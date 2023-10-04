@@ -1,59 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Utilities.Grid;
 
 namespace Game
 {
-    using Utilities.AI;
     public class GameCell : GridCell<GameCellData>
     {
         private int islandID = -1;
+        public Player Player;
         public Chump Tree1;
         public Chump Tree2;
-        public Player Player = null;
-        public bool IsBlockingRollingTree
-        {
-            get
-            {
-                return value.state == CELL_STATE.LOW_ROCK_OBSTANCE 
-                    || value.state == CELL_STATE.HIGH_ROCK_OBSTANCE;
-            }
-        }
-        public bool IsRaft
-        {
-            get => Tree1 != null && Tree2 != null;
-        }
-        public bool IsBlockingPlayer
-        {
-            get => ((value.type == CELL_TYPE.WATER) && !IsRaft)
-                || value.state == CELL_STATE.HIGH_ROCK_OBSTANCE;
-        }       
-        public bool IsCanPushRaft
-        {
-            get => (value.state == CELL_STATE.HIGH_ROCK_OBSTANCE)
-                || (Tree1 != null && value.type == CELL_TYPE.GROUND);
-        }
 
-        public int IslandID
-        {
-            get => islandID;
-            set
-            {
-                if (value < 0 || islandID >= 0) return;
-                if(this.value.type == CELL_TYPE.GROUND) 
-                { 
-                    islandID = value;
-                }
-            }
-        }
         public GameCell()
         {
             value = new GameCellData();
         }
+
         public GameCell(GameCellData data)
         {
             value = data;
         }
+
         public GameCell(GameCell copy) : base(copy)
         {
             value = new GameCellData();
@@ -65,6 +30,30 @@ namespace Game
             Tree2 = copy.Tree2;
             Player = copy.Player;
 
+        }
+
+        public bool IsBlockingRollingTree =>
+            value.state == CellState.LowRockObstacle
+            || value.state == CellState.HighRockObstacle;
+
+        public bool IsRaft => Tree1 != null && Tree2 != null;
+
+        public bool IsBlockingPlayer =>
+            (value.type == CellType.Water && !IsRaft)
+            || value.state == CellState.HighRockObstacle;
+
+        public bool IsCanPushRaft =>
+            value.state == CellState.HighRockObstacle
+            || (Tree1 != null && value.type == CellType.Ground);
+
+        public int IslandID
+        {
+            get => islandID;
+            set
+            {
+                if (value < 0 || islandID >= 0) return;
+                if (this.value.type == CellType.Ground) islandID = value;
+            }
         }
     }
 }

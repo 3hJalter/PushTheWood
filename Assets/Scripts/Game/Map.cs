@@ -1,39 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Utilities.AI;
+using Utilities.Grid;
 
 namespace Game
 {
     public class Map : MonoBehaviour
     {
-        [SerializeField]
-        CONSTANTS.PLANE planeType;
-        [SerializeField]
-        Vector2Int mapSize;
-        [SerializeField]
-        float cellSize;
+        [SerializeField] private Constants.Plane planeType;
 
-        Grid<GameCell, GameCellData> grid;
-        Grid<GameCell, GameCellData>.DebugGrid debug;
+        [SerializeField] private Vector2Int mapSize;
+
+        [SerializeField] private float cellSize;
+
+        private Grid<GameCell, GameCellData>.DebugGrid debug;
 
         private Mesh mesh;
-        private Obstance[] obstances;
-        public Grid<GameCell, GameCellData> GridMap => grid;
-        void Awake()
+        public Grid<GameCell, GameCellData> GridMap { get; private set; }
+
+        private void Awake()
         {
-            grid = new Grid<GameCell, GameCellData>(mapSize.x, mapSize.y, cellSize, transform.position, () => new GameCell(), planeType);
+            GridMap = new Grid<GameCell, GameCellData>(mapSize.x, mapSize.y, cellSize, transform.position,
+                () => new GameCell(), planeType);
             debug = new Grid<GameCell, GameCellData>.DebugGrid();
-            obstances = FindObjectsOfType<Obstance>();
 
             mesh = new Mesh();
             GetComponent<MeshFilter>().mesh = mesh;
-            debug.DrawGrid(grid);
+            debug.DrawGrid(GridMap);
         }
+
         // Update is called once per frame
         public void UpdateVisual()
         {
-            debug.UpdateVisualMap(grid, mesh);
+            debug.UpdateVisualMap(GridMap, mesh);
         }
     }
 }

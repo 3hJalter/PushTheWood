@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace UnityStandardAssets.ImageEffects
@@ -7,26 +6,26 @@ namespace UnityStandardAssets.ImageEffects
     {
         Ghosting = 0,
         Anamorphic = 1,
-        Combined = 2,
+        Combined = 2
     }
 
     public enum TweakMode34
     {
         Basic = 0,
-        Complex = 1,
+        Complex = 1
     }
 
     public enum HDRBloomMode
     {
         Auto = 0,
         On = 1,
-        Off = 2,
+        Off = 2
     }
 
     public enum BloomScreenBlendMode
     {
         Screen = 0,
-        Add = 1,
+        Add = 1
     }
 
     [ExecuteInEditMode]
@@ -38,7 +37,6 @@ namespace UnityStandardAssets.ImageEffects
         public BloomScreenBlendMode screenBlendMode = BloomScreenBlendMode.Add;
 
         public HDRBloomMode hdr = HDRBloomMode.Auto;
-        private bool doHdr = false;
         public float sepBlurSpread = 1.5f;
         public float useSrcAlphaAsMask = 0.5f;
 
@@ -46,58 +44,41 @@ namespace UnityStandardAssets.ImageEffects
         public float bloomThreshold = 0.5f;
         public int bloomBlurIterations = 2;
 
-        public bool lensflares = false;
+        public bool lensflares;
         public int hollywoodFlareBlurIterations = 2;
         public LensflareStyle34 lensflareMode = (LensflareStyle34)1;
         public float hollyStretchWidth = 3.5f;
         public float lensflareIntensity = 1.0f;
         public float lensflareThreshold = 0.3f;
-        public Color flareColorA = new Color(0.4f, 0.4f, 0.8f, 0.75f);
-        public Color flareColorB = new Color(0.4f, 0.8f, 0.8f, 0.75f);
-        public Color flareColorC = new Color(0.8f, 0.4f, 0.8f, 0.75f);
-        public Color flareColorD = new Color(0.8f, 0.4f, 0.0f, 0.75f);
+        public Color flareColorA = new(0.4f, 0.4f, 0.8f, 0.75f);
+        public Color flareColorB = new(0.4f, 0.8f, 0.8f, 0.75f);
+        public Color flareColorC = new(0.8f, 0.4f, 0.8f, 0.75f);
+        public Color flareColorD = new(0.8f, 0.4f, 0.0f, 0.75f);
         public Texture2D lensFlareVignetteMask;
 
         public Shader lensFlareShader;
-        private Material lensFlareMaterial;
 
         public Shader vignetteShader;
-        private Material vignetteMaterial;
 
         public Shader separableBlurShader;
-        private Material separableBlurMaterial;
 
         public Shader addBrightStuffOneOneShader;
-        private Material addBrightStuffBlendOneOneMaterial;
 
         public Shader screenBlendShader;
-        private Material screenBlend;
 
         public Shader hollywoodFlaresShader;
-        private Material hollywoodFlaresMaterial;
 
         public Shader brightPassFilterShader;
+        private Material addBrightStuffBlendOneOneMaterial;
         private Material brightPassFilterMaterial;
+        private bool doHdr;
+        private Material hollywoodFlaresMaterial;
+        private Material lensFlareMaterial;
+        private Material screenBlend;
+        private Material separableBlurMaterial;
+        private Material vignetteMaterial;
 
-
-        public override bool CheckResources()
-        {
-            CheckSupport(false);
-
-            screenBlend = CheckShaderAndCreateMaterial(screenBlendShader, screenBlend);
-            lensFlareMaterial = CheckShaderAndCreateMaterial(lensFlareShader, lensFlareMaterial);
-            vignetteMaterial = CheckShaderAndCreateMaterial(vignetteShader, vignetteMaterial);
-            separableBlurMaterial = CheckShaderAndCreateMaterial(separableBlurShader, separableBlurMaterial);
-            addBrightStuffBlendOneOneMaterial = CheckShaderAndCreateMaterial(addBrightStuffOneOneShader, addBrightStuffBlendOneOneMaterial);
-            hollywoodFlaresMaterial = CheckShaderAndCreateMaterial(hollywoodFlaresShader, hollywoodFlaresMaterial);
-            brightPassFilterMaterial = CheckShaderAndCreateMaterial(brightPassFilterShader, brightPassFilterMaterial);
-
-            if (!isSupported)
-                ReportAutoDisable();
-            return isSupported;
-        }
-
-        void OnRenderImage(RenderTexture source, RenderTexture destination)
+        private void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
             if (CheckResources() == false)
             {
@@ -111,9 +92,7 @@ namespace UnityStandardAssets.ImageEffects
             if (hdr == HDRBloomMode.Auto)
                 doHdr = source.format == RenderTextureFormat.ARGBHalf && GetComponent<Camera>().allowHDR;
             else
-            {
                 doHdr = hdr == HDRBloomMode.On;
-            }
 
             doHdr = doHdr && supportHDRTextures;
 
@@ -121,13 +100,16 @@ namespace UnityStandardAssets.ImageEffects
             if (doHdr)
                 realBlendMode = BloomScreenBlendMode.Add;
 
-            var rtFormat = (doHdr) ? RenderTextureFormat.ARGBHalf : RenderTextureFormat.Default;
+            RenderTextureFormat rtFormat = doHdr ? RenderTextureFormat.ARGBHalf : RenderTextureFormat.Default;
             RenderTexture halfRezColor = RenderTexture.GetTemporary(source.width / 2, source.height / 2, 0, rtFormat);
-            RenderTexture quarterRezColor = RenderTexture.GetTemporary(source.width / 4, source.height / 4, 0, rtFormat);
-            RenderTexture secondQuarterRezColor = RenderTexture.GetTemporary(source.width / 4, source.height / 4, 0, rtFormat);
-            RenderTexture thirdQuarterRezColor = RenderTexture.GetTemporary(source.width / 4, source.height / 4, 0, rtFormat);
+            RenderTexture quarterRezColor =
+                RenderTexture.GetTemporary(source.width / 4, source.height / 4, 0, rtFormat);
+            RenderTexture secondQuarterRezColor =
+                RenderTexture.GetTemporary(source.width / 4, source.height / 4, 0, rtFormat);
+            RenderTexture thirdQuarterRezColor =
+                RenderTexture.GetTemporary(source.width / 4, source.height / 4, 0, rtFormat);
 
-            float widthOverHeight = (1.0f * source.width) / (1.0f * source.height);
+            float widthOverHeight = 1.0f * source.width / (1.0f * source.height);
             float oneOverBaseSize = 1.0f / 512.0f;
 
             // downsample
@@ -148,14 +130,16 @@ namespace UnityStandardAssets.ImageEffects
 
             for (int iter = 0; iter < bloomBlurIterations; iter++)
             {
-                float spreadForPass = (1.0f + (iter * 0.5f)) * sepBlurSpread;
-                separableBlurMaterial.SetVector("offsets", new Vector4(0.0f, spreadForPass * oneOverBaseSize, 0.0f, 0.0f));
+                float spreadForPass = (1.0f + iter * 0.5f) * sepBlurSpread;
+                separableBlurMaterial.SetVector("offsets",
+                    new Vector4(0.0f, spreadForPass * oneOverBaseSize, 0.0f, 0.0f));
 
                 RenderTexture src = iter == 0 ? secondQuarterRezColor : quarterRezColor;
                 Graphics.Blit(src, thirdQuarterRezColor, separableBlurMaterial);
                 src.DiscardContents();
 
-                separableBlurMaterial.SetVector("offsets", new Vector4((spreadForPass / widthOverHeight) * oneOverBaseSize, 0.0f, 0.0f, 0.0f));
+                separableBlurMaterial.SetVector("offsets",
+                    new Vector4(spreadForPass / widthOverHeight * oneOverBaseSize, 0.0f, 0.0f, 0.0f));
                 Graphics.Blit(thirdQuarterRezColor, quarterRezColor, separableBlurMaterial);
                 thirdQuarterRezColor.DiscardContents();
             }
@@ -195,15 +179,19 @@ namespace UnityStandardAssets.ImageEffects
                     // thirdQuarter has the brightcut unblurred colors
                     // quarterRezColor is the blurred, brightcut buffer that will end up as bloom
 
-                    hollywoodFlaresMaterial.SetVector("_threshold", new Vector4(lensflareThreshold, 1.0f / (1.0f - lensflareThreshold), 0.0f, 0.0f));
-                    hollywoodFlaresMaterial.SetVector("tintColor", new Vector4(flareColorA.r, flareColorA.g, flareColorA.b, flareColorA.a) * flareColorA.a * lensflareIntensity);
+                    hollywoodFlaresMaterial.SetVector("_threshold",
+                        new Vector4(lensflareThreshold, 1.0f / (1.0f - lensflareThreshold), 0.0f, 0.0f));
+                    hollywoodFlaresMaterial.SetVector("tintColor",
+                        new Vector4(flareColorA.r, flareColorA.g, flareColorA.b, flareColorA.a) * flareColorA.a *
+                        lensflareIntensity);
                     Graphics.Blit(thirdQuarterRezColor, secondQuarterRezColor, hollywoodFlaresMaterial, 2);
                     thirdQuarterRezColor.DiscardContents();
 
                     Graphics.Blit(secondQuarterRezColor, thirdQuarterRezColor, hollywoodFlaresMaterial, 3);
                     secondQuarterRezColor.DiscardContents();
 
-                    hollywoodFlaresMaterial.SetVector("offsets", new Vector4((sepBlurSpread * 1.0f / widthOverHeight) * oneOverBaseSize, 0.0f, 0.0f, 0.0f));
+                    hollywoodFlaresMaterial.SetVector("offsets",
+                        new Vector4(sepBlurSpread * 1.0f / widthOverHeight * oneOverBaseSize, 0.0f, 0.0f, 0.0f));
                     hollywoodFlaresMaterial.SetFloat("stretchWidth", hollyStretchWidth);
                     Graphics.Blit(thirdQuarterRezColor, secondQuarterRezColor, hollywoodFlaresMaterial, 1);
                     thirdQuarterRezColor.DiscardContents();
@@ -220,11 +208,15 @@ namespace UnityStandardAssets.ImageEffects
                     {
                         for (int itera = 0; itera < hollywoodFlareBlurIterations; itera++)
                         {
-                            separableBlurMaterial.SetVector("offsets", new Vector4((hollyStretchWidth * 2.0f / widthOverHeight) * oneOverBaseSize, 0.0f, 0.0f, 0.0f));
+                            separableBlurMaterial.SetVector("offsets",
+                                new Vector4(hollyStretchWidth * 2.0f / widthOverHeight * oneOverBaseSize, 0.0f, 0.0f,
+                                    0.0f));
                             Graphics.Blit(secondQuarterRezColor, thirdQuarterRezColor, separableBlurMaterial);
                             secondQuarterRezColor.DiscardContents();
 
-                            separableBlurMaterial.SetVector("offsets", new Vector4((hollyStretchWidth * 2.0f / widthOverHeight) * oneOverBaseSize, 0.0f, 0.0f, 0.0f));
+                            separableBlurMaterial.SetVector("offsets",
+                                new Vector4(hollyStretchWidth * 2.0f / widthOverHeight * oneOverBaseSize, 0.0f, 0.0f,
+                                    0.0f));
                             Graphics.Blit(thirdQuarterRezColor, secondQuarterRezColor, separableBlurMaterial);
                             thirdQuarterRezColor.DiscardContents();
                         }
@@ -239,11 +231,15 @@ namespace UnityStandardAssets.ImageEffects
 
                         for (int ix = 0; ix < hollywoodFlareBlurIterations; ix++)
                         {
-                            separableBlurMaterial.SetVector("offsets", new Vector4((hollyStretchWidth * 2.0f / widthOverHeight) * oneOverBaseSize, 0.0f, 0.0f, 0.0f));
+                            separableBlurMaterial.SetVector("offsets",
+                                new Vector4(hollyStretchWidth * 2.0f / widthOverHeight * oneOverBaseSize, 0.0f, 0.0f,
+                                    0.0f));
                             Graphics.Blit(secondQuarterRezColor, thirdQuarterRezColor, separableBlurMaterial);
                             secondQuarterRezColor.DiscardContents();
 
-                            separableBlurMaterial.SetVector("offsets", new Vector4((hollyStretchWidth * 2.0f / widthOverHeight) * oneOverBaseSize, 0.0f, 0.0f, 0.0f));
+                            separableBlurMaterial.SetVector("offsets",
+                                new Vector4(hollyStretchWidth * 2.0f / widthOverHeight * oneOverBaseSize, 0.0f, 0.0f,
+                                    0.0f));
                             Graphics.Blit(thirdQuarterRezColor, secondQuarterRezColor, separableBlurMaterial);
                             thirdQuarterRezColor.DiscardContents();
                         }
@@ -271,6 +267,25 @@ namespace UnityStandardAssets.ImageEffects
             RenderTexture.ReleaseTemporary(thirdQuarterRezColor);
         }
 
+
+        public override bool CheckResources()
+        {
+            CheckSupport(false);
+
+            screenBlend = CheckShaderAndCreateMaterial(screenBlendShader, screenBlend);
+            lensFlareMaterial = CheckShaderAndCreateMaterial(lensFlareShader, lensFlareMaterial);
+            vignetteMaterial = CheckShaderAndCreateMaterial(vignetteShader, vignetteMaterial);
+            separableBlurMaterial = CheckShaderAndCreateMaterial(separableBlurShader, separableBlurMaterial);
+            addBrightStuffBlendOneOneMaterial =
+                CheckShaderAndCreateMaterial(addBrightStuffOneOneShader, addBrightStuffBlendOneOneMaterial);
+            hollywoodFlaresMaterial = CheckShaderAndCreateMaterial(hollywoodFlaresShader, hollywoodFlaresMaterial);
+            brightPassFilterMaterial = CheckShaderAndCreateMaterial(brightPassFilterShader, brightPassFilterMaterial);
+
+            if (!isSupported)
+                ReportAutoDisable();
+            return isSupported;
+        }
+
         private void AddTo(float intensity_, RenderTexture from, RenderTexture to)
         {
             addBrightStuffBlendOneOneMaterial.SetFloat("_Intensity", intensity_);
@@ -279,10 +294,14 @@ namespace UnityStandardAssets.ImageEffects
 
         private void BlendFlares(RenderTexture from, RenderTexture to)
         {
-            lensFlareMaterial.SetVector("colorA", new Vector4(flareColorA.r, flareColorA.g, flareColorA.b, flareColorA.a) * lensflareIntensity);
-            lensFlareMaterial.SetVector("colorB", new Vector4(flareColorB.r, flareColorB.g, flareColorB.b, flareColorB.a) * lensflareIntensity);
-            lensFlareMaterial.SetVector("colorC", new Vector4(flareColorC.r, flareColorC.g, flareColorC.b, flareColorC.a) * lensflareIntensity);
-            lensFlareMaterial.SetVector("colorD", new Vector4(flareColorD.r, flareColorD.g, flareColorD.b, flareColorD.a) * lensflareIntensity);
+            lensFlareMaterial.SetVector("colorA",
+                new Vector4(flareColorA.r, flareColorA.g, flareColorA.b, flareColorA.a) * lensflareIntensity);
+            lensFlareMaterial.SetVector("colorB",
+                new Vector4(flareColorB.r, flareColorB.g, flareColorB.b, flareColorB.a) * lensflareIntensity);
+            lensFlareMaterial.SetVector("colorC",
+                new Vector4(flareColorC.r, flareColorC.g, flareColorC.b, flareColorC.a) * lensflareIntensity);
+            lensFlareMaterial.SetVector("colorD",
+                new Vector4(flareColorD.r, flareColorD.g, flareColorD.b, flareColorD.a) * lensflareIntensity);
             Graphics.Blit(from, to, lensFlareMaterial);
         }
 
@@ -291,7 +310,8 @@ namespace UnityStandardAssets.ImageEffects
             if (doHdr)
                 brightPassFilterMaterial.SetVector("threshold", new Vector4(thresh, 1.0f, 0.0f, 0.0f));
             else
-                brightPassFilterMaterial.SetVector("threshold", new Vector4(thresh, 1.0f / (1.0f - thresh), 0.0f, 0.0f));
+                brightPassFilterMaterial.SetVector("threshold",
+                    new Vector4(thresh, 1.0f / (1.0f - thresh), 0.0f, 0.0f));
             brightPassFilterMaterial.SetFloat("useSrcAlphaAsMask", useAlphaAsMask);
             Graphics.Blit(from, to, brightPassFilterMaterial);
         }
@@ -309,6 +329,5 @@ namespace UnityStandardAssets.ImageEffects
                 Graphics.Blit(from, to, vignetteMaterial);
             }
         }
-
     }
 }

@@ -14,11 +14,11 @@
 	half4 fragBase (VertexOutputBaseSimple i) : SV_Target { return fragForwardBaseSimpleInternal(i); }
 	half4 fragAdd (VertexOutputForwardAddSimple i) : SV_Target { return fragForwardAddSimpleInternal(i); }
 #else
-	#include "PolyboxCore.cginc"
-	VertexOutputForwardBase vertBase (VertexInput v) { return vertForwardBase(v); }
-	VertexOutputForwardAdd vertAdd (VertexInput v) { return vertForwardAdd(v); }
-	half4 fragBase (VertexOutputForwardBase i) : SV_Target { return fragForwardBaseInternal(i); }
-	half4 fragAdd (VertexOutputForwardAdd i) : SV_Target { return fragForwardAddInternal(i); }
+#include "PolyboxCore.cginc"
+VertexOutputForwardBase vertBase(VertexInput v) { return vertForwardBase(v); }
+VertexOutputForwardAdd vertAdd(VertexInput v) { return vertForwardAdd(v); }
+half4 fragBase(VertexOutputForwardBase i) : SV_Target { return fragForwardBaseInternal(i); }
+half4 fragAdd(VertexOutputForwardAdd i) : SV_Target { return fragForwardAddInternal(i); }
 #endif
 
 #endif // POLYBOX_CORE_FORWARD_INCLUDED

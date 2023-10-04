@@ -1,24 +1,23 @@
-using System;
 using UnityEditor;
 using UnityEngine;
 
 namespace UnityStandardAssets.ImageEffects
 {
-    [CustomEditor(typeof (Antialiasing))]
+    [CustomEditor(typeof(Antialiasing))]
     public class AntialiasingEditor : Editor
     {
-        private SerializedObject serObj;
-
-        private SerializedProperty mode;
-
-        private SerializedProperty showGeneratedNormals;
-        private SerializedProperty offsetScale;
         private SerializedProperty blurRadius;
         private SerializedProperty dlaaSharp;
+        private SerializedProperty edgeSharpness;
+        private SerializedProperty edgeThreshold;
 
         private SerializedProperty edgeThresholdMin;
-        private SerializedProperty edgeThreshold;
-        private SerializedProperty edgeSharpness;
+
+        private SerializedProperty mode;
+        private SerializedProperty offsetScale;
+        private SerializedObject serObj;
+
+        private SerializedProperty showGeneratedNormals;
 
 
         private void OnEnable()
@@ -48,21 +47,21 @@ namespace UnityStandardAssets.ImageEffects
 
             Material mat = (target as Antialiasing).CurrentAAMaterial();
             if (null == mat && (target as Antialiasing).enabled)
-            {
-                EditorGUILayout.HelpBox("This AA technique is currently not supported. Choose a different technique or disable the effect and use MSAA instead.", MessageType.Warning);
-            }
+                EditorGUILayout.HelpBox(
+                    "This AA technique is currently not supported. Choose a different technique or disable the effect and use MSAA instead.",
+                    MessageType.Warning);
 
-            if (mode.enumValueIndex == (int) AAMode.NFAA)
+            if (mode.enumValueIndex == (int)AAMode.NFAA)
             {
                 EditorGUILayout.PropertyField(offsetScale, new GUIContent("Edge Detect Ofs"));
                 EditorGUILayout.PropertyField(blurRadius, new GUIContent("Blur Radius"));
                 EditorGUILayout.PropertyField(showGeneratedNormals, new GUIContent("Show Normals"));
             }
-            else if (mode.enumValueIndex == (int) AAMode.DLAA)
+            else if (mode.enumValueIndex == (int)AAMode.DLAA)
             {
                 EditorGUILayout.PropertyField(dlaaSharp, new GUIContent("Sharp"));
             }
-            else if (mode.enumValueIndex == (int) AAMode.FXAA3Console)
+            else if (mode.enumValueIndex == (int)AAMode.FXAA3Console)
             {
                 EditorGUILayout.PropertyField(edgeThresholdMin, new GUIContent("Edge Min Threshhold"));
                 EditorGUILayout.PropertyField(edgeThreshold, new GUIContent("Edge Threshhold"));

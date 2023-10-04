@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Daivq
 {
@@ -7,7 +6,7 @@ namespace Daivq
     {
         private static readonly int ANIM_BOOL_IS_MOVING = Animator.StringToHash("IsMoving");
         private static readonly int ANIM_TRIGGER_PUSH = Animator.StringToHash("Push");
-        [SerializeField] private Animator _animator = null;
+        [SerializeField] private Animator _animator;
 
         public void Idle()
         {

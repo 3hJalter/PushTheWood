@@ -1,49 +1,48 @@
-using DG.Tweening;
-using Game;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Daivq;
+using DG.Tweening;
+using Game.AI;
 using UnityEngine;
+using Utilities.Grid;
 
 namespace Game
 {
-    using Game.AI;
-    using System;
-    using Utilities.AI;
-
     public partial class Player : MonoBehaviour, IInit
     {
-        public static event Action<int> _OnChangeIsland;
-        public Vector3 InitPos1 = new Vector3(5.09999847f, 0, 244.850006f);
-        public Vector3 InitPos2 = new Vector3(83.0999985f, 0, 240.850006f);
-        public Vector3 InitPos3 = new Vector3(107.099998f, 0, 258.850006f);
-        public Vector3 InitPos4 = new Vector3(47.0999985f, 0, 192.850006f);
-        public Vector3 InitPos5 = new Vector3(111.099998f, 0, 220.850006f);
-        public Vector3 InitPos6 = new Vector3(25.0999985f, 0, 170.850006f);
-        public Vector3 InitPos7 = new Vector3(99.0999985f, 0, 158.850006f);
+        public Vector3 InitPos1 = new(5.09999847f, 0, 244.850006f);
+        public Vector3 InitPos2 = new(83.0999985f, 0, 240.850006f);
+        public Vector3 InitPos3 = new(107.099998f, 0, 258.850006f);
+        public Vector3 InitPos4 = new(47.0999985f, 0, 192.850006f);
+        public Vector3 InitPos5 = new(111.099998f, 0, 220.850006f);
+        public Vector3 InitPos6 = new(25.0999985f, 0, 170.850006f);
+        public Vector3 InitPos7 = new(99.0999985f, 0, 158.850006f);
 
-        [Header("Anim")]
-        [SerializeField] private Transform _modelTransform = null;
-        [SerializeField] private Daivq.PlayerAnimationControl _playerAnimationControl = null;
+        [Header("Anim")] [SerializeField] private Transform _modelTransform;
+
+        [SerializeField] private PlayerAnimationControl _playerAnimationControl;
         [SerializeField] private float _delayPush = 0.5f;
         [SerializeField] private float _durationRotate = 0.25f;
         [SerializeField] private Ease _easeRotate = Ease.OutQuad;
-        [SerializeField] Transform model;
+        [SerializeField] private Transform model;
 
-        [Header("Control")]
-        [SerializeField] private SwipeDetector _swipeDetector = null;
-        public Daivq.UIManager _uiManager = null;
+        [Header("Control")] [SerializeField] private SwipeDetector _swipeDetector;
 
-        Vector2Int gridPosition = Vector2Int.zero;
+        public UIManager _uiManager;
 
-        Grid<GameCell, GameCellData> map;
-        Vector2Int nextPos = Vector2Int.zero;
-
-        GameCell currentCell;
-        GameCell nextCell;
-        bool isMoving = false;
+        private GameCell currentCell;
         private int currentIslandID = -1;
-        private Stack<PlayerMemento> saveSteps = new Stack<PlayerMemento>();
         private PlayerMemento currentSave;
+
+        private Vector2Int gridPosition = Vector2Int.zero;
+        private bool isMoving;
+
+        private Grid<GameCell, GameCellData> map;
+        private GameCell nextCell;
+        private Vector2Int nextPos = Vector2Int.zero;
+        private Stack<PlayerMemento> saveSteps = new();
+
         public int CurrentIslandID
         {
             get => currentIslandID;
@@ -57,26 +56,15 @@ namespace Game
             }
         }
 
-
-        public void OnInit()
-        {
-            map = LevelManager.Inst.Map.GridMap;
-            GameCell initCell = map.GetGridCell(transform.position);
-            LevelManager.Inst.FindIsland(initCell);
-            CurrentIslandID = initCell.IslandID;
-            gridPosition.Set(initCell.X, initCell.Y);
-        }
         public Vector2Int GridPosition
         {
             get => gridPosition;
             set
             {
-                if (gridPosition != value)
-                {
-                    gridPosition = value;
-                }
+                if (gridPosition != value) gridPosition = value;
             }
         }
+
         private void Update()
         {
             isMoving = false;
@@ -85,30 +73,18 @@ namespace Game
             if (!_swipeDetector.IsBlockPlayerInput.Value)
             {
                 moveDir = _swipeDetector.SwipeDirection;
-                if (moveDir.x == 0 && moveDir.y == 0)
-                {
-                    moveDir = _uiManager.MoveDirectionFromButton;
-                }
+                if (moveDir.x == 0 && moveDir.y == 0) moveDir = _uiManager.MoveDirectionFromButton;
             }
 
             if (moveDir.x == 0 && moveDir.y == 0)
             {
                 if (Input.GetKeyDown(KeyCode.A))
-                {
                     moveDir = Vector2Int.left;
-                }
                 else if (Input.GetKeyDown(KeyCode.W))
-                {
                     moveDir = Vector2Int.up;
-                }
                 else if (Input.GetKeyDown(KeyCode.D))
-                {
                     moveDir = Vector2Int.right;
-                }
-                else if (Input.GetKeyDown(KeyCode.S))
-                {
-                    moveDir = Vector2Int.down;
-                }
+                else if (Input.GetKeyDown(KeyCode.S)) moveDir = Vector2Int.down;
             }
 
             //if (Input.GetKeyDown(KeyCode.J))
@@ -135,18 +111,19 @@ namespace Game
                         currentCell.Player = null;
                         GridPosition = nextPos;
                         MovingTo(nextPos, moveDir);
-                        transform.DOMoveY(0f, 0.05f).SetDelay(CONSTANTS.MOVING_TIME);
+                        transform.DOMoveY(0f, 0.05f).SetDelay(Constants.MOVING_TIME);
                         nextCell.Player = this;
                     }
                     else if (nextCell.Tree1 != null)
                     {
-                        Vector2 direction = new Vector2(nextCell.X - currentCell.X, nextCell.Y - currentCell.Y);
+                        Vector2 direction = new(nextCell.X - currentCell.X, nextCell.Y - currentCell.Y);
                         switch (nextCell.Value.type)
                         {
-                            case CELL_TYPE.GROUND: // Push Log
-                                if (currentCell.Value.state == CELL_STATE.TREE_OBSTANCE && nextCell.Tree1.SState != TREE_STATE.UP) //When player in root and tree is down
+                            case CellType.Ground: // Push Log
+                                if (currentCell.Value.state == CellState.TreeObstacle &&
+                                    nextCell.Tree1.SState != TreeState.Up) //When player in root and tree is down
                                 {
-                                    if (nextCell.Value.state == CELL_STATE.TREE_OBSTANCE) // When tree in tree root 
+                                    if (nextCell.Value.state == CellState.TreeObstacle) // When tree in tree root 
                                     {
                                         MoveTree(nextCell.Tree1, direction);
                                         return;
@@ -154,7 +131,7 @@ namespace Game
 
                                     switch (nextCell.Tree1.Type) //Tree not in root
                                     {
-                                        case TREE_TYPE.HORIZONTAL:
+                                        case TreeType.Horizontal:
                                             if (Mathf.Abs(direction.x) > 0)
                                             {
                                                 currentCell.Player = null;
@@ -167,8 +144,9 @@ namespace Game
                                             {
                                                 MoveTree(nextCell.Tree1, direction);
                                             }
+
                                             break;
-                                        case TREE_TYPE.VERTICAL:
+                                        case TreeType.Vertical:
                                             if (Mathf.Abs(direction.y) > 0)
                                             {
                                                 currentCell.Player = null;
@@ -181,19 +159,21 @@ namespace Game
                                             {
                                                 MoveTree(nextCell.Tree1, direction);
                                             }
+
                                             break;
                                     }
                                 }
                                 else //When player not in root
                                 {
-                                    Vector3 dir = new Vector3(nextPos.x - gridPosition.x, 0, nextPos.y - gridPosition.y);
+                                    Vector3 dir = new(nextPos.x - gridPosition.x, 0, nextPos.y - gridPosition.y);
                                     MoveTree(nextCell.Tree1, dir);
                                 }
+
                                 break;
-                            case CELL_TYPE.WATER: //Move to log in water
+                            case CellType.Water: //Move to log in water
                                 switch (nextCell.Tree1.Type)
                                 {
-                                    case TREE_TYPE.HORIZONTAL:
+                                    case TreeType.Horizontal:
                                         if (Mathf.Abs(direction.x) > 0)
                                         {
                                             currentCell.Player = null;
@@ -201,8 +181,9 @@ namespace Game
                                             MovingTo(nextPos, moveDir);
                                             nextCell.Player = this;
                                         }
+
                                         break;
-                                    case TREE_TYPE.VERTICAL:
+                                    case TreeType.Vertical:
                                         if (Mathf.Abs(direction.y) > 0)
                                         {
                                             currentCell.Player = null;
@@ -210,8 +191,10 @@ namespace Game
                                             MovingTo(nextPos, moveDir);
                                             nextCell.Player = this;
                                         }
+
                                         break;
                                 }
+
                                 break;
                         }
 
@@ -226,13 +209,13 @@ namespace Game
                         currentCell.Player = null;
                         GridPosition = nextPos;
                         MovingTo(nextPos, moveDir);
-                        transform.DOMoveY(0f, 0.05f).SetDelay(CONSTANTS.MOVING_TIME);
+                        transform.DOMoveY(0f, 0.05f).SetDelay(Constants.MOVING_TIME);
                         nextCell.Player = this;
                     }
                 }
                 else //Player in Raft
                 {
-                    if (nextCell.Value.type == CELL_TYPE.GROUND && !nextCell.IsBlockingPlayer) //Player move to ground
+                    if (nextCell.Value.type == CellType.Ground && !nextCell.IsBlockingPlayer) //Player move to ground
                     {
                         currentCell.Player = null;
                         GridPosition = nextPos;
@@ -241,21 +224,22 @@ namespace Game
                     }
                     else if (nextCell.IsCanPushRaft) //Player move raft when push
                     {
-                        MoveTree(currentCell.Tree1, new Vector3(currentCell.X - nextCell.X, 0, currentCell.Y - nextCell.Y));
+                        MoveTree(currentCell.Tree1,
+                            new Vector3(currentCell.X - nextCell.X, 0, currentCell.Y - nextCell.Y));
                     }
                     else if (nextCell.Tree1 != null)
                     {
-                        Vector3 direction = new Vector3(currentCell.X - nextCell.X, 0, currentCell.Y - nextCell.Y);
+                        Vector3 direction = new(currentCell.X - nextCell.X, 0, currentCell.Y - nextCell.Y);
                         switch (nextCell.Value.type)
                         {
-                            case CELL_TYPE.GROUND:
+                            case CellType.Ground:
                                 MoveTree(currentCell.Tree1, direction);
                                 MoveTree(nextCell.Tree1, -direction);
                                 break;
-                            case CELL_TYPE.WATER:
+                            case CellType.Water:
                                 switch (nextCell.Tree1.Type)
                                 {
-                                    case TREE_TYPE.HORIZONTAL:
+                                    case TreeType.Horizontal:
                                         if (Mathf.Abs(direction.x) > 0)
                                         {
                                             currentCell.Player = null;
@@ -263,8 +247,9 @@ namespace Game
                                             MovingTo(nextPos, moveDir);
                                             nextCell.Player = this;
                                         }
+
                                         break;
-                                    case TREE_TYPE.VERTICAL:
+                                    case TreeType.Vertical:
                                         if (Mathf.Abs(direction.y) > 0)
                                         {
                                             currentCell.Player = null;
@@ -272,8 +257,10 @@ namespace Game
                                             MovingTo(nextPos, moveDir);
                                             nextCell.Player = this;
                                         }
+
                                         break;
                                 }
+
                                 break;
                         }
                     }
@@ -281,25 +268,41 @@ namespace Game
             }
         }
 
+
+        public void OnInit()
+        {
+            map = LevelManager.Inst.Map.GridMap;
+            GameCell initCell = map.GetGridCell(transform.position);
+            LevelManager.Inst.FindIsland(initCell);
+            CurrentIslandID = initCell.IslandID;
+            gridPosition.Set(initCell.X, initCell.Y);
+        }
+
+        public static event Action<int> _OnChangeIsland;
+
         private void MovingTo(Vector2Int pos, Vector2Int direction, Ease ease = Ease.InOutSine)
         {
             GameCell desCell = map.GetGridCell(pos.x, pos.y);
             desCell.Player = null;
 
             Sequence s = DOTween.Sequence();
-            s.Append(transform.DOMoveX(desCell.WorldPos.x, CONSTANTS.MOVING_TIME).SetEase(ease));
-            s.Join(transform.DOMoveZ(desCell.WorldPos.z, CONSTANTS.MOVING_TIME).SetEase(ease));
+            s.Append(transform.DOMoveX(desCell.WorldPos.x, Constants.MOVING_TIME).SetEase(ease));
+            s.Join(transform.DOMoveZ(desCell.WorldPos.z, Constants.MOVING_TIME).SetEase(ease));
             _playerAnimationControl.Run();
             s.Play().OnComplete(OnMoveDone);
-            _modelTransform.DOLocalRotateQuaternion(Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.y), Vector3.up), _durationRotate).SetEase(_easeRotate).Play();
+            _modelTransform
+                .DOLocalRotateQuaternion(Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.y), Vector3.up),
+                    _durationRotate).SetEase(_easeRotate).Play();
+
             void OnMoveDone()
             {
                 _playerAnimationControl.Idle();
                 CurrentIslandID = desCell.IslandID;
                 LevelManager.Inst.Steps++;
-                _uiManager._stepText.text = LevelManager.Inst.Steps.ToString() + " / 150";
+                _uiManager._stepText.text = LevelManager.Inst.Steps + " / 150";
             }
         }
+
         public void SetPosition(Vector3 pos)
         {
             GameCell cell = map.GetGridCell(pos);
@@ -311,11 +314,14 @@ namespace Game
         public void MovingOnRaft(Vector2Int pos, Ease ease = Ease.InOutSine)
         {
             GameCell desCell = map.GetGridCell(pos.x, pos.y);
-            transform.DOMove(desCell.WorldPos, CONSTANTS.MOVING_TIME).SetEase(ease).OnComplete(() => CurrentIslandID = desCell.IslandID);
+            transform.DOMove(desCell.WorldPos, Constants.MOVING_TIME).SetEase(ease)
+                .OnComplete(() => CurrentIslandID = desCell.IslandID);
 
             Vector3 deltaPosition = desCell.WorldPos - transform.position;
             deltaPosition.y = 0f;
-            _modelTransform.DOLocalRotateQuaternion(Quaternion.LookRotation(-deltaPosition, Vector3.up), _durationRotate).SetEase(_easeRotate).Play();
+            _modelTransform
+                .DOLocalRotateQuaternion(Quaternion.LookRotation(-deltaPosition, Vector3.up), _durationRotate)
+                .SetEase(_easeRotate).Play();
         }
 
         private void MoveTree(Chump tree, Vector3 direction)
@@ -325,12 +331,15 @@ namespace Game
             IEnumerator IEPushAndMoveTree(Chump tree, Vector3 direction)
             {
                 _playerAnimationControl.Push();
-                _modelTransform.DOLocalRotateQuaternion(Quaternion.LookRotation(direction, Vector3.up), _durationRotate).SetEase(_easeRotate).Play();
+                _modelTransform.DOLocalRotateQuaternion(Quaternion.LookRotation(direction, Vector3.up), _durationRotate)
+                    .SetEase(_easeRotate).Play();
                 yield return new WaitForSeconds(_delayPush);
                 tree.MovingTree(direction);
             }
         }
+
         #region PLAYER STATE
+
         public class State : BaseState<Player>
         {
             public State(Player Data)
@@ -338,14 +347,17 @@ namespace Game
                 this.Data = Data;
             }
         }
+
         #endregion
 
         #region SAVE
+
         public class PlayerMemento : Memento
         {
-            Player main;
-            Vector3 rotation;
-            GameCell currentCell;
+            private readonly Player main;
+            private GameCell currentCell;
+
+            private Vector3 rotation;
             //GameCell nextCell;
 
             public PlayerMemento(Player main)
@@ -371,6 +383,7 @@ namespace Game
                 //main.map.SetGridCell(nextCell.X, nextCell.X, nextCell);
             }
         }
+
         #endregion
     }
 }

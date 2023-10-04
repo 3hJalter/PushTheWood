@@ -1,20 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public static class CONSTANTS 
+public static class Constants
 {
-    public enum PATH_FINDING
-    {
-        A_STAR = 0,
-        BFS = 1,
-        DFS = 2,
-    }
-    public enum PLANE
+    public enum Plane
     {
         XY = 0,
         XZ = 1,
-        YZ = 2,
+        YZ = 2
     }
 
     public const float TREE_HEIGHT = 1f;
@@ -24,37 +14,38 @@ public static class CONSTANTS
 
 namespace Game
 {
-    public enum CELL_TYPE
+    public enum CellType
     {
-        NONE = 0,
-        GROUND = 1,
-        WATER = 2,
-    }
-    public enum CELL_STATE
-    {
-        NONE = 0,
-        PLAYER = 1,
-        TREE_OBSTANCE = 3,
-        LOW_ROCK_OBSTANCE = 4,
-        HIGH_ROCK_OBSTANCE = 5,
+        None = 0,
+        Ground = 1,
+        Water = 2
     }
 
-    public enum TREE_TYPE
+    public enum CellState
     {
-        HORIZONTAL = 0,
-        VERTICAL = 1,
+        None = 0,
+        Player = 1,
+        TreeObstacle = 3,
+        LowRockObstacle = 4,
+        HighRockObstacle = 5
     }
 
-    public enum TREE_STATE
+    public enum TreeType
     {
-        UP = 0,
-        DOWN = 1,
+        Horizontal = 0,
+        Vertical = 1
+    }
+
+    public enum TreeState
+    {
+        Up = 0,
+        Down = 1
     }
 
     public class GameCellData
     {
-        public CELL_TYPE type = CELL_TYPE.WATER;
-        public CELL_STATE state = CELL_STATE.NONE;
+        public CellState state = CellState.None;
+        public CellType type = CellType.Water;
     }
 
     public interface IInit

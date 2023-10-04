@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Daivq;
-using Utilities;
 using DG.Tweening;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using Utilities;
 
 public class Tutorial : Singleton<Tutorial>
 {
@@ -42,11 +40,13 @@ public class Tutorial : Singleton<Tutorial>
                 break;
             case 2:
                 tapContinueButton.gameObject.SetActive(true);
-                tutorialText.text = "You can step on stump to step on the log. And you can only walk through the log pointing direction";
+                tutorialText.text =
+                    "You can step on stump to step on the log. And you can only walk through the log pointing direction";
                 break;
             case 3:
                 tapContinueButton.gameObject.SetActive(true);
-                tutorialText.text = "Push a log horizontally will make it roll forever. Use rock, stump or others log to stop it";
+                tutorialText.text =
+                    "Push a log horizontally will make it roll forever. Use rock, stump or others log to stop it";
                 break;
             case 4:
                 tapContinueButton.gameObject.SetActive(true);
@@ -76,6 +76,7 @@ public class Tutorial : Singleton<Tutorial>
                 uiManager.ControlBtns.localScale = Vector3.one;
                 break;
         }
+
         tutorialDone++;
     }
 }

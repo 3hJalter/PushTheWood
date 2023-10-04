@@ -1,104 +1,85 @@
-﻿using Cinemachine;
-using System.Collections;
+﻿using System;
+using System.Collections.Generic;
+using Cinemachine;
+using DG.Tweening;
+using Game;
+using TMPro;
 using UB.Simple2dWeatherEffects.Standard;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
-using TMPro;
 
 namespace Daivq
 {
-    using Game;
-    using System.Collections.Generic;
-
     [DefaultExecutionOrder(-1)]
     public class UIManager : MonoBehaviour
     {
-        private const string KEY_PASS_TUT = "IsPassTut";
-        private static bool IsPassTut => PlayerPrefs.GetInt(KEY_PASS_TUT, 0) == 1;
-        private static void SetPassTut() => PlayerPrefs.SetInt(KEY_PASS_TUT, 1);
-
-        private const int CAMERA_PRIORITY_ACTIVE = 99;
-        private const int CAMERA_PRIORITY_INACTIVE = 1;
-
         public enum State
         {
             MAIN_MENU,
             IN_GAME,
             SETTING,
-            WIN_POPUP,
+            WIN_POPUP
         }
 
-        //public void SetUpCamera(Transform player)
-        //{
-        //    _sectionMainMenu.camera.Follow = player;
-        //    _sectionMainMenu.camera.LookAt = player;
-        //    _sectionInGame.camera.Follow = player;
-        //    _sectionInGame.camera.LookAt = player;
-        //}
+        private const string KEY_PASS_TUT = "IsPassTut";
 
-        [System.Serializable]
-        public class UISectionSetting
-        {
-            public CanvasGroup canvasGroup = null;
-            public CinemachineVirtualCameraBase camera = null;
-            public float fogDensity = 1f;
-        }
+        private const int CAMERA_PRIORITY_ACTIVE = 99;
+        private const int CAMERA_PRIORITY_INACTIVE = 1;
 
-        [Header("General")]
-        [SerializeField] private D2FogsPE _fogControl = null;
-        [SerializeField] private SwipeDetector _swipeDetector = null;
+        [Header("General")] [SerializeField] private D2FogsPE _fogControl;
+
+        [SerializeField] private SwipeDetector _swipeDetector;
         [SerializeField] private float _startFogDensity = 1f;
         [SerializeField] private float _durationShowCanvasGroup = 0.5f;
         [SerializeField] private float _durationHideCanvasGroup = 1f;
 
-        [Header("Main Menu")]
-        [SerializeField] private UISectionSetting _sectionMainMenu = null;
-        [SerializeField] private UISectionSetting _sectionInGame = null;
-        [SerializeField] private UISectionSetting _sectionWin = null;
-        [SerializeField] private UISectionSetting _sectionSetting = null;
-        [SerializeField] private UISectionSetting _sectionMap = null;
+        [Header("Main Menu")] [SerializeField] private UISectionSetting _sectionMainMenu;
+
+        [SerializeField] private UISectionSetting _sectionInGame;
+        [SerializeField] private UISectionSetting _sectionWin;
+        [SerializeField] private UISectionSetting _sectionSetting;
+        [SerializeField] private UISectionSetting _sectionMap;
 
 
-        [Header("Main Menu")]
-        [SerializeField] private Button _btnPlay = null;
+        [Header("Main Menu")] [SerializeField] private Button _btnPlay;
+
         [SerializeField] private float _durationTweenFogFromMainMenu = 1f;
         [SerializeField] private float _delayShowMainMenu = 1f;
         [SerializeField] private float _delayHideMainMenu = 1f;
 
-        [Header("Tut")]
-        [SerializeField] private CanvasGroup _canvasTut = null;
-        [SerializeField] private Button _btnCloseTut = null;
+        [Header("Tut")] [SerializeField] private CanvasGroup _canvasTut;
+
+        [SerializeField] private Button _btnCloseTut;
         [SerializeField] private float _delayShowTuts = 1f;
 
-        [Header("In Game")]
-        [SerializeField] private Button _btnSetting = null;
-        [SerializeField] private Button _btnMap = null;
-        [SerializeField] private Button _btnUndo = null;
-        [SerializeField] private Button _btnReset = null;
-        [SerializeField] private float _fogTransitionEnterIngame = 0.5f;
-        public TMP_Text _stepText = null;
+        [Header("In Game")] [SerializeField] private Button _btnSetting;
 
-        [Header("In Control")]
-        [SerializeField] private Button _btnMoveUp = null;
-        [SerializeField] private Button _btnMoveDown = null;
-        [SerializeField] private Button _btnMoveLeft = null;
-        [SerializeField] private Button _btnMoveRight = null;
+        [SerializeField] private Button _btnMap;
+        [SerializeField] private Button _btnUndo;
+        [SerializeField] private Button _btnReset;
+        [SerializeField] private float _fogTransitionEnterIngame = 0.5f;
+        public TMP_Text _stepText;
+
+        [Header("In Control")] [SerializeField]
+        private Button _btnMoveUp;
+
+        [SerializeField] private Button _btnMoveDown;
+        [SerializeField] private Button _btnMoveLeft;
+        [SerializeField] private Button _btnMoveRight;
         public Transform ControlBtns;
 
-        [Header("Setting")]
-        [SerializeField] private Button[] _btnsCloseSetting = null;
+        [Header("Setting")] [SerializeField] private Button[] _btnsCloseSetting;
 
-        [Header("Win")]
-        [SerializeField] private Button _btnsNextLevel = null;
+        [Header("Win")] [SerializeField] private Button _btnsNextLevel;
 
-        [Header("WorldMap")]
-        public List<Button> _teleportBtn;
+        [Header("WorldMap")] public List<Button> _teleportBtn;
+
         [SerializeField] private float _delayShowWorldMap = 2f;
         [SerializeField] private Button _backButton;
 
-        float teleportFogDensity = 5f;
-        float teleportTimeWait = 2f;
+        private readonly float teleportFogDensity = 5f;
+        private readonly float teleportTimeWait = 2f;
+        private static bool IsPassTut => PlayerPrefs.GetInt(KEY_PASS_TUT, 0) == 1;
         public Vector2Int MoveDirectionFromButton { get; private set; }
 
         private void Start()
@@ -117,6 +98,16 @@ namespace Daivq
             {
                 LevelManager.Inst.Restart();
             }
+        }
+
+        private void LateUpdate()
+        {
+            MoveDirectionFromButton = Vector2Int.zero;
+        }
+
+        private static void SetPassTut()
+        {
+            PlayerPrefs.SetInt(KEY_PASS_TUT, 1);
         }
 
         private void SetTeleportPosition()
@@ -155,24 +146,32 @@ namespace Daivq
         {
             if (!_fogControl) return;
             DOTween.To(GetDensity, SetDensity, fog, duration).SetEase(Ease.OutSine).Play();
-            float GetDensity() => _fogControl.Density;
-            void SetDensity(float value) => _fogControl.Density = value;
+
+            float GetDensity()
+            {
+                return _fogControl.Density;
+            }
+
+            void SetDensity(float value)
+            {
+                _fogControl.Density = value;
+            }
         }
 
         private void TweenShowCanvasGroup(CanvasGroup canvasGroup, float delay = 0)
         {
             canvasGroup.alpha = 0f;
-            canvasGroup.DOFade(1f, _durationShowCanvasGroup).SetEase(Ease.OutQuad).SetDelay(delay).Play().OnComplete(() =>
-            {
-                canvasGroup.interactable = true;
-            });
+            canvasGroup.DOFade(1f, _durationShowCanvasGroup).SetEase(Ease.OutQuad).SetDelay(delay).Play()
+                .OnComplete(() => { canvasGroup.interactable = true; });
             canvasGroup.blocksRaycasts = true;
         }
+
         private void TweenHideCanvasGroup(CanvasGroup canvasGroup, float delay = 0f, TweenCallback onComplete = null)
         {
             canvasGroup.blocksRaycasts = false;
             canvasGroup.interactable = false;
-            canvasGroup.DOFade(0f, _durationHideCanvasGroup).SetEase(Ease.OutQuad).SetDelay(delay).OnComplete(onComplete).Play();
+            canvasGroup.DOFade(0f, _durationHideCanvasGroup).SetEase(Ease.OutQuad).SetDelay(delay)
+                .OnComplete(onComplete).Play();
         }
 
         private void ShowMainMenu()
@@ -239,16 +238,15 @@ namespace Daivq
             _swipeDetector.IsBlockPlayerInput.RemoveModifier(this);
 
             _btnSetting.onClick.AddListener(OpenSetting);
+
             void OpenSetting()
             {
                 _swipeDetector.IsBlockPlayerInput.AddModifier(this);
                 TweenShowCanvasGroup(_sectionSetting.canvasGroup);
                 TweenFog(_sectionSetting.fogDensity);
-                foreach (var btn in _btnsCloseSetting)
-                {
-                    btn.onClick.AddListener(CloseSetting);
-                }
+                foreach (Button btn in _btnsCloseSetting) btn.onClick.AddListener(CloseSetting);
             }
+
             void CloseSetting()
             {
                 _swipeDetector.IsBlockPlayerInput.RemoveModifier(this);
@@ -264,15 +262,25 @@ namespace Daivq
             _btnMoveLeft.onClick.AddListener(MoveLeft);
             _btnMoveRight.onClick.AddListener(MoveRight);
 
-            void Moveup() => MoveDirectionFromButton = Vector2Int.up;
-            void MoveDown() => MoveDirectionFromButton = Vector2Int.down;
-            void MoveLeft() => MoveDirectionFromButton = Vector2Int.left;
-            void MoveRight() => MoveDirectionFromButton = Vector2Int.right;
-        }
+            void Moveup()
+            {
+                MoveDirectionFromButton = Vector2Int.up;
+            }
 
-        private void LateUpdate()
-        {
-            MoveDirectionFromButton = Vector2Int.zero;
+            void MoveDown()
+            {
+                MoveDirectionFromButton = Vector2Int.down;
+            }
+
+            void MoveLeft()
+            {
+                MoveDirectionFromButton = Vector2Int.left;
+            }
+
+            void MoveRight()
+            {
+                MoveDirectionFromButton = Vector2Int.right;
+            }
         }
 
         public void ShowWin()
@@ -294,6 +302,22 @@ namespace Daivq
             _swipeDetector.IsBlockPlayerInput.RemoveModifier(this);
             TweenFog(_sectionInGame.fogDensity);
             TweenHideCanvasGroup(_sectionWin.canvasGroup);
+        }
+
+        //public void SetUpCamera(Transform player)
+        //{
+        //    _sectionMainMenu.camera.Follow = player;
+        //    _sectionMainMenu.camera.LookAt = player;
+        //    _sectionInGame.camera.Follow = player;
+        //    _sectionInGame.camera.LookAt = player;
+        //}
+
+        [Serializable]
+        public class UISectionSetting
+        {
+            public CanvasGroup canvasGroup;
+            public CinemachineVirtualCameraBase camera;
+            public float fogDensity = 1f;
         }
     }
 }

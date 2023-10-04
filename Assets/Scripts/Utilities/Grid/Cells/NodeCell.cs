@@ -1,14 +1,14 @@
-
-namespace Utilities.AI
+namespace Utilities.Grid
 {
     public class NodeCell : GridCell<int>
     {
         public int GCost;
         public int HCost;
-        public int FCost => value;
         public bool IsWalkable = true;
 
         public NodeCell Parent;
+        public int FCost => value;
+
         public override string ToString()
         {
             return $"{x},{y}";

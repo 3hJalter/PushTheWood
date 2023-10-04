@@ -1,23 +1,44 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Utilities.AI
+namespace Utilities.Grid
 {
     public class GridCell<T>
     {
-        public Action<int, int> _OnValueChange;
         protected const int MIN = 0;
         protected const int MAX = 100;
+        public Action<int, int> _OnValueChange;
+        public Constants.Plane PlaneType;
+        protected float size;
+        protected T value;
+        protected Vector3 worldPos;
+        protected float worldX;
+        protected float worldY;
 
         protected int x;
         protected int y;
-        protected float size;
-        protected float worldX;
-        protected float worldY;
-        protected Vector3 worldPos = new Vector3();
-        protected T value;
+
+        public GridCell()
+        {
+        }
+
+        public GridCell(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+
+        public GridCell(GridCell<T> copy)
+        {
+            x = copy.x;
+            y = copy.y;
+            size = copy.size;
+            worldX = copy.worldX;
+            worldY = copy.worldY;
+            worldPos = copy.worldPos;
+            PlaneType = copy.PlaneType;
+        }
+
         public int X => x;
         public int Y => y;
         public float WorldX => worldX;
@@ -29,24 +50,6 @@ namespace Utilities.AI
         {
             get => size;
             set => size = value;
-        }
-        public CONSTANTS.PLANE PlaneType;
-
-        public GridCell() { }
-        public GridCell(int x, int y)
-        {
-            this.x = x;
-            this.y = y;
-        }
-        public GridCell(GridCell<T> copy)
-        {
-            this.x = copy.x;
-            this.y = copy.y;
-            this.size = copy.size;
-            this.worldX = copy.worldX;
-            this.worldY = copy.worldY;
-            this.worldPos = copy.worldPos;
-            this.PlaneType = copy.PlaneType;
         }
 
         public void SetCellValue(T value)
@@ -69,21 +72,21 @@ namespace Utilities.AI
 
             switch (PlaneType)
             {
-                case CONSTANTS.PLANE.XY:
+                case Constants.Plane.XY:
                     worldPos.Set(worldX, worldY, 0);
                     break;
-                case CONSTANTS.PLANE.XZ:
+                case Constants.Plane.XZ:
                     worldPos.Set(worldX, 0, worldY);
                     break;
-                case CONSTANTS.PLANE.YZ:
-                    worldPos.Set( 0, worldX, worldY);
+                case Constants.Plane.YZ:
+                    worldPos.Set(0, worldX, worldY);
                     break;
             }
         }
+
         public override string ToString()
         {
             return value.ToString();
         }
-
     }
 }

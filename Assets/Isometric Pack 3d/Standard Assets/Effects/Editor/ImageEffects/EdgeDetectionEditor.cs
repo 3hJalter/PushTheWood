@@ -1,29 +1,28 @@
-using System;
 using UnityEditor;
 using UnityEngine;
 
 namespace UnityStandardAssets.ImageEffects
 {
-    [CustomEditor (typeof(EdgeDetection))]
-    class EdgeDetectionEditor : Editor
+    [CustomEditor(typeof(EdgeDetection))]
+    internal class EdgeDetectionEditor : Editor
     {
-        SerializedObject serObj;
+        private SerializedProperty edgeExp;
 
-        SerializedProperty mode;
-        SerializedProperty sensitivityDepth;
-        SerializedProperty sensitivityNormals;
+        private SerializedProperty edgesOnly;
+        private SerializedProperty edgesOnlyBgColor;
 
-        SerializedProperty lumThreshold;
+        private SerializedProperty lumThreshold;
 
-        SerializedProperty edgesOnly;
-        SerializedProperty edgesOnlyBgColor;
+        private SerializedProperty mode;
+        private SerializedProperty sampleDist;
+        private SerializedProperty sensitivityDepth;
+        private SerializedProperty sensitivityNormals;
+        private SerializedObject serObj;
 
-        SerializedProperty edgeExp;
-        SerializedProperty sampleDist;
 
-
-        void OnEnable () {
-            serObj = new SerializedObject (target);
+        private void OnEnable()
+        {
+            serObj = new SerializedObject(target);
 
             mode = serObj.FindProperty("mode");
 
@@ -40,31 +39,35 @@ namespace UnityStandardAssets.ImageEffects
         }
 
 
-        public override void OnInspectorGUI () {
-            serObj.Update ();
+        public override void OnInspectorGUI()
+        {
+            serObj.Update();
 
             GUILayout.Label("Detects spatial differences and converts into black outlines", EditorStyles.miniBoldLabel);
-            EditorGUILayout.PropertyField (mode, new GUIContent("Mode"));
+            EditorGUILayout.PropertyField(mode, new GUIContent("Mode"));
 
-            if (mode.intValue < 2) {
-                EditorGUILayout.PropertyField (sensitivityDepth, new GUIContent(" Depth Sensitivity"));
-                EditorGUILayout.PropertyField (sensitivityNormals, new GUIContent(" Normals Sensitivity"));
+            if (mode.intValue < 2)
+            {
+                EditorGUILayout.PropertyField(sensitivityDepth, new GUIContent(" Depth Sensitivity"));
+                EditorGUILayout.PropertyField(sensitivityNormals, new GUIContent(" Normals Sensitivity"));
             }
-            else if (mode.intValue < 4) {
-                EditorGUILayout.PropertyField (edgeExp, new GUIContent(" Edge Exponent"));
+            else if (mode.intValue < 4)
+            {
+                EditorGUILayout.PropertyField(edgeExp, new GUIContent(" Edge Exponent"));
             }
-            else {
+            else
+            {
                 // lum based mode
-                EditorGUILayout.PropertyField (lumThreshold, new GUIContent(" Luminance Threshold"));
+                EditorGUILayout.PropertyField(lumThreshold, new GUIContent(" Luminance Threshold"));
             }
 
-            EditorGUILayout.PropertyField (sampleDist, new GUIContent(" Sample Distance"));
+            EditorGUILayout.PropertyField(sampleDist, new GUIContent(" Sample Distance"));
 
-            EditorGUILayout.Separator ();
+            EditorGUILayout.Separator();
 
-            GUILayout.Label ("Background Options");
-            edgesOnly.floatValue = EditorGUILayout.Slider (" Edges only", edgesOnly.floatValue, 0.0f, 1.0f);
-            EditorGUILayout.PropertyField (edgesOnlyBgColor, new GUIContent (" Color"));
+            GUILayout.Label("Background Options");
+            edgesOnly.floatValue = EditorGUILayout.Slider(" Edges only", edgesOnly.floatValue, 0.0f, 1.0f);
+            EditorGUILayout.PropertyField(edgesOnlyBgColor, new GUIContent(" Color"));
 
             serObj.ApplyModifiedProperties();
         }

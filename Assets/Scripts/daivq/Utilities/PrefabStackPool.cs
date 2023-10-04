@@ -1,19 +1,20 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Game.DesignPattern
 {
     /// <summary>
-    /// This type of pool require object that done used have to return to pool explicitly
+    ///     This type of pool require object that done used have to return to pool explicitly
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [System.Serializable]
+    [Serializable]
     public class PrefabStackPool<T> where T : MonoBehaviour
     {
-        private T _prefab = null;
-        private Transform _container = null;
-        private Stack<T> _stack = null;
+        private Transform _container;
+        private T _prefab;
+        private Stack<T> _stack;
 
         public PrefabStackPool(T prefab, Transform container, int capacity)
         {
@@ -26,7 +27,7 @@ namespace Game.DesignPattern
         {
             for (int i = 0; i < prePoolAmount; i++)
             {
-                T spawnedObjectComp = GameObject.Instantiate(_prefab, _container);
+                T spawnedObjectComp = Object.Instantiate(_prefab, _container);
                 spawnedObjectComp.gameObject.SetActive(false);
                 _stack.Push(spawnedObjectComp);
             }
@@ -42,9 +43,10 @@ namespace Game.DesignPattern
             }
             else
             {
-                result = GameObject.Instantiate(_prefab, _container);
+                result = Object.Instantiate(_prefab, _container);
                 result.gameObject.SetActive(true);
             }
+
             return result;
         }
 

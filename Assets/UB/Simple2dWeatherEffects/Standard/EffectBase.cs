@@ -1,24 +1,12 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace UB.Simple2dWeatherEffects.Standard
 {
     public class EffectBase : MonoBehaviour
     {
-        public static Dictionary<string, RenderTexture> AlreadyRendered = new Dictionary<string, RenderTexture>();
+        public static Dictionary<string, RenderTexture> AlreadyRendered = new();
 
-        private static bool _insiderendering = false;
-        public static bool InsideRendering
-        {
-            get
-            {
-                return _insiderendering;
-            }
-            set
-            {
-                _insiderendering = value;
-            }
-        }
+        public static bool InsideRendering { get; set; } = false;
     }
 }

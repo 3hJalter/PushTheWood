@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Game;
-using Utilities;
+using UnityEngine;
 
 public class MapWin : MonoBehaviour
 {
@@ -14,12 +11,8 @@ public class MapWin : MonoBehaviour
         LevelManager.Inst.Land = Land;
         LevelManager.Inst.player._uiManager.ShowWin();
         if (WinBySkip)
-        {
             LevelManager.Inst.WinBySkip = true;
-        }
         else
-        {
             LevelManager.Inst.WinBySkip = false;
-        }
     }
 }

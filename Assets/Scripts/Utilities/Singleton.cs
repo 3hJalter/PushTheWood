@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Utilities
@@ -13,13 +11,9 @@ namespace Utilities
         protected virtual void Awake()
         {
             if (inst == null)
-            {
                 inst = this as T;
-            }
             else
-            {
                 Destroy(gameObject);
-            }
         }
     }
 
@@ -41,6 +35,5 @@ namespace Utilities
                 Destroy(gameObject);
             }
         }
-
     }
 }
