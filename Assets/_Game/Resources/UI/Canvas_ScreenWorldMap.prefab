@@ -342,7 +342,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5880724504928091054}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2631207827604691805}
+        m_TargetAssemblyTypeName: _Game._Scripts.UIs.Screen.WorldMapScreen, Assembly-CSharp
+        m_MethodName: OnClickTeleport
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5880724505002404945
 GameObject:
   m_ObjectHideFlags: 0
@@ -463,7 +475,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5880724505002404948}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2631207827604691805}
+        m_TargetAssemblyTypeName: _Game._Scripts.UIs.Screen.WorldMapScreen, Assembly-CSharp
+        m_MethodName: OnClickTeleport
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5880724505636419446
 GameObject:
   m_ObjectHideFlags: 0
@@ -719,7 +743,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5880724505702451640}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2631207827604691805}
+        m_TargetAssemblyTypeName: _Game._Scripts.UIs.Screen.WorldMapScreen, Assembly-CSharp
+        m_MethodName: OnClickTeleport
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5880724505736843272
 GameObject:
   m_ObjectHideFlags: 0
@@ -1337,7 +1373,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5880724506081838367}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2631207827604691805}
+        m_TargetAssemblyTypeName: _Game._Scripts.UIs.Screen.WorldMapScreen, Assembly-CSharp
+        m_MethodName: OnClickTeleport
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5880724506083376750
 GameObject:
   m_ObjectHideFlags: 0
@@ -1458,7 +1506,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5880724506083376749}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2631207827604691805}
+        m_TargetAssemblyTypeName: _Game._Scripts.UIs.Screen.WorldMapScreen, Assembly-CSharp
+        m_MethodName: OnClickTeleport
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5880724506138819281
 GameObject:
   m_ObjectHideFlags: 0
@@ -1579,7 +1639,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5880724506138819284}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2631207827604691805}
+        m_TargetAssemblyTypeName: _Game._Scripts.UIs.Screen.WorldMapScreen, Assembly-CSharp
+        m_MethodName: OnClickTeleport
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 6
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5880724506261816368
 GameObject:
   m_ObjectHideFlags: 0
@@ -1700,7 +1772,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5880724506261816375}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2631207827604691805}
+        m_TargetAssemblyTypeName: _Game._Scripts.UIs.Screen.WorldMapScreen, Assembly-CSharp
+        m_MethodName: OnClickTeleport
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 5
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8148130629445312418
 GameObject:
   m_ObjectHideFlags: 0

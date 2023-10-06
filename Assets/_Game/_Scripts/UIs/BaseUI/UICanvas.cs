@@ -19,7 +19,7 @@ public class UICanvas : MonoBehaviour
 
     private RectTransform _mRectTransform;
 
-    private RectTransform MRectTransform
+    protected RectTransform MRectTransform
     {
         get
         {

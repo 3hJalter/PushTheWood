@@ -196,12 +196,19 @@ namespace _Game
             Steps = 0;
             if (WinBySkip) return;
             player.SetPosition(initPos[Land]);
-            FxManager.Ins.PlayTweenFog(true, TRANSITION_LEVEL_TIME);
+            FxManager.Ins.PlayTweenFog(false, TRANSITION_LEVEL_TIME);
             CameraManager.Ins.ChangeCamera(CameraType.WorldMapCamera);
             DOVirtual.DelayedCall(TRANSITION_LEVEL_TIME, () =>
             {
                 UIManager.Ins.OpenUI<InGameScreen>();
             });
+        }
+
+        public void GoLevel(int index)
+        {
+            Steps = 0;
+            player.SetPosition(initPos[index]);
+            UIManager.Ins.OpenUI<InGameScreen>();
         }
     }
 }

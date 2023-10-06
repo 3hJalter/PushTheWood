@@ -1,3 +1,4 @@
+using System;
 using DesignPattern;
 using DG.Tweening;
 using UB.Simple2dWeatherEffects.Standard;
@@ -10,10 +11,11 @@ public class FxManager : Singleton<FxManager>
     private const float DEFAULT_PLAY_FOG_DENSITY = 1f;
     private const float DEFAULT_STOP_FOG_DENSITY = 0f;
     private const float DEFAULT_PLAY_FOG_DURATION = 1f;
-    private const float DEFAULT_STOP_FOG_DURATION = 0.5f;
+    private const float DEFAULT_STOP_FOG_DURATION = 1f;
     
     
-    public void PlayTweenFog(bool isStopAfterDone = false, float fogDensity = DEFAULT_PLAY_FOG_DENSITY, float duration = DEFAULT_PLAY_FOG_DURATION)
+    public void PlayTweenFog(bool isStopAfterDone = false, float fogDensity = DEFAULT_PLAY_FOG_DENSITY, 
+        float duration = DEFAULT_PLAY_FOG_DURATION, Action onCompleteAction = null)
     {
         if (!fogControl) return;
         DOTween.To(GetDensity, SetDensity, fogDensity, duration).SetEase(Ease.OutSine).Play()
@@ -21,8 +23,8 @@ public class FxManager : Singleton<FxManager>
                 () =>
                 {
                     if (isStopAfterDone) StopTweenFog();
+                    onCompleteAction?.Invoke();
                 });
-        return;
     }
 
     public void StopTweenFog(float duration = DEFAULT_STOP_FOG_DURATION)

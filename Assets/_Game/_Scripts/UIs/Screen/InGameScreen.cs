@@ -18,7 +18,9 @@ namespace _Game._Scripts.UIs.Screen
         {
             base.Setup();
             joystick.ResetJoyStickPos();
-            if (!CameraManager.Ins.IsCurrentCameraIs(CameraType.InGameCamera)) blockPanel.enabled = true;
+            if (CameraManager.Ins.IsCurrentCameraIs(CameraType.InGameCamera)) return;
+            FxManager.Ins.StopTweenFog();
+            blockPanel.enabled = true;
         }
 
         public override void Open()

@@ -16,12 +16,6 @@ namespace _Game._Scripts.UIs.Screen
             DOVirtual.Float(0, 1, 1f, value => canvasGroup.alpha = value);
         }
 
-        public override void Close()
-        {
-            FxManager.Ins.StopTweenFog();
-            base.Close();
-        }
-
         public void OnClickStart()
         {
             UIManager.Ins.OpenUI<InGameScreen>();
