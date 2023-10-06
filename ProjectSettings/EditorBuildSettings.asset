@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/NavigationMesh.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/_Game.unity
+    path: Assets/_Game/_Scenes/_Game.unity
     guid: bba6030d3882d2146ac79d552c1640fa
   m_configObjects: {}
