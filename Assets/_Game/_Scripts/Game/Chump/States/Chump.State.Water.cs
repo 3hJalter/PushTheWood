@@ -26,10 +26,10 @@ namespace _Game
 
                 #region CHEKING RAFT
 
-                GameCell cell = Data.map.GetGridCell(Data.transform.position);
-                float originHeight = Data.transform.position.y;
+                GameCell cell = stateHolder.map.GetGridCell(stateHolder.transform.position);
+                float originHeight = stateHolder.transform.position.y;
                 Vector3 rotateVector = Vector3.zero;
-                switch (Data.Type)
+                switch (stateHolder.Type)
                 {
                     case TreeType.Horizontal:
                         rotateVector = new Vector3(0, 0, 90);
@@ -41,10 +41,10 @@ namespace _Game
 
                 if (!cell.IsRaft)
                 {
-                    Data.transform.DOMoveY(RAFT_HEIGHT - 2f, 0.25f).OnComplete(() =>
+                    stateHolder.transform.DOMoveY(RAFT_HEIGHT - 2f, 0.25f).OnComplete(() =>
                     {
-                        Data.transform.DORotate(rotateVector, 0.4f);
-                        Data.transform.DOMoveY(RAFT_HEIGHT, 0.5f);
+                        stateHolder.transform.DORotate(rotateVector, 0.4f);
+                        stateHolder.transform.DOMoveY(RAFT_HEIGHT, 0.5f);
                     });
                 }
                 else
@@ -85,7 +85,7 @@ namespace _Game
                 #region INIT
 
                 direction = dir;
-                currentCell = Data.map.GetGridCell(Data.gridPosition.x, Data.gridPosition.y);
+                currentCell = stateHolder.map.GetGridCell(stateHolder.gridPosition.x, stateHolder.gridPosition.y);
                 nextCell = GetNextCell(dir);
 
                 #endregion
@@ -139,7 +139,7 @@ namespace _Game
 
             public override int LogicUpdate()
             {
-                if (Data.isMoving) return FALSE;
+                if (stateHolder.isMoving) return FALSE;
                 if (isRaftMoving) Move(direction);
 
                 return TRUE;

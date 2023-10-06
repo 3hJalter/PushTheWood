@@ -4,7 +4,7 @@ namespace _Game
     {
         public class OnRaftState : State
         {
-            public OnRaftState(Player Data) : base(Data)
+            public OnRaftState(Player stateHolder) : base(stateHolder)
             {
             }
         }

@@ -93,7 +93,7 @@ namespace Daivq
             _btnReset.onClick.AddListener(Reset);
             _btnMap.onClick.AddListener(ShowWorldMap);
             _backButton.onClick.AddListener(WorldMapBack);
-            _btnsNextLevel.onClick.AddListener(() => NextLevelButton(LevelManager.Ins.Land));
+            _btnsNextLevel.onClick.AddListener(() => NextLevelButton(LevelManager.Ins.landIndex));
             SetTeleportPosition();
 
             void Reset()
@@ -294,8 +294,8 @@ namespace Daivq
 
         private void NextLevelButton(int index)
         {
-            LevelManager.Ins.Steps = 0;
-            if (LevelManager.Ins.WinBySkip) return;
+            LevelManager.Ins.steps = 0;
+            if (LevelManager.Ins.winBySkip) return;
             TeleportTransition(index);
         }
 

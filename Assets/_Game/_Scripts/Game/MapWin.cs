@@ -8,12 +8,12 @@ public class MapWin : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        LevelManager.Ins.Land = Land;
+        LevelManager.Ins.landIndex = Land;
         LevelManager.Ins.OnWin();
         // LevelManager.Ins.player._uiManager.ShowWin();
         if (WinBySkip)
-            LevelManager.Ins.WinBySkip = true;
+            LevelManager.Ins.winBySkip = true;
         else
-            LevelManager.Ins.WinBySkip = false;
+            LevelManager.Ins.winBySkip = false;
     }
 }

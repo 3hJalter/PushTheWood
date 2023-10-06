@@ -15,8 +15,8 @@ namespace _Game
             public override void Enter()
             {
                 base.Enter();
-                Data.SState = TreeState.Up;
-                currentCell = Data.map.GetGridCell(Data.gridPosition.x, Data.gridPosition.y);
+                stateHolder.SState = TreeState.Up;
+                currentCell = stateHolder.map.GetGridCell(stateHolder.gridPosition.x, stateHolder.gridPosition.y);
                 switch (currentCell.Value.type)
                 {
                     case CellType.Water:
@@ -27,7 +27,7 @@ namespace _Game
 
             public override int LogicUpdate()
             {
-                if (nextState != STATE.NONE && !Data.isMoving) stateMachine.ChangeState(nextState);
+                if (nextState != STATE.NONE && !stateHolder.isMoving) stateMachine.ChangeState(nextState);
                 return TRUE;
 
             }
@@ -37,9 +37,9 @@ namespace _Game
 
                 #region INIT
 
-                Vector3 anchor = Data.transform.position;
+                Vector3 anchor = stateHolder.transform.position;
 
-                currentCell = Data.map.GetGridCell(Data.gridPosition.x, Data.gridPosition.y);
+                currentCell = stateHolder.map.GetGridCell(stateHolder.gridPosition.x, stateHolder.gridPosition.y);
                 nextCell = GetNextCell(dir);
 
                 #endregion
@@ -61,13 +61,13 @@ namespace _Game
 
                 if (dir.x != 0) //Horizontal Move
                 {
-                    anchor += (Vector3.down * Data.treeSize + dir) * 0.5f;
-                    Data.Type = TreeType.Horizontal;
+                    anchor += (Vector3.down * stateHolder.treeSize + dir) * 0.5f;
+                    stateHolder.Type = TreeType.Horizontal;
                 }
                 else if (dir.z != 0) //Vertical Move
                 {
-                    anchor += (Vector3.down * Data.treeSize + dir) * 0.5f;
-                    Data.Type = TreeType.Vertical;
+                    anchor += (Vector3.down * stateHolder.treeSize + dir) * 0.5f;
+                    stateHolder.Type = TreeType.Vertical;
                 }
 
                 #endregion
@@ -77,20 +77,20 @@ namespace _Game
                 desCell = nextCell;
                 //Data.Save(currentCell);
 
-                if (currentCell.Tree1 == Data)
+                if (currentCell.Tree1 == stateHolder)
                     currentCell.Tree1 = null;
-                else if (currentCell.Tree2 == Data) currentCell.Tree2 = null;
+                else if (currentCell.Tree2 == stateHolder) currentCell.Tree2 = null;
 
                 if (desCell.Tree1 == null)
-                    desCell.Tree1 = Data;
+                    desCell.Tree1 = stateHolder;
                 else
-                    desCell.Tree2 = Data;
+                    desCell.Tree2 = stateHolder;
 
 
-                Data.gridPosition.Set(desCell.X, desCell.Y);
+                stateHolder.gridPosition.Set(desCell.X, desCell.Y);
                 nextState = STATE.TREE_DOWN;
                 Vector3 axis = Vector3.Cross(Vector3.up, dir);
-                Data.Rolling(anchor, axis, desCell.WorldPos, false);
+                stateHolder.Rolling(anchor, axis, desCell.WorldPos, false);
 
                 #endregion
 

@@ -8,20 +8,31 @@ using DesignPattern.Grid;
 using DG.Tweening;
 using MapEnum;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Game
 {
-    public partial class Player : MonoBehaviour, IInit
+    public partial class Player : HMonoBehaviour, IInit
     {
-        [Header("Anim")] [SerializeField] private Transform _modelTransform;
+        [Header("Anim")] [SerializeField]
+        private Transform modelTransform;
 
-        [SerializeField] private PlayerAnimationControl _playerAnimationControl;
-        [SerializeField] private float _delayPush = 0.5f;
-        [SerializeField] private float _durationRotate = 0.25f;
-        [SerializeField] private Ease _easeRotate = Ease.OutQuad;
+        [SerializeField]
+        private PlayerAnimationControl playerAnimationControl;
+
+        [SerializeField]
+        private float delayPush = 0.2f;
+
+        [SerializeField]
+        private float durationRotate = 0.25f;
+
+        [FormerlySerializedAs("_easeRotate")] [SerializeField]
+        private Ease easeRotate = Ease.OutQuad;
+
         [SerializeField] private Transform model;
 
-        [Header("Control")] [SerializeField] private SwipeDetector _swipeDetector;
+        [FormerlySerializedAs("_swipeDetector")] [Header("Control")] [SerializeField]
+        private SwipeDetector swipeDetector;
 
         // public UIManager _uiManager;
 
@@ -317,17 +328,17 @@ namespace _Game
             Sequence s = DOTween.Sequence();
             s.Append(transform.DOMoveX(desCell.WorldPos.x, Constants.MOVING_TIME).SetEase(ease));
             s.Join(transform.DOMoveZ(desCell.WorldPos.z, Constants.MOVING_TIME).SetEase(ease));
-            _playerAnimationControl.Run();
+            playerAnimationControl.Run();
             s.Play().OnComplete(OnMoveDone);
-            _modelTransform
+            modelTransform
                 .DOLocalRotateQuaternion(Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.y), Vector3.up),
-                    _durationRotate).SetEase(_easeRotate).Play();
+                    durationRotate).SetEase(easeRotate).Play();
 
             void OnMoveDone()
             {
-                _playerAnimationControl.Idle();
+                playerAnimationControl.Idle();
                 CurrentIslandID = desCell.IslandID;
-                LevelManager.Ins.Steps++;
+                LevelManager.Ins.steps++;
                 // _uiManager._stepText.text = LevelManager.Ins.Steps + " / 150";
                 isMoving = false;
             }
@@ -349,9 +360,9 @@ namespace _Game
 
             Vector3 deltaPosition = desCell.WorldPos - transform.position;
             deltaPosition.y = 0f;
-            _modelTransform
-                .DOLocalRotateQuaternion(Quaternion.LookRotation(-deltaPosition, Vector3.up), _durationRotate)
-                .SetEase(_easeRotate).Play();
+            modelTransform
+                .DOLocalRotateQuaternion(Quaternion.LookRotation(-deltaPosition, Vector3.up), durationRotate)
+                .SetEase(easeRotate).Play();
         }
 
         private void MoveTree(Chump tree, Vector3 direction)
@@ -360,10 +371,10 @@ namespace _Game
 
             IEnumerator IEPushAndMoveTree(Chump tree, Vector3 direction)
             {
-                _playerAnimationControl.Push();
-                _modelTransform.DOLocalRotateQuaternion(Quaternion.LookRotation(direction, Vector3.up), _durationRotate)
-                    .SetEase(_easeRotate).Play();
-                yield return new WaitForSeconds(_delayPush);
+                playerAnimationControl.Push();
+                modelTransform.DOLocalRotateQuaternion(Quaternion.LookRotation(direction, Vector3.up), durationRotate)
+                    .SetEase(easeRotate).Play();
+                yield return new WaitForSeconds(delayPush);
                 tree.MovingTree(direction);
                 isMoving = false;
             }
@@ -373,9 +384,9 @@ namespace _Game
 
         public class State : BaseState<Player>
         {
-            public State(Player Data)
+            public State(Player stateHolder)
             {
-                this.Data = Data;
+                this.stateHolder = stateHolder;
             }
         }
 

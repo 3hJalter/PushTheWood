@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using _Game._Scripts.Data;
+using _Game._Scripts.Managers;
 using AudioEnum;
 using DesignPattern;
 using DG.Tweening;
@@ -13,6 +15,7 @@ public class AudioManager : Singleton<AudioManager>
     
     private void Awake()
     {
+        audioData = DataManager.Ins.AudioData;
         PlayBgm(BgmType.MainMenu);
     }
 

@@ -11,6 +11,7 @@ namespace _Game._Scripts.Managers
         private const int CAMERA_PRIORITY_INACTIVE = 1;
         private CinemachineVirtualCameraBase _currentVirtualCamera;
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
+        // ReSharper disable once CollectionNeverUpdated.Local
         [SerializeField] private readonly Dictionary<CameraType, CinemachineVirtualCameraBase> virtualCameraDic = new();
 
         public bool IsCurrentCameraIs(CameraType cameraType)
@@ -26,6 +27,12 @@ namespace _Game._Scripts.Managers
             }
             _currentVirtualCamera = virtualCameraDic[cameraType];
             _currentVirtualCamera.Priority = CAMERA_PRIORITY_ACTIVE;
+        }
+        
+        public void ChangeCameraTarget(CameraType cameraType, Transform target)
+        {
+            virtualCameraDic[cameraType].Follow = target;
+            virtualCameraDic[cameraType].LookAt = target;
         }
     }
 

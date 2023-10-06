@@ -12,12 +12,16 @@ namespace _Game
 
         [SerializeField] private float cellSize;
 
+        [SerializeField] private Player player;
+
+        public Player Player => player;
+
         private Grid<GameCell, GameCellData>.DebugGrid debug;
 
         private Mesh mesh;
         public Grid<GameCell, GameCellData> GridMap { get; private set; }
 
-        private void Awake()
+        public void OnInit()
         {
             GridMap = new Grid<GameCell, GameCellData>(mapSize.x, mapSize.y, cellSize, transform.position,
                 () => new GameCell(), planeType);
@@ -27,7 +31,7 @@ namespace _Game
             GetComponent<MeshFilter>().mesh = mesh;
             debug.DrawGrid(GridMap);
         }
-
+        
         // Update is called once per frame
         public void UpdateVisual()
         {

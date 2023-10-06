@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using _Game._Scripts.Managers;
 using _Game._Scripts.UIs.Screen;
-using Cinemachine;
-using Daivq;
 using DesignPattern;
 using DG.Tweening;
 using MapEnum;
@@ -13,25 +11,17 @@ namespace _Game
 {
     public class LevelManager : Singleton<LevelManager>
     {
-        private static int ISLAND_ID;
+        private const float TRANSITION_LEVEL_TIME = 2f;
+        private static int _islandID;
 
         [SerializeField] private Map map;
 
         [SerializeField] public Player player;
 
-        [SerializeField] private GameObject environment;
-
-        [SerializeField] private GameObject world;
-
-        [SerializeField] private CinemachineVirtualCameraBase _cameraMain;
-
-        [SerializeField] private CinemachineVirtualCameraBase _cameraPlay;
-
-        public bool isWin;
-        public int Land = 1;
-        public bool WinBySkip;
+        public int landIndex = 1;
+        public bool winBySkip;
         public List<Vector3> initPos;
-        public int Steps;
+        public int steps;
         private readonly List<GameCell> closeCells = new();
         private readonly List<GameCell>[] islands = new List<GameCell>[50];
 
@@ -39,77 +29,52 @@ namespace _Game
         private readonly List<GameCell> openCells = new();
         private readonly List<GameCell>[] saveIslands = new List<GameCell>[50];
         private List<GameCell> island;
-        private GameObject worlddd;
 
 
         public Map Map => map;
 
         private void Start()
         {
-            worlddd = Instantiate(world, transform);
-            //worlddd = world;
-            map = worlddd.GetComponent<Map>();
-            environment = worlddd.transform.GetChild(0).gameObject;
-            player = worlddd.transform.GetChild(1).GetComponent<Player>();
-            // player._uiManager = FindObjectOfType<UIManager>();
-
-
-            //player._uiManager.SetUpCamera(this.transform);
-            /*player.transform.position = cell.WorldPos;
-            cell.Player = player;*/
-            if (_cameraMain != null) InitCamera();
+            // TEMP
+            map = Instantiate(DataManager.Ins.WorldData.GetMap(0), transform);
+            map.OnInit();
+            player = map.Player;
+            SetCameraToPlayer();
             InitGridData();
             InitGameObject();
         }
 
-
+        private void SetCameraToPlayer()
+        {
+            CameraManager.Ins.ChangeCameraTarget(CameraType.MainMenuCamera, player.Tf);
+            CameraManager.Ins.ChangeCameraTarget(CameraType.InGameCamera, player.Tf);
+        }
+        
+        
         public void Restart()
         {
-            Destroy(worlddd);
-            worlddd = Instantiate(world, transform);
-
-            map = worlddd.GetComponent<Map>();
-            environment = worlddd.transform.GetChild(0).gameObject;
-            player = worlddd.transform.GetChild(1).GetComponent<Player>();
+            Destroy(map.gameObject);
+            Instantiate(map, transform).OnInit();
+            // TEMP
+            player = map.Player;
             // player._uiManager = FindObjectOfType<UIManager>();
 
-            if (_cameraMain != null) InitCamera();
             /*player.transform.position = cell.WorldPos;
             cell.Player = player;*/
             InitGridData();
             InitGameObject();
-        }
-
-        private void InitCamera()
-        {
-            _cameraMain.Follow = player.transform;
-            _cameraMain.LookAt = player.transform;
-            _cameraPlay.Follow = player.transform;
-            _cameraPlay.LookAt = player.transform;
         }
 
         private void InitGridData()
         {
             GameUnit[] units = FindObjectsOfType<GameUnit>();
-            GameCell cell;
             for (int i = 0; i < units.Length; i++)
             {
-                cell = map.GridMap.GetGridCell(units[i].transform.position);
+                GameCell cell = map.GridMap.GetGridCell(units[i].transform.position);
 
                 if (units[i].Type != CellType.None) cell.Value.type = units[i].Type;
                 if (units[i].State != CellState.None) cell.Value.state = units[i].State;
             }
-/*            for(int x = 0; x < map.GridMap.Width; x++)
-            {
-                for(int y = 0; y < map.GridMap.Height; y++)
-                {
-                    cell = map.GridMap.GetGridCell(x, y);
-                    if(cell.Value.type == CELL_TYPE.WATER)
-                    {
-                        Instantiate(waterPrefab, cell.WorldPos, Quaternion.identity, environment.transform);
-                    }
-                }
-            }*/
         }
 
         private void InitGameObject()
@@ -126,15 +91,15 @@ namespace _Game
             openCells.Clear();
             closeCells.Clear();
 
-            cell.IslandID = ISLAND_ID;
+            cell.IslandID = _islandID;
             openCells.Add(cell);
             island = new List<GameCell>();
 
-            islands[ISLAND_ID] = island;
+            islands[_islandID] = island;
             island.Add(cell);
 
             while (openCells.Count > 0) FindGroundNearby(openCells[0]);
-            ISLAND_ID += 1;
+            _islandID += 1;
             return cell.IslandID;
         }
 
@@ -189,24 +154,19 @@ namespace _Game
             UIManager.Ins.OpenUI<WinScreen>();
         }
 
-        private const float TRANSITION_LEVEL_TIME = 2f;
-        
         public void GoNextLevel()
         {
-            Steps = 0;
-            if (WinBySkip) return;
-            player.SetPosition(initPos[Land]);
+            steps = 0;
+            if (winBySkip) return;
+            player.SetPosition(initPos[landIndex]);
             FxManager.Ins.PlayTweenFog(false, TRANSITION_LEVEL_TIME);
             CameraManager.Ins.ChangeCamera(CameraType.WorldMapCamera);
-            DOVirtual.DelayedCall(TRANSITION_LEVEL_TIME, () =>
-            {
-                UIManager.Ins.OpenUI<InGameScreen>();
-            });
+            DOVirtual.DelayedCall(TRANSITION_LEVEL_TIME, () => { UIManager.Ins.OpenUI<InGameScreen>(); });
         }
 
         public void GoLevel(int index)
         {
-            Steps = 0;
+            steps = 0;
             player.SetPosition(initPos[index]);
             UIManager.Ins.OpenUI<InGameScreen>();
         }

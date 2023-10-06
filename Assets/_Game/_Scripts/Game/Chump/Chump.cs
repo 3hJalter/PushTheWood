@@ -123,7 +123,7 @@ namespace _Game
             public State(Chump tree, StateMachine<Chump, State> stateMachine)
             {
                 this.stateMachine = stateMachine;
-                Data = tree;
+                stateHolder = tree;
             }
 
             public override void Enter()
@@ -142,18 +142,18 @@ namespace _Game
                 if (dir.x != 0) //Horizontal Move
                 {
                     if (dir.x > 0) //Update Grid Position
-                        nextPos = Data.gridPosition + Vector2Int.right;
+                        nextPos = stateHolder.gridPosition + Vector2Int.right;
                     else
-                        nextPos = Data.gridPosition + Vector2Int.left;
-                    nextCell = Data.map.GetGridCell(nextPos.x, nextPos.y);
+                        nextPos = stateHolder.gridPosition + Vector2Int.left;
+                    nextCell = stateHolder.map.GetGridCell(nextPos.x, nextPos.y);
                 }
                 else if (dir.z != 0) //Vertical Move
                 {
                     if (dir.z > 0) //Update Grid Position
-                        nextPos = Data.gridPosition + Vector2Int.up;
+                        nextPos = stateHolder.gridPosition + Vector2Int.up;
                     else
-                        nextPos = Data.gridPosition + Vector2Int.down;
-                    nextCell = Data.map.GetGridCell(nextPos.x, nextPos.y);
+                        nextPos = stateHolder.gridPosition + Vector2Int.down;
+                    nextCell = stateHolder.map.GetGridCell(nextPos.x, nextPos.y);
                 }
 
                 return nextCell;
