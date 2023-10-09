@@ -1,4 +1,7 @@
-public abstract class GameUnit : HMonoBehaviour
+namespace _Game._Scripts.DesignPattern
 {
-    public PoolType poolType;
+    public abstract class GameUnit : HMonoBehaviour
+    {
+        public PoolType poolType;
+    }
 }

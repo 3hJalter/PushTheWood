@@ -1,6 +1,8 @@
-﻿namespace MapEnum
+﻿using _Game._Scripts.DesignPattern;
+
+namespace MapEnum
 {
-    public enum Plane
+    public enum GridPlane
     {
         XY = 0,
         XZ = 1,
@@ -35,7 +37,6 @@
         Down = 1
     }
 }
-
 public enum Direction
 {
     None = -1,
@@ -43,19 +44,6 @@ public enum Direction
     Right = 1,
     Up = 2,
     Down = 3,
-}
-namespace AudioEnum
-{
-    public enum SfxType
-    {
-        None = -1,
-    }
-    
-    public enum BgmType
-    {
-        None = -1,
-        MainMenu = 0,
-    }
 }
 
 namespace TweenTypeEnum
@@ -101,4 +89,41 @@ namespace TweenTypeEnum
     }
 }
 
+namespace GameGridEnum
+{
+    public enum HeightLevel
+    {
+        None = -1,
+        Zero = 0,
+        One = 1,
+        Two = 2,
+    }
+    public enum GridSurfaceType
+    {
+        // Default value of all GameGridCell is Water, so no need to create a WaterGridSurface
+        // Other GridSurfaceType must be created when needed (e.g. GroundGridSurface) to overwrite the default value
+        Water = PoolType.SurfaceWater, 
+        Ground = PoolType.SurfaceGround,
+    }
+    public enum GridUnitStaticType
+    {
+        None = -1,
+        RockShort = 0,
+        RockHigh = 1,
+        TreeRoot = 2,
+        TreeShort = 3,
+        TreeHigh = 4,
+        BridgeShort = 5,
+        BridgeHigh = 6,
+    }
+    public enum GridUnitDynamicType
+    {
+        None = -1,
+        Player = 0,
+        ChumpShort = 1,
+        ChumpHigh = 2,
+        Raft = 3,
+    }
+    
+}
 

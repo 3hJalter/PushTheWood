@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DesignPattern.Observe
+namespace _Game._Scripts.DesignPattern.DesignPattern
 {
     public abstract class Dispatcher<T> : Singleton<T> where T : HMonoBehaviour
     {

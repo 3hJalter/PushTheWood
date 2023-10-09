@@ -1,45 +1,48 @@
 using System;
-using DesignPattern;
+using _Game._Scripts.DesignPattern;
 using DG.Tweening;
 using UB.Simple2dWeatherEffects.Standard;
 using UnityEngine;
 
-public class FxManager : Singleton<FxManager>
+namespace _Game._Scripts.Managers
 {
-    [Header("Fog")]
-    [SerializeField] private D2FogsPE fogControl;
-    private const float DEFAULT_PLAY_FOG_DENSITY = 1f;
-    private const float DEFAULT_STOP_FOG_DENSITY = 0f;
-    private const float DEFAULT_PLAY_FOG_DURATION = 1f;
-    private const float DEFAULT_STOP_FOG_DURATION = 1f;
-    
-    
-    public void PlayTweenFog(bool isStopAfterDone = false, float fogDensity = DEFAULT_PLAY_FOG_DENSITY, 
-        float duration = DEFAULT_PLAY_FOG_DURATION, Action onCompleteAction = null)
+    public class FxManager : Singleton<FxManager>
     {
-        if (!fogControl) return;
-        DOTween.To(GetDensity, SetDensity, fogDensity, duration).SetEase(Ease.OutSine).Play()
-            .OnComplete(
-                () =>
-                {
-                    if (isStopAfterDone) StopTweenFog();
-                    onCompleteAction?.Invoke();
-                });
-    }
+        private const float DEFAULT_PLAY_FOG_DENSITY = 1f;
+        private const float DEFAULT_STOP_FOG_DENSITY = 0f;
+        private const float DEFAULT_PLAY_FOG_DURATION = 1f;
+        private const float DEFAULT_STOP_FOG_DURATION = 1f;
 
-    public void StopTweenFog(float duration = DEFAULT_STOP_FOG_DURATION)
-    {
-        if (!fogControl) return;
-        DOTween.To(GetDensity, SetDensity, DEFAULT_STOP_FOG_DENSITY, duration).SetEase(Ease.OutSine).Play();
-    }
-    
-    private float GetDensity()
-    {
-        return fogControl.Density;
-    }
+        [Header("Fog")] [SerializeField] private D2FogsPE fogControl;
 
-    private void SetDensity(float value)
-    {
-        fogControl.Density = value;
+
+        public void PlayTweenFog(bool isStopAfterDone = false, float fogDensity = DEFAULT_PLAY_FOG_DENSITY,
+            float duration = DEFAULT_PLAY_FOG_DURATION, Action onCompleteAction = null)
+        {
+            if (!fogControl) return;
+            DOTween.To(GetDensity, SetDensity, fogDensity, duration).SetEase(Ease.OutSine).Play()
+                .OnComplete(
+                    () =>
+                    {
+                        if (isStopAfterDone) StopTweenFog();
+                        onCompleteAction?.Invoke();
+                    });
+        }
+
+        public void StopTweenFog(float duration = DEFAULT_STOP_FOG_DURATION)
+        {
+            if (!fogControl) return;
+            DOTween.To(GetDensity, SetDensity, DEFAULT_STOP_FOG_DENSITY, duration).SetEase(Ease.OutSine).Play();
+        }
+
+        private float GetDensity()
+        {
+            return fogControl.Density;
+        }
+
+        private void SetDensity(float value)
+        {
+            fogControl.Density = value;
+        }
     }
 }

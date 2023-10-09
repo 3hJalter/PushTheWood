@@ -1,4 +1,6 @@
-﻿namespace _Game._Scripts.UIs.Screen
+﻿using _Game._Scripts.Managers;
+
+namespace _Game._Scripts.UIs.Screen
 {
     public class WinScreen : UICanvas
     {

@@ -1,5 +1,7 @@
 ﻿using _Game._Scripts.Data;
-using DesignPattern;
+using _Game._Scripts.DesignPattern;
+using _Game.GameGrid.GridSurface;
+using GameGridEnum;
 using UnityEngine;
 
 namespace _Game._Scripts.Managers
@@ -13,5 +15,17 @@ namespace _Game._Scripts.Managers
         [SerializeField] private WorldData worldData;
 
         public WorldData WorldData => worldData;
+        
+        [SerializeField] private GridData gameData;
+        
+        public TextAsset GetGridTextData(int index)
+        {
+            return gameData.GetGridTextData(index);
+        }
+        
+        public GridSurfaceBase GetGridSurface(GridSurfaceType gridSurfaceType)
+        {
+            return gameData.GetGridSurface(gridSurfaceType);
+        }
     }
 }

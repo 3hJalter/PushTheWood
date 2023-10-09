@@ -1,56 +1,56 @@
+using _Game._Scripts.DesignPattern.DesignPattern;
 using _Game._Scripts.UIs.Screen;
-using DesignPattern.Observe;
 using DG.Tweening;
 using UnityEngine;
 
-public enum GameState
+namespace _Game._Scripts.Managers
 {
-    MainMenu,
-    InGame,
-    Pause,
-    Transition,
-}
-
-public class GameManager : Dispatcher<GameManager>
-{
-    [SerializeField] private GameState gameState;
-
-    private void Awake()
+    public enum GameState
     {
-        Input.multiTouchEnabled = false;
-        Application.targetFrameRate = 60;
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        const int maxScreenHeight = 1280;
-        float ratio = Screen.currentResolution.width / (float)Screen.currentResolution.height;
-        if (Screen.currentResolution.height > maxScreenHeight)
-        {
-            Screen.SetResolution(Mathf.RoundToInt(ratio * maxScreenHeight), maxScreenHeight, true);
-        }
-        // TEST
-        UIManager.Ins.OpenUI<MainMenuScreen>();
+        MainMenu,
+        InGame,
+        Pause,
+        Transition
     }
 
-    public void ChangeState(GameState gameStateI)
+    public class GameManager : Dispatcher<GameManager>
     {
-        if (gameStateI == GameState.Pause)
-        {
-            DOTween.PauseAll();
-            AudioManager.Ins.PauseSfx();
-            PostEvent(EventID.Pause);
-        }
-        else if (gameState == GameState.Pause)
-        {
-            DOTween.PlayAll();
-            AudioManager.Ins.UnPauseSfx();
-            PostEvent(EventID.UnPause);
-        }
-        gameState = gameStateI; 
-    }
+        [SerializeField] private GameState gameState;
 
-    public bool IsState(GameState gameStateI)
-    {
-        return gameState == gameStateI;
+        private void Awake()
+        {
+            Input.multiTouchEnabled = false;
+            Application.targetFrameRate = 60;
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
+            const int maxScreenHeight = 1280;
+            float ratio = Screen.currentResolution.width / (float)Screen.currentResolution.height;
+            if (Screen.currentResolution.height > maxScreenHeight)
+                Screen.SetResolution(Mathf.RoundToInt(ratio * maxScreenHeight), maxScreenHeight, true);
+            // TEST
+            UIManager.Ins.OpenUI<MainMenuScreen>();
+        }
+
+        public void ChangeState(GameState gameStateI)
+        {
+            if (gameStateI == GameState.Pause)
+            {
+                DOTween.PauseAll();
+                AudioManager.Ins.PauseSfx();
+                PostEvent(EventID.Pause);
+            }
+            else if (gameState == GameState.Pause)
+            {
+                DOTween.PlayAll();
+                AudioManager.Ins.UnPauseSfx();
+                PostEvent(EventID.UnPause);
+            }
+
+            gameState = gameStateI;
+        }
+
+        public bool IsState(GameState gameStateI)
+        {
+            return gameState == gameStateI;
+        }
     }
-    
-    
 }

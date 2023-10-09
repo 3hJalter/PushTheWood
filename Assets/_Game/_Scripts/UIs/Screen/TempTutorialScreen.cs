@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using _Game._Scripts.Managers;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

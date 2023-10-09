@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Utilitys.Timer
+namespace _Game._Scripts.Utilities.Timer
 {
     [DefaultExecutionOrder(-100)]
     public class TimerManager : MonoBehaviour

@@ -29,12 +29,6 @@ public static class Constants
 
 namespace _Game
 {
-    public class GameCellData
-    {
-        public CellState state = CellState.None;
-        public CellType type = CellType.Water;
-    }
-
     public interface IInit
     {
         public void OnInit();

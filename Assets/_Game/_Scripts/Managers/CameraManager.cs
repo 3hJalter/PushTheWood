@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using _Game._Scripts.DesignPattern;
 using Cinemachine;
-using DesignPattern;
 using UnityEngine;
 
 namespace _Game._Scripts.Managers
