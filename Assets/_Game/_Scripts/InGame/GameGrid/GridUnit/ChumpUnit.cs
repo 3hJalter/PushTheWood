@@ -9,7 +9,7 @@ namespace _Game.GameGrid.GridUnit
         private ChumpState _chumpState;
     }
 
-    public enum ChumpType
+    public enum ChumpType   
     {
         Horizontal = 0,
         Vertical = 1

@@ -23,7 +23,7 @@ namespace _Game._Scripts.DesignPattern
             {
                 if (root == null)
                 {
-                    root = Object.FindObjectOfType<PoolControler>().transform;
+                    root = Object.FindObjectOfType<PoolController>().transform;
                     if (root == null)
                     {
                         root = new GameObject().transform;

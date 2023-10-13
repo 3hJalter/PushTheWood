@@ -42,8 +42,8 @@ public enum Direction
     None = -1,
     Left = 0,
     Right = 1,
-    Up = 2,
-    Down = 3,
+    Forward = 2,
+    Back = 3,
 }
 
 namespace TweenTypeEnum
@@ -97,6 +97,7 @@ namespace GameGridEnum
         Zero = 0,
         One = 1,
         Two = 2,
+        Three = 3,
     }
     public enum GridSurfaceType
     {
@@ -119,10 +120,10 @@ namespace GameGridEnum
     public enum GridUnitDynamicType
     {
         None = -1,
-        Player = 0,
-        ChumpShort = 1,
-        ChumpHigh = 2,
-        Raft = 3,
+        Player = PoolType.Player,
+        ChumpShort = PoolType.ChumpShort,
+        ChumpHigh = PoolType.ChumpHigh,
+        Raft = PoolType.Raft,
     }
     
 }

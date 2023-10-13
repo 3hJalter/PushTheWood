@@ -69,8 +69,8 @@ namespace _Game._Scripts.InGame.Player
             {
                 Direction.Left => Vector2Int.left,
                 Direction.Right => Vector2Int.right,
-                Direction.Up => Vector2Int.up,
-                Direction.Down => Vector2Int.down,
+                Direction.Forward => Vector2Int.up,
+                Direction.Back => Vector2Int.down,
                 _ => Vector2Int.zero
             };
             // Get left, up , right, down from _input Vector2
@@ -297,7 +297,7 @@ namespace _Game._Scripts.InGame.Player
             _input = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
             if (Mathf.Abs(_input.x) > Mathf.Abs(_input.y))
                 return _input.x > 0 ? Direction.Left : Direction.Right;
-            return _input.y > 0 ? Direction.Up : Direction.Down;
+            return _input.y > 0 ? Direction.Forward : Direction.Back;
         }
 
         public static event Action<int> OnChangeIsland;

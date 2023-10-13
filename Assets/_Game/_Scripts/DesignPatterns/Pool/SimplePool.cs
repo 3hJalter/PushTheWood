@@ -7,6 +7,7 @@ namespace _Game._Scripts.DesignPattern
 {
     public static class SimplePool
     {
+        private const string PATH = "Pool";
         private const int DEFAULT_POOL_SIZE = 3;
 
         private static readonly Dictionary<int, Pool> Pools = new();
@@ -26,9 +27,9 @@ namespace _Game._Scripts.DesignPattern
             {
                 if (_root == null)
                 {
-                    _root = Object.FindObjectOfType<PoolControler>().transform;
+                    _root = Object.FindObjectOfType<PoolController>().transform;
 
-                    if (_root == null) _root = new GameObject("Pool").transform;
+                    if (_root == null) _root = new GameObject(PATH).transform;
                 }
 
                 return _root;
@@ -117,7 +118,7 @@ namespace _Game._Scripts.DesignPattern
             if (obj.gameObject.activeSelf)
             {
                 if (Pools.ContainsKey(obj.GetInstanceID()))
-                    Pools[obj.GetInstanceID()].Despawn(obj);
+                    Pools[obj.GetInstanceID()].DeSpawn(obj);
                 else
                     Object.Destroy(obj.gameObject);
             }
@@ -152,7 +153,7 @@ namespace _Game._Scripts.DesignPattern
         private static GameUnit GetGameUnitByType(PoolType poolType)
         {
             if (_gameUnitResources == null || _gameUnitResources.Length == 0)
-                _gameUnitResources = Resources.LoadAll<GameUnit>("Pool");
+                _gameUnitResources = Resources.LoadAll<GameUnit>(PATH);
 
             if (!PoolTypes.ContainsKey(poolType) || PoolTypes[poolType] == null)
             {
@@ -231,7 +232,7 @@ namespace _Game._Scripts.DesignPattern
                 }
 
                 if (IsCollect) _active.Add(obj);
-                if (_mClamp && _active.Count >= _mAmount) Despawn(_active[0]);
+                if (_mClamp && _active.Count >= _mAmount) DeSpawn(_active[0]);
 
                 obj.gameObject.SetActive(true);
 
@@ -239,7 +240,7 @@ namespace _Game._Scripts.DesignPattern
             }
 
             // Return an object to the inactive pool.
-            public void Despawn(GameUnit obj)
+            public void DeSpawn(GameUnit obj)
             {
                 if (obj != null /*&& !inactive.Contains(obj)*/)
                 {
@@ -272,7 +273,7 @@ namespace _Game._Scripts.DesignPattern
 
             public void Collect()
             {
-                while (_active.Count > 0) Despawn(_active[0]);
+                while (_active.Count > 0) DeSpawn(_active[0]);
             }
         }
     }
@@ -295,5 +296,9 @@ namespace _Game._Scripts.DesignPattern
         SurfaceWater = 0,
         SurfaceGround = 1,
         // Grid Unit
+        Player = 3,
+        ChumpShort = 4,
+        ChumpHigh = 5,
+        Raft = 6,
     }
 }

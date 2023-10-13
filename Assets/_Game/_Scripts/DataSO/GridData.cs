@@ -14,6 +14,7 @@ namespace _Game._Scripts.Data
         [SerializeField] private List<TextAsset> gridTextDataList = new();
         [Title("Surface")] 
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
+        // ReSharper disable once CollectionNeverUpdated.Local
         [SerializeField] private readonly Dictionary<GridSurfaceType, GridSurfaceBase> _surfaceDic = new();
         [Title("Static Unit")] 
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
@@ -30,6 +31,11 @@ namespace _Game._Scripts.Data
         public GridSurfaceBase GetGridSurface(GridSurfaceType gridSurfaceType)
         {
             return _surfaceDic.TryGetValue(gridSurfaceType, value: out GridSurfaceBase surface) ? surface : null;
+        }
+        
+        public GridUnitDynamic GetGridUnitDynamic(GridUnitDynamicType gridUnitDynamicType)
+        {
+            return _dynamicUnitDic.TryGetValue(gridUnitDynamicType, value: out GridUnitDynamic unit) ? unit : null;
         }
     }
 }

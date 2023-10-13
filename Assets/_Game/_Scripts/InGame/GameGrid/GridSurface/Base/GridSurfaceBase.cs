@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace _Game.GameGrid.GridSurface
 {
-    public abstract class GridSurfaceBase : GameUnit, IInit
+    public abstract class GridSurfaceBase : GameUnit
     {
         [SerializeField] protected GridSurfaceType surfaceType;
-        [SerializeField] private int _islandID = -1;
+        private int _islandID = -1;
 
         public int IslandID
         {
@@ -20,9 +20,5 @@ namespace _Game.GameGrid.GridSurface
         }
 
         public GridSurfaceType SurfaceType => surfaceType;
-
-        public virtual void OnInit()
-        {
-        }
     }
 }

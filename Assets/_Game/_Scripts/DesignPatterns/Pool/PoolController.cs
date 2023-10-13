@@ -2,7 +2,7 @@
 
 namespace _Game._Scripts.DesignPattern
 {
-    public class PoolControler : MonoBehaviour
+    public class PoolController : MonoBehaviour
     {
         [Header("Pool")] public PoolAmount[] Pool;
 
