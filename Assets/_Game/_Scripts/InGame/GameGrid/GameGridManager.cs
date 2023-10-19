@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using _Game._Scripts.DesignPattern;
-using _Game._Scripts.Managers;
-using _Game._Scripts.Utilities.Grid;
+using _Game.Managers;
+using _Game.Utilities.Grid;
+using _Game.DesignPattern;
 using _Game.GameGrid.GridSurface;
-using _Game.GameGrid.GridUnit.Base;
+using _Game.GameGrid.GridUnit;
+using _Game.GameGrid.GridUnit.DynamicUnit;
+using _Game.GameGrid.GridUnit.StaticUnit;
 using GameGridEnum;
 using MapEnum;
 using UnityEngine;
@@ -21,6 +23,9 @@ namespace _Game.GameGrid
         private Grid<GameGridCell, GameGridCellData> _gridMap;
 
         private GridSurfaceBase[,] _gridSurfaceMap;
+
+        // Test Init GridUnit
+        private GridUnitDynamic _gridUnit;
         private TextGridData _textGridData;
 
         // TODO: Learning tilemap in 3D, then try to create a scene to create map and save it as text file
@@ -48,29 +53,30 @@ namespace _Game.GameGrid
             // --> No Complete: need GridUnit prefab and data
             TestInitGridUnit();
         }
-        
-        // Test Init GridUnit
-        private GridUnitDynamic _gridUnit;
+
         private void TestInitGridUnit()
         {
             GameGridCell cell = _gridMap.GetGridCell(5, 5);
-            _gridUnit = SimplePool.Spawn<GridUnitDynamic>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.ChumpHigh));
+            _gridUnit = SimplePool.Spawn<GridUnitDynamic>(
+                DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.ChumpHigh));
             _gridUnit.OnInit(cell);
             cell = _gridMap.GetGridCell(3, 3);
-            SimplePool.Spawn<GridUnitDynamic>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.ChumpHigh)).OnInit(cell);
+            SimplePool.Spawn<GridUnitDynamic>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.ChumpShort))
+                .OnInit(cell);
             cell = _gridMap.GetGridCell(6, 7);
-            SimplePool.Spawn<GridUnitDynamic>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.ChumpHigh)).OnInit(cell);
+            // SimplePool.Spawn<GridUnitDynamic>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.ChumpHigh)).OnInit(cell);
+            SimplePool.Spawn<PlayerUnit>(
+                DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Player)).OnInit(cell);
+            cell = _gridMap.GetGridCell(8, 8);
+            SimplePool.Spawn<TreeUnit>(DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.TreeShort)).OnInit(cell);
+            cell = _gridMap.GetGridCell(8, 7);
+            SimplePool.Spawn<GridUnitDynamic>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.ChumpHigh))
+                .OnInit(cell);
+            cell = _gridMap.GetGridCell(3, 4);
+            SimplePool.Spawn<TreeUnit>(DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.TreeHigh)).OnInit(cell);
+
         }
 
-        public void OnMoveUnit(int i)
-        {
-            // _gridUnit.RotateMoveDirection((Direction) i);
-            _gridUnit.RotateMove((Direction)i);
-            // _gridUnit.MoveDirection((Direction) i );
-        }
-        
-        
-        
         private void CreateGridMap()
         {
             _gridMap = new Grid<GameGridCell, GameGridCellData>(gridSizeX, gridSizeY, Constants.CELL_SIZE, Tf.position,
@@ -117,7 +123,9 @@ namespace _Game.GameGrid
                     FloodFillIslandID(gridSurface, x, y, currentIslandID);
                     currentIslandID++;
                 }
+
             return;
+
             void FloodFillIslandID(GridSurfaceBase gridSurface, int x, int y, int islandID)
             {
                 gridSurface.IslandID = islandID;
@@ -133,6 +141,7 @@ namespace _Game.GameGrid
                 if (IsGridSurfaceHadIsland(x, y + 1, out GridSurfaceBase upGridSurface))
                     FloodFillIslandID(upGridSurface, x, y + 1, islandID);
             }
+
             bool IsGridSurfaceHadIsland(int x, int y, out GridSurfaceBase gridSurface)
             {
                 gridSurface = null;
@@ -148,7 +157,7 @@ namespace _Game.GameGrid
 
         private void SpawnGridUnitToGrid()
         {
-            
+
         }
 
         public GameGridCell GetNeighbourCell(GameGridCell cell, Vector2Int direction, int distance = 1)
@@ -160,7 +169,7 @@ namespace _Game.GameGrid
         {
             return _gridMap.GetGridCell(position.x, position.y);
         }
-        
+
         public GameGridCell GetNeighbourCell(GameGridCell cell, Direction direction, int distance = 1)
         {
             Vector2Int cellPos = cell.GetCellPosition();

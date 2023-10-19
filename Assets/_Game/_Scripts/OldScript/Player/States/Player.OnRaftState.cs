@@ -1,4 +1,4 @@
-namespace _Game._Scripts.InGame.Player{
+namespace _Game.InGame.Player{
     public partial class Player
     {
         public class OnRaftState : State

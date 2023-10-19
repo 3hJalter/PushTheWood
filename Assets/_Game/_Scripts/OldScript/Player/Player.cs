@@ -1,15 +1,15 @@
 using System;
 using System.Collections;
-using _Game._Scripts.DesignPattern;
-using _Game._Scripts.Managers;
-using _Game._Scripts.Utilities.Grid;
+using _Game.DesignPattern;
+using _Game.Managers;
+using _Game.Utilities.Grid;
 using CnControls;
 using DG.Tweening;
 using MapEnum;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace _Game._Scripts.InGame.Player
+namespace _Game.InGame.Player
 {
     public partial class Player : HMonoBehaviour, IInit
     {

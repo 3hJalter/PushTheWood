@@ -1,12 +1,12 @@
-﻿using _Game._Scripts.Managers;
+﻿using _Game.Managers;
 using _Game.UIs.Popup;
 using CnControls;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using CameraType = _Game._Scripts.Managers.CameraType;
+using CameraType = _Game.Managers.CameraType;
 
-namespace _Game._Scripts.UIs.Screen
+namespace _Game.UIs.Screen
 {
     public class InGameScreen : UICanvas
     {

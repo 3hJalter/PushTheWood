@@ -1,4 +1,4 @@
-﻿using _Game._Scripts.DesignPattern;
+﻿using _Game.DesignPattern;
 
 namespace MapEnum
 {
@@ -91,6 +91,21 @@ namespace TweenTypeEnum
 
 namespace GameGridEnum
 {
+    public enum NewHeightLevel
+    {
+        None = -1,
+        Zero = 0,
+        ZeroPointFive = 1,
+        One = 2,
+        OnePointFive = 3,
+        Two = 4,
+        TwoPointFive = 5,
+        Three = 6,
+        ThreePointFive = 7,
+        Four = 8,
+        FourPointFive = 9,
+    }
+    
     public enum HeightLevel
     {
         None = -1,
@@ -109,13 +124,15 @@ namespace GameGridEnum
     public enum GridUnitStaticType
     {
         None = -1,
-        RockShort = 0,
-        RockHigh = 1,
-        TreeRoot = 2,
-        TreeShort = 3,
-        TreeHigh = 4,
-        BridgeShort = 5,
-        BridgeHigh = 6,
+        RockShort = PoolType.RockShort,
+        RockHigh = PoolType.RockHigh,
+        TreeRoot = PoolType.TreeRoot,
+        TreeShort = PoolType.TreeShort,
+        TreeHigh = PoolType.TreeHigh,
+        BridgeShortHorizontal = PoolType.BridgeShortHorizontal,
+        BridgeShortVertical = PoolType.BridgeShortVertical,
+        BridgeHighHorizontal = PoolType.BridgeHighHorizontal,
+        BridgeHighVertical = PoolType.BridgeHighVertical,
     }
     public enum GridUnitDynamicType
     {

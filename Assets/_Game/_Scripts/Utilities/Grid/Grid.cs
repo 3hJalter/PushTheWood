@@ -4,7 +4,7 @@ using _Game;
 using MapEnum;
 using UnityEngine;
 
-namespace _Game._Scripts.Utilities.Grid
+namespace _Game.Utilities.Grid
 {
     public class Grid<T, TD> where T : GridCell<TD>
     {

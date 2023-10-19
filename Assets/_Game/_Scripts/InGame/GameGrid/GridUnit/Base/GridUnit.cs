@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using _Game._Scripts.DesignPattern;
+﻿using System.Collections.Generic;
+using _Game.DesignPattern;
 using GameGridEnum;
 using UnityEngine;
 
-namespace _Game.GameGrid.GridUnit.Base
+namespace _Game.GameGrid.GridUnit
 {
     public abstract class GridUnit : GameUnit
     {
         // Skin
         [SerializeField] protected Transform skin;
-
+    
         // Unit Height
         [SerializeField] protected HeightLevel startHeight;
 
@@ -23,6 +21,11 @@ namespace _Game.GameGrid.GridUnit.Base
         // Unit Cell
         protected readonly List<GameGridCell> cellInUnits = new();
         protected GameGridCell mainCell;
+
+        public GameGridCell MainCell => mainCell;
+
+        protected int islandID = -1;
+        
         public HeightLevel StartHeight => startHeight;
         public HeightLevel EndHeight => endHeight;
 
@@ -36,12 +39,12 @@ namespace _Game.GameGrid.GridUnit.Base
             return size;
         }
 
-        public void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One)
+        public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One)
         {
             startHeight = startHeightIn;
             endHeight = startHeightIn + size.y - 1;
             mainCell = mainCellIn;
-            cellInUnits.Add(mainCell);
+            cellInUnits.Add(mainCell);  
             // Add all neighbour X from mainCell
             AddXCell(mainCell, size.x);
             // Add all neighbour Z from all cells in cellInUnits
@@ -51,6 +54,11 @@ namespace _Game.GameGrid.GridUnit.Base
             // Add offset Height to Position
             Vector3 offsetY = new(0, (int)startHeight * Constants.CELL_SIZE, 0);
             Tf.position = mainCell.WorldPos + offsetY;
+        }
+
+        protected virtual void OnDespawn()
+        {
+            SimplePool.Despawn(this);
         }
 
         public virtual void OnInteract(Direction direction, GridUnit interactUnit = null)

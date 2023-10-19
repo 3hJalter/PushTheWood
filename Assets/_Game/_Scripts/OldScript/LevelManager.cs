@@ -1,12 +1,12 @@
 using System.Collections.Generic;
-using _Game._Scripts.DesignPattern;
-using _Game._Scripts.InGame.Player;
-using _Game._Scripts.UIs.Screen;
+using _Game.DesignPattern;
+using _Game.InGame.Player;
+using _Game.UIs.Screen;
 using DG.Tweening;
 using MapEnum;
 using UnityEngine;
 
-namespace _Game._Scripts.Managers
+namespace _Game.Managers
 {
     public class LevelManager : Singleton<LevelManager>
     {

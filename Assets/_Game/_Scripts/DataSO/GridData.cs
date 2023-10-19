@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using _Game.GameGrid.GridSurface;
-using _Game.GameGrid.GridUnit.Base;
+using _Game.GameGrid.GridUnit;
 using GameGridEnum;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace _Game._Scripts.Data
+namespace _Game.Data
 {
     [CreateAssetMenu(fileName = "GridData", menuName = "ScriptableObjects/GridData", order = 1)]
     public class GridData : SerializedScriptableObject
@@ -36,6 +36,11 @@ namespace _Game._Scripts.Data
         public GridUnitDynamic GetGridUnitDynamic(GridUnitDynamicType gridUnitDynamicType)
         {
             return _dynamicUnitDic.TryGetValue(gridUnitDynamicType, value: out GridUnitDynamic unit) ? unit : null;
+        }
+
+        public GridUnitStatic GetGridUnitStatic(GridUnitStaticType gridUnitStaticType)
+        {
+            return _staticUnitDic.TryGetValue(gridUnitStaticType, value: out GridUnitStatic unit) ? unit : null;
         }
     }
 }

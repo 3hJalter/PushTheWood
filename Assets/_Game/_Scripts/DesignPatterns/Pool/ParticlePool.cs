@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace _Game._Scripts.DesignPattern
+namespace _Game.DesignPattern
 {
     public static class ParticlePool
     {

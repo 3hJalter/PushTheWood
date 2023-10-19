@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace _Game._Scripts.daivq.Utilities
+namespace _Game.daivq.Utilities
 {
     /// <summary>
     ///     This type of pool require object that done used have to return to pool explicitly

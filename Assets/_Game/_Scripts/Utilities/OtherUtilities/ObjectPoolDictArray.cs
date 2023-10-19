@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace _Game._Scripts.daivq.Utilities
+namespace _Game.daivq.Utilities
 {
     /// <summary>
     ///     This kind of pool is convenient because of not required return object after finished using, with trade-off is some

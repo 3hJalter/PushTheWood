@@ -1,7 +1,7 @@
 ﻿using GameGridEnum;
 using UnityEngine;
 
-namespace _Game.GameGrid.GridUnit.Base
+namespace _Game.GameGrid.GridUnit
 {
     public class GridUnitStatic : GridUnit
     {

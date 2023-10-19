@@ -1,4 +1,4 @@
-﻿using _Game._Scripts.Managers;
+﻿using _Game.Managers;
 using UnityEngine;
 
 namespace _Game.GameGrid

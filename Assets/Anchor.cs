@@ -1,8 +1,8 @@
-using _Game.GameGrid.GridUnit.Base;
+using _Game.GameGrid.GridUnit;
 using UnityEngine;
 
 public class Anchor : HMonoBehaviour
-{
+{   
     public void ChangeAnchorPos(GridUnit gridUnitI, Direction direction)
     {
         Vector3Int unitSize = gridUnitI.GetSize();

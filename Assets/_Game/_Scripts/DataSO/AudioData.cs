@@ -3,7 +3,7 @@ using AudioEnum;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace _Game._Scripts.Data
+namespace _Game.Data
 {
     [CreateAssetMenu(fileName = "AudioData", menuName = "ScriptableObjects/AudioData", order = 1)]
     public class AudioData : SerializedScriptableObject

@@ -1,5 +1,5 @@
-using _Game._Scripts.Managers;
-using _Game._Scripts.UIs.Screen;
+using _Game.Managers;
+using _Game.UIs.Screen;
 using UnityEngine;
 
 public class TutorialTrigger : MonoBehaviour

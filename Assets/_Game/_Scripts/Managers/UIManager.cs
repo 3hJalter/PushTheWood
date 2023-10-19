@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Game._Scripts.DesignPattern;
+using _Game.DesignPattern;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace _Game._Scripts.Managers
+namespace _Game.Managers
 {
     public class UIManager : Singleton<UIManager>
     {

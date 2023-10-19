@@ -1,9 +1,9 @@
-﻿using _Game._Scripts.Managers;
+﻿using _Game.Managers;
 using DG.Tweening;
 using UnityEngine;
-using CameraType = _Game._Scripts.Managers.CameraType;
+using CameraType = _Game.Managers.CameraType;
 
-namespace _Game._Scripts.UIs.Screen
+namespace _Game.UIs.Screen
 {
     public class MainMenuScreen : UICanvas
     {

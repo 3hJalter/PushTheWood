@@ -1,10 +1,10 @@
 using System;
-using _Game._Scripts.DesignPattern;
+using _Game.DesignPattern;
 using DG.Tweening;
 using UB.Simple2dWeatherEffects.Standard;
 using UnityEngine;
 
-namespace _Game._Scripts.Managers
+namespace _Game.Managers
 {
     public class FxManager : Singleton<FxManager>
     {

@@ -1,5 +1,5 @@
-using _Game._Scripts.InGame.Player;
-using _Game._Scripts.Utilities.Grid;
+using _Game.InGame.Player;
+using _Game.Utilities.Grid;
 using MapEnum;
 
 namespace _Game

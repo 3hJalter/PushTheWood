@@ -1,5 +1,5 @@
 ﻿using System;
-using _Game._Scripts.Managers;
+using _Game.Managers;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;

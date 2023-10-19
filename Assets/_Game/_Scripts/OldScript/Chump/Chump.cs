@@ -1,7 +1,7 @@
 using System.Collections;
-using _Game._Scripts.DesignPattern;
-using _Game._Scripts.Managers;
-using _Game._Scripts.Utilities.Grid;
+using _Game.DesignPattern;
+using _Game.Managers;
+using _Game.Utilities.Grid;
 using DG.Tweening;
 using MapEnum;
 using UnityEngine;

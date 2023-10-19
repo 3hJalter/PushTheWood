@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace _Game._Scripts.daivq.Utilities
+namespace _Game.daivq.Utilities
 {
     [Serializable]
     public class BoolModifierWithRegisteredSource

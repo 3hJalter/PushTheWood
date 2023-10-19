@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Game._Scripts.InGame.Player
+namespace _Game.InGame.Player
 {
     public class PlayerAnimationControl : MonoBehaviour
     {

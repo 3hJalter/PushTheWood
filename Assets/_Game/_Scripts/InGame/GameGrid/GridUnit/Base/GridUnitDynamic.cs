@@ -1,32 +1,42 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using _Game.GameGrid.GridUnit.StaticUnit;
+using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
 
-namespace _Game.GameGrid.GridUnit.Base
+namespace _Game.GameGrid.GridUnit
 {
     public abstract class GridUnitDynamic : GridUnit
     {
         [SerializeField] protected GridUnitDynamicType gridUnitDynamicType;
-        [SerializeField] private Anchor anchor;
+        [SerializeField] protected Anchor anchor;
+        [SerializeField] protected int changeStateEndHeightOffset;
         public bool isInAction;
+        private Vector3Int _initSize;
+        private Quaternion _initSkinRotate;
+        private Vector3 _initSkinPos;
 
-        public void ResetAction()
+        private void Awake()
         {
-            isInAction = false;
+            _initSize = size;
+            _initSkinRotate = skin.localRotation;
+            _initSkinPos = skin.localPosition;
         }
 
-        public override void OnInteract(Direction direction, GridUnit interactUnit = null)
+        public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One)
         {
-            base.OnInteract(direction, interactUnit);
-            Debug.Log("Interact Dynamic Unit");
-            MoveDirection(direction);
+            base.OnInit(mainCellIn, startHeightIn);
+            size = _initSize;
+            skin.localRotation = _initSkinRotate;
+            skin.localPosition = _initSkinPos;
+            isInAction = false; 
         }
-
-        private void Fall(int numHeightDown)
+        
+        protected virtual void OnFall(int numHeightDown, Action callback = null)
         {
             // ----- Falling Logic ----- //
+            isInAction = true;
             RemoveUnitFromCell();
             // Set new startHeight and endHeight
             startHeight -= numHeightDown;
@@ -34,10 +44,16 @@ namespace _Game.GameGrid.GridUnit.Base
             for (int i = cellInUnits.Count - 1; i >= 0; i--)
                 cellInUnits[i].AddGridUnit(this);
             // Temporary Move to new position (need animation)
-            Tf.position -= new Vector3(0, numHeightDown * mainCell.Size, 0);
+            Tf.DOMove(Tf.position - new Vector3(0, numHeightDown * mainCell.Size, 0), 0.25f)
+                .SetEase(Ease.Linear).OnComplete(() =>
+                {
+                    isInAction = false;
+                    callback?.Invoke();
+                });
+            // TODO: Change it to virtual for logic spawn Bridge of ChumpUnit (or create callback)
         }
 
-        private bool CanFall(out int numHeightDown)
+        protected virtual bool CanFall(out int numHeightDown)
         {
             numHeightDown = int.MinValue;
             for (int i = 0; i < cellInUnits.Count; i++)
@@ -61,48 +77,37 @@ namespace _Game.GameGrid.GridUnit.Base
             return numHeightDown > 0;
         }
 
-        protected virtual void OnNotMove(Direction direction, HashSet<GridUnit> nextUnits,
+        protected static void OnNotMove(Direction direction, HashSet<GridUnit> nextUnits, GridUnit interactUnit = null,
             bool interactWithNextUnit = true)
         {
             if (!interactWithNextUnit) return;
-            foreach (GridUnit unit in nextUnits) unit.OnInteract(direction);
+            foreach (GridUnit unit in nextUnits) unit.OnInteract(direction, interactUnit);
         }
 
-        public void MoveDirection(Direction direction)
-        {
-            if (isInAction) return;
-            if (!CanMove(direction, out GameGridCell nextMainCell,
-                    out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits))
-            {
-                OnNotMove(direction, nextUnits);
-                return;
-            }
-
-            isInAction = true;
-            // ----- Moving Logic ----- //
-            // Remove all gridUnit value in gridUnitDic of cellInUnits with heightLevel in heightLevel list
-            // TODO: Take all GridUnitBase in cellInUnits which above this and handle them later
-            InitCellsToUnit(nextMainCell, nextCells);
-            // Temporary Move to new position (need animation)
-            Vector2Int moveOffset = Constants.dirVector[direction];
-            Tf.position += new Vector3(moveOffset.x * mainCell.Size * size.x, 0,
-                moveOffset.y * mainCell.Size * size.z);
-            if (CanFall(out int numHeightDown)) Fall(numHeightDown);
-            // TODO: Handle the above of old cellUnits
-            // ----- End of Logic ----- //
-            isInAction = false;
-        }
-
-        private void InitCellsToUnit(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells)
+        protected void OnOutCurrentCells()
         {
             RemoveUnitFromCell();
             cellInUnits.Clear();
-            mainCell = nextMainCell;
-            // Add all nextCells to cellInUnits
-            foreach (GameGridCell nextCell in nextCells) AddCell(nextCell);
         }
 
-        private bool CanMove(Direction direction, out GameGridCell nextMainCell,
+        protected virtual void OnEnterNextCells(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null, Action fallCallback = null)
+        {
+            InitCellsToUnit(nextMainCell, nextCells);
+            if (CanFall(out int numHeightDown)) OnFall(numHeightDown, fallCallback);
+            else OnNotFall();
+        }
+
+        protected virtual void OnNotFall() {}
+
+        private void InitCellsToUnit(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null)
+        {
+            mainCell = nextMainCell;
+            // Add all nextCells to cellInUnits
+            if (nextCells != null) foreach (GameGridCell nextCell in nextCells) AddCell(nextCell);
+            else AddCell(nextMainCell);
+        }
+
+        protected bool CanMove(Direction direction, out GameGridCell nextMainCell,
             out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits)
         {
             nextMainCell = GameGridManager.Ins.GetNeighbourCell(mainCell, direction);
@@ -127,65 +132,26 @@ namespace _Game.GameGrid.GridUnit.Base
                     isNextCellHasUnit = true;
                     nextUnits.Add(unit);
                 }
+
                 nextCells.Add(neighbour);
             }
 
             return !isNextCellHasUnit && !isNextCellIsNull;
         }
 
-        public void RotateMove(Direction direction)
+        protected Vector3 GetUnitWorldPos()
         {
-            if (isInAction) return;
-            if (!CanRotateMove(direction, out Vector3Int newSize, out HeightLevel endHeightAfterRotate,
-                    out GameGridCell nextMainCell, out HashSet<GameGridCell> nextCells,
-                    out HashSet<GridUnit> nextUnits))
-            {
-                OnNotMove(direction, nextUnits);
-                return;
-            }
-
-            isInAction = true;
-            anchor.ChangeAnchorPos(this, direction);
-            Vector3 axis = Vector3.Cross(Vector3.up, Constants.dirVector3[direction]);
-            StartCoroutine(Roll(anchor.Tf.position, axis, isDone =>
-            {
-                if (isDone) AfterRoll();
-            }));
-            return;
-
-            void AfterRoll()
-            {
-                size = newSize;
-                endHeight = endHeightAfterRotate;
-                // TODO: Take all GridUnitBase in cellInUnits which above this and handle them later
-                // Get offset of new main cell with old main cell to move the skin later
-                Vector3 skinOffset = nextMainCell.WorldPos - mainCell.WorldPos;
-                InitCellsToUnit(nextMainCell, nextCells);
-                // Move to new Position
-                float offsetY = (int)startHeight * Constants.CELL_SIZE;
-                Vector3 offset = new(0, offsetY, 0);
-                Tf.position = mainCell.WorldPos + offset;
-                // Move the skin by minus the offset of new main cell with old main cell
-                skin.position -= skinOffset;
-                if (CanFall(out int numHeightDown)) Fall(numHeightDown);
-                // TODO: Handle the above of old cellUnits
-                // ----- End of Moving Logic ----- //
-                isInAction = false;
-            }
+            float offsetY = (int)startHeight * Constants.CELL_SIZE;
+            return mainCell.WorldPos + Vector3.up * offsetY;
         }
 
-        private IEnumerator Roll(Vector3 anchorIn, Vector3 axis, Action<bool> callback)
+        protected Vector3 GetUnitNextWorldPos(GameGridCell nextMainCell)
         {
-            for (int i = 0; i < 90 / 5; i++)
-            {
-                skin.RotateAround(anchorIn, axis, 5);
-                yield return new WaitForSeconds(0.01f);
-            }
-
-            callback(true);
+            float offsetY = (int)startHeight * Constants.CELL_SIZE;
+            return nextMainCell.WorldPos + Vector3.up * offsetY;
         }
 
-        private bool CanRotateMove(Direction direction, out Vector3Int sizeAfterRotate,
+        protected bool CanRotateMove(Direction direction, out Vector3Int sizeAfterRotate,
             out HeightLevel endHeightAfterRotate, out GameGridCell nextMainCell,
             out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits)
         {
@@ -263,7 +229,7 @@ namespace _Game.GameGrid.GridUnit.Base
             }
         }
 
-        private static Vector3Int RotateSize(Direction direction, Vector3Int sizeIn)
+        protected static Vector3Int RotateSize(Direction direction, Vector3Int sizeIn)
         {
             switch (direction)
             {
@@ -290,5 +256,17 @@ namespace _Game.GameGrid.GridUnit.Base
             cellInUnits.Add(cell);
             cell.AddGridUnit(this);
         }
+
+        // SPAGHETTI CODE
+        public virtual void OnInteractWithTreeRoot(Direction direction, TreeRootUnit treeRootUnit)
+        {
+            
+        }
+    }
+
+    public enum DUnitState
+    {
+        Up = 0,
+        Down = 1,
     }
 }

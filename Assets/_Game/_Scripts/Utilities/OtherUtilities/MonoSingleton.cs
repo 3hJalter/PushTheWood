@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace _Game._Scripts.daivq.Utilities
+namespace _Game.daivq.Utilities
 {
     /// <summary>
     ///     This singleton need pre instantiated object in scene

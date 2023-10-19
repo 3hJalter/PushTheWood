@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace _Game._Scripts.DesignPattern
+namespace _Game.DesignPattern
 {
     public enum STATE
     {

@@ -2,7 +2,7 @@ using System;
 using MapEnum;
 using UnityEngine;
 
-namespace _Game._Scripts.Utilities.Grid
+namespace _Game.Utilities.Grid
 {
     public class GridCell<T> 
     {

@@ -1,5 +1,5 @@
 using System;
-using _Game._Scripts.Managers;
+using _Game.Managers;
 using AudioEnum;
 using DG.Tweening;
 using DG.Tweening.Core;

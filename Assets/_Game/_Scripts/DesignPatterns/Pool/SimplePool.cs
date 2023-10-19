@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace _Game._Scripts.DesignPattern
+namespace _Game.DesignPattern
 {
     public static class SimplePool
     {
@@ -295,10 +295,21 @@ namespace _Game._Scripts.DesignPattern
         // Grid Surface
         SurfaceWater = 0,
         SurfaceGround = 1,
-        // Grid Unit
+        // Grid Unit Dynamic
         Player = 3,
         ChumpShort = 4,
         ChumpHigh = 5,
         Raft = 6,
+        // Grid Unit Static
+        RockShort = 7,
+        RockHigh = 8,
+        TreeRoot = 9,
+        TreeShort = 10,
+        TreeHigh = 11,
+        BridgeShortHorizontal = 12,
+        BridgeShortVertical = 13,
+        BridgeHighHorizontal = 14,
+        BridgeHighVertical = 15,
+        
     }
 }

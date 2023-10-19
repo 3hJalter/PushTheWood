@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using _Game._Scripts.Data;
-using _Game._Scripts.DesignPattern;
+using _Game.Data;
+using _Game.DesignPattern;
 using AudioEnum;
 using DG.Tweening;
 using UnityEngine;
 
-namespace _Game._Scripts.Managers
+namespace _Game.Managers
 {
     public class AudioManager : Singleton<AudioManager>
     {

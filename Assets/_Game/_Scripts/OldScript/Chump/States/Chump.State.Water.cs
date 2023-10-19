@@ -1,4 +1,4 @@
-using _Game._Scripts.DesignPattern;
+using _Game.DesignPattern;
 using DG.Tweening;
 using MapEnum;
 using UnityEngine;

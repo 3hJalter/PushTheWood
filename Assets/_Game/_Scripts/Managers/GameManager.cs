@@ -1,9 +1,9 @@
-using _Game._Scripts.DesignPattern.DesignPattern;
-using _Game._Scripts.UIs.Screen;
+using _Game.DesignPattern;
+using _Game.UIs.Screen;
 using DG.Tweening;
 using UnityEngine;
 
-namespace _Game._Scripts.Managers
+namespace _Game.Managers
 {
     public enum GameState
     {
