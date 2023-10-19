@@ -21,6 +21,19 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             OnDespawn();
         }
 
+        public override void OnGetNextStateAndType(Direction direction)
+        {
+            base.OnGetNextStateAndType(direction);
+            if (unitState != UnitState.Down) return;
+            switch (chumpType)
+            {
+                case ChumpType.Horizontal when direction is Direction.Left or Direction.Right:
+                case ChumpType.Vertical when direction is Direction.Forward or Direction.Back:
+                    nextUnitState = UnitState.Up;
+                    break;
+            }
+        }
+
         public override void OnPushChumpUp(Direction direction)
         {
             RollChump(direction);

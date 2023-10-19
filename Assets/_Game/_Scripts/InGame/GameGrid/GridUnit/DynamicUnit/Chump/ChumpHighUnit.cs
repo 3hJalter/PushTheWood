@@ -1,4 +1,5 @@
 ﻿using _Game.DesignPattern;
+using _Game.GameGrid.GridUnit;
 using _Game.GameGrid.GridUnit.StaticUnit;
 using _Game.Managers;
 using GameGridEnum;
@@ -18,9 +19,19 @@ namespace _Game.InGame.GameGrid.GridUnit.DynamicUnit
                     .OnInit(mainCell, HeightLevel.ZeroPointFive); 
             OnDespawn();
         }
-        
-        public override void OnPushChumpUp(Direction direction)
+
+        // public override void OnPushChumpUp(Direction direction)
+        // {
+        // }
+
+
+        public override void OnPushChumpDown(Direction direction)
         {
+            if (unitState == UnitState.Up)
+            {
+                RollChump(direction);
+                return;
+            }
             if (chumpType == ChumpType.Vertical)
             {
                 switch (direction)
@@ -45,11 +56,6 @@ namespace _Game.InGame.GameGrid.GridUnit.DynamicUnit
                         break;
                 }
             }
-        }
-
-        public override void OnPushChumpDown(Direction direction)
-        {
-            RollChump(direction);
         }
     }
 }

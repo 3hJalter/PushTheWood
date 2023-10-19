@@ -12,7 +12,6 @@ namespace _Game.GameGrid.GridUnit
         [SerializeField] protected GridUnitDynamicType gridUnitDynamicType;
         [SerializeField] protected Anchor anchor;
         public bool isInAction;
-        protected bool isFall;
         protected override void OnDespawn()
         {
             isInAction = false; 
@@ -30,7 +29,9 @@ namespace _Game.GameGrid.GridUnit
             for (int i = cellInUnits.Count - 1; i >= 0; i--)
                 cellInUnits[i].AddGridUnit(this);
             // Temporary Move to new position (need animation)
-            Tf.DOMove(Tf.position - new Vector3(0, (float) numHeightDown * Constants.CELL_SIZE / 2, 0), 0.25f)
+            Vector3 newPos = Tf.position - new Vector3(0, (float) numHeightDown * Constants.CELL_SIZE / 2, 0);
+            if (nextUnitState == UnitState.Down) newPos -= Vector3.up * yOffsetOnDown;
+            Tf.DOMove(newPos, 0.25f)
                 .SetEase(Ease.Linear).OnComplete(() =>
                 {
                     isInAction = false;
@@ -82,7 +83,9 @@ namespace _Game.GameGrid.GridUnit
         }
 
         protected virtual void OnNotFall()
-        { }
+        {
+            
+        }
 
         private void InitCellsToUnit(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null)
         {

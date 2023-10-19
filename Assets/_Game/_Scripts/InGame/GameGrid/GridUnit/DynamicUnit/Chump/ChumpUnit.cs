@@ -32,28 +32,19 @@ namespace _Game.InGame.GameGrid.GridUnit.DynamicUnit
             OnPushChump(direction);
         }
         
-        public void OnGetNextStateAndType(Direction direction)
+        public virtual void OnGetNextStateAndType(Direction direction)
         {
             nextUnitState = unitState;
             nextChumpType = chumpType;
-            switch (unitState)
+            if (unitState == UnitState.Up)
             {
-                case UnitState.Up:
-                    nextUnitState = UnitState.Down;
-                    nextChumpType = direction is Direction.Left or Direction.Right
-                        ? ChumpType.Horizontal
-                        : ChumpType.Vertical;
-                    break;
-                case UnitState.Down:
-                    switch (chumpType)
-                    {
-                        case ChumpType.Horizontal when direction is Direction.Left or Direction.Right:
-                        case ChumpType.Vertical when direction is Direction.Forward or Direction.Back:
-                            nextUnitState = UnitState.Up;
-                            break;
-                    }
-                    break;
+                nextUnitState = UnitState.Down;
+                nextChumpType = direction is Direction.Left or Direction.Right
+                    ? ChumpType.Horizontal
+                    : ChumpType.Vertical;
             }
+            // Override handle case when state is down
+            
         }
         
         public void OnPushChump(Direction direction)
@@ -133,6 +124,7 @@ namespace _Game.InGame.GameGrid.GridUnit.DynamicUnit
             isInAction = true;
             OnOutCurrentCells();
             Vector3 newPosition = GetUnitNextWorldPos(nextMainCell);
+            if (nextUnitState == UnitState.Down) newPosition -= Vector3.up * yOffsetOnDown;
             Tf.DOMove(newPosition, 0.4f).SetEase(Ease.Linear).OnComplete(() =>
             {
                 isInAction = false;
@@ -164,6 +156,7 @@ namespace _Game.InGame.GameGrid.GridUnit.DynamicUnit
                 skin.position -= skinOffset;
                 OnOutCurrentCells();
                 Tf.position = GetUnitNextWorldPos(nextMainCell);
+                if (nextUnitState == UnitState.Down) Tf.position -= Vector3.up * yOffsetOnDown;
                 isInAction = false;
                 OnEnterNextCells(nextMainCell, nextCells, OnFallAtWaterSurface);
                 // TODO: Handle the above of old cellUnits
