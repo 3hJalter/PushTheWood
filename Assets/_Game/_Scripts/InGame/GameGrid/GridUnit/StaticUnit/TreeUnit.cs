@@ -19,7 +19,7 @@ namespace _Game.GameGrid.GridUnit.StaticUnit
             // Spawn Chump
             ChumpUnit chump = SimplePool.Spawn<ChumpUnit>(chumpSpawn);
             chump.OnInit(mainCell, startHeight + 1);
-            chump.Tf.position -= treeRoot.offsetY;
+            // chump.Tf.position -= treeRoot.offsetY;
             chump.OnInteract(direction);
             // OnPushChump(direction);
             OnDespawn();

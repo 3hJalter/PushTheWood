@@ -110,9 +110,15 @@ namespace GameGridEnum
     {
         None = -1,
         Zero = 0,
-        One = 1,
-        Two = 2,
-        Three = 3,
+        ZeroPointFive = 1,
+        One = 2,
+        OnePointFive = 3,
+        Two = 4,
+        TwoPointFive = 5,
+        Three = 6,
+        ThreePointFive = 7,
+        Four = 8,
+        FourPointFive = 9,
     }
     public enum GridSurfaceType
     {

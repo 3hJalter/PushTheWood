@@ -1623,9 +1623,12 @@ MonoBehaviour:
     SerializationNodes: []
   poolType: 0
   skin: {fileID: 6485057654909396514}
-  startHeight: 0
-  endHeight: 0
   size: {x: 1, y: 1, z: 1}
+  startHeight: 0
+  yOffsetOnDown: 0.4
+  unitState: 1
+  isMinusHalfSizeY: 0
+  endHeight: 0
   gridUnitStaticType: 13
   bridgeType: 1
 --- !u!1 &6485057654909396513

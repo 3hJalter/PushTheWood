@@ -11,29 +11,15 @@ namespace _Game.GameGrid.GridUnit
     {
         [SerializeField] protected GridUnitDynamicType gridUnitDynamicType;
         [SerializeField] protected Anchor anchor;
-        [SerializeField] protected int changeStateEndHeightOffset;
         public bool isInAction;
-        private Vector3Int _initSize;
-        private Quaternion _initSkinRotate;
-        private Vector3 _initSkinPos;
-
-        private void Awake()
+        protected bool isFall;
+        protected override void OnDespawn()
         {
-            _initSize = size;
-            _initSkinRotate = skin.localRotation;
-            _initSkinPos = skin.localPosition;
-        }
-
-        public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One)
-        {
-            base.OnInit(mainCellIn, startHeightIn);
-            size = _initSize;
-            skin.localRotation = _initSkinRotate;
-            skin.localPosition = _initSkinPos;
             isInAction = false; 
+            base.OnDespawn();
         }
-        
-        protected virtual void OnFall(int numHeightDown, Action callback = null)
+
+        private void OnFall(int numHeightDown, Action callback = null)
         {
             // ----- Falling Logic ----- //
             isInAction = true;
@@ -44,16 +30,15 @@ namespace _Game.GameGrid.GridUnit
             for (int i = cellInUnits.Count - 1; i >= 0; i--)
                 cellInUnits[i].AddGridUnit(this);
             // Temporary Move to new position (need animation)
-            Tf.DOMove(Tf.position - new Vector3(0, numHeightDown * mainCell.Size, 0), 0.25f)
+            Tf.DOMove(Tf.position - new Vector3(0, (float) numHeightDown * Constants.CELL_SIZE / 2, 0), 0.25f)
                 .SetEase(Ease.Linear).OnComplete(() =>
                 {
                     isInAction = false;
                     callback?.Invoke();
                 });
-            // TODO: Change it to virtual for logic spawn Bridge of ChumpUnit (or create callback)
         }
 
-        protected virtual bool CanFall(out int numHeightDown)
+        private bool CanFall(out int numHeightDown)
         {
             numHeightDown = int.MinValue;
             for (int i = 0; i < cellInUnits.Count; i++)
@@ -71,7 +56,6 @@ namespace _Game.GameGrid.GridUnit
 
                 if (numHeightDownInCell > numHeightDown) numHeightDown = numHeightDownInCell;
             }
-
             // invert numHeightDown to positive number
             numHeightDown = -numHeightDown;
             return numHeightDown > 0;
@@ -90,14 +74,15 @@ namespace _Game.GameGrid.GridUnit
             cellInUnits.Clear();
         }
 
-        protected virtual void OnEnterNextCells(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null, Action fallCallback = null)
+        protected void OnEnterNextCells(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null, Action fallCallback = null)
         {
             InitCellsToUnit(nextMainCell, nextCells);
             if (CanFall(out int numHeightDown)) OnFall(numHeightDown, fallCallback);
             else OnNotFall();
         }
 
-        protected virtual void OnNotFall() {}
+        protected virtual void OnNotFall()
+        { }
 
         private void InitCellsToUnit(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null)
         {
@@ -145,9 +130,9 @@ namespace _Game.GameGrid.GridUnit
             return mainCell.WorldPos + Vector3.up * offsetY;
         }
 
-        protected Vector3 GetUnitNextWorldPos(GameGridCell nextMainCell)
+        protected Vector3 GetUnitNextWorldPos(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null)
         {
-            float offsetY = (int)startHeight * Constants.CELL_SIZE;
+            float offsetY = (float) startHeight / 2 * Constants.CELL_SIZE;
             return nextMainCell.WorldPos + Vector3.up * offsetY;
         }
 
@@ -174,7 +159,9 @@ namespace _Game.GameGrid.GridUnit
             Vector2Int nexMainCellPos = nextMainCell.GetCellPosition();
             // Suppose that this unit can rotate
             sizeAfterRotate = RotateSize(direction, size);
-            endHeightAfterRotate = startHeight + sizeAfterRotate.y - 1;
+            // endHeightAfterRotate = startHeight + sizeAfterRotate.y - 1; // Old code
+            endHeightAfterRotate = startHeight + (sizeAfterRotate.y - 1) * 2;
+            if (!isMinusHalfSizeY && nextUnitState == UnitState.Up) endHeightAfterRotate += 1;
             HeightLevel endHeightForChecking = endHeightAfterRotate > endHeight ? endHeightAfterRotate : endHeight;
             // Loop to check if all next cells are exist and empty
             for (int i = 0; i < xAxisLoop; i++)
@@ -262,11 +249,5 @@ namespace _Game.GameGrid.GridUnit
         {
             
         }
-    }
-
-    public enum DUnitState
-    {
-        Up = 0,
-        Down = 1,
     }
 }

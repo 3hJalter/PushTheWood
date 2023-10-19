@@ -3084,9 +3084,12 @@ MonoBehaviour:
     SerializationNodes: []
   poolType: 0
   skin: {fileID: 105151025028116467}
-  startHeight: 0
-  endHeight: 0
   size: {x: 1, y: 1, z: 2}
+  startHeight: 0
+  yOffsetOnDown: 0.4
+  unitState: 1
+  isMinusHalfSizeY: 0
+  endHeight: 0
   gridUnitStaticType: 15
   bridgeType: 1
 --- !u!1 &2945805575382613797

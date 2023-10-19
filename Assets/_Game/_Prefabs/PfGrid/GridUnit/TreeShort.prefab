@@ -58,9 +58,12 @@ MonoBehaviour:
     SerializationNodes: []
   poolType: 0
   skin: {fileID: 1964658229298664182}
-  startHeight: 1
-  endHeight: 1
   size: {x: 1, y: 1, z: 1}
+  startHeight: 1
+  yOffsetOnDown: 0.4
+  unitState: 0
+  isMinusHalfSizeY: 0
+  endHeight: 0
   gridUnitStaticType: 10
   chumpSpawn: {fileID: 2623478110790930152, guid: 7d2d8c26c208e6748835843aee7b2ae7, type: 3}
 --- !u!1 &925196026703752831

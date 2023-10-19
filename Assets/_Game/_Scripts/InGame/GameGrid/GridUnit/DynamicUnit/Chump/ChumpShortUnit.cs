@@ -14,10 +14,10 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             if (chumpType is ChumpType.Horizontal)
                 SimplePool.Spawn<BridgeUnit>(
                         DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.BridgeShortHorizontal))
-                    .OnInit(mainCell, HeightLevel.Zero);
+                    .OnInit(mainCell, HeightLevel.ZeroPointFive);
             else
                 SimplePool.Spawn<BridgeUnit>(DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.BridgeShortVertical))
-                    .OnInit(mainCell, HeightLevel.Zero);
+                    .OnInit(mainCell, HeightLevel.ZeroPointFive);
             OnDespawn();
         }
 
@@ -46,8 +46,8 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             if (mainCell.GetGridUnitAtHeight(endHeight + 1) != null) return;
             isInAction = true;
             Vector3 nextPos = treeRootUnit.GetMainCellWorldPos();
-            Vector3 offsetY = new(0, ((int)startHeight + 1) * Constants.CELL_SIZE, 0);
-            nextPos += offsetY - treeRootUnit.offsetY;
+            Vector3 offsetY = new(0, ((float) startHeight + 1) / 2 * Constants.CELL_SIZE, 0);
+            nextPos += offsetY;
             
             StartCoroutine(Roll(direction, () =>
             {
@@ -59,7 +59,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 OnOutCurrentCells();
                 Tf.position = nextPos;
                 OnEnterNextCells(treeRootUnit.MainCell, null, OnFallAtWaterSurface);
-                chumpState = nextChumpState;
+                unitState = nextUnitState;
                 chumpType = nextChumpType;
                 isInAction = false;
             }));

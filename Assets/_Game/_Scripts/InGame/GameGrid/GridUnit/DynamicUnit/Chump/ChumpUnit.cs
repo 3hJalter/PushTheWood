@@ -13,52 +13,16 @@ namespace _Game.InGame.GameGrid.GridUnit.DynamicUnit
 {
     public abstract class ChumpUnit : GridUnitDynamic, IChumpUnit
     {
-        protected ChumpState nextChumpState;
         protected ChumpType nextChumpType;
-        protected ChumpState chumpState;
         [SerializeField] protected ChumpType chumpType;
 
         public ChumpType ChumpType => chumpType;
-
-
-        public void OnGetNextStateAndType(Direction direction)
-        {
-            nextChumpState = chumpState;
-            nextChumpType = chumpType;
-            switch (chumpState)
-            {
-                case ChumpState.Up:
-                    nextChumpState = ChumpState.Down;
-                    nextChumpType = direction is Direction.Left or Direction.Right
-                        ? ChumpType.Horizontal
-                        : ChumpType.Vertical;
-                    break;
-                case ChumpState.Down:
-                    if (chumpType == ChumpType.Horizontal)
-                    {
-                        if (direction is Direction.Left or Direction.Right) nextChumpState = ChumpState.Up;
-                    }
-                    else
-                    {
-                        if (direction is Direction.Forward or Direction.Back) nextChumpState = ChumpState.Up;
-                    }
-                    break;
-            }
-        }
-
-        public virtual void OnPushChumpUp(Direction direction)
-        {
-        }
-
-        public virtual void OnPushChumpDown(Direction direction)
-        {
-        }
 
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One)
         {
             base.OnInit(mainCellIn, startHeightIn);
             chumpType = ChumpType.Horizontal;
-            chumpState = ChumpState.Up;
+            unitState = UnitState.Up;
         }
 
         public override void OnInteract(Direction direction, _Game.GameGrid.GridUnit.GridUnit interactUnit = null)
@@ -66,6 +30,45 @@ namespace _Game.InGame.GameGrid.GridUnit.DynamicUnit
             // base.OnInteract(direction, interactUnit);
             if (isInAction) return;
             OnPushChump(direction);
+        }
+        
+        public void OnGetNextStateAndType(Direction direction)
+        {
+            nextUnitState = unitState;
+            nextChumpType = chumpType;
+            switch (unitState)
+            {
+                case UnitState.Up:
+                    nextUnitState = UnitState.Down;
+                    nextChumpType = direction is Direction.Left or Direction.Right
+                        ? ChumpType.Horizontal
+                        : ChumpType.Vertical;
+                    break;
+                case UnitState.Down:
+                    switch (chumpType)
+                    {
+                        case ChumpType.Horizontal when direction is Direction.Left or Direction.Right:
+                        case ChumpType.Vertical when direction is Direction.Forward or Direction.Back:
+                            nextUnitState = UnitState.Up;
+                            break;
+                    }
+                    break;
+            }
+        }
+        
+        public void OnPushChump(Direction direction)
+        {
+            OnGetNextStateAndType(direction);
+            if (nextUnitState == UnitState.Up) OnPushChumpUp(direction);
+            else OnPushChumpDown(direction);
+        }
+        
+        public virtual void OnPushChumpUp(Direction direction)
+        {
+        }
+
+        public virtual void OnPushChumpDown(Direction direction)
+        {
         }
 
         protected virtual void SpawnBridge()
@@ -92,6 +95,7 @@ namespace _Game.InGame.GameGrid.GridUnit.DynamicUnit
 
         protected override void OnNotFall()
         {
+            base.OnNotFall();
             if (cellInUnits.Any(t => t.GetSurfaceType() is not GridSurfaceType.Water)) return;
             if (startHeight == HeightLevel.One && CanSpawnRaft())
                 SpawnRaft();
@@ -101,14 +105,6 @@ namespace _Game.InGame.GameGrid.GridUnit.DynamicUnit
 
         private bool CanSpawnRaft()
         {
-            // for (int i = 0; i < cellInUnits.Count; i++)
-            // {
-            //     GameGridCell cell = cellInUnits[i];
-            //     if (cell.GetSurfaceType() is GridSurfaceType.Water)
-            //     {
-            //         if (cell.GetGridUnitAtHeight(startHeight - 1) is BridgeUnit) return false;
-            //     }
-            // }
             for (int i = 0; i < cellInUnits.Count; i++)
             {
                 GameGridCell cell = cellInUnits[i];
@@ -125,22 +121,13 @@ namespace _Game.InGame.GameGrid.GridUnit.DynamicUnit
             return false;
         }
 
-        private void OnPushChump(Direction direction)
-        {
-            OnGetNextStateAndType(direction);
-            if (nextChumpState == ChumpState.Up) OnPushChumpUp(direction);
-            else OnPushChumpDown(direction);
-        }
-
-        public ChumpState NextChumpState => nextChumpState;
-
         protected void MoveChump(Direction direction)
         {
             if (!CanMove(direction, out GameGridCell nextMainCell,
                     out HashSet<GameGridCell> nextCells, out HashSet<_Game.GameGrid.GridUnit.GridUnit> nextUnits))
             {
                 OnNotMove(direction, nextUnits, this);
-                return;
+                return; 
             }
 
             isInAction = true;
@@ -180,8 +167,8 @@ namespace _Game.InGame.GameGrid.GridUnit.DynamicUnit
                 isInAction = false;
                 OnEnterNextCells(nextMainCell, nextCells, OnFallAtWaterSurface);
                 // TODO: Handle the above of old cellUnits
-                if (chumpState == nextChumpState && !isInAction) OnPushChump(direction);
-                chumpState = nextChumpState;
+                if (unitState == nextUnitState && !isInAction) OnPushChump(direction);
+                unitState = nextUnitState;
                 chumpType = nextChumpType;
                 
             }
@@ -207,9 +194,9 @@ namespace _Game.InGame.GameGrid.GridUnit.DynamicUnit
         Vertical = 1
     }
 
-    public enum ChumpState
-    {
-        Up = 0,
-        Down = 1
-    }
+    // public enum UnitState
+    // {
+    //     Up = 0,
+    //     Down = 1
+    // }
 }

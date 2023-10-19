@@ -12,10 +12,10 @@ namespace _Game.InGame.GameGrid.GridUnit.DynamicUnit
             if (chumpType is ChumpType.Horizontal)
                 SimplePool.Spawn<BridgeUnit>(
                         DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.BridgeHighHorizontal))
-                    .OnInit(mainCell, HeightLevel.Zero);
+                    .OnInit(mainCell, HeightLevel.ZeroPointFive);
             else
                 SimplePool.Spawn<BridgeUnit>(DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.BridgeHighVertical))
-                    .OnInit(mainCell, HeightLevel.Zero); 
+                    .OnInit(mainCell, HeightLevel.ZeroPointFive); 
             OnDespawn();
         }
         

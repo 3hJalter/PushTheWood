@@ -175,12 +175,16 @@ MonoBehaviour:
     SerializationNodes: []
   poolType: 0
   skin: {fileID: 7392072108781793883}
-  startHeight: 1
-  endHeight: 2
   size: {x: 1, y: 2, z: 1}
+  startHeight: 2
+  yOffsetOnDown: 0.4
+  unitState: 0
+  isMinusHalfSizeY: 0
+  endHeight: 0
   gridUnitDynamicType: 5
   anchor: {fileID: 1038378367440558923}
   isInAction: 0
+  chumpType: 0
 --- !u!1 &8142720097504196381
 GameObject:
   m_ObjectHideFlags: 0
