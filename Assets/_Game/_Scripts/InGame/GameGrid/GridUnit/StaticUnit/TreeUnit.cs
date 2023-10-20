@@ -1,5 +1,5 @@
 ﻿using _Game.DesignPattern;
-using _Game.InGame.GameGrid.GridUnit.DynamicUnit;
+using _Game.GameGrid.GridUnit.DynamicUnit;
 using _Game.Managers;
 using GameGridEnum;
 using UnityEngine;

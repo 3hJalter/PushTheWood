@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using _Game.GameGrid.GridUnit.StaticUnit;
-using _Game.InGame.GameGrid.GridUnit.DynamicUnit;
 using CnControls;
 using DG.Tweening;
 using GameGridEnum;
@@ -26,9 +25,9 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             OnMove(direction);
         }
 
-        public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One)
+        public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true)
         {
-            base.OnInit(mainCellIn, startHeightIn);
+            base.OnInit(mainCellIn, startHeightIn, isUseInitData);
             ChangeAnim(Constants.IDLE_ANIM);
         }
 
@@ -42,11 +41,12 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 aboveUnit.OnInteract(direction);
                 return;
             }
+
             if (mainCell.GetGridUnitAtHeight(endHeight + 1) != null) return;
             // Jump to treeRootUnit
             isInAction = true;
             Vector3 nextPos = treeRootUnit.GetMainCellWorldPos();
-            Vector3 offsetY = new(0, ((float) startHeight + 1) / 2 * Constants.CELL_SIZE, 0);
+            Vector3 offsetY = new(0, ((float)startHeight + 1) / 2 * Constants.CELL_SIZE, 0);
             // nextPos += offsetY - treeRootUnit.offsetY;
             nextPos += offsetY;
             MoveAnimation(nextPos, () =>
@@ -74,39 +74,23 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             }
 
             // SPAGHETTI CODE
-            if (nextMainCell.GetSurfaceType() is GridSurfaceType.Water)
+            GridUnit unit = nextMainCell.GetGridUnitAtHeight(BelowStartHeight);
+            if (nextMainCell.GetSurfaceType() is GridSurfaceType.Water && unit is null) return;
+            if (unit is ChumpUnit chumpUnit)
             {
-                GridUnit unit = nextMainCell.GetGridUnitAtHeight(startHeight - 1);
-                if (unit == null) return;
-                if (unit is BridgeUnit bridgeUnit)
-                {
-                    BridgeType type = bridgeUnit.BridgeType;
-                    if ((type is BridgeType.BridgeHorizontal && direction is Direction.Forward or Direction.Back)
-                        || (type is BridgeType.BridgeVertical && direction is Direction.Left or Direction.Right))
-                        return;
-                }
-            } // Temporary, may be we can remove bridge unit and use only Chump Unit
-            else
-            {
-                GridUnit unit = nextMainCell.GetGridUnitAtHeight(startHeight - 1);
-                if (unit is ChumpUnit chumpUnit)
-                {
-                    ChumpType type = chumpUnit.ChumpType;
-                    if ((type is ChumpType.Horizontal && direction is Direction.Forward or Direction.Back)
-                        || (type is ChumpType.Vertical && direction is Direction.Left or Direction.Right))
-                        return;
-                }
+                ChumpType type = chumpUnit.ChumpType;
+                if ((type is ChumpType.Horizontal && direction is Direction.Forward or Direction.Back)
+                    || (type is ChumpType.Vertical && direction is Direction.Left or Direction.Right))
+                    return;
             }
-
             // 
             isInAction = true;
             OnOutCurrentCells();
             Vector3 nextPos = GetUnitNextWorldPos(nextMainCell);
             MoveAnimation(nextPos, () => { OnEnterNextCells(nextMainCell); });
-
         }
 
-        private void MoveAnimation(Vector3 newPosition, Action callback, float time = 0.4f,
+        private void MoveAnimation(Vector3 newPosition, Action callback, float time = Constants.MOVING_TIME,
             string animName = Constants.WALK_ANIM)
         {
             ChangeAnim(animName);

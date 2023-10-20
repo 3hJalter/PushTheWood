@@ -7,6 +7,8 @@ public static class Constants
 {
     public const int CELL_SIZE = 2;
 
+    // String Constants
+    
     /// <summary>
     ///     Path to the folder in Resources
     /// </summary>
@@ -33,18 +35,35 @@ public static class Constants
     ///     UI Animation Trigger
     /// </summary>
     public const string OPEN = "Open";
-
     public const string CLOSE = "Close";
 
+    
+    // Value Constants
+    public const int UPPER_HEIGHT = 1;
+    public const int BELOW_HEIGHT = 1;
+
+    public const float MOVING_TIME = 0.4f;
+    public const float FALLING_TIME = 0.25f;
+    
+    public static readonly Vector3 horizontalSkinRotation = new(0, 0, 90);
+    public static readonly Vector3 verticalSkinRotation = new(0, 90, 90);
+    
+    // OLD 
     public const float TREE_HEIGHT = 1f;
-
-    public const float MOVING_TIME = 0.25f;
+    public const float MOVING_TIME2 = 0.25f;
     public const float MOVING_LOG_TIME = 0.01f;
-
+    //
+    
+    
+    // Dictionary constants
+    
+    /// <summary>
+    ///  Dictionary
+    /// </summary>
     public static readonly Dictionary<GridSurfaceType, HeightLevel> dirFirstHeightOfSurface = new()
     {
         { GridSurfaceType.Ground, HeightLevel.One },
-        { GridSurfaceType.Water, HeightLevel.Zero }
+        { GridSurfaceType.Water, HeightLevel.ZeroPointFive }
     };
 
     public static readonly Dictionary<Direction, Vector3Int> dirVector3 = new()
@@ -63,24 +82,6 @@ public static class Constants
         { Direction.Right, Vector2Int.right },
         { Direction.Forward, Vector2Int.up },
         { Direction.Back, Vector2Int.down }
-    };
-
-    public static readonly Dictionary<Direction, Vector3Int> dirRotate = new()
-    {
-        { Direction.None, Vector3Int.zero },
-        { Direction.Left, new Vector3Int(0, 0, 90) },
-        { Direction.Right, new Vector3Int(0, 0, -90) },
-        { Direction.Forward, new Vector3Int(90, 0, 0) },
-        { Direction.Back, new Vector3Int(-90, 0, 0) }
-    };
-
-    // BUG: Seem like the changing is not correct
-    public static readonly Dictionary<Direction, Action<Transform>> dirRotateAction = new()
-    {
-        { Direction.Left, skin => { skin.Rotate(0, 0, 90); } },
-        { Direction.Right, skin => { skin.Rotate(0, 0, -90); } },
-        { Direction.Forward, skin => { skin.Rotate(90, 0, 0); } },
-        { Direction.Back, skin => { skin.Rotate(-90, 0, 0); } }
     };
 }
 

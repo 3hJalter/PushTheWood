@@ -117,7 +117,7 @@ namespace _Game.InGame.Player
                         currentCell.Player = null;
                         GridPosition = nextPos;
                         MovingTo(nextPos, moveDir);
-                        Tf.DOMoveY(0f, 0.05f).SetDelay(Constants.MOVING_TIME);
+                        Tf.DOMoveY(0f, 0.05f).SetDelay(Constants.MOVING_TIME2);
                         nextCell.Player = this;
                     }
                     else if (nextCell.Tree1 != null)
@@ -220,7 +220,7 @@ namespace _Game.InGame.Player
                         currentCell.Player = null;
                         GridPosition = nextPos;
                         MovingTo(nextPos, moveDir);
-                        Tf.DOMoveY(0f, 0.05f).SetDelay(Constants.MOVING_TIME);
+                        Tf.DOMoveY(0f, 0.05f).SetDelay(Constants.MOVING_TIME2);
                         nextCell.Player = this;
                     }
                 }
@@ -308,8 +308,8 @@ namespace _Game.InGame.Player
             desCell.Player = null;
 
             Sequence s = DOTween.Sequence();
-            s.Append(Tf.DOMoveX(desCell.WorldPos.x, Constants.MOVING_TIME).SetEase(ease));
-            s.Join(Tf.DOMoveZ(desCell.WorldPos.z, Constants.MOVING_TIME).SetEase(ease));
+            s.Append(Tf.DOMoveX(desCell.WorldPos.x, Constants.MOVING_TIME2).SetEase(ease));
+            s.Join(Tf.DOMoveZ(desCell.WorldPos.z, Constants.MOVING_TIME2).SetEase(ease));
             playerAnimationControl.Run();
             s.Play().OnComplete(OnMoveDone);
             modelTransform
@@ -338,7 +338,7 @@ namespace _Game.InGame.Player
         public void MovingOnRaft(Vector2Int pos, Ease ease = Ease.InOutSine)
         {
             GameCell desCell = map.GetGridCell(pos.x, pos.y);
-            Tf.DOMove(desCell.WorldPos, Constants.MOVING_TIME).SetEase(ease)
+            Tf.DOMove(desCell.WorldPos, Constants.MOVING_TIME2).SetEase(ease)
                 .OnComplete(() => CurrentIslandID = desCell.IslandID);
 
             Vector3 deltaPosition = desCell.WorldPos - Tf.position;

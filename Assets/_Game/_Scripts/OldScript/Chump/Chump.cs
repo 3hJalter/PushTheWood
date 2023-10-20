@@ -63,7 +63,7 @@ namespace _Game
         {
             if (isMoving) return;
             isMoving = true;
-            Tf.DOMove(new Vector3(des.x, Tf.position.y, des.z), Constants.MOVING_TIME).SetEase(ease)
+            Tf.DOMove(new Vector3(des.x, Tf.position.y, des.z), Constants.MOVING_TIME2).SetEase(ease)
                 .OnComplete(() => isMoving = false);
         }
 

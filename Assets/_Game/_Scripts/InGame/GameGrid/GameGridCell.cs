@@ -58,7 +58,7 @@ namespace _Game.GameGrid
         public void RemoveGridUnitAtHeight(HeightLevel heightLevel)
         {
             if (!data.gridUnitDic.TryGetValue(heightLevel, out GridUnit.GridUnit unit)) return;
-            if (unit == null) return;
+            if (unit is null) return;
             data.gridUnitDic[heightLevel] = null;
             // unit.OnExitCell();
         }
@@ -88,8 +88,8 @@ namespace _Game.GameGrid
         public void OnInit()
         {
             gridSurfaceType = gridSurface == null ? GridSurfaceType.Water : gridSurface.SurfaceType;
-            for (int i = 0; i < Enum.GetValues(typeof(HeightLevel)).Length - 1; i++)
-                gridUnitDic.Add((HeightLevel)i, null);
+            for (HeightLevel i = HeightLevel.OnePointFive; i < (HeightLevel) (Enum.GetValues(typeof(HeightLevel)).Length - 1); i++)
+                gridUnitDic.Add(i, null);
         }
     }
 }

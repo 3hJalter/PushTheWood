@@ -4,27 +4,10 @@ using _Game.GameGrid.GridUnit.StaticUnit;
 using _Game.Managers;
 using GameGridEnum;
 
-namespace _Game.InGame.GameGrid.GridUnit.DynamicUnit
+namespace _Game.GameGrid.GridUnit.DynamicUnit
 {
     public class ChumpHighUnit : ChumpUnit
     {
-        protected override void SpawnBridge()
-        {
-            if (chumpType is ChumpType.Horizontal)
-                SimplePool.Spawn<BridgeUnit>(
-                        DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.BridgeHighHorizontal))
-                    .OnInit(mainCell, HeightLevel.ZeroPointFive);
-            else
-                SimplePool.Spawn<BridgeUnit>(DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.BridgeHighVertical))
-                    .OnInit(mainCell, HeightLevel.ZeroPointFive); 
-            OnDespawn();
-        }
-
-        // public override void OnPushChumpUp(Direction direction)
-        // {
-        // }
-
-
         public override void OnPushChumpDown(Direction direction)
         {
             if (unitState == UnitState.Up)

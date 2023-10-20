@@ -1,6 +1,5 @@
 ﻿using _Game.DesignPattern;
 using _Game.GameGrid.GridUnit.StaticUnit;
-using _Game.InGame.GameGrid.GridUnit.DynamicUnit;
 using _Game.Managers;
 using GameGridEnum;
 using UnityEngine;
@@ -9,19 +8,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 {
     public class ChumpShortUnit : ChumpUnit
     {
-        protected override void SpawnBridge()
-        {
-            if (chumpType is ChumpType.Horizontal)
-                SimplePool.Spawn<BridgeUnit>(
-                        DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.BridgeShortHorizontal))
-                    .OnInit(mainCell, HeightLevel.ZeroPointFive);
-            else
-                SimplePool.Spawn<BridgeUnit>(DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.BridgeShortVertical))
-                    .OnInit(mainCell, HeightLevel.ZeroPointFive);
-            OnDespawn();
-        }
-
-        public override void OnGetNextStateAndType(Direction direction)
+       public override void OnGetNextStateAndType(Direction direction)
         {
             base.OnGetNextStateAndType(direction);
             if (unitState != UnitState.Down) return;
@@ -30,6 +17,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 case ChumpType.Horizontal when direction is Direction.Left or Direction.Right:
                 case ChumpType.Vertical when direction is Direction.Forward or Direction.Back:
                     nextUnitState = UnitState.Up;
+                    nextChumpType = ChumpType.None;
                     break;
             }
         }
@@ -64,7 +52,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             
             StartCoroutine(Roll(direction, () =>
             {
-                size = RotateSize(direction, size);
+                size = GridUnitFunc.RotateSize(direction, size);
                 startHeight += 1;
                 endHeight = startHeight + size.y - 1;
                 Vector3 skinOffset = treeRootUnit.GetMainCellWorldPos() - mainCell.WorldPos;

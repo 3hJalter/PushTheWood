@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using _Game.DesignPattern;
 using GameGridEnum;
 using UnityEngine;
@@ -14,28 +12,30 @@ namespace _Game.GameGrid.GridUnit
         [SerializeField] protected HeightLevel startHeight = HeightLevel.One;
         [SerializeField] protected float yOffsetOnDown = 0.5f;
         [SerializeField] protected UnitState unitState = UnitState.Up;
-        protected readonly List<GameGridCell> cellInUnits = new();
-        private UnitInitData _unitInitData;
 
         [SerializeField] protected bool isMinusHalfSizeY;
         [SerializeField] protected HeightLevel endHeight;
+        protected readonly List<GameGridCell> cellInUnits = new();
+        private UnitInitData _unitInitData;
         protected int islandID = -1;
         protected GameGridCell mainCell;
         protected UnitState nextUnitState;
-            
+
 
         public GameGridCell MainCell => mainCell;
         public HeightLevel StartHeight => startHeight;
         public HeightLevel EndHeight => endHeight;
+
+        protected HeightLevel BelowStartHeight => startHeight - Constants.BELOW_HEIGHT;
 
         private void Awake()
         {
             SaveInitData(size, unitState, skin);
         }
 
-        public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One)
+        public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true)
         {
-            GetInitData();
+            if (isUseInitData) GetInitData();
             startHeight = startHeightIn;
             endHeight = startHeightIn + (size.y - 1) * 2;
             if (!isMinusHalfSizeY && unitState == UnitState.Up) endHeight += 1;
@@ -52,21 +52,6 @@ namespace _Game.GameGrid.GridUnit
             if (unitState is UnitState.Down) Tf.position -= Vector3.up * yOffsetOnDown;
         }
 
-        protected Vector3 UnitYPos(HeightLevel startHeightI)
-        {
-            float offsetY1 = (float)startHeight / 2 * Constants.CELL_SIZE;
-            float offsetY2 = float.MaxValue;
-            for (int i = 0; i < cellInUnits.Count; i++)
-            {
-                GridUnit unit = cellInUnits[i].GetGridUnitAtHeight(startHeightI - 1);
-                if (unit != null && unit.unitState is UnitState.Down && unit.yOffsetOnDown < offsetY2)
-                    offsetY2 = unit.yOffsetOnDown;
-            }
-
-            if (Math.Abs(offsetY2 - float.MaxValue) < 0.1) offsetY2 = 0f;
-            return new Vector3(0, offsetY1 - offsetY2, 0);
-        }
-
         public Vector3 GetMainCellWorldPos()
         {
             return mainCell.WorldPos;
@@ -77,8 +62,10 @@ namespace _Game.GameGrid.GridUnit
             return size;
         }
 
+
         protected virtual void OnDespawn()
         {
+            for (int i = 0; i < cellInUnits.Count; i++) cellInUnits[i].RemoveGridUnit(this);
             SimplePool.Despawn(this);
         }
 
@@ -110,7 +97,7 @@ namespace _Game.GameGrid.GridUnit
 
         private void SaveInitData(Vector3Int sizeI, UnitState unitStateI, Transform skinI)
         {
-            _unitInitData = new UnitInitData(size, unitState, skin.localPosition, skin.localRotation);
+            _unitInitData = new UnitInitData(sizeI, unitStateI, skinI.localPosition, skinI.localRotation);
         }
 
         private void GetInitData()

@@ -101,7 +101,7 @@ namespace _Game.GameGrid
                     if (!Enum.IsDefined(typeof(GridSurfaceType), cell)) continue;
                     // Convert cell to GridSurfaceType and try get GridSurface prefab from Data
                     GridSurfaceBase gridSurface = DataManager.Ins.GetGridSurface((GridSurfaceType)cell);
-                    if (gridSurface == null) continue;
+                    if (gridSurface is null) continue;
                     // Instantiate and Set GridSurface to GridCell
                     // TODO: Change to Pooling and set Height based on HeightMap
                     GameGridCell gridCell = _gridMap.GetGridCell(x, y);
@@ -149,7 +149,7 @@ namespace _Game.GameGrid
                 int cols = _gridSurfaceMap.GetLength(1);
                 if (x < 0 || x >= rows || y < 0 || y >= cols) return false;
                 gridSurface = _gridSurfaceMap[x, y];
-                if (gridSurface == null) return false;
+                if (gridSurface is null) return false;
                 if (gridSurface.SurfaceType == GridSurfaceType.Water) return false;
                 return gridSurface.IslandID < 0;
             }

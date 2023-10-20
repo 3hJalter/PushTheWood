@@ -29,9 +29,9 @@ namespace _Game.GameGrid.GridUnit
             for (int i = cellInUnits.Count - 1; i >= 0; i--)
                 cellInUnits[i].AddGridUnit(this);
             // Temporary Move to new position (need animation)
-            Vector3 newPos = Tf.position - new Vector3(0, (float) numHeightDown * Constants.CELL_SIZE / 2, 0);
-            if (nextUnitState == UnitState.Down) newPos -= Vector3.up * yOffsetOnDown;
-            Tf.DOMove(newPos, 0.25f)
+            // Vector3 newPos = Tf.position - new Vector3(0, (float) numHeightDown * Constants.CELL_SIZE / 2, 0);
+            Vector3 newPos = GetUnitNextWorldPos(mainCell);
+            Tf.DOMove(newPos, Constants.FALLING_TIME)
                 .SetEase(Ease.Linear).OnComplete(() =>
                 {
                     isInAction = false;
@@ -51,7 +51,7 @@ namespace _Game.GameGrid.GridUnit
                      j--)
                 {
                     GridUnit unit = cell.GetGridUnitAtHeight(j);
-                    if (unit == null) numHeightDownInCell--;
+                    if (unit is null) numHeightDownInCell--;
                     else break;
                 }
 
@@ -107,7 +107,7 @@ namespace _Game.GameGrid.GridUnit
             for (int i = 0; i < cellInUnits.Count; i++)
             {
                 GameGridCell neighbour = GameGridManager.Ins.GetNeighbourCell(cellInUnits[i], direction);
-                if (neighbour == null)
+                if (neighbour is null)
                 {
                     isNextCellIsNull = true;
                     continue;
@@ -116,7 +116,7 @@ namespace _Game.GameGrid.GridUnit
                 for (HeightLevel j = startHeight; j <= endHeight; j++)
                 {
                     GridUnit unit = neighbour.GetGridUnitAtHeight(j);
-                    if (unit == null || unit == this) continue;
+                    if (unit is null || unit == this) continue;
                     isNextCellHasUnit = true;
                     nextUnits.Add(unit);
                 }
@@ -136,6 +136,7 @@ namespace _Game.GameGrid.GridUnit
         protected Vector3 GetUnitNextWorldPos(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null)
         {
             float offsetY = (float) startHeight / 2 * Constants.CELL_SIZE;
+            if (nextUnitState == UnitState.Down) offsetY -= yOffsetOnDown;
             return nextMainCell.WorldPos + Vector3.up * offsetY;
         }
 
@@ -152,7 +153,7 @@ namespace _Game.GameGrid.GridUnit
             endHeightAfterRotate = endHeight;
             // Get next main cell and xAxisLoop, zAxisLoop for get all next cells
             nextMainCell = GetNextMainCell(direction);
-            if (nextMainCell == null) return false;
+            if (nextMainCell is null) return false;
             int xAxisLoop = direction is Direction.Left or Direction.Right
                 ? size.y
                 : size.x;
@@ -161,7 +162,7 @@ namespace _Game.GameGrid.GridUnit
                 : size.y;
             Vector2Int nexMainCellPos = nextMainCell.GetCellPosition();
             // Suppose that this unit can rotate
-            sizeAfterRotate = RotateSize(direction, size);
+            sizeAfterRotate = GridUnitFunc.RotateSize(direction, size);
             // endHeightAfterRotate = startHeight + sizeAfterRotate.y - 1; // Old code
             endHeightAfterRotate = startHeight + (sizeAfterRotate.y - 1) * 2;
             if (!isMinusHalfSizeY && nextUnitState == UnitState.Up) endHeightAfterRotate += 1;
@@ -172,7 +173,7 @@ namespace _Game.GameGrid.GridUnit
             {
                 Vector2Int cellPos = nexMainCellPos + new Vector2Int(i, j);
                 GameGridCell cell = GameGridManager.Ins.GetCell(cellPos);
-                if (cell == null)
+                if (cell is null)
                 {
                     hasNullNextCell = true;
                     continue;
@@ -181,7 +182,7 @@ namespace _Game.GameGrid.GridUnit
                 for (HeightLevel k = startHeight; k <= endHeightForChecking; k++)
                 {
                     GridUnit unit = cell.GetGridUnitAtHeight(k);
-                    if (unit == null || unit == this) continue;
+                    if (unit is null || unit == this) continue;
                     hasUnitInNextCell = true;
                     nextUnits.Add(unit);
                 }
@@ -219,21 +220,7 @@ namespace _Game.GameGrid.GridUnit
             }
         }
 
-        protected static Vector3Int RotateSize(Direction direction, Vector3Int sizeIn)
-        {
-            switch (direction)
-            {
-                case Direction.Left:
-                case Direction.Right:
-                    return new Vector3Int(sizeIn.y, sizeIn.x, sizeIn.z);
-                case Direction.Forward:
-                case Direction.Back:
-                    return new Vector3Int(sizeIn.x, sizeIn.z, sizeIn.y);
-                case Direction.None:
-                default:
-                    return Vector3Int.zero;
-            }
-        }
+        
 
         private void RemoveUnitFromCell()
         {

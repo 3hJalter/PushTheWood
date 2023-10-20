@@ -81,7 +81,7 @@ namespace _Game.Utilities.Grid
 
         public void SetGridCell(int x, int y, T value)
         {
-            if (value == null) return;
+            if (value is null) return;
             if (x >= 0 && y >= 0 && x < Width && y < Height)
             {
                 gridArray[x, y].OnValueChange -= OnGridCellValueChange;

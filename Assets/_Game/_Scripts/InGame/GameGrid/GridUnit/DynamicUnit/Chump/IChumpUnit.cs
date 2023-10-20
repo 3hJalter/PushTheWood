@@ -1,6 +1,6 @@
 ﻿using _Game.GameGrid.GridUnit;
 
-namespace _Game.InGame.GameGrid.GridUnit.DynamicUnit
+namespace _Game.GameGrid.GridUnit.DynamicUnit
 {
     public interface IChumpUnit
     {
