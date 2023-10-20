@@ -135,10 +135,6 @@ namespace GameGridEnum
         TreeRoot = PoolType.TreeRoot,
         TreeShort = PoolType.TreeShort,
         TreeHigh = PoolType.TreeHigh,
-        BridgeShortHorizontal = PoolType.BridgeShortHorizontal,
-        BridgeShortVertical = PoolType.BridgeShortVertical,
-        BridgeHighHorizontal = PoolType.BridgeHighHorizontal,
-        BridgeHighVertical = PoolType.BridgeHighVertical,
     }
     public enum GridUnitDynamicType
     {
@@ -147,6 +143,7 @@ namespace GameGridEnum
         ChumpShort = PoolType.ChumpShort,
         ChumpHigh = PoolType.ChumpHigh,
         Raft = PoolType.Raft,
+        RaftLong = PoolType.RaftLong,
     }
     
 }

@@ -15,6 +15,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         {
             skin.localRotation =
                 Quaternion.Euler(type is ChumpType.Horizontal ? Constants.horizontalSkinRotation : Constants.verticalSkinRotation);
+            if (type is ChumpType.Vertical) size = new Vector3Int(size.z, size.y, size.x);
         }
     }
 }

@@ -47,7 +47,7 @@ namespace _Game.GameGrid.GridUnit
                 GameGridCell cell = cellInUnits[i];
                 int numHeightDownInCell = 0;
                 for (HeightLevel j = startHeight - 1;
-                     j >= Constants.dirFirstHeightOfSurface[cell.GetSurfaceType()];
+                     j >= Constants.dirFirstHeightOfSurface[cell.SurfaceType];
                      j--)
                 {
                     GridUnit unit = cell.GetGridUnitAtHeight(j);
@@ -62,9 +62,12 @@ namespace _Game.GameGrid.GridUnit
             return numHeightDown > 0;
         }
 
-        protected static void OnNotMove(Direction direction, HashSet<GridUnit> nextUnits, GridUnit interactUnit = null,
+        protected void OnNotMove(Direction direction, HashSet<GridUnit> nextUnits, GridUnit interactUnit = null,
             bool interactWithNextUnit = true)
         {
+            isInAction = true;
+            // TODO: Animation something while lock the unit can not make another action
+            DOVirtual.DelayedCall(0.25f, () => { isInAction = false;});
             if (!interactWithNextUnit) return;
             foreach (GridUnit unit in nextUnits) unit.OnInteract(direction, interactUnit);
         }
@@ -95,7 +98,7 @@ namespace _Game.GameGrid.GridUnit
             else AddCell(nextMainCell);
         }
 
-        protected bool CanMove(Direction direction, out GameGridCell nextMainCell,
+        protected bool HasNoObstacleIfMove(Direction direction, out GameGridCell nextMainCell,
             out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits)
         {
             nextMainCell = GameGridManager.Ins.GetNeighbourCell(mainCell, direction);
@@ -140,7 +143,7 @@ namespace _Game.GameGrid.GridUnit
             return nextMainCell.WorldPos + Vector3.up * offsetY;
         }
 
-        protected bool CanRotateMove(Direction direction, out Vector3Int sizeAfterRotate,
+        protected bool HasNoObstacleIfRotateMove(Direction direction, out Vector3Int sizeAfterRotate,
             out HeightLevel endHeightAfterRotate, out GameGridCell nextMainCell,
             out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits)
         {
@@ -232,12 +235,6 @@ namespace _Game.GameGrid.GridUnit
         {
             cellInUnits.Add(cell);
             cell.AddGridUnit(this);
-        }
-
-        // SPAGHETTI CODE
-        public virtual void OnInteractWithTreeRoot(Direction direction, TreeRootUnit treeRootUnit)
-        {
-            
         }
     }
 }

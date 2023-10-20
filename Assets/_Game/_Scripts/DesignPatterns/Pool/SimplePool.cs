@@ -300,16 +300,14 @@ namespace _Game.DesignPattern
         ChumpShort = 4,
         ChumpHigh = 5,
         Raft = 6,
+        RaftLong = 12,
         // Grid Unit Static
         RockShort = 7,
         RockHigh = 8,
         TreeRoot = 9,
         TreeShort = 10,
         TreeHigh = 11,
-        BridgeShortHorizontal = 12,
-        BridgeShortVertical = 13,
-        BridgeHighHorizontal = 14,
-        BridgeHighVertical = 15,
+        
         
     }
 }

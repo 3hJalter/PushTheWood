@@ -5,10 +5,11 @@ using CnControls;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 
 namespace _Game.GameGrid.GridUnit.DynamicUnit
 {
-    public class PlayerUnit : GridUnitDynamic
+    public class PlayerUnit : GridUnitDynamic, IInteractRootTreeUnit
     {
         [SerializeField] private Animator animator;
         private string _currentAnim = Constants.INIT_ANIM;
@@ -17,6 +18,13 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         private Vector2Int _currentPosition;
         private Vector2 _moveInput;
         private Vector2Int _nextPosition;
+
+        public void OnClickButton(int direction)
+        {
+            if (isInAction) return;
+            Direction dir = (Direction) direction;
+            OnMove(dir);
+        }
 
         private void Update()
         {
@@ -32,7 +40,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         }
 
         // SPAGHETTI CODE
-        public override void OnInteractWithTreeRoot(Direction direction, TreeRootUnit treeRootUnit)
+        public void OnInteractWithTreeRoot(Direction direction, TreeRootUnit treeRootUnit)
         {
             // check if above treeRootUnit has unit or if above player has unit, return
             GridUnit aboveUnit = treeRootUnit.GetAboveUnit();
@@ -66,30 +74,66 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         {
             if (direction == Direction.None) return;
             skin.DOLookAt(Tf.position + Constants.dirVector3[direction], 0.2f, AxisConstraint.Y, Vector3.up);
-            if (!CanMove(direction, out GameGridCell nextMainCell,
+            if (!HasNoObstacleIfMove(direction, out GameGridCell nextMainCell,
                     out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits))
             {
                 OnNotMove(direction, nextUnits, this);
                 return;
             }
-
-            // SPAGHETTI CODE
-            GridUnit unit = nextMainCell.GetGridUnitAtHeight(BelowStartHeight);
-            if (nextMainCell.GetSurfaceType() is GridSurfaceType.Water && unit is null) return;
-            if (unit is ChumpUnit chumpUnit)
-            {
-                ChumpType type = chumpUnit.ChumpType;
-                if ((type is ChumpType.Horizontal && direction is Direction.Forward or Direction.Back)
-                    || (type is ChumpType.Vertical && direction is Direction.Left or Direction.Right))
-                    return;
-            }
+            if (!CanMove(nextMainCell, direction)) return;
             // 
             isInAction = true;
             OnOutCurrentCells();
             Vector3 nextPos = GetUnitNextWorldPos(nextMainCell);
             MoveAnimation(nextPos, () => { OnEnterNextCells(nextMainCell); });
         }
-
+        
+        // SUPER SPAGHETTI CODE
+        private bool CanMove(GameGridCell nextMainCell, Direction direction)
+        {
+            GridUnit unit = mainCell.GetGridUnitAtHeight(Constants.dirFirstHeightOfSurface[GridSurfaceType.Water]);
+            GridUnit nextUnit = nextMainCell.GetGridUnitAtHeight(Constants.dirFirstHeightOfSurface[GridSurfaceType.Water]);
+            // Four case: both mainCell and nextMainCell is not Water, mainCell is not Water and nextMainCell is Water,
+            // mainCell is Water and nextMainCell is not Water, both mainCell and nextMainCell is Water
+            GridSurfaceType mainCellType = mainCell.SurfaceType;
+            GridSurfaceType nextMainCellType = nextMainCell.SurfaceType;
+            switch (mainCellType)
+            {
+                case GridSurfaceType.Ground when nextMainCellType is GridSurfaceType.Ground:
+                    return true;
+                case GridSurfaceType.Ground when nextMainCellType is GridSurfaceType.Water:
+                    if (nextUnit is null) return false;
+                    if (nextUnit is RaftUnit) return true;
+                    if (nextUnit is not ChumpUnit chumpUnit) return false;
+                    ChumpType type = chumpUnit.ChumpType;
+                    return (type is not ChumpType.Horizontal || direction is not (Direction.Forward or Direction.Back))
+                           && (type is not ChumpType.Vertical || direction is not (Direction.Left or Direction.Right));
+                case GridSurfaceType.Water when nextMainCellType is GridSurfaceType.Ground:
+                    if (unit is RaftUnit) return true;
+                    if (unit is not ChumpUnit chumpUnit1) return false;
+                    ChumpType type1 = chumpUnit1.ChumpType;
+                    return (type1 is not ChumpType.Horizontal || direction is not (Direction.Forward or Direction.Back))
+                           && (type1 is not ChumpType.Vertical || direction is not (Direction.Left or Direction.Right));
+                case GridSurfaceType.Water when nextMainCellType is GridSurfaceType.Water:
+                    if (unit is RaftUnit)
+                    {
+                        if (nextUnit is RaftUnit) return true;
+                        if (nextUnit is not ChumpUnit chumpUnit2) return false;
+                        ChumpType type2 = chumpUnit2.ChumpType;
+                        return (type2 is not ChumpType.Horizontal || direction is not (Direction.Forward or Direction.Back))
+                               && (type2 is not ChumpType.Vertical || direction is not (Direction.Left or Direction.Right));
+                    }
+                    if (unit is not ChumpUnit chumpUnit3) return false;
+                    ChumpType type3 = chumpUnit3.ChumpType;
+                    if (nextUnit is RaftUnit) return (type3 is not ChumpType.Horizontal || direction is not (Direction.Forward or Direction.Back))
+                                                     && (type3 is not ChumpType.Vertical || direction is not (Direction.Left or Direction.Right));
+                    if (nextUnit is not ChumpUnit chumpUnit4) return false;
+                    ChumpType type4 = chumpUnit4.ChumpType;
+                    return type3 == type4;
+            }
+            return true;
+        }
+        
         private void MoveAnimation(Vector3 newPosition, Action callback, float time = Constants.MOVING_TIME,
             string animName = Constants.WALK_ANIM)
         {

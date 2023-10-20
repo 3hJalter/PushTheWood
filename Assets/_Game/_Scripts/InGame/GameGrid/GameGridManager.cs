@@ -25,7 +25,7 @@ namespace _Game.GameGrid
         private GridSurfaceBase[,] _gridSurfaceMap;
 
         // Test Init GridUnit
-        private GridUnitDynamic _gridUnit;
+        private PlayerUnit _pUnit;
         private TextGridData _textGridData;
 
         // TODO: Learning tilemap in 3D, then try to create a scene to create map and save it as text file
@@ -57,16 +57,16 @@ namespace _Game.GameGrid
         private void TestInitGridUnit()
         {
             GameGridCell cell = _gridMap.GetGridCell(5, 5);
-            _gridUnit = SimplePool.Spawn<GridUnitDynamic>(
-                DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.ChumpHigh));
-            _gridUnit.OnInit(cell);
+            SimplePool.Spawn<GridUnitDynamic>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.ChumpHigh))
+                .OnInit(cell);
             cell = _gridMap.GetGridCell(3, 3);
             SimplePool.Spawn<GridUnitDynamic>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.ChumpShort))
                 .OnInit(cell);
             cell = _gridMap.GetGridCell(6, 7);
             // SimplePool.Spawn<GridUnitDynamic>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.ChumpHigh)).OnInit(cell);
-            SimplePool.Spawn<PlayerUnit>(
-                DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Player)).OnInit(cell);
+            _pUnit = SimplePool.Spawn<PlayerUnit>(
+                DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Player));
+            _pUnit.OnInit(cell);
             cell = _gridMap.GetGridCell(8, 8);
             SimplePool.Spawn<TreeUnit>(DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.TreeShort)).OnInit(cell);
             cell = _gridMap.GetGridCell(8, 7);
@@ -74,9 +74,13 @@ namespace _Game.GameGrid
                 .OnInit(cell);
             cell = _gridMap.GetGridCell(3, 4);
             SimplePool.Spawn<TreeUnit>(DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.TreeHigh)).OnInit(cell);
-
         }
 
+        public void MovePlayer(int direction)
+        {
+            _pUnit.OnClickButton(direction);
+        }
+        
         private void CreateGridMap()
         {
             _gridMap = new Grid<GameGridCell, GameGridCellData>(gridSizeX, gridSizeY, Constants.CELL_SIZE, Tf.position,

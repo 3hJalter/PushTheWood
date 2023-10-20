@@ -69,8 +69,11 @@ namespace _Game.GameGrid.GridUnit
             SimplePool.Despawn(this);
         }
 
+        [SerializeField] protected Direction lastPushedDirection = Direction.None;
+        
         public virtual void OnInteract(Direction direction, GridUnit interactUnit = null)
         {
+            lastPushedDirection = direction;
         }
 
         private void AddZCell(GameGridCell cell, int sizeZ)

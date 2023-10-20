@@ -46,7 +46,7 @@ public static class Constants
     public const float FALLING_TIME = 0.25f;
     
     public static readonly Vector3 horizontalSkinRotation = new(0, 0, 90);
-    public static readonly Vector3 verticalSkinRotation = new(0, 90, 90);
+    public static readonly Vector3 verticalSkinRotation = new(0, -90, 90);
     
     // OLD 
     public const float TREE_HEIGHT = 1f;

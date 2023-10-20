@@ -6,9 +6,15 @@ using UnityEngine;
 
 namespace _Game.GameGrid.GridUnit.DynamicUnit
 {
-    public class ChumpShortUnit : ChumpUnit
+    public class ChumpShortUnit : ChumpUnit, IInteractRootTreeUnit
     {
-       public override void OnGetNextStateAndType(Direction direction)
+        protected override void SpawnRaftPrefab(ChumpType type)
+        {
+            SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Raft))
+                .OnInit(mainCell, type);
+        }
+
+        public override void OnGetNextStateAndType(Direction direction)
         {
             base.OnGetNextStateAndType(direction);
             if (unitState != UnitState.Down) return;
@@ -33,7 +39,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         }
 
         // SPAGHETTI CODE, change later
-        public override void OnInteractWithTreeRoot(Direction direction, TreeRootUnit treeRootUnit)
+        public void OnInteractWithTreeRoot(Direction direction, TreeRootUnit treeRootUnit)
         {
             OnGetNextStateAndType(direction);
 

@@ -31,10 +31,8 @@ namespace _Game.GameGrid
             data.gridSurfaceType = surface.SurfaceType;
         }
 
-        public GridSurfaceType GetSurfaceType()
-        {
-            return data.gridSurfaceType;
-        }
+        public GridSurfaceType SurfaceType => data.gridSurfaceType;
+        
 
         public GridUnit.GridUnit GetGridUnitAtHeight(HeightLevel heightLevel)
         {

@@ -34,7 +34,15 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                     : ChumpType.Vertical;
             }
             // Override handle case when state is down
+        }
 
+        protected virtual void SpawnRaftPrefab(ChumpType type)
+        { }
+
+        private void SpawnShortRaftPrefab(GameGridCell cellInit, ChumpType type)
+        {
+            SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Raft))
+                .OnInit(cellInit, type);
         }
 
         public void OnPushChump(Direction direction)
@@ -62,22 +70,22 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
         public override void OnInteract(Direction direction, GridUnit interactUnit = null)
         {
-            // base.OnInteract(direction, interactUnit);
+            base.OnInteract(direction, interactUnit);
             if (isInAction) return;
             OnPushChump(direction);
         }
 
-        private bool CanSpawnRaftAndWaterChump(out List<GameGridCell> createRaftCells,
+        private bool CanSpawnRaftAndWaterChump(out List<GameGridCell> createShortRaftCells,
             out List<GameGridCell> createChumpShortCells,
             out HashSet<ChumpUnit> waterChumps)
         {
-            createRaftCells = new List<GameGridCell>();
+            createShortRaftCells = new List<GameGridCell>();
             createChumpShortCells = new List<GameGridCell>();
             waterChumps = new HashSet<ChumpUnit>();
             for (int i = 0; i < cellInUnits.Count; i++)
             {
                 GameGridCell cell = cellInUnits[i];
-                if (cell.GetSurfaceType() is not GridSurfaceType.Water) return false;
+                if (cell.SurfaceType is not GridSurfaceType.Water) return false;
                 GridUnit unit = cell.GetGridUnitAtHeight(BelowStartHeight);
                 switch (unit)
                 {
@@ -89,31 +97,41 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                     case ChumpUnit waterChump:
                         if (waterChump.ChumpType != nextChumpType) return false;
                         waterChumps.Add(waterChump);
-                        createRaftCells.Add(cell);
+                        createShortRaftCells.Add(cell);
                         break;
                 }
             }
-            // Loop through all waterChumps to check if they has larger size than this, is yes, get the cell that this chump doesn't have, add it to createChumpShortCells
-            // May has a bugs here
-            foreach (GameGridCell cell in from waterChump in waterChumps
-                     where waterChump.size.x > size.x || waterChump.size.z > size.z
-                     select waterChump.cellInUnits.Find(t => !cellInUnits.Contains(t)))
+            
+            // If count of createRaftCells equal to count of cellInUnits:
+            // => clear the createRaftCells to tell next function spawn the raft which has same size with it at mainCell
+            // ELse the next function spawn rafts which has size 1x1
+            if (createShortRaftCells.Count == cellInUnits.Count) createShortRaftCells.Clear();
+            
+            // Loop through all waterChumps to check if they has unit that not be in cellInUnits, if has, add to createChumpShortCells
+
+            foreach (ChumpUnit chump in waterChumps)
             {
-                if (cell is null) return false;
-                createChumpShortCells.Add(cell);
+                for (int i = 0; i < chump.cellInUnits.Count; i++)
+                {
+                    GameGridCell cell = chump.cellInUnits[i];
+                    if (cell.SurfaceType is not GridSurfaceType.Water) return false;
+                    if (cellInUnits.Contains(cell)) continue;
+                    createChumpShortCells.Add(cell);
+                }
             }
+
             return true;
         }
 
         private void SpawnRaftAndWaterChump(IReadOnlyList<GameGridCell> createRaftCells,
             IReadOnlyList<GameGridCell> createChumpShortCells, HashSet<ChumpUnit> waterChumps)
         {
-            // TODO: Lock isInAction and Animation for this function
+            ChumpType type = ChumpType == ChumpType.None ? waterChumps.First().ChumpType : ChumpType;
+            // if createRaftCells is cleared, it means that the raft will be spawn at mainCell
+            if (createRaftCells.Count == 0) SpawnRaftPrefab(type);
             for (int i = 0; i < createRaftCells.Count; i++)
             {
-                ChumpType type = ChumpType == ChumpType.None ? waterChumps.First().ChumpType : ChumpType;
-                SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Raft))
-                    .OnInit(createRaftCells[i], type);
+                SpawnShortRaftPrefab(createRaftCells[i], type);
             }
 
             for (int i = 0; i < createChumpShortCells.Count; i++)
@@ -139,23 +157,50 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
         protected void OnFallAtWaterSurface()
         {
-            if (mainCell.GetSurfaceType() is not GridSurfaceType.Water) return;
+            if (mainCell.SurfaceType is not GridSurfaceType.Water) return;
             if (startHeight == Constants.dirFirstHeightOfSurface[GridSurfaceType.Water])
+            {
                 isOnWater = true;
+                if (nextChumpType is ChumpType.None)
+                {
+                    // Temporary only need to handle this case with short chump, so just remove the unit at the endHeight
+                    // TODO: Change later because it will be make bugs when extend with object can rotate like chumpShort but has larger size
+                    mainCell.RemoveGridUnitAtHeight(endHeight);
+                    // Change the chump to down and rotate skin
+                    // May be it will be conflict with the Roll or Move chump Function because of running when complete a tween, which make this function call after the two before function done
+                    size = GridUnitFunc.RotateSize(lastPushedDirection, size);
+                    endHeight = startHeight + (size.y - 1) * 2;
+                    chumpType = lastPushedDirection is Direction.Left or Direction.Right
+                        ? ChumpType.Horizontal
+                        : ChumpType.Vertical;
+                    if (!isMinusHalfSizeY && unitState == UnitState.Up) endHeight += 1;
+                    unitState = UnitState.Down;
+                    skin.localRotation =
+                        Quaternion.Euler(chumpType is ChumpType.Horizontal
+                            ? Constants.horizontalSkinRotation
+                            : Constants.verticalSkinRotation);
+                    // minus position offsetY
+                    Tf.position -= Vector3.up * yOffsetOnDown;
+                }
+            }
             else if (startHeight == Constants.dirFirstHeightOfSurface[GridSurfaceType.Water] + Constants.UPPER_HEIGHT &&
                      CanSpawnRaftAndWaterChump(out List<GameGridCell> createRaftCells,
                          out List<GameGridCell> createChumpShortCells,
                          out HashSet<ChumpUnit> waterChumps))
+            {
                 SpawnRaftAndWaterChump(createRaftCells, createChumpShortCells, waterChumps);
+            }
             else
+            {
                 Debug.Log("Has Raft Below");
+            }
         }
 
         // SPAGHETTI CODE
         protected override void OnNotFall()
         {
             base.OnNotFall();
-            if (cellInUnits.Any(t => t.GetSurfaceType() is not GridSurfaceType.Water)) return;
+            if (cellInUnits.Any(t => t.SurfaceType is not GridSurfaceType.Water)) return;
             if (startHeight == Constants.dirFirstHeightOfSurface[GridSurfaceType.Water] + Constants.UPPER_HEIGHT &&
                 CanSpawnRaftAndWaterChump(out List<GameGridCell> createRaftCells,
                     out List<GameGridCell> createChumpShortCells,
@@ -167,7 +212,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
         protected void MoveChump(Direction direction)
         {
-            if (!CanMove(direction, out GameGridCell nextMainCell,
+            if (!HasNoObstacleIfMove(direction, out GameGridCell nextMainCell,
                     out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits))
             {
                 OnNotMove(direction, nextUnits, this);
@@ -186,7 +231,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
         protected void RollChump(Direction direction)
         {
-            if (!CanRotateMove(direction, out Vector3Int sizeAfterRotate,
+            if (!HasNoObstacleIfRotateMove(direction, out Vector3Int sizeAfterRotate,
                     out HeightLevel endHeightAfterRotate, out GameGridCell nextMainCell,
                     out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits))
             {
