@@ -65,7 +65,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 skin.position -= skinOffset;
                 OnOutCurrentCells();
                 Tf.position = nextPos;
-                OnEnterNextCells(treeRootUnit.MainCell, null, OnFallAtWaterSurface);
+                OnEnterNextCells(treeRootUnit.MainCell, null, AfterChumpFall);
                 unitState = nextUnitState;
                 chumpType = nextChumpType;
                 isInAction = false;

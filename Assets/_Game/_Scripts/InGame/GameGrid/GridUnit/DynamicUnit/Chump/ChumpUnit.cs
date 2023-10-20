@@ -95,7 +95,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                         createChumpShortCells.Add(cell);
                         continue;
                     case ChumpUnit waterChump:
-                        if (waterChump.ChumpType != nextChumpType) return false;
+                        if (waterChump.ChumpType != nextChumpType && nextChumpType != ChumpType.None) return false;
                         waterChumps.Add(waterChump);
                         createShortRaftCells.Add(cell);
                         break;
@@ -155,7 +155,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             chumpUnit.isOnWater = true;
         }
 
-        protected void OnFallAtWaterSurface()
+        protected void AfterChumpFall()
         {
             if (mainCell.SurfaceType is not GridSurfaceType.Water) return;
             if (startHeight == Constants.dirFirstHeightOfSurface[GridSurfaceType.Water])
@@ -220,12 +220,29 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             }
 
             isInAction = true;
-            OnOutCurrentCells();
+            
             Vector3 newPosition = GetUnitNextWorldPos(nextMainCell);
             Tf.DOMove(newPosition, Constants.MOVING_TIME).SetEase(Ease.Linear).OnComplete(() =>
             {
+                HashSet<GridUnit> aboveUnits = new();
+                for (int i = 0; i < cellInUnits.Count; i++)
+                {
+                    GameGridCell cell = cellInUnits[i];
+                    for (HeightLevel j = endHeight + 1; j <= cell.GetMaxHeight(); j++)
+                    {
+                        GridUnit unit = cell.GetGridUnitAtHeight(j);
+                        if (unit is null) continue;
+                        if (unit is GridUnitDynamic) aboveUnits.Add(unit);
+                    }
+                }
+                // make all aboveUnits fall
+                OnOutCurrentCells();
                 isInAction = false;
-                OnEnterNextCells(nextMainCell, nextCells, OnFallAtWaterSurface);
+                OnEnterNextCells(nextMainCell, nextCells, AfterChumpFall);
+                foreach (GridUnit unit in aboveUnits)
+                {
+                    if (unit is GridUnitDynamic dynamicUnit && dynamicUnit.CanFall(out int numHeightDown)) dynamicUnit.OnFall(numHeightDown, AfterChumpFall);
+                }
             });
         }
 
@@ -249,12 +266,28 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 size = sizeAfterRotate;
                 endHeight = endHeightAfterRotate;
                 // TODO: Take all GridUnitBase in cellInUnits which above this and handle them later
+                HashSet<GridUnit> aboveUnits = new();
+                for (int i = 0; i < cellInUnits.Count; i++)
+                {
+                    GameGridCell cell = cellInUnits[i];
+                    for (HeightLevel j = endHeight + 1; j <= cell.GetMaxHeight(); j++)
+                    {
+                        GridUnit unit = cell.GetGridUnitAtHeight(j);
+                        if (unit is null) continue;
+                        if (unit is GridUnitDynamic) aboveUnits.Add(unit);
+                    }
+                }
                 Vector3 skinOffset = nextMainCell.WorldPos - mainCell.WorldPos;
                 skin.position -= skinOffset;
                 OnOutCurrentCells();
                 Tf.position = GetUnitNextWorldPos(nextMainCell);
                 isInAction = false;
-                OnEnterNextCells(nextMainCell, nextCells, OnFallAtWaterSurface);
+                OnEnterNextCells(nextMainCell, nextCells, AfterChumpFall);
+                // make all aboveUnits fall
+                foreach (GridUnit unit in aboveUnits)
+                {
+                    if (unit is GridUnitDynamic dynamicUnit && dynamicUnit.CanFall(out int numHeightDown)) dynamicUnit.OnFall(numHeightDown, AfterChumpFall);
+                }
                 // TODO: Handle the above of old cellUnits
                 if (unitState == nextUnitState && !isInAction && gameObject.activeSelf) OnPushChump(direction);
                 unitState = nextUnitState;

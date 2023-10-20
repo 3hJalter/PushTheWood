@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using _Game.GameGrid.GridUnit.StaticUnit;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Game.GameGrid.GridUnit
 {
@@ -12,13 +12,14 @@ namespace _Game.GameGrid.GridUnit
         [SerializeField] protected GridUnitDynamicType gridUnitDynamicType;
         [SerializeField] protected Anchor anchor;
         public bool isInAction;
+        [FormerlySerializedAs("isMovingLock")] [FormerlySerializedAs("isNotMovingLock")] public bool isLockedActionWhenNotMove;
         protected override void OnDespawn()
         {
             isInAction = false; 
             base.OnDespawn();
         }
 
-        private void OnFall(int numHeightDown, Action callback = null)
+        public void OnFall(int numHeightDown, Action callback = null)
         {
             // ----- Falling Logic ----- //
             isInAction = true;
@@ -39,7 +40,7 @@ namespace _Game.GameGrid.GridUnit
                 });
         }
 
-        private bool CanFall(out int numHeightDown)
+        public bool CanFall(out int numHeightDown)
         {
             numHeightDown = int.MinValue;
             for (int i = 0; i < cellInUnits.Count; i++)
@@ -65,9 +66,9 @@ namespace _Game.GameGrid.GridUnit
         protected void OnNotMove(Direction direction, HashSet<GridUnit> nextUnits, GridUnit interactUnit = null,
             bool interactWithNextUnit = true)
         {
-            isInAction = true;
-            // TODO: Animation something while lock the unit can not make another action
-            DOVirtual.DelayedCall(0.25f, () => { isInAction = false;});
+            if (isLockedActionWhenNotMove) return;
+            DOVirtual.DelayedCall(Constants.MOVING_TIME, () => { isLockedActionWhenNotMove = false; });
+            isLockedActionWhenNotMove = true;
             if (!interactWithNextUnit) return;
             foreach (GridUnit unit in nextUnits) unit.OnInteract(direction, interactUnit);
         }

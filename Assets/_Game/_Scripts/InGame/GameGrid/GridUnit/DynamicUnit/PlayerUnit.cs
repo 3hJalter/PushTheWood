@@ -18,14 +18,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         private Vector2Int _currentPosition;
         private Vector2 _moveInput;
         private Vector2Int _nextPosition;
-
-        public void OnClickButton(int direction)
-        {
-            if (isInAction) return;
-            Direction dir = (Direction) direction;
-            OnMove(dir);
-        }
-
+        
         private void Update()
         {
             if (isInAction) return;

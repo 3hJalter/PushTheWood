@@ -71,6 +71,14 @@ namespace _Game.GameGrid
         {
             for (HeightLevel i = startHeight; i <= endHeight; i++) data.gridUnitDic[i] = unit;
         }
+
+        public HeightLevel GetMaxHeight()
+        {
+            HeightLevel maxHeight = HeightLevel.One;
+            foreach (HeightLevel height in data.gridUnitDic.Keys.Where(height => data.gridUnitDic[height] is not null && height > maxHeight))
+                maxHeight = height;
+            return maxHeight;
+        }
     }
 
     public class GameGridCellData

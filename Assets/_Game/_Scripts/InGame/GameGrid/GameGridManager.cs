@@ -75,11 +75,6 @@ namespace _Game.GameGrid
             cell = _gridMap.GetGridCell(3, 4);
             SimplePool.Spawn<TreeUnit>(DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.TreeHigh)).OnInit(cell);
         }
-
-        public void MovePlayer(int direction)
-        {
-            _pUnit.OnClickButton(direction);
-        }
         
         private void CreateGridMap()
         {
