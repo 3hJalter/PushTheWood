@@ -39,7 +39,14 @@ namespace _Game.GameGrid
             return data.gridUnitDic.TryGetValue(heightLevel, out GridUnit.GridUnit height) ? height : null;
         }
 
-
+        public void ClearGridUnit()
+        {
+            foreach (HeightLevel height in data.gridUnitDic.Keys.ToList().Where(height => data.gridUnitDic[height] != null))
+            {
+                data.gridUnitDic[height] = null;
+            }
+        }
+        
         public void RemoveGridUnit(GridUnit.GridUnit removeUnit)
         {
             // loop all height level and set value to null if it is the removeUnit
@@ -79,6 +86,8 @@ namespace _Game.GameGrid
                 maxHeight = height;
             return maxHeight;
         }
+
+        public int IslandID => data.gridSurface == null ? -1 : data.gridSurface.IslandID;
     }
 
     public class GameGridCellData

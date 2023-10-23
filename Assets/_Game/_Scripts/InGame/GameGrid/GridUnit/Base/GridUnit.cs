@@ -16,7 +16,8 @@ namespace _Game.GameGrid.GridUnit
         [SerializeField] protected HeightLevel endHeight;
         public readonly List<GameGridCell> cellInUnits = new();
         private UnitInitData _unitInitData;
-        protected int islandID = -1;
+        public int islandID = -1;
+
         protected GameGridCell mainCell;
         protected UnitState nextUnitState;
 
@@ -41,13 +42,13 @@ namespace _Game.GameGrid.GridUnit
             if (!isMinusHalfSizeY && unitState == UnitState.Up) endHeight += 1;
             mainCell = mainCellIn;
             cellInUnits.Add(mainCell);
+            islandID = mainCellIn.IslandID;
             // Add all neighbour X Z from mainCell
             AddXCell(mainCell, size.x);
             for (int i = cellInUnits.Count - 1; i >= 0; i--) AddZCell(cellInUnits[i], size.z);
             // Set gridUnitDic of cellInUnits with heightLevel in heightLevel list
             for (int i = 0; i < cellInUnits.Count; i++) cellInUnits[i].AddGridUnit(startHeight, endHeight, this);
             // Add offset Height to Position
-            // Vector3 offsetY = new(0, (int) startHeight * Constants.CELL_SIZE, 0);
             Tf.position = mainCell.WorldPos + Vector3.up * (float)startHeight / 2 * Constants.CELL_SIZE;
             if (unitState is UnitState.Down) Tf.position -= Vector3.up * yOffsetOnDown;
         }
@@ -63,7 +64,7 @@ namespace _Game.GameGrid.GridUnit
         }
 
 
-        protected virtual void OnDespawn()
+        public virtual void OnDespawn()
         {
             for (int i = 0; i < cellInUnits.Count; i++) cellInUnits[i].RemoveGridUnit(this);
             cellInUnits.Clear();

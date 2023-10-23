@@ -122,7 +122,10 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                                                      && (type3 is not ChumpType.Vertical || direction is not (Direction.Left or Direction.Right));
                     if (nextUnit is not ChumpUnit chumpUnit4) return false;
                     ChumpType type4 = chumpUnit4.ChumpType;
-                    return type3 == type4;
+                    if (type3 != type4) return false;
+                    if (direction is Direction.Left or Direction.Right && type4 is ChumpType.Vertical) return false;
+                    if (direction is Direction.Back or Direction.Forward && type4 is ChumpType.Horizontal) return false;
+                    return true;
             }
             return true;
         }

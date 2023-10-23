@@ -13,7 +13,6 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
     public abstract class ChumpUnit : GridUnitDynamic, IChumpUnit
     {
         [SerializeField] protected ChumpType chumpType;
-        [SerializeField] protected bool isOnWater;
         protected ChumpType nextChumpType;
 
         public ChumpType ChumpType
@@ -41,8 +40,10 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
         private void SpawnShortRaftPrefab(GameGridCell cellInit, ChumpType type)
         {
-            SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Raft))
-                .OnInit(cellInit, type);
+            RaftUnit raft = SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Raft));
+            raft.OnInit(cellInit, type);
+            raft.islandID = islandID;
+            GameGridManager.Ins.AddNewUnitToIsland(raft);
         }
 
         public void OnPushChump(Direction direction)
@@ -147,12 +148,13 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 SimplePool.Spawn<ChumpUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.ChumpShort));
             chumpUnit.unitState = UnitState.Down;
             chumpUnit.OnInit(spawnCell, Constants.dirFirstHeightOfSurface[GridSurfaceType.Water], false);
+            chumpUnit.islandID = islandID;
+            GameGridManager.Ins.AddNewUnitToIsland(chumpUnit);
             chumpUnit.ChumpType = createdChumpType;
             chumpUnit.skin.localRotation =
                 Quaternion.Euler(chumpUnit.ChumpType is ChumpType.Horizontal
                     ? Constants.horizontalSkinRotation
                     : Constants.verticalSkinRotation);
-            chumpUnit.isOnWater = true;
         }
 
         protected void AfterChumpFall()
@@ -160,7 +162,6 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             if (mainCell.SurfaceType is not GridSurfaceType.Water) return;
             if (startHeight == Constants.dirFirstHeightOfSurface[GridSurfaceType.Water])
             {
-                isOnWater = true;
                 if (nextChumpType is ChumpType.None)
                 {
                     // Temporary only need to handle this case with short chump, so just remove the unit at the endHeight

@@ -10,8 +10,10 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
     {
         protected override void SpawnRaftPrefab(ChumpType type)
         {
-            SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Raft))
-                .OnInit(mainCell, type);
+            RaftUnit raft = SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Raft));
+            raft.OnInit(mainCell, type);
+            raft.islandID = islandID;
+            GameGridManager.Ins.AddNewUnitToIsland(raft);
         }
 
         public override void OnGetNextStateAndType(Direction direction)

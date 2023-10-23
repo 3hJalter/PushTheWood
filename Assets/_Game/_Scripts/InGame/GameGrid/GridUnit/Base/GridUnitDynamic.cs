@@ -11,13 +11,16 @@ namespace _Game.GameGrid.GridUnit
     public abstract class GridUnitDynamic : GridUnit
     {
         [SerializeField] protected GridUnitDynamicType gridUnitDynamicType;
+
+        public GridUnitDynamicType GridUnitDynamicType => gridUnitDynamicType;
+
         [SerializeField] protected Anchor anchor;
         public bool isInAction;
         [FormerlySerializedAs("isMovingLock")] [FormerlySerializedAs("isNotMovingLock")] public bool isLockedActionWhenNotMove;
         
         public PoolType? PoolType => ConvertToPoolType(gridUnitDynamicType);
-        
-        protected override void OnDespawn()
+
+        public override void OnDespawn()
         {
             isInAction = false; 
             base.OnDespawn();

@@ -12,8 +12,8 @@ namespace _Game.Utilities.Grid
         public GridPlane GridPlaneType;
         protected T data;
         private Vector3 worldPos;
-        private float worldX;
-        private float worldY;
+        [SerializeField] private float worldX;
+        [SerializeField] private float worldY;
 
         protected int x;
         protected int y;

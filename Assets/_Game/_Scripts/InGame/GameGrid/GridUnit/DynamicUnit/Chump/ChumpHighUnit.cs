@@ -1,6 +1,4 @@
 ﻿using _Game.DesignPattern;
-using _Game.GameGrid.GridUnit;
-using _Game.GameGrid.GridUnit.StaticUnit;
 using _Game.Managers;
 using GameGridEnum;
 
@@ -10,8 +8,10 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
     {
         protected override void SpawnRaftPrefab(ChumpType type)
         {
-            SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.RaftLong))
-                .OnInit(mainCell, type);
+            RaftUnit raft = SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.RaftLong));
+            raft.OnInit(mainCell, type);
+            raft.islandID = islandID;
+            GameGridManager.Ins.AddNewUnitToIsland(raft);
         }
 
         public override void OnPushChumpDown(Direction direction)
