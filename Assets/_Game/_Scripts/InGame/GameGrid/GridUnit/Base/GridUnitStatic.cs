@@ -1,4 +1,5 @@
-﻿using GameGridEnum;
+﻿using _Game.DesignPattern;
+using GameGridEnum;
 using UnityEngine;
 
 namespace _Game.GameGrid.GridUnit
@@ -8,5 +9,7 @@ namespace _Game.GameGrid.GridUnit
         [SerializeField] protected GridUnitStaticType gridUnitStaticType;
 
         public GridUnitStaticType GridUnitStaticType => gridUnitStaticType;
+        
+        public PoolType? PoolType => ConvertToPoolType(gridUnitStaticType);
     }
 }

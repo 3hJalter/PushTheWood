@@ -7,7 +7,7 @@ namespace _Game.DesignPattern
         [HideInInspector]
         public PoolType poolType;
         
-        public PoolType ConvertToPoolType<T>(T type)
+        protected static PoolType ConvertToPoolType<T>(T type)
         {
             return (PoolType) (object) type;
         }

@@ -7,6 +7,7 @@ namespace _Game.GameGrid.GridSurface
     public abstract class GridSurfaceBase : GameUnit
     {
         [SerializeField] protected GridSurfaceType surfaceType;
+        public PoolType PoolType => ConvertToPoolType(surfaceType);
         private int _islandID = -1;
 
         public int IslandID
@@ -18,7 +19,8 @@ namespace _Game.GameGrid.GridSurface
                 if (surfaceType != GridSurfaceType.Water) _islandID = value;
             }
         }
-
         public GridSurfaceType SurfaceType => surfaceType;
+
+        
     }
 }

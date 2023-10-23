@@ -12,22 +12,22 @@ namespace _Game.GameGrid.GridUnit
         [SerializeField] protected HeightLevel startHeight = HeightLevel.One;
         [SerializeField] protected float yOffsetOnDown = 0.5f;
         [SerializeField] protected UnitState unitState = UnitState.Up;
-
         [SerializeField] protected bool isMinusHalfSizeY;
         [SerializeField] protected HeightLevel endHeight;
-        protected readonly List<GameGridCell> cellInUnits = new();
+        public readonly List<GameGridCell> cellInUnits = new();
         private UnitInitData _unitInitData;
         protected int islandID = -1;
         protected GameGridCell mainCell;
         protected UnitState nextUnitState;
-
 
         public GameGridCell MainCell => mainCell;
         public HeightLevel StartHeight => startHeight;
         public HeightLevel EndHeight => endHeight;
 
         protected HeightLevel BelowStartHeight => startHeight - Constants.BELOW_HEIGHT;
-
+        protected HeightLevel UpperEndHeight => endHeight + Constants.UPPER_HEIGHT;
+        
+        
         private void Awake()
         {
             SaveInitData(size, unitState, skin);
@@ -66,6 +66,8 @@ namespace _Game.GameGrid.GridUnit
         protected virtual void OnDespawn()
         {
             for (int i = 0; i < cellInUnits.Count; i++) cellInUnits[i].RemoveGridUnit(this);
+            cellInUnits.Clear();
+            mainCell = null;
             SimplePool.Despawn(this);
         }
 
@@ -76,6 +78,16 @@ namespace _Game.GameGrid.GridUnit
             lastPushedDirection = direction;
         }
 
+        public GridUnit GetBelowUnit()
+        {
+            return mainCell.GetGridUnitAtHeight(BelowStartHeight);
+        }
+        
+        protected GridUnit GetAboveUnit()
+        {
+            return mainCell.GetGridUnitAtHeight(UpperEndHeight);
+        }
+        
         private void AddZCell(GameGridCell cell, int sizeZ)
         {
             for (int i = 1; i < sizeZ; i++)

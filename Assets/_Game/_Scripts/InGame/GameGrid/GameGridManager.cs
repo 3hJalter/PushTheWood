@@ -10,6 +10,7 @@ using _Game.GameGrid.GridUnit.StaticUnit;
 using GameGridEnum;
 using MapEnum;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace _Game.GameGrid
 {
@@ -29,12 +30,21 @@ namespace _Game.GameGrid
         private TextGridData _textGridData;
 
         // TODO: Learning tilemap in 3D, then try to create a scene to create map and save it as text file
-
+    
 
         // TESTING
         private void Start()
         {
             OnInit();
+        }
+
+        private void Update()
+        {
+            // Reload this scene
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name); 
+            }
         }
 
         private void OnInit()
@@ -54,6 +64,29 @@ namespace _Game.GameGrid
             TestInitGridUnit();
         }
 
+        private int _xCellInfo;
+        private int _yCellInfo;
+
+        
+        // TESTING
+        public void SetXInfo(int x)
+        {
+            _xCellInfo = x;
+        }
+
+        public void SetYInfo(int y)
+        {
+            _yCellInfo = y;
+        }
+        
+        public void ShowCellInformation()
+        {
+            GameGridCell cell = _gridMap.GetGridCell(_xCellInfo, _yCellInfo);
+            if (cell is null) return;
+            GridUnitFunc.DebugCellInformation(cell);
+        }
+        // TESTING
+        
         private void TestInitGridUnit()
         {
             GameGridCell cell = _gridMap.GetGridCell(5, 5);
@@ -67,6 +100,9 @@ namespace _Game.GameGrid
             _pUnit = SimplePool.Spawn<PlayerUnit>(
                 DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Player));
             _pUnit.OnInit(cell);
+            cell = _gridMap.GetGridCell(7, 8);
+            SimplePool.Spawn<GridUnitDynamic>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.ChumpShort))
+                .OnInit(cell);
             cell = _gridMap.GetGridCell(8, 8);
             SimplePool.Spawn<TreeUnit>(DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.TreeShort)).OnInit(cell);
             cell = _gridMap.GetGridCell(8, 7);
@@ -74,6 +110,8 @@ namespace _Game.GameGrid
                 .OnInit(cell);
             cell = _gridMap.GetGridCell(3, 4);
             SimplePool.Spawn<TreeUnit>(DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.TreeHigh)).OnInit(cell);
+            cell = _gridMap.GetGridCell(5, 3);
+            SimplePool.Spawn<RockUnit>(DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.RockHigh)).OnInit(cell);
         }
         
         private void CreateGridMap()

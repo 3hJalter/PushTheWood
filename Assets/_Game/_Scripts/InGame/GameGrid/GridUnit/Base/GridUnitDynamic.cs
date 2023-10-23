@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using _Game.DesignPattern;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
@@ -13,6 +14,9 @@ namespace _Game.GameGrid.GridUnit
         [SerializeField] protected Anchor anchor;
         public bool isInAction;
         [FormerlySerializedAs("isMovingLock")] [FormerlySerializedAs("isNotMovingLock")] public bool isLockedActionWhenNotMove;
+        
+        public PoolType? PoolType => ConvertToPoolType(gridUnitDynamicType);
+        
         protected override void OnDespawn()
         {
             isInAction = false; 
@@ -73,7 +77,7 @@ namespace _Game.GameGrid.GridUnit
             foreach (GridUnit unit in nextUnits) unit.OnInteract(direction, interactUnit);
         }
 
-        protected void OnOutCurrentCells()
+        public void OnOutCurrentCells()
         {
             RemoveUnitFromCell();
             cellInUnits.Clear();
@@ -86,6 +90,11 @@ namespace _Game.GameGrid.GridUnit
             else OnNotFall();
         }
 
+        public void OnEnterNextCellWithoutFall(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null)
+        {
+            InitCellsToUnit(nextMainCell, nextCells);
+        }
+        
         protected virtual void OnNotFall()
         {
             
@@ -199,6 +208,19 @@ namespace _Game.GameGrid.GridUnit
             return canRotateMove;
         }
 
+        protected HashSet<GridUnitDynamic> GetAllAboveUnit()
+        {
+            // NOTE: This function is only handle one height level above, made one more loop for all higher level if need more logic
+            HashSet<GridUnitDynamic> aboveUnits = new();
+            for (int i = 0; i < cellInUnits.Count; i++)
+            {
+                GridUnit aboveUnit = cellInUnits[i].GetGridUnitAtHeight(UpperEndHeight);
+                if (aboveUnit is not GridUnitDynamic unitDynamic) continue;
+                aboveUnits.Add(unitDynamic);
+            }
+            return aboveUnits;
+        }
+        
         private GameGridCell GetNextMainCell(Direction direction)
         {
             Vector2Int nextMainCellPos = mainCell.GetCellPosition() + GetOffset();
@@ -223,9 +245,7 @@ namespace _Game.GameGrid.GridUnit
                 }
             }
         }
-
         
-
         private void RemoveUnitFromCell()
         {
             for (int i = cellInUnits.Count - 1; i >= 0; i--)
