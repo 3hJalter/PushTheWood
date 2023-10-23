@@ -13,8 +13,9 @@ using UnityEngine;
 
 public class GridMapDataGenerator : MonoBehaviour
 {
-    [SerializeField] private int gridSizeX;
-    [SerializeField] private int gridSizeY;
+    [SerializeField] private string mapLevelName = "level0";
+    private int _gridSizeX;
+    private int _gridSizeY;
     private Grid<GameGridCell, GameGridCellData>.DebugGrid _debugGrid;
     private Grid<GameGridCell, GameGridCellData> _gridMap;
 
@@ -25,13 +26,15 @@ public class GridMapDataGenerator : MonoBehaviour
     private TextGridData _textGridData;
     private void Start()
     {
+        TextAsset gridData = Resources.Load<TextAsset>(mapLevelName);
+        TextGridData textGridData = GameGridDataHandler.CreateGridData2(gridData);
         GenerateMap();
     }
 
     private void GenerateMap()
     {
         // Get gridData.txt from Assets/_Game/Resources/gridData.txt
-        TextAsset gridData = Resources.Load<TextAsset>("gridData");
+        TextAsset gridData = Resources.Load<TextAsset>(mapLevelName);
         // Split the text into two parts: surfaceData and unitData by @
         string[] gridDataSplit = gridData.text.Split('@');
         // Split surfaceData into lines
@@ -43,13 +46,13 @@ public class GridMapDataGenerator : MonoBehaviour
         // remove the first line
         Array.Copy(unitData, 1, unitData, 0, unitData.Length - 1);
         // remove the last line
-        Array.Resize(ref unitData, unitData.Length - 1);
+        Array.Resize(ref unitData, unitData.Length - 2);
         // Get the maximum x and z position of gridSurface
-        gridSizeX = surfaceData.Length;
-        gridSizeY = surfaceData[0].Split(' ').Length;
-        _gridSurfaceMap = new GridSurfaceBase[gridSizeX, gridSizeY];
+        _gridSizeX = surfaceData.Length;
+        _gridSizeY = surfaceData[0].Split(' ').Length;
+        _gridSurfaceMap = new GridSurfaceBase[_gridSizeX, _gridSizeY];
         // Create GridMap
-        _gridMap = new Grid<GameGridCell, GameGridCellData>(gridSizeX, gridSizeY, Constants.CELL_SIZE, transform.position,
+        _gridMap = new Grid<GameGridCell, GameGridCellData>(_gridSizeX, _gridSizeY, Constants.CELL_SIZE, transform.position,
             () => new GameGridCell(), GridPlane.XZ);
         _debugGrid = new Grid<GameGridCell, GameGridCellData>.DebugGrid();
         _debugGrid.DrawGrid(_gridMap);
@@ -61,16 +64,36 @@ public class GridMapDataGenerator : MonoBehaviour
 
     private void SpawnGridUnitToGrid(string[] unitData)
     {
-        
+        for (int x = 0; x < _gridSizeY; x++)
+        {
+            string[] unitDataSplit = unitData[x].Split(' ');
+            for (int y = 0; y < _gridSizeY; y++)
+            {
+                if (!int.TryParse(unitDataSplit[y], out int cell)) continue;
+                if (Enum.IsDefined(typeof(GridUnitDynamicType), cell))
+                {
+                    GridUnitDynamic gridUnitDynamic = DataManager.Ins.GetGridUnitDynamic((GridUnitDynamicType)cell);
+                    if (gridUnitDynamic is null) continue;
+                    GameGridCell gridCell = _gridMap.GetGridCell(x, y);
+                    SimplePool.Spawn<GridUnitDynamic>(gridUnitDynamic).OnInit(gridCell);
+                } else if (Enum.IsDefined(typeof(GridUnitStaticType), cell))
+                {
+                    GridUnitStatic gridUnitStatic = DataManager.Ins.GetGridUnitStatic((GridUnitStaticType)cell);
+                    if (gridUnitStatic is null) continue;
+                    GameGridCell gridCell = _gridMap.GetGridCell(x, y);
+                   SimplePool.Spawn<GridUnitStatic>(gridUnitStatic).OnInit(gridCell);
+                }
+            }
+        }
     }
 
     private void SpawnGridSurfaceToGrid(string[] surfaceData)
     {
         
-        for (int x = 0; x < gridSizeX; x++)
+        for (int x = 0; x < _gridSizeX; x++)
         {
             string[] surfaceDataSplit = surfaceData[x].Split(' ');
-            for (int y = 0; y < gridSizeY; y++)
+            for (int y = 0; y < _gridSizeY; y++)
             {
                 if (!int.TryParse(surfaceDataSplit[y], out int cell)) continue;
                 if (!Enum.IsDefined(typeof(GridSurfaceType), cell)) continue;
@@ -88,7 +111,13 @@ public class GridMapDataGenerator : MonoBehaviour
     [ContextMenu("Save Data as txt file")]
     private void Setup()
     {
-        Debug.Log("Setup");
+        switch (mapLevelName)
+        {
+            case null:
+            case " ":
+            case "":
+                return;
+        }
         GroundSurface[] gridSurfaces = FindObjectsOfType<GroundSurface>();
         GridUnit[] gridUnits = FindObjectsOfType<GridUnit>();
         // Handle gridSurface
@@ -120,13 +149,14 @@ public class GridMapDataGenerator : MonoBehaviour
         }
 
         // Save the array as txt file in Resources folder
-        const string path = "Assets/_Game/Resources/gridData.txt";
+        string path = "Assets/_Game/Resources/" + mapLevelName + ".txt";
         File.WriteAllText(path, string.Empty);
         using StreamWriter file = new(path, true);
         for (int i = 0; i < maxX; i++)
         {
             string line = "";
             for (int j = 0; j < maxZ; j++) line += gridData[i, j] + " ";
+            line = line.Remove(line.Length - 1);
             file.WriteLine(line);
         }
 
@@ -157,6 +187,7 @@ public class GridMapDataGenerator : MonoBehaviour
         {
             string line = "";
             for (int j = 0; j < maxZ; j++) line += gridData[i, j] + " ";
+            line = line.Remove(line.Length - 1);
             file.WriteLine(line);
         }
 

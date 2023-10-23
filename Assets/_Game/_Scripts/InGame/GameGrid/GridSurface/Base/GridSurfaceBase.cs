@@ -8,7 +8,7 @@ namespace _Game.GameGrid.GridSurface
     {
         [SerializeField] protected GridSurfaceType surfaceType;
         public PoolType PoolType => ConvertToPoolType(surfaceType);
-        private int _islandID = -1;
+        [SerializeField] private int _islandID = -1;
 
         public int IslandID
         {

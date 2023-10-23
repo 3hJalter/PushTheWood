@@ -13,7 +13,6 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
     {
         [SerializeField] private Animator animator;
         private string _currentAnim = Constants.INIT_ANIM;
-        private int _currentIslandID;
 
         private Vector2Int _currentPosition;
         private Vector2 _moveInput;
@@ -79,6 +78,9 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             OnOutCurrentCells();
             Vector3 nextPos = GetUnitNextWorldPos(nextMainCell);
             MoveAnimation(nextPos, () => { OnEnterNextCells(nextMainCell); });
+            if (islandID == nextMainCell.IslandID || nextMainCell.IslandID == -1) return;
+            islandID = nextMainCell.IslandID;
+            GameGridManager.Ins.SetFirstPlayerStepOnIsland(nextMainCell);
         }
         
         // SUPER SPAGHETTI CODE
@@ -139,6 +141,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 isInAction = false;
                 ChangeAnim(Constants.IDLE_ANIM);
                 callback?.Invoke();
+                
             });
         }
 
