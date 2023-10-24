@@ -307,6 +307,7 @@ namespace _Game.DesignPattern
         TreeRoot = 9,
         TreeShort = 10,
         TreeHigh = 11,
+        FinalPoint = 13,
         
         
     }

@@ -119,18 +119,62 @@ public class GridMapDataGenerator : MonoBehaviour
                 return;
         }
         GroundSurface[] gridSurfaces = FindObjectsOfType<GroundSurface>();
+        if (gridSurfaces.Length == 0)
+        {
+            Debug.LogError("Grid must have at least 1 surface, and all unit must have on a surface");
+            return;
+        }
         GridUnit[] gridUnits = FindObjectsOfType<GridUnit>();
-        // Handle gridSurface
-        // Get the maximum x and z position of gridSurface
-        int maxX = 0;
-        int maxZ = 0;
-        const int cellOffset = 1;
+        int minX = int.MaxValue;
+        int minZ = int.MaxValue;
+        int maxX = int.MinValue;
+        int maxZ = int.MinValue;
         foreach (GroundSurface gridSurface in gridSurfaces)
         {
-            if (gridSurface.Tf.position.x > maxX) maxX = (int)gridSurface.Tf.position.x;
-            if (gridSurface.Tf.position.z > maxZ) maxZ = (int)gridSurface.Tf.position.z;
+            Vector3 position = gridSurface.Tf.position;
+            if (position.x < minX) minX = (int) Math.Round(position.x);
+            if (position.z < minZ) minZ = (int) Math.Round(position.z);
+            if (position.x > maxX) maxX = (int) Math.Round(position.x);
+            if (position.z > maxZ) maxZ = (int) Math.Round(position.z);
         }
-
+        // if minX or minY < 0, get the offset and make all position added with this offset so the minX and minY can be 0
+        if (minX < 1)
+        {
+            int offsetX = 1 - minX;
+            foreach (GroundSurface gridSurface in gridSurfaces)
+            {
+                Vector3 position = gridSurface.Tf.position;
+                position.x += offsetX;
+                gridSurface.Tf.position = position;
+            }
+            foreach (GridUnit gridUnit in gridUnits)
+            {
+                Vector3 position = gridUnit.Tf.position;
+                position.x += offsetX;
+                gridUnit.Tf.position = position;
+            }
+            minX += offsetX;
+            maxX += offsetX;
+        }
+        if (minZ < 1)
+        {
+            int offsetZ = 1 - minZ;
+            foreach (GroundSurface gridSurface in gridSurfaces)
+            {
+                Vector3 position = gridSurface.Tf.position;
+                position.z += offsetZ;
+                gridSurface.Tf.position = position;
+            }
+            foreach (GridUnit gridUnit in gridUnits)
+            {
+                Vector3 position = gridUnit.Tf.position;
+                position.z += offsetZ;
+                gridUnit.Tf.position = position;
+            }
+            minZ += offsetZ;
+            maxZ += offsetZ;
+        }
+        const int cellOffset = 1;
         maxX = (maxX + cellOffset) / 2;
         maxZ = (maxZ + cellOffset) / 2;
         // create 2 dimension int array with default value is 0
@@ -172,6 +216,16 @@ public class GridMapDataGenerator : MonoBehaviour
             Vector3 position = gridUnit.Tf.position;
             int x = (int)(position.x + 1) / 2;
             int z = (int)(position.z + 1) / 2;
+            // if x or z larger than size of array, return 
+            if (x > maxX || z > maxZ)
+            {
+                Debug.LogError("Grid Unit must be on Grid Surface");
+                // Close the file then delete it
+                file.Close();
+                File.Delete(path);
+                // Remove the file
+                return;
+            }
             gridData[x - 1, z - 1] = gridUnit switch
             {
                 GridUnitDynamic { PoolType: not null } gridUnitDynamic => (int)gridUnitDynamic.PoolType,
@@ -190,7 +244,7 @@ public class GridMapDataGenerator : MonoBehaviour
             line = line.Remove(line.Length - 1);
             file.WriteLine(line);
         }
-
+        file.Close();
         Debug.Log("Save unit: Complete");
     }
 }

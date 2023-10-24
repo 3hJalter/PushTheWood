@@ -93,7 +93,7 @@ namespace _Game.GameGrid.GridUnit
         {
             for (int i = 1; i < sizeZ; i++)
             {
-                GameGridCell neighbourZ = GameGridManager.Ins.GetNeighbourCell(cell, Direction.Forward, i);
+                GameGridCell neighbourZ = LevelManager2.Ins.GetNeighbourCell(cell, Direction.Forward, i);
                 if (neighbourZ == null) continue;
                 cellInUnits.Add(neighbourZ);
                 Debug.Log("Add neighbourZ: " + neighbourZ.WorldPos + " to cellInUnits: " + name);
@@ -104,7 +104,7 @@ namespace _Game.GameGrid.GridUnit
         {
             for (int i = 1; i < sizeX; i++)
             {
-                GameGridCell neighbourX = GameGridManager.Ins.GetNeighbourCell(cell, Direction.Right, i);
+                GameGridCell neighbourX = LevelManager2.Ins.GetNeighbourCell(cell, Direction.Right, i);
                 if (neighbourX == null) continue;
                 cellInUnits.Add(neighbourX);
                 Debug.Log("Add neighbourX: " + neighbourX.WorldPos + " to cellInUnits: " + name);

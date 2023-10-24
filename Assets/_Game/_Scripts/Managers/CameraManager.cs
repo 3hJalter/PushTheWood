@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using _Game.DesignPattern;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Game.Managers
 {
@@ -13,18 +14,18 @@ namespace _Game.Managers
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         // ReSharper disable once CollectionNeverUpdated.Local
         [SerializeField] private readonly Dictionary<CameraType, CinemachineVirtualCameraBase> virtualCameraDic = new();
-        private CinemachineVirtualCameraBase _currentVirtualCamera;
+        [SerializeField] private CinemachineVirtualCameraBase currentVirtualCamera;
 
         public bool IsCurrentCameraIs(CameraType cameraType)
         {
-            return _currentVirtualCamera == virtualCameraDic[cameraType];
+            return currentVirtualCamera == virtualCameraDic[cameraType];
         }
 
         public void ChangeCamera(CameraType cameraType)
         {
-            if (_currentVirtualCamera != null) _currentVirtualCamera.Priority = CAMERA_PRIORITY_INACTIVE;
-            _currentVirtualCamera = virtualCameraDic[cameraType];
-            _currentVirtualCamera.Priority = CAMERA_PRIORITY_ACTIVE;
+            if (currentVirtualCamera != null) currentVirtualCamera.Priority = CAMERA_PRIORITY_INACTIVE;
+            currentVirtualCamera = virtualCameraDic[cameraType];
+            currentVirtualCamera.Priority = CAMERA_PRIORITY_ACTIVE;
         }
 
         public void ChangeCameraTarget(CameraType cameraType, Transform target)

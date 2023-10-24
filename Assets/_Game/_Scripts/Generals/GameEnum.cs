@@ -135,6 +135,7 @@ namespace GameGridEnum
         TreeRoot = PoolType.TreeRoot,
         TreeShort = PoolType.TreeShort,
         TreeHigh = PoolType.TreeHigh,
+        FinalPoint = PoolType.FinalPoint,
     }
     public enum GridUnitDynamicType
     {

@@ -43,7 +43,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             RaftUnit raft = SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Raft));
             raft.OnInit(cellInit, type);
             raft.islandID = islandID;
-            GameGridManager.Ins.AddNewUnitToIsland(raft);
+            LevelManager2.Ins.AddNewUnitToIsland(raft);
         }
 
         public void OnPushChump(Direction direction)
@@ -149,7 +149,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             chumpUnit.unitState = UnitState.Down;
             chumpUnit.OnInit(spawnCell, Constants.dirFirstHeightOfSurface[GridSurfaceType.Water], false);
             chumpUnit.islandID = islandID;
-            GameGridManager.Ins.AddNewUnitToIsland(chumpUnit);
+            LevelManager2.Ins.AddNewUnitToIsland(chumpUnit);
             chumpUnit.ChumpType = createdChumpType;
             chumpUnit.skin.localRotation =
                 Quaternion.Euler(chumpUnit.ChumpType is ChumpType.Horizontal
@@ -159,7 +159,14 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
         protected void AfterChumpFall()
         {
-            if (mainCell.SurfaceType is not GridSurfaceType.Water) return;
+            if (mainCell.SurfaceType is not GridSurfaceType.Water)
+            {
+                if (unitState is not UnitState.Down) return;
+                if ((chumpType is ChumpType.Horizontal && lastPushedDirection is Direction.Back or Direction.Forward)
+                    || (chumpType is ChumpType.Vertical && lastPushedDirection is Direction.Left or Direction.Right))
+                    OnPushChump(lastPushedDirection);
+                return;
+            }
             if (startHeight == Constants.dirFirstHeightOfSurface[GridSurfaceType.Water])
             {
                 if (nextChumpType is ChumpType.None)

@@ -10,78 +10,153 @@ using _Game.Utilities.Grid;
 using GameGridEnum;
 using MapEnum;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using CameraType = _Game.Managers.CameraType;
 
 namespace _Game.GameGrid
 {
-    public class GameGridManager : Singleton<GameGridManager>
+    public class LevelManager2 : Singleton<LevelManager2>
     {
-        [SerializeField] private int gridSizeX;
-        [SerializeField] private int gridSizeY;
-        [SerializeField] private int mapIndex = 0; // Will be use the saved data later
-        private readonly Dictionary<int, Island> islandDic = new();
-        private Grid<GameGridCell, GameGridCellData>.DebugGrid _debugGrid;
+        [SerializeField] private int levelIndex;
+        private int gridSizeX;
+        private int gridSizeY;
+        
+        private readonly Dictionary<int, Island> _islandDic = new();
         private Grid<GameGridCell, GameGridCellData> _gridMap;
-
         private GridSurfaceBase[,] _gridSurfaceMap;
-
-        // Test Init GridUnit
         private PlayerUnit _pUnit;
+        private GameGridCell _firstPlayerInitCell;
         private TextGridData _textGridData;
 
-        // TODO: Learning tilemap in 3D, then try to create a scene to create map and save it as text file
-
-
-        // TESTING
         private void Start()
         {
+            // TEST
             OnInit();
-        }
-
-        private void Update()
-        {
-            // Reload this scene
-            if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            // Test
+            // CameraManager.Ins.ChangeCamera(CameraType.InGameCamera);
         }
 
         private void OnInit()
         {
-            _textGridData = GameGridDataHandler.CreateGridData(mapIndex);
-            CreateGridMap2();
+            _textGridData = GameGridDataHandler.CreateGridData(levelIndex);
+            CreateGridMap();
             SpawnGridSurfaceToGrid();
             AddIslandIdToSurface();
             SpawnGridUnitToGrid();
+            SetCameraToPlayer();
         }
         
-        public void ResetIsland()
+        public void OnWin()
         {
-            if (!islandDic.ContainsKey(_pUnit.islandID)) return;
-            islandDic[_pUnit.islandID].ResetIsland();
-            _pUnit.OnDespawn();
-            _pUnit = SimplePool.Spawn<PlayerUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Player));
-            _pUnit.OnInit(islandDic[_pUnit.islandID].FirstPlayerStepCell);
+            // Show win screen
+            // +1 LevelIndex and save
+            // Future: Add reward collected in-game
         }
 
+        public void OnNextLevel()
+        {
+            // Load next level
+            OnDespawnLevel();
+            OnInit();
+        }
+
+        public void OnLose()
+        {
+            // Show lose screen
+        }
+        
+        public void OnRestart()
+        {
+            ResetAllIsland();
+            _pUnit.OnDespawn();
+            _pUnit = SimplePool.Spawn<PlayerUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Player));
+            _pUnit.OnInit(_firstPlayerInitCell);
+        }
+
+        public GameGridCell GetCell(Vector2Int position)
+        {
+            return _gridMap.GetGridCell(position.x, position.y);
+        }
+        
+        public GameGridCell GetNeighbourCell(GameGridCell cell, Direction direction, int distance = 1)
+        {
+            Vector2Int cellPos = cell.GetCellPosition();
+            Vector2Int dir = Constants.dirVector[direction];
+            Vector2Int neighbourPos = cellPos + dir * distance;
+            return _gridMap.GetGridCell(neighbourPos.x, neighbourPos.y);
+            // return _gridMap.GetGridCell(x, y);
+        }
+        
+        public void SetFirstPlayerStepOnIsland(GameGridCell cell)
+        {
+            _islandDic[_pUnit.islandID].SetFirstPlayerStepCell(cell);
+        }
+        
+        public void AddNewUnitToIsland(GridUnit.GridUnit unit)
+        {
+            if (!_islandDic.ContainsKey(unit.islandID)) return;
+            _islandDic[unit.islandID].AddNewUnitToIsland(unit);
+        }
+        
+        public void ResetIslandPlayerOn()
+        {
+            if (!_islandDic.ContainsKey(_pUnit.islandID)) return;
+            _islandDic[_pUnit.islandID].ResetIsland();
+            _pUnit.OnDespawn();
+            _pUnit = SimplePool.Spawn<PlayerUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Player));
+            _pUnit.OnInit(_islandDic[_pUnit.islandID].FirstPlayerStepCell);
+        }
+        
+        private void ResetAllIsland()
+        {
+            for (int i = 0; i < _islandDic.Count; i++)
+            {
+                _islandDic[i].ResetIsland();
+            }
+        }
+        
+        private void OnDespawnLevel()
+        {
+            // Despawn all groundUnit
+            for (int index0 = 0; index0 < _gridSurfaceMap.GetLength(0); index0++)
+            for (int index1 = 0; index1 < _gridSurfaceMap.GetLength(1); index1++)
+            {
+                GridSurfaceBase gridSurface = _gridSurfaceMap[index0, index1];
+                SimplePool.Despawn(gridSurface);
+            }
+            // Despawn all unit in each island
+            for (int i = 0; i < _islandDic.Count; i++)
+            {
+                Island island = _islandDic[i];
+                island.ClearIsland();
+            }
+            // Set player to null
+            SimplePool.Despawn(_pUnit);
+            _pUnit = null;
+            _firstPlayerInitCell = null;
+            // Clear all _islandDic data
+            _islandDic.Clear();
+            // Clear all _gridSurfaceMap data
+            _gridSurfaceMap = null;
+            // Clear all _gridMap data
+            _gridMap = null;
+        }
+        
+        private void SetCameraToPlayer()
+        {
+            CameraManager.Ins.ChangeCameraTarget(CameraType.MainMenuCamera, _pUnit.Tf);
+            CameraManager.Ins.ChangeCameraTarget(CameraType.InGameCamera, _pUnit.Tf);
+        }
+        
         private void SpawnPlayerUnit(int x, int y)
         {
             GameGridCell cell = _gridMap.GetGridCell(x, y);
             _pUnit = SimplePool.Spawn<PlayerUnit>(
                 DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Player));
             _pUnit.OnInit(cell);
-            islandDic[cell.GetData().gridSurface.IslandID].SetFirstPlayerStepCell(cell);
+            _islandDic[cell.GetData().gridSurface.IslandID].SetFirstPlayerStepCell(cell);
+            _firstPlayerInitCell = cell;
         }
-
-        public void SetFirstPlayerStepOnIsland(GameGridCell cell)
-        {
-            islandDic[_pUnit.islandID].SetFirstPlayerStepCell(cell);
-        }
-
-        public void AddNewUnitToIsland(GridUnit.GridUnit unit)
-        {
-            if (!islandDic.ContainsKey(unit.islandID)) return;
-            islandDic[unit.islandID].AddNewUnitToIsland(unit);
-        }
-
+        
         private void SpawnInitUnit<T>(int x, int y, T type)
         {
             GameGridCell cell = _gridMap.GetGridCell(x, y);
@@ -91,32 +166,28 @@ namespace _Game.GameGrid
                 {
                     GridUnitDynamic unit = SimplePool.Spawn<GridUnitDynamic>(DataManager.Ins.GetGridUnitDynamic(dT));
                     unit.OnInit(cell);
-                    // islandDic[cell.GetData().gridSurface.IslandID].AddInitUnitToIsland(unit);
-                    islandDic[cell.GetData().gridSurface.IslandID].AddInitUnitToIsland(unit, dT, cell);
+                    _islandDic[cell.GetData().gridSurface.IslandID].AddInitUnitToIsland(unit, dT, cell);
                     break;
                 }
                 case GridUnitStaticType sT:
                 {
                     GridUnitStatic unit = SimplePool.Spawn<GridUnitStatic>(DataManager.Ins.GetGridUnitStatic(sT));
                     unit.OnInit(cell);
-                    // islandDic[cell.GetData().gridSurface.IslandID].AddInitUnitToIsland(unit);
-                    islandDic[cell.GetData().gridSurface.IslandID].AddInitUnitToIsland(unit, sT, cell);
+                    _islandDic[cell.GetData().gridSurface.IslandID].AddInitUnitToIsland(unit, sT, cell);
                     break;
                 }
             }
         }
-
-        private void CreateGridMap2()
+        
+        private void CreateGridMap()
         {
             Vector2Int size = _textGridData.GetSize();
             gridSizeX = size.x;
             gridSizeY = size.y;
             _gridMap = new Grid<GameGridCell, GameGridCellData>(gridSizeX, gridSizeY, Constants.CELL_SIZE, Tf.position,
                 () => new GameGridCell(), GridPlane.XZ);
-            _debugGrid = new Grid<GameGridCell, GameGridCellData>.DebugGrid();
-            _debugGrid.DrawGrid(_gridMap);
         }
-
+        
         private void SpawnGridSurfaceToGrid()
         {
             string[] surfaceData = _textGridData.SurfaceData.Split('\n');
@@ -139,7 +210,7 @@ namespace _Game.GameGrid
                 }
             }
         }
-
+        
         private void SpawnGridUnitToGrid()
         {
             string[] unitData = _textGridData.UnitData.Split('\n');
@@ -166,7 +237,7 @@ namespace _Game.GameGrid
                 }
             }
         }
-
+        
         private void AddIslandIdToSurface()
         {
             int currentIslandID = 0;
@@ -183,8 +254,8 @@ namespace _Game.GameGrid
             void FloodFillIslandID(GridSurfaceBase gridSurface, int x, int y, int islandID)
             {
                 gridSurface.IslandID = islandID;
-                islandDic.TryAdd(islandID, new Island());
-                islandDic[islandID].AddGridCell(_gridMap.GetGridCell(x, y));
+                _islandDic.TryAdd(islandID, new Island());
+                _islandDic[islandID].AddGridCell(_gridMap.GetGridCell(x, y));
                 if (IsGridSurfaceHadIsland(x - 1, y, out GridSurfaceBase leftGridSurface))
                     FloodFillIslandID(leftGridSurface, x - 1, y, islandID);
                 if (IsGridSurfaceHadIsland(x + 1, y, out GridSurfaceBase rightGridSurface))
@@ -205,92 +276,6 @@ namespace _Game.GameGrid
                 if (gridSurface is null) return false;
                 if (gridSurface.SurfaceType == GridSurfaceType.Water) return false;
                 return gridSurface.IslandID < 0;
-            }
-        }
-
-        public GameGridCell GetCell(Vector2Int position)
-        {
-            return _gridMap.GetGridCell(position.x, position.y);
-        }
-
-        public GameGridCell GetNeighbourCell(GameGridCell cell, Direction direction, int distance = 1)
-        {
-            Vector2Int cellPos = cell.GetCellPosition();
-            Vector2Int dir = Constants.dirVector[direction];
-            Vector2Int neighbourPos = cellPos + dir * distance;
-            return _gridMap.GetGridCell(neighbourPos.x, neighbourPos.y);
-            // return _gridMap.GetGridCell(x, y);
-        }
-    }
-
-    public class Island
-    {
-        private readonly List<GameGridCell> _gridCells = new();
-
-        private readonly HashSet<GridUnit.GridUnit> _gridUnits = new();
-
-        // private readonly Dictionary<GridUnit.GridUnit, GameGridCell> _initGridUnitDic = new();
-        private readonly Dictionary<GameGridCell, GridUnitDynamicType> _initGridDynamicDic = new();
-        private readonly Dictionary<GameGridCell, GridUnitStaticType> _initGridStaticDic = new();
-        private GameGridCell _firstPlayerStepCell;
-
-        public GameGridCell FirstPlayerStepCell => _firstPlayerStepCell;
-
-        public void SetFirstPlayerStepCell(GameGridCell cell)
-        {
-            _firstPlayerStepCell ??= cell;
-        }
-
-        public void AddGridCell(GameGridCell cell)
-        {
-            _gridCells.Add(cell);
-        }
-
-        public void AddInitUnitToIsland(GridUnitDynamic unit, GridUnitDynamicType type, GameGridCell cell)
-        {
-            _gridUnits.Add(unit);
-            _initGridDynamicDic.Add(cell, type);
-        }
-
-        public void AddInitUnitToIsland(GridUnitStatic unit, GridUnitStaticType type, GameGridCell cell)
-        {
-            _gridUnits.Add(unit);
-            _initGridStaticDic.Add(cell, type);
-        }
-
-        public void AddNewUnitToIsland(GridUnit.GridUnit unit)
-        {
-            if (_gridUnits.Contains(unit)) return;
-            _gridUnits.Add(unit);
-        }
-
-        public void ClearIsland()
-        {
-            for (int i = 0; i < _gridCells.Count; i++)
-            {
-                GameGridCell cell = _gridCells[i];
-                cell.ClearGridUnit();
-            }
-            foreach (GridUnit.GridUnit unit in _gridUnits.Where(unit => unit.gameObject.activeSelf)) unit.OnDespawn();
-            _gridUnits.Clear();
-        }
-        
-        public void ResetIsland()
-        {
-            ClearIsland();
-            foreach (KeyValuePair<GameGridCell, GridUnitDynamicType> pair in _initGridDynamicDic)
-            {
-                GridUnitDynamic unit =
-                    SimplePool.Spawn<GridUnitDynamic>(DataManager.Ins.GetGridUnitDynamic(pair.Value));
-                unit.OnInit(pair.Key);
-                AddNewUnitToIsland(unit);
-            }
-
-            foreach (KeyValuePair<GameGridCell, GridUnitStaticType> pair in _initGridStaticDic)
-            {
-                GridUnitStatic unit = SimplePool.Spawn<GridUnitStatic>(DataManager.Ins.GetGridUnitStatic(pair.Value));
-                unit.OnInit(pair.Key);
-                AddNewUnitToIsland(unit);
             }
         }
     }

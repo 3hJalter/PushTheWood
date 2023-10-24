@@ -13,7 +13,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             RaftUnit raft = SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Raft));
             raft.OnInit(mainCell, type);
             raft.islandID = islandID;
-            GameGridManager.Ins.AddNewUnitToIsland(raft);
+            LevelManager2.Ins.AddNewUnitToIsland(raft);
         }
 
         public override void OnGetNextStateAndType(Direction direction)
@@ -43,6 +43,9 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         // SPAGHETTI CODE, change later
         public void OnInteractWithTreeRoot(Direction direction, TreeRootUnit treeRootUnit)
         {
+            if ((chumpType is ChumpType.Horizontal && lastPushedDirection is Direction.Back or Direction.Forward)
+                || (chumpType is ChumpType.Vertical && lastPushedDirection is Direction.Left or Direction.Right)) return;
+            
             OnGetNextStateAndType(direction);
 
             GridUnit aboveUnit = treeRootUnit.GetAboveUnit();
