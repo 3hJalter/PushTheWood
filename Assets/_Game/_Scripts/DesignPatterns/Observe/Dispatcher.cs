@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using _Game.DesignPattern;
 using UnityEngine;
 
-namespace DesignPattern.Observe
+namespace _Game.DesignPattern
 {
     public abstract class Dispatcher<T> : Singleton<T> where T : HMonoBehaviour
     {

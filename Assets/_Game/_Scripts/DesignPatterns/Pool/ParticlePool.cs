@@ -1,181 +1,184 @@
-﻿
-using UnityEngine;
+﻿using System;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
-public static class ParticlePool
+namespace _Game.DesignPattern
 {
-    const int DEFAULT_POOL_SIZE = 3;
-
-    private static Transform root;
-
-    public static Transform Root
+    public static class ParticlePool
     {
-        get
+        private const int DEFAULT_POOL_SIZE = 3;
+
+        private static Transform root;
+
+        //--------------------------------------------------------------------------------------------------
+
+        // All of our pools
+        private static readonly Dictionary<int, Pool> pools = new();
+
+        public static Transform Root
         {
-            if (root == null)
+            get
             {
-                root = GameObject.FindObjectOfType<PoolControler>().transform;
                 if (root == null)
                 {
-                    root = new GameObject().transform;
-                    root.name = "ParticlePool";
+                    root = Object.FindObjectOfType<PoolController>().transform;
+                    if (root == null)
+                    {
+                        root = new GameObject().transform;
+                        root.name = "ParticlePool";
+                    }
+                }
+
+                return root;
+            }
+        }
+
+        /// <summary>
+        ///     Init our dictionary.
+        /// </summary>
+        private static void Init(ParticleSystem prefab = null, int qty = DEFAULT_POOL_SIZE, Transform parent = null)
+        {
+            if (prefab != null && !pools.ContainsKey(prefab.GetInstanceID()))
+                pools[prefab.GetInstanceID()] = new Pool(prefab, qty, parent);
+        }
+
+        public static void Preload(ParticleSystem prefab, int qty = 1, Transform parent = null)
+        {
+            Init(prefab, qty, parent);
+        }
+
+        public static void Play(ParticleSystem prefab, Vector3 pos, Quaternion rot)
+        {
+            if (prefab == null)
+            {
+                Debug.Log(prefab.name + " is null");
+                return;
+            }
+
+            if (!pools.ContainsKey(prefab.GetInstanceID()))
+            {
+                Transform newRoot = new GameObject("VFX_" + prefab.name).transform;
+                newRoot.SetParent(Root);
+                pools[prefab.GetInstanceID()] = new Pool(prefab, 10, newRoot);
+            }
+
+            pools[prefab.GetInstanceID()].Play(pos, rot);
+        }
+
+        public static void Release(ParticleSystem prefab)
+        {
+            if (pools.ContainsKey(prefab.GetInstanceID()))
+            {
+                pools[prefab.GetInstanceID()].Release();
+                pools.Remove(prefab.GetInstanceID());
+            }
+            else
+            {
+                Object.DestroyImmediate(prefab);
+            }
+        }
+
+        /// <summary>
+        ///     The Pool class represents the pool for a particular prefab.
+        /// </summary>
+        private class Pool
+        {
+            //list prefab ready
+            private readonly List<ParticleSystem> inactive;
+            private readonly Transform m_sRoot;
+
+            // The prefab that we are pooling
+            private readonly ParticleSystem prefab;
+
+            private int index;
+
+            // Constructor
+            public Pool(ParticleSystem prefab, int initialQty, Transform parent)
+            {
+#if UNITY_EDITOR
+                if (prefab.main.loop)
+                {
+                    ParticleSystem.MainModule main = prefab.main;
+                    main.loop = false;
+
+                    //save prefab
+                    Undo.RegisterCompleteObjectUndo(prefab, "Fix To Not Loop");
+                    Debug.Log(prefab.name + " ~ Fix To Not Loop");
+                }
+
+                if (prefab.main.stopAction != ParticleSystemStopAction.None)
+                {
+                    ParticleSystem.MainModule main = prefab.main;
+                    main.stopAction = ParticleSystemStopAction.None;
+
+                    //save prefab
+                    Undo.RegisterCompleteObjectUndo(prefab, "Fix To Stop Action None");
+                    Debug.Log(prefab.name + " ~ Fix To  Stop Action None");
+                }
+
+                if (prefab.main.duration > 1)
+                {
+                    ParticleSystem.MainModule main = prefab.main;
+                    main.duration = 1;
+
+                    //save prefab
+                    Undo.RegisterCompleteObjectUndo(prefab, "Fix To Duration By 1");
+                    Debug.Log(prefab.name + " ~ Fix To Duration By 1");
+                }
+#endif
+
+                m_sRoot = parent;
+                this.prefab = prefab;
+                inactive = new List<ParticleSystem>(initialQty);
+
+                for (int i = 0; i < initialQty; i++)
+                {
+                    ParticleSystem particle = Object.Instantiate(prefab, m_sRoot);
+                    particle.Stop();
+                    inactive.Add(particle);
                 }
             }
 
-            return root;
-        }
-    }
+            public int Count => inactive.Count;
 
-    /// <summary>
-    /// The Pool class represents the pool for a particular prefab.
-    /// </summary>
-    class Pool
-    {
-        Transform m_sRoot = null;
-
-        //list prefab ready
-        List<ParticleSystem> inactive;
-
-        // The prefab that we are pooling
-        ParticleSystem prefab;
-
-        int index;
-
-        // Constructor
-        public Pool(ParticleSystem prefab, int initialQty, Transform parent)
-        {
-#if UNITY_EDITOR
-            if (prefab.main.loop)
+            // Spawn an object from our pool
+            public void Play(Vector3 pos, Quaternion rot)
             {
-                var main = prefab.main;
-                main.loop = false;
+                index = index + 1 < inactive.Count ? index + 1 : 0;
 
-                //save prefab
-                UnityEditor.Undo.RegisterCompleteObjectUndo(prefab, "Fix To Not Loop");
-                Debug.Log(prefab.name + " ~ Fix To Not Loop");
+                ParticleSystem obj = inactive[index];
+
+                if (obj.isPlaying)
+                {
+                    obj = Object.Instantiate(prefab, m_sRoot);
+                    obj.Stop();
+                    inactive.Insert(index, obj);
+                }
+
+                obj.transform.SetPositionAndRotation(pos, rot);
+                obj.Play();
             }
 
-            if (prefab.main.stopAction != ParticleSystemStopAction.None)
+            public void Release()
             {
-                var main = prefab.main;
-                main.stopAction = ParticleSystemStopAction.None;
+                while (inactive.Count > 0)
+                {
+                    Object.DestroyImmediate(inactive[0]);
+                    inactive.RemoveAt(0);
+                }
 
-                //save prefab
-                UnityEditor.Undo.RegisterCompleteObjectUndo(prefab, "Fix To Stop Action None");
-                Debug.Log(prefab.name + " ~ Fix To  Stop Action None");
-            }   
-            
-            if (prefab.main.duration > 1)
-            {
-                var main = prefab.main;
-                main.duration = 1;
-
-                //save prefab
-                UnityEditor.Undo.RegisterCompleteObjectUndo(prefab, "Fix To Duration By 1");
-                Debug.Log(prefab.name + " ~ Fix To Duration By 1");
-            }
-#endif
-
-            m_sRoot = parent;
-            this.prefab = prefab;
-            inactive = new List<ParticleSystem>(initialQty);
-
-            for (int i = 0; i < initialQty; i++)
-            {
-                ParticleSystem particle = (ParticleSystem)GameObject.Instantiate(prefab, m_sRoot);
-                particle.Stop();
-                inactive.Add(particle);
+                inactive.Clear();
             }
         }
-
-        public int Count {
-            get { return inactive.Count;}
-        }
-
-        // Spawn an object from our pool
-        public void Play(Vector3 pos, Quaternion rot)
-        {
-            index = index + 1 < inactive.Count ? index + 1 : 0;
-
-            ParticleSystem obj = inactive[index];
-
-            if (obj.isPlaying)
-            {
-                obj = (ParticleSystem)GameObject.Instantiate(prefab, m_sRoot);
-                obj.Stop();
-                inactive.Insert(index, obj);
-            }
-
-            obj.transform.SetPositionAndRotation( pos, rot);
-            obj.Play();
-        }
-
-        public void Release() {
-            while(inactive.Count > 0) {
-                GameObject.DestroyImmediate(inactive[0]);
-                inactive.RemoveAt(0);
-            }
-            inactive.Clear();
-        }
     }
 
-    //--------------------------------------------------------------------------------------------------
-
-    // All of our pools
-    static Dictionary<int, Pool> pools = new Dictionary<int, Pool>();
-
-    /// <summary>
-    /// Init our dictionary.
-    /// </summary>
-    static void Init(ParticleSystem prefab = null, int qty = DEFAULT_POOL_SIZE, Transform parent = null)
+    [Serializable]
+    public class ParticleAmount
     {
-        if (prefab != null && !pools.ContainsKey(prefab.GetInstanceID()))
-        {
-            pools[prefab.GetInstanceID()] = new Pool(prefab, qty, parent);
-        }
+        public ParticleSystem prefab;
+        public int amount;
+        public Transform root;
     }
-
-    static public void Preload(ParticleSystem prefab, int qty = 1, Transform parent = null)
-    {
-        Init(prefab, qty, parent);
-    }
-
-    static public void Play(ParticleSystem prefab, Vector3 pos, Quaternion rot)
-    {
-        if (prefab == null)
-        {
-            Debug.Log(prefab.name + " is null");
-            return;
-        }
-
-        if ( !pools.ContainsKey(prefab.GetInstanceID()))
-        {
-            Transform newRoot = new GameObject("VFX_" + prefab.name).transform;
-            newRoot.SetParent(Root);
-            pools[prefab.GetInstanceID()] = new Pool(prefab, 10, newRoot);
-        }
-
-        pools[prefab.GetInstanceID()].Play(pos, rot);
-    }
-
-    static public void Release(ParticleSystem prefab)
-    {
-        if (pools.ContainsKey(prefab.GetInstanceID()))
-        {
-            pools[prefab.GetInstanceID()].Release();
-            pools.Remove(prefab.GetInstanceID());
-        }
-        else
-        {
-            GameObject.DestroyImmediate(prefab);
-        }
-    }
-}
-
-[System.Serializable]
-public class ParticleAmount
-{
-    public ParticleSystem prefab;
-    public int amount;
-    public Transform root;
 }

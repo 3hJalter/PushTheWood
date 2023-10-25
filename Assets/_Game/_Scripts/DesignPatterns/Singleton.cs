@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DesignPattern
+namespace _Game.DesignPattern
 {
     public class Singleton<T> : HMonoBehaviour where T : HMonoBehaviour
     {

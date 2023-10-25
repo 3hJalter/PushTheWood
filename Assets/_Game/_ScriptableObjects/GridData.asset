@@ -1,0 +1,264 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 143f0badee364eefb3c99d449f4222e2, type: 3}
+  m_Name: GridData
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 5855485751288777823, guid: b96b595fba346e94aa96abc0752ced94, type: 3}
+    - {fileID: 925196025747551484, guid: 1ba27f3e7bc228d43a21f1ea8d0fa763, type: 3}
+    - {fileID: 4258035793235304891, guid: 5cf5e71fc2800db45ae76bcef98f8244, type: 3}
+    - {fileID: 4799337733843929289, guid: 72e538945521e3c4c96af32e03a4e60c, type: 3}
+    - {fileID: 6033861197893767037, guid: 4cc5494473a645e4f9730d044b789132, type: 3}
+    - {fileID: 2969586027676873429, guid: e51b66539c236b94386021d95f746ece, type: 3}
+    - {fileID: 1885524239494379297, guid: 1bce3ee87a601454ea022ac203bf1dc9, type: 3}
+    - {fileID: 2623478110790930152, guid: 7d2d8c26c208e6748835843aee7b2ae7, type: 3}
+    - {fileID: 3627019707810029916, guid: 5e5fc1739cee3984a986bc928a5ee956, type: 3}
+    - {fileID: 2325166382673045663, guid: 51ad1b81b0eaa9941be47c8dd14ffc74, type: 3}
+    - {fileID: 5760769762768296407, guid: 3b857625abbc05c4c81a32e5b76cbaad, type: 3}
+    - {fileID: 6317968097269191125, guid: c5ac8e7a10732714484e1939591f41c0, type: 3}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: _surfaceDic
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[GameGridEnum.GridSurfaceType,
+        Assembly-CSharp],[_Game.GameGrid.GridSurface.GridSurfaceBase, Assembly-CSharp]],
+        mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[GameGridEnum.GridSurfaceType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _staticUnitDic
+      Entry: 7
+      Data: 2|System.Collections.Generic.Dictionary`2[[GameGridEnum.GridUnitStaticType,
+        Assembly-CSharp],[_Game.GameGrid.GridUnit.GridUnitStatic, Assembly-CSharp]],
+        mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[GameGridEnum.GridUnitStaticType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 6
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 10
+    - Name: $v
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 9
+    - Name: $v
+      Entry: 10
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 11
+    - Name: $v
+      Entry: 10
+      Data: 3
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 8
+    - Name: $v
+      Entry: 10
+      Data: 4
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 7
+    - Name: $v
+      Entry: 10
+      Data: 5
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 13
+    - Name: $v
+      Entry: 10
+      Data: 6
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _dynamicUnitDic
+      Entry: 7
+      Data: 4|System.Collections.Generic.Dictionary`2[[GameGridEnum.GridUnitDynamicType,
+        Assembly-CSharp],[_Game.GameGrid.GridUnit.GridUnitDynamic, Assembly-CSharp]],
+        mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 5|System.Collections.Generic.EnumEqualityComparer`1[[GameGridEnum.GridUnitDynamicType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 5
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 4
+    - Name: $v
+      Entry: 10
+      Data: 7
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 5
+    - Name: $v
+      Entry: 10
+      Data: 8
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 3
+    - Name: $v
+      Entry: 10
+      Data: 9
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 6
+    - Name: $v
+      Entry: 10
+      Data: 10
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 12
+    - Name: $v
+      Entry: 10
+      Data: 11
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  gridTextDataList:
+  - {fileID: 4900000, guid: 4659561a057f8c74ca2ed0ca39f0dfb7, type: 3}
+  - {fileID: 4900000, guid: 9f60765a6b27bb043ab4ef399c955c2c, type: 3}
+  - {fileID: 4900000, guid: cbfee702de0f2464282281775503bf57, type: 3}

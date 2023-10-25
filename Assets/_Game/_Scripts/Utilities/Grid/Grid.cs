@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using _Game;
+using MapEnum;
 using UnityEngine;
-using Plane = MapEnum.Plane;
 
-namespace DesignPattern.Grid
+namespace _Game.Utilities.Grid
 {
     public class Grid<T, TD> where T : GridCell<TD>
     {
@@ -13,13 +13,13 @@ namespace DesignPattern.Grid
         private readonly Vector3 originPosition;
 
         public Grid(int width, int height, float cellSize, Vector3 originPosition = default,
-            Func<GridCell<TD>> constructorCell = null, Plane planeType = Plane.XY)
+            Func<GridCell<TD>> constructorCell = null, GridPlane gridPlaneType = GridPlane.XY)
         {
             Width = width;
             Height = height;
             CellSize = cellSize;
             this.originPosition = originPosition;
-            PlaneType = planeType;
+            GridPlaneType = gridPlaneType;
 
             gridArray = new T[width, height];
             debugTextArray = new TextMesh[width, height];
@@ -30,16 +30,16 @@ namespace DesignPattern.Grid
                 if (constructorCell != null) gridArray[x, y] = (T)constructorCell();
                 gridArray[x, y].SetCellPosition(x, y);
                 gridArray[x, y].Size = cellSize;
-                gridArray[x, y].PlaneType = planeType;
-                switch (planeType)
+                gridArray[x, y].GridPlaneType = gridPlaneType;
+                switch (gridPlaneType)
                 {
-                    case Plane.XY:
+                    case GridPlane.XY:
                         gridArray[x, y].UpdateWorldPosition(originPosition.x, originPosition.y);
                         break;
-                    case Plane.XZ:
+                    case GridPlane.XZ:
                         gridArray[x, y].UpdateWorldPosition(originPosition.x, originPosition.z);
                         break;
-                    case Plane.YZ:
+                    case GridPlane.YZ:
                         gridArray[x, y].UpdateWorldPosition(originPosition.y, originPosition.z);
                         break;
                 }
@@ -56,7 +56,7 @@ namespace DesignPattern.Grid
 
         public int Height { get; }
 
-        public Plane PlaneType { get; }
+        public GridPlane GridPlaneType { get; }
 
         public Vector3 GetWorldPosition(int x, int y)
         {
@@ -66,13 +66,13 @@ namespace DesignPattern.Grid
         public (int, int) GetGridPosition(Vector3 worldPosition)
         {
             Vector3 realPos = worldPosition - originPosition;
-            switch (PlaneType)
+            switch (GridPlaneType)
             {
-                case Plane.XY:
+                case GridPlane.XY:
                     return (Mathf.FloorToInt(realPos.x / CellSize), Mathf.FloorToInt(realPos.y / CellSize));
-                case Plane.XZ:
+                case GridPlane.XZ:
                     return (Mathf.FloorToInt(realPos.x / CellSize), Mathf.FloorToInt(realPos.z / CellSize));
-                case Plane.YZ:
+                case GridPlane.YZ:
                     return (Mathf.FloorToInt(realPos.y / CellSize), Mathf.FloorToInt(realPos.z / CellSize));
             }
 
@@ -81,7 +81,7 @@ namespace DesignPattern.Grid
 
         public void SetGridCell(int x, int y, T value)
         {
-            if (value == null) return;
+            if (value is null) return;
             if (x >= 0 && y >= 0 && x < Width && y < Height)
             {
                 gridArray[x, y].OnValueChange -= OnGridCellValueChange;
@@ -118,13 +118,13 @@ namespace DesignPattern.Grid
 
         private Vector3 GetUnitVector3(float val1, float val2)
         {
-            switch (PlaneType)
+            switch (GridPlaneType)
             {
-                case Plane.XY:
+                case GridPlane.XY:
                     return new Vector3(val1, val2, 0);
-                case Plane.XZ:
+                case GridPlane.XZ:
                     return new Vector3(val1, 0, val2);
-                case Plane.YZ:
+                case GridPlane.YZ:
                     return new Vector3(0, val1, val2);
             }
 
@@ -151,21 +151,39 @@ namespace DesignPattern.Grid
                 for (int y = 0; y < grid.gridArray.GetLength(1); y++)
                 {
                     if (isPositionShow)
-                        grid.debugTextArray[x, y] = GridUtilities.CreateWorldText(grid.gridArray[x, y].ToString(), null
-                            , grid.GetWorldPosition(x, y) + new Vector3(grid.CellSize / 2, grid.CellSize / 2), 20,
+                    {
+                        grid.debugTextArray[x, y] = GridUtilities.CreateWorldText(grid.gridArray[x, y].GetCellPosition().ToString(), null
+                            , grid.GetWorldPosition(x, y) + new Vector3(grid.CellSize / 2, grid.CellSize / 2), 5,
                             Color.white, TextAnchor.MiddleCenter);
+                        // Rotate text base on the gridPlane
+                        grid.debugTextArray[x, y].transform.rotation = grid.GridPlaneType switch
+                        {
+                            GridPlane.XY => Quaternion.Euler(0, 90, 0),
+                            GridPlane.XZ => Quaternion.Euler(90, 0, 0),
+                            GridPlane.YZ => Quaternion.Euler(0, 0, 90),
+                            _ => grid.debugTextArray[x, y].transform.rotation
+                        };
+
+                    }
                     Debug.DrawLine(grid.GetWorldPosition(x, y), grid.GetWorldPosition(x, y + 1), Color.white, 100f,
                         true);
                     Debug.DrawLine(grid.GetWorldPosition(x, y), grid.GetWorldPosition(x + 1, y), Color.white, 100f,
                         true);
                 }
-
+                
                 Debug.DrawLine(grid.GetWorldPosition(0, grid.Height), grid.GetWorldPosition(grid.Width, grid.Height),
                     Color.white, 100f);
                 Debug.DrawLine(grid.GetWorldPosition(grid.Width, 0), grid.GetWorldPosition(grid.Width, grid.Height),
                     Color.white, 100f);
             }
 
+            private string GetGridCellDataString(Grid<T, TD> grid, int x, int y)
+            {
+                if (grid.gridArray[x, y].Data != null)
+                    return grid.gridArray[x, y].Data.ToString();
+                return "";
+            }
+            
             public void UpdateVisualMap(Grid<GameCell, GameCellData> grid, Mesh mesh)
             {
                 GridUtilities.CreateEmptyMeshArray(grid.Width * grid.Height, out Vector3[] vertices, out Vector2[] uv,
@@ -176,15 +194,15 @@ namespace DesignPattern.Grid
                     int index = x * grid.Height + y;
 
                     Vector3 quadSize = default;
-                    switch (grid.PlaneType)
+                    switch (grid.GridPlaneType)
                     {
-                        case Plane.XY:
+                        case GridPlane.XY:
                             quadSize = new Vector3(1, 1) * grid.CellSize;
                             break;
-                        case Plane.XZ:
+                        case GridPlane.XZ:
                             quadSize = new Vector3(1, 0, 1) * grid.CellSize;
                             break;
-                        case Plane.YZ:
+                        case GridPlane.YZ:
                             quadSize = new Vector3(0, 1, 1) * grid.CellSize;
                             break;
                     }

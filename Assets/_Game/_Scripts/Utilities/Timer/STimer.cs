@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Utilitys.Timer
+namespace _Game.Utilities.Timer
 {
     public class STimer
     {

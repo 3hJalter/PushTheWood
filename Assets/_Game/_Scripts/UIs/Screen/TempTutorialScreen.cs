@@ -1,9 +1,10 @@
-﻿using DG.Tweening;
+﻿using _Game.Managers;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Game._Scripts.UIs.Screen
+namespace _Game.UIs.Screen
 {
     public class TempTutorialScreen : UICanvas
     {

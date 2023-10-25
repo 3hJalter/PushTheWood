@@ -183,6 +183,13 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.selection-groups": {
+      "version": "0.2.3-preview",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
     "com.unity.services.core": {
       "version": "1.6.0",
       "depth": 1,

@@ -1,12 +1,13 @@
-﻿using _Game._Scripts.Managers;
+﻿using _Game.GameGrid;
+using _Game.Managers;
 using _Game.UIs.Popup;
 using CnControls;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using CameraType = _Game._Scripts.Managers.CameraType;
+using CameraType = _Game.Managers.CameraType;
 
-namespace _Game._Scripts.UIs.Screen
+namespace _Game.UIs.Screen
 {
     public class InGameScreen : UICanvas
     {
@@ -41,12 +42,7 @@ namespace _Game._Scripts.UIs.Screen
         {
             UIManager.Ins.OpenUI<SettingPopup>();
         }
-
-        public void OnClickBackButton()
-        {
-            Debug.Log("Click back button");
-        }
-
+        
         public void OnClickOpenMapButton()
         {
             Close();
@@ -55,7 +51,7 @@ namespace _Game._Scripts.UIs.Screen
 
         public void OnClickResetIslandButton()
         {
-            Debug.Log("Click reset island button");
+            LevelManager.Ins.ResetIslandPlayerOn();
         }
     }
 }

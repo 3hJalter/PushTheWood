@@ -1,31 +1,37 @@
 using System.Collections.Generic;
+using _Game.DesignPattern;
 using Cinemachine;
-using DesignPattern;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace _Game._Scripts.Managers
+namespace _Game.Managers
 {
     public class CameraManager : Singleton<CameraManager>
     {
         private const int CAMERA_PRIORITY_ACTIVE = 99;
         private const int CAMERA_PRIORITY_INACTIVE = 1;
-        private CinemachineVirtualCameraBase _currentVirtualCamera;
+
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
+        // ReSharper disable once CollectionNeverUpdated.Local
         [SerializeField] private readonly Dictionary<CameraType, CinemachineVirtualCameraBase> virtualCameraDic = new();
+        [SerializeField] private CinemachineVirtualCameraBase currentVirtualCamera;
 
         public bool IsCurrentCameraIs(CameraType cameraType)
         {
-            return  _currentVirtualCamera == virtualCameraDic[cameraType];
+            return currentVirtualCamera == virtualCameraDic[cameraType];
         }
-        
+
         public void ChangeCamera(CameraType cameraType)
         {
-            if (_currentVirtualCamera != null)
-            {
-                _currentVirtualCamera.Priority = CAMERA_PRIORITY_INACTIVE;
-            }
-            _currentVirtualCamera = virtualCameraDic[cameraType];
-            _currentVirtualCamera.Priority = CAMERA_PRIORITY_ACTIVE;
+            if (currentVirtualCamera != null) currentVirtualCamera.Priority = CAMERA_PRIORITY_INACTIVE;
+            currentVirtualCamera = virtualCameraDic[cameraType];
+            currentVirtualCamera.Priority = CAMERA_PRIORITY_ACTIVE;
+        }
+
+        public void ChangeCameraTarget(CameraType cameraType, Transform target)
+        {
+            virtualCameraDic[cameraType].Follow = target;
+            virtualCameraDic[cameraType].LookAt = target;
         }
     }
 
@@ -33,9 +39,6 @@ namespace _Game._Scripts.Managers
     {
         MainMenuCamera = 0,
         InGameCamera = 1,
-        WorldMapCamera = 2,
+        WorldMapCamera = 2
     }
 }
-
-
-

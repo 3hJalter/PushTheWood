@@ -1,19 +1,19 @@
 using System;
+using MapEnum;
 using UnityEngine;
-using Plane = MapEnum.Plane;
 
-namespace DesignPattern.Grid
+namespace _Game.Utilities.Grid
 {
-    public class GridCell<T>
+    public class GridCell<T> 
     {
         protected const int MIN = 0;
         protected const int MAX = 100;
         public Action<int, int> OnValueChange;
-        public Plane PlaneType;
-        protected T value;
+        public GridPlane GridPlaneType;
+        protected T data;
         private Vector3 worldPos;
-        private float worldX;
-        private float worldY;
+        [SerializeField] private float worldX;
+        [SerializeField] private float worldY;
 
         protected int x;
         protected int y;
@@ -36,7 +36,7 @@ namespace DesignPattern.Grid
             worldX = copy.worldX;
             worldY = copy.worldY;
             worldPos = copy.worldPos;
-            PlaneType = copy.PlaneType;
+            GridPlaneType = copy.GridPlaneType;
         }
 
         public int X => x;
@@ -44,17 +44,22 @@ namespace DesignPattern.Grid
         public float WorldX => worldX;
         public float WorldY => worldY;
         public Vector3 WorldPos => worldPos;
-        public T Value => value;
+        public T Data => data;
 
         public float Size { get; set; }
 
         public void SetCellValue(T valueIn)
         {
-            value = valueIn;
+            data = valueIn;
             OnValueChange?.Invoke(x, y);
         }
 
-
+        
+        public Vector2Int GetCellPosition()
+        {
+            return new Vector2Int(x, y);
+        }
+        
         public void SetCellPosition(int xIn, int yIn)
         {
             x = xIn;
@@ -66,15 +71,15 @@ namespace DesignPattern.Grid
             worldX = originX + (x + 0.5f) * Size;
             worldY = originY + (y + 0.5f) * Size;
 
-            switch (PlaneType)
+            switch (GridPlaneType)
             {
-                case Plane.XY:
+                case GridPlane.XY:
                     worldPos.Set(worldX, worldY, 0);
                     break;
-                case Plane.XZ:
+                case GridPlane.XZ:
                     worldPos.Set(worldX, 0, worldY);
                     break;
-                case Plane.YZ:
+                case GridPlane.YZ:
                     worldPos.Set(0, worldX, worldY);
                     break;
             }
@@ -82,7 +87,7 @@ namespace DesignPattern.Grid
 
         public override string ToString()
         {
-            return value.ToString();
+            return data.ToString();
         }
     }
 }

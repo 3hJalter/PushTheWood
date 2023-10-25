@@ -1,9 +1,9 @@
-﻿using _Game._Scripts.Managers;
+﻿using _Game.Managers;
 using DG.Tweening;
 using UnityEngine;
-using CameraType = _Game._Scripts.Managers.CameraType;
+using CameraType = _Game.Managers.CameraType;
 
-namespace _Game._Scripts.UIs.Screen
+namespace _Game.UIs.Screen
 {
     public class WorldMapScreen : UICanvas
     {
@@ -37,7 +37,9 @@ namespace _Game._Scripts.UIs.Screen
         public void OnClickTeleport(int index)
         {
             Close();
-            LevelManager.Ins.GoLevel(index);
+            // Temporary, change it when remove all old script
+            // if (OldLevelManager.Ins != null) OldLevelManager.Ins.GoLevel(index);
+            UIManager.Ins.OpenUI<InGameScreen>();
         }
     }
 }

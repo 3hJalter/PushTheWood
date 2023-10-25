@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 551658376920407627}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3965552545316307887}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Middle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ GameObject:
   - component: {fileID: 6630061401179279425}
   - component: {fileID: 6630061401179279430}
   - component: {fileID: 6630061401179279426}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BaseCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,7 +189,7 @@ GameObject:
   - component: {fileID: 6630061402600170697}
   - component: {fileID: 6630061402600170699}
   - component: {fileID: 6630061402600170696}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,7 +267,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4702288442592296388}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -305,6 +305,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HButton
       objectReference: {fileID: 0}
+    - target: {fileID: 2073520842874827294, guid: fc9cb1b8d43db7b4f86d77ceb680745b, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 2073520842874827294, guid: fc9cb1b8d43db7b4f86d77ceb680745b, type: 3}
     - target: {fileID: 2073520842874827295, guid: fc9cb1b8d43db7b4f86d77ceb680745b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
