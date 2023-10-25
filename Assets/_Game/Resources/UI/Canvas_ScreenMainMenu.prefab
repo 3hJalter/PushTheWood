@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8897314877290242476}
   - component: {fileID: 8897314877290242475}
   - component: {fileID: 8897314877290242479}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Canvas_ScreenMainMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 8897314877330189465}
   - component: {fileID: 8897314877330189467}
   - component: {fileID: 8897314877330189466}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Logo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: 8897314877719706241}
   - component: {fileID: 8897314877719706240}
   - component: {fileID: 8897314877719706367}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Play
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -343,6 +343,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96f0f9d7b36308640831be797a227375, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   btnSound: -1
   unscaleTime: 0
   showAnimType: 0
@@ -568,7 +577,7 @@ GameObject:
   - component: {fileID: 8897314878687925540}
   - component: {fileID: 8897314878687925542}
   - component: {fileID: 8897314878687925541}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}

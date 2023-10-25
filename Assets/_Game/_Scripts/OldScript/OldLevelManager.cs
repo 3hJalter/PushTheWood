@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace _Game.Managers
 {
-    public class LevelManager : Singleton<LevelManager>
+    public class OldLevelManager : Singleton<OldLevelManager>
     {
         private const float TRANSITION_LEVEL_TIME = 2f;
         private static int _islandID;

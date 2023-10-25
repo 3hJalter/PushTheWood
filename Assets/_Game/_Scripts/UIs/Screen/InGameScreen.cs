@@ -1,4 +1,5 @@
-﻿using _Game.Managers;
+﻿using _Game.GameGrid;
+using _Game.Managers;
 using _Game.UIs.Popup;
 using CnControls;
 using DG.Tweening;
@@ -41,12 +42,7 @@ namespace _Game.UIs.Screen
         {
             UIManager.Ins.OpenUI<SettingPopup>();
         }
-
-        public void OnClickBackButton()
-        {
-            Debug.Log("Click back button");
-        }
-
+        
         public void OnClickOpenMapButton()
         {
             Close();
@@ -55,7 +51,7 @@ namespace _Game.UIs.Screen
 
         public void OnClickResetIslandButton()
         {
-            Debug.Log("Click reset island button");
+            LevelManager.Ins.ResetIslandPlayerOn();
         }
     }
 }

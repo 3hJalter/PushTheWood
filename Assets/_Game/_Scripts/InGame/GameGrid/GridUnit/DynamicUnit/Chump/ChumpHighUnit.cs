@@ -11,7 +11,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             RaftUnit raft = SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.RaftLong));
             raft.OnInit(mainCell, type);
             raft.islandID = islandID;
-            LevelManager2.Ins.AddNewUnitToIsland(raft);
+            LevelManager.Ins.AddNewUnitToIsland(raft);
         }
 
         public override void OnPushChumpDown(Direction direction)

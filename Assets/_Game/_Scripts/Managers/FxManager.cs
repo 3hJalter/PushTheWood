@@ -14,7 +14,12 @@ namespace _Game.Managers
         private const float DEFAULT_STOP_FOG_DURATION = 1f;
 
         [Header("Fog")] [SerializeField] private D2FogsPE fogControl;
+        [Header("Water")] [SerializeField] private GameObject water;
 
+        private void Awake()
+        {
+            water.SetActive(true);
+        }
 
         public void PlayTweenFog(bool isStopAfterDone = false, float fogDensity = DEFAULT_PLAY_FOG_DENSITY,
             float duration = DEFAULT_PLAY_FOG_DURATION, Action onCompleteAction = null)

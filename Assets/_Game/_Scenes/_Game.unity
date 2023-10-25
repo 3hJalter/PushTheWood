@@ -5208,6 +5208,7 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+  currentVirtualCamera: {fileID: 0}
 --- !u!43 &432634627
 Mesh:
   m_ObjectHideFlags: 0

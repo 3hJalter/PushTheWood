@@ -282,9 +282,9 @@ namespace _Game.InGame.Player
 
         public void OnInit()
         {
-            map = LevelManager.Ins.Map.GridMap;
+            map = OldLevelManager.Ins.Map.GridMap;
             GameCell initCell = map.GetGridCell(Tf.position);
-            LevelManager.Ins.FindIsland(initCell);
+            OldLevelManager.Ins.FindIsland(initCell);
             CurrentIslandID = initCell.IslandID;
             gridPosition.Set(initCell.X, initCell.Y);
         }
@@ -321,7 +321,7 @@ namespace _Game.InGame.Player
             {
                 playerAnimationControl.Idle();
                 CurrentIslandID = desCell.IslandID;
-                LevelManager.Ins.steps++;
+                OldLevelManager.Ins.steps++;
                 // _uiManager._stepText.text = LevelManager.Ins.Steps + " / 150";
                 isMoving = false;
             }

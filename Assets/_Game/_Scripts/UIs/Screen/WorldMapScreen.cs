@@ -37,7 +37,9 @@ namespace _Game.UIs.Screen
         public void OnClickTeleport(int index)
         {
             Close();
-            LevelManager.Ins.GoLevel(index);
+            // Temporary, change it when remove all old script
+            // if (OldLevelManager.Ins != null) OldLevelManager.Ins.GoLevel(index);
+            UIManager.Ins.OpenUI<InGameScreen>();
         }
     }
 }

@@ -57,7 +57,7 @@ namespace _Game.GameGrid.GridUnit
         // Get next main cell
         public static GameGridCell GetNextMainCell(GridUnit unit, Direction direction)
         {
-            return LevelManager2.Ins.GetNeighbourCell(unit.MainCell, direction);
+            return LevelManager.Ins.GetNeighbourCell(unit.MainCell, direction);
         }
         
         // Get next cells from cellInUnits
@@ -67,7 +67,7 @@ namespace _Game.GameGrid.GridUnit
 
             for (int i = 0; i < unit.cellInUnits.Count; i++)
             {
-                GameGridCell nextCell = LevelManager2.Ins.GetNeighbourCell(unit.cellInUnits[i], direction);
+                GameGridCell nextCell = LevelManager.Ins.GetNeighbourCell(unit.cellInUnits[i], direction);
                 if (nextCell == null) continue;
                 nextCells.Add(nextCell);
             }

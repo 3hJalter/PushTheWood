@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using _Game.GameGrid;
+using _Game.Managers;
+using _Game.UIs.Screen;
+using UnityEngine;
 
 namespace _Game.UIs.Popup
 {
@@ -19,14 +22,17 @@ namespace _Game.UIs.Popup
             Debug.Log("Click like button");
         }
 
-        public void OnClickChangeLanguageButton()
+        public void OnClickRestartButton()
         {
-            Debug.Log("Click change language button");
+            LevelManager.Ins.OnRestart();
+            Close();
         }
 
-        public void OnClickContactUsButton()
+        public void OnClickGoMenuButton()
         {
-            Debug.Log("Click contact us button");
+            LevelManager.Ins.OnRestart();
+            UIManager.Ins.CloseAll();
+            UIManager.Ins.OpenUI<MainMenuScreen>();
         }
 
         public void OnClickHowToPlayButton()

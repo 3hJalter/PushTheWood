@@ -114,7 +114,7 @@ namespace _Game.GameGrid.GridUnit
         protected bool HasNoObstacleIfMove(Direction direction, out GameGridCell nextMainCell,
             out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits)
         {
-            nextMainCell = LevelManager2.Ins.GetNeighbourCell(mainCell, direction);
+            nextMainCell = LevelManager.Ins.GetNeighbourCell(mainCell, direction);
             nextCells = new HashSet<GameGridCell>();
             nextUnits = new HashSet<GridUnit>();
             bool isNextCellHasUnit = false;
@@ -122,7 +122,7 @@ namespace _Game.GameGrid.GridUnit
             // Loop to check if all next cells at direction are exist and empty
             for (int i = 0; i < cellInUnits.Count; i++)
             {
-                GameGridCell neighbour = LevelManager2.Ins.GetNeighbourCell(cellInUnits[i], direction);
+                GameGridCell neighbour = LevelManager.Ins.GetNeighbourCell(cellInUnits[i], direction);
                 if (neighbour is null)
                 {
                     isNextCellIsNull = true;
@@ -188,7 +188,7 @@ namespace _Game.GameGrid.GridUnit
             for (int j = 0; j < zAxisLoop; j++)
             {
                 Vector2Int cellPos = nexMainCellPos + new Vector2Int(i, j);
-                GameGridCell cell = LevelManager2.Ins.GetCell(cellPos);
+                GameGridCell cell = LevelManager.Ins.GetCell(cellPos);
                 if (cell is null)
                 {
                     hasNullNextCell = true;
@@ -227,7 +227,7 @@ namespace _Game.GameGrid.GridUnit
         private GameGridCell GetNextMainCell(Direction direction)
         {
             Vector2Int nextMainCellPos = mainCell.GetCellPosition() + GetOffset();
-            GameGridCell nextMainCell = LevelManager2.Ins.GetCell(nextMainCellPos);
+            GameGridCell nextMainCell = LevelManager.Ins.GetCell(nextMainCellPos);
             return nextMainCell;
 
             Vector2Int GetOffset()

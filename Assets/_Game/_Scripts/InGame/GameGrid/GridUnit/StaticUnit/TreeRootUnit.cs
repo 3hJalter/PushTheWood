@@ -11,7 +11,7 @@ namespace _Game.GameGrid.GridUnit.StaticUnit
             interactRootTreeUnit.OnInteractWithTreeRoot(direction, this);
         }
 
-        public GridUnit GetAboveUnit()
+        public new GridUnit GetAboveUnit()
         {
             return mainCell.GetGridUnitAtHeight(endHeight + 1);
         }

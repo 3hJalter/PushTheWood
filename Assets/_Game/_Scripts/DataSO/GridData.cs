@@ -23,6 +23,8 @@ namespace _Game.Data
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         [SerializeField] private readonly Dictionary<GridUnitDynamicType, GridUnitDynamic> _dynamicUnitDic = new();
 
+        public int CountLevel => gridTextDataList.Count;
+        
         public TextAsset GetGridTextData(int index)
         {
             return gridTextDataList[index];

@@ -10,10 +10,14 @@ public static class Constants
     // String Constants
     
     /// <summary>
+    ///     Player Prefab Path
+    /// </summary>
+    public const string LEVEL_INDEX = "levelIndex";
+    
+    /// <summary>
     ///     Path to the folder in Resources
     /// </summary>
     public const string POOL_PATH = "Pool";
-
     public const string UI_PATH = "UI/";
 
     /// <summary>

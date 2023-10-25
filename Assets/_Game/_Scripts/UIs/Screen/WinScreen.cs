@@ -1,4 +1,4 @@
-﻿using _Game.Managers;
+﻿using _Game.GameGrid;
 
 namespace _Game.UIs.Screen
 {
@@ -6,7 +6,7 @@ namespace _Game.UIs.Screen
     {
         public void OnClickNextButton()
         {
-            LevelManager.Ins.GoNextLevel();
+            LevelManager.Ins.OnNextLevel();
             Close();
         }
     }

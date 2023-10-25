@@ -43,7 +43,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             RaftUnit raft = SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Raft));
             raft.OnInit(cellInit, type);
             raft.islandID = islandID;
-            LevelManager2.Ins.AddNewUnitToIsland(raft);
+            LevelManager.Ins.AddNewUnitToIsland(raft);
         }
 
         public void OnPushChump(Direction direction)
@@ -149,7 +149,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             chumpUnit.unitState = UnitState.Down;
             chumpUnit.OnInit(spawnCell, Constants.dirFirstHeightOfSurface[GridSurfaceType.Water], false);
             chumpUnit.islandID = islandID;
-            LevelManager2.Ins.AddNewUnitToIsland(chumpUnit);
+            LevelManager.Ins.AddNewUnitToIsland(chumpUnit);
             chumpUnit.ChumpType = createdChumpType;
             chumpUnit.skin.localRotation =
                 Quaternion.Euler(chumpUnit.ChumpType is ChumpType.Horizontal

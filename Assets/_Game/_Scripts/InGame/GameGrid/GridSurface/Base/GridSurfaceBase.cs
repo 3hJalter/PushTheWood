@@ -1,6 +1,7 @@
 ﻿using _Game.DesignPattern;
 using GameGridEnum;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Game.GameGrid.GridSurface
 {
@@ -8,19 +9,23 @@ namespace _Game.GameGrid.GridSurface
     {
         [SerializeField] protected GridSurfaceType surfaceType;
         public PoolType PoolType => ConvertToPoolType(surfaceType);
-        [SerializeField] private int _islandID = -1;
+        [SerializeField] private int islandID = -1;
 
         public int IslandID
         {
-            get => _islandID;
+            get => islandID;
             set
             {
-                if (value < 0 || _islandID >= 0) return;
-                if (surfaceType != GridSurfaceType.Water) _islandID = value;
+                if (value < 0 || islandID >= 0) return;
+                if (surfaceType != GridSurfaceType.Water) islandID = value;
             }
         }
         public GridSurfaceType SurfaceType => surfaceType;
 
-        
+        public void OnDespawn()
+        {
+            islandID = -1;
+            SimplePool.Despawn(this);
+        }
     }
 }

@@ -80,7 +80,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             MoveAnimation(nextPos, () => { OnEnterNextCells(nextMainCell); });
             if (islandID == nextMainCell.IslandID || nextMainCell.IslandID == -1) return;
             islandID = nextMainCell.IslandID;
-            LevelManager2.Ins.SetFirstPlayerStepOnIsland(nextMainCell);
+            LevelManager.Ins.SetFirstPlayerStepOnIsland(nextMainCell);
         }
         
         // SUPER SPAGHETTI CODE

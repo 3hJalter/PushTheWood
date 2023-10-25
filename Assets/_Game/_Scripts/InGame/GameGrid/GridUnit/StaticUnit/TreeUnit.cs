@@ -17,12 +17,12 @@ namespace _Game.GameGrid.GridUnit.StaticUnit
             TreeRootUnit treeRoot = SimplePool.Spawn<TreeRootUnit>(DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.TreeRoot));
             treeRoot.OnInit(mainCell, startHeight);
             treeRoot.islandID = islandID;
-            LevelManager2.Ins.AddNewUnitToIsland(treeRoot);
+            LevelManager.Ins.AddNewUnitToIsland(treeRoot);
             // Spawn Chump
             ChumpUnit chump = SimplePool.Spawn<ChumpUnit>(chumpSpawn);
             chump.OnInit(mainCell, startHeight + 1);
             chump.islandID = islandID;
-            LevelManager2.Ins.AddNewUnitToIsland(chump);
+            LevelManager.Ins.AddNewUnitToIsland(chump);
             // chump.Tf.position -= treeRoot.offsetY;
             chump.OnInteract(direction);
             // OnPushChump(direction);

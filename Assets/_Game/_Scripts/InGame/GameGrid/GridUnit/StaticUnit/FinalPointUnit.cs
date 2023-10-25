@@ -1,5 +1,4 @@
 ﻿using _Game.GameGrid.GridUnit.DynamicUnit;
-using UnityEngine;
 
 namespace _Game.GameGrid.GridUnit.StaticUnit
 {
@@ -7,10 +6,9 @@ namespace _Game.GameGrid.GridUnit.StaticUnit
     {
         public override void OnInteract(Direction direction, GridUnit interactUnit = null)
         {
-            base.OnInteract(direction, interactUnit);
             if (interactUnit is PlayerUnit)
             {
-                Debug.Log("Win");
+               LevelManager.Ins.OnWin();
             }
         }
     }

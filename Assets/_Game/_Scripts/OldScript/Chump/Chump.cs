@@ -41,7 +41,7 @@ namespace _Game
 
         public void OnInit()
         {
-            map = LevelManager.Ins.Map.GridMap;
+            map = OldLevelManager.Ins.Map.GridMap;
             GameCell initCell = map.GetGridCell(Tf.position);
             initCell.Tree1 = this;
             gridPosition.Set(initCell.X, initCell.Y);

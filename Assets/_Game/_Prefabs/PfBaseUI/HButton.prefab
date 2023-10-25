@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2073520841091623021}
   - component: {fileID: 2073520841091623023}
   - component: {fileID: 2073520841091623020}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 2073520842874827360}
   - component: {fileID: 2073520842874827361}
   - component: {fileID: 2073520842874827294}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: HButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -284,6 +284,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96f0f9d7b36308640831be797a227375, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   btnSound: -1
   unscaleTime: 0
   showAnimType: 0
