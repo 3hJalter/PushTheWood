@@ -1,11 +1,11 @@
-﻿using _Game.GameGrid;
+﻿using _Game.Camera;
+using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Popup;
 using CnControls;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using CameraType = _Game.Managers.CameraType;
 
 namespace _Game.UIs.Screen
 {
@@ -19,7 +19,7 @@ namespace _Game.UIs.Screen
         {
             base.Setup();
             joystick.ResetJoyStickPos();
-            if (CameraManager.Ins.IsCurrentCameraIs(CameraType.InGameCamera)) return;
+            if (CameraFollow.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
             FxManager.Ins.StopTweenFog();
             blockPanel.enabled = true;
         }
@@ -27,7 +27,7 @@ namespace _Game.UIs.Screen
         public override void Open()
         {
             base.Open();
-            CameraManager.Ins.ChangeCamera(CameraType.InGameCamera);
+            CameraFollow.Ins.ChangeCamera(ECameraType.InGameCamera);
             DOVirtual.Float(0, 1, 1f, value => canvasGroup.alpha = value)
                 .OnComplete(() =>
                 {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _Game.Camera;
 using _Game.DesignPattern;
 using _Game.InGame.Player;
 using _Game.UIs.Screen;
@@ -44,8 +45,8 @@ namespace _Game.Managers
 
         private void SetCameraToPlayer()
         {
-            CameraManager.Ins.ChangeCameraTarget(CameraType.MainMenuCamera, player.Tf);
-            CameraManager.Ins.ChangeCameraTarget(CameraType.InGameCamera, player.Tf);
+            // CameraManager.Ins.ChangeCameraTarget(ECameraType.MainMenuCamera, player.Tf);
+            // CameraManager.Ins.ChangeCameraTarget(ECameraType.InGameCamera, player.Tf);
         }
 
 
@@ -134,7 +135,8 @@ namespace _Game.Managers
             if (winBySkip) return;
             player.SetPosition(initPos[landIndex]);
             FxManager.Ins.PlayTweenFog(false, TRANSITION_LEVEL_TIME);
-            CameraManager.Ins.ChangeCamera(CameraType.WorldMapCamera);
+            // CameraManager.Ins.ChangeCamera(ECameraType.WorldMapCamera);
+            CameraFollow.Ins.ChangeCamera(ECameraType.WorldMapCamera, player.Tf);
             DOVirtual.DelayedCall(TRANSITION_LEVEL_TIME, () => { UIManager.Ins.OpenUI<InGameScreen>(); });
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Game.Camera;
 using _Game.DesignPattern;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.GridUnit;
@@ -11,7 +12,6 @@ using _Game.Utilities.Grid;
 using GameGridEnum;
 using MapEnum;
 using UnityEngine;
-using CameraType = _Game.Managers.CameraType;
 
 namespace _Game.GameGrid
 {
@@ -31,7 +31,6 @@ namespace _Game.GameGrid
         private void Start()
         {
             // TEST
-            PlayerPrefs.SetInt(Constants.LEVEL_INDEX, 0);
             levelIndex = PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0);
             OnInit();
         }
@@ -149,8 +148,7 @@ namespace _Game.GameGrid
         
         private void SetCameraToPlayer()
         {
-            CameraManager.Ins.ChangeCameraTarget(CameraType.MainMenuCamera, _pUnit.Tf);
-            CameraManager.Ins.ChangeCameraTarget(CameraType.InGameCamera, _pUnit.Tf);
+            CameraFollow.Ins.SetTarget(_pUnit.Tf);
         }
         
         private void SpawnPlayerUnit(int x, int y)
@@ -260,7 +258,7 @@ namespace _Game.GameGrid
             void FloodFillIslandID(GridSurfaceBase gridSurface, int x, int y, int islandID)
             {
                 gridSurface.IslandID = islandID;
-                _islandDic.TryAdd(islandID, new Island());
+                _islandDic.TryAdd(islandID, new Island(islandID));
                 _islandDic[islandID].AddGridCell(_gridMap.GetGridCell(x, y));
                 if (IsGridSurfaceHadIsland(x - 1, y, out GridSurfaceBase leftGridSurface))
                     FloodFillIslandID(leftGridSurface, x - 1, y, islandID);
@@ -288,6 +286,7 @@ namespace _Game.GameGrid
     
     public class Island
     {
+        private int _islandID;
         private readonly List<GameGridCell> _gridCells = new();
 
         private readonly HashSet<GridUnit.GridUnit> _gridUnits = new();
@@ -296,6 +295,11 @@ namespace _Game.GameGrid
         private readonly Dictionary<GameGridCell, GridUnitDynamicType> _initGridDynamicDic = new();
         private readonly Dictionary<GameGridCell, GridUnitStaticType> _initGridStaticDic = new();
         private GameGridCell _firstPlayerStepCell;
+
+        public Island(int islandID)
+        {
+            _islandID = islandID;
+        }
 
         public GameGridCell FirstPlayerStepCell => _firstPlayerStepCell;
 
@@ -334,7 +338,11 @@ namespace _Game.GameGrid
                 GameGridCell cell = _gridCells[i];
                 cell.ClearGridUnit();
             }
-            foreach (GridUnit.GridUnit unit in _gridUnits.Where(unit => unit.gameObject.activeSelf)) unit.OnDespawn();
+            foreach (GridUnit.GridUnit unit in _gridUnits.Where(unit => unit.gameObject.activeSelf))
+            {   
+                if (unit.islandID != _islandID) continue;
+                unit.OnDespawn();
+            }
             _gridUnits.Clear();
         }
         

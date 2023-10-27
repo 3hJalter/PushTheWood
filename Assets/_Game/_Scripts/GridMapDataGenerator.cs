@@ -137,10 +137,10 @@ public class GridMapDataGenerator : MonoBehaviour
             if (position.x > maxX) maxX = (int) Math.Round(position.x);
             if (position.z > maxZ) maxZ = (int) Math.Round(position.z);
         }
-        // if minX or minY < 0, get the offset and make all position added with this offset so the minX and minY can be 0
-        if (minX < 1)
+        // if minX or minY < 3, get the offset and make all position added with this offset so the minX and minY can be 3 (index 1,1)
+        if (minX < 3)
         {
-            int offsetX = 1 - minX;
+            int offsetX = 3 - minX;
             foreach (GroundSurface gridSurface in gridSurfaces)
             {
                 Vector3 position = gridSurface.Tf.position;
@@ -156,9 +156,10 @@ public class GridMapDataGenerator : MonoBehaviour
             minX += offsetX;
             maxX += offsetX;
         }
-        if (minZ < 1)
+        maxX += 2; // add one more cell to maxX and maxY
+        if (minZ < 3)
         {
-            int offsetZ = 1 - minZ;
+            int offsetZ = 3 - minZ;
             foreach (GroundSurface gridSurface in gridSurfaces)
             {
                 Vector3 position = gridSurface.Tf.position;
@@ -174,6 +175,7 @@ public class GridMapDataGenerator : MonoBehaviour
             minZ += offsetZ;
             maxZ += offsetZ;
         }
+        maxZ += 2;
         const int cellOffset = 1;
         maxX = (maxX + cellOffset) / 2;
         maxZ = (maxZ + cellOffset) / 2;

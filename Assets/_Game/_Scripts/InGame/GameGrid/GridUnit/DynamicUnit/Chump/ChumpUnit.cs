@@ -265,8 +265,8 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             }
 
             isInAction = true;
-            StartCoroutine(Roll(direction, OnRollComplete));
-            // RollTween(direction, OnRollComplete);
+            // StartCoroutine(Roll(direction, OnRollComplete));
+            RollTween(direction, OnRollComplete);
             return;
 
             void OnRollComplete()
@@ -303,6 +303,19 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             }
         }
 
+        private void RollTween(Direction direction, Action callback)
+        {
+            anchor.ChangeAnchorPos(this, direction);
+            Vector3 axis = Vector3.Cross(Vector3.up, Constants.dirVector3[direction]);
+            // Roll 90 degree around anchor in 0.18 second using Tween
+            float lastAngle = 0;
+            DOVirtual.Float(0, 90, Constants.MOVING_TIME, i =>
+            {
+                skin.RotateAround(anchor.Tf.position, axis, i - lastAngle);
+                lastAngle = i;
+            }).OnComplete(() => { callback?.Invoke(); });
+        } 
+        
         protected IEnumerator Roll(Direction direction, Action callback)
         {
             anchor.ChangeAnchorPos(this, direction);
@@ -312,7 +325,6 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 skin.RotateAround(anchor.Tf.position, axis, 5);
                 yield return new WaitForSeconds(0.01f);
             }
-
             callback?.Invoke();
         }
     }

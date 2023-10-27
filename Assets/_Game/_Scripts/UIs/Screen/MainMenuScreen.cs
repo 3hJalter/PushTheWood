@@ -1,7 +1,7 @@
-﻿using _Game.Managers;
+﻿using _Game.Camera;
+using _Game.Managers;
 using DG.Tweening;
 using UnityEngine;
-using CameraType = _Game.Managers.CameraType;
 
 namespace _Game.UIs.Screen
 {
@@ -11,7 +11,7 @@ namespace _Game.UIs.Screen
         public override void Open()
         {
             base.Open();
-            CameraManager.Ins.ChangeCamera(CameraType.MainMenuCamera);
+            CameraFollow.Ins.ChangeCamera(ECameraType.MainMenuCamera);
             FxManager.Ins.PlayTweenFog();
             DOVirtual.Float(0, 1, 1f, value => canvasGroup.alpha = value);
         }

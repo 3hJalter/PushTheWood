@@ -145,7 +145,7 @@ namespace _Game.GameGrid.GridUnit
 
         protected Vector3 GetUnitWorldPos()
         {
-            float offsetY = (int)startHeight * Constants.CELL_SIZE;
+            float offsetY = (float) startHeight / 2 * Constants.CELL_SIZE;
             return mainCell.WorldPos + Vector3.up * offsetY;
         }
 
