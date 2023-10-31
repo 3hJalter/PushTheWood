@@ -12,14 +12,24 @@ namespace _Game.GameGrid.GridUnit
         [SerializeField] protected HeightLevel startHeight = HeightLevel.One;
         [SerializeField] protected float yOffsetOnDown = 0.5f;
         [SerializeField] protected UnitState unitState = UnitState.Up;
+        [SerializeField] protected UnitType unitType = UnitType.Both;
         [SerializeField] protected bool isMinusHalfSizeY;
         [SerializeField] protected HeightLevel endHeight;
+        public int islandID = -1;
+
+        [SerializeField] protected Direction lastPushedDirection = Direction.None;
         public readonly List<GameGridCell> cellInUnits = new();
         private UnitInitData _unitInitData;
-        public int islandID = -1;
 
         protected GameGridCell mainCell;
         protected UnitState nextUnitState;
+
+
+        public UnitType UnitType
+        {
+            get => unitType;
+            protected set => unitType = value;
+        }
 
         public GameGridCell MainCell => mainCell;
         public HeightLevel StartHeight => startHeight;
@@ -27,14 +37,15 @@ namespace _Game.GameGrid.GridUnit
 
         protected HeightLevel BelowStartHeight => startHeight - Constants.BELOW_HEIGHT;
         protected HeightLevel UpperEndHeight => endHeight + Constants.UPPER_HEIGHT;
-        
-        
+
+
         private void Awake()
         {
             SaveInitData(size, unitState, skin);
         }
 
-        public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true)
+        public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
+            bool isUseInitData = true)
         {
             if (isUseInitData) GetInitData();
             startHeight = startHeightIn;
@@ -72,8 +83,6 @@ namespace _Game.GameGrid.GridUnit
             SimplePool.Despawn(this);
         }
 
-        [SerializeField] protected Direction lastPushedDirection = Direction.None;
-        
         public virtual void OnInteract(Direction direction, GridUnit interactUnit = null)
         {
             lastPushedDirection = direction;
@@ -83,12 +92,12 @@ namespace _Game.GameGrid.GridUnit
         {
             return mainCell.GetGridUnitAtHeight(BelowStartHeight);
         }
-        
+
         protected GridUnit GetAboveUnit()
         {
             return mainCell.GetGridUnitAtHeight(UpperEndHeight);
         }
-        
+
         private void AddZCell(GameGridCell cell, int sizeZ)
         {
             for (int i = 1; i < sizeZ; i++)
@@ -96,7 +105,6 @@ namespace _Game.GameGrid.GridUnit
                 GameGridCell neighbourZ = LevelManager.Ins.GetNeighbourCell(cell, Direction.Forward, i);
                 if (neighbourZ == null) continue;
                 cellInUnits.Add(neighbourZ);
-                Debug.Log("Add neighbourZ: " + neighbourZ.WorldPos + " to cellInUnits: " + name);
             }
         }
 
@@ -107,7 +115,6 @@ namespace _Game.GameGrid.GridUnit
                 GameGridCell neighbourX = LevelManager.Ins.GetNeighbourCell(cell, Direction.Right, i);
                 if (neighbourX == null) continue;
                 cellInUnits.Add(neighbourX);
-                Debug.Log("Add neighbourX: " + neighbourX.WorldPos + " to cellInUnits: " + name);
             }
         }
 
@@ -129,6 +136,14 @@ namespace _Game.GameGrid.GridUnit
     {
         Up = 0,
         Down = 1
+    }
+
+    public enum UnitType
+    {
+        None = -1,
+        Horizontal = 0,
+        Vertical = 1,
+        Both = 2
     }
 
     public class UnitInitData

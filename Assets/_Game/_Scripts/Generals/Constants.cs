@@ -46,7 +46,7 @@ public static class Constants
     public const int UPPER_HEIGHT = 1;
     public const int BELOW_HEIGHT = 1;
 
-    public const float DELAY_INPUT_TIME = 0.01f;
+    public const int DELAY_FRAME_TIME = 3;
     public const float MOVING_TIME = 0.25f;
     public const float FALLING_TIME = 0.2f;
     

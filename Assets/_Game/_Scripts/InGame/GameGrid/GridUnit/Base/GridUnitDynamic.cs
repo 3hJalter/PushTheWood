@@ -4,7 +4,6 @@ using _Game.DesignPattern;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _Game.GameGrid.GridUnit
 {
@@ -12,17 +11,17 @@ namespace _Game.GameGrid.GridUnit
     {
         [SerializeField] protected GridUnitDynamicType gridUnitDynamicType;
 
-        public GridUnitDynamicType GridUnitDynamicType => gridUnitDynamicType;
-
         [SerializeField] protected Anchor anchor;
         public bool isInAction;
-        [FormerlySerializedAs("isMovingLock")] [FormerlySerializedAs("isNotMovingLock")] public bool isLockedActionWhenNotMove;
-        
+        public bool isLockedActionWhenNotMove;
+        protected UnitType nextUnitType;
+
+        public GridUnitDynamicType GridUnitDynamicType => gridUnitDynamicType;
         public PoolType? PoolType => ConvertToPoolType(gridUnitDynamicType);
 
         public override void OnDespawn()
         {
-            isInAction = false; 
+            isInAction = false;
             base.OnDespawn();
         }
 
@@ -65,6 +64,7 @@ namespace _Game.GameGrid.GridUnit
 
                 if (numHeightDownInCell > numHeightDown) numHeightDown = numHeightDownInCell;
             }
+
             // invert numHeightDown to positive number
             numHeightDown = -numHeightDown;
             return numHeightDown > 0;
@@ -86,32 +86,67 @@ namespace _Game.GameGrid.GridUnit
             cellInUnits.Clear();
         }
 
-        protected void OnEnterNextCells(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null, Action fallCallback = null)
+        protected void OnEnterNextCells(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null,
+            Action fallCallback = null)
         {
             InitCellsToUnit(nextMainCell, nextCells);
             if (CanFall(out int numHeightDown)) OnFall(numHeightDown, fallCallback);
             else OnNotFall();
         }
 
+        protected void OnEnterNextCell2(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null)
+        {
+            startHeight = nextCells is not null ? GetNextStartHeight(nextCells) : GetNextStartHeight(nextMainCell);
+            endHeight = startHeight + size.y - 1;
+            InitCellsToUnit(nextMainCell);
+        }
+
+        private HeightLevel GetNextStartHeight(GameGridCell nextCell)
+        {
+            HeightLevel nextStartHeight = Constants.maxHeight;
+            for (HeightLevel height = startHeight - 1;
+                 height >= Constants.dirFirstHeightOfSurface[nextCell.SurfaceType];
+                 height--)
+                if (nextCell.GetGridUnitAtHeight(height) is null && height < nextStartHeight)
+                    nextStartHeight = height;
+                else break;
+            return nextStartHeight == Constants.maxHeight ? startHeight : nextStartHeight;
+        }
+
+        private HeightLevel GetNextStartHeight(HashSet<GameGridCell> nextCells)
+        {
+            HeightLevel nextStartHeight = Constants.maxHeight;
+            foreach (GameGridCell cell in nextCells)
+                for (HeightLevel height = startHeight - 1;
+                     height >= Constants.dirFirstHeightOfSurface[cell.SurfaceType];
+                     height--)
+                    if (cell.GetGridUnitAtHeight(height) is null && height < nextStartHeight)
+                        nextStartHeight = height;
+                    else break;
+            return nextStartHeight == Constants.maxHeight ? startHeight : nextStartHeight;
+        }
+
         public void OnEnterNextCellWithoutFall(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null)
         {
             InitCellsToUnit(nextMainCell, nextCells);
         }
-        
+
         protected virtual void OnNotFall()
         {
-            
+
         }
 
         private void InitCellsToUnit(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null)
         {
             mainCell = nextMainCell;
             // Add all nextCells to cellInUnits
-            if (nextCells != null) foreach (GameGridCell nextCell in nextCells) AddCell(nextCell);
+            if (nextCells is not null)
+                foreach (GameGridCell nextCell in nextCells)
+                    AddCell(nextCell);
             else AddCell(nextMainCell);
         }
 
-        protected bool HasNoObstacleIfMove(Direction direction, out GameGridCell nextMainCell,
+        protected bool HasObstacleIfMove(Direction direction, out GameGridCell nextMainCell,
             out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits)
         {
             nextMainCell = LevelManager.Ins.GetNeighbourCell(mainCell, direction);
@@ -140,23 +175,23 @@ namespace _Game.GameGrid.GridUnit
                 nextCells.Add(neighbour);
             }
 
-            return !isNextCellHasUnit && !isNextCellIsNull;
+            return isNextCellHasUnit || isNextCellIsNull;
         }
 
         protected Vector3 GetUnitWorldPos()
         {
-            float offsetY = (float) startHeight / 2 * Constants.CELL_SIZE;
+            float offsetY = (float)startHeight / 2 * Constants.CELL_SIZE;
             return mainCell.WorldPos + Vector3.up * offsetY;
         }
 
         protected Vector3 GetUnitNextWorldPos(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null)
         {
-            float offsetY = (float) startHeight / 2 * Constants.CELL_SIZE;
+            float offsetY = (float)startHeight / 2 * Constants.CELL_SIZE;
             if (nextUnitState == UnitState.Down) offsetY -= yOffsetOnDown;
             return nextMainCell.WorldPos + Vector3.up * offsetY;
         }
 
-        protected bool HasNoObstacleIfRotateMove(Direction direction, out Vector3Int sizeAfterRotate,
+        protected bool HasObstacleIfRotateMove(Direction direction, out Vector3Int sizeAfterRotate,
             out HeightLevel endHeightAfterRotate, out GameGridCell nextMainCell,
             out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits)
         {
@@ -207,8 +242,7 @@ namespace _Game.GameGrid.GridUnit
             }
 
             // False if has null cell or has unit in next cell
-            bool canRotateMove = !(hasNullNextCell || hasUnitInNextCell);
-            return canRotateMove;
+            return hasNullNextCell || hasUnitInNextCell;
         }
 
         protected HashSet<GridUnitDynamic> GetAllAboveUnit()
@@ -221,9 +255,10 @@ namespace _Game.GameGrid.GridUnit
                 if (aboveUnit is not GridUnitDynamic unitDynamic) continue;
                 aboveUnits.Add(unitDynamic);
             }
+
             return aboveUnits;
         }
-        
+
         private GameGridCell GetNextMainCell(Direction direction)
         {
             Vector2Int nextMainCellPos = mainCell.GetCellPosition() + GetOffset();
@@ -248,7 +283,7 @@ namespace _Game.GameGrid.GridUnit
                 }
             }
         }
-        
+
         private void RemoveUnitFromCell()
         {
             for (int i = cellInUnits.Count - 1; i >= 0; i--)

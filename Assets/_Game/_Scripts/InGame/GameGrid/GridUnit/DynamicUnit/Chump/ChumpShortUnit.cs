@@ -8,7 +8,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 {
     public class ChumpShortUnit : ChumpUnit, IInteractRootTreeUnit
     {
-        protected override void SpawnRaftPrefab(ChumpType type)
+        protected override void SpawnRaftPrefab(UnitType type)
         {
             RaftUnit raft = SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Raft));
             raft.OnInit(mainCell, type);
@@ -20,12 +20,12 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         {
             base.OnGetNextStateAndType(direction);
             if (unitState != UnitState.Down) return;
-            switch (chumpType)
+            switch (unitType)
             {
-                case ChumpType.Horizontal when direction is Direction.Left or Direction.Right:
-                case ChumpType.Vertical when direction is Direction.Forward or Direction.Back:
+                case UnitType.Horizontal when direction is Direction.Left or Direction.Right:
+                case UnitType.Vertical when direction is Direction.Forward or Direction.Back:
                     nextUnitState = UnitState.Up;
-                    nextChumpType = ChumpType.None;
+                    nextUnitType = UnitType.None;
                     break;
             }
         }
@@ -43,8 +43,8 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         // SPAGHETTI CODE, change later
         public void OnInteractWithTreeRoot(Direction direction, TreeRootUnit treeRootUnit)
         {
-            if ((chumpType is ChumpType.Horizontal && lastPushedDirection is Direction.Back or Direction.Forward)
-                || (chumpType is ChumpType.Vertical && lastPushedDirection is Direction.Left or Direction.Right)) return;
+            if ((unitType is UnitType.Horizontal && lastPushedDirection is Direction.Back or Direction.Forward)
+                || (unitType is UnitType.Vertical && lastPushedDirection is Direction.Left or Direction.Right)) return;
             
             OnGetNextStateAndType(direction);
 
@@ -72,7 +72,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 Tf.position = nextPos;
                 OnEnterNextCells(treeRootUnit.MainCell, null, AfterChumpFall);
                 unitState = nextUnitState;
-                chumpType = nextChumpType;
+                unitType = nextUnitType;
                 isInAction = false;
             }));
 

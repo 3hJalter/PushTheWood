@@ -6,7 +6,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 {
     public class ChumpHighUnit : ChumpUnit
     {
-        protected override void SpawnRaftPrefab(ChumpType type)
+        protected override void SpawnRaftPrefab(UnitType type)
         {
             RaftUnit raft = SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.RaftLong));
             raft.OnInit(mainCell, type);
@@ -21,7 +21,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 RollChump(direction);
                 return;
             }
-            if (chumpType == ChumpType.Vertical)
+            if (unitType == UnitType.Vertical)
             {
                 switch (direction)
                 {

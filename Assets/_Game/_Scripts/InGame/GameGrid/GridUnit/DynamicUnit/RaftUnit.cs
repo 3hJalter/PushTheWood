@@ -9,7 +9,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
     {
         private HashSet<GridUnitDynamic> _carryUnits = new();
         
-        public void OnInit(GameGridCell mainCellIn, ChumpType type, HeightLevel startHeightIn = HeightLevel.ZeroPointFive)
+        public void OnInit(GameGridCell mainCellIn, UnitType type, HeightLevel startHeightIn = HeightLevel.ZeroPointFive)
         {
             base.OnInit(mainCellIn, startHeightIn);
             RotateSkin(type);
@@ -19,7 +19,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         public void OnMove(Direction direction)
         {
             if (direction == Direction.None) return;
-            if (!HasNoObstacleIfMove(direction, out GameGridCell nextMainCell,
+            if (HasObstacleIfMove(direction, out GameGridCell nextMainCell,
                     out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits))
             {
                 OnNotMove(direction, nextUnits, this);
@@ -64,11 +64,11 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             _carryUnits.Clear();
         }
         
-        private void RotateSkin(ChumpType type)
+        private void RotateSkin(UnitType type)
         {
             skin.localRotation =
-                Quaternion.Euler(type is ChumpType.Horizontal ? Constants.horizontalSkinRotation : Constants.verticalSkinRotation);
-            if (type is ChumpType.Vertical) size = new Vector3Int(size.z, size.y, size.x);
+                Quaternion.Euler(type is UnitType.Horizontal ? Constants.horizontalSkinRotation : Constants.verticalSkinRotation);
+            if (type is UnitType.Vertical) size = new Vector3Int(size.z, size.y, size.x);
         }
     }
 }
