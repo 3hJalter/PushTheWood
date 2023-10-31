@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using _Game.DesignPattern;
+using _Game.GameGrid.GridUnit.DynamicUnit;
+using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
 
@@ -10,11 +12,11 @@ namespace _Game.GameGrid.GridUnit
         [SerializeField] protected Transform skin;
         [SerializeField] protected Vector3Int size;
         [SerializeField] protected HeightLevel startHeight = HeightLevel.One;
+        [SerializeField] protected HeightLevel endHeight;
         [SerializeField] protected float yOffsetOnDown = 0.5f;
         [SerializeField] protected UnitState unitState = UnitState.Up;
         [SerializeField] protected UnitType unitType = UnitType.Both;
         [SerializeField] protected bool isMinusHalfSizeY;
-        [SerializeField] protected HeightLevel endHeight;
         public int islandID = -1;
 
         [SerializeField] protected Direction lastPushedDirection = Direction.None;
@@ -77,6 +79,7 @@ namespace _Game.GameGrid.GridUnit
 
         public virtual void OnDespawn()
         {
+            Tf.DOKill(true);
             for (int i = 0; i < cellInUnits.Count; i++) cellInUnits[i].RemoveGridUnit(this);
             cellInUnits.Clear();
             mainCell = null;
@@ -86,6 +89,7 @@ namespace _Game.GameGrid.GridUnit
         public virtual void OnInteract(Direction direction, GridUnit interactUnit = null)
         {
             lastPushedDirection = direction;
+            
         }
 
         public GridUnit GetBelowUnit()

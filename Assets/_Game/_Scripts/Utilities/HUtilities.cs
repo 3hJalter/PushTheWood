@@ -5,18 +5,6 @@ namespace _Game._Scripts.Utilities
 {
     public static class HUtilities
     {
-        public static Direction InverseDirection(Direction direction)
-        {
-            return direction switch
-            {
-                Direction.Left => Direction.Right,
-                Direction.Right => Direction.Left,
-                Direction.Forward => Direction.Back,
-                Direction.Back => Direction.Forward,
-                _ => Direction.None
-            };
-        }
-        
         public static void DoAfterFrames(ref int frames, Action action, Action onWait = null)
         {
             if (frames > 0)

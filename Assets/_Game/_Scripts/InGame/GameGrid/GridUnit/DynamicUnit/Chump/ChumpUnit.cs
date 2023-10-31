@@ -116,16 +116,16 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         private void SpawnRaftAndWaterChump(IReadOnlyList<GameGridCell> createRaftCells,
             IReadOnlyList<GameGridCell> createChumpShortCells, HashSet<ChumpUnit> waterChumps)
         {
-            UnitType type = UnitType == UnitType.None ? waterChumps.First().UnitType : UnitType;
+            UnitType spawnType = nextUnitType == UnitType.None ? waterChumps.First().UnitType : UnitType;
             // if createRaftCells is cleared, it means that the raft will be spawn at mainCell
-            if (createRaftCells.Count == 0) SpawnRaftPrefab(type);
+            if (createRaftCells.Count == 0) SpawnRaftPrefab(spawnType);
             for (int i = 0; i < createRaftCells.Count; i++)
             {
-                SpawnShortRaftPrefab(createRaftCells[i], type);
+                SpawnShortRaftPrefab(createRaftCells[i], spawnType);
             }
 
             for (int i = 0; i < createChumpShortCells.Count; i++)
-                SpawnWaterChumpShort(createChumpShortCells[i], nextUnitType);
+                SpawnWaterChumpShort(createChumpShortCells[i], spawnType);
             foreach (ChumpUnit chump in waterChumps) chump.OnDespawn();
             OnDespawn();
             Debug.Log("Create Raft");

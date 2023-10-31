@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
@@ -25,7 +26,10 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 OnNotMove(direction, nextUnits, this);
                 return;
             }
-            if (nextMainCell.SurfaceType is GridSurfaceType.Ground) return;
+            if (nextCells.Any(cell => cell.SurfaceType is GridSurfaceType.Ground))
+            {
+                return;
+            }
             SetAllCarryUnitAsChild();
             Vector3 newPosition = GetUnitNextWorldPos(nextMainCell);
             Tf.DOMove(newPosition, Constants.MOVING_TIME).SetEase(Ease.Linear).OnComplete(() =>

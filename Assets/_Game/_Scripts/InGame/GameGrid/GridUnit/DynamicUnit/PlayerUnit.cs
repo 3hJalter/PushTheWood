@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using _Game._Scripts.Utilities;
 using _Game.GameGrid.GridUnit.StaticUnit;
 using CnControls;
@@ -31,6 +32,16 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             });
         }
         
+        public void OnPushVehicle(Direction direction)
+        {
+            // Check if below player unit is vehicle
+            GridUnit belowPlayerUnit = GetBelowUnit();
+            if (belowPlayerUnit is not IVehicle vehicleUnit) return;
+            // invert direction
+            direction = GridUnitFunc.InvertDirection(direction);
+            vehicleUnit.OnMove(direction);
+        }
+        
         private void OnUpdate()
         {
             Direction direction = GetInputDirection();
@@ -41,6 +52,11 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                     out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits))
             {
                 OnNotMove(direction, nextUnits, this);
+                // Temporary
+                if (nextUnits.Count == 1 && nextUnits.First() is not TreeRootUnit)
+                {
+                    OnPushVehicle(direction);
+                }
                 return;
             }
             if (!CanMove(nextMainCell, direction)) return;
