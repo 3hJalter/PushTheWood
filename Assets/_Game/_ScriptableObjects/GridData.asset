@@ -261,5 +261,5 @@ MonoBehaviour:
   gridTextDataList:
   - {fileID: 4900000, guid: 8844aa33792359a4ba0a0d20b01c1235, type: 3}
   - {fileID: 4900000, guid: 9f60765a6b27bb043ab4ef399c955c2c, type: 3}
-  - {fileID: 4900000, guid: cbfee702de0f2464282281775503bf57, type: 3}
   - {fileID: 4900000, guid: 01bc77d52fcfad64c8ff7759b80e9950, type: 3}
+  - {fileID: 4900000, guid: cbfee702de0f2464282281775503bf57, type: 3}

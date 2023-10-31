@@ -25,6 +25,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 OnNotMove(direction, nextUnits, this);
                 return;
             }
+            if (nextMainCell.SurfaceType is GridSurfaceType.Ground) return;
             SetAllCarryUnitAsChild();
             Vector3 newPosition = GetUnitNextWorldPos(nextMainCell);
             Tf.DOMove(newPosition, Constants.MOVING_TIME).SetEase(Ease.Linear).OnComplete(() =>
@@ -51,6 +52,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             {
                 unit.transform.SetParent(transform);
                 unit.isInAction = true;
+                unit.isLockedAction = true;
             }
         }
         
@@ -60,6 +62,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             {
                 unit.transform.SetParent(null);
                 unit.isInAction = false;
+                unit.isLockedAction = false;
             }
             _carryUnits.Clear();
         }

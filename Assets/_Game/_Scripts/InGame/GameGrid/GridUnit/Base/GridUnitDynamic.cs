@@ -4,6 +4,7 @@ using _Game.DesignPattern;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Game.GameGrid.GridUnit
 {
@@ -13,7 +14,7 @@ namespace _Game.GameGrid.GridUnit
 
         [SerializeField] protected Anchor anchor;
         public bool isInAction;
-        public bool isLockedActionWhenNotMove;
+        public bool isLockedAction;
         protected UnitType nextUnitType;
 
         public GridUnitDynamicType GridUnitDynamicType => gridUnitDynamicType;
@@ -73,9 +74,9 @@ namespace _Game.GameGrid.GridUnit
         protected void OnNotMove(Direction direction, HashSet<GridUnit> nextUnits, GridUnit interactUnit = null,
             bool interactWithNextUnit = true)
         {
-            if (isLockedActionWhenNotMove) return;
-            DOVirtual.DelayedCall(Constants.MOVING_TIME, () => { isLockedActionWhenNotMove = false; });
-            isLockedActionWhenNotMove = true;
+            if (isLockedAction) return;
+            DOVirtual.DelayedCall(Constants.MOVING_TIME, () => { isLockedAction = false; });
+            isLockedAction = true;
             if (!interactWithNextUnit) return;
             foreach (GridUnit unit in nextUnits) unit.OnInteract(direction, interactUnit);
         }
