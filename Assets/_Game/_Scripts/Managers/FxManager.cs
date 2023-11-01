@@ -15,10 +15,12 @@ namespace _Game.Managers
 
         [Header("Fog")] [SerializeField] private D2FogsPE fogControl;
         [Header("Water")] [SerializeField] private GameObject water;
+        [Header("Grid")] [SerializeField] private GameObject grid;
 
         private void Awake()
         {
             water.SetActive(true);
+            grid.SetActive(true);
         }
 
         public void PlayTweenFog(bool isStopAfterDone = false, float fogDensity = DEFAULT_PLAY_FOG_DENSITY,

@@ -349,6 +349,7 @@ namespace _Game.GameGrid
         
         public void ResetIsland()
         {
+            DOTween.KillAll();
             ClearIsland();
             foreach (KeyValuePair<GameGridCell, GridUnitDynamicType> pair in _initGridDynamicDic)
             {

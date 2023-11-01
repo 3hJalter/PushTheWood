@@ -16,6 +16,12 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             RotateSkin(type);
         }
 
+        public override void OnDespawn()
+        {
+            if (_carryUnits.Count > 0) ReleaseAllCarryUnit();
+            base.OnDespawn();
+        }
+
         // Handle Moving Logic
         public void OnMove(Direction direction)
         {

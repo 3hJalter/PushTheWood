@@ -15,6 +15,8 @@ namespace _Game.UIs.Screen
         [SerializeField] private Image blockPanel;
         [SerializeField] private CanvasGroup canvasGroup;
 
+        [SerializeField] private Image resetButtonImg;
+        
         public override void Setup()
         {
             base.Setup();
