@@ -37,11 +37,56 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
         public void OnPushChump(Direction direction)
         {
+            if (_isOnWater)
+            {
+                // Bugs on not move (check null ground)
+                OnMoveChumpWater(direction);
+                return;
+            }
             OnGetNextStateAndType(direction);
             if (nextUnitState == UnitState.Up) OnPushChumpUp(direction);
             else OnPushChumpDown(direction);
         }
 
+        private void OnMoveChumpWater(Direction direction)
+        {
+            if (HasObstacleIfMove(direction, out GameGridCell nextMainCell,
+                    out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits))
+            {
+                OnNotMove(direction, nextUnits, this);
+                return;
+            }
+            if (nextCells.Any(cell => cell.SurfaceType is GridSurfaceType.Ground))
+            {
+                return;
+            }
+            isInAction = true;
+            Vector3 newPosition = GetUnitNextWorldPos(nextMainCell);
+            Tf.DOMove(newPosition, Constants.MOVING_TIME).SetEase(Ease.Linear).OnComplete(() =>
+            {
+                HashSet<GridUnit> aboveUnits = new();
+                for (int i = 0; i < cellInUnits.Count; i++)
+                {
+                    GameGridCell cell = cellInUnits[i];
+                    for (HeightLevel j = endHeight + 1; j <= cell.GetMaxHeight(); j++)
+                    {
+                        GridUnit unit = cell.GetGridUnitAtHeight(j);
+                        if (unit is null) continue;
+                        if (unit is GridUnitDynamic) aboveUnits.Add(unit);
+                    }
+                }
+                // make all aboveUnits fall
+                OnOutCurrentCells();
+                isInAction = false;
+                OnEnterNextCells(nextMainCell, nextCells, AfterChumpFall);
+                foreach (GridUnit unit in aboveUnits)
+                {
+                    if (unit is GridUnitDynamic dynamicUnit && dynamicUnit.CanFall(out int numHeightDown)) dynamicUnit.OnFall(numHeightDown, AfterChumpFall);
+                }
+                if (unitState == nextUnitState && !isInAction && gameObject.activeSelf) OnMoveChumpWater(direction);
+            });
+        }
+        
         public virtual void OnPushChumpUp(Direction direction)
         {
         }
@@ -51,11 +96,14 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         }
 
         //
+        [SerializeField] private bool _isOnWater;
+        
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
             bool isUseInitData = true)
         {
             base.OnInit(mainCellIn, startHeightIn, isUseInitData);
             unitType = UnitType.None;
+            _isOnWater = mainCellIn.SurfaceType is GridSurfaceType.Water;
         }
 
         public override void OnInteract(Direction direction, GridUnit interactUnit = null)
@@ -158,6 +206,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             }
             if (startHeight == Constants.dirFirstHeightOfSurface[GridSurfaceType.Water])
             {
+                _isOnWater = true;
                 if (nextUnitType is UnitType.None)
                 {
                     // Temporary only need to handle this case with short chump, so just remove the unit at the endHeight

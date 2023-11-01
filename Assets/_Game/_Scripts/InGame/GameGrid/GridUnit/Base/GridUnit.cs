@@ -64,6 +64,7 @@ namespace _Game.GameGrid.GridUnit
             // Add offset Height to Position
             Tf.position = mainCell.WorldPos + Vector3.up * (float)startHeight / 2 * Constants.CELL_SIZE;
             if (unitState is UnitState.Down) Tf.position -= Vector3.up * yOffsetOnDown;
+            nextUnitState = unitState;
         }
 
         public Vector3 GetMainCellWorldPos()
