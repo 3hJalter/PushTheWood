@@ -219,9 +219,13 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         {
             _moveInput = new Vector2(CnInputManager.GetAxisRaw(Constants.HORIZONTAL),
                 CnInputManager.GetAxisRaw(Constants.VERTICAL));
-            if (_moveInput.sqrMagnitude < 0.01f) return Direction.None;
+            if (_moveInput.sqrMagnitude < Constants.INPUT_THRESHOLD_P2) return Direction.None;
             float angle = Mathf.Atan2(_moveInput.y, -_moveInput.x);
+            // convert to degree angle
+            Debug.Log($"Angle: {angle}");
+            Debug.Log($"Angle Deg: {angle * Mathf.Rad2Deg}");
             _moveInput = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+            Debug.Log($"Move input: {_moveInput}");
             return Mathf.Abs(_moveInput.x) > Mathf.Abs(_moveInput.y)
                 ? _moveInput.x > 0 ? Direction.Left : Direction.Right
                 : _moveInput.y > 0
