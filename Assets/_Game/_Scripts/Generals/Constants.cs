@@ -24,9 +24,9 @@ public static class Constants
     ///     Control input axis
     /// </summary>
     public const string HORIZONTAL = "Horizontal";
-
     public const string VERTICAL = "Vertical";
-
+    public const float INPUT_THRESHOLD_P2 = 0.16f; // Threshold Power 2 from 0 to 1
+    
     /// <summary>
     ///     Player Animation
     /// </summary>
