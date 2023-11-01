@@ -12,8 +12,8 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         
         public void OnInit(GameGridCell mainCellIn, UnitType type, HeightLevel startHeightIn = HeightLevel.ZeroPointFive)
         {
-            base.OnInit(mainCellIn, startHeightIn);
             RotateSkin(type);
+            base.OnInit(mainCellIn, startHeightIn, false);
         }
 
         public override void OnDespawn()
@@ -76,12 +76,24 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             }
             _carryUnits.Clear();
         }
-        
+
+        [SerializeField] private UnitType _lastSpawnType = UnitType.None;
+        [SerializeField] private bool _isFirstSpawnDone;
         private void RotateSkin(UnitType type)
         {
             skin.localRotation =
                 Quaternion.Euler(type is UnitType.Horizontal ? Constants.horizontalSkinRotation : Constants.verticalSkinRotation);
-            if (type is UnitType.Vertical) size = new Vector3Int(size.z, size.y, size.x);
+            switch (_isFirstSpawnDone)
+            {
+                case false when type is UnitType.Vertical:
+                    size = new Vector3Int(size.z, size.y, size.x);
+                    _isFirstSpawnDone = true;
+                    break;
+                case true when _lastSpawnType != type:
+                    size = new Vector3Int(size.z, size.y, size.x);
+                    break;
+            }
+            _lastSpawnType = type;
         }
     }
 }
