@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Game._Scripts.Utilities;
 using _Game.GameGrid.GridUnit.StaticUnit;
 using CnControls;
 using DG.Tweening;
@@ -32,12 +31,13 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             //     OnUpdate();
             // });
         }
-        
-        public void OnPushVehicle(Direction direction)
+
+        private void OnPushVehicle(Direction direction, GridUnit unit)
         {
             // Check if below player unit is vehicle
             GridUnit belowPlayerUnit = GetBelowUnit();
             if (belowPlayerUnit is not IVehicle vehicleUnit) return;
+            if (unit.GetBelowUnit() == belowPlayerUnit) return;
             // invert direction
             direction = GridUnitFunc.InvertDirection(direction);
             vehicleUnit.OnMove(direction);
@@ -54,13 +54,14 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             {
                 OnNotMove(direction, nextUnits, this);
                 // Temporary
-                if (nextUnits.Count == 1 && nextUnits.First() is not TreeRootUnit)
+                if (nextUnits.Count == 1)
                 {
-                    OnPushVehicle(direction);
+                    GridUnit unit = nextUnits.First();
+                    if (unit is not TreeRootUnit) OnPushVehicle(direction, unit);
                 }
                 return;
             }
-            if (!CanMove(nextMainCell, direction)) return;
+            if (!CanMoveNextSurface(nextMainCell, direction)) return;
             if (isInAction)
             {
                 if (direction == _lastDirection) return;
@@ -150,72 +151,48 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             skin.DOLookAt(Tf.position + Constants.dirVector3[direction], 0.2f, AxisConstraint.Y, Vector3.up);
         }
 
-        // SUPER SPAGHETTI CODE
-        // TODO: Change late, each unit will be has one of three type: Horizontal, Vertical, Both, we will only handle the type instead of check class
-        private bool CanMove(GameGridCell nextMainCell, Direction direction)
+        private bool CanMoveNextSurface(GameGridCell nextMainCell, Direction direction)
         {
-            GridUnit unit = mainCell.GetGridUnitAtHeight(BelowStartHeight);
-            GridUnit nextUnit = null;
-            // Looping nextUnit from BelowStartHeight to first height of next cell until nextUnit is not null
-            for (HeightLevel height = BelowStartHeight;
-                 height >= Constants.dirFirstHeightOfSurface[nextMainCell.SurfaceType];
-                 height--)
-            {
-                nextUnit = nextMainCell.GetGridUnitAtHeight(height);
-                if (nextUnit is not null) break;
-            }
-
-            // Four case: both mainCell and nextMainCell is not Water, mainCell is not Water and nextMainCell is Water,
-            // mainCell is Water and nextMainCell is not Water, both mainCell and nextMainCell is Water
-            GridSurfaceType mainCellType = mainCell.SurfaceType;
-            GridSurfaceType nextMainCellType = nextMainCell.SurfaceType;
-            switch (mainCellType)
-            {
-                case GridSurfaceType.Ground when nextMainCellType is GridSurfaceType.Ground:
-                    return true;
-                case GridSurfaceType.Ground when nextMainCellType is GridSurfaceType.Water:
-                    if (nextUnit is null) return false;
-                    if (nextUnit is RaftUnit) return true;
-                    if (nextUnit is not ChumpUnit chumpUnit) return false;
-                    UnitType type = chumpUnit.UnitType;
-                    return (type is not UnitType.Horizontal || direction is not (Direction.Forward or Direction.Back))
-                           && (type is not UnitType.Vertical || direction is not (Direction.Left or Direction.Right));
-                case GridSurfaceType.Water when nextMainCellType is GridSurfaceType.Ground:
-                    if (unit is RaftUnit) return true;
-                    if (unit is not ChumpUnit chumpUnit1) return false;
-                    UnitType type1 = chumpUnit1.UnitType;
-                    return (type1 is not UnitType.Horizontal || direction is not (Direction.Forward or Direction.Back))
-                           && (type1 is not UnitType.Vertical || direction is not (Direction.Left or Direction.Right));
-                case GridSurfaceType.Water when nextMainCellType is GridSurfaceType.Water:
-                    if (unit is RaftUnit)
-                    {
-                        if (nextUnit is RaftUnit) return true;
-                        if (nextUnit is not ChumpUnit chumpUnit2) return false;
-                        UnitType type2 = chumpUnit2.UnitType;
-                        return (type2 is not UnitType.Horizontal ||
-                                direction is not (Direction.Forward or Direction.Back))
-                               && (type2 is not UnitType.Vertical ||
-                                   direction is not (Direction.Left or Direction.Right));
-                    }
-
-                    if (unit is not ChumpUnit chumpUnit3) return false;
-                    UnitType type3 = chumpUnit3.UnitType;
-                    if (nextUnit is RaftUnit)
-                        return (type3 is not UnitType.Horizontal ||
-                                direction is not (Direction.Forward or Direction.Back))
-                               && (type3 is not UnitType.Vertical ||
-                                   direction is not (Direction.Left or Direction.Right));
-                    if (nextUnit is not ChumpUnit chumpUnit4) return false;
-                    UnitType type4 = chumpUnit4.UnitType;
-                    if (type3 != type4) return false;
-                    if (direction is Direction.Left or Direction.Right && type4 is UnitType.Vertical) return false;
-                    if (direction is Direction.Back or Direction.Forward && type4 is UnitType.Horizontal) return false;
-                    return true;
-            }
-
+            GridUnit acceptBelowUnit = GetAcceptUnit(mainCell);
+            GridUnit acceptBelowNextUnit = GetAcceptUnit(nextMainCell, true);
+            // case 1: null null -> false if current or nextCell can not move
+            if (acceptBelowUnit is null && acceptBelowNextUnit is null && 
+                (!mainCell.Data.canMovingDirectly || !nextMainCell.Data.canMovingDirectly)) return false;
+            // case 2: null not null -> false if nextCell can not move
+            if (acceptBelowUnit is null && acceptBelowNextUnit is not null &&
+                (!mainCell.Data.canMovingDirectly)) return false;
+            // case 3: not null null -> false if currentCell can not move
+            if (acceptBelowUnit is not null && acceptBelowNextUnit is null &&
+                (!nextMainCell.Data.canMovingDirectly)) return false;
             return true;
-        }
 
+            GridUnit GetAcceptUnit(GameGridCell cell, bool stopWhenFirstFound = false)
+            {
+                for (HeightLevel height = BelowStartHeight;
+                     height >= Constants.dirFirstHeightOfSurface[cell.SurfaceType];
+                     height--)
+                {
+                    GridUnit unit = cell.GetGridUnitAtHeight(height);
+                    if (unit is null) continue;
+                    if (unit.UnitType is UnitType.None) continue;
+                    switch (unit.UnitType)
+                    {
+                        case UnitType.Horizontal when direction is Direction.Left or Direction.Right:
+                            return unit;
+                        case UnitType.Vertical when direction is Direction.Back or Direction.Forward:
+                            return unit;
+                        case UnitType.Both:
+                            return unit;
+                        case UnitType.None:
+                        default:
+                            if (stopWhenFirstFound) return null;
+                            break;
+                    }
+                }
+                return null;
+            }
+        }
+        
         private Direction GetInputDirection()
         {
             _moveInput = new Vector2(CnInputManager.GetAxisRaw(Constants.HORIZONTAL),

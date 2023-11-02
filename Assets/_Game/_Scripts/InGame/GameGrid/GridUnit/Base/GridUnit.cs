@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using _Game.DesignPattern;
-using _Game.GameGrid.GridUnit.DynamicUnit;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
@@ -11,17 +10,18 @@ namespace _Game.GameGrid.GridUnit
     {
         [SerializeField] protected Transform skin;
         [SerializeField] protected Vector3Int size;
+        [SerializeField] protected bool isMinusHalfSizeY;
         [SerializeField] protected HeightLevel startHeight = HeightLevel.One;
         [SerializeField] protected HeightLevel endHeight;
         [SerializeField] protected float yOffsetOnDown = 0.5f;
         [SerializeField] protected UnitState unitState = UnitState.Up;
         [SerializeField] protected UnitType unitType = UnitType.Both;
-        [SerializeField] protected bool isMinusHalfSizeY;
         public int islandID = -1;
 
         [SerializeField] protected Direction lastPushedDirection = Direction.None;
         public readonly List<GameGridCell> cellInUnits = new();
         private UnitInitData _unitInitData;
+
 
         protected GameGridCell mainCell;
         protected UnitState nextUnitState;
@@ -40,10 +40,22 @@ namespace _Game.GameGrid.GridUnit
         protected HeightLevel BelowStartHeight => startHeight - Constants.BELOW_HEIGHT;
         protected HeightLevel UpperEndHeight => endHeight + Constants.UPPER_HEIGHT;
 
-
         private void Awake()
         {
             SaveInitData(size, unitState, skin);
+        }
+
+        private void SaveInitData(Vector3Int sizeI, UnitState unitStateI, Transform skinI)
+        {
+            _unitInitData = new UnitInitData(sizeI, unitStateI, skinI.localPosition, skinI.localRotation);
+        }
+
+        private void GetInitData()
+        {
+            size = _unitInitData.Size;
+            unitState = _unitInitData.UnitState;
+            skin.localPosition = _unitInitData.LocalSkinPos;
+            skin.localRotation = _unitInitData.LocalSkinRot;
         }
 
         public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
@@ -90,7 +102,7 @@ namespace _Game.GameGrid.GridUnit
         public virtual void OnInteract(Direction direction, GridUnit interactUnit = null)
         {
             lastPushedDirection = direction;
-            
+
         }
 
         public GridUnit GetBelowUnit()
@@ -121,19 +133,6 @@ namespace _Game.GameGrid.GridUnit
                 if (neighbourX == null) continue;
                 cellInUnits.Add(neighbourX);
             }
-        }
-
-        private void SaveInitData(Vector3Int sizeI, UnitState unitStateI, Transform skinI)
-        {
-            _unitInitData = new UnitInitData(sizeI, unitStateI, skinI.localPosition, skinI.localRotation);
-        }
-
-        private void GetInitData()
-        {
-            size = _unitInitData.Size;
-            unitState = _unitInitData.UnitState;
-            skin.localPosition = _unitInitData.LocalSkinPos;
-            skin.localRotation = _unitInitData.LocalSkinRot;
         }
     }
 

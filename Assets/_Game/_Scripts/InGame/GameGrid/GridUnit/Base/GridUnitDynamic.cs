@@ -19,7 +19,7 @@ namespace _Game.GameGrid.GridUnit
 
         public GridUnitDynamicType GridUnitDynamicType => gridUnitDynamicType;
         public PoolType? PoolType => ConvertToPoolType(gridUnitDynamicType);
-
+        
         public override void OnDespawn()
         {
             isInAction = false;

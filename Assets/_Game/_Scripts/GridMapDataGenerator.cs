@@ -103,7 +103,7 @@ public class GridMapDataGenerator : MonoBehaviour
                 gridCell.SetSurface(
                     SimplePool.Spawn<GridSurfaceBase>(gridSurface,
                         new Vector3(gridCell.WorldX, 0, gridCell.WorldY), Quaternion.identity));
-                _gridSurfaceMap[x, y] = gridCell.GetData().gridSurface;
+                _gridSurfaceMap[x, y] = gridCell.Data.gridSurface;
             }
         }
     }

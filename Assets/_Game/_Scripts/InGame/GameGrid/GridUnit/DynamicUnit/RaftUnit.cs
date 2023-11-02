@@ -38,7 +38,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             }
             SetAllCarryUnitAsChild();
             Vector3 newPosition = GetUnitNextWorldPos(nextMainCell);
-            Tf.DOMove(newPosition, Constants.MOVING_TIME).SetEase(Ease.Linear).OnComplete(() =>
+            Tf.DOMove(newPosition, Constants.MOVING_TIME).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
             {
                 OnOutCurrentCells();
                 OnEnterNextCellWithoutFall(nextMainCell, nextCells);

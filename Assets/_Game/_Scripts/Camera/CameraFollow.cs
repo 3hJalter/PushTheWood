@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using _Game.DesignPattern;
-using DG.Tweening;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace _Game.Camera

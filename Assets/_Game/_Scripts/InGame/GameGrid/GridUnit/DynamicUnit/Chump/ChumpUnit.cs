@@ -62,7 +62,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             }
             isInAction = true;
             Vector3 newPosition = GetUnitNextWorldPos(nextMainCell);
-            Tf.DOMove(newPosition, Constants.MOVING_TIME).SetEase(Ease.Linear).OnComplete(() =>
+            Tf.DOMove(newPosition, Constants.MOVING_TIME).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
             {
                 HashSet<GridUnit> aboveUnits = new();
                 for (int i = 0; i < cellInUnits.Count; i++)
@@ -94,9 +94,8 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         public virtual void OnPushChumpDown(Direction direction)
         {
         }
-
-        //
-        [SerializeField] private bool _isOnWater;
+        
+        private bool _isOnWater;
         
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
             bool isUseInitData = true)
@@ -268,7 +267,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             isInAction = true;
             
             Vector3 newPosition = GetUnitNextWorldPos(nextMainCell);
-            Tf.DOMove(newPosition, Constants.MOVING_TIME).SetEase(Ease.Linear).OnComplete(() =>
+            Tf.DOMove(newPosition, Constants.MOVING_TIME).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
             {
                 HashSet<GridUnit> aboveUnits = new();
                 for (int i = 0; i < cellInUnits.Count; i++)
@@ -351,7 +350,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             {
                 skin.RotateAround(anchor.Tf.position, axis, i - lastAngle);
                 lastAngle = i;
-            }).OnComplete(() => { callback?.Invoke(); });
+            }).SetUpdate(UpdateType.Fixed).OnComplete(() => { callback?.Invoke(); });
         } 
         
         protected IEnumerator Roll(Direction direction, Action callback)

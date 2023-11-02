@@ -108,19 +108,35 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: cellInUnits
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[_Game.GameGrid.GameGridCell, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   poolType: 0
   skin: {fileID: 3746253626358163692}
   size: {x: 1, y: 1, z: 1}
+  isMinusHalfSizeY: 0
   startHeight: 2
+  endHeight: 0
   yOffsetOnDown: 0.4
   unitState: 0
-  isMinusHalfSizeY: 0
-  endHeight: 0
+  unitType: -1
+  islandID: -1
+  lastPushedDirection: -1
   gridUnitDynamicType: 4
   anchor: {fileID: 6557725013261451772}
   isInAction: 0
-  chumpType: 0
+  isLockedAction: 0
 --- !u!1 &2623478111982474341
 GameObject:
   m_ObjectHideFlags: 0

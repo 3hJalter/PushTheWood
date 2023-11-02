@@ -158,7 +158,7 @@ namespace _Game.GameGrid
             _pUnit = SimplePool.Spawn<PlayerUnit>(
                 DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Player));
             _pUnit.OnInit(cell);
-            _islandDic[cell.GetData().gridSurface.IslandID].SetFirstPlayerStepCell(cell);
+            _islandDic[cell.Data.gridSurface.IslandID].SetFirstPlayerStepCell(cell);
             _firstPlayerInitCell = cell;
         }
         
@@ -171,14 +171,14 @@ namespace _Game.GameGrid
                 {
                     GridUnitDynamic unit = SimplePool.Spawn<GridUnitDynamic>(DataManager.Ins.GetGridUnitDynamic(dT));
                     unit.OnInit(cell);
-                    _islandDic[cell.GetData().gridSurface.IslandID].AddInitUnitToIsland(unit, dT, cell);
+                    _islandDic[cell.Data.gridSurface.IslandID].AddInitUnitToIsland(unit, dT, cell);
                     break;
                 }
                 case GridUnitStaticType sT:
                 {
                     GridUnitStatic unit = SimplePool.Spawn<GridUnitStatic>(DataManager.Ins.GetGridUnitStatic(sT));
                     unit.OnInit(cell);
-                    _islandDic[cell.GetData().gridSurface.IslandID].AddInitUnitToIsland(unit, sT, cell);
+                    _islandDic[cell.Data.gridSurface.IslandID].AddInitUnitToIsland(unit, sT, cell);
                     break;
                 }
             }
@@ -211,7 +211,7 @@ namespace _Game.GameGrid
                     gridCell.SetSurface(
                         SimplePool.Spawn<GridSurfaceBase>(gridSurface,
                             new Vector3(gridCell.WorldX, 0, gridCell.WorldY), Quaternion.identity));
-                    _gridSurfaceMap[x, y] = gridCell.GetData().gridSurface;
+                    _gridSurfaceMap[x, y] = gridCell.Data.gridSurface;
                 }
             }
         }
