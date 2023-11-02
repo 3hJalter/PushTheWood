@@ -25,11 +25,12 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         private void Update()
         {
             if (isLockedAction) return;
-            HUtilities.DoAfterFrames(ref _delayFrameCount, () =>
-            {
-                _delayFrameCount = Constants.DELAY_FRAME_TIME;
-                OnUpdate();
-            });
+            OnUpdate();
+            // HUtilities.DoAfterFrames(ref _delayFrameCount, () =>
+            // {
+            //     _delayFrameCount = Constants.DELAY_FRAME_TIME;
+            //     OnUpdate();
+            // });
         }
         
         public void OnPushVehicle(Direction direction)

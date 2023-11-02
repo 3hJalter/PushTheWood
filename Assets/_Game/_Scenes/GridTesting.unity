@@ -316,9 +316,9 @@ MonoBehaviour:
     - Name: isFollowTarget
       Entry: 5
       Data: true
-    - Name: moveSpeed
+    - Name: smooth
       Entry: 4
-      Data: 3
+      Data: 0.05
     - Name: offsetPosition
       Entry: 7
       Data: UnityEngine.Vector3, UnityEngine.CoreModule
@@ -370,9 +370,9 @@ MonoBehaviour:
     - Name: isFollowTarget
       Entry: 5
       Data: true
-    - Name: moveSpeed
+    - Name: smooth
       Entry: 4
-      Data: 5
+      Data: 1
     - Name: offsetPosition
       Entry: 7
       Data: UnityEngine.Vector3, UnityEngine.CoreModule
@@ -424,9 +424,9 @@ MonoBehaviour:
     - Name: isFollowTarget
       Entry: 5
       Data: false
-    - Name: moveSpeed
+    - Name: smooth
       Entry: 4
-      Data: 2
+      Data: 0.05
     - Name: offsetPosition
       Entry: 7
       Data: UnityEngine.Vector3, UnityEngine.CoreModule

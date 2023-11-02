@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using _Game.DesignPattern;
+using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace _Game.Camera
@@ -40,15 +42,15 @@ namespace _Game.Camera
             if (targetTf is null || !_currentCamera.isFollowTarget)
             {
                 _mainCameraTf.position = Vector3.Lerp(_mainCameraTf.position,_currentCamera.offsetPosition, 
-                    Time.deltaTime * _currentCamera.moveSpeed);
+                    _currentCamera.smooth);
             }
             else
             {
                 _mainCameraTf.position = Vector3.Lerp(_mainCameraTf.position,
-                    targetTf.position + _currentCamera.offsetPosition, Time.deltaTime * _currentCamera.moveSpeed);
+                    targetTf.position + _currentCamera.offsetPosition, _currentCamera.smooth);
             }
             _mainCameraTf.rotation = Quaternion.Lerp(_mainCameraTf.rotation, _currentCamera.offsetRotation,
-                Time.deltaTime * _currentCamera.moveSpeed);
+                _currentCamera.smooth);
         }
 
         // Change to public if need
@@ -74,15 +76,16 @@ namespace _Game.Camera
     public class CameraFollower
     {
         public readonly bool isFollowTarget;
-        public readonly float moveSpeed;
+        [Range(0,1)]
+        public readonly float smooth; // From 0 to 1
         public Vector3 offsetPosition;
         public Quaternion offsetRotation;
 
-        public CameraFollower(Vector3 offsetPosition, Quaternion offsetRotation, float moveSpeed, bool isFollowTarget)
+        public CameraFollower(Vector3 offsetPosition, Quaternion offsetRotation, float smooth, bool isFollowTarget)
         {
             this.offsetPosition = offsetPosition;
             this.offsetRotation = offsetRotation;
-            this.moveSpeed = moveSpeed;
+            this.smooth = smooth;
             this.isFollowTarget = isFollowTarget;
         }
     }
