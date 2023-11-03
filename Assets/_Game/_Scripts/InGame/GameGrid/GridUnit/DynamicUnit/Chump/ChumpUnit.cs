@@ -350,7 +350,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             {
                 skin.RotateAround(anchor.Tf.position, axis, i - lastAngle);
                 lastAngle = i;
-            }).SetUpdate(UpdateType.Fixed).OnComplete(() => { callback?.Invoke(); });
+            }).SetUpdate(UpdateType.Fixed).OnComplete(() => { callback?.Invoke(); }).SetEase(Ease.Linear);
         } 
         
         protected IEnumerator Roll(Direction direction, Action callback)
