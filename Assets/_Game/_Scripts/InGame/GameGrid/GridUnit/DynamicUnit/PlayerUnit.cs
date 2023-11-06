@@ -25,11 +25,6 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         {
             if (isLockedAction) return;
             OnUpdate();
-            // HUtilities.DoAfterFrames(ref _delayFrameCount, () =>
-            // {
-            //     _delayFrameCount = Constants.DELAY_FRAME_TIME;
-            //     OnUpdate();
-            // });
         }
 
         private void OnPushVehicle(Direction direction, GridUnit unit)
@@ -46,7 +41,11 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         private void OnUpdate()
         {
             Direction direction = GetInputDirection();
-            if (direction == Direction.None) return;
+            if (direction == Direction.None)
+            {
+                if (!isInAction) ChangeAnim(Constants.IDLE_ANIM);
+                return;
+            }
             if (isInAction && direction == _lastDirection) return;
             LookDirection(direction);
             if (HasObstacleIfMove(direction, out GameGridCell nextMainCell,
@@ -78,7 +77,6 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             ChangeAnim(Constants.IDLE_ANIM);
         }
         
-        // SPAGHETTI CODE
         public void OnInteractWithTreeRoot(Direction direction, TreeRootUnit treeRootUnit)
         {
             // check if above treeRootUnit has unit or if above player has unit, return
@@ -102,7 +100,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         {
             isInAction = false;
             if (isInterrupt) return;
-            ChangeAnim(Constants.IDLE_ANIM);
+            // ChangeAnim(Constants.IDLE_ANIM);
             Tf.position = GetUnitWorldPos();
         }
         
@@ -113,11 +111,12 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             // Out Current Cell
             OnOutCurrentCells();
             // Enter Next cell
-            OnEnterNextCell2(nextMainCell, nextCells);
+            OnEnterNextCell2(nextMainCell);
             SetIslandId(nextMainCell);
             // Position After Fall
             Vector3 finalPos = GetUnitWorldPos();
             // If notFallFinalPos Not Same y position With finalPos, minus 1 at x or z position based on the direction
+            // Can be changed if have animation instead of use Tween
             bool isFalling = false;
             if (Math.Abs(finalPos.y - notFallFinalPos.y) > 0.01)
             {
@@ -155,13 +154,13 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         {
             GridUnit acceptBelowUnit = GetAcceptUnit(mainCell);
             GridUnit acceptBelowNextUnit = GetAcceptUnit(nextMainCell, true);
-            // case 1: null null -> false if current or nextCell can not move
+            // case 1: null, null -> false if current or nextCell can not move
             if (acceptBelowUnit is null && acceptBelowNextUnit is null && 
                 (!mainCell.Data.canMovingDirectly || !nextMainCell.Data.canMovingDirectly)) return false;
-            // case 2: null not null -> false if nextCell can not move
+            // case 2: null, not null -> false if nextCell can not move
             if (acceptBelowUnit is null && acceptBelowNextUnit is not null &&
                 (!mainCell.Data.canMovingDirectly)) return false;
-            // case 3: not null null -> false if currentCell can not move
+            // case 3: not null, null -> false if currentCell can not move
             if (acceptBelowUnit is not null && acceptBelowNextUnit is null &&
                 (!nextMainCell.Data.canMovingDirectly)) return false;
             return true;
@@ -199,11 +198,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 CnInputManager.GetAxisRaw(Constants.VERTICAL));
             if (_moveInput.sqrMagnitude < Constants.INPUT_THRESHOLD_P2) return Direction.None;
             float angle = Mathf.Atan2(_moveInput.y, -_moveInput.x);
-            // convert to degree angle
-            Debug.Log($"Angle: {angle}");
-            Debug.Log($"Angle Deg: {angle * Mathf.Rad2Deg}");
             _moveInput = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-            Debug.Log($"Move input: {_moveInput}");
             return Mathf.Abs(_moveInput.x) > Mathf.Abs(_moveInput.y)
                 ? _moveInput.x > 0 ? Direction.Left : Direction.Right
                 : _moveInput.y > 0

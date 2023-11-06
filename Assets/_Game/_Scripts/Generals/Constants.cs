@@ -51,6 +51,7 @@ public static class Constants
     public const float FALLING_TIME = 0.2f;
     
     public static readonly HeightLevel maxHeight = (HeightLevel)(Enum.GetValues(typeof(HeightLevel)).Length - 1);
+    public const HeightLevel MIN_HEIGHT = HeightLevel.Zero;
     public static readonly Vector3 horizontalSkinRotation = new(0, 0, 90);
     public static readonly Vector3 verticalSkinRotation = new(0, -90, 90);
     

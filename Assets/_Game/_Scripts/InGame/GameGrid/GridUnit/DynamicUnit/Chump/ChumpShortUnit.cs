@@ -49,7 +49,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             OnGetNextStateAndType(direction);
 
             GridUnit aboveUnit = treeRootUnit.GetAboveUnit();
-            if (aboveUnit != null)
+            if (aboveUnit is not null)
             {
                 aboveUnit.OnInteract(direction);
                 return;

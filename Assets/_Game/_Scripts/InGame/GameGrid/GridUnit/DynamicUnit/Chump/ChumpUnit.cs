@@ -109,6 +109,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         {
             base.OnInteract(direction, interactUnit);
             if (isInAction) return;
+            Debug.Log("PushChump");
             OnPushChump(direction);
         }
 
@@ -160,10 +161,11 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             return true;
         }
 
+        // SPAGHETTI CODE
         private void SpawnRaftAndWaterChump(IReadOnlyList<GameGridCell> createRaftCells,
             IReadOnlyList<GameGridCell> createChumpShortCells, HashSet<ChumpUnit> waterChumps)
         {
-            UnitType spawnType = nextUnitType == UnitType.None ? waterChumps.First().UnitType : UnitType;
+            UnitType spawnType = nextUnitType == UnitType.None ? waterChumps.First().UnitType : nextUnitType;
             // if createRaftCells is cleared, it means that the raft will be spawn at mainCell
             if (createRaftCells.Count == 0) SpawnRaftPrefab(spawnType);
             for (int i = 0; i < createRaftCells.Count; i++)
@@ -178,6 +180,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             Debug.Log("Create Raft");
         }
 
+        // SPAGHETTI CODE
         private void SpawnWaterChumpShort(GameGridCell spawnCell, UnitType createdUnitType)
         {
             ChumpUnit chumpUnit =
@@ -193,6 +196,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                     : Constants.verticalSkinRotation);
         }
 
+        // SPAGHETTI CODE
         protected void AfterChumpFall()
         {
             if (mainCell.SurfaceType is not GridSurfaceType.Water)
@@ -226,6 +230,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                             : Constants.verticalSkinRotation);
                     // minus position offsetY
                     Tf.position -= Vector3.up * yOffsetOnDown;
+                    nextUnitType = unitType;
                 }
             }
             else if (startHeight == Constants.dirFirstHeightOfSurface[GridSurfaceType.Water] + Constants.UPPER_HEIGHT &&
@@ -263,35 +268,53 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 OnNotMove(direction, nextUnits, this);
                 return;
             }
-
-            isInAction = true;
-            
-            Vector3 newPosition = GetUnitNextWorldPos(nextMainCell);
-            Tf.DOMove(newPosition, Constants.MOVING_TIME).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
+            Vector3 notFallFinalPos = GetUnitNextWorldPos(nextMainCell);
+            #region Get above units
+            HashSet<GridUnit> aboveUnits = new();
+            for (int i = 0; i < cellInUnits.Count; i++)
             {
-                HashSet<GridUnit> aboveUnits = new();
-                for (int i = 0; i < cellInUnits.Count; i++)
+                GameGridCell cell = cellInUnits[i];
+                for (HeightLevel j = endHeight + 1; j <= cell.GetMaxHeight(); j++)
                 {
-                    GameGridCell cell = cellInUnits[i];
-                    for (HeightLevel j = endHeight + 1; j <= cell.GetMaxHeight(); j++)
-                    {
-                        GridUnit unit = cell.GetGridUnitAtHeight(j);
-                        if (unit is null) continue;
-                        if (unit is GridUnitDynamic) aboveUnits.Add(unit);
-                    }
+                    GridUnit unit = cell.GetGridUnitAtHeight(j);
+                    if (unit is null) continue;
+                    if (unit is GridUnitDynamic) aboveUnits.Add(unit);
                 }
-                // make all aboveUnits fall
-                OnOutCurrentCells();
-                isInAction = false;
-                OnEnterNextCells(nextMainCell, nextCells, AfterChumpFall);
-                foreach (GridUnit unit in aboveUnits)
+            }
+            #endregion
+            OnOutCurrentCells();
+            OnEnterNextCell2(nextMainCell, nextCells);
+            Vector3 finalPos = GetUnitWorldPos();
+            bool isFalling = false;
+            if (Math.Abs(finalPos.y - notFallFinalPos.y) > 0.01)
+            {
+                isFalling = true;
+                Vector3Int dirVector3 = Constants.dirVector3[direction];
+                notFallFinalPos -= new Vector3(dirVector3.x, 0, dirVector3.z) * Constants.CELL_SIZE / 2;
+            }
+            isInAction = true;
+            Tf.DOMove(notFallFinalPos, isFalling ? Constants.MOVING_TIME / 2 : Constants.MOVING_TIME)
+                .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                 {
-                    if (unit is GridUnitDynamic dynamicUnit && dynamicUnit.CanFall(out int numHeightDown)) dynamicUnit.OnFall(numHeightDown, AfterChumpFall);
-                }
-            });
+                    if (isFalling)
+                        Tf.DOMove(finalPos, Constants.MOVING_TIME / 2).SetEase(Ease.Linear)
+                            .SetUpdate(UpdateType.Fixed).OnComplete(() => { OnMovingDone(isFalling, aboveUnits); });
+                    else
+                        OnMovingDone(isFalling, aboveUnits);
+                });
+        }
+
+        private void OnMovingDone(bool isFalling, HashSet<GridUnit> aboveUnits)
+        {
+            isInAction = false;
+            if (isFalling) AfterChumpFall();
+            foreach (GridUnit unit in aboveUnits)
+            {
+                if (unit is GridUnitDynamic dynamicUnit && dynamicUnit.CanFall(out int numHeightDown)) dynamicUnit.OnFall(numHeightDown, AfterChumpFall);
+            }
         }
         
-        protected void RollChump(Direction direction)
+        protected void RollChump2(Direction direction)
         {
             if (HasObstacleIfRotateMove(direction, out Vector3Int sizeAfterRotate,
                     out HeightLevel endHeightAfterRotate, out GameGridCell nextMainCell,
@@ -340,6 +363,65 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             }
         }
 
+        protected void RollChump(Direction direction)
+        {
+            if (HasObstacleIfRotateMove(direction, out Vector3Int sizeAfterRotate,
+                    out HeightLevel endHeightAfterRotate, out GameGridCell nextMainCell,
+                    out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits))
+            {
+                OnNotMove(direction, nextUnits, this);
+                return;
+            }
+            Vector3 notFallFinalPos = GetUnitNextWorldPos(nextMainCell);
+            anchor.ChangeAnchorPos(this, direction);
+            size = sizeAfterRotate;
+            endHeight = endHeightAfterRotate;
+            Vector3 skinOffset = nextMainCell.WorldPos - mainCell.WorldPos;
+            HashSet<GridUnit> aboveUnits = GetAboveUnits();
+            OnOutCurrentCells();
+            OnEnterNextCell2(nextMainCell, nextCells);
+           
+            
+            Vector3 finalPos = GetUnitWorldPos();
+            bool isFalling = Math.Abs(finalPos.y - notFallFinalPos.y) > 0.01;
+            isInAction = true;
+            #region Roll
+            Vector3 axis = Vector3.Cross(Vector3.up, Constants.dirVector3[direction]);
+            // Roll 90 degree around anchor in 0.18 second using Tween
+            float lastAngle = 0;
+            DOVirtual.Float(0, 90, Constants.MOVING_TIME, i =>
+            {
+                skin.RotateAround(anchor.Tf.position, axis, i - lastAngle);
+                lastAngle = i;
+            }).SetUpdate(UpdateType.Fixed).OnComplete(() =>
+            {
+                skin.localPosition -= skinOffset;
+                Tf.position = notFallFinalPos;
+                if (!isFalling)
+                {
+                    OnNotFall();
+                    // active self if chump is not de-spawn by craft raft or something else
+                    OnMovingDone(false, aboveUnits);
+                    if (unitState == nextUnitState && gameObject.activeSelf) OnPushChump(direction);
+                    unitState = nextUnitState;
+                    unitType = nextUnitType;
+                }
+                else
+                {
+                    // Tween to final position
+                    Tf.DOMove(finalPos, Constants.MOVING_TIME).SetEase(Ease.Linear)
+                        .SetUpdate(UpdateType.Fixed).OnComplete(() =>
+                        {
+                            OnMovingDone(true, aboveUnits);
+                            Tf.position = GetUnitNextWorldPos(nextMainCell);
+                            unitState = nextUnitState;
+                            unitType = nextUnitType;
+                        });
+                }
+            });
+            #endregion
+        }
+        
         private void RollTween(Direction direction, Action callback)
         {
             anchor.ChangeAnchorPos(this, direction);
@@ -351,7 +433,22 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 skin.RotateAround(anchor.Tf.position, axis, i - lastAngle);
                 lastAngle = i;
             }).SetUpdate(UpdateType.Fixed).OnComplete(() => { callback?.Invoke(); });
-        } 
+        }
+
+        private HashSet<GridUnit> GetAboveUnits()
+        {
+            HashSet<GridUnit> aboveUnits = new();
+            for (int i = 0; i < cellInUnits.Count; i++)
+            {
+                GameGridCell cell = cellInUnits[i];
+                for (HeightLevel j = endHeight + 1; j <= cell.GetMaxHeight(); j++)
+                {
+                    GridUnit unit = cell.GetGridUnitAtHeight(j);
+                    if (unit is GridUnitDynamic) aboveUnits.Add(unit);
+                }
+            }
+            return aboveUnits;
+        }
         
         protected IEnumerator Roll(Direction direction, Action callback)
         {
