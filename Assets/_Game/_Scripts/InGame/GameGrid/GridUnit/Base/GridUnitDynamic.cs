@@ -4,7 +4,6 @@ using _Game.DesignPattern;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _Game.GameGrid.GridUnit
 {
@@ -19,7 +18,7 @@ namespace _Game.GameGrid.GridUnit
 
         public GridUnitDynamicType GridUnitDynamicType => gridUnitDynamicType;
         public PoolType? PoolType => ConvertToPoolType(gridUnitDynamicType);
-        
+
         public override void OnDespawn()
         {
             isInAction = false;
@@ -36,8 +35,6 @@ namespace _Game.GameGrid.GridUnit
             endHeight -= numHeightDown;
             for (int i = cellInUnits.Count - 1; i >= 0; i--)
                 cellInUnits[i].AddGridUnit(this);
-            // Temporary Move to new position (need animation)
-            // Vector3 newPos = Tf.position - new Vector3(0, (float) numHeightDown * Constants.CELL_SIZE / 2, 0);
             Vector3 newPos = GetUnitNextWorldPos(mainCell);
             Tf.DOMove(newPos, Constants.FALLING_TIME)
                 .SetEase(Ease.Linear).OnComplete(() =>
@@ -75,7 +72,7 @@ namespace _Game.GameGrid.GridUnit
             bool interactWithNextUnit = true)
         {
             if (isLockedAction) return;
-            DOVirtual.DelayedCall(Constants.MOVING_TIME, () => { isLockedAction = false; });
+            DOVirtual.DelayedCall(Constants.DELAY_INTERACT_TIME, () => { isLockedAction = false; });
             isLockedAction = true;
             if (!interactWithNextUnit) return;
             foreach (GridUnit unit in nextUnits) unit.OnInteract(direction, interactUnit);
@@ -98,33 +95,44 @@ namespace _Game.GameGrid.GridUnit
         protected void OnEnterNextCell2(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null)
         {
             startHeight = nextCells is not null ? GetNextStartHeight(nextCells) : GetNextStartHeight(nextMainCell);
-            endHeight = startHeight + size.y - 1;
-            InitCellsToUnit(nextMainCell);
+            endHeight = startHeight + (size.y - 1) * 2;
+            if (!isMinusHalfSizeY && nextUnitState == UnitState.Up) endHeight += 1;
+            InitCellsToUnit(nextMainCell, nextCells);
         }
 
         private HeightLevel GetNextStartHeight(GameGridCell nextCell)
         {
-            HeightLevel nextStartHeight = Constants.maxHeight;
-            for (HeightLevel height = startHeight - 1;
-                 height >= Constants.dirFirstHeightOfSurface[nextCell.SurfaceType];
-                 height--)
-                if (nextCell.GetGridUnitAtHeight(height) is null && height < nextStartHeight)
-                    nextStartHeight = height;
-                else break;
-            return nextStartHeight == Constants.maxHeight ? startHeight : nextStartHeight;
+            HeightLevel nextStartHeight = Constants.MIN_HEIGHT;
+            HeightLevel initHeight = Constants.dirFirstHeightOfSurface[nextCell.SurfaceType];
+            if (initHeight > nextStartHeight) nextStartHeight = initHeight;
+            for (HeightLevel heightLevel = initHeight;
+                 heightLevel <= BelowStartHeight;
+                 heightLevel++)
+            {
+                if (nextCell.GetGridUnitAtHeight(heightLevel) is null) continue;
+                if (heightLevel + 1 > nextStartHeight) nextStartHeight = heightLevel + 1;
+            }
+
+            return nextStartHeight;
         }
 
         private HeightLevel GetNextStartHeight(HashSet<GameGridCell> nextCells)
         {
-            HeightLevel nextStartHeight = Constants.maxHeight;
+            HeightLevel nextStartHeight = Constants.MIN_HEIGHT;
             foreach (GameGridCell cell in nextCells)
-                for (HeightLevel height = startHeight - 1;
-                     height >= Constants.dirFirstHeightOfSurface[cell.SurfaceType];
-                     height--)
-                    if (cell.GetGridUnitAtHeight(height) is null && height < nextStartHeight)
-                        nextStartHeight = height;
-                    else break;
-            return nextStartHeight == Constants.maxHeight ? startHeight : nextStartHeight;
+            {
+                HeightLevel initHeight = Constants.dirFirstHeightOfSurface[cell.SurfaceType];
+                if (initHeight > nextStartHeight) nextStartHeight = initHeight;
+                for (HeightLevel heightLevel = initHeight;
+                     heightLevel <= BelowStartHeight;
+                     heightLevel++)
+                {
+                    if (cell.GetGridUnitAtHeight(heightLevel) is null) continue;
+                    if (heightLevel + 1 > nextStartHeight) nextStartHeight = heightLevel + 1;
+                }
+            }
+
+            return nextStartHeight;
         }
 
         public void OnEnterNextCellWithoutFall(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null)
@@ -182,6 +190,7 @@ namespace _Game.GameGrid.GridUnit
         protected Vector3 GetUnitWorldPos()
         {
             float offsetY = (float)startHeight / 2 * Constants.CELL_SIZE;
+            if (nextUnitState == UnitState.Down) offsetY -= yOffsetOnDown;
             return mainCell.WorldPos + Vector3.up * offsetY;
         }
 

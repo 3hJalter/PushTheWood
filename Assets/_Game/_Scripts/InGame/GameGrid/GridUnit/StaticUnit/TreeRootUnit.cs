@@ -6,7 +6,6 @@ namespace _Game.GameGrid.GridUnit.StaticUnit
     {
         public override void OnInteract(Direction direction, GridUnit interactUnit = null)
         {
-            // SPAGHETTI CODE, change later
             if (interactUnit is not IInteractRootTreeUnit interactRootTreeUnit) return;
             interactRootTreeUnit.OnInteractWithTreeRoot(direction, this);
         }

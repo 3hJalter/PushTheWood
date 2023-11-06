@@ -21,8 +21,7 @@ namespace _Game.GameGrid.GridUnit
         [SerializeField] protected Direction lastPushedDirection = Direction.None;
         public readonly List<GameGridCell> cellInUnits = new();
         private UnitInitData _unitInitData;
-
-
+        
         protected GameGridCell mainCell;
         protected UnitState nextUnitState;
 
@@ -62,21 +61,30 @@ namespace _Game.GameGrid.GridUnit
             bool isUseInitData = true)
         {
             if (isUseInitData) GetInitData();
-            startHeight = startHeightIn;
-            endHeight = startHeightIn + (size.y - 1) * 2;
-            if (!isMinusHalfSizeY && unitState == UnitState.Up) endHeight += 1;
-            mainCell = mainCellIn;
-            cellInUnits.Add(mainCell);
             islandID = mainCellIn.IslandID;
-            // Add all neighbour X Z from mainCell
-            AddXCell(mainCell, size.x);
-            for (int i = cellInUnits.Count - 1; i >= 0; i--) AddZCell(cellInUnits[i], size.z);
-            // Set gridUnitDic of cellInUnits with heightLevel in heightLevel list
-            for (int i = 0; i < cellInUnits.Count; i++) cellInUnits[i].AddGridUnit(startHeight, endHeight, this);
+            SetHeight(startHeightIn);
+            AddCell(mainCellIn);
             // Add offset Height to Position
             Tf.position = mainCell.WorldPos + Vector3.up * (float)startHeight / 2 * Constants.CELL_SIZE;
             if (unitState is UnitState.Down) Tf.position -= Vector3.up * yOffsetOnDown;
             nextUnitState = unitState;
+        }
+
+        private void SetHeight(HeightLevel startHeightIn)
+        {
+            startHeight = startHeightIn;
+            endHeight = startHeightIn + (size.y - 1) * 2;
+            if (!isMinusHalfSizeY && unitState == UnitState.Up) endHeight += 1;
+        }
+        
+        private void AddCell(GameGridCell mainCellIn)
+        {
+            mainCell = mainCellIn;
+            cellInUnits.Add(mainCell);
+            AddXCell(mainCell, size.x);
+            for (int i = cellInUnits.Count - 1; i >= 0; i--) AddZCell(cellInUnits[i], size.z);
+            // Add this unit to cells
+            for (int i = 0; i < cellInUnits.Count; i++) cellInUnits[i].AddGridUnit(startHeight, endHeight, this);
         }
 
         public Vector3 GetMainCellWorldPos()
@@ -102,12 +110,15 @@ namespace _Game.GameGrid.GridUnit
         public virtual void OnInteract(Direction direction, GridUnit interactUnit = null)
         {
             lastPushedDirection = direction;
-
         }
 
         public GridUnit GetBelowUnit()
         {
-            return mainCell.GetGridUnitAtHeight(BelowStartHeight);
+            if (mainCell is not null) return mainCell.GetGridUnitAtHeight(BelowStartHeight);
+            // Get cell from this position
+            Vector3 position = Tf.position;
+            GameGridCell cell = LevelManager.Ins.GetCell(new Vector2Int(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z)));
+            return cell?.GetGridUnitAtHeight(BelowStartHeight);
         }
 
         protected GridUnit GetAboveUnit()

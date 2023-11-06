@@ -9,24 +9,32 @@ namespace _Game.GameGrid.GridUnit.StaticUnit
     public class TreeUnit : GridUnitStatic
     {
         [SerializeField] private ChumpUnit chumpSpawn;
-        // SPAGHETTI CODE, change later
+        // Spawn TreeRootUnit at height of tree and Chump at height of tree + 1
         public override void OnInteract(Direction direction, GridUnit interactUnit = null)
         {
-            // Spawn TreeRootUnit at height of tree and Chump at height of tree + 1
+            if (!gameObject.activeSelf) return;
             // Spawn TreeRoot
+            SpawnTreeRoot();
+            // Spawn Chump and Push it
+            SpawnChump().OnInteract(direction);
+            OnDespawn();
+        }
+
+        private void SpawnTreeRoot()
+        {
             TreeRootUnit treeRoot = SimplePool.Spawn<TreeRootUnit>(DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.TreeRoot));
             treeRoot.OnInit(mainCell, startHeight);
             treeRoot.islandID = islandID;
             LevelManager.Ins.AddNewUnitToIsland(treeRoot);
-            // Spawn Chump
+        }
+
+        private ChumpUnit SpawnChump()
+        {
             ChumpUnit chump = SimplePool.Spawn<ChumpUnit>(chumpSpawn);
             chump.OnInit(mainCell, startHeight + 1);
             chump.islandID = islandID;
             LevelManager.Ins.AddNewUnitToIsland(chump);
-            // chump.Tf.position -= treeRoot.offsetY;
-            chump.OnInteract(direction);
-            // OnPushChump(direction);
-            OnDespawn();
+            return chump;
         }
     }
 }

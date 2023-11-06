@@ -25,17 +25,21 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         // Handle Moving Logic
         public void OnMove(Direction direction)
         {
+            if (isInAction) return;
             if (direction == Direction.None) return;
             if (HasObstacleIfMove(direction, out GameGridCell nextMainCell,
                     out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits))
             {
+                ReleaseAllCarryUnit();
                 OnNotMove(direction, nextUnits, this);
                 return;
             }
             if (nextCells.Any(cell => cell.SurfaceType is GridSurfaceType.Ground))
             {
+                ReleaseAllCarryUnit();
                 return;
             }
+            isInAction = true;
             SetAllCarryUnitAsChild();
             Vector3 newPosition = GetUnitNextWorldPos(nextMainCell);
             Tf.DOMove(newPosition, Constants.MOVING_TIME).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
@@ -50,7 +54,8 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                     unit.OnOutCurrentCells();
                     unit.OnEnterNextCellWithoutFall(nextMainCellIn, nextCellsIn);
                 }
-                ReleaseAllCarryUnit();
+                isInAction = false;
+                // ReleaseAllCarryUnit();
                 OnMove(direction);
             });
         }
