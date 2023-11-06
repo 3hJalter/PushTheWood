@@ -72,7 +72,7 @@ namespace _Game.GameGrid.GridUnit
             bool interactWithNextUnit = true)
         {
             if (isLockedAction) return;
-            DOVirtual.DelayedCall(0.04f, () => { isLockedAction = false; });
+            DOVirtual.DelayedCall(Constants.DELAY_INTERACT_TIME, () => { isLockedAction = false; });
             isLockedAction = true;
             if (!interactWithNextUnit) return;
             foreach (GridUnit unit in nextUnits) unit.OnInteract(direction, interactUnit);
