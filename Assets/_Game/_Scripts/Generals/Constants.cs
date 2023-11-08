@@ -46,7 +46,7 @@ public static class Constants
     public const int UPPER_HEIGHT = 1;
     public const int BELOW_HEIGHT = 1;
 
-    public const float DELAY_INTERACT_TIME = 0.05f;
+    public const float DELAY_INTERACT_TIME = 0.25f;
     public const float MOVING_TIME = 0.25f;
     public const float FALLING_TIME = 0.2f;
     
@@ -73,6 +73,15 @@ public static class Constants
         { GridSurfaceType.Water, HeightLevel.ZeroPointFive }
     };
 
+    public static readonly Dictionary<Direction, Vector3> dirVector3F = new()
+    {
+        { Direction.None, Vector3.zero },
+        { Direction.Left, Vector3.left },
+        { Direction.Right, Vector3.right },
+        { Direction.Forward, Vector3.forward },
+        { Direction.Back, Vector3.back }
+    };
+    
     public static readonly Dictionary<Direction, Vector3Int> dirVector3 = new()
     {
         { Direction.None, Vector3Int.zero },

@@ -55,5 +55,11 @@ namespace _Game.UIs.Screen
         {
             LevelManager.Ins.ResetIslandPlayerOn();
         }
+        
+        // TEST
+        public void OnChangeCellViewerState()
+        {
+            LevelManager.Ins.ChangeCellViewer();
+        }
     }
 }

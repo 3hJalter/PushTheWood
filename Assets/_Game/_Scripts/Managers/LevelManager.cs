@@ -28,8 +28,28 @@ namespace _Game.GameGrid
         private PlayerUnit _pUnit;
         private GameGridCell _firstPlayerInitCell;
         private TextGridData _textGridData;
+        
         // Test
+        [SerializeField] private Transform currentPCellViewer;
 
+        public void SetPlayerDirection(Direction direction)
+        {
+            _pUnit.direction = direction;
+        }
+        //
+        
+        
+        public void MoveCellViewer(GameGridCell cell)
+        {
+            currentPCellViewer.DOMove(cell.WorldPos + Vector3.up * 1.25f, 0.05f).SetEase(Ease.Linear);
+        }
+
+        public void ChangeCellViewer()
+        {
+            // set active false if is active now, and vice versa
+            currentPCellViewer.gameObject.SetActive(!currentPCellViewer.gameObject.activeSelf);
+        }
+        
         private void Start()
         {
             // TEST
@@ -77,11 +97,17 @@ namespace _Game.GameGrid
             _pUnit.OnDespawn();
             _pUnit = SimplePool.Spawn<PlayerUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Player));
             _pUnit.OnInit(_firstPlayerInitCell);
+            currentPCellViewer.position = _firstPlayerInitCell.WorldPos + Vector3.up * 1.25f;
         }
 
         public GameGridCell GetCell(Vector2Int position)
         {
             return _gridMap.GetGridCell(position.x, position.y);
+        }
+        
+        public GameGridCell GetCellWorldPos(Vector3 position)
+        {
+            return _gridMap.GetGridCell(position);
         }
         
         public GameGridCell GetNeighbourCell(GameGridCell cell, Direction direction, int distance = 1)
@@ -111,6 +137,7 @@ namespace _Game.GameGrid
             _pUnit.OnDespawn();
             _pUnit = SimplePool.Spawn<PlayerUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Player));
             _pUnit.OnInit(_islandDic[_pUnit.islandID].FirstPlayerStepCell);
+            currentPCellViewer.position = _islandDic[_pUnit.islandID].FirstPlayerStepCell.WorldPos + Vector3.up * 1.25f;
         }
         
         private void ResetAllIsland()
@@ -159,6 +186,7 @@ namespace _Game.GameGrid
             _pUnit = SimplePool.Spawn<PlayerUnit>(
                 DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Player));
             _pUnit.OnInit(cell);
+            currentPCellViewer.position = cell.WorldPos + Vector3.up * 1.25f;
             _islandDic[cell.Data.gridSurface.IslandID].SetFirstPlayerStepCell(cell);
             _firstPlayerInitCell = cell;
         }

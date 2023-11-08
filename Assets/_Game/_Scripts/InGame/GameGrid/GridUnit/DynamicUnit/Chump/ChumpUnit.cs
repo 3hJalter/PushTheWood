@@ -393,7 +393,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             {
                 skin.RotateAround(anchor.Tf.position, axis, i - lastAngle);
                 lastAngle = i;
-            }).SetUpdate(UpdateType.Fixed).OnComplete(() =>
+            }).SetUpdate(UpdateType.Fixed).SetEase(Ease.Linear).OnComplete(() =>
             {
                 skin.localPosition -= skinOffset;
                 Tf.position = notFallFinalPos;

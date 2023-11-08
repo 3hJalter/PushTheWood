@@ -26,6 +26,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         public void OnMove(Direction direction)
         {
             if (isInAction) return;
+            SetAllCarryUnitAsChild();
             if (direction == Direction.None) return;
             if (HasObstacleIfMove(direction, out GameGridCell nextMainCell,
                     out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits))
@@ -40,7 +41,6 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 return;
             }
             isInAction = true;
-            SetAllCarryUnitAsChild();
             Vector3 newPosition = GetUnitNextWorldPos(nextMainCell);
             Tf.DOMove(newPosition, Constants.MOVING_TIME).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
             {
