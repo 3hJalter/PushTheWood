@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using _Game.GameGrid.GridUnit.StaticUnit;
+using _Game.Managers;
+using _Game.UIs.Screen;
 using CnControls;
 using DG.Tweening;
 using GameGridEnum;
+using HControls;
 using UnityEngine;
 
 namespace _Game.GameGrid.GridUnit.DynamicUnit
@@ -23,10 +26,25 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
         public Direction direction = Direction.None;
 
-        private void Update()
+        // TEST
+        public MovingOption.MoveChoice moveChoice = MovingOption.MoveChoice.DPad;
+        //
+        
+        private bool _canNewMove;
+        private bool isFalling;
+        private void FixedUpdate()
         {
             if (isLockedAction) return;
-            OnUpdate();
+            // OnUpdate();
+            direction = HInputManager.GetDirectionInput();
+            if (direction == Direction.None)
+            {
+                _canNewMove = true;
+                if (isInAction) return;
+                ChangeAnim(Constants.IDLE_ANIM);
+                return;
+            }
+            DPad();
         }
 
         public void OnInteractWithTreeRoot(Direction direction, TreeRootUnit treeRootUnit)
@@ -63,13 +81,24 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
         private void OnUpdate()
         {
-            // direction = GetInputDirection();
+            direction = GetInputDirection();
             if (direction == Direction.None)
             {
-                if (!isInAction) ChangeAnim(Constants.IDLE_ANIM);
+                // _canNewMove = true;
+                if (isInAction) return;
+                ChangeAnim(Constants.IDLE_ANIM);
                 return;
             }
             if (isInAction && direction == _lastDirection) return;
+            // TEST WITH ONLY ONE DIRECTION PER INPUT
+            // if (!_canNewMove && direction != _lastDirection)
+            // {
+            //     Debug.Log("Block change direction");
+            //     direction = _lastDirection;
+            // }
+            // _canNewMove = false; 
+            // UIManager.Ins.GetUI<InGameScreen>().OnChangeDirection(direction);
+            // 
             LookDirection(direction);
             if (HasObstacleIfMove(direction, out GameGridCell nextMainCell,
                     out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits))
@@ -84,16 +113,16 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 return;
             }
             if (!CanMoveNextSurface(nextMainCell, direction)) return;
-            if (isInAction)
-            {
-                if (direction == _lastDirection) return;
-                // if (direction != GridUnitFunc.InvertDirection(_lastDirection)) return;
-                Tf.DOKill();
-                OnMovingDone(true);
-            }
+            if (isInAction) return;
+            // {
+            //     if (direction == _lastDirection) return;
+            //     // if (direction != GridUnitFunc.InvertDirection(_lastDirection)) return;
+            //     Tf.DOKill();
+            //     OnMovingDone(true);
+            // }
             OnMove(direction, nextMainCell, nextCells);
-            // // Tf.position += new Vector3(-_moveInput.x, 0, _moveInput.y) * (Time.deltaTime * 7f);
-            // // Tf.position += Constants.dirVector3F[direction] * (Time.deltaTime * 7f);
+            // Tf.position += new Vector3(-_moveInput.x, 0, _moveInput.y) * (Time.deltaTime * 7f);
+            // Tf.position += Constants.dirVector3F[direction] * (Time.deltaTime * 7f);
 
         }
 
@@ -128,6 +157,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
         private void OnMove(Direction direction, GameGridCell nextMainCell, HashSet<GameGridCell> nextCells)
         {
+            LevelManager.Ins.MoveCellViewer(nextMainCell);
             _lastDirection = direction;
             Vector3 notFallFinalPos = GetUnitNextWorldPos(nextMainCell);
             // Out Current Cell
@@ -139,7 +169,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             Vector3 finalPos = GetUnitWorldPos();
             // If notFallFinalPos Not Same y position With finalPos, minus 1 at x or z position based on the direction
             // Can be changed if have animation instead of use Tween
-            bool isFalling = false;
+            isFalling = false;
             if (Math.Abs(finalPos.y - notFallFinalPos.y) > 0.01)
             {
                 isFalling = true;
@@ -237,73 +267,230 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             _currentAnim = animName;
             animator.SetTrigger(_currentAnim);
         }
-        //
-        // #region TEST
-        //
-        // private bool _isFalling;
-        // private void FixedUpdate()
-        // {
-        //     if (isLockedAction) return;
-        //     if (_isFalling) return;
-        //     // Test
-        //     if (isInAction || direction is Direction.None)
-        //     {
-        //         ChangeAnim(Constants.IDLE_ANIM);
-        //         return;
-        //     }
-        //
-        //     ChangeAnim(Constants.WALK_ANIM);
-        //     // Look at new position
-        //     Vector3 position = Tf.position;
-        //     // Vector3 newPos = position + new Vector3(-_moveInput.x, 0, _moveInput.y) * (Time.fixedDeltaTime * 7f);
-        //     Vector3 newPos = position + Constants.dirVector3F[direction] * (Time.fixedDeltaTime * 7f);
-        //     // Tf.LookAt(newPos);
-        //     LookDirection(direction);
-        //     GameGridCell nextCell = GetNextMoveCell(newPos);
-        //     if (nextCell == mainCell)
-        //     {
-        //         Tf.position = newPos;
-        //         return;
-        //     }
-        //
-        //     // check if next cell is null or have unit
-        //     if (nextCell != mainCell)
-        //     {
-        //         if (nextCell is null) return; // return if next cell is null
-        //         for (HeightLevel j = startHeight; j <= endHeight; j++)
-        //         {
-        //             GridUnit unit = nextCell.GetGridUnitAtHeight(j);
-        //             if (unit is null || unit == this) continue;
-        //             if (isLockedAction) return;
-        //             isLockedAction = true;
-        //             DOVirtual.DelayedCall(Constants.DELAY_INTERACT_TIME, () => { isLockedAction = false; });
-        //             unit.OnInteract(direction, this);
-        //             if (unit is not TreeRootUnit) OnPushVehicle(direction, unit);
-        //             return; // return if have unit
-        //         }
-        //     }
-        //
-        //     if (!CanMoveNextSurface(nextCell, direction)) return;
-        //     Tf.position = newPos;
-        //     _lastDirection = direction;
-        //     LevelManager.Ins.MoveCellViewer(nextCell);
-        //     // Out Current Cell
-        //     OnOutCurrentCells();
-        //     // Enter Next cell
-        //     Vector3 notFallFinalPos = GetUnitNextWorldPos(nextCell);
-        //     OnEnterNextCell2(nextCell);
-        //     SetIslandId(nextCell);
-        //     Vector3 finalPos = GetUnitWorldPos();
-        //     // If notFallFinalPos Not Same y position With finalPos, minus 1 at x or z position based on the direction
-        //     // Can be changed if have animation instead of use Tween
-        //     if (Math.Abs(finalPos.y - notFallFinalPos.y) > 0.01) _isFalling = true;
-        //     if (_isFalling)
-        //         Tf.DOMove(finalPos, Constants.MOVING_TIME / 2).SetEase(Ease.Linear)
-        //             .SetUpdate(UpdateType.Fixed).OnComplete(() => { _isFalling = false; });
-        //     // OnMovingDone();
-        //     //
-        // }
-        //
-        // #endregion
+        
+    // #region TEST
+    //
+    //
+    // private void FixedUpdate()
+    // {
+    //     direction = GetInputDirection();
+    //     if (isLockedAction) return;
+    //     if (isFalling) return;
+    //     // Test
+    //     if (isInAction || direction is Direction.None)
+    //     {
+    //         // _canNewMove = true;
+    //         ChangeAnim(Constants.IDLE_ANIM);
+    //         return;
+    //     }
+    //     // // TEST WITH ONLY ONE DIRECTION PER INPUT
+    //     // if (!_canNewMove && direction != _lastDirection)
+    //     // {
+    //     //     direction = _lastDirection;
+    //     // }
+    //     // _canNewMove = false;
+    //     // // 
+    //     ChangeAnim(Constants.WALK_ANIM);
+    //     // Look at new position
+    //     Vector3 position = Tf.position;
+    //     // Vector3 newPos = position + new Vector3(-_moveInput.x, 0, _moveInput.y) * (Time.fixedDeltaTime * 7f);
+    //     Vector3 newPos = position + Constants.dirVector3F[direction] * (Time.fixedDeltaTime * 7f);
+    //     _lastDirection = direction;
+    //     // Tf.LookAt(newPos);
+    //     LookDirection(direction);
+    //     GameGridCell nextCell = GetNextMoveCell(newPos);
+    //     if (nextCell == mainCell)
+    //     {
+    //         Tf.position = newPos;
+    //         return;
+    //     }
+    //
+    //     // check if next cell is null or have unit
+    //     if (nextCell != mainCell)
+    //     {
+    //         if (nextCell is null) return; // return if next cell is null
+    //         for (HeightLevel j = startHeight; j <= endHeight; j++)
+    //         {
+    //             GridUnit unit = nextCell.GetGridUnitAtHeight(j);
+    //             if (unit is null || unit == this) continue;
+    //             if (isLockedAction) return;
+    //             isLockedAction = true;
+    //             DOVirtual.DelayedCall(Constants.DELAY_INTERACT_TIME, () => { isLockedAction = false; });
+    //             unit.OnInteract(direction, this);
+    //             if (unit is not TreeRootUnit) OnPushVehicle(direction, unit);
+    //             return; // return if have unit
+    //         }
+    //     }
+    //
+    //     if (!CanMoveNextSurface(nextCell, direction)) return;
+    //     Tf.position = newPos;
+    //     // _lastDirection = direction;
+    //     LevelManager.Ins.MoveCellViewer(nextCell);
+    //     // Out Current Cell
+    //     OnOutCurrentCells();
+    //     // Enter Next cell
+    //     Vector3 notFallFinalPos = GetUnitNextWorldPos(nextCell);
+    //     OnEnterNextCell2(nextCell);
+    //     SetIslandId(nextCell);
+    //     Vector3 finalPos = GetUnitWorldPos();
+    //     // If notFallFinalPos Not Same y position With finalPos, minus 1 at x or z position based on the direction
+    //     // Can be changed if have animation instead of use Tween
+    //     if (Math.Abs(finalPos.y - notFallFinalPos.y) > 0.01) isFalling = true;
+    //     if (isFalling)
+    //         Tf.DOMove(finalPos, Constants.MOVING_TIME / 2).SetEase(Ease.Linear)
+    //             .SetUpdate(UpdateType.Fixed).OnComplete(() => { isFalling = false; });
+    //     // OnMovingDone();
+    //     //
+    // }
+    //
+    // #endregion
+
+    private void DPad()
+    {
+        if (isInAction && direction == _lastDirection) return;
+        LookDirection(direction);
+        if (HasObstacleIfMove(direction, out GameGridCell nextMainCell,
+                out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits))
+        {
+            OnNotMove(direction, nextUnits, this);
+            // Temporary
+            if (nextUnits.Count == 1)
+            {
+                GridUnit unit = nextUnits.First();
+                if (unit is not TreeRootUnit) OnPushVehicle(direction, unit);
+            }
+            return;
+        }
+        if (!CanMoveNextSurface(nextMainCell, direction)) return;
+        if (isInAction) return;
+        OnMove(direction, nextMainCell, nextCells);
+    }
+    
+    private void JoystickLockPos()
+    {
+        if (isInAction && direction == _lastDirection) return;
+        LookDirection(direction);
+        if (HasObstacleIfMove(direction, out GameGridCell nextMainCell,
+                out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits))
+        {
+            OnNotMove(direction, nextUnits, this);
+            // Temporary
+            if (nextUnits.Count == 1)
+            {
+                GridUnit unit = nextUnits.First();
+                if (unit is not TreeRootUnit) OnPushVehicle(direction, unit);
+            }
+            return;
+        }
+        if (!CanMoveNextSurface(nextMainCell, direction)) return;
+        if (isInAction)
+        {
+            if (direction == _lastDirection) return;
+            // if (direction != GridUnitFunc.InvertDirection(_lastDirection)) return;
+            Tf.DOKill();
+            OnMovingDone(true);
+        }
+        OnMove(direction, nextMainCell, nextCells);
+    }
+    
+    private void JoystickFreePos()
+    {
+        ChangeAnim(Constants.WALK_ANIM);
+        // Look at new position
+        Vector3 position = Tf.position;
+        Vector3 newPos = position + Constants.dirVector3F[direction] * (Time.fixedDeltaTime * 7f);
+        _lastDirection = direction;
+        LookDirection(direction);
+        GameGridCell nextCell = GetNextMoveCell(newPos);
+        if (nextCell == mainCell)
+        {
+            Tf.position = newPos;
+            return;
+        }
+        // check if next cell is null or have unit
+        if (nextCell != mainCell)
+        {
+            if (nextCell is null) return; // return if next cell is null
+            for (HeightLevel j = startHeight; j <= endHeight; j++)
+            {
+                GridUnit unit = nextCell.GetGridUnitAtHeight(j);
+                if (unit is null || unit == this) continue;
+                if (isLockedAction) return;
+                isLockedAction = true;
+                DOVirtual.DelayedCall(Constants.DELAY_INTERACT_TIME, () => { isLockedAction = false; });
+                unit.OnInteract(direction, this);
+                if (unit is not TreeRootUnit) OnPushVehicle(direction, unit);
+                return; // return if have unit
+            }
+        }
+        if (!CanMoveNextSurface(nextCell, direction)) return;
+        Tf.position = newPos;
+        // _lastDirection = direction;
+        LevelManager.Ins.MoveCellViewer(nextCell);
+        // Out Current Cell
+        OnOutCurrentCells();
+        // Enter Next cell
+        Vector3 notFallFinalPos = GetUnitNextWorldPos(nextCell);
+        OnEnterNextCell2(nextCell);
+        SetIslandId(nextCell);
+        Vector3 finalPos = GetUnitWorldPos();
+        // If notFallFinalPos Not Same y position With finalPos, minus 1 at x or z position based on the direction
+        // Can be changed if have animation instead of use Tween
+        if (Math.Abs(finalPos.y - notFallFinalPos.y) > 0.01) isFalling = true;
+        if (isFalling)
+            Tf.DOMove(finalPos, Constants.MOVING_TIME / 2).SetEase(Ease.Linear)
+                .SetUpdate(UpdateType.Fixed).OnComplete(() => { isFalling = false; });
+    }
+    
+    private void SwipeOne()
+    {
+        if (isInAction && direction == _lastDirection) return;
+        // TEST WITH ONLY ONE DIRECTION PER INPUT
+        if (!_canNewMove && direction != _lastDirection)
+        {
+            Debug.Log("Block change direction");
+            direction = _lastDirection;
+        }
+        _canNewMove = false; 
+        UIManager.Ins.GetUI<InGameScreen>().OnChangeDirection(direction);
+        
+        LookDirection(direction);
+        if (HasObstacleIfMove(direction, out GameGridCell nextMainCell,
+                out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits))
+        {
+            OnNotMove(direction, nextUnits, this);
+            // Temporary
+            if (nextUnits.Count == 1)
+            {
+                GridUnit unit = nextUnits.First();
+                if (unit is not TreeRootUnit) OnPushVehicle(direction, unit);
+            }
+            return;
+        }
+        if (!CanMoveNextSurface(nextMainCell, direction)) return;
+        if (isInAction) return;
+        OnMove(direction, nextMainCell, nextCells);
+    }
+    
+    private void SwipeMultiple()
+    {
+        if (isInAction && direction == _lastDirection) return;
+        UIManager.Ins.GetUI<InGameScreen>().OnChangeDirection(direction);
+        LookDirection(direction);
+        if (HasObstacleIfMove(direction, out GameGridCell nextMainCell,
+                out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits))
+        {
+            OnNotMove(direction, nextUnits, this);
+            if (nextUnits.Count == 1)
+            {
+                GridUnit unit = nextUnits.First();
+                if (unit is not TreeRootUnit) OnPushVehicle(direction, unit);
+            }
+            return;
+        }
+        if (!CanMoveNextSurface(nextMainCell, direction)) return;
+        if (isInAction) return;
+        OnMove(direction, nextMainCell, nextCells);
+    }
     }
 }

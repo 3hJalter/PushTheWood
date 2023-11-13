@@ -32,6 +32,11 @@ namespace _Game.GameGrid
         // Test
         [SerializeField] private Transform currentPCellViewer;
 
+        public void ChangePlayerMoveChoice(MovingOption.MoveChoice moveChoice)
+        {
+            _pUnit.moveChoice = moveChoice;
+        }
+        
         public void SetPlayerDirection(Direction direction)
         {
             _pUnit.direction = direction;
@@ -41,7 +46,7 @@ namespace _Game.GameGrid
         
         public void MoveCellViewer(GameGridCell cell)
         {
-            currentPCellViewer.DOMove(cell.WorldPos + Vector3.up * 1.25f, 0.05f).SetEase(Ease.Linear);
+            currentPCellViewer.DOMove(cell.WorldPos + Vector3.up * 1.25f, 0.15f).SetEase(Ease.Linear);
         }
 
         public void ChangeCellViewer()

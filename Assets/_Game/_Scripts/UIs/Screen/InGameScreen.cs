@@ -4,23 +4,32 @@ using _Game.Managers;
 using _Game.UIs.Popup;
 using CnControls;
 using DG.Tweening;
+using HControls;
+using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace _Game.UIs.Screen
 {
     public class InGameScreen : UICanvas
     {
-        [SerializeField] private SimpleJoystick joystick;
+        
+        [SerializeField] private HSwitch hSwitch;
+        [SerializeField] private GameObject dpad;
+        
+        public Image joystickImage1;
+        public Image joystickImage2;
+        public HSwitch HSwitch => hSwitch;
+        public GameObject Dpad => dpad;
+
         [SerializeField] private Image blockPanel;
         [SerializeField] private CanvasGroup canvasGroup;
-
-        [SerializeField] private Image resetButtonImg;
         
         public override void Setup()
         {
             base.Setup();
-            joystick.ResetJoyStickPos();
+            // if (hSwitch.enabled) hSwitch.ResetSwitchPos();
             if (CameraFollow.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
             FxManager.Ins.StopTweenFog();
             blockPanel.enabled = true;
@@ -57,9 +66,21 @@ namespace _Game.UIs.Screen
         }
         
         // TEST
+        public void OnClickMoveOptionPopup()
+        {
+            UIManager.Ins.OpenUI<MoveOptionPopup>();
+        }
+        
         public void OnChangeCellViewerState()
         {
             LevelManager.Ins.ChangeCellViewer();
+        }
+
+        [SerializeField] private ImageDirectionChange imageDirectionChange;
+        
+        public void OnChangeDirection(Direction direction)
+        {
+            imageDirectionChange.ChangeSprite(direction);
         }
     }
 }

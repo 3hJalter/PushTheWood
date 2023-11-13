@@ -25,7 +25,7 @@ public static class Constants
     /// </summary>
     public const string HORIZONTAL = "Horizontal";
     public const string VERTICAL = "Vertical";
-    public const float INPUT_THRESHOLD_P2 = 0.16f; // Threshold Power 2 from 0 to 1
+    public const float INPUT_THRESHOLD_P2 = 0.09f; // Threshold Power 2 from 0 to 1 -> Default = 0.16
     
     /// <summary>
     ///     Player Animation

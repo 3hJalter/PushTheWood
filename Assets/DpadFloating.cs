@@ -9,14 +9,17 @@ using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(EmptyGraphic))]
-public class FloatingMoveInputButton : HMonoBehaviour, IPointerUpHandler, IPointerDownHandler
+public class DpadFloating : HMonoBehaviour, IPointerUpHandler, IPointerDownHandler
 {
     public EmptyGraphic emptyGraphic;
     public float timeToHideButton = 1f;
     [SerializeField] private RectTransform btnContainer;
+
+    private Vector3 _initPos;
     
     private void Awake()
     {
+        _initPos = btnContainer.rect.position;
         emptyGraphic = GetComponent<EmptyGraphic>();
         HideButton();
     }
@@ -42,14 +45,7 @@ public class FloatingMoveInputButton : HMonoBehaviour, IPointerUpHandler, IPoint
         }).SetId(this);
         // throw new System.NotImplementedException();
     }
-
-    private IEnumerator<float> HideButtonAfterDelay()
-    {
-        yield return Timing.WaitForSeconds(timeToHideButton);
-        HideButton();
-        emptyGraphic.enabled = true;
-    }
-
+    
     private void ShowButton()
     {
         

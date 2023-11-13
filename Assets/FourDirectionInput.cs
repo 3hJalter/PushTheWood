@@ -1,0 +1,268 @@
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+
+namespace CnControls
+{
+    /// <summary>
+    ///     Simple joystick class
+    ///     Contains logic for creating a simple joystick
+    /// </summary>
+    public sealed class FourDirectionInput : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
+    {
+        // ------- Inspector visible variables ---------------------------------------
+
+        /// <summary>
+        ///     The range in non-scaled pixels for which we can drag the joystick around
+        /// </summary>
+        public float movementRange = 50f;
+
+        /// <summary>
+        ///     The name of the horizontal axis for this joystick to update
+        /// </summary>
+        public string horizontalAxisName = "Horizontal";
+
+        /// <summary>
+        ///     The name of the vertical axis for this joystick to update
+        /// </summary>
+        public string verticalAxisName = "Vertical";
+
+        /// <summary>
+        ///     Should the joystick be hidden when the user releases the finger?
+        ///     [Space(15f)] attribute is needed only for the editor, it creates some spacing in the inspector
+        /// </summary>
+        [Space(15f)] [Tooltip("Should the joystick be hidden on release?")]
+        public bool hideOnRelease;
+
+        /// <summary>
+        ///     Should the joystick be moved along with the finger
+        /// </summary>
+        [Tooltip("Should the Base image move along with the finger without any constraints?")]
+        public bool moveBase = true;
+
+        /// <summary>
+        ///     Should the joystick be moved along with the finger
+        /// </summary>
+        [Tooltip("Should the joystick snap to finger? If it's FALSE, the MoveBase checkbox logic will be omitted")]
+        public bool snapsToFinger = true;
+
+        /// <summary>
+        ///     Joystick movement direction
+        ///     Specifies the axis along which it can move
+        /// </summary>
+        [Tooltip("Constraints on the joystick movement axis")]
+        public ControlMovementDirection joystickMoveAxis = ControlMovementDirection.Both;
+
+        /// <summary>
+        ///     Image of the joystick base
+        /// </summary>
+        [Tooltip("Image of the joystick base")]
+        public Image joystickBase;
+
+        /// <summary>
+        ///     Image of the stick itself
+        /// </summary>
+        [Tooltip("Image of the stick itself")] public Image stick;
+
+        /// <summary>
+        ///     Rect Transform of the touch zone
+        /// </summary>
+        [Tooltip("Touch Zone transform")] public RectTransform touchZone;
+
+        private RectTransform _baseTransform;
+        private Vector2 _initialBasePosition;
+
+        // ---------------------------------------------------------------------------
+
+        private Vector2 _initialStickPosition;
+        private Vector2 _intermediateStickPosition;
+
+        private float _oneOverMovementRange;
+        private RectTransform _stickTransform;
+
+        private VirtualAxis _horizontalAxis;
+        private VirtualAxis _verticalAxis;
+
+        /// <summary>
+        ///     Current event camera reference. Needed for the sake of Unity Remote input
+        /// </summary>
+        private Camera CurrentEventCamera { get; set; }
+
+        private void Awake()
+        {
+            _stickTransform = stick.GetComponent<RectTransform>();
+            _baseTransform = joystickBase.GetComponent<RectTransform>();
+
+            _initialStickPosition = _stickTransform.anchoredPosition;
+            _intermediateStickPosition = _initialStickPosition;
+            _initialBasePosition = _baseTransform.anchoredPosition;
+
+            _stickTransform.anchoredPosition = _initialStickPosition;
+            _baseTransform.anchoredPosition = _initialBasePosition;
+
+            _oneOverMovementRange = 1f / movementRange;
+
+            if (hideOnRelease) Hide(true);
+        }
+
+        private void OnEnable()
+        {
+            // When we enable, we get our virtual axis
+
+            _horizontalAxis = _horizontalAxis ?? new VirtualAxis(horizontalAxisName);
+            _verticalAxis = _verticalAxis ?? new VirtualAxis(verticalAxisName);
+
+            // And register them in our input system
+            CnInputManager.RegisterVirtualAxis(_horizontalAxis);
+            CnInputManager.RegisterVirtualAxis(_verticalAxis);
+        }
+
+        private void OnDisable()
+        {
+            // When we disable, we just unregister our axis
+            // It also happens before the game object is Destroyed
+            CnInputManager.UnregisterVirtualAxis(_horizontalAxis);
+            CnInputManager.UnregisterVirtualAxis(_verticalAxis);
+        }
+
+        public void OnDrag(PointerEventData eventData)
+        {
+            // Unity remote multitouch related thing
+            // When we feed fake PointerEventData we can't really provide a camera, 
+            // it has a lot of private setters via not created objects, so even the Reflection magic won't help a lot here
+            // Instead, we just provide an actual event camera as a public property so we can easily set it in the Input Helper class
+            CurrentEventCamera = eventData.pressEventCamera ? eventData.pressEventCamera : CurrentEventCamera;
+
+            // We get the local position of the joystick
+            RectTransformUtility.ScreenPointToWorldPointInRectangle(_stickTransform, eventData.position,
+                CurrentEventCamera, out Vector3 worldJoystickPosition);
+
+            // Then we change it's actual position so it snaps to the user's finger
+            _stickTransform.position = worldJoystickPosition;
+            // We then query it's anchored position. It's calculated internally and quite tricky to do from scratch here in C#
+            Vector2 stickAnchoredPosition = _stickTransform.anchoredPosition;
+
+            // Some bitwise logic for constraining the joystick along one of the axis
+            // If the "Both" option was selected, non of these two checks will yield "true"
+            if ((joystickMoveAxis & ControlMovementDirection.Horizontal) == 0)
+                stickAnchoredPosition.x = _intermediateStickPosition.x;
+
+            if ((joystickMoveAxis & ControlMovementDirection.Vertical) == 0)
+                stickAnchoredPosition.y = _intermediateStickPosition.y;
+
+            _stickTransform.anchoredPosition = stickAnchoredPosition;
+
+            // Find current difference between the previous central point of the joystick and it's current position
+            Vector2 difference = new Vector2(stickAnchoredPosition.x, stickAnchoredPosition.y) -
+                                 _intermediateStickPosition;
+
+            // Normalisation stuff
+            float diffMagnitude = difference.magnitude;
+            Vector2 normalizedDifference = difference / diffMagnitude;
+
+            // If the joystick is being dragged outside of it's range
+            if (diffMagnitude > movementRange)
+            {
+                if (moveBase && snapsToFinger)
+                {
+                    // We move the base so it maps the new joystick center position
+                    float baseMovementDifference = difference.magnitude - movementRange;
+                    Vector2 addition = normalizedDifference * baseMovementDifference;
+                    _baseTransform.anchoredPosition += addition;
+                    _intermediateStickPosition += addition;
+                }
+                else
+                {
+                    _stickTransform.anchoredPosition =
+                        _intermediateStickPosition + normalizedDifference * movementRange;
+                }
+            }
+
+            // We should now calculate axis values based on final position and not on "virtual" one
+            Vector2 finalStickAnchoredPosition = _stickTransform.anchoredPosition;
+            // Sanity recalculation
+            Vector2 finalDifference = new Vector2(finalStickAnchoredPosition.x, finalStickAnchoredPosition.y) -
+                                      _intermediateStickPosition;
+            // We don't need any values that are greater than 1 or less than -1
+            float horizontalValue = Mathf.Clamp(finalDifference.x * _oneOverMovementRange, -1f, 1f);
+            float verticalValue = Mathf.Clamp(finalDifference.y * _oneOverMovementRange, -1f, 1f);
+
+            // Finally, we update our virtual axis
+            _horizontalAxis.Value = horizontalValue;
+            _verticalAxis.Value = verticalValue;
+        }
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            // We also want to show it if we specified that behaviour
+            if (hideOnRelease) Hide(false);
+
+            // When we press, we first want to snap the joystick to the user's finger
+            if (snapsToFinger)
+            {
+                CurrentEventCamera = eventData.pressEventCamera ? eventData.pressEventCamera : CurrentEventCamera;
+
+                RectTransformUtility.ScreenPointToWorldPointInRectangle(_stickTransform, eventData.position,
+                    CurrentEventCamera, out Vector3 localStickPosition);
+                RectTransformUtility.ScreenPointToWorldPointInRectangle(_baseTransform, eventData.position,
+                    CurrentEventCamera, out Vector3 localBasePosition);
+
+                _baseTransform.position = localBasePosition;
+                _stickTransform.position = localStickPosition;
+                _intermediateStickPosition = _stickTransform.anchoredPosition;
+            }
+            else
+            {
+                OnDrag(eventData);
+            }
+        }
+
+        public void OnPointerUp(PointerEventData eventData)
+        {
+            // When we lift our finger, we reset everything to the initial state
+            _baseTransform.anchoredPosition = _initialBasePosition;
+            _stickTransform.anchoredPosition = _initialStickPosition;
+            _intermediateStickPosition = _initialStickPosition;
+
+            _horizontalAxis.Value = _verticalAxis.Value = 0f;
+
+            // We also hide it if we specified that behaviour
+            if (hideOnRelease) Hide(true);
+        }
+
+        public void ResetJoyStickPos()
+        {
+            // When we lift our finger, we reset everything to the initial state
+            _baseTransform.anchoredPosition = _initialBasePosition;
+            _stickTransform.anchoredPosition = _initialStickPosition;
+            _intermediateStickPosition = _initialStickPosition;
+
+            _horizontalAxis.Value = _verticalAxis.Value = 0f;
+
+            // We also hide it if we specified that behaviour
+            if (hideOnRelease) Hide(true);
+        }
+
+        public void Release()
+        {
+            _baseTransform.anchoredPosition = _initialBasePosition;
+            _stickTransform.anchoredPosition = _initialStickPosition;
+            _intermediateStickPosition = _initialStickPosition;
+
+            _horizontalAxis.Value = _verticalAxis.Value = 0f;
+
+            // We also hide it if we specified that behaviour
+            if (hideOnRelease) Hide(true);
+        }
+
+        /// <summary>
+        ///     Simple "Hide" behaviour
+        /// </summary>
+        /// <param name="isHidden">Whether the joystick should be hidden</param>
+        private void Hide(bool isHidden)
+        {
+            joystickBase.gameObject.SetActive(!isHidden);
+            stick.gameObject.SetActive(!isHidden);
+        }
+    }
+}
