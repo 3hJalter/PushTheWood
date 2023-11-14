@@ -15,10 +15,10 @@ namespace _Game.GameGrid.GridUnit
         public bool isInAction;
         public bool isLockedAction;
         protected UnitType nextUnitType;
-
-        public GridUnitDynamicType GridUnitDynamicType => gridUnitDynamicType;
         public PoolType? PoolType => ConvertToPoolType(gridUnitDynamicType);
 
+        protected readonly NextCellPosData nextPosData = new();
+        
         public override void OnDespawn()
         {
             isInAction = false;
@@ -35,7 +35,7 @@ namespace _Game.GameGrid.GridUnit
             endHeight -= numHeightDown;
             for (int i = cellInUnits.Count - 1; i >= 0; i--)
                 cellInUnits[i].AddGridUnit(this);
-            Vector3 newPos = GetUnitNextWorldPos(mainCell);
+            Vector3 newPos = GetUnitWorldPos(mainCell);
             Tf.DOMove(newPos, Constants.FALLING_TIME)
                 .SetEase(Ease.Linear).OnComplete(() =>
                 {
@@ -84,20 +84,13 @@ namespace _Game.GameGrid.GridUnit
             cellInUnits.Clear();
         }
 
-        protected void OnEnterNextCells(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null,
-            Action fallCallback = null)
+        protected void OnEnterNextCell(Direction direction, GameGridCell nextMainCell, bool hasInitialOffset = true, HashSet<GameGridCell> nextCells = null)
         {
+            Vector3 initialPos = GetUnitWorldPos(nextMainCell);
+            SetHeight(nextCells is not null ? GetNextStartHeight(nextCells) : GetNextStartHeight(nextMainCell));
             InitCellsToUnit(nextMainCell, nextCells);
-            if (CanFall(out int numHeightDown)) OnFall(numHeightDown, fallCallback);
-            else OnNotFall();
-        }
-
-        protected void OnEnterNextCell2(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null)
-        {
-            startHeight = nextCells is not null ? GetNextStartHeight(nextCells) : GetNextStartHeight(nextMainCell);
-            endHeight = startHeight + (size.y - 1) * 2;
-            if (!isMinusHalfSizeY && nextUnitState == UnitState.Up) endHeight += 1;
-            InitCellsToUnit(nextMainCell, nextCells);
+            Vector3 finalPos = GetUnitWorldPos();
+            nextPosData.SetNextPosData(direction, initialPos, finalPos, hasInitialOffset);
         }
 
         private HeightLevel GetNextStartHeight(GameGridCell nextCell)
@@ -194,11 +187,11 @@ namespace _Game.GameGrid.GridUnit
             return mainCell.WorldPos + Vector3.up * offsetY;
         }
 
-        protected Vector3 GetUnitNextWorldPos(GameGridCell nextMainCell, HashSet<GameGridCell> nextCells = null)
+        protected Vector3 GetUnitWorldPos(GameGridCell cell)
         {
             float offsetY = (float)startHeight / 2 * Constants.CELL_SIZE;
             if (nextUnitState == UnitState.Down) offsetY -= yOffsetOnDown;
-            return nextMainCell.WorldPos + Vector3.up * offsetY;
+            return cell.WorldPos + Vector3.up * offsetY;
         }
 
         protected bool HasObstacleIfRotateMove(Direction direction, out Vector3Int sizeAfterRotate,
@@ -304,6 +297,23 @@ namespace _Game.GameGrid.GridUnit
         {
             cellInUnits.Add(cell);
             cell.AddGridUnit(this);
+        }
+    }
+
+    public class NextCellPosData
+    {
+        public bool isFalling;
+        public Vector3 initialPos; // not consider falling
+        public Vector3 finalPos;
+        
+        public void SetNextPosData(Direction direction, Vector3 initialPosIn, Vector3 finalPosIn, bool hasInitialOffset = true)
+        {
+            initialPos = initialPosIn;
+            finalPos = finalPosIn;
+            isFalling = Math.Abs(finalPosIn.y - initialPosIn.y) > 0.01;
+            if (!isFalling || !hasInitialOffset) return; // make falling before go to the center of next cell
+            Vector3Int dirVector3 = Constants.dirVector3[direction];
+            initialPos -= new Vector3(dirVector3.x, 0, dirVector3.z) * Constants.CELL_SIZE / 2;
         }
     }
 }

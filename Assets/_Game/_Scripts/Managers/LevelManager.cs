@@ -32,14 +32,9 @@ namespace _Game.GameGrid
         // Test
         [SerializeField] private Transform currentPCellViewer;
 
-        public void ChangePlayerMoveChoice(MovingOption.MoveChoice moveChoice)
+        public void OnShowDirectionIcon()
         {
-            _pUnit.moveChoice = moveChoice;
-        }
-        
-        public void SetPlayerDirection(Direction direction)
-        {
-            _pUnit.direction = direction;
+            _pUnit.DirectionIcon.gameObject.SetActive(!_pUnit.DirectionIcon.gameObject.activeSelf);
         }
         //
         

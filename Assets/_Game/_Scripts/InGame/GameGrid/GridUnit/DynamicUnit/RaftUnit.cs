@@ -41,7 +41,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 return;
             }
             isInAction = true;
-            Vector3 newPosition = GetUnitNextWorldPos(nextMainCell);
+            Vector3 newPosition = GetUnitWorldPos(nextMainCell);
             Tf.DOMove(newPosition, Constants.MOVING_TIME).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
             {
                 OnOutCurrentCells();
@@ -82,8 +82,8 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             _carryUnits.Clear();
         }
 
-        [SerializeField] private UnitType _lastSpawnType = UnitType.None;
-        [SerializeField] private bool _isFirstSpawnDone;
+        private UnitType _lastSpawnType = UnitType.None;
+        private bool _isFirstSpawnDone;
         private void RotateSkin(UnitType type)
         {
             skin.localRotation =

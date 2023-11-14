@@ -1,17 +1,70 @@
+using _Game.GameGrid;
+using _Game.Managers;
+using _Game.UIs.Screen;
+
 public class MoveOptionPopup : UICanvas
 {
-    public void OnUseDpad()
+    private enum MoveChoice
     {
-        MovingOption.Ins.OnChangeMoveChoice(MovingOption.MoveChoice.DPad);
+        DPad,
+        Switch,
+        Swipe
     }
     
-    public void OnUseJoyLock()
+    public void OnUseDpad()
     {
-        MovingOption.Ins.OnChangeMoveChoice(MovingOption.MoveChoice.Switch);
+        OnChangeMoveChoice(MoveChoice.DPad);
+    }
+    
+    public void OnUseSwitch()
+    {
+        OnChangeMoveChoice(MoveChoice.Switch);
     }
 
-    public void OnUseSwipeMultiple()
+    public void OnUseSwipe()
     {
-        MovingOption.Ins.OnChangeMoveChoice(MovingOption.MoveChoice.Swipe);
+        OnChangeMoveChoice(MoveChoice.Swipe);
+    }
+    
+    public void OnShowDirectionIcon()
+    {
+        LevelManager.Ins.OnShowDirectionIcon();
+    }
+    
+    public void OnChangeCellViewerState()
+    {
+        LevelManager.Ins.ChangeCellViewer();
+    }
+    
+    private static void OnChangeMoveChoice(MoveChoice moveChoice)
+    {
+        InGameScreen igScreen = UIManager.Ins.GetUI<InGameScreen>();
+        if (igScreen == null) return;
+        HideButton(igScreen);
+        switch (moveChoice)
+        {
+            case MoveChoice.DPad:
+                igScreen.Dpad.SetActive(true);
+                break;
+            case MoveChoice.Switch:
+            {
+                igScreen.HSwitch.gameObject.SetActive(true);
+                igScreen.HSwitch.HideAllTime(false);
+                break;
+            }
+            case MoveChoice.Swipe:
+            {
+                igScreen.HSwitch.gameObject.SetActive(true);
+                igScreen.HSwitch.HideAllTime(true);
+                break;
+            }
+
+        }
+    }
+
+    private static void HideButton(InGameScreen igScreen)
+    {
+        igScreen.Dpad.SetActive(false);
+        igScreen.HSwitch.gameObject.SetActive(false);
     }
 }

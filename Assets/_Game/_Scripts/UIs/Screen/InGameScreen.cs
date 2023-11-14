@@ -17,9 +17,6 @@ namespace _Game.UIs.Screen
         
         [SerializeField] private HSwitch hSwitch;
         [SerializeField] private GameObject dpad;
-        
-        public Image joystickImage1;
-        public Image joystickImage2;
         public HSwitch HSwitch => hSwitch;
         public GameObject Dpad => dpad;
 
@@ -69,18 +66,6 @@ namespace _Game.UIs.Screen
         public void OnClickMoveOptionPopup()
         {
             UIManager.Ins.OpenUI<MoveOptionPopup>();
-        }
-        
-        public void OnChangeCellViewerState()
-        {
-            LevelManager.Ins.ChangeCellViewer();
-        }
-
-        [SerializeField] private ImageDirectionChange imageDirectionChange;
-        
-        public void OnChangeDirection(Direction direction)
-        {
-            imageDirectionChange.ChangeSprite(direction);
         }
     }
 }

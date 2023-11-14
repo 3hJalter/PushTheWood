@@ -4,7 +4,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 {
     public interface IInteractRootTreeUnit
     {
-        public void OnInteractWithTreeRoot(Direction direction, TreeRootUnit treeRootUnit)
+        public void OnInteractWithTreeRoot(Direction directionIn, TreeRootUnit treeRootUnit)
         {
             
         }
