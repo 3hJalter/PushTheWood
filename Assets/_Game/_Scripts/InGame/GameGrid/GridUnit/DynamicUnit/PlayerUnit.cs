@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using _Game.DesignPattern;
 using _Game.GameGrid.GridUnit.StaticUnit;
 using DG.Tweening;
 using GameGridEnum;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 namespace _Game.GameGrid.GridUnit.DynamicUnit
 {
-    public class PlayerUnit : GridUnitDynamic, IInteractRootTreeUnit
+    public class PlayerUnit : GridUnitDynamic, IInteractRootTreeUnit, ISubject
     {
         [SerializeField] private DirectionIcon directionIcon;
 
@@ -202,6 +203,26 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             animator.ResetTrigger(_currentAnim);
             _currentAnim = animName;
             animator.SetTrigger(_currentAnim);
+        }
+        
+        private readonly List<IObserver> observers = new();
+        
+        public void AddObserver(IObserver observer)
+        {
+            observers.Add(observer);
+        }
+
+        public void RemoveObserver(IObserver observer)
+        {
+            observers.Remove(observer);
+        }
+
+        public void NotifyObservers()
+        {
+            for (int i = 0; i < observers.Count; i++)
+            {
+                observers[i].OnNotify();
+            }
         }
     }
 }

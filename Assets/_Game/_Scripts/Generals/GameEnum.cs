@@ -126,6 +126,7 @@ namespace GameGridEnum
         // Other GridSurfaceType must be created when needed (e.g. GroundGridSurface) to overwrite the default value
         Water = PoolType.SurfaceWater, 
         Ground = PoolType.SurfaceGround,
+        GroundTut = PoolType.SurfaceGroundTut,
     }
     public enum GridUnitStaticType
     {

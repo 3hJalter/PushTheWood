@@ -35,7 +35,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 OnNotMove(direction, nextUnits, this);
                 return;
             }
-            if (nextCells.Any(cell => cell.SurfaceType is GridSurfaceType.Ground))
+            if (nextCells.Any(cell => cell.SurfaceType is not GridSurfaceType.Water))
             {
                 ReleaseAllCarryUnit();
                 return;

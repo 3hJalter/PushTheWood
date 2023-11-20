@@ -1,4 +1,5 @@
 ﻿using _Game.Camera;
+using _Game.GameGrid;
 using _Game.Managers;
 using DG.Tweening;
 using UnityEngine;
@@ -8,6 +9,7 @@ namespace _Game.UIs.Screen
     public class MainMenuScreen : UICanvas
     {
         [SerializeField] private CanvasGroup canvasGroup;
+        private bool _isFirstOpen = false;
         public override void Open()
         {
             base.Open();
@@ -18,7 +20,13 @@ namespace _Game.UIs.Screen
 
         public void OnClickStart()
         {
+            if (!_isFirstOpen)
+            {
+                LevelManager.Ins.OnInit();
+                _isFirstOpen = true;
+            }
             UIManager.Ins.OpenUI<InGameScreen>();
+            FxManager.Ins.StopTweenFog();
             Close();
         }
     }

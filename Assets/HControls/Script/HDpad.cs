@@ -1,3 +1,5 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace HControls
@@ -17,6 +19,12 @@ namespace HControls
         public void OnButtonPointerUp(int index)
         {
             dpadButtons[index].PointerDownImg.SetActive(false);
+            HInputManager.SetDirectionInput(Direction.None);
+        }
+
+        private void OnDisable()
+        {
+            for (int i = 0; i < dpadButtons.Length; i++) dpadButtons[i].PointerDownImg.SetActive(false);
             HInputManager.SetDirectionInput(Direction.None);
         }
     } 

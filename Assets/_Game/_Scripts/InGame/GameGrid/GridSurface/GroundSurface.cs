@@ -2,7 +2,7 @@
 
 namespace _Game.GameGrid.GridSurface
 {
-    public class GroundSurface : GridSurfaceBase
+    public class GroundSurface : GridSurface
     {
         
     }

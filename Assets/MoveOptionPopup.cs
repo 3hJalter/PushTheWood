@@ -44,7 +44,7 @@ public class MoveOptionPopup : UICanvas
         switch (moveChoice)
         {
             case MoveChoice.DPad:
-                igScreen.Dpad.SetActive(true);
+                igScreen.DpadObj.SetActive(true);
                 break;
             case MoveChoice.Switch:
             {
@@ -64,7 +64,7 @@ public class MoveOptionPopup : UICanvas
 
     private static void HideButton(InGameScreen igScreen)
     {
-        igScreen.Dpad.SetActive(false);
+        igScreen.DpadObj.SetActive(false);
         igScreen.HSwitch.gameObject.SetActive(false);
     }
 }

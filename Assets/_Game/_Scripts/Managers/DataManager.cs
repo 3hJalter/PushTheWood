@@ -1,4 +1,5 @@
-﻿using _Game.Data;
+﻿using _Game._Scripts.UIs.Tutorial;
+using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.GridUnit;
@@ -12,13 +13,18 @@ namespace _Game.Managers
     {
         [SerializeField] private AudioData audioData;
 
-        [SerializeField] private WorldData worldData; // OLD, Remove later
-
         [SerializeField] private GridData gridData;
 
+        [SerializeField] private TutorialData tutorialData;
+        
+        public TutorialContext GetTutorial(int index)
+        {
+            return tutorialData.GetTutorial(index);
+        }
+        
+        public int CountTutorial => tutorialData.CountTutorial;
+        
         public AudioData AudioData => audioData;
-
-        public WorldData WorldData => worldData;
 
         public int CountLevel => gridData.CountLevel;
         
@@ -27,7 +33,7 @@ namespace _Game.Managers
             return gridData.GetGridTextData(index);
         }
 
-        public GridSurfaceBase GetGridSurface(GridSurfaceType gridSurfaceType)
+        public GridSurface GetGridSurface(GridSurfaceType gridSurfaceType)
         {
             return gridData.GetGridSurface(gridSurfaceType);
         }

@@ -183,43 +183,6 @@ namespace _Game.Utilities.Grid
                     return grid.gridArray[x, y].Data.ToString();
                 return "";
             }
-            
-            public void UpdateVisualMap(Grid<GameCell, GameCellData> grid, Mesh mesh)
-            {
-                GridUtilities.CreateEmptyMeshArray(grid.Width * grid.Height, out Vector3[] vertices, out Vector2[] uv,
-                    out int[] triangles);
-                for (int x = 0; x < grid.Width; x++)
-                for (int y = 0; y < grid.Height; y++)
-                {
-                    int index = x * grid.Height + y;
-
-                    Vector3 quadSize = default;
-                    switch (grid.GridPlaneType)
-                    {
-                        case GridPlane.XY:
-                            quadSize = new Vector3(1, 1) * grid.CellSize;
-                            break;
-                        case GridPlane.XZ:
-                            quadSize = new Vector3(1, 0, 1) * grid.CellSize;
-                            break;
-                        case GridPlane.YZ:
-                            quadSize = new Vector3(0, 1, 1) * grid.CellSize;
-                            break;
-                    }
-
-                    GameCell cell = grid.GetGridCell(x, y);
-                    if (!cell.IsBlockingRollingTree)
-                        GridUtilities.AddToMeshArray(vertices, uv, triangles, index, cell.WorldPos, 0f, quadSize,
-                            walkableUV, walkableUV);
-                    else
-                        GridUtilities.AddToMeshArray(vertices, uv, triangles, index, cell.WorldPos, 0f, quadSize,
-                            unwalkableUV, unwalkableUV);
-                }
-
-                mesh.vertices = vertices;
-                mesh.uv = uv;
-                mesh.triangles = triangles;
-            }
 
             public void DrawPath(List<T> path)
             {

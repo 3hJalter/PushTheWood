@@ -1,5 +1,4 @@
 ﻿using System;
-using _Game.GameGrid.GridSurface;
 using _Game.Utilities.Grid;
 using GameGridEnum;
 
@@ -17,7 +16,7 @@ namespace _Game.GameGrid
 
         public int IslandID => data.gridSurface == null ? -1 : data.gridSurface.IslandID;
 
-        public void SetSurface(GridSurfaceBase surface, bool canMoving = true)
+        public void SetSurface(GridSurface.GridSurface surface, bool canMoving = true)
         {
             data.gridSurface = surface;
             data.gridSurfaceType = surface.SurfaceType;
@@ -46,6 +45,7 @@ namespace _Game.GameGrid
         public void AddGridUnit(GridUnit.GridUnit addUnit)
         {
             for (int i = (int)addUnit.StartHeight; i <= (int)addUnit.EndHeight; i++) data.gridUnits[i] = addUnit;
+            if (data.gridSurface is not null) data.gridSurface.OnUnitEnter(addUnit);
         }
 
         public void RemoveGridUnitAtHeight(HeightLevel heightLevel)
@@ -62,6 +62,7 @@ namespace _Game.GameGrid
         public void AddGridUnit(HeightLevel startHeight, HeightLevel endHeight, GridUnit.GridUnit unit)
         {
             for (int i = (int)startHeight; i <= (int)endHeight; i++) data.gridUnits[i] = unit;
+            if (data.gridSurface is not null) data.gridSurface.OnUnitEnter(unit);
         }
 
         public HeightLevel GetMaxHeight()
@@ -78,7 +79,7 @@ namespace _Game.GameGrid
     {
         public bool canMovingDirectly;
 
-        public GridSurfaceBase gridSurface;
+        public GridSurface.GridSurface gridSurface;
 
         // Type of cell
         public GridSurfaceType gridSurfaceType;

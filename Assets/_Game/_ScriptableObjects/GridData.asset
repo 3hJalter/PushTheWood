@@ -17,6 +17,7 @@ MonoBehaviour:
     SerializedBytes: 
     ReferencedUnityObjects:
     - {fileID: 5855485751288777823, guid: b96b595fba346e94aa96abc0752ced94, type: 3}
+    - {fileID: 2765123450655242244, guid: f0b9deaf3eac8384885dd3b4d18e3c4c, type: 3}
     - {fileID: 925196025747551484, guid: 1ba27f3e7bc228d43a21f1ea8d0fa763, type: 3}
     - {fileID: 4258035793235304891, guid: 5cf5e71fc2800db45ae76bcef98f8244, type: 3}
     - {fileID: 4799337733843929289, guid: 72e538945521e3c4c96af32e03a4e60c, type: 3}
@@ -36,7 +37,7 @@ MonoBehaviour:
     - Name: _surfaceDic
       Entry: 7
       Data: 0|System.Collections.Generic.Dictionary`2[[GameGridEnum.GridSurfaceType,
-        Assembly-CSharp],[_Game.GameGrid.GridSurface.GridSurfaceBase, Assembly-CSharp]],
+        Assembly-CSharp],[_Game.GameGrid.GridSurface.GridSurface, Assembly-CSharp]],
         mscorlib
     - Name: comparer
       Entry: 7
@@ -53,7 +54,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 1
+      Data: 2
     - Name: 
       Entry: 7
       Data: 
@@ -63,6 +64,18 @@ MonoBehaviour:
     - Name: $v
       Entry: 10
       Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 10
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
@@ -101,7 +114,7 @@ MonoBehaviour:
       Data: 10
     - Name: $v
       Entry: 10
-      Data: 1
+      Data: 2
     - Name: 
       Entry: 8
       Data: 
@@ -113,7 +126,7 @@ MonoBehaviour:
       Data: 9
     - Name: $v
       Entry: 10
-      Data: 2
+      Data: 3
     - Name: 
       Entry: 8
       Data: 
@@ -125,7 +138,7 @@ MonoBehaviour:
       Data: 11
     - Name: $v
       Entry: 10
-      Data: 3
+      Data: 4
     - Name: 
       Entry: 8
       Data: 
@@ -137,7 +150,7 @@ MonoBehaviour:
       Data: 8
     - Name: $v
       Entry: 10
-      Data: 4
+      Data: 5
     - Name: 
       Entry: 8
       Data: 
@@ -149,7 +162,7 @@ MonoBehaviour:
       Data: 7
     - Name: $v
       Entry: 10
-      Data: 5
+      Data: 6
     - Name: 
       Entry: 8
       Data: 
@@ -161,7 +174,7 @@ MonoBehaviour:
       Data: 13
     - Name: $v
       Entry: 10
-      Data: 6
+      Data: 7
     - Name: 
       Entry: 8
       Data: 
@@ -200,7 +213,7 @@ MonoBehaviour:
       Data: 4
     - Name: $v
       Entry: 10
-      Data: 7
+      Data: 8
     - Name: 
       Entry: 8
       Data: 
@@ -212,7 +225,7 @@ MonoBehaviour:
       Data: 5
     - Name: $v
       Entry: 10
-      Data: 8
+      Data: 9
     - Name: 
       Entry: 8
       Data: 
@@ -224,7 +237,7 @@ MonoBehaviour:
       Data: 3
     - Name: $v
       Entry: 10
-      Data: 9
+      Data: 10
     - Name: 
       Entry: 8
       Data: 
@@ -236,7 +249,7 @@ MonoBehaviour:
       Data: 6
     - Name: $v
       Entry: 10
-      Data: 10
+      Data: 11
     - Name: 
       Entry: 8
       Data: 
@@ -248,7 +261,7 @@ MonoBehaviour:
       Data: 12
     - Name: $v
       Entry: 10
-      Data: 11
+      Data: 12
     - Name: 
       Entry: 8
       Data: 
@@ -259,7 +272,6 @@ MonoBehaviour:
       Entry: 8
       Data: 
   gridTextDataList:
-  - {fileID: 4900000, guid: 8844aa33792359a4ba0a0d20b01c1235, type: 3}
-  - {fileID: 4900000, guid: 9f60765a6b27bb043ab4ef399c955c2c, type: 3}
-  - {fileID: 4900000, guid: 01bc77d52fcfad64c8ff7759b80e9950, type: 3}
-  - {fileID: 4900000, guid: cbfee702de0f2464282281775503bf57, type: 3}
+  - {fileID: 4900000, guid: a725a93483d0a0c48991351f8af7f964, type: 3}
+  - {fileID: 4900000, guid: 362b54be7e2ec4f43ac4d50bb7ef28b2, type: 3}
+  - {fileID: 4900000, guid: 64b932d3d2c19e14c8495add8d67b1c5, type: 3}

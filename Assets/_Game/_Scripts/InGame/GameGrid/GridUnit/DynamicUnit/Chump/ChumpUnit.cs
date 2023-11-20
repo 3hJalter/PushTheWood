@@ -67,7 +67,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 return;
             }
 
-            if (nextCells.Any(cell => cell.SurfaceType is GridSurfaceType.Ground)) return;
+            if (nextCells.Any(cell => cell.SurfaceType is not GridSurfaceType.Water)) return;
             OnMoveChump(direction, nextMainCell, nextCells, () => { OnMoveChumpWater(direction); });
         }
 

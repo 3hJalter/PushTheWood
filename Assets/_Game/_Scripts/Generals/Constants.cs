@@ -13,6 +13,7 @@ public static class Constants
     ///     Player Prefab Path
     /// </summary>
     public const string LEVEL_INDEX = "levelIndex";
+    public const string TUTORIAL_INDEX = "tutorialIndex";
     
     /// <summary>
     ///     Path to the folder in Resources
@@ -70,6 +71,7 @@ public static class Constants
     public static readonly Dictionary<GridSurfaceType, HeightLevel> dirFirstHeightOfSurface = new()
     {
         { GridSurfaceType.Ground, HeightLevel.One },
+        { GridSurfaceType.GroundTut, HeightLevel.One},
         { GridSurfaceType.Water, HeightLevel.ZeroPointFive }
     };
 

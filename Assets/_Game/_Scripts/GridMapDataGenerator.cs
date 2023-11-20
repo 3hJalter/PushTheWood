@@ -19,7 +19,7 @@ public class GridMapDataGenerator : MonoBehaviour
     private Grid<GameGridCell, GameGridCellData>.DebugGrid _debugGrid;
     private Grid<GameGridCell, GameGridCellData> _gridMap;
 
-    private GridSurfaceBase[,] _gridSurfaceMap;
+    private GridSurface[,] _gridSurfaceMap;
 
     // Test Init GridUnit
     private PlayerUnit _pUnit;
@@ -28,7 +28,7 @@ public class GridMapDataGenerator : MonoBehaviour
     {
         TextAsset gridData = Resources.Load<TextAsset>(mapLevelName);
         TextGridData textGridData = GameGridDataHandler.CreateGridData2(gridData);
-        GenerateMap();
+        // GenerateMap();
     }
 
     private void GenerateMap()
@@ -50,7 +50,7 @@ public class GridMapDataGenerator : MonoBehaviour
         // Get the maximum x and z position of gridSurface
         _gridSizeX = surfaceData.Length;
         _gridSizeY = surfaceData[0].Split(' ').Length;
-        _gridSurfaceMap = new GridSurfaceBase[_gridSizeX, _gridSizeY];
+        _gridSurfaceMap = new GridSurface[_gridSizeX, _gridSizeY];
         // Create GridMap
         _gridMap = new Grid<GameGridCell, GameGridCellData>(_gridSizeX, _gridSizeY, Constants.CELL_SIZE, transform.position,
             () => new GameGridCell(), GridPlane.XZ);
@@ -97,17 +97,17 @@ public class GridMapDataGenerator : MonoBehaviour
             {
                 if (!int.TryParse(surfaceDataSplit[y], out int cell)) continue;
                 if (!Enum.IsDefined(typeof(GridSurfaceType), cell)) continue;
-                GridSurfaceBase gridSurface = DataManager.Ins.GetGridSurface((GridSurfaceType)cell);
+                GridSurface gridSurface = DataManager.Ins.GetGridSurface((GridSurfaceType)cell);
                 if (gridSurface is null) continue;
                 GameGridCell gridCell = _gridMap.GetGridCell(x, y);
                 gridCell.SetSurface(
-                    SimplePool.Spawn<GridSurfaceBase>(gridSurface,
+                    SimplePool.Spawn<GridSurface>(gridSurface,
                         new Vector3(gridCell.WorldX, 0, gridCell.WorldY), Quaternion.identity));
                 _gridSurfaceMap[x, y] = gridCell.Data.gridSurface;
             }
         }
     }
-
+    
     [ContextMenu("Save Data as txt file")]
     private void Setup()
     {
@@ -118,7 +118,7 @@ public class GridMapDataGenerator : MonoBehaviour
             case "":
                 return;
         }
-        GroundSurface[] gridSurfaces = FindObjectsOfType<GroundSurface>();
+        GridSurface[] gridSurfaces = FindObjectsOfType<GridSurface>();
         if (gridSurfaces.Length == 0)
         {
             Debug.LogError("Grid must have at least 1 surface, and all unit must have on a surface");
@@ -129,7 +129,7 @@ public class GridMapDataGenerator : MonoBehaviour
         int minZ = int.MaxValue;
         int maxX = int.MinValue;
         int maxZ = int.MinValue;
-        foreach (GroundSurface gridSurface in gridSurfaces)
+        foreach (GridSurface gridSurface in gridSurfaces)
         {
             Vector3 position = gridSurface.Tf.position;
             if (position.x < minX) minX = (int) Math.Round(position.x);
@@ -141,7 +141,7 @@ public class GridMapDataGenerator : MonoBehaviour
         if (minX < 11)
         {
             int offsetX = 11 - minX;
-            foreach (GroundSurface gridSurface in gridSurfaces)
+            foreach (GridSurface gridSurface in gridSurfaces)
             {
                 Vector3 position = gridSurface.Tf.position;
                 position.x += offsetX;
@@ -160,7 +160,7 @@ public class GridMapDataGenerator : MonoBehaviour
         if (minZ < 11)
         {
             int offsetZ = 11 - minZ;
-            foreach (GroundSurface gridSurface in gridSurfaces)
+            foreach (GridSurface gridSurface in gridSurfaces)
             {
                 Vector3 position = gridSurface.Tf.position;
                 position.z += offsetZ;
@@ -186,7 +186,7 @@ public class GridMapDataGenerator : MonoBehaviour
         for (int j = 0; j < maxZ; j++)
             gridData[i, j] = 0;
         // Get position of each gridSurface and set the value of gridSurfaceData to 1
-        foreach (GroundSurface gridSurface in gridSurfaces)
+        foreach (GridSurface gridSurface in gridSurfaces)
         {
             Vector3 position = gridSurface.Tf.position;
             int x = (int)(position.x + 1) / 2;
