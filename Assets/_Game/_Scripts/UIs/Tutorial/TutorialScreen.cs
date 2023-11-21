@@ -42,11 +42,11 @@ namespace _Game._Scripts.UIs.Tutorial
         public void LoadContext(TutorialContext contextIn)
         {
             context = contextIn;
-            context.Tf.SetParent(MRectTransform);
+            context.Tf.SetParent(MRectTransform, false);
             context.TutorialScreen = this;
             // set top left right bottom to zero
-            // context.Rect.offsetMin = Vector2.zero;
-            // context.Rect.offsetMax = Vector2.zero;
+            context.Rect.offsetMin = Vector2.zero;
+            context.Rect.offsetMax = Vector2.zero;
                 
         }
         
