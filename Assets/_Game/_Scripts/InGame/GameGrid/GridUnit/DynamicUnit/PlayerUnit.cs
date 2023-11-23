@@ -2,6 +2,7 @@
 using System.Linq;
 using _Game.DesignPattern;
 using _Game.GameGrid.GridUnit.StaticUnit;
+using _Game.GameRule.RuleEngine;
 using DG.Tweening;
 using GameGridEnum;
 using HControls;
@@ -30,6 +31,17 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
         public DirectionIcon DirectionIcon => directionIcon;
 
+        #region TEST RULE
+        public RuleEngine movingRuleEngine;
+        private RuleMovingData _ruleMovingData;
+
+        private void Start()
+        {
+            _ruleMovingData = new RuleMovingData(this);
+        }
+        
+        #endregion
+        
         private void FixedUpdate()
         {
             if (isLockedAction) return;
@@ -42,7 +54,6 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 ChangeAnim(Constants.IDLE_ANIM);
                 return;
             }
-
             OnMoveUpdate();
         }
 
@@ -68,26 +79,32 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
         private void OnMoveUpdate()
         {
-            if (isInAction && direction == _lastDirection) return;
-            _isStop = false;
-            LookDirection(direction);
-            if (HasObstacleIfMove(direction, out GameGridCell nextMainCell,
-                    out HashSet<GameGridCell> _, out HashSet<GridUnit> nextUnits))
+            if (isInAction && direction == _lastDirection)
             {
-                OnNotMove(direction, nextUnits, this);
-                // Temporary
-                if (nextUnits.Count == 1)
-                {
-                    GridUnit unit = nextUnits.First();
-                    if (unit is not TreeRootUnit) OnPushVehicle(direction, unit);
-                }
-
+                Debug.Log("Lock action");
                 return;
             }
-
-            if (!CanMoveNextSurface(nextMainCell, direction)) return;
+            _isStop = false;
+            LookDirection(direction);
+            // if (HasObstacleIfMove(direction, out GameGridCell nextMainCell,
+            //         out HashSet<GameGridCell> _, out HashSet<GridUnit> nextUnits))
+            // {
+            //     OnNotMove(direction, nextUnits, this);
+            //     // Temporary
+            //     if (nextUnits.Count == 1)
+            //     {
+            //         GridUnit unit = nextUnits.First();
+            //         if (unit is not TreeRootUnit) OnPushVehicle(direction, unit);
+            //     }
+            //
+            //     return;
+            // }
+            // if (!CanMoveNextSurface(nextMainCell, direction)) return;
             if (isInAction) return;
-            OnMove(direction, nextMainCell);
+            _ruleMovingData.SetData(direction);  // TEST RULE
+            movingRuleEngine.ApplyRules(_ruleMovingData);
+            if (MoveAccept) OnMove(direction, _ruleMovingData.nextMainCell);
+            // OnMove(direction, nextMainCell);
         }
 
 
@@ -115,6 +132,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             if (isInterrupt) return;
             // ChangeAnim(Constants.IDLE_ANIM);
             Tf.position = GetUnitWorldPos();
+            SetMove(false);
         }
 
         private void OnMove(Direction directionIn, GameGridCell nextMainCell)

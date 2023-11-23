@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using _Game.DesignPattern;
+using _Game.GameRule.RuleEngine;
 using _Game.Managers;
 using DG.Tweening;
 using GameGridEnum;
@@ -230,6 +231,25 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 Debug.Log("Has Raft below on NotFall");
         }
 
+        #region TEST RULE
+
+        [SerializeField] private RuleEngine ruleMovingEngine;
+        private RuleMovingData _ruleMovingData;
+
+        private void Start()
+        {
+            _ruleMovingData = new RuleMovingData(this);
+        }
+
+        public override void OnMove(Direction direction)
+        {
+            _ruleMovingData.SetData(direction);
+            ruleMovingEngine.ApplyRules(_ruleMovingData);
+            if (MoveAccept) OnMoveChump(direction, _ruleMovingData.nextMainCell, _ruleMovingData.nextCells);
+        }
+        
+        #endregion
+        
         protected void MoveChump(Direction direction)
         {
             if (HasObstacleIfMove(direction, out GameGridCell nextMainCell,
@@ -238,10 +258,10 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 OnNotMove(direction, nextUnits, this);
                 return;
             }
-
+            
             OnMoveChump(direction, nextMainCell, nextCells);
         }
-
+        
         private void OnMoveChump(Direction direction, GameGridCell nextMainCell, HashSet<GameGridCell> nextCells,
             Action nextAction = null)
         {
@@ -282,6 +302,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         private void OnMovingDone(bool isFalling, HashSet<GridUnit> aboveUnits, Action nextAction = null)
         {
             isInAction = false;
+            SetMove(false);
             if (isFalling) AfterChumpFall();
             foreach (GridUnit unit in aboveUnits)
                 if (unit is GridUnitDynamic dynamicUnit && dynamicUnit.CanFall(out int numHeightDown))

@@ -235,6 +235,7 @@ MonoBehaviour:
   anchor: {fileID: 6557725013261451772}
   isInAction: 0
   isLockedAction: 0
+  ruleMovingEngine: {fileID: 11400000, guid: bb103cd6ae208a14b81b3a705bc33625, type: 2}
 --- !u!1 &2623478111982474341
 GameObject:
   m_ObjectHideFlags: 0

@@ -2607,6 +2607,7 @@ MonoBehaviour:
   directionIcon: {fileID: 2945314564669326161}
   animator: {fileID: 1502363185334409405}
   direction: -1
+  movingRuleEngine: {fileID: 11400000, guid: bb103cd6ae208a14b81b3a705bc33625, type: 2}
 --- !u!1 &3634324265696134740
 GameObject:
   m_ObjectHideFlags: 0

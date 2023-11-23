@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using _Game.DesignPattern;
+using _Game.GameRule.RuleEngine;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
@@ -298,6 +299,16 @@ namespace _Game.GameGrid.GridUnit
             cellInUnits.Add(cell);
             cell.AddGridUnit(this);
         }
+        
+        #region TEST RULE
+        private bool _moveAccept;
+        public void SetMove(bool canMove)
+        {
+            _moveAccept = canMove;
+        }
+        public bool MoveAccept => _moveAccept;
+        public virtual void OnMove(Direction direction) {}
+        #endregion
     }
 
     public class NextCellPosData
