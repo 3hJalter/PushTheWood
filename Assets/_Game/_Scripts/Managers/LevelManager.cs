@@ -62,7 +62,7 @@ namespace _Game.GameGrid
         private void Start()
         {
             // TEST
-            PlayerPrefs.SetInt(Constants.TUTORIAL_INDEX, 0);
+            // PlayerPrefs.SetInt(Constants.TUTORIAL_INDEX, 0);
             levelIndex = PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0);
             _tutorialIndex = PlayerPrefs.GetInt(Constants.TUTORIAL_INDEX, 0);
             // OnInit();

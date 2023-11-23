@@ -13,6 +13,7 @@ namespace _Game.GameGrid.GridUnit.StaticUnit
         public override void OnInteract(Direction direction, GridUnit interactUnit = null)
         {
             if (!gameObject.activeSelf) return;
+            if (interactUnit is not PlayerUnit) return;
             // Spawn TreeRoot
             SpawnTreeRoot();
             // Spawn Chump and Push it
