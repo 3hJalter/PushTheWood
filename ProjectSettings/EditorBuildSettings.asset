@@ -5,10 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/_Game/_Scenes/GridTesting.unity
-    guid: f508c74ed8f57d84899f7a9d72700688
+    path: Assets/_Game/_Scenes/GameDemo.unity
+    guid: 68659dff99d74634ca1826433fdada6f
   m_configObjects: {}

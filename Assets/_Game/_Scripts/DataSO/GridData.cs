@@ -15,7 +15,7 @@ namespace _Game.Data
         [Title("Surface")] 
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         // ReSharper disable once CollectionNeverUpdated.Local
-        [SerializeField] private readonly Dictionary<GridSurfaceType, GridSurfaceBase> _surfaceDic = new();
+        [SerializeField] private readonly Dictionary<GridSurfaceType, GridSurface> _surfaceDic = new();
         [Title("Static Unit")] 
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         [SerializeField] private readonly Dictionary<GridUnitStaticType, GridUnitStatic> _staticUnitDic = new();
@@ -30,9 +30,9 @@ namespace _Game.Data
             return gridTextDataList[index];
         }
 
-        public GridSurfaceBase GetGridSurface(GridSurfaceType gridSurfaceType)
+        public GridSurface GetGridSurface(GridSurfaceType gridSurfaceType)
         {
-            return _surfaceDic.TryGetValue(gridSurfaceType, value: out GridSurfaceBase surface) ? surface : null;
+            return _surfaceDic.TryGetValue(gridSurfaceType, value: out GridSurface surface) ? surface : null;
         }
         
         public GridUnitDynamic GetGridUnitDynamic(GridUnitDynamicType gridUnitDynamicType)

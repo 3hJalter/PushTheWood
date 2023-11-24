@@ -133,6 +133,19 @@ namespace _Game.DesignPattern
             }
             else
             {
+               Object.Destroy(obj.gameObject);
+            }
+        }
+        
+        public static void ReleaseImmediate(GameUnit obj)
+        {
+            if (Pools.ContainsKey(obj.GetInstanceID()))
+            {
+                Pools[obj.GetInstanceID()].Release();
+                Pools.Remove(obj.GetInstanceID());
+            }
+            else
+            {
                 Object.DestroyImmediate(obj);
             }
         }
@@ -295,6 +308,7 @@ namespace _Game.DesignPattern
         // Grid Surface
         SurfaceWater = 0,
         SurfaceGround = 1,
+        SurfaceGroundTut = 2,
         // Grid Unit Dynamic
         Player = 3,
         ChumpShort = 4,
@@ -308,7 +322,7 @@ namespace _Game.DesignPattern
         TreeShort = 10,
         TreeHigh = 11,
         FinalPoint = 13,
-        
-        
+
+
     }
 }

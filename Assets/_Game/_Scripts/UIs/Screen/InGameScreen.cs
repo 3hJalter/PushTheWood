@@ -1,9 +1,10 @@
-﻿using _Game.Camera;
+﻿using _Game._Scripts.UIs.Tutorial;
+using _Game.Camera;
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Popup;
-using CnControls;
 using DG.Tweening;
+using HControls;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,40 +12,50 @@ namespace _Game.UIs.Screen
 {
     public class InGameScreen : UICanvas
     {
-        [SerializeField] private SimpleJoystick joystick;
+        [SerializeField] private HSwitch hSwitch;
+        [SerializeField] private HDpad dpad;
+
         [SerializeField] private Image blockPanel;
         [SerializeField] private CanvasGroup canvasGroup;
+        public HSwitch HSwitch => hSwitch;
+        public GameObject DpadObj => dpad.gameObject;
 
-        [SerializeField] private Image resetButtonImg;
-        
+        private bool _isTutOpen;
         public override void Setup()
         {
+            _isTutOpen = UIManager.Ins.IsOpened<TutorialScreen>();
             base.Setup();
-            joystick.ResetJoyStickPos();
             if (CameraFollow.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
-            FxManager.Ins.StopTweenFog();
+            CameraFollow.Ins.ChangeCamera(ECameraType.InGameCamera);
             blockPanel.enabled = true;
         }
 
         public override void Open()
-        {
+        {   
+            if (_isTutOpen)
+            {
+                Close();
+                return;
+            }
             base.Open();
-            CameraFollow.Ins.ChangeCamera(ECameraType.InGameCamera);
             DOVirtual.Float(0, 1, 1f, value => canvasGroup.alpha = value)
                 .OnComplete(() =>
                 {
                     blockPanel.enabled = false;
-                    // TESTING
-                    if (!UIManager.Ins.IsLoaded<TempTutorialScreen>()) UIManager.Ins.OpenUI<TempTutorialScreen>();
-                    // END OF TESTING
                 });
+        }
+
+        public override void Close()
+        {
+            HInputManager.SetDefault();
+            base.Close();
         }
 
         public void OnClickSettingButton()
         {
             UIManager.Ins.OpenUI<SettingPopup>();
         }
-        
+
         public void OnClickOpenMapButton()
         {
             Close();
@@ -54,6 +65,12 @@ namespace _Game.UIs.Screen
         public void OnClickResetIslandButton()
         {
             LevelManager.Ins.ResetIslandPlayerOn();
+        }
+
+        // TEST
+        public void OnClickMoveOptionPopup()
+        {
+            UIManager.Ins.OpenUI<MoveOptionPopup>();
         }
     }
 }

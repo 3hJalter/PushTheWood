@@ -37,45 +37,27 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
         public override void OnPushChumpDown(Direction direction)
         {
-            RollChump(direction);
+            // RollChump(direction);
+            OnMove(direction); // TEST RULE
         }
 
         // SPAGHETTI CODE, change later
-        public void OnInteractWithTreeRoot(Direction direction, TreeRootUnit treeRootUnit)
+        public void OnInteractWithTreeRoot(Direction directionIn, TreeRootUnit treeRootUnit)
         {
             if ((unitType is UnitType.Horizontal && lastPushedDirection is Direction.Back or Direction.Forward)
                 || (unitType is UnitType.Vertical && lastPushedDirection is Direction.Left or Direction.Right)) return;
-            
-            OnGetNextStateAndType(direction);
-
             GridUnit aboveUnit = treeRootUnit.GetAboveUnit();
             if (aboveUnit is not null)
             {
-                aboveUnit.OnInteract(direction);
+                aboveUnit.OnInteract(directionIn);
                 return;
             }
-
-            if (mainCell.GetGridUnitAtHeight(endHeight + 1) != null) return;
-            isInAction = true;
-            Vector3 nextPos = treeRootUnit.GetMainCellWorldPos();
-            Vector3 offsetY = new(0, ((float) startHeight + 1) / 2 * Constants.CELL_SIZE, 0);
-            nextPos += offsetY;
             
-            StartCoroutine(Roll(direction, () =>
-            {
-                size = GridUnitFunc.RotateSize(direction, size);
-                startHeight += 1;
-                endHeight = startHeight + size.y - 1;
-                Vector3 skinOffset = treeRootUnit.GetMainCellWorldPos() - mainCell.WorldPos;
-                skin.position -= skinOffset;
-                OnOutCurrentCells();
-                Tf.position = nextPos;
-                OnEnterNextCells(treeRootUnit.MainCell, null, AfterChumpFall);
-                unitState = nextUnitState;
-                unitType = nextUnitType;
-                isInAction = false;
-            }));
-
+            if (mainCell.GetGridUnitAtHeight(endHeight + 1) is not null) return;
+            startHeight += 1;
+            endHeight += 1;
+            OnGetNextStateAndType(directionIn);
+            RollChump(directionIn);
         }
     }
 }

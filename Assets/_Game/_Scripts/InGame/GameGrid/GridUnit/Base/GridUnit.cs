@@ -61,20 +61,21 @@ namespace _Game.GameGrid.GridUnit
             bool isUseInitData = true)
         {
             if (isUseInitData) GetInitData();
+            nextUnitState = unitState;
             islandID = mainCellIn.IslandID;
             SetHeight(startHeightIn);
             AddCell(mainCellIn);
             // Add offset Height to Position
             Tf.position = mainCell.WorldPos + Vector3.up * (float)startHeight / 2 * Constants.CELL_SIZE;
             if (unitState is UnitState.Down) Tf.position -= Vector3.up * yOffsetOnDown;
-            nextUnitState = unitState;
+            
         }
 
-        private void SetHeight(HeightLevel startHeightIn)
+        protected void SetHeight(HeightLevel startHeightIn)
         {
             startHeight = startHeightIn;
             endHeight = startHeightIn + (size.y - 1) * 2;
-            if (!isMinusHalfSizeY && unitState == UnitState.Up) endHeight += 1;
+            if (!isMinusHalfSizeY && nextUnitState == UnitState.Up) endHeight += 1;
         }
         
         private void AddCell(GameGridCell mainCellIn)

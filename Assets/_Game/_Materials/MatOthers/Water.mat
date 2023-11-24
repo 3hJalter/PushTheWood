@@ -14,7 +14,7 @@ Material:
   - SHADOWS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
+  m_DoubleSidedGI: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
@@ -42,7 +42,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FoamTexture:
-        m_Texture: {fileID: 2800000, guid: 90465543c6a45b74d83140e70db1b167, type: 3}
+        m_Texture: {fileID: 2800000, guid: 31ad2b18f337d214494b0ec5bd643d04, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -66,7 +66,7 @@ Material:
     - _Alpha: 0.975
     - _AlphaDistance: 20
     - _AlphaFar: 1
-    - _AlphaNear: 0.287
+    - _AlphaNear: 0.2
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DepthValue: 1
@@ -96,8 +96,8 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DeepColor: {r: 0.035288375, g: 0.18158798, b: 0.5754717, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FarColor: {r: 0.017058246, g: 0.086482264, b: 0.23584908, a: 1}
-    - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FarColor: {r: 0, g: 0.109164484, b: 0.33962262, a: 1}
+    - _FoamColor: {r: 1, g: 1, b: 1, a: 0.56078434}
     - _ShadowColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _ShallowColor: {r: 0.36078435, g: 0.7346327, b: 0.9490196, a: 1}
+    - _ShallowColor: {r: 0.1787558, g: 0.68095267, b: 0.9716981, a: 0.7529412}
   m_BuildTextureStacks: []

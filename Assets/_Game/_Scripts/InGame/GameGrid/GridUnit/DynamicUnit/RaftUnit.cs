@@ -26,6 +26,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         public void OnMove(Direction direction)
         {
             if (isInAction) return;
+            SetAllCarryUnitAsChild();
             if (direction == Direction.None) return;
             if (HasObstacleIfMove(direction, out GameGridCell nextMainCell,
                     out HashSet<GameGridCell> nextCells, out HashSet<GridUnit> nextUnits))
@@ -34,14 +35,13 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 OnNotMove(direction, nextUnits, this);
                 return;
             }
-            if (nextCells.Any(cell => cell.SurfaceType is GridSurfaceType.Ground))
+            if (nextCells.Any(cell => cell.SurfaceType is not GridSurfaceType.Water))
             {
                 ReleaseAllCarryUnit();
                 return;
             }
             isInAction = true;
-            SetAllCarryUnitAsChild();
-            Vector3 newPosition = GetUnitNextWorldPos(nextMainCell);
+            Vector3 newPosition = GetUnitWorldPos(nextMainCell);
             Tf.DOMove(newPosition, Constants.MOVING_TIME).SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
             {
                 OnOutCurrentCells();
@@ -82,8 +82,8 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             _carryUnits.Clear();
         }
 
-        [SerializeField] private UnitType _lastSpawnType = UnitType.None;
-        [SerializeField] private bool _isFirstSpawnDone;
+        private UnitType _lastSpawnType = UnitType.None;
+        private bool _isFirstSpawnDone;
         private void RotateSkin(UnitType type)
         {
             skin.localRotation =

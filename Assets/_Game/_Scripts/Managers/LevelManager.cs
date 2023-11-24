@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Game._Scripts.UIs.Tutorial;
 using _Game.Camera;
 using _Game.DesignPattern;
-using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.GridUnit;
 using _Game.GameGrid.GridUnit.DynamicUnit;
 using _Game.Managers;
@@ -24,20 +24,51 @@ namespace _Game.GameGrid
         
         private readonly Dictionary<int, Island> _islandDic = new();
         private Grid<GameGridCell, GameGridCellData> _gridMap;
-        private GridSurfaceBase[,] _gridSurfaceMap;
+        private GridSurface.GridSurface[,] _gridSurfaceMap;
         private PlayerUnit _pUnit;
         private GameGridCell _firstPlayerInitCell;
         private TextGridData _textGridData;
+        [SerializeField] private int _tutorialIndex;
+        
         // Test
+        [SerializeField] private Transform currentPCellViewer;
 
+        public void OnShowDirectionIcon()
+        {
+            _pUnit.DirectionIcon.gameObject.SetActive(!_pUnit.DirectionIcon.gameObject.activeSelf);
+        }
+
+        public void OnShowTutorial()
+        {
+            UIManager.Ins.OpenUI<TutorialScreen>()
+                .LoadContext(Instantiate(DataManager.Ins.GetTutorial(_tutorialIndex)));
+            _tutorialIndex++;
+            if (_tutorialIndex >= DataManager.Ins.CountTutorial) _tutorialIndex = 0;
+        }
+        
+        //
+        
+        public void MoveCellViewer(GameGridCell cell)
+        {
+            currentPCellViewer.DOMove(cell.WorldPos + Vector3.up * 1.25f, 0.15f).SetEase(Ease.Linear);
+        }
+
+        public void ChangeCellViewer()
+        {
+            // set active false if is active now, and vice versa
+            currentPCellViewer.gameObject.SetActive(!currentPCellViewer.gameObject.activeSelf);
+        }
+        
         private void Start()
         {
             // TEST
+            // PlayerPrefs.SetInt(Constants.TUTORIAL_INDEX, 0);
             levelIndex = PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0);
-            OnInit();
+            _tutorialIndex = PlayerPrefs.GetInt(Constants.TUTORIAL_INDEX, 0);
+            // OnInit();
         }
 
-        private void OnInit()
+        public void OnInit()
         {
             _textGridData = GameGridDataHandler.CreateGridData(levelIndex);
             CreateGridMap();
@@ -64,6 +95,12 @@ namespace _Game.GameGrid
             // Load next level
             OnDespawnLevel();
             OnInit();
+            OnChangeTutorialIndex();
+        }
+
+        private void OnChangeTutorialIndex()
+        {
+            PlayerPrefs.SetInt(Constants.TUTORIAL_INDEX, _tutorialIndex);
         }
 
         public void OnLose()
@@ -77,11 +114,17 @@ namespace _Game.GameGrid
             _pUnit.OnDespawn();
             _pUnit = SimplePool.Spawn<PlayerUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Player));
             _pUnit.OnInit(_firstPlayerInitCell);
+            currentPCellViewer.position = _firstPlayerInitCell.WorldPos + Vector3.up * 1.25f;
         }
 
         public GameGridCell GetCell(Vector2Int position)
         {
             return _gridMap.GetGridCell(position.x, position.y);
+        }
+        
+        public GameGridCell GetCellWorldPos(Vector3 position)
+        {
+            return _gridMap.GetGridCell(position);
         }
         
         public GameGridCell GetNeighbourCell(GameGridCell cell, Direction direction, int distance = 1)
@@ -111,6 +154,7 @@ namespace _Game.GameGrid
             _pUnit.OnDespawn();
             _pUnit = SimplePool.Spawn<PlayerUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Player));
             _pUnit.OnInit(_islandDic[_pUnit.islandID].FirstPlayerStepCell);
+            currentPCellViewer.position = _islandDic[_pUnit.islandID].FirstPlayerStepCell.WorldPos + Vector3.up * 1.25f;
         }
         
         private void ResetAllIsland()
@@ -127,7 +171,7 @@ namespace _Game.GameGrid
             for (int index0 = 0; index0 < _gridSurfaceMap.GetLength(0); index0++)
             for (int index1 = 0; index1 < _gridSurfaceMap.GetLength(1); index1++)
             {
-                GridSurfaceBase gridSurface = _gridSurfaceMap[index0, index1];
+                GridSurface.GridSurface gridSurface = _gridSurfaceMap[index0, index1];
                 if (gridSurface is not null) gridSurface.OnDespawn();
             }
             // Despawn all unit in each island
@@ -159,6 +203,7 @@ namespace _Game.GameGrid
             _pUnit = SimplePool.Spawn<PlayerUnit>(
                 DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Player));
             _pUnit.OnInit(cell);
+            currentPCellViewer.position = cell.WorldPos + Vector3.up * 1.25f;
             _islandDic[cell.Data.gridSurface.IslandID].SetFirstPlayerStepCell(cell);
             _firstPlayerInitCell = cell;
         }
@@ -197,7 +242,7 @@ namespace _Game.GameGrid
         private void SpawnGridSurfaceToGrid()
         {
             string[] surfaceData = _textGridData.SurfaceData.Split('\n');
-            _gridSurfaceMap = new GridSurfaceBase[surfaceData.Length, surfaceData[0].Split(' ').Length];
+            _gridSurfaceMap = new GridSurface.GridSurface[surfaceData.Length, surfaceData[0].Split(' ').Length];
             for (int x = 0; x < gridSizeX; x++)
             {
                 string[] surfaceDataSplit = surfaceData[x].Split(' ');
@@ -206,11 +251,11 @@ namespace _Game.GameGrid
                 {
                     if (!int.TryParse(surfaceDataSplit[y], out int cell)) continue;
                     if (!Enum.IsDefined(typeof(GridSurfaceType), cell)) continue;
-                    GridSurfaceBase gridSurface = DataManager.Ins.GetGridSurface((GridSurfaceType)cell);
+                    GridSurface.GridSurface gridSurface = DataManager.Ins.GetGridSurface((GridSurfaceType)cell);
                     if (gridSurface is null) continue;
                     GameGridCell gridCell = _gridMap.GetGridCell(x, y);
                     gridCell.SetSurface(
-                        SimplePool.Spawn<GridSurfaceBase>(gridSurface,
+                        SimplePool.Spawn<GridSurface.GridSurface>(gridSurface,
                             new Vector3(gridCell.WorldX, 0, gridCell.WorldY), Quaternion.identity));
                     _gridSurfaceMap[x, y] = gridCell.Data.gridSurface;
                 }
@@ -249,7 +294,7 @@ namespace _Game.GameGrid
             int currentIslandID = 0;
             for (int y = 0; y < _gridSurfaceMap.GetLength(1); y++)
             for (int x = 0; x < _gridSurfaceMap.GetLength(0); x++)
-                if (IsGridSurfaceHadIsland(x, y, out GridSurfaceBase gridSurface))
+                if (IsGridSurfaceHadIsland(x, y, out GridSurface.GridSurface gridSurface))
                 {
                     FloodFillIslandID(gridSurface, x, y, currentIslandID);
                     currentIslandID++;
@@ -257,22 +302,22 @@ namespace _Game.GameGrid
 
             return;
 
-            void FloodFillIslandID(GridSurfaceBase gridSurface, int x, int y, int islandID)
+            void FloodFillIslandID(GridSurface.GridSurface gridSurface, int x, int y, int islandID)
             {
                 gridSurface.IslandID = islandID;
                 _islandDic.TryAdd(islandID, new Island(islandID));
                 _islandDic[islandID].AddGridCell(_gridMap.GetGridCell(x, y));
-                if (IsGridSurfaceHadIsland(x - 1, y, out GridSurfaceBase leftGridSurface))
+                if (IsGridSurfaceHadIsland(x - 1, y, out GridSurface.GridSurface leftGridSurface))
                     FloodFillIslandID(leftGridSurface, x - 1, y, islandID);
-                if (IsGridSurfaceHadIsland(x + 1, y, out GridSurfaceBase rightGridSurface))
+                if (IsGridSurfaceHadIsland(x + 1, y, out GridSurface.GridSurface rightGridSurface))
                     FloodFillIslandID(rightGridSurface, x + 1, y, islandID);
-                if (IsGridSurfaceHadIsland(x, y - 1, out GridSurfaceBase downGridSurface))
+                if (IsGridSurfaceHadIsland(x, y - 1, out GridSurface.GridSurface downGridSurface))
                     FloodFillIslandID(downGridSurface, x, y - 1, islandID);
-                if (IsGridSurfaceHadIsland(x, y + 1, out GridSurfaceBase upGridSurface))
+                if (IsGridSurfaceHadIsland(x, y + 1, out GridSurface.GridSurface upGridSurface))
                     FloodFillIslandID(upGridSurface, x, y + 1, islandID);
             }
 
-            bool IsGridSurfaceHadIsland(int x, int y, out GridSurfaceBase gridSurface)
+            bool IsGridSurfaceHadIsland(int x, int y, out GridSurface.GridSurface gridSurface)
             {
                 gridSurface = null;
                 int rows = _gridSurfaceMap.GetLength(0);
@@ -288,7 +333,7 @@ namespace _Game.GameGrid
     
     public class Island
     {
-        private int _islandID;
+        private readonly int _islandID;
         private readonly List<GameGridCell> _gridCells = new();
 
         private readonly HashSet<GridUnit.GridUnit> _gridUnits = new();

@@ -19,8 +19,9 @@ namespace _Game.Camera
 
         private void Awake()
         {
+            targetTf = Tf;
             _mainCameraTf = mainCamera.transform;
-            ChangeCamera(ECameraType.MainMenuCamera);
+            // ChangeCamera(ECameraType.MainMenuCamera);
         }
 
         // Testing
@@ -37,7 +38,7 @@ namespace _Game.Camera
 
         private void FixedUpdate()
         {
-            if (targetTf is null || !_currentCamera.isFollowTarget)
+            if (targetTf == Tf || !_currentCamera.isFollowTarget)
             {
                 _mainCameraTf.position = Vector3.Lerp(_mainCameraTf.position,_currentCamera.offsetPosition, 
                     _currentCamera.smooth);
@@ -54,14 +55,14 @@ namespace _Game.Camera
         // Change to public if need
         public void SetTarget(Transform target)
         {
-            targetTf = target;
+            targetTf = target ? target : Tf;
         }
         
         public void ChangeCamera(ECameraType eCameraType, Transform target = null)
         {
             currentECameraType = eCameraType;
             _currentCamera = _cameraDic[eCameraType];
-            if (target is not null) SetTarget(target);
+            if (target is not null && (targetTf == Tf || targetTf != target)) SetTarget(target);
         }
         
         public bool IsCurrentCameraIs(ECameraType eCameraType)

@@ -28,7 +28,7 @@ namespace _Game.Managers
             canvas.Setup();
             canvas.Open();
 
-            return canvas as T;
+            return (T)canvas;
         }
 
         public void CloseUI<T>() where T : UICanvas

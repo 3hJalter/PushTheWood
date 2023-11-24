@@ -32,6 +32,7 @@ namespace _Game.UIs.Screen
         {
             Close();
             UIManager.Ins.OpenUI<InGameScreen>();
+            FxManager.Ins.StopTweenFog();
         }
 
         public void OnClickTeleport(int index)
@@ -40,6 +41,7 @@ namespace _Game.UIs.Screen
             // Temporary, change it when remove all old script
             // if (OldLevelManager.Ins != null) OldLevelManager.Ins.GoLevel(index);
             UIManager.Ins.OpenUI<InGameScreen>();
+            FxManager.Ins.StopTweenFog();
         }
     }
 }

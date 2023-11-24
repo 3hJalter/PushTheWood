@@ -13,6 +13,7 @@ public static class Constants
     ///     Player Prefab Path
     /// </summary>
     public const string LEVEL_INDEX = "levelIndex";
+    public const string TUTORIAL_INDEX = "tutorialIndex";
     
     /// <summary>
     ///     Path to the folder in Resources
@@ -25,7 +26,7 @@ public static class Constants
     /// </summary>
     public const string HORIZONTAL = "Horizontal";
     public const string VERTICAL = "Vertical";
-    public const float INPUT_THRESHOLD_P2 = 0.16f; // Threshold Power 2 from 0 to 1
+    public const float INPUT_THRESHOLD_P2 = 0.09f; // Threshold Power 2 from 0 to 1 -> Default = 0.16
     
     /// <summary>
     ///     Player Animation
@@ -46,7 +47,7 @@ public static class Constants
     public const int UPPER_HEIGHT = 1;
     public const int BELOW_HEIGHT = 1;
 
-    public const float DELAY_INTERACT_TIME = 0.05f;
+    public const float DELAY_INTERACT_TIME = 0.25f;
     public const float MOVING_TIME = 0.25f;
     public const float FALLING_TIME = 0.2f;
     
@@ -70,9 +71,19 @@ public static class Constants
     public static readonly Dictionary<GridSurfaceType, HeightLevel> dirFirstHeightOfSurface = new()
     {
         { GridSurfaceType.Ground, HeightLevel.One },
+        { GridSurfaceType.GroundTut, HeightLevel.One},
         { GridSurfaceType.Water, HeightLevel.ZeroPointFive }
     };
 
+    public static readonly Dictionary<Direction, Vector3> dirVector3F = new()
+    {
+        { Direction.None, Vector3.zero },
+        { Direction.Left, Vector3.left },
+        { Direction.Right, Vector3.right },
+        { Direction.Forward, Vector3.forward },
+        { Direction.Back, Vector3.back }
+    };
+    
     public static readonly Dictionary<Direction, Vector3Int> dirVector3 = new()
     {
         { Direction.None, Vector3Int.zero },

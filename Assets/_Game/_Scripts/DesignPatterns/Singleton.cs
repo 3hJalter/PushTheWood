@@ -9,12 +9,8 @@ namespace _Game.DesignPattern
         public static T Ins { 
             get
             {
-                if (_instance != null) return _instance;
-                _instance = FindObjectOfType<T>();
-                if (_instance == null)
-                {
-                    _instance = new GameObject().AddComponent<T>();
-                }
+                if (_instance is not null) return _instance;
+                _instance = FindObjectOfType<T>() ?? new GameObject().AddComponent<T>();
                 return _instance; 
             } 
         }
