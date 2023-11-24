@@ -10,6 +10,9 @@ namespace _Game.GameGrid.GridUnit
     {
         [SerializeField] protected Transform skin;
         [SerializeField] protected Vector3Int size;
+
+        public Vector3Int Size => size;
+
         [SerializeField] protected bool isMinusHalfSizeY;
         [SerializeField] protected HeightLevel startHeight = HeightLevel.One;
         [SerializeField] protected HeightLevel endHeight;
@@ -74,8 +77,14 @@ namespace _Game.GameGrid.GridUnit
         protected void SetHeight(HeightLevel startHeightIn)
         {
             startHeight = startHeightIn;
-            endHeight = startHeightIn + (size.y - 1) * 2;
-            if (!isMinusHalfSizeY && nextUnitState == UnitState.Up) endHeight += 1;
+            endHeight = CalculateEndHeight(startHeightIn, size);
+        }
+        
+        public HeightLevel CalculateEndHeight(HeightLevel startHeightIn, Vector3Int sizeIn)
+        {
+            HeightLevel endHeightOut = startHeightIn + (sizeIn.y - 1) * 2;
+            if (!isMinusHalfSizeY && nextUnitState == UnitState.Up) endHeightOut += 1;
+            return endHeightOut;
         }
         
         private void AddCell(GameGridCell mainCellIn)
@@ -107,7 +116,7 @@ namespace _Game.GameGrid.GridUnit
             mainCell = null;
             SimplePool.Despawn(this);
         }
-
+        
         public virtual void OnInteract(Direction direction, GridUnit interactUnit = null)
         {
             lastPushedDirection = direction;

@@ -399,6 +399,8 @@ MonoBehaviour:
   anchor: {fileID: 1038378367440558923}
   isInAction: 0
   isLockedAction: 0
+  ruleMovingEngine: {fileID: 11400000, guid: d3a8732c9648ec840969f32223452cde, type: 2}
+  ruleInteractEngine: {fileID: 11400000, guid: 43a7477c6d114ec44b26ad6fa0b192f9, type: 2}
 --- !u!1 &8142720097504196381
 GameObject:
   m_ObjectHideFlags: 0

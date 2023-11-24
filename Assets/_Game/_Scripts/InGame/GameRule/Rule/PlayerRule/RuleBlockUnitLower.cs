@@ -39,7 +39,7 @@ namespace _Game.GameRule.Rule
             if (data.runRuleUnit is GridUnitDynamic dUnit) dUnit.SetMove(true);
         }
 
-        public void Reverse(RuleEngineData dataIn)
+        public void CancelApply(RuleEngineData dataIn)
         {
             if (dataIn is not RuleMovingData data) return;
             if (data.runRuleUnit is GridUnitDynamic dUnit) dUnit.SetMove(false);

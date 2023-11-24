@@ -17,7 +17,7 @@ namespace _Game.GameGrid.GridUnit.StaticUnit
             // Spawn TreeRoot
             SpawnTreeRoot();
             // Spawn Chump and Push it
-            SpawnChump().OnInteract(direction);
+            SpawnChump().OnInteract(direction, interactUnit);
             OnDespawn();
         }
 

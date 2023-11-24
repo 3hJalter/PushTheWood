@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using _Game.DesignPattern;
+﻿using _Game.DesignPattern;
 using _Game.GameGrid.GridUnit.StaticUnit;
 using _Game.GameRule.RuleEngine;
 using DG.Tweening;
@@ -10,7 +8,7 @@ using UnityEngine;
 
 namespace _Game.GameGrid.GridUnit.DynamicUnit
 {
-    public class PlayerUnit : GridUnitDynamic, IInteractRootTreeUnit, ISubject
+    public class PlayerUnit : GridUnitDynamic, IInteractRootTreeUnit
     {
         [SerializeField] private DirectionIcon directionIcon;
 
@@ -35,10 +33,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         public RuleEngine movingRuleEngine;
         private RuleMovingData _ruleMovingData;
 
-        private void Start()
-        {
-            _ruleMovingData = new RuleMovingData(this);
-        }
+        private RuleMovingData RuleMovingData => _ruleMovingData ??= new RuleMovingData(this);
         
         #endregion
         
@@ -86,25 +81,15 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             }
             _isStop = false;
             LookDirection(direction);
-            // if (HasObstacleIfMove(direction, out GameGridCell nextMainCell,
-            //         out HashSet<GameGridCell> _, out HashSet<GridUnit> nextUnits))
-            // {
-            //     OnNotMove(direction, nextUnits, this);
-            //     // Temporary
-            //     if (nextUnits.Count == 1)
-            //     {
-            //         GridUnit unit = nextUnits.First();
-            //         if (unit is not TreeRootUnit) OnPushVehicle(direction, unit);
-            //     }
-            //
-            //     return;
-            // }
-            // if (!CanMoveNextSurface(nextMainCell, direction)) return;
             if (isInAction) return;
-            _ruleMovingData.SetData(direction);  // TEST RULE
-            movingRuleEngine.ApplyRules(_ruleMovingData);
-            if (MoveAccept) OnMove(direction, _ruleMovingData.nextMainCell);
-            // OnMove(direction, nextMainCell);
+            RuleMovingData.SetData(direction);  // TEST RULE
+            movingRuleEngine.ApplyRules(RuleMovingData);
+            if (MoveAccept) OnMove(direction, RuleMovingData.nextMainCell);
+            // else // TEST DELAY
+            // {
+            //     isLockedAction = true;
+            //     DOVirtual.DelayedCall(0.4f, () => { isLockedAction = false; });Z
+            // }
         }
 
 
@@ -172,75 +157,12 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             directionIcon.OnChangeIcon(directionIn);
         }
 
-        private bool CanMoveNextSurface(GameGridCell nextMainCell, Direction directionIn)
-        {
-            GridUnit acceptBelowUnit = GetAcceptUnit(mainCell);
-            GridUnit acceptBelowNextUnit = GetAcceptUnit(nextMainCell, true);
-            // case 1: null, null -> false if current or nextCell can not move
-            if (acceptBelowUnit is null && acceptBelowNextUnit is null &&
-                (!mainCell.Data.canMovingDirectly || !nextMainCell.Data.canMovingDirectly)) return false;
-            // case 2: null, not null -> false if nextCell can not move
-            if (acceptBelowUnit is null && acceptBelowNextUnit is not null &&
-                !mainCell.Data.canMovingDirectly) return false;
-            // case 3: not null, null -> false if currentCell can not move
-            if (acceptBelowUnit is not null && acceptBelowNextUnit is null &&
-                !nextMainCell.Data.canMovingDirectly) return false;
-            return true;
-
-            GridUnit GetAcceptUnit(GameGridCell cell, bool stopWhenFirstFound = false)
-            {
-                for (HeightLevel height = BelowStartHeight;
-                     height >= Constants.dirFirstHeightOfSurface[cell.SurfaceType];
-                     height--)
-                {
-                    GridUnit unit = cell.GetGridUnitAtHeight(height);
-                    if (unit is null) continue;
-                    if (unit.UnitType is UnitType.None) continue;
-                    switch (unit.UnitType)
-                    {
-                        case UnitType.Horizontal when directionIn is Direction.Left or Direction.Right:
-                            return unit;
-                        case UnitType.Vertical when directionIn is Direction.Back or Direction.Forward:
-                            return unit;
-                        case UnitType.Both:
-                            return unit;
-                        case UnitType.None:
-                        default:
-                            if (stopWhenFirstFound) return null;
-                            break;
-                    }
-                }
-
-                return null;
-            }
-        }
-
         private void ChangeAnim(string animName)
         {
             if (_currentAnim.Equals(animName)) return;
             animator.ResetTrigger(_currentAnim);
             _currentAnim = animName;
             animator.SetTrigger(_currentAnim);
-        }
-        
-        private readonly List<IObserver> observers = new();
-        
-        public void AddObserver(IObserver observer)
-        {
-            observers.Add(observer);
-        }
-
-        public void RemoveObserver(IObserver observer)
-        {
-            observers.Remove(observer);
-        }
-
-        public void NotifyObservers()
-        {
-            for (int i = 0; i < observers.Count; i++)
-            {
-                observers[i].OnNotify();
-            }
         }
     }
 }

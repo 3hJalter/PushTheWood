@@ -20,12 +20,12 @@ namespace _Game.GameRule.RuleEngine
             blockUnits = new HashSet<GridUnit>();
         }
 
-        public void SetData(Direction direction)
+        public virtual void SetData(Direction direction)
         {
             runDirection = direction;
-            nextMainCell = LevelManager.Ins.GetNeighbourCell(runRuleUnit.MainCell, direction);
             nextCells.Clear();
             blockUnits.Clear();
+            nextMainCell = LevelManager.Ins.GetNeighbourCell(runRuleUnit.MainCell, direction);
             for (int i = 0; i < runRuleUnit.cellInUnits.Count; i++)
             {
                 GameGridCell neighbour = LevelManager.Ins.GetNeighbourCell(runRuleUnit.cellInUnits[i], direction);

@@ -7,8 +7,7 @@ namespace _Game.DesignPattern
     {
         bool IsApplicable(RuleEngineData data);
         void Apply(RuleEngineData data);
-        
-        void Reverse(RuleEngineData data);
+        void CancelApply(RuleEngineData data);
         
     }
 }

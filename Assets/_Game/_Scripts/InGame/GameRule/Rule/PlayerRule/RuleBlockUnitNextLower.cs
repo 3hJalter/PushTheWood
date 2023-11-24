@@ -51,17 +51,20 @@ namespace _Game.GameRule.Rule
                     switch (firstUnit.UnitType)
                     {
                         case UnitType.None:
+                            if (firstUnit.StartHeight == belowSurfaceStartHeight && !canMoveDirectly) return false;  // TEMP
                             firstUnit.OnInteract(data.runDirection, data.runRuleUnit);
                             return false;
                         case UnitType.Both:
                         case UnitType.Vertical when data.runDirection is Direction.Forward or Direction.Back:
                             return true;
                         case UnitType.Vertical:
+                            if (firstUnit.StartHeight == belowSurfaceStartHeight && !canMoveDirectly) return false;  // TEMP
                             firstUnit.OnInteract(data.runDirection, data.runRuleUnit);
                             return false;
                         case UnitType.Horizontal when data.runDirection is Direction.Left or Direction.Right:
                             return true;
                         case UnitType.Horizontal:
+                            if (firstUnit.StartHeight == belowSurfaceStartHeight && !canMoveDirectly) return false;  // TEMP
                             firstUnit.OnInteract(data.runDirection, data.runRuleUnit);
                             return false;
                         default:
@@ -77,7 +80,7 @@ namespace _Game.GameRule.Rule
             if (data.runRuleUnit is GridUnitDynamic dUnit) dUnit.SetMove(true);
         }
 
-        public void Reverse(RuleEngineData dataIn)
+        public void CancelApply(RuleEngineData dataIn)
         {
             if (dataIn is not RuleMovingData data) return;
             if (data.runRuleUnit is GridUnitDynamic dUnit) dUnit.SetMove(false);
