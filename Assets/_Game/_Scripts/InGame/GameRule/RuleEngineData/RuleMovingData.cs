@@ -6,23 +6,18 @@ using GameGridEnum;
 
 namespace _Game.GameRule.RuleEngine
 {
-    public abstract class RuleEngineData
-    {
-        public GridUnit runRuleUnit;
-    }
-    
     public class RuleMovingData : RuleEngineData
     {
         public Direction runDirection;
         public GameGridCell nextMainCell;
         public readonly HashSet<GameGridCell> nextCells;
-        public readonly HashSet<GameUnit> blockUnits;
+        public readonly HashSet<GridUnit> blockUnits;
 
         public RuleMovingData(GridUnit runRuleUnit)
         {
             this.runRuleUnit = runRuleUnit;
             nextCells = new HashSet<GameGridCell>();
-            blockUnits = new HashSet<GameUnit>();
+            blockUnits = new HashSet<GridUnit>();
         }
 
         public void SetData(Direction direction)

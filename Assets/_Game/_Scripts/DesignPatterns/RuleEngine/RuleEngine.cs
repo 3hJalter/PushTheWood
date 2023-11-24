@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using _Game.GameRule.Rule;
+using _Game.GameRule.RuleEngine;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace _Game.GameRule.RuleEngine
+namespace _Game.DesignPattern
 {
     [CreateAssetMenu(fileName = "RuleEngine", menuName = "RuleSO/RuleEngine", order = 1)]
     public class RuleEngine : SerializedScriptableObject
@@ -18,8 +19,8 @@ namespace _Game.GameRule.RuleEngine
             {
                 IRule rule = rules[index];
                 if (rule.IsApplicable(data)) rule.Apply(data);
-                else if (acceptReverseRule && index > 0)
-                {
+                else if (acceptReverseRule)
+                {   
                     for (int j = index - 1; j >= 0; j--)
                     {
                         IRule reverseRule = rules[j];reverseRule.Reverse(data);

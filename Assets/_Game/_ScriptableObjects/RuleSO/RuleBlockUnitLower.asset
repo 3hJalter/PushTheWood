@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 513c1271e7f34234bb3bbcb909a0c9c8, type: 3}
-  m_Name: RuleTest
+  m_Script: {fileID: 11500000, guid: f39d6d98f4354e0e98bdafe89a76d99a, type: 3}
+  m_Name: RuleBlockUnitLower
   m_EditorClassIdentifier: 

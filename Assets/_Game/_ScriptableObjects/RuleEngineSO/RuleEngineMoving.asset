@@ -17,6 +17,8 @@ MonoBehaviour:
     SerializedBytes: 
     ReferencedUnityObjects:
     - {fileID: 11400000, guid: 980dcc9a4234b7346a12ddb80251a8d8, type: 2}
+    - {fileID: 11400000, guid: 64efac47134bf164bb2616574caa6c01, type: 2}
+    - {fileID: 11400000, guid: a4498f41156937547bc9dda475dd0874, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -24,14 +26,20 @@ MonoBehaviour:
     SerializationNodes:
     - Name: rules
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[_Game.GameRule.Rule.IRule, Assembly-CSharp]],
+      Data: 0|System.Collections.Generic.List`1[[_Game.DesignPattern.IRule, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
-      Data: 1
+      Data: 3
     - Name: 
       Entry: 10
       Data: 0
+    - Name: 
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 10
+      Data: 2
     - Name: 
       Entry: 13
       Data: 

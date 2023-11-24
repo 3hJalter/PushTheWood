@@ -37,8 +37,8 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
         public override void OnPushChumpDown(Direction direction)
         {
-            // RollChump(direction);
-            OnMove(direction); // TEST RULE
+            RollChump(direction);
+            // OnMove(direction); // TEST RULE
         }
 
         // SPAGHETTI CODE, change later

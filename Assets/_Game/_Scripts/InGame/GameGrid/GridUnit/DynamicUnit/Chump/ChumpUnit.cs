@@ -282,6 +282,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
             #endregion
 
+            SetMove(true);
             OnOutCurrentCells();
             OnEnterNextCell(direction, nextMainCell, false, nextCells);
             isInAction = true;
@@ -326,6 +327,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         private void OnRollChump(Direction direction, Vector3Int sizeAfterRotate, HeightLevel endHeightAfterRotate,
             GameGridCell nextMainCell, HashSet<GameGridCell> nextCells)
         {
+            SetMove(true);
             anchor.ChangeAnchorPos(this, direction);
             size = sizeAfterRotate;
             endHeight = endHeightAfterRotate;

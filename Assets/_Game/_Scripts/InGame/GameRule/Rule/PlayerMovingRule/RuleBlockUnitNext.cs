@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace _Game.GameRule.Rule
 {
-    [CreateAssetMenu(fileName = "RuleBlockUnits", menuName = "RuleSO/Moving/RuleBlockUnits", order = 1)]
-    public class RuleBlockUnit : ScriptableObject, IRule
+    [CreateAssetMenu(fileName = "RuleBlockUnitNext", menuName = "RuleSO/Moving/RuleBlockUnitNext", order = 1)]
+    public class RuleBlockUnitNext : ScriptableObject, IRule
     {
         public bool IsApplicable(RuleEngineData dataIn)
         {
@@ -14,11 +14,12 @@ namespace _Game.GameRule.Rule
             if (data.runRuleUnit is not GridUnitDynamic) return false;
             if (data.blockUnits.Count == 0) return true;
             bool isBlockUnitsMove = true;
-            foreach (GameUnit unit in data.blockUnits)
+            foreach (GridUnit unit in data.blockUnits)
             {
+                unit.OnInteract(data.runDirection, data.runRuleUnit);
+                // TODO: Need to handle the case when the unit is not movable (Just GridUnit)
                 if (unit is GridUnitDynamic dUnit)
                 {
-                    dUnit.OnMove(data.runDirection);
                     if (!dUnit.MoveAccept) isBlockUnitsMove = false;
                 }
                 else isBlockUnitsMove = false;

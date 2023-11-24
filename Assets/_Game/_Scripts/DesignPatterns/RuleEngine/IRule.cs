@@ -1,6 +1,7 @@
-﻿using _Game.GameRule.RuleEngine;
+﻿
+using _Game.GameRule.RuleEngine;
 
-namespace _Game.GameRule.Rule
+namespace _Game.DesignPattern
 {
     public interface IRule
     {
