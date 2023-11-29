@@ -1395,7 +1395,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1292
+  m_VersionIndex: 1295
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1553,12 +1553,12 @@ MonoBehaviour:
   poolType: 0
   skin: {fileID: 6129265637862239939}
   size: {x: 1, y: 2, z: 1}
+  isMinusHalfSizeY: 0
   startHeight: 2
   endHeight: 0
   yOffsetOnDown: 0.4
   unitState: 0
   unitType: 2
-  isMinusHalfSizeY: 0
   islandID: -1
   lastPushedDirection: -1
   gridUnitStaticType: 11
@@ -2958,7 +2958,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2473
+  m_VersionIndex: 2476
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -4523,7 +4523,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2476
+  m_VersionIndex: 2479
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
