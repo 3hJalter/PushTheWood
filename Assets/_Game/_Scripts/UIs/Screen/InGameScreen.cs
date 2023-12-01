@@ -66,11 +66,5 @@ namespace _Game.UIs.Screen
         {
             LevelManager.Ins.ResetIslandPlayerOn();
         }
-
-        // TEST
-        public void OnClickMoveOptionPopup()
-        {
-            UIManager.Ins.OpenUI<MoveOptionPopup>();
-        }
     }
 }

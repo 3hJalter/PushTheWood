@@ -1,4 +1,5 @@
-﻿using _Game.GameGrid;
+﻿
+using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Screen;
 using UnityEngine;
@@ -22,12 +23,11 @@ namespace _Game.UIs.Popup
             Debug.Log("Click like button");
         }
 
-        public void OnClickRestartButton()
+        public void OnClickMoveOptionPopup()
         {
-            LevelManager.Ins.OnRestart();
-            Close();
+            UIManager.Ins.OpenUI<MoveOptionPopup>();
         }
-
+        
         public void OnClickGoMenuButton()
         {
             LevelManager.Ins.OnRestart();
