@@ -1,14 +1,13 @@
 ﻿using _Game.DesignPattern;
 using _Game.Managers;
-using GameGridEnum;
 
-namespace _Game.GameGrid.GridUnit.DynamicUnit
+namespace _Game.GameGrid.Unit.DynamicUnit
 {
     public class ChumpHighUnit : ChumpUnit
     {
         protected override void SpawnRaftPrefab(UnitType type)
         {
-            RaftUnit raft = SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.RaftLong));
+            RaftUnit raft = SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnit(PoolType.RaftLong));
             raft.OnInit(mainCell, type);
             raft.islandID = islandID;
             LevelManager.Ins.AddNewUnitToIsland(raft);

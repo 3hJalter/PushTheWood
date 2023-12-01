@@ -2293,8 +2293,8 @@
     },
     "m_FragmentContext": {
         "m_Position": {
-            "x": 479.0000305175781,
-            "y": 601.0000610351563
+            "x": 479.0,
+            "y": 600.9999389648438
         },
         "m_Blocks": [
             {
@@ -2317,7 +2317,7 @@
     },
     "m_ActiveTargets": [
         {
-            "m_Id": "a2256a8ac274401fa3911bd78524a9fc"
+            "m_Id": "c9dfb5a105c447eea34742fa15c742a8"
         }
     ]
 }
@@ -3919,7 +3919,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "UseSRP",
+    "m_Name": "SRP",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -8942,12 +8942,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.Rendering.BuiltIn.ShaderGraph.BuiltInUnlitSubTarget",
-    "m_ObjectId": "898894f951fc491a944f158a2329466e"
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.SubGraphNode",
     "m_ObjectId": "899cf2a545cf4b43abeb4bb37d85b238",
     "m_Group": {
@@ -9614,6 +9608,12 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalUnlitSubTarget",
+    "m_ObjectId": "986e41d29f28489f82d5efbd638f67c1"
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.NegateNode",
     "m_ObjectId": "998366fa09c44eef8eba854f6850706f",
     "m_Group": {
@@ -9985,23 +9985,6 @@
     "m_Property": {
         "m_Id": "a249f45f25004148b140299a615e5b74"
     }
-}
-
-{
-    "m_SGVersion": 2,
-    "m_Type": "UnityEditor.Rendering.BuiltIn.ShaderGraph.BuiltInTarget",
-    "m_ObjectId": "a2256a8ac274401fa3911bd78524a9fc",
-    "m_ActiveSubTarget": {
-        "m_Id": "898894f951fc491a944f158a2329466e"
-    },
-    "m_AllowMaterialOverride": false,
-    "m_SurfaceType": 0,
-    "m_ZWriteControl": 0,
-    "m_ZTestMode": 4,
-    "m_AlphaMode": 0,
-    "m_RenderFace": 2,
-    "m_AlphaClip": false,
-    "m_CustomEditorGUI": ""
 }
 
 {
@@ -12094,6 +12077,26 @@
 }
 
 {
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalTarget",
+    "m_ObjectId": "c9dfb5a105c447eea34742fa15c742a8",
+    "m_ActiveSubTarget": {
+        "m_Id": "986e41d29f28489f82d5efbd638f67c1"
+    },
+    "m_AllowMaterialOverride": false,
+    "m_SurfaceType": 0,
+    "m_ZTestMode": 4,
+    "m_ZWriteControl": 0,
+    "m_AlphaMode": 0,
+    "m_RenderFace": 2,
+    "m_AlphaClip": false,
+    "m_CastShadows": true,
+    "m_ReceiveShadows": true,
+    "m_CustomEditorGUI": "",
+    "m_SupportVFX": false
+}
+
+{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.SaturateNode",
     "m_ObjectId": "c9e01c4008164b5baaa83ed22968f771",
@@ -13947,10 +13950,10 @@
     "m_Guid": {
         "m_GuidSerialized": "9258e54d-32bd-418d-b106-5a28996d6400"
     },
-    "m_Name": "UseSRP",
+    "m_Name": "SRP",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "UseSRP",
-    "m_DefaultReferenceName": "_USESRP",
+    "m_RefNameGeneratedByDisplayName": "SRP",
+    "m_DefaultReferenceName": "_SRP",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,

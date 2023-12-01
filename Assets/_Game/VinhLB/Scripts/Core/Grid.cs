@@ -14,6 +14,10 @@ namespace VinhLB
         private Vector3 _originPosition;
         private GridPlaneType _planeType;
         private T[,] _gridArray;
+        private TextMeshPro[,] _debugTextArray;
+        private Transform _debugTextParentTransform;
+
+        public float CellSize => _cellSize;
 
         public Grid(int width, int height, float cellSize,
             Vector3 originPosition = default, Func<Grid<T>, int, int, T> createFunc = null, GridPlaneType planeType = GridPlaneType.XY)
@@ -35,21 +39,17 @@ namespace VinhLB
                     }
                 }
             }
+
+            _debugTextArray = new TextMeshPro[_width, _height];
+            _debugTextParentTransform = new GameObject("GridDebugTexts").GetComponent<Transform>();
         }
 
-        public T this[int i, int j]
+        ~Grid()
         {
-            get
-            {
-                return GetValue(i, j);
-            }
-            set
-            {
-                SetValue(i, j, value);
-            }
+            UnityEngine.Object.Destroy(_debugTextParentTransform.gameObject);
         }
 
-        public T GetValue(int i, int j)
+        public T GetCellValue(int i, int j)
         {
             if (i >= 0 && j >= 0 && i < _width && j < _height)
             {
@@ -61,7 +61,14 @@ namespace VinhLB
             }
         }
 
-        public void SetValue(int i, int j, T value)
+        public T GetCellValue(Vector3 worldPosition)
+        {
+            GetGridPosition(worldPosition, out int i, out int j);
+
+            return GetCellValue(i, j);
+        }
+
+        public void SetCellValue(int i, int j, T value)
         {
             if (i >= 0 && j >= 0 && i < _width && j < _height)
             {
@@ -69,13 +76,14 @@ namespace VinhLB
             }
         }
 
-        public void SetValue(Vector3 worldPosition, T value)
+        public void SetCellValue(Vector3 worldPosition, T value)
         {
-            GetGridLocations(worldPosition, out int i, out int j);
-            SetValue(i, j, value);
+            GetGridPosition(worldPosition, out int i, out int j);
+
+            SetCellValue(i, j, value);
         }
 
-        public Vector3 GetWorldPosition(int i, int j)
+        public Vector3 GetGridWorldPosition(int i, int j)
         {
             Vector3 position;
             switch (_planeType)
@@ -97,22 +105,32 @@ namespace VinhLB
             return position * _cellSize + _originPosition;
         }
 
-        public void GetGridLocations(Vector3 worldPosition, out int i, out int j)
+        public Vector3 GetGridWorldPosition(Vector3 worldPosition)
+        {
+            GetGridPosition(worldPosition, out int i, out int j);
+
+            return GetGridWorldPosition(i, j);
+        }
+
+        public void GetGridPosition(Vector3 worldPosition, out int i, out int j)
         {
             Vector3 actualPosition = worldPosition - _originPosition;
+            int intX = Mathf.FloorToInt(actualPosition.x / _cellSize);
+            int intY = Mathf.FloorToInt(actualPosition.y / _cellSize);
+            int intZ = Mathf.FloorToInt(actualPosition.z / _cellSize);
             switch (_planeType)
             {
                 case GridPlaneType.XY:
-                    i = Mathf.FloorToInt(actualPosition.x / _cellSize);
-                    j = Mathf.FloorToInt(actualPosition.y / _cellSize);
+                    i = intX;
+                    j = intY;
                     break;
                 case GridPlaneType.YZ:
-                    i = Mathf.FloorToInt(actualPosition.y / _cellSize);
-                    j = Mathf.FloorToInt(actualPosition.z / _cellSize);
+                    i = intY;
+                    j = intZ;
                     break;
                 case GridPlaneType.XZ:
-                    i = Mathf.FloorToInt(actualPosition.x / _cellSize);
-                    j = Mathf.FloorToInt(actualPosition.z / _cellSize);
+                    i = intX;
+                    j = intZ;
                     break;
                 default:
                     i = 0;
@@ -123,23 +141,22 @@ namespace VinhLB
 
         public void DrawGrid()
         {
-            TextMeshPro[,] debugTextArray = new TextMeshPro[_width, _height];
             for (int i = 0; i < _gridArray.GetLength(0); i++)
             {
                 for (int j = 0; j < _gridArray.GetLength(1); j++)
                 {
-                    Vector3 textPosition = GetWorldPosition(i, j) + GetOffset(_cellSize * 0.5f);
-                    debugTextArray[i, j] = Utilities.CreateWorldText($"({i}, {j})",
+                    Vector3 textPosition = GetGridWorldPosition(i, j) + GetOffset(_cellSize * 0.5f);
+                    _debugTextArray[i, j] = Utilities.CreateWorldText($"({i}, {j})",
                         null, textPosition, Vector2.one * _cellSize, 2f * _cellSize, Color.white, TextAlignmentOptions.Center);
-                    debugTextArray[i, j].transform.forward = -GetNormal();
+                    _debugTextArray[i, j].transform.forward = GetGridPlaneNormal();
 
-                    Debug.DrawLine(GetWorldPosition(i, j), GetWorldPosition(i, j + 1), Color.white, 100f);
-                    Debug.DrawLine(GetWorldPosition(i, j), GetWorldPosition(i + 1, j), Color.white, 100f);
+                    Debug.DrawLine(GetGridWorldPosition(i, j), GetGridWorldPosition(i, j + 1), Color.white, 100f);
+                    Debug.DrawLine(GetGridWorldPosition(i, j), GetGridWorldPosition(i + 1, j), Color.white, 100f);
                 }
             }
 
-            Debug.DrawLine(GetWorldPosition(0, _height), GetWorldPosition(_width, _height), Color.white, 100f);
-            Debug.DrawLine(GetWorldPosition(_width, 0), GetWorldPosition(_width, _height), Color.white, 100f);
+            Debug.DrawLine(GetGridWorldPosition(0, _height), GetGridWorldPosition(_width, _height), Color.white, 100f);
+            Debug.DrawLine(GetGridWorldPosition(_width, 0), GetGridWorldPosition(_width, _height), Color.white, 100f);
         }
 
         private Vector3 GetOffset(float value)
@@ -164,19 +181,19 @@ namespace VinhLB
             return offset;
         }
 
-        private Vector3 GetNormal()
+        private Vector3 GetGridPlaneNormal()
         {
             Vector3 normal;
             switch (_planeType)
             {
                 case GridPlaneType.XY:
-                    normal = Vector3.Cross(Vector3.right, Vector3.up).normalized;
+                    normal = Vector3.forward;
                     break;
                 case GridPlaneType.YZ:
-                    normal = Vector3.Cross(Vector3.up, Vector3.forward).normalized;
+                    normal = Vector3.right;
                     break;
                 case GridPlaneType.XZ:
-                    normal = Vector3.Cross(Vector3.forward, Vector3.right).normalized;
+                    normal = Vector3.down;
                     break;
                 default:
                     normal = Vector3.zero;

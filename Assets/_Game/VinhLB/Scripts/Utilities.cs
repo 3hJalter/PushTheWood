@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using _Game.GameGrid;
+using _Game.Utilities.Grid;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -22,6 +24,23 @@ namespace VinhLB
             textMesh.GetComponent<MeshRenderer>().sortingOrder = sortingOrder;
 
             return textMesh;
+        }
+
+        public static bool TryGetMouseWorldPosition(out Vector3 mousePosition, 
+            Camera camera = null, float distance = Mathf.Infinity, LayerMask layerMask = default)
+        {
+            mousePosition = Vector3.zero;
+            camera = camera != null ? camera : Camera.main;
+            layerMask = layerMask != default ? layerMask : Physics.DefaultRaycastLayers;
+            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, distance, layerMask))
+            {
+                mousePosition = hit.point;
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

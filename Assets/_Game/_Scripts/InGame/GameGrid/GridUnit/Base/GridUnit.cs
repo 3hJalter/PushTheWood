@@ -4,12 +4,15 @@ using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
 
-namespace _Game.GameGrid.GridUnit
+namespace _Game.GameGrid.Unit
 {
     public abstract class GridUnit : GameUnit
     {
         [SerializeField] protected Transform skin;
         [SerializeField] protected Vector3Int size;
+
+        public Vector3Int Size => size;
+
         [SerializeField] protected bool isMinusHalfSizeY;
         [SerializeField] protected HeightLevel startHeight = HeightLevel.One;
         [SerializeField] protected HeightLevel endHeight;
@@ -24,7 +27,6 @@ namespace _Game.GameGrid.GridUnit
         
         protected GameGridCell mainCell;
         protected UnitState nextUnitState;
-
 
         public UnitType UnitType
         {
@@ -57,8 +59,7 @@ namespace _Game.GameGrid.GridUnit
             skin.localRotation = _unitInitData.LocalSkinRot;
         }
 
-        public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
-            bool isUseInitData = true)
+        public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true)
         {
             if (isUseInitData) GetInitData();
             nextUnitState = unitState;
@@ -74,8 +75,14 @@ namespace _Game.GameGrid.GridUnit
         protected void SetHeight(HeightLevel startHeightIn)
         {
             startHeight = startHeightIn;
-            endHeight = startHeightIn + (size.y - 1) * 2;
-            if (!isMinusHalfSizeY && nextUnitState == UnitState.Up) endHeight += 1;
+            endHeight = CalculateEndHeight(startHeightIn, size);
+        }
+        
+        public HeightLevel CalculateEndHeight(HeightLevel startHeightIn, Vector3Int sizeIn)
+        {
+            HeightLevel endHeightOut = startHeightIn + (sizeIn.y - 1) * 2;
+            if (!isMinusHalfSizeY && nextUnitState == UnitState.Up) endHeightOut += 1;
+            return endHeightOut;
         }
         
         private void AddCell(GameGridCell mainCellIn)
@@ -107,7 +114,7 @@ namespace _Game.GameGrid.GridUnit
             mainCell = null;
             SimplePool.Despawn(this);
         }
-
+        
         public virtual void OnInteract(Direction direction, GridUnit interactUnit = null)
         {
             lastPushedDirection = direction;
@@ -131,6 +138,7 @@ namespace _Game.GameGrid.GridUnit
         {
             for (int i = 1; i < sizeZ; i++)
             {
+                //GameGridCell neighbourZ = GridUnitFunc.GetNeighbourCell(grid, cell, Direction.Forward, i);
                 GameGridCell neighbourZ = LevelManager.Ins.GetNeighbourCell(cell, Direction.Forward, i);
                 if (neighbourZ == null) continue;
                 cellInUnits.Add(neighbourZ);
@@ -141,6 +149,7 @@ namespace _Game.GameGrid.GridUnit
         {
             for (int i = 1; i < sizeX; i++)
             {
+                //GameGridCell neighbourX = GridUnitFunc.GetNeighbourCell(grid, cell, Direction.Right, i);
                 GameGridCell neighbourX = LevelManager.Ins.GetNeighbourCell(cell, Direction.Right, i);
                 if (neighbourX == null) continue;
                 cellInUnits.Add(neighbourX);

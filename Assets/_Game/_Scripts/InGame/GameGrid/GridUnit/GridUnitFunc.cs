@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using _Game.Utilities.Grid;
 using GameGridEnum;
 using UnityEngine;
+using GridUnit = _Game.GameGrid.Unit.GridUnit;
 
-namespace _Game.GameGrid.GridUnit
+namespace _Game.GameGrid.Unit
 {
     public static class GridUnitFunc
     {
@@ -73,6 +75,17 @@ namespace _Game.GameGrid.GridUnit
             }
             return nextCells;
         }
-        
+
+        public static GameGridCell GetNeighbourCell(Grid<GameGridCell, GameGridCellData> grid,
+            GameGridCell cell, Direction direction, int distance = 1)
+        {
+            Vector2Int cellPos = cell.GetCellPosition();
+            Vector2Int dir = Constants.dirVector[direction];
+            Vector2Int neighbourPos = cellPos + dir * distance;
+            Debug.Log(neighbourPos);
+
+            return grid.GetGridCell(neighbourPos.x, neighbourPos.y);
+        }
+
     }
 }

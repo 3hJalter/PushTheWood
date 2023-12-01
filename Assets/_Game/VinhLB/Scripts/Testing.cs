@@ -10,7 +10,9 @@ namespace VinhLB
 
         private void Start()
         {
-            _intGrid = new Grid<int>(3, 3, 2f, Vector3.zero, null, GridPlaneType.XZ);
+            int gridSize = 5;
+            float cellSize = 2f;
+            _intGrid = new Grid<int>(gridSize, gridSize, cellSize, default, null, GridPlaneType.XZ);
             _intGrid.DrawGrid();
         }
 
@@ -22,7 +24,7 @@ namespace VinhLB
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
                     //Debug.Log(hit.point);
-                    _intGrid.SetValue(hit.point, 69);
+                    _intGrid.SetCellValue(hit.point, 69);
                 }
             }
         }
