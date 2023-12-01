@@ -71,7 +71,6 @@ public static class Constants
     public static readonly Dictionary<GridSurfaceType, HeightLevel> dirFirstHeightOfSurface = new()
     {
         { GridSurfaceType.Ground, HeightLevel.One },
-        { GridSurfaceType.GroundTut, HeightLevel.One},
         { GridSurfaceType.Water, HeightLevel.ZeroPointFive }
     };
 

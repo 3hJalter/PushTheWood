@@ -1,6 +1,6 @@
-﻿using _Game.GameGrid.GridUnit.StaticUnit;
+﻿using _Game.GameGrid.Unit.StaticUnit;
 
-namespace _Game.GameGrid.GridUnit.DynamicUnit
+namespace _Game.GameGrid.Unit.DynamicUnit
 {
     public interface IInteractRootTreeUnit
     {

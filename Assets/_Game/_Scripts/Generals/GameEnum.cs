@@ -124,28 +124,27 @@ namespace GameGridEnum
     {
         // Default value of all GameGridCell is Water, so no need to create a WaterGridSurface
         // Other GridSurfaceType must be created when needed (e.g. GroundGridSurface) to overwrite the default value
-        Water = PoolType.SurfaceWater, 
-        Ground = PoolType.SurfaceGround,
-        GroundTut = PoolType.SurfaceGroundTut,
+        Water = 0, 
+        Ground = 1,
     }
     public enum GridUnitStaticType
     {
         None = -1,
-        RockShort = PoolType.RockShort,
-        RockHigh = PoolType.RockHigh,
-        TreeRoot = PoolType.TreeRoot,
-        TreeShort = PoolType.TreeShort,
-        TreeHigh = PoolType.TreeHigh,
-        FinalPoint = PoolType.FinalPoint,
+        RockShort = 0,
+        RockHigh = 1,
+        TreeRoot = 2,
+        TreeShort = 3,
+        TreeHigh = 4,
+        FinalPoint = 5,
     }
     public enum GridUnitDynamicType
     {
         None = -1,
-        Player = PoolType.Player,
-        ChumpShort = PoolType.ChumpShort,
-        ChumpHigh = PoolType.ChumpHigh,
-        Raft = PoolType.Raft,
-        RaftLong = PoolType.RaftLong,
+        Player = 0,
+        ChumpShort = 1,
+        ChumpHigh = 2,
+        Raft = 3,
+        RaftLong = 4,
     }
     
 }

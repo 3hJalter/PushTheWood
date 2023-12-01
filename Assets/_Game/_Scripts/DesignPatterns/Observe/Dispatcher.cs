@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using _Game.DesignPattern;
 using UnityEngine;
 
 namespace _Game.DesignPattern

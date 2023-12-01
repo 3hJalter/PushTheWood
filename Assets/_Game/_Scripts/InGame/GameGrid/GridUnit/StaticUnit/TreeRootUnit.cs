@@ -1,6 +1,6 @@
-﻿using _Game.GameGrid.GridUnit.DynamicUnit;
+﻿using _Game.GameGrid.Unit.DynamicUnit;
 
-namespace _Game.GameGrid.GridUnit.StaticUnit
+namespace _Game.GameGrid.Unit.StaticUnit
 {
     public class TreeRootUnit : GridUnitStatic
     {

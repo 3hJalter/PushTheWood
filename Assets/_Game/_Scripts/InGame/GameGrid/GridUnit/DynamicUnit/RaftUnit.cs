@@ -4,7 +4,7 @@ using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
 
-namespace _Game.GameGrid.GridUnit.DynamicUnit
+namespace _Game.GameGrid.Unit.DynamicUnit
 {
     public class RaftUnit : GridUnitDynamic, IVehicle
     {

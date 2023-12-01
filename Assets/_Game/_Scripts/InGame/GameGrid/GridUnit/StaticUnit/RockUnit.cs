@@ -1,6 +1,6 @@
-﻿using _Game.GameGrid.GridUnit.StaticUnit.Interface;
+﻿using _Game.GameGrid.Unit.StaticUnit.Interface;
 
-namespace _Game.GameGrid.GridUnit.StaticUnit
+namespace _Game.GameGrid.Unit.StaticUnit
 {
     public class RockUnit : GridUnitStatic, IPlayerInteracted
     {
