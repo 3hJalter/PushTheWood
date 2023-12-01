@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using GameGridEnum;
 using UnityEngine;
+using GridUnit = _Game.GameGrid.Unit.GridUnit;
 
 namespace _Game.GameGrid.Unit
 {
