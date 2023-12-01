@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using _Game.DesignPattern;
 using _Game.GameGrid;
-using _Game.GameGrid.GridUnit;
+using _Game.GameGrid.Unit;
 using GameGridEnum;
 
 namespace _Game.GameRule.RuleEngine

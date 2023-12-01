@@ -2,7 +2,7 @@
 using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid.GridSurface;
-using _Game.GameGrid.GridUnit;
+using _Game.GameGrid.Unit;
 using GameGridEnum;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -33,19 +33,14 @@ namespace _Game.Managers
             return gridData.GetGridTextData(index);
         }
 
-        public GridSurface GetGridSurface(GridSurfaceType gridSurfaceType)
+        public GridSurface GetGridSurface(PoolType poolType)
         {
-            return gridData.GetGridSurface(gridSurfaceType);
+            return gridData.GetGridSurface(poolType);
         }
 
-        public GridUnitDynamic GetGridUnitDynamic(GridUnitDynamicType gridUnitDynamicType)
+        public GridUnit GetGridUnit(PoolType poolType)
         {
-            return gridData.GetGridUnitDynamic(gridUnitDynamicType);
-        }
-
-        public GridUnitStatic GetGridUnitStatic(GridUnitStaticType gridUnitStaticType)
-        {
-            return gridData.GetGridUnitStatic(gridUnitStaticType);
+            return gridData.GetGridUnit(poolType);
         }
     }
 }

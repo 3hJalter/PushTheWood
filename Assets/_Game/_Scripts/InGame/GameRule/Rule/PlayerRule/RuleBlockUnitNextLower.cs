@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using _Game.DesignPattern;
-using _Game.GameGrid.GridUnit;
+using _Game.GameGrid.Unit;
 using _Game.GameRule.RuleEngine;
 using GameGridEnum;
 using UnityEngine;

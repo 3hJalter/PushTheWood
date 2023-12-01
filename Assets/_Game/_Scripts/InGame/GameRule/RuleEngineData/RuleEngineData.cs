@@ -1,4 +1,4 @@
-﻿using _Game.GameGrid.GridUnit;
+﻿using _Game.GameGrid.Unit;
 
 namespace _Game.GameRule.RuleEngine
 {

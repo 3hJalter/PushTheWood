@@ -1,14 +1,14 @@
 ﻿using _Game.DesignPattern;
-using _Game.GameGrid.GridUnit.DynamicUnit;
+using _Game.GameGrid.Unit.DynamicUnit;
 using _Game.Managers;
-using GameGridEnum;
 using UnityEngine;
 
-namespace _Game.GameGrid.GridUnit.StaticUnit
+namespace _Game.GameGrid.Unit.StaticUnit
 {
     public class TreeUnit : GridUnitStatic
     {
         [SerializeField] private ChumpUnit chumpSpawn;
+
         // Spawn TreeRootUnit at height of tree and Chump at height of tree + 1
         public override void OnInteract(Direction direction, GridUnit interactUnit = null)
         {
@@ -23,7 +23,7 @@ namespace _Game.GameGrid.GridUnit.StaticUnit
 
         private void SpawnTreeRoot()
         {
-            TreeRootUnit treeRoot = SimplePool.Spawn<TreeRootUnit>(DataManager.Ins.GetGridUnitStatic(GridUnitStaticType.TreeRoot));
+            TreeRootUnit treeRoot = SimplePool.Spawn<TreeRootUnit>(DataManager.Ins.GetGridUnit(PoolType.TreeRoot));
             treeRoot.OnInit(mainCell, startHeight);
             treeRoot.islandID = islandID;
             LevelManager.Ins.AddNewUnitToIsland(treeRoot);

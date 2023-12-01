@@ -5,7 +5,7 @@ using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
 
-namespace _Game.GameGrid.GridUnit
+namespace _Game.GameGrid.Unit
 {
     public abstract class GridUnitDynamic : GridUnit
     {
@@ -17,7 +17,6 @@ namespace _Game.GameGrid.GridUnit
 
         protected readonly NextCellPosData nextPosData = new();
         protected UnitType nextUnitType;
-        public PoolType? PoolType => ConvertToPoolType(gridUnitDynamicType);
 
         public override void OnDespawn()
         {

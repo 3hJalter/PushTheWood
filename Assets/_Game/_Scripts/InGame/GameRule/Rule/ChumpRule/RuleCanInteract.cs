@@ -1,7 +1,7 @@
 ﻿using System;
 using _Game.DesignPattern;
-using _Game.GameGrid.GridUnit;
-using _Game.GameGrid.GridUnit.DynamicUnit;
+using _Game.GameGrid.Unit;
+using _Game.GameGrid.Unit.DynamicUnit;
 using _Game.GameRule.RuleEngine;
 using UnityEngine;
 

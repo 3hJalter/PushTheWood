@@ -1,12 +1,13 @@
-﻿using _Game.DesignPattern;
-using _Game.GameGrid.GridUnit.StaticUnit;
+﻿using System.Linq;
+using _Game.DesignPattern;
+using _Game.GameGrid.Unit.StaticUnit;
 using _Game.GameRule.RuleEngine;
 using DG.Tweening;
 using GameGridEnum;
 using HControls;
 using UnityEngine;
 
-namespace _Game.GameGrid.GridUnit.DynamicUnit
+namespace _Game.GameGrid.Unit.DynamicUnit
 {
     public class PlayerUnit : GridUnitDynamic, IInteractRootTreeUnit
     {
@@ -16,16 +17,10 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
         public Direction direction = Direction.None;
         private string _currentAnim = Constants.INIT_ANIM;
-
-        private Vector2Int _currentPosition;
-        private int _delayFrameCount;
-
-        private bool _isFalling;
+        
         private bool _isStop;
 
         private Direction _lastDirection;
-        private Vector2 _moveInput;
-        private Vector2Int _nextPosition;
 
         public DirectionIcon DirectionIcon => directionIcon;
 
@@ -43,6 +38,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             direction = HInputManager.GetDirectionInput();
             if (direction == Direction.None)
             {
+                _blockDirectionByUnit = direction;
                 if (isInAction || _isStop) return;
                 _isStop = true;
                 directionIcon.OnChangeIcon(direction);
@@ -72,6 +68,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             OnMove(directionIn, treeRootUnit.MainCell);
         }
 
+        private Direction _blockDirectionByUnit = Direction.None;
         private void OnMoveUpdate()
         {
             if (isInAction && direction == _lastDirection)
@@ -82,26 +79,36 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             _isStop = false;
             LookDirection(direction);
             if (isInAction) return;
+            if (direction == _blockDirectionByUnit) return;
             RuleMovingData.SetData(direction);  // TEST RULE
             movingRuleEngine.ApplyRules(RuleMovingData);
-            if (MoveAccept) OnMove(direction, RuleMovingData.nextMainCell);
-            // else // TEST DELAY
-            // {
-            //     isLockedAction = true;
-            //     DOVirtual.DelayedCall(0.4f, () => { isLockedAction = false; });Z
-            // }
-        }
-
-
-        private void OnPushVehicle(Direction directionIn, GridUnit unit)
-        {
-            // Check if below player unit is vehicle
-            GridUnit belowPlayerUnit = GetBelowUnit();
-            if (belowPlayerUnit is not IVehicle vehicleUnit) return;
-            if (unit.GetBelowUnit() == belowPlayerUnit) return;
-            // invert direction
-            directionIn = GridUnitFunc.InvertDirection(directionIn);
-            vehicleUnit.OnMove(directionIn);
+            // TEMPORARY FOR VEHICLE
+            if (GetBelowUnit() is IVehicle vehicleUnit)
+            {
+                switch (MoveAccept)
+                {
+                    case false:
+                        Direction invertDirection = GridUnitFunc.InvertDirection(direction);
+                        vehicleUnit.OnMove(invertDirection);
+                        return;
+                    case true when RuleMovingData.blockUnits.Count > 0 &&
+                                   RuleMovingData.blockUnits.First() is not TreeRootUnit:
+                        invertDirection = GridUnitFunc.InvertDirection(direction);
+                        vehicleUnit.OnMove(invertDirection);
+                        return;
+                }
+            }
+            //
+            if (MoveAccept)
+            {
+                OnMove(direction, RuleMovingData.nextMainCell);
+                _blockDirectionByUnit = Direction.None;
+            }
+            else if (RuleMovingData.blockUnits.Count > 0)
+            {
+                if (RuleMovingData.blockUnits.First() is not TreeRootUnit) // Temporary for TreeRootUnit
+                    _blockDirectionByUnit = direction;
+            }
         }
 
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
@@ -122,6 +129,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
         private void OnMove(Direction directionIn, GameGridCell nextMainCell)
         {
+            if (isInAction) return;
             LevelManager.Ins.MoveCellViewer(nextMainCell);
             _lastDirection = directionIn;
             // Out Current Cell

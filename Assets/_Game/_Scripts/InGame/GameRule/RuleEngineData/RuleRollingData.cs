@@ -1,5 +1,5 @@
 ﻿using _Game.GameGrid;
-using _Game.GameGrid.GridUnit;
+using _Game.GameGrid.Unit;
 using GameGridEnum;
 using UnityEngine;
 

@@ -1,5 +1,5 @@
 ﻿using _Game.DesignPattern;
-using _Game.GameGrid.GridUnit.DynamicUnit;
+using _Game.GameGrid.Unit.DynamicUnit;
 using UnityEngine;
 
 namespace _Game.GameGrid.GridSurface
@@ -7,7 +7,7 @@ namespace _Game.GameGrid.GridSurface
     public class TutorialGroundSurface : GridSurface
     {
         private bool _isTutorialDone;
-        public override void OnUnitEnter(GridUnit.GridUnit gridUnit)
+        public override void OnUnitEnter(Unit.GridUnit gridUnit)
         {
             if (_isTutorialDone) return;
             if (gridUnit is not PlayerUnit) return;

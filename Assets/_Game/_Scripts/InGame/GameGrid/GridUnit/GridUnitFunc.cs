@@ -2,7 +2,7 @@
 using GameGridEnum;
 using UnityEngine;
 
-namespace _Game.GameGrid.GridUnit
+namespace _Game.GameGrid.Unit
 {
     public static class GridUnitFunc
     {

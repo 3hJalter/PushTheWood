@@ -24,7 +24,7 @@ namespace _Game.GameGrid
         }
 
 
-        public GridUnit.GridUnit GetGridUnitAtHeight(HeightLevel heightLevel)
+        public Unit.GridUnit GetGridUnitAtHeight(HeightLevel heightLevel)
         {
             return data.gridUnits[(int)heightLevel];
         }
@@ -35,14 +35,14 @@ namespace _Game.GameGrid
                 data.gridUnits[i] = null;
         }
 
-        public void RemoveGridUnit(GridUnit.GridUnit removeUnit)
+        public void RemoveGridUnit(Unit.GridUnit removeUnit)
         {
             for (int i = 0; i < data.gridUnits.Length; i++)
                 if (data.gridUnits[i] == removeUnit)
                     data.gridUnits[i] = null;
         }
 
-        public void AddGridUnit(GridUnit.GridUnit addUnit)
+        public void AddGridUnit(Unit.GridUnit addUnit)
         {
             for (int i = (int)addUnit.StartHeight; i <= (int)addUnit.EndHeight; i++) data.gridUnits[i] = addUnit;
             if (data.gridSurface is not null) data.gridSurface.OnUnitEnter(addUnit);
@@ -54,12 +54,12 @@ namespace _Game.GameGrid
             data.gridUnits[(int)heightLevel] = null;
         }
 
-        public void AddGridUnit(HeightLevel heightLevel, GridUnit.GridUnit unit)
+        public void AddGridUnit(HeightLevel heightLevel, Unit.GridUnit unit)
         {
             data.gridUnits[(int)heightLevel] = unit;
         }
 
-        public void AddGridUnit(HeightLevel startHeight, HeightLevel endHeight, GridUnit.GridUnit unit)
+        public void AddGridUnit(HeightLevel startHeight, HeightLevel endHeight, Unit.GridUnit unit)
         {
             for (int i = (int)startHeight; i <= (int)endHeight; i++) data.gridUnits[i] = unit;
             if (data.gridSurface is not null) data.gridSurface.OnUnitEnter(unit);
@@ -83,12 +83,12 @@ namespace _Game.GameGrid
 
         // Type of cell
         public GridSurfaceType gridSurfaceType;
-        public GridUnit.GridUnit[] gridUnits;
+        public Unit.GridUnit[] gridUnits;
 
         public void OnInit()
         {
             gridSurfaceType = gridSurface == null ? GridSurfaceType.Water : gridSurface.SurfaceType;
-            gridUnits = new GridUnit.GridUnit[Enum.GetValues(typeof(HeightLevel)).Length - 1];
+            gridUnits = new Unit.GridUnit[Enum.GetValues(typeof(HeightLevel)).Length - 1];
         }
     }
 }

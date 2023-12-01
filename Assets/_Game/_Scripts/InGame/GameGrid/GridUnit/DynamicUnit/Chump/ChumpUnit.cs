@@ -8,7 +8,7 @@ using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
 
-namespace _Game.GameGrid.GridUnit.DynamicUnit
+namespace _Game.GameGrid.Unit.DynamicUnit
 {
     public abstract class ChumpUnit : GridUnitDynamic, IChumpUnit
     {
@@ -53,7 +53,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
         private void SpawnShortRaftPrefab(GameGridCell cellInit, UnitType type)
         {
-            RaftUnit raft = SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.Raft));
+            RaftUnit raft = SimplePool.Spawn<RaftUnit>(DataManager.Ins.GetGridUnit(PoolType.Raft));
             raft.OnInit(cellInit, type);
             raft.islandID = islandID;
             LevelManager.Ins.AddNewUnitToIsland(raft);
@@ -64,8 +64,9 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
             RuleMovingData.SetData(direction);
             if (RuleMovingData.nextCells.Any(cell => cell.SurfaceType is not GridSurfaceType.Water)) return;
             ruleMovingEngine.ApplyRules(RuleMovingData);
-            if (MoveAccept) OnMoveChump(direction, RuleMovingData.nextMainCell, 
-                RuleMovingData.nextCells, () => { OnMoveChumpWater(direction); });
+            if (MoveAccept)
+                OnMoveChump(direction, RuleMovingData.nextMainCell,
+                    RuleMovingData.nextCells, () => { OnMoveChumpWater(direction); });
         }
 
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
@@ -142,7 +143,7 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         private void SpawnWaterChumpShort(GameGridCell spawnCell, UnitType createdUnitType)
         {
             ChumpUnit chumpUnit =
-                SimplePool.Spawn<ChumpUnit>(DataManager.Ins.GetGridUnitDynamic(GridUnitDynamicType.ChumpShort));
+                SimplePool.Spawn<ChumpUnit>(DataManager.Ins.GetGridUnit(PoolType.ChumpShort));
             chumpUnit.unitState = UnitState.Down;
             chumpUnit.OnInit(spawnCell, Constants.dirFirstHeightOfSurface[GridSurfaceType.Water], false);
             chumpUnit.islandID = islandID;
@@ -219,46 +220,17 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
                 Debug.Log("Has Raft below on NotFall");
         }
 
-        #region TEST RULE
-
-        [SerializeField] private RuleEngine ruleMovingEngine;
-        private RuleMovingData _ruleMovingData;
-        private RuleRollingData _ruleRollingData;
-        [SerializeField] private RuleEngine ruleInteractEngine;
-        private RuleInteractData _ruleInteractData;
-        private bool _isInteractAccept;
-        public void SetInteractAccept(bool isAccept)
-        {
-            _isInteractAccept = isAccept;
-        }
-
-        private RuleInteractData RuleInteractData => _ruleInteractData ??= new RuleInteractData(this);
-        private RuleMovingData RuleMovingData => _ruleMovingData ??= new RuleMovingData(this);
-        private RuleRollingData RuleRollingData => _ruleRollingData ??= new RuleRollingData(this);
-
-        public override void OnInteract(Direction direction, GridUnit interactUnit = null)
-        {
-            base.OnInteract(direction, interactUnit);
-            if (isInAction) return;
-            RuleInteractData.SetData(direction, interactUnit);
-            ruleInteractEngine.ApplyRules(RuleInteractData);
-            if (!_isInteractAccept) return;
-            OnPushChump(direction);
-            SetInteractAccept(false);
-        }
-        
-        #endregion
-        
         protected void MoveChump(Direction direction)
         {
             RuleMovingData.SetData(direction);
             ruleMovingEngine.ApplyRules(RuleMovingData);
             if (MoveAccept) OnMoveChump(direction, RuleMovingData.nextMainCell, RuleMovingData.nextCells);
         }
-        
+
         private void OnMoveChump(Direction direction, GameGridCell nextMainCell, HashSet<GameGridCell> nextCells,
             Action nextAction = null)
         {
+            if (isInAction) return;
 
             #region Get above units
 
@@ -309,13 +281,15 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
         {
             RuleRollingData.SetData(direction);
             ruleMovingEngine.ApplyRules(RuleRollingData);
-            if (MoveAccept) OnRollChump(direction, RuleRollingData.nextSize, RuleRollingData.nextEndHeight,
-                RuleRollingData.nextMainCell, RuleRollingData.nextCells);
+            if (MoveAccept)
+                OnRollChump(direction, RuleRollingData.nextSize, RuleRollingData.nextEndHeight,
+                    RuleRollingData.nextMainCell, RuleRollingData.nextCells);
         }
 
-        private void OnRollChump(Direction direction, Vector3Int sizeAfterRotate, HeightLevel endHeightAfterRotate,
+        protected void OnRollChump(Direction direction, Vector3Int sizeAfterRotate, HeightLevel endHeightAfterRotate,
             GameGridCell nextMainCell, HashSet<GameGridCell> nextCells)
         {
+            if (isInAction) return;
             SetMove(true);
             anchor.ChangeAnchorPos(this, direction);
             size = sizeAfterRotate;
@@ -366,6 +340,35 @@ namespace _Game.GameGrid.GridUnit.DynamicUnit
 
         }
 
-        
+        #region TEST RULE
+
+        [SerializeField] private RuleEngine ruleMovingEngine;
+        private RuleMovingData _ruleMovingData;
+        private RuleRollingData _ruleRollingData;
+        [SerializeField] private RuleEngine ruleInteractEngine;
+        private RuleInteractData _ruleInteractData;
+        private bool _isInteractAccept;
+
+        public void SetInteractAccept(bool isAccept)
+        {
+            _isInteractAccept = isAccept;
+        }
+
+        private RuleInteractData RuleInteractData => _ruleInteractData ??= new RuleInteractData(this);
+        private RuleMovingData RuleMovingData => _ruleMovingData ??= new RuleMovingData(this);
+        protected RuleRollingData RuleRollingData => _ruleRollingData ??= new RuleRollingData(this);
+
+        public override void OnInteract(Direction direction, GridUnit interactUnit = null)
+        {
+            base.OnInteract(direction, interactUnit);
+            if (isInAction) return;
+            RuleInteractData.SetData(direction, interactUnit);
+            ruleInteractEngine.ApplyRules(RuleInteractData);
+            if (!_isInteractAccept) return;
+            OnPushChump(direction);
+            SetInteractAccept(false);
+        }
+
+        #endregion
     }
 }

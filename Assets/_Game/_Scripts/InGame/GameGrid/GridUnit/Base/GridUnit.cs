@@ -4,7 +4,7 @@ using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
 
-namespace _Game.GameGrid.GridUnit
+namespace _Game.GameGrid.Unit
 {
     public abstract class GridUnit : GameUnit
     {
