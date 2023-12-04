@@ -19,7 +19,8 @@ namespace _Game.UIs.Screen
         {
             base.Open();
             CameraFollow.Ins.ChangeCamera(ECameraType.WorldMapCamera);
-            FxManager.Ins.PlayTweenFog(false, 1.5f, 1.5f, ShowUI);
+            // FxManager.Ins.PlayTweenFog(false, 1.5f, 1.5f, ShowUI);
+            ShowUI();
         }
 
         private void ShowUI()
@@ -32,16 +33,7 @@ namespace _Game.UIs.Screen
         {
             Close();
             UIManager.Ins.OpenUI<InGameScreen>();
-            FxManager.Ins.StopTweenFog();
-        }
-
-        public void OnClickTeleport(int index)
-        {
-            Close();
-            // Temporary, change it when remove all old script
-            // if (OldLevelManager.Ins != null) OldLevelManager.Ins.GoLevel(index);
-            UIManager.Ins.OpenUI<InGameScreen>();
-            FxManager.Ins.StopTweenFog();
+            // FxManager.Ins.StopTweenFog();
         }
     }
 }

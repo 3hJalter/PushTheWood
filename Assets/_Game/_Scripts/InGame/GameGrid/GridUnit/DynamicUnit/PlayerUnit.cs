@@ -11,8 +11,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit
 {
     public class PlayerUnit : GridUnitDynamic, IInteractRootTreeUnit
     {
-        [SerializeField] private DirectionIcon directionIcon;
-
         [SerializeField] private Animator animator;
 
         public Direction direction = Direction.None;
@@ -21,8 +19,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit
         private bool _isStop;
 
         private Direction _lastDirection;
-
-        public DirectionIcon DirectionIcon => directionIcon;
 
         #region TEST RULE
         public RuleEngine movingRuleEngine;
@@ -41,7 +37,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit
                 _blockDirectionByUnit = direction;
                 if (isInAction || _isStop) return;
                 _isStop = true;
-                directionIcon.OnChangeIcon(direction);
                 ChangeAnim(Constants.IDLE_ANIM);
                 return;
             }
@@ -162,7 +157,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit
         private void LookDirection(Direction directionIn)
         {
             skin.DOLookAt(Tf.position + Constants.dirVector3[directionIn], 0.2f, AxisConstraint.Y, Vector3.up);
-            directionIcon.OnChangeIcon(directionIn);
         }
 
         private void ChangeAnim(string animName)

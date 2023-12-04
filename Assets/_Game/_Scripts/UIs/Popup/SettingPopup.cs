@@ -21,11 +21,10 @@ namespace _Game.UIs.Popup
         {
             Debug.Log("Click like button");
         }
-
-        public void OnClickRestartButton()
+        
+        public void OnClickMoveOptionPopup()
         {
-            LevelManager.Ins.OnRestart();
-            Close();
+            UIManager.Ins.OpenUI<MoveOptionPopup>();
         }
 
         public void OnClickGoMenuButton()
