@@ -66,6 +66,5 @@ namespace _Game.UIs.Screen
         {
             LevelManager.Ins.ResetIslandPlayerOn();
         }
-      
     }
 }
