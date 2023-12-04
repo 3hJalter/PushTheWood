@@ -51,10 +51,10 @@ public static class Constants
     public const float MOVING_TIME = 0.25f;
     public const float FALLING_TIME = 0.2f;
     
-    public static readonly HeightLevel maxHeight = (HeightLevel)(Enum.GetValues(typeof(HeightLevel)).Length - 1);
+    public static readonly HeightLevel MaxHeight = (HeightLevel)(Enum.GetValues(typeof(HeightLevel)).Length - 1);
     public const HeightLevel MIN_HEIGHT = HeightLevel.Zero;
-    public static readonly Vector3 horizontalSkinRotation = new(0, 0, 90);
-    public static readonly Vector3 verticalSkinRotation = new(0, -90, 90);
+    public static readonly Vector3 HorizontalSkinRotation = new(0, 0, 90);
+    public static readonly Vector3 VerticalSkinRotation = new(0, -90, 90);
     
     // OLD 
     public const float TREE_HEIGHT = 1f;
@@ -68,13 +68,13 @@ public static class Constants
     /// <summary>
     ///  Dictionary
     /// </summary>
-    public static readonly Dictionary<GridSurfaceType, HeightLevel> dirFirstHeightOfSurface = new()
+    public static readonly Dictionary<GridSurfaceType, HeightLevel> DirFirstHeightOfSurface = new()
     {
         { GridSurfaceType.Ground, HeightLevel.One },
         { GridSurfaceType.Water, HeightLevel.ZeroPointFive }
     };
 
-    public static readonly Dictionary<Direction, Vector3> dirVector3F = new()
+    public static readonly Dictionary<Direction, Vector3> DirVector3F = new()
     {
         { Direction.None, Vector3.zero },
         { Direction.Left, Vector3.left },
@@ -83,7 +83,7 @@ public static class Constants
         { Direction.Back, Vector3.back }
     };
     
-    public static readonly Dictionary<Direction, Vector3Int> dirVector3 = new()
+    public static readonly Dictionary<Direction, Vector3Int> DirVector3 = new()
     {
         { Direction.None, Vector3Int.zero },
         { Direction.Left, Vector3Int.left },
@@ -92,7 +92,7 @@ public static class Constants
         { Direction.Back, Vector3Int.back }
     };
 
-    public static readonly Dictionary<Direction, Vector2Int> dirVector = new()
+    public static readonly Dictionary<Direction, Vector2Int> DirVector = new()
     {
         { Direction.None, Vector2Int.zero },
         { Direction.Left, Vector2Int.left },

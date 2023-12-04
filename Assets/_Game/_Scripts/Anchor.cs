@@ -9,7 +9,7 @@ public class Anchor : HMonoBehaviour
         CenterXZAnchorFromUnit();
         float xOffset = (float)unitSize.x / 2 * Constants.CELL_SIZE;
         float zOffset = (float)unitSize.z / 2 * Constants.CELL_SIZE;
-        Vector2Int dirVector = Constants.dirVector[direction];
+        Vector2Int dirVector = Constants.DirVector[direction];
         Tf.position += new Vector3(dirVector.x * xOffset, 0, dirVector.y * zOffset);
         return;
 

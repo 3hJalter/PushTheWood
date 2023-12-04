@@ -15,7 +15,7 @@ namespace _Game.GameRule.Rule
             if (dataIn is not RuleMovingData data) return false;
             if (data.runRuleUnit is not GridUnitDynamic player) return false;
             bool canMoveDirectly = data.nextMainCell.Data.canMovingDirectly;
-            HeightLevel belowSurfaceStartHeight = Constants.dirFirstHeightOfSurface[data.nextMainCell.SurfaceType];
+            HeightLevel belowSurfaceStartHeight = Constants.DirFirstHeightOfSurface[data.nextMainCell.SurfaceType];
             // Get all objects in next cell from below this (Player) to Surface Start Height
             List<GridUnit> unitsInNextCell = new();
             for (HeightLevel i = player.StartHeight - 1; i >= belowSurfaceStartHeight; i--)

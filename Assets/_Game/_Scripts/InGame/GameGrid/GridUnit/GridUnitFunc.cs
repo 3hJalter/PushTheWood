@@ -15,7 +15,7 @@ namespace _Game.GameGrid.Unit
             // World position
             Debug.Log("World position: " + cell.WorldPos);
             // Name of unit in each height
-            for (HeightLevel i = Constants.dirFirstHeightOfSurface[cell.SurfaceType]; i < cell.GetMaxHeight(); i++)
+            for (HeightLevel i = Constants.DirFirstHeightOfSurface[cell.SurfaceType]; i < cell.GetMaxHeight(); i++)
             {
                 Debug.Log("Unit name at height " + i + ": " + cell.GetGridUnitAtHeight(i)?.name);
             }

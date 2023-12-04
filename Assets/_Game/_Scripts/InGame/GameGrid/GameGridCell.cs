@@ -31,7 +31,7 @@ namespace _Game.GameGrid
 
         public void ClearGridUnit()
         {
-            for (int i = (int)Constants.dirFirstHeightOfSurface[data.gridSurfaceType]; i < data.gridUnits.Length; i++)
+            for (int i = (int)Constants.DirFirstHeightOfSurface[data.gridSurfaceType]; i < data.gridUnits.Length; i++)
                 data.gridUnits[i] = null;
         }
 

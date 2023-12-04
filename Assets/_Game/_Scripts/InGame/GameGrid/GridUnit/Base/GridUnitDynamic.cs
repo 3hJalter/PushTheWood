@@ -44,7 +44,7 @@ namespace _Game.GameGrid.Unit
         private HeightLevel GetNextStartHeight(GameGridCell nextCell)
         {
             HeightLevel nextStartHeight = Constants.MIN_HEIGHT;
-            HeightLevel initHeight = Constants.dirFirstHeightOfSurface[nextCell.SurfaceType];
+            HeightLevel initHeight = Constants.DirFirstHeightOfSurface[nextCell.SurfaceType];
             if (initHeight > nextStartHeight) nextStartHeight = initHeight;
             for (HeightLevel heightLevel = initHeight;
                  heightLevel <= BelowStartHeight;
@@ -62,7 +62,7 @@ namespace _Game.GameGrid.Unit
             HeightLevel nextStartHeight = Constants.MIN_HEIGHT;
             foreach (GameGridCell cell in nextCells)
             {
-                HeightLevel initHeight = Constants.dirFirstHeightOfSurface[cell.SurfaceType];
+                HeightLevel initHeight = Constants.DirFirstHeightOfSurface[cell.SurfaceType];
                 if (initHeight > nextStartHeight) nextStartHeight = initHeight;
                 for (HeightLevel heightLevel = initHeight;
                      heightLevel <= BelowStartHeight;
@@ -171,7 +171,7 @@ namespace _Game.GameGrid.Unit
                 GameGridCell cell = cellInUnits[i];
                 int numHeightDownInCell = 0;
                 for (HeightLevel j = startHeight - 1;
-                     j >= Constants.dirFirstHeightOfSurface[cell.SurfaceType];
+                     j >= Constants.DirFirstHeightOfSurface[cell.SurfaceType];
                      j--)
                 {
                     GridUnit unit = cell.GetGridUnitAtHeight(j);
@@ -266,7 +266,7 @@ namespace _Game.GameGrid.Unit
             finalPos = finalPosIn;
             isFalling = Math.Abs(finalPosIn.y - initialPosIn.y) > 0.01;
             if (!isFalling || !hasInitialOffset) return; // make falling before go to the center of next cell
-            Vector3Int dirVector3 = Constants.dirVector3[direction];
+            Vector3Int dirVector3 = Constants.DirVector3[direction];
             initialPos -= new Vector3(dirVector3.x, 0, dirVector3.z) * Constants.CELL_SIZE / 2;
         }
     }
