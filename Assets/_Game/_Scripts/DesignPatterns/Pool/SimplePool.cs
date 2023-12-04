@@ -314,6 +314,8 @@ namespace _Game.DesignPattern
         TreeShort = 10,
         TreeHigh = 11,
         FinalPoint = 13,
+        Box = 14,
+        Bomb = 15,
 
         // From 100 -> Grid Surface List
         SurfaceWater = 100,

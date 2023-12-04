@@ -145,14 +145,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit
             ChumpUnit chumpUnit =
                 SimplePool.Spawn<ChumpUnit>(DataManager.Ins.GetGridUnit(PoolType.ChumpShort));
             chumpUnit.unitState = UnitState.Down;
-            chumpUnit.OnInit(spawnCell, Constants.dirFirstHeightOfSurface[GridSurfaceType.Water], false);
+            chumpUnit.OnInit(spawnCell, Constants.DirFirstHeightOfSurface[GridSurfaceType.Water], false);
             chumpUnit.islandID = islandID;
             LevelManager.Ins.AddNewUnitToIsland(chumpUnit);
             chumpUnit.UnitType = createdUnitType;
             chumpUnit.skin.localRotation =
                 Quaternion.Euler(chumpUnit.UnitType is UnitType.Horizontal
-                    ? Constants.horizontalSkinRotation
-                    : Constants.verticalSkinRotation);
+                    ? Constants.HorizontalSkinRotation
+                    : Constants.VerticalSkinRotation);
         }
 
         // SPAGHETTI CODE
@@ -167,7 +167,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit
                 return;
             }
 
-            if (startHeight == Constants.dirFirstHeightOfSurface[GridSurfaceType.Water])
+            if (startHeight == Constants.DirFirstHeightOfSurface[GridSurfaceType.Water])
             {
                 _isOnWater = true;
                 if (nextUnitType is UnitType.None)
@@ -186,14 +186,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit
                     unitState = UnitState.Down;
                     skin.localRotation =
                         Quaternion.Euler(unitType is UnitType.Horizontal
-                            ? Constants.horizontalSkinRotation
-                            : Constants.verticalSkinRotation);
+                            ? Constants.HorizontalSkinRotation
+                            : Constants.VerticalSkinRotation);
                     // minus position offsetY
                     Tf.position -= Vector3.up * yOffsetOnDown;
                     nextUnitType = unitType;
                 }
             }
-            else if (startHeight == Constants.dirFirstHeightOfSurface[GridSurfaceType.Water] + Constants.UPPER_HEIGHT &&
+            else if (startHeight == Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + Constants.UPPER_HEIGHT &&
                      CanSpawnRaftAndWaterChump(out List<GameGridCell> createRaftCells,
                          out List<GameGridCell> createChumpShortCells,
                          out HashSet<ChumpUnit> waterChumps))
@@ -211,7 +211,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit
         {
             base.OnNotFall();
             if (cellInUnits.Any(t => t.SurfaceType is not GridSurfaceType.Water)) return;
-            if (startHeight == Constants.dirFirstHeightOfSurface[GridSurfaceType.Water] + Constants.UPPER_HEIGHT &&
+            if (startHeight == Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + Constants.UPPER_HEIGHT &&
                 CanSpawnRaftAndWaterChump(out List<GameGridCell> createRaftCells,
                     out List<GameGridCell> createChumpShortCells,
                     out HashSet<ChumpUnit> waterChumps))
@@ -302,7 +302,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit
 
             #region Roll
 
-            Vector3 axis = Vector3.Cross(Vector3.up, Constants.dirVector3[direction]);
+            Vector3 axis = Vector3.Cross(Vector3.up, Constants.DirVector3[direction]);
             // Roll 90 degree around anchor in 0.18 second using Tween
             float lastAngle = 0;
             DOVirtual.Float(0, 90, Constants.MOVING_TIME, i =>
@@ -347,12 +347,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit
         private RuleRollingData _ruleRollingData;
         [SerializeField] private RuleEngine ruleInteractEngine;
         private RuleInteractData _ruleInteractData;
-        private bool _isInteractAccept;
-
-        public void SetInteractAccept(bool isAccept)
-        {
-            _isInteractAccept = isAccept;
-        }
 
         private RuleInteractData RuleInteractData => _ruleInteractData ??= new RuleInteractData(this);
         private RuleMovingData RuleMovingData => _ruleMovingData ??= new RuleMovingData(this);
@@ -364,9 +358,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit
             if (isInAction) return;
             RuleInteractData.SetData(direction, interactUnit);
             ruleInteractEngine.ApplyRules(RuleInteractData);
-            if (!_isInteractAccept) return;
+            if (!RuleInteractData.isInteractAccept) return;
             OnPushChump(direction);
-            SetInteractAccept(false);
         }
 
         #endregion

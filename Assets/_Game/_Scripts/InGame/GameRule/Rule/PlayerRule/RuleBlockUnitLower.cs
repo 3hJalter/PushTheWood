@@ -17,7 +17,7 @@ namespace _Game.GameRule.Rule
             // Get Below Player Information
             GameGridCell currentCell = player.MainCell;
             bool canMoveDirectly = currentCell.Data.canMovingDirectly;
-            HeightLevel belowSurfaceStartHeight = Constants.dirFirstHeightOfSurface[currentCell.SurfaceType];
+            HeightLevel belowSurfaceStartHeight = Constants.DirFirstHeightOfSurface[currentCell.SurfaceType];
             // Condition
             if (canMoveDirectly) return true;
             if (player.StartHeight <= belowSurfaceStartHeight) return false;

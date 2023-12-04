@@ -101,8 +101,15 @@ namespace _Game.GameGrid.Unit.DynamicUnit
             }
             else if (RuleMovingData.blockUnits.Count > 0)
             {
-                if (RuleMovingData.blockUnits.First() is not TreeRootUnit) // Temporary for TreeRootUnit
+                if (RuleMovingData.blockUnits.First() is not TreeRootUnit) // Temporary for only TreeRootUnit
+                {
                     _blockDirectionByUnit = direction;
+                    ChangeAnim(Constants.IDLE_ANIM);
+                }
+            }
+            else
+            {
+                ChangeAnim(Constants.IDLE_ANIM);
             }
         }
 
@@ -156,7 +163,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit
 
         private void LookDirection(Direction directionIn)
         {
-            skin.DOLookAt(Tf.position + Constants.dirVector3[directionIn], 0.2f, AxisConstraint.Y, Vector3.up);
+            skin.DOLookAt(Tf.position + Constants.DirVector3[directionIn], 0.2f, AxisConstraint.Y, Vector3.up);
         }
 
         private void ChangeAnim(string animName)

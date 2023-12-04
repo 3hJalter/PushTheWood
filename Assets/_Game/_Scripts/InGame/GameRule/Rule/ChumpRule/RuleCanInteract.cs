@@ -1,5 +1,4 @@
-﻿using System;
-using _Game.DesignPattern;
+﻿using _Game.DesignPattern;
 using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit;
 using _Game.GameRule.RuleEngine;
@@ -22,8 +21,8 @@ namespace _Game.GameRule.Rule
                     return direction is Direction.Back or Direction.Forward;
                 case UnitType.Vertical:
                     return direction is Direction.Left or Direction.Right;
-                case UnitType.None:
                 case UnitType.Both:
+                case UnitType.None:
                 default:
                     return false;
             }
@@ -32,13 +31,13 @@ namespace _Game.GameRule.Rule
         public void Apply(RuleEngineData dataIn)
         {
             if (dataIn is not RuleInteractData data) return;
-            if (data.runRuleUnit is ChumpUnit cUnit) cUnit.SetInteractAccept(true);
+            data.isInteractAccept = true;
         }
 
         public void CancelApply(RuleEngineData dataIn)
         {
             if (dataIn is not RuleInteractData data) return;
-            if (data.runRuleUnit is ChumpUnit cUnit) cUnit.SetInteractAccept(false);
+            data.isInteractAccept = false;
         }
     }
 }

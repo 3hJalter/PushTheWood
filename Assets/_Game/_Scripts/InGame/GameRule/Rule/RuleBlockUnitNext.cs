@@ -18,6 +18,7 @@ namespace _Game.GameRule.Rule
             bool isBlockUnitsMove = canMoveWithBlockUnits;
             foreach (GridUnit unit in data.blockUnits)
             {
+                if (unit is GridUnitDynamic { isInAction: true }) isBlockUnitsMove = false;
                 unit.OnInteract(data.runDirection, data.runRuleUnit);
                 // TODO: Need to handle the case when the unit is not movable (Just GridUnit)
                 if (unit is GridUnitDynamic dUnit)

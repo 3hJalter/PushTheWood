@@ -87,7 +87,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit
         private void RotateSkin(UnitType type)
         {
             skin.localRotation =
-                Quaternion.Euler(type is UnitType.Horizontal ? Constants.horizontalSkinRotation : Constants.verticalSkinRotation);
+                Quaternion.Euler(type is UnitType.Horizontal ? Constants.HorizontalSkinRotation : Constants.VerticalSkinRotation);
             switch (_isFirstSpawnDone)
             {
                 case false when type is UnitType.Vertical:

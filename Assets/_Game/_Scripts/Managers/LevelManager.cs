@@ -125,7 +125,7 @@ namespace _Game.GameGrid
         public GameGridCell GetNeighbourCell(GameGridCell cell, Direction direction, int distance = 1)
         {
             Vector2Int cellPos = cell.GetCellPosition();
-            Vector2Int dir = Constants.dirVector[direction];
+            Vector2Int dir = Constants.DirVector[direction];
             Vector2Int neighbourPos = cellPos + dir * distance;
             return _gridMap.GetGridCell(neighbourPos.x, neighbourPos.y);
             // return _gridMap.GetGridCell(x, y);
