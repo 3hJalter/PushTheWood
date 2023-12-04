@@ -15,7 +15,7 @@ namespace _Game.Utilities.Grid
         [SerializeField] private float worldX;
         [SerializeField] private float worldY;
 
-        protected int x;
+        protected int x;    
         protected int y;
 
         protected GridCell()

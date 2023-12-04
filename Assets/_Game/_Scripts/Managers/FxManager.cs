@@ -1,7 +1,7 @@
 using System;
 using _Game.DesignPattern;
+using AkilliMum.SRP.D2WeatherEffects.URP;
 using DG.Tweening;
-using UB.Simple2dWeatherEffects.Standard;
 using UnityEngine;
 
 namespace _Game.Managers
@@ -12,8 +12,8 @@ namespace _Game.Managers
         private const float DEFAULT_STOP_FOG_DENSITY = 0f;
         private const float DEFAULT_PLAY_FOG_DURATION = 1f;
         private const float DEFAULT_STOP_FOG_DURATION = 1f;
-
-        [Header("Fog")] [SerializeField] private D2FogsPE fogControl;
+        
+        [Header("Fog")] [SerializeField] private D2FogsSprite fogControl;
         [Header("Water")] [SerializeField] private GameObject water;
         [Header("Grid")] [SerializeField] private GameObject grid;
 
@@ -38,7 +38,7 @@ namespace _Game.Managers
 
         public void StopTweenFog(float duration = DEFAULT_STOP_FOG_DURATION)
         {
-            if (!fogControl) return;
+            // if (!fogControl) return;
             DOTween.To(GetDensity, SetDensity, DEFAULT_STOP_FOG_DENSITY, duration).SetEase(Ease.OutSine).Play();
         }
 
@@ -46,10 +46,12 @@ namespace _Game.Managers
         {
             return fogControl.Density;
         }
+        
 
         private void SetDensity(float value)
         {
             fogControl.Density = value;
         }
+        
     }
 }

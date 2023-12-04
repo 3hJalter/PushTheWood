@@ -42,11 +42,6 @@ namespace _Game.GameGrid
             _tutorialIndex = PlayerPrefs.GetInt(Constants.TUTORIAL_INDEX, 0);
         }
 
-        public void OnShowDirectionIcon()
-        {
-            _pUnit.DirectionIcon.gameObject.SetActive(!_pUnit.DirectionIcon.gameObject.activeSelf);
-        }
-
         public void OnShowTutorial()
         {
             UIManager.Ins.OpenUI<TutorialScreen>()
