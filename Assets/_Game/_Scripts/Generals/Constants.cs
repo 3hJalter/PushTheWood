@@ -35,6 +35,13 @@ public static class Constants
 
     public const string IDLE_ANIM = "idle";
     public const string WALK_ANIM = "walk";
+    public const string JUMP_UP_ANIM = "jumpUp";
+    public const string JUMP_DOWN_ANIM = "jumpDown";
+    public const string INTERACT_ANIM = "interact";
+    public const string PUSH_ANIM = "push";
+    public const string CUT_TREE_ANIM = "cutTree";
+    public const string FALLING_ANIM = "falling";
+    public const string DIE_ANIM = "die";
 
     /// <summary>
     ///     UI Animation Trigger

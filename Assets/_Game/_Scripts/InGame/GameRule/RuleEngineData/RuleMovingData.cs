@@ -11,13 +11,13 @@ namespace _Game.GameRule.RuleEngine
         public Direction runDirection;
         public GameGridCell nextMainCell;
         public readonly HashSet<GameGridCell> nextCells;
-        public readonly HashSet<GridUnit> blockUnits;
+        public readonly List<GridUnit> blockUnits;
 
         public RuleMovingData(GridUnit runRuleUnit)
         {
             this.runRuleUnit = runRuleUnit;
             nextCells = new HashSet<GameGridCell>();
-            blockUnits = new HashSet<GridUnit>();
+            blockUnits = new List<GridUnit>();
         }
 
         public virtual void SetData(Direction direction)
@@ -33,7 +33,7 @@ namespace _Game.GameRule.RuleEngine
                 for (HeightLevel j = runRuleUnit.StartHeight; j <= runRuleUnit.EndHeight; j++)
                 {
                     GridUnit unit = neighbour.GetGridUnitAtHeight(j);
-                    if (unit is null || unit == runRuleUnit) continue;
+                    if (unit is null || unit == runRuleUnit || blockUnits.Contains(unit)) continue;
                     blockUnits.Add(unit);
                 }
                 nextCells.Add(neighbour);

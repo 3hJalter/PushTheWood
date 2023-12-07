@@ -13,6 +13,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit
         public void OnInit(GameGridCell mainCellIn, UnitType type, HeightLevel startHeightIn = HeightLevel.ZeroPointFive)
         {
             RotateSkin(type);
+            unitState = UnitState.Down;
             base.OnInit(mainCellIn, startHeightIn, false);
         }
 

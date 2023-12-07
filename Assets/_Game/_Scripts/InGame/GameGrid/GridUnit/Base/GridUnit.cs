@@ -8,26 +8,26 @@ namespace _Game.GameGrid.Unit
 {
     public abstract class GridUnit : GameUnit
     {
-        [SerializeField] protected Transform skin;
-        [SerializeField] protected Vector3Int size;
+        [SerializeField] protected Transform skin; // Model location
+        [SerializeField] protected Vector3Int size; // Size of this unit
+        [SerializeField] protected bool isMinusHalfSizeY; // Use when the init size need to be x.5 (ex: 1.5, 2.5, 3.5)
+        [SerializeField] protected HeightLevel startHeight = HeightLevel.One; // Serialize for test
+        [SerializeField] protected HeightLevel endHeight; // Serialize for test
+        [SerializeField] protected float yOffsetOnDown = 0.5f; // Offset when unit is down
+
+        public int islandID = -1; // The island that this unit is on
+        public readonly List<GameGridCell> cellInUnits = new(); // All cells that this unit is on
+
+        private UnitInitData _unitInitData; // Save init data for despawn and spawn
+
+        protected Direction lastPushedDirection = Direction.None; // The last direction that this unit is pushed
+        protected GameGridCell mainCell; // The main cell that this unit is on
+        protected UnitState nextUnitState; // The next state of this unit
+        [SerializeField] protected UnitState unitState = UnitState.Up; // The current state of this unit (Up or Down), Serialize for test
+        [SerializeField] protected UnitType unitType = UnitType.Both; // The type of this unit (Horizontal, Vertical, Both or None). Serialize for test
+
 
         public Vector3Int Size => size;
-
-        [SerializeField] protected bool isMinusHalfSizeY;
-        [SerializeField] protected HeightLevel startHeight = HeightLevel.One;
-        [SerializeField] protected HeightLevel endHeight;
-        [SerializeField] protected float yOffsetOnDown = 0.5f;
-        [SerializeField] protected UnitState unitState = UnitState.Up;
-        [SerializeField] protected UnitType unitType = UnitType.Both;
-        public int islandID = -1;
-
-        [SerializeField] protected Direction lastPushedDirection = Direction.None;
-        public readonly List<GameGridCell> cellInUnits = new();
-        private UnitInitData _unitInitData;
-        
-        protected GameGridCell mainCell;
-        protected UnitState nextUnitState;
-
 
         public UnitType UnitType
         {
@@ -52,6 +52,7 @@ namespace _Game.GameGrid.Unit
             _unitInitData = new UnitInitData(sizeI, unitStateI, skinI.localPosition, skinI.localRotation);
         }
 
+
         private void GetInitData()
         {
             size = _unitInitData.Size;
@@ -71,7 +72,7 @@ namespace _Game.GameGrid.Unit
             // Add offset Height to Position
             Tf.position = mainCell.WorldPos + Vector3.up * (float)startHeight / 2 * Constants.CELL_SIZE;
             if (unitState is UnitState.Down) Tf.position -= Vector3.up * yOffsetOnDown;
-            
+
         }
 
         protected void SetHeight(HeightLevel startHeightIn)
@@ -79,14 +80,14 @@ namespace _Game.GameGrid.Unit
             startHeight = startHeightIn;
             endHeight = CalculateEndHeight(startHeightIn, size);
         }
-        
+
         public HeightLevel CalculateEndHeight(HeightLevel startHeightIn, Vector3Int sizeIn)
         {
             HeightLevel endHeightOut = startHeightIn + (sizeIn.y - 1) * 2;
             if (!isMinusHalfSizeY && nextUnitState == UnitState.Up) endHeightOut += 1;
             return endHeightOut;
         }
-        
+
         private void AddCell(GameGridCell mainCellIn)
         {
             mainCell = mainCellIn;
@@ -116,7 +117,7 @@ namespace _Game.GameGrid.Unit
             mainCell = null;
             SimplePool.Despawn(this);
         }
-        
+
         public virtual void OnInteract(Direction direction, GridUnit interactUnit = null)
         {
             lastPushedDirection = direction;
@@ -127,7 +128,8 @@ namespace _Game.GameGrid.Unit
             if (mainCell is not null) return mainCell.GetGridUnitAtHeight(BelowStartHeight);
             // Get cell from this position
             Vector3 position = Tf.position;
-            GameGridCell cell = LevelManager.Ins.GetCell(new Vector2Int(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z)));
+            GameGridCell cell =
+                LevelManager.Ins.GetCell(new Vector2Int(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z)));
             return cell?.GetGridUnitAtHeight(BelowStartHeight);
         }
 

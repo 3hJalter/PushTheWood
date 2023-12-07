@@ -22,6 +22,7 @@ namespace _Game.GameRule.Rule
                 case UnitType.Vertical:
                     return direction is Direction.Left or Direction.Right;
                 case UnitType.Both:
+                    return true;
                 case UnitType.None:
                 default:
                     return false;
