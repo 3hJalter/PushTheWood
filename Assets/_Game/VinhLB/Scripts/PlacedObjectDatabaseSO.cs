@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    [CreateAssetMenu(menuName = "ScriptableObjects/Placed Object Database")]
+    [CreateAssetMenu(fileName = "PlacedObjectDatabase", menuName = "ScriptableObjects/PlacedObjectDatabase")]
     public class PlacedObjectDatabaseSO : ScriptableObject
     {
         public List<PlacedObjectData> BuildingObjectDataList;

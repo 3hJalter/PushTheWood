@@ -1,6 +1,7 @@
 ﻿using System;
 using _Game.Utilities.Grid;
 using GameGridEnum;
+using VinhLB;
 
 namespace _Game.GameGrid
 {
@@ -77,6 +78,7 @@ namespace _Game.GameGrid
 
     public class GameGridCellData
     {
+
         public bool canMovingDirectly;
 
         public GridSurface.GridSurface gridSurface;
@@ -85,10 +87,17 @@ namespace _Game.GameGrid
         public GridSurfaceType gridSurfaceType;
         public Unit.GridUnit[] gridUnits;
 
+        public PlacedObject PlacedObject;
+
         public void OnInit()
         {
             gridSurfaceType = gridSurface == null ? GridSurfaceType.Water : gridSurface.SurfaceType;
             gridUnits = new Unit.GridUnit[Enum.GetValues(typeof(HeightLevel)).Length - 1];
+        }
+
+        public bool CanBuild()
+        {
+            return gridSurfaceType == GridSurfaceType.Ground && PlacedObject == null;
         }
     }
 }

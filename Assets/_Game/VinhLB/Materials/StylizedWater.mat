@@ -131,9 +131,9 @@ Material:
     - _IntersectionFoamBlend: 1
     - _IntersectionFoamColorBlend: 1
     - _IntersectionFoamCutoff: 1
-    - _IntersectionFoamDepth: 0.5
+    - _IntersectionFoamDepth: 1
     - _IntersectionFoamDirection: 0.375
-    - _IntersectionFoamFade: 1
+    - _IntersectionFoamFade: 1.5
     - _IntersectionFoamSpeed: 0.1
     - _IntersectionFoamTiling: 5
     - _IsSRP: 0
@@ -174,7 +174,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DeepColor: {r: 0.086274505, g: 0.24093802, b: 1, a: 0.7647059}
+    - _DeepColor: {r: 0.086274505, g: 0.29166266, b: 1, a: 0.7647059}
     - _DepthGradientDeep: {r: 0.086, g: 0.407, b: 1, a: 0.749}
     - _DepthGradientShallow: {r: 0.325, g: 0.807, b: 0.971, a: 0.725}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    public class BuoyantObject : MonoBehaviour
+    public class BuoyantObject : HMonoBehaviour
     {
         [Header("References")]
         [SerializeField]

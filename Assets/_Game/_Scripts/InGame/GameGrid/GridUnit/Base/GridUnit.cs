@@ -59,7 +59,8 @@ namespace _Game.GameGrid.Unit
             skin.localRotation = _unitInitData.LocalSkinRot;
         }
 
-        public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true)
+        public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, 
+            bool isUseInitData = true, Vector3 posOffset = default)
         {
             if (isUseInitData) GetInitData();
             nextUnitState = unitState;
@@ -67,7 +68,7 @@ namespace _Game.GameGrid.Unit
             SetHeight(startHeightIn);
             AddCell(mainCellIn);
             // Add offset Height to Position
-            Tf.position = mainCell.WorldPos + Vector3.up * (float)startHeight / 2 * Constants.CELL_SIZE;
+            Tf.position = mainCell.WorldPos + Vector3.up * (float)startHeight / 2 * Constants.CELL_SIZE + posOffset;
             if (unitState is UnitState.Down) Tf.position -= Vector3.up * yOffsetOnDown;
             
         }

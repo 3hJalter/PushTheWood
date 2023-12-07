@@ -113,7 +113,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit
         }
 
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
-            bool isUseInitData = true)
+            bool isUseInitData = true, Vector3 posOffset = default)
         {
             base.OnInit(mainCellIn, startHeightIn, isUseInitData);
             ChangeAnim(Constants.IDLE_ANIM);

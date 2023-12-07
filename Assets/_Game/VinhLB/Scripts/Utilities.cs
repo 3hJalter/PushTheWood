@@ -1,9 +1,9 @@
-﻿using _Game.GameGrid;
-using _Game.Utilities.Grid;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 namespace VinhLB
 {
@@ -39,6 +39,50 @@ namespace VinhLB
 
                 return true;
             }
+
+            return false;
+        }
+
+        public static bool TryGetCenterScreenPosition(out Vector3 centerScreenPosition,
+            Camera camera = null, float distance = Mathf.Infinity, LayerMask layerMask = default)
+        {
+            centerScreenPosition = Vector3.zero;
+            camera = camera != null ? camera : Camera.main;
+            layerMask = layerMask != default ? layerMask : Physics.DefaultRaycastLayers;
+            Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            if (Physics.Raycast(ray, out RaycastHit hit, distance, layerMask))
+            {
+                centerScreenPosition = hit.point;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool TryGetRendererFeature<T>(ScriptableRendererData rendererData, out T rendererFeature) 
+            where T : ScriptableRendererFeature
+        {
+            rendererFeature = rendererData.rendererFeatures.OfType<T>().FirstOrDefault();
+
+            return rendererFeature != null;
+        }
+
+        public static bool TryGetRendererFeature<T>(ScriptableRendererData rendererData, string featureName, out T rendererFeature)
+            where T : ScriptableRendererFeature
+        {
+            var rendererFeatures = rendererData.rendererFeatures.OfType<T>();
+            foreach (T feature in rendererFeatures)
+            {
+                if (feature.name.Equals(featureName))
+                {
+                    rendererFeature = feature;
+
+                    return true;
+                }
+            }
+
+            rendererFeature = null;
 
             return false;
         }
