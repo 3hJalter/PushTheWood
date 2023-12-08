@@ -3,6 +3,7 @@ using _Game.DesignPattern;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
+using VinhLB;
 
 namespace _Game.GameGrid.Unit
 {
@@ -20,7 +21,8 @@ namespace _Game.GameGrid.Unit
         [SerializeField] protected UnitState unitState = UnitState.Up;
         [SerializeField] protected UnitType unitType = UnitType.Both;
         public int islandID = -1;
-
+        
+        [SerializeField] protected Direction skinRotationDirection = Direction.None;
         [SerializeField] protected Direction lastPushedDirection = Direction.None;
         public readonly List<GameGridCell> cellInUnits = new();
         private UnitInitData _unitInitData;
@@ -37,6 +39,7 @@ namespace _Game.GameGrid.Unit
         public GameGridCell MainCell => mainCell;
         public HeightLevel StartHeight => startHeight;
         public HeightLevel EndHeight => endHeight;
+        public Direction SkinRotationDirection => skinRotationDirection; 
 
         protected HeightLevel BelowStartHeight => startHeight - Constants.BELOW_HEIGHT;
         protected HeightLevel UpperEndHeight => endHeight + Constants.UPPER_HEIGHT;
@@ -60,7 +63,7 @@ namespace _Game.GameGrid.Unit
         }
 
         public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, 
-            bool isUseInitData = true, Vector3 posOffset = default)
+            bool isUseInitData = true, Direction skinDirection = Direction.None)
         {
             if (isUseInitData) GetInitData();
             nextUnitState = unitState;
@@ -68,9 +71,16 @@ namespace _Game.GameGrid.Unit
             SetHeight(startHeightIn);
             AddCell(mainCellIn);
             // Add offset Height to Position
-            Tf.position = mainCell.WorldPos + Vector3.up * (float)startHeight / 2 * Constants.CELL_SIZE + posOffset;
+            Tf.position = mainCell.WorldPos + Vector3.up * (float)startHeight / 2 * Constants.CELL_SIZE;
             if (unitState is UnitState.Down) Tf.position -= Vector3.up * yOffsetOnDown;
             
+            skinRotationDirection = skinDirection;
+            skin.rotation = Quaternion.Euler(0f, PlacedObjectData.GetRotationAngle(skinRotationDirection), 0f);
+            
+            Vector2Int rotationOffset = PlacedObjectData.GetRotationOffset(size.x, size.z, skinRotationDirection);
+            Vector3 posOffset = new Vector3(rotationOffset.x, 0, rotationOffset.y) * Constants.CELL_SIZE;
+            skin.position += posOffset;
+
         }
 
         protected void SetHeight(HeightLevel startHeightIn)

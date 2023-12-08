@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.Rendering.Universal;
@@ -37,6 +37,11 @@ namespace VinhLB
 
             RefreshVisual();
 
+            Vector3 startPosition = Tf.position;
+            startPosition.y = _heightOffset;
+            Tf.position = startPosition;
+            Tf.DOMoveY(_heightOffset + 0.25f, 0.5f).SetLoops(-1, LoopType.Yoyo);
+
             GridBuildingManager.Ins.OnSelectedChanged += GridBuildingSystem_OnSelectedChanged;
         }
 
@@ -52,26 +57,27 @@ namespace VinhLB
                 return;
             }
 
-            if (_isValid != GridBuildingManager.Ins.CanBuild())
+            if (_isValid != GridBuildingManager.Ins.CanBuild(out _))
             {
-                _isValid = GridBuildingManager.Ins.CanBuild();
+                _isValid = GridBuildingManager.Ins.CanBuild(out _);
 
                 UpdateGhostMaterial();
             }
 
             Vector3 targetPosition = GridBuildingManager.Ins.GetMouseWorldSnappedPosition();
-            targetPosition.y = _heightOffset;
+            targetPosition += new Vector3(Constants.CELL_SIZE * 0.5f, 0f, Constants.CELL_SIZE * 0.5f);
+            targetPosition.y = transform.position.y;
             Quaternion targetRotation = GridBuildingManager.Ins.GetPlacedObjectRotation();
 
             if (instant)
             {
-                transform.position = targetPosition;
-                transform.rotation = targetRotation;
+                Tf.position = targetPosition;
+                Tf.rotation = targetRotation;
             }
             else
             {
-                transform.position = Vector3.Lerp(transform.position, targetPosition, _animationSpeed * Time.deltaTime);
-                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, _animationSpeed * Time.deltaTime);
+                Tf.position = Vector3.Lerp(Tf.position, targetPosition, _animationSpeed * Time.deltaTime);
+                Tf.rotation = Quaternion.Lerp(Tf.rotation, targetRotation, _animationSpeed * Time.deltaTime);
             }
         }
 

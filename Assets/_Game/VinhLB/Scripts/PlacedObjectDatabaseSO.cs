@@ -17,7 +17,6 @@ namespace VinhLB
         {
             switch (direction)
             {
-                default:
                 case Direction.Left:
                     return Direction.Forward;
                 case Direction.Forward:
@@ -25,6 +24,7 @@ namespace VinhLB
                 case Direction.Right:
                     return Direction.Back;
                 case Direction.Back:
+                default:
                     return Direction.Left;
             }
         }
@@ -33,7 +33,6 @@ namespace VinhLB
         {
             switch (direction)
             {
-                default:
                 case Direction.Left:
                     return 270f;
                 case Direction.Right:
@@ -41,34 +40,31 @@ namespace VinhLB
                 case Direction.Forward:
                     return 0;
                 case Direction.Back:
+                default:
                     return 180f;
             }
         }
-
-        public int ID;
-        public string Name;
-        public int Width;
-        public int Height;
-        public Transform Prefab;
-        public Transform Visual;
-
-        public Vector2Int GetRotationOffset(Direction direction)
+        
+        public static Vector2Int GetRotationOffset(int width, int height, Direction direction)
         {
+            width = Mathf.Clamp(width - 1, 0, width - 1);
+            height = Mathf.Clamp(height - 1, 0, height - 1);
+            
             switch (direction)
             {
-                default:
                 case Direction.Left:
-                    return new Vector2Int(0, Width);
+                    return new Vector2Int(0, width);
                 case Direction.Right:
-                    return new Vector2Int(Height, 0);
+                    return new Vector2Int(height, 0);
                 case Direction.Forward:
-                    return new Vector2Int(Width, Height);
+                    return new Vector2Int(width, height);
                 case Direction.Back:
+                default:
                     return Vector2Int.zero;
             }
         }
-
-        public List<Vector2Int> GetGridPositionList(Vector2Int offset, Direction direction)
+        
+        public static List<Vector2Int> GetGridPositionList(int width, int height, Vector2Int offset, Direction direction)
         {
             List<Vector2Int> gridPositionList = new List<Vector2Int>();
             switch (direction)
@@ -76,9 +72,9 @@ namespace VinhLB
                 default:
                 case Direction.Forward:
                 case Direction.Back:
-                    for (int i = 0; i < Width; i++)
+                    for (int i = 0; i < width; i++)
                     {
-                        for (int j = 0; j < Height; j++)
+                        for (int j = 0; j < height; j++)
                         {
                             gridPositionList.Add(offset + new Vector2Int(i, j));
                         }
@@ -86,9 +82,9 @@ namespace VinhLB
                     break;
                 case Direction.Left:
                 case Direction.Right:
-                    for (int i = 0; i < Height; i++)
+                    for (int i = 0; i < height; i++)
                     {
-                        for (int j = 0; j < Width; j++)
+                        for (int j = 0; j < width; j++)
                         {
                             gridPositionList.Add(offset + new Vector2Int(i, j));
                         }
@@ -98,5 +94,12 @@ namespace VinhLB
 
             return gridPositionList;
         }
+
+        public int ID;
+        public string Name;
+        public int Width;
+        public int Height;
+        public Transform Prefab;
+        public Transform Visual;
     }
 }

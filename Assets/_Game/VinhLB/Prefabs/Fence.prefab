@@ -69,7 +69,7 @@ MonoBehaviour:
       Data: 
   poolType: 0
   skin: {fileID: 3502855852442327549}
-  size: {x: 2, y: 1, z: 1}
+  size: {x: 3, y: 1, z: 1}
   isMinusHalfSizeY: 0
   startHeight: 2
   endHeight: 0
@@ -77,6 +77,7 @@ MonoBehaviour:
   unitState: 0
   unitType: 2
   islandID: -1
+  skinRotationDirection: -1
   lastPushedDirection: -1
   gridUnitStaticType: 0
 --- !u!1 &7131958115790244763
@@ -128,7 +129,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8525451917697680636, guid: 3cc63256be09e3949b2ea976b01f2f68, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8525451917697680636, guid: 3cc63256be09e3949b2ea976b01f2f68, type: 3}
       propertyPath: m_LocalPosition.y
@@ -136,7 +137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8525451917697680636, guid: 3cc63256be09e3949b2ea976b01f2f68, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8525451917697680636, guid: 3cc63256be09e3949b2ea976b01f2f68, type: 3}
       propertyPath: m_LocalRotation.w

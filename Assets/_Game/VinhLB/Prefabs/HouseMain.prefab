@@ -24,12 +24,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 740095208409534239}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6033861197893767010}
+  m_Father: {fileID: 3502855852442327549}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8522014238594777272
@@ -54,7 +54,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _rendererData: {fileID: 11400000, guid: 82b4ed0936573764e945e1fb602913e0, type: 2}
-  _trampleRadius: 3
+  _trampleRadius: 2.25
 --- !u!1 &6033861197893767012
 GameObject:
   m_ObjectHideFlags: 0
@@ -85,7 +85,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3502855852442327549}
-  - {fileID: 7368797785472617685}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -133,6 +132,7 @@ MonoBehaviour:
   unitState: 0
   unitType: 2
   islandID: -1
+  skinRotationDirection: -1
   lastPushedDirection: -1
   gridUnitStaticType: 0
 --- !u!1 &7131958115790244763
@@ -159,11 +159,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7131958115790244763}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7524512138086597041}
+  - {fileID: 7368797785472617685}
   m_Father: {fileID: 6033861197893767010}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -33,7 +33,7 @@ MonoBehaviour:
     Visual: {fileID: 4577928502999957388, guid: a74b60e7f36d08b42bd014bf1f478c02, type: 3}
   - ID: 3
     Name: Fence
-    Width: 2
+    Width: 3
     Height: 1
     Prefab: {fileID: 6033861197893767010, guid: fd2f6663f9d4bd54c86f8293b86544b0, type: 3}
     Visual: {fileID: 8525451917697680636, guid: 3cc63256be09e3949b2ea976b01f2f68, type: 3}

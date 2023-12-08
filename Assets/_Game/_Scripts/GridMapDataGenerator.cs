@@ -160,7 +160,41 @@ public class GridMapDataGenerator : MonoBehaviour
             line = line.Remove(line.Length - 1);
             file.WriteLine(line);
         }
-        file.Close();
         Debug.Log("Save unit: Complete");
+        
+        // Reset the array to all -1
+        for (int i = 0; i < maxX; i++)
+        for (int j = 0; j < maxZ; j++)
+            gridData[i, j] = -1;
+        // Handle gridUnitRotationDirection
+        foreach (GridUnit gridUnit in gridUnits)
+        {
+            Vector3 position = gridUnit.Tf.position;
+            int x = (int)(position.x + 1) / 2;
+            int z = (int)(position.z + 1) / 2;
+            // if x or z larger than size of array, return 
+            if (x > maxX || z > maxZ)
+            {
+                Debug.LogError("Grid Unit must be on Grid Surface");
+                // Close the file then delete it
+                file.Close();
+                File.Delete(path);
+                // Remove the file
+                return;
+            }
+            gridData[x - 1, z - 1] = (int) gridUnit.SkinRotationDirection;
+        }
+        // Write a @ to separate
+        file.WriteLine("@");
+        // Save the array as txt file in Resources folder
+        for (int i = 0; i < maxX; i++)
+        {
+            string line = "";
+            for (int j = 0; j < maxZ; j++) line += gridData[i, j] + " ";
+            line = line.Remove(line.Length - 1);
+            file.WriteLine(line);
+        }
+        file.Close();
+        Debug.Log("Save unit rotation: Complete");
     }
 }

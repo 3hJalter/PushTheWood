@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using _Game.Utilities.Grid;
 using GameGridEnum;
-using VinhLB;
+using UnityEngine;
 
 namespace _Game.GameGrid
 {
@@ -74,11 +76,72 @@ namespace _Game.GameGrid
                     maxHeight = (HeightLevel)i;
             return maxHeight;
         }
+        
+        public List<GameGridCell> GetNeighborCells(Grid<GameGridCell, GameGridCellData> grid,
+            int width, int height, Direction direction)
+        {
+            List<GameGridCell> gameGridCellList = new List<GameGridCell>();
+            switch (direction)
+            {
+                default:
+                case Direction.Forward:
+                case Direction.Back:
+                    for (int i = 0; i < width; i++)
+                    {
+                        for (int j = 0; j < height; j++)
+                        {
+                            Vector2Int cellPosition = GetCellPosition() + new Vector2Int(i, j);
+                            GameGridCell gameGridCell = grid.GetGridCell(cellPosition.x, cellPosition.y);
+                            gameGridCellList.Add(gameGridCell);
+                        }
+                    }
+                    break;
+                case Direction.Left:
+                case Direction.Right:
+                    for (int i = 0; i < height; i++)
+                    {
+                        for (int j = 0; j < width; j++)
+                        {
+                            Vector2Int cellPosition = GetCellPosition() + new Vector2Int(i, j);
+                            GameGridCell gameGridCell = grid.GetGridCell(cellPosition.x, cellPosition.y);
+                            gameGridCellList.Add(gameGridCell);
+                        }
+                    }
+                    break;
+            }
+
+            return gameGridCellList;
+        }
+        
+        public void DestroyGridUnits()
+        {
+            for (int i = (int)Constants.dirFirstHeightOfSurface[data.gridSurfaceType]; i < data.gridUnits.Length; i++)
+            {
+                if (data.gridUnits[i] is not null)
+                {
+                    UnityEngine.Object.Destroy(data.gridUnits[i].gameObject);
+                    UnityEngine.Object.Destroy(data.gridUnits[i]);
+                }
+            }
+        }
+        
+        public bool CanBuild()
+        {
+            int placedUnitCount = data.gridUnits.Count(unit => unit is not null);
+            
+            return data.gridSurfaceType == GridSurfaceType.Ground && placedUnitCount == 0;
+        }
+        
+        public bool HasBuilding()
+        {
+            int placedUnitCount = data.gridUnits.Count(unit => unit is not null);
+
+            return placedUnitCount > 0;
+        }
     }
 
     public class GameGridCellData
     {
-
         public bool canMovingDirectly;
 
         public GridSurface.GridSurface gridSurface;
@@ -86,18 +149,11 @@ namespace _Game.GameGrid
         // Type of cell
         public GridSurfaceType gridSurfaceType;
         public Unit.GridUnit[] gridUnits;
-
-        public PlacedObject PlacedObject;
-
+        
         public void OnInit()
         {
             gridSurfaceType = gridSurface == null ? GridSurfaceType.Water : gridSurface.SurfaceType;
             gridUnits = new Unit.GridUnit[Enum.GetValues(typeof(HeightLevel)).Length - 1];
-        }
-
-        public bool CanBuild()
-        {
-            return gridSurfaceType == GridSurfaceType.Ground && PlacedObject == null;
         }
     }
 }

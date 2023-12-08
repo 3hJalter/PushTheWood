@@ -31,7 +31,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _RandomJitterRadius: 0.1
-    - _TrampleFalloff: 2.5
+    - _TrampleFalloff: 5
     - _TrampleMaxDistance: 1
     - _TramplePushStrength: 0.5
     - _TrampleSquishStrength: 1

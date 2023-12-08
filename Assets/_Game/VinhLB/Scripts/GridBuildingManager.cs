@@ -4,6 +4,7 @@ using _Game.GameGrid;
 using _Game.Utilities.Grid;
 using System.Collections;
 using System.Collections.Generic;
+using _Game.GameGrid.Unit;
 using UnityEngine;
 
 namespace VinhLB
@@ -99,9 +100,10 @@ namespace VinhLB
 
         public Vector3 GetMouseWorldSnappedPosition()
         {
-            Vector2Int rotationOffset = CurrentPlacedObjectData.GetRotationOffset(_currentDirection);
+            Vector2Int rotationOffset = PlacedObjectData.GetRotationOffset(CurrentPlacedObjectData.Width, 
+                CurrentPlacedObjectData.Height, _currentDirection);
             Vector3 buildingObjectPosition = _homeGrid.GetWorldPosition(_lastMousePosition) +
-                new Vector3(rotationOffset.x, 0, rotationOffset.y) * _homeGrid.CellSize;
+                new Vector3(rotationOffset.x, 0f, rotationOffset.y) * _homeGrid.CellSize;
 
             return buildingObjectPosition;
         }
@@ -111,18 +113,18 @@ namespace VinhLB
             return Quaternion.Euler(0, PlacedObjectData.GetRotationAngle(_currentDirection), 0);
         }
 
-        public bool CanBuild()
+        public bool CanBuild(out List<GameGridCell> neighborCellList)
         {
             bool canBuild = true;
-            (int i, int j) = _homeGrid.GetGridPosition(_lastMousePosition);
-            List<Vector2Int> gridPositionList = CurrentPlacedObjectData.GetGridPositionList(new Vector2Int(i, j), _currentDirection);
-            for (int p = 0; p < gridPositionList.Count; p++)
+            GameGridCell gameGridCell = _homeGrid.GetGridCell(_lastMousePosition);
+            neighborCellList = gameGridCell.GetNeighborCells( _homeGrid,
+                CurrentPlacedObjectData.Width, CurrentPlacedObjectData.Height, _currentDirection);
+            for (int i = 0; i < neighborCellList.Count; i++)
             {
-                GameGridCell gameGridCell = _homeGrid.GetGridCell(gridPositionList[p].x, gridPositionList[p].y);
-                if (gameGridCell == null || !gameGridCell.Data.CanBuild())
+                if (neighborCellList[i] == null || !neighborCellList[i].CanBuild())
                 {
                     canBuild = false;
-
+            
                     break;
                 }
             }
@@ -149,23 +151,16 @@ namespace VinhLB
 
             if (Input.GetKeyDown(KeyCode.G))
             {
-                (int i, int j) = _homeGrid.GetGridPosition(_lastMousePosition);
+                GameGridCell gameGridCell = _homeGrid.GetGridCell(_lastMousePosition);
 
-                if (CanBuild())
+                if (CanBuild(out List<GameGridCell> neighborCellList))
                 {
-                    Vector2Int rotationOffset = CurrentPlacedObjectData.GetRotationOffset(_currentDirection);
-                    Vector3 buildingObjectPosition = _homeGrid.GetWorldPosition(i, j) +
-                        new Vector3(rotationOffset.x, 0, rotationOffset.y) * _homeGrid.CellSize;
-                    PlacedObject placedObject = PlacedObject.Create(CurrentPlacedObjectData,
-                        buildingObjectPosition, new Vector2Int(i, j), _currentDirection);
-                    placedObject.OnInit(_homeGrid.GetGridCell(i, j), GameGridEnum.HeightLevel.One, true,
-                        new Vector3(rotationOffset.x, 0, rotationOffset.y) * _homeGrid.CellSize * 0.5f);
+                    PlacedObject placedObject = PlacedObject.Create(CurrentPlacedObjectData);
+                    placedObject.OnInit(gameGridCell, GameGridEnum.HeightLevel.One, true, _currentDirection);
 
-                    List<Vector2Int> gridPositionList = CurrentPlacedObjectData.GetGridPositionList(new Vector2Int(i, j), _currentDirection);
-                    for (int p = 0; p < gridPositionList.Count; p++)
+                    for (int i = 0; i < neighborCellList.Count; i++)
                     {
-                        GameGridCell gameGridCell = _homeGrid.GetGridCell(gridPositionList[p].x, gridPositionList[p].y);
-                        gameGridCell.Data.PlacedObject = placedObject;
+                        neighborCellList[i].AddGridUnit(placedObject);
                     }
                 }
             }
@@ -175,19 +170,15 @@ namespace VinhLB
                 if (Utilities.TryGetMouseWorldPosition(out Vector3 mousePosition))
                 {
                     GameGridCell gameGridCell = _homeGrid.GetGridCell(mousePosition);
-                    if (gameGridCell != null && gameGridCell.Data.PlacedObject != null)
+                    if (gameGridCell != null && gameGridCell.HasBuilding())
                     {
-                        gameGridCell.Data.PlacedObject.DestroySelf();
-
-                        List<Vector2Int> gridPositionList = gameGridCell.Data.PlacedObject.GetGridPositionList();
-
-                        for (int p = 0; p < gridPositionList.Count; p++)
+                        gameGridCell.DestroyGridUnits();
+                        
+                        GridUnit unit = gameGridCell.GetGridUnitAtHeight(GameGridEnum.HeightLevel.One);
+                        List<GameGridCell> neighborCellList = unit.cellInUnits;
+                        for (int i = 0; i < neighborCellList.Count; i++)
                         {
-                            GameGridCell ggc = _homeGrid.GetGridCell(gridPositionList[p].x, gridPositionList[p].y);
-                            if (ggc is GridPlacedObject gpo)
-                            {
-                                gpo.SetPlacedObject(null);
-                            }
+                            neighborCellList[i].ClearGridUnit();
                         }
                     }
                 }
@@ -206,23 +197,11 @@ namespace VinhLB
 
                 OnSelectedChanged?.Invoke();
             }
-        }
-    }
 
-    public class GridPlacedObject : GameGridCell
-    {
-        private PlacedObject _placedObject;
-
-        public PlacedObject PlacedObject => _placedObject;
-
-        public void SetPlacedObject(PlacedObject placedObject)
-        {
-            _placedObject = placedObject;
-        }
-
-        public bool CanBuild()
-        {
-            return _placedObject == null;
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                
+            }
         }
     }
 }

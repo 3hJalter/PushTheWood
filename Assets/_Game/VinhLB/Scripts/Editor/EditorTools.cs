@@ -26,6 +26,15 @@ namespace VinhLB
                 EditorSceneManager.OpenScene("Assets/_Game/_Scenes/GameDemo.unity", OpenSceneMode.Single);
             }
         }
+        
+        [MenuItem("Tools/VinhLB/Scenes/MapEditor")]
+        private static void OpenMapEditorScene()
+        {
+            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            {
+                EditorSceneManager.OpenScene("Assets/_Game/_Scenes/MapEditor.unity", OpenSceneMode.Single);
+            }
+        }
     }
 }
 #endif

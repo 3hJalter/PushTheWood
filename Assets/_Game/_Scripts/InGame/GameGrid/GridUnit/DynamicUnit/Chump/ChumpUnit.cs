@@ -71,7 +71,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit
         }
 
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
-            bool isUseInitData = true, Vector3 posOffset = default)
+            bool isUseInitData = true, Direction skinDirection = Direction.None)
         {
             base.OnInit(mainCellIn, startHeightIn, isUseInitData);
             unitType = UnitType.None;

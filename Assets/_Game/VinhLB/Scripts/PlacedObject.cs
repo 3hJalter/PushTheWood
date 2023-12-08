@@ -9,31 +9,12 @@ namespace VinhLB
 {
     public class PlacedObject : GridUnitStatic
     {
-        public static PlacedObject Create(PlacedObjectData placedObjectData, Vector3 worldPosition, Vector2Int origin, Direction direction)
+        public static PlacedObject Create(PlacedObjectData placedObjectData)
         {
-            Transform placedObjectTransform = Instantiate(placedObjectData.Prefab, 
-                worldPosition, Quaternion.Euler(0, PlacedObjectData.GetRotationAngle(direction), 0));
-
+            Transform placedObjectTransform = Instantiate(placedObjectData.Prefab);
             PlacedObject placedObject = placedObjectTransform.GetComponent<PlacedObject>();
-            placedObject._placedObjectData = placedObjectData;
-            placedObject._origin = origin;
-            placedObject._direction = direction;
 
             return placedObject;
-        }
-
-        private PlacedObjectData _placedObjectData;
-        private Vector2Int _origin; 
-        private Direction _direction;
-
-        public List<Vector2Int> GetGridPositionList()
-        {
-            return _placedObjectData.GetGridPositionList(_origin, _direction);
-        }
-
-        public void DestroySelf()
-        {
-            Destroy(gameObject);
         }
     }
 }
