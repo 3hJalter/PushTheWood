@@ -314,6 +314,10 @@ namespace _Game.DesignPattern
         TreeShort = 10,
         TreeHigh = 11,
         FinalPoint = 13,
+        // Grid Unit Placed Object
+        HouseMain = 50,
+        Fence = 51,
+        StationFishing = 52,
 
         // From 100 -> Grid Surface List
         SurfaceWater = 100,

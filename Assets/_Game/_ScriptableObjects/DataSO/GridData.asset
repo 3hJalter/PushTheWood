@@ -66,6 +66,9 @@ MonoBehaviour:
     - {fileID: 2325166382673045663, guid: 51ad1b81b0eaa9941be47c8dd14ffc74, type: 3}
     - {fileID: 5760769762768296407, guid: 3b857625abbc05c4c81a32e5b76cbaad, type: 3}
     - {fileID: 6317968097269191125, guid: c5ac8e7a10732714484e1939591f41c0, type: 3}
+    - {fileID: -684823040248915490, guid: 4c4972374503a684ba75a09118924d31, type: 3}
+    - {fileID: -5441964512500297059, guid: fd2f6663f9d4bd54c86f8293b86544b0, type: 3}
+    - {fileID: -5441964512500297059, guid: 07204eebc6a6cf6459a4188f1f724e0e, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -733,6 +736,68 @@ MonoBehaviour:
     - Name: $v
       Entry: 10
       Data: 49
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _buildingUnitDic
+      Entry: 7
+      Data: 5|System.Collections.Generic.Dictionary`2[[_Game.DesignPattern.PoolType,
+        Assembly-CSharp],[VinhLB.BuildingUnit, Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 6|System.Collections.Generic.EnumEqualityComparer`1[[_Game.DesignPattern.PoolType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 50
+    - Name: $v
+      Entry: 10
+      Data: 50
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 51
+    - Name: $v
+      Entry: 10
+      Data: 51
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 52
+    - Name: $v
+      Entry: 10
+      Data: 52
     - Name: 
       Entry: 8
       Data: 

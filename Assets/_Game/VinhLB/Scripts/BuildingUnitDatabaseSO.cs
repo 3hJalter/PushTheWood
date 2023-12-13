@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using _Game.DesignPattern;
+using GameGridEnum;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace VinhLB
 {
     [CreateAssetMenu(fileName = "PlacedObjectDatabase", menuName = "ScriptableObjects/PlacedObjectDatabase")]
-    public class PlacedObjectDatabaseSO : ScriptableObject
+    public class BuildingUnitDatabaseSO : ScriptableObject
     {
-        public List<PlacedObjectData> BuildingObjectDataList;
+        public List<BuildingUnitData> BuildingUnitDataList;
     }
 
     [System.Serializable]
-    public class PlacedObjectData
+    public class BuildingUnitData
     {
         public static Direction GetNextDirection(Direction direction)
         {
@@ -98,10 +101,16 @@ namespace VinhLB
         public int Id;
         public string Name;
         public Sprite Sprite;
+        public int Width;
+        public int Height;
         public BuildingUnit Prefab;
         public Transform Visual;
-
-        public int Width => Prefab.Size.x;
-        public int Height => Prefab.Size.z;
+        public PoolType PoolType;
+        public GridSurfaceType BelowSurfaceType;
+        public bool CheckAdjacentCells;
+        [ShowIf(nameof(CheckAdjacentCells))]
+        public GridSurfaceType AdjacentSurfaceType;
+        [ShowIf(nameof(CheckAdjacentCells))]
+        public int MinAdjacentCells;
     }
 }

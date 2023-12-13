@@ -7,6 +7,7 @@ using DG.Tweening;
 using HControls;
 using UnityEngine;
 using UnityEngine.UI;
+using VinhLB;
 
 namespace _Game.UIs.Screen
 {
@@ -65,6 +66,14 @@ namespace _Game.UIs.Screen
         public void OnClickResetIslandButton()
         {
             LevelManager.Ins.ResetIslandPlayerOn();
+        }
+
+        public void OnClickToggleBuildingMode()
+        {
+            Close();
+            UIManager.Ins.OpenUI<BuildingScreen>();
+            
+            GridBuildingManager.Ins.ToggleBuildMode();
         }
     }
 }

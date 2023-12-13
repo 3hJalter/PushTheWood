@@ -20,6 +20,10 @@ namespace VinhLB
         private Material _validMaterial;
         [SerializeField]
         private Material _invalidMaterial;
+        [SerializeField]
+        private Transform _visualHolderTransform;
+        [SerializeField]
+        private Transform _cursorIndicatorTransform;
 
         [Header("Settings")]
         [SerializeField]
@@ -35,14 +39,23 @@ namespace VinhLB
         {
             Utilities.TryGetRendererFeature<RenderObjects>(_rendererData, out _ghostRenderObjects);
 
-            RefreshVisual();
+            _isValid = true;
 
             Vector3 startPosition = Tf.position;
             startPosition.y = _heightOffset;
             Tf.position = startPosition;
-            Tf.DOMoveY(_heightOffset + 0.25f, 0.5f).SetLoops(-1, LoopType.Yoyo);
+            _visualHolderTransform.DOMoveY(_heightOffset + 0.25f, 0.5f).SetLoops(-1, LoopType.Yoyo);
 
-            GridBuildingManager.Ins.OnSelectedChanged += GridBuildingSystem_OnSelectedChanged;
+            GridBuildingManager.Ins.OnBuildingModeChanged += GridBuildingManager_OnOnBuildingModeChanged;
+            GridBuildingManager.Ins.OnSelectedChanged += GridBuildingManager_OnSelectedChanged;
+
+            GridBuildingManager_OnOnBuildingModeChanged();
+            GridBuildingManager_OnSelectedChanged();
+        }
+
+        private void GridBuildingManager_OnOnBuildingModeChanged()
+        {
+            _cursorIndicatorTransform.gameObject.SetActive(GridBuildingManager.Ins.IsOnBuildingMode);
         }
 
         private void LateUpdate()
@@ -52,32 +65,44 @@ namespace VinhLB
 
         private void UpdateGhostPositionAndRotation(bool instant)
         {
-            if (!GridBuildingManager.Ins.IsOnBuildMode || GridBuildingManager.Ins.CurrentPlacedObjectData == null)
+            if (!GridBuildingManager.Ins.IsOnBuildingMode)
             {
                 return;
             }
 
-            if (_isValid != GridBuildingManager.Ins.CanBuild(out _))
+            if (GridBuildingManager.Ins.CurrentBuildingUnitData != null && 
+                _isValid != GridBuildingManager.Ins.CanBuild())
             {
-                _isValid = GridBuildingManager.Ins.CanBuild(out _);
+                _isValid = GridBuildingManager.Ins.CanBuild();
 
                 UpdateGhostMaterial();
             }
 
             Vector3 targetPosition = GridBuildingManager.Ins.GetMouseWorldSnappedPosition();
             targetPosition += new Vector3(Constants.CELL_SIZE * 0.5f, 0f, Constants.CELL_SIZE * 0.5f);
-            targetPosition.y = transform.position.y;
-            Quaternion targetRotation = GridBuildingManager.Ins.GetPlacedObjectRotation();
+            targetPosition.y = Tf.position.y;
+            Quaternion targetRotation = Quaternion.identity;
+            Vector3 visualTargetPosition = Vector3.zero;
+            if (GridBuildingManager.Ins.CurrentBuildingUnitData != null)
+            {
+                targetRotation = GridBuildingManager.Ins.GetPlacedObjectRotation();
+                
+                visualTargetPosition = Quaternion.Inverse(targetRotation) * GridBuildingManager.Ins.GetRotationOffset();
+                visualTargetPosition.y = _visualHolderTransform.localPosition.y;
+            }
 
             if (instant)
             {
                 Tf.position = targetPosition;
                 Tf.rotation = targetRotation;
+                _visualHolderTransform.localPosition = visualTargetPosition;
             }
             else
             {
                 Tf.position = Vector3.Lerp(Tf.position, targetPosition, _animationSpeed * Time.deltaTime);
                 Tf.rotation = Quaternion.Lerp(Tf.rotation, targetRotation, _animationSpeed * Time.deltaTime);
+                _visualHolderTransform.localPosition = Vector3.Lerp(
+                    _visualHolderTransform.localPosition, visualTargetPosition, _animationSpeed * Time.deltaTime);
             }
         }
 
@@ -89,10 +114,10 @@ namespace VinhLB
                 _visual = null;
             }
 
-            PlacedObjectData placedObjectData = GridBuildingManager.Ins.CurrentPlacedObjectData;
-            if (placedObjectData != null)
+            BuildingUnitData buildingUnitData = GridBuildingManager.Ins.CurrentBuildingUnitData;
+            if (buildingUnitData != null)
             {
-                _visual = Instantiate(placedObjectData.Visual, transform);
+                _visual = Instantiate(buildingUnitData.Visual, _visualHolderTransform);
                 _visual.localPosition = Vector3.zero;
                 _visual.localRotation = Quaternion.identity;
                 _visual.SetLayer(LayerMask.NameToLayer(GHOST_LAYER_NAME), true);
@@ -115,7 +140,7 @@ namespace VinhLB
             _rendererData.SetDirty();
         }
 
-        private void GridBuildingSystem_OnSelectedChanged()
+        private void GridBuildingManager_OnSelectedChanged()
         {
             RefreshVisual();
         }

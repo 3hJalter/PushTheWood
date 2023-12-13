@@ -2992,7 +2992,7 @@ MonoBehaviour:
   unitState: 0
   unitType: 2
   islandID: -1
-  _rotationDirection: -1
+  skinRotationDirection: -1
   lastPushedDirection: -1
   gridUnitDynamicType: 0
   anchor: {fileID: 927261637}
@@ -5061,7 +5061,7 @@ MonoBehaviour:
   unitState: 0
   unitType: 2
   islandID: -1
-  _rotationDirection: 1
+  skinRotationDirection: -1
   lastPushedDirection: -1
   gridUnitStaticType: 3
   chumpSpawn: {fileID: 2623478110790930152, guid: 7d2d8c26c208e6748835843aee7b2ae7, type: 3}
@@ -9166,7 +9166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4f520395f80b6a43af5279950cd2211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapLevelName: L0-
+  mapLevelName: L0
 --- !u!1001 &849361013
 PrefabInstance:
   m_ObjectHideFlags: 0

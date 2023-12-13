@@ -134,7 +134,7 @@ namespace _Game.GameGrid
             Vector2Int cellPos = cell.GetCellPosition();
             Vector2Int dir = Constants.dirVector[direction];
             Vector2Int neighbourPos = cellPos + dir * distance;
-            Debug.Log(neighbourPos);
+            // Debug.Log(neighbourPos);
             return _gridMap.GetGridCell(neighbourPos.x, neighbourPos.y);
             // return _gridMap.GetGridCell(x, y);
         }
@@ -215,6 +215,7 @@ namespace _Game.GameGrid
             GameGridCell cell = _gridMap.GetGridCell(x, y);
             GridUnit unit = SimplePool.Spawn<GridUnit>(DataManager.Ins.GetGridUnit(type));
             unit.OnInit(cell, HeightLevel.One, true, direction);
+            if (cell.Data.gridSurface == null) return;
             _islandDic[cell.Data.gridSurface.IslandID].AddInitUnitToIsland(unit, type, cell);
         }
 
@@ -240,7 +241,7 @@ namespace _Game.GameGrid
                     if (!int.TryParse(surfaceDataSplit[y], out int cell)) continue;
                     if (!Enum.IsDefined(typeof(PoolType), cell)) continue;
                     GridSurface.GridSurface gridSurface = DataManager.Ins.GetGridSurface((PoolType)cell);
-                    if (gridSurface is null) continue;
+                    if (gridSurface is null) return;
                     GameGridCell gridCell = _gridMap.GetGridCell(x, y);
                     gridCell.SetSurface(
                         SimplePool.Spawn<GridSurface.GridSurface>(gridSurface,

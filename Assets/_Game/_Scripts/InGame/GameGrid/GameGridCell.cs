@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Game.GameGrid.Unit.DynamicUnit;
 using _Game.Utilities.Grid;
 using GameGridEnum;
 using UnityEngine;
+using VinhLB;
 
 namespace _Game.GameGrid
 {
@@ -125,18 +127,84 @@ namespace _Game.GameGrid
             }
         }
         
-        public bool CanBuild()
+        public bool CanBuild(GridSurfaceType surfaceType)
         {
-            int placedUnitCount = data.gridUnits.Count(unit => unit is not null);
+            int unitCount = data.gridUnits.Count(unit => unit is not null);
             
-            return data.gridSurfaceType == GridSurfaceType.Ground && placedUnitCount == 0;
+            return data.gridSurfaceType == surfaceType && unitCount == 0;
         }
         
         public bool HasBuilding()
         {
-            int placedUnitCount = data.gridUnits.Count(unit => unit is not null);
+            int unitCount = data.gridUnits.Count(unit => unit is BuildingUnit);
 
-            return placedUnitCount > 0;
+            return unitCount > 0;
+        }
+        
+        public List<GameGridCell> GetAdjacentCells(Grid<GameGridCell, GameGridCellData> grid,
+            int width, int height, Direction direction, int depth = 1, bool includingCorners = false)
+        {
+            List<GameGridCell> gameGridCellList = new List<GameGridCell>();
+            switch (direction)
+            {
+                default:
+                case Direction.Forward:
+                case Direction.Back:
+                    for (int i = -depth; i < width + depth; i++)
+                    {
+                        for (int j = -depth; j < height + depth; j++)
+                        {
+                            if (!includingCorners &&
+                                ((i == -depth && j == -depth) ||
+                                 (i == -depth && j == height + depth - 1) ||
+                                 (i == width + depth - 1 && j == -depth) ||
+                                 (i == width + depth - 1 && j == height + depth - 1)))
+                            {
+                                continue;
+                            }
+
+                            if (i > -depth && i < width + depth - 1 &&
+                                j > -depth && j < height + depth - 1)
+                            {
+                                continue;
+                            }
+                            
+                            Vector2Int cellPosition = GetCellPosition() + new Vector2Int(i, j);
+                            GameGridCell gameGridCell = grid.GetGridCell(cellPosition.x, cellPosition.y);
+                            gameGridCellList.Add(gameGridCell);
+                        }
+                    }
+                    break;
+                case Direction.Left:
+                case Direction.Right:
+                    for (int i = -depth; i < height + depth; i++)
+                    {
+                        for (int j = -depth; j < width + depth; j++)
+                        {
+                            if (!includingCorners &&
+                                ((i == -depth && j == -depth) ||
+                                 (i == -depth && j == width + depth - 1) ||
+                                 (i == height + depth - 1 && j == -depth) ||
+                                 (i == height + depth - 1 && j == width + depth - 1)))
+                            {
+                                continue;
+                            }
+                            
+                            if (i > -depth && i < height + depth - 1 &&
+                                j > -depth && j < width + depth - 1)
+                            {
+                                continue;
+                            }
+                            
+                            Vector2Int cellPosition = GetCellPosition() + new Vector2Int(i, j);
+                            GameGridCell gameGridCell = grid.GetGridCell(cellPosition.x, cellPosition.y);
+                            gameGridCellList.Add(gameGridCell);
+                        }
+                    }
+                    break;
+            }
+
+            return gameGridCellList;
         }
     }
 

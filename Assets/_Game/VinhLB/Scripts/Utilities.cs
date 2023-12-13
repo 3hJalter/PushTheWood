@@ -43,6 +43,11 @@ namespace VinhLB
             return false;
         }
 
+        public static bool TryGetMouseWorldPosition(out Vector3 mousePosition, LayerMask layerMask)
+        {
+            return TryGetMouseWorldPosition(out mousePosition, null, Mathf.Infinity, layerMask);
+        }
+
         public static bool TryGetCenterScreenPosition(out Vector3 centerScreenPosition,
             Camera camera = null, float distance = Mathf.Infinity, LayerMask layerMask = default)
         {
@@ -58,6 +63,11 @@ namespace VinhLB
             }
 
             return false;
+        }
+        
+        public static bool TryGetCenterScreenPosition(out Vector3 mousePosition, LayerMask layerMask)
+        {
+            return TryGetCenterScreenPosition(out mousePosition, null, Mathf.Infinity, layerMask);
         }
 
         public static bool TryGetRendererFeature<T>(ScriptableRendererData rendererData, out T rendererFeature) 

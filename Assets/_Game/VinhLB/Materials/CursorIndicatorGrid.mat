@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_Grid 1
+  m_Name: CursorIndicatorGrid
   m_Shader: {fileID: -6465566751694194690, guid: d633d8482197a5a4095fb58c220f14fb, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -52,14 +52,14 @@ Material:
     - _BUILTIN_QueueOffset: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Thickness: 0.075
+    - _Thickness: 0.2
     - _Transperent: 1
     m_Colors:
-    - _Color: {r: 1, g: 0.41037738, b: 0.41037738, a: 1}
-    - _DefaultScale: {r: 5, g: 5, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DefaultScale: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _Size: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &3559461212408072855
+--- !u!114 &301426165858603555
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

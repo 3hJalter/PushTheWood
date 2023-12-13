@@ -9,15 +9,6 @@ namespace VinhLB
 {
     public static class EditorTools
     {
-        [MenuItem("Tools/VinhLB/Scenes/BuildingTest")]
-        private static void OpenBuildingTestScene()
-        {
-            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            {
-                EditorSceneManager.OpenScene("Assets/_Game/VinhLB/Scenes/BuildingTest.unity", OpenSceneMode.Single);
-            }
-        }
-
         [MenuItem("Tools/VinhLB/Scenes/GameDemo")]
         private static void OpenGameDemoScene()
         {
@@ -33,6 +24,15 @@ namespace VinhLB
             if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             {
                 EditorSceneManager.OpenScene("Assets/_Game/_Scenes/MapEditor.unity", OpenSceneMode.Single);
+            }
+        }
+        
+        [MenuItem("Tools/VinhLB/Scenes/BuildingTest")]
+        private static void OpenBuildingTestScene()
+        {
+            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            {
+                EditorSceneManager.OpenScene("Assets/_Game/VinhLB/Scenes/BuildingTest.unity", OpenSceneMode.Single);
             }
         }
     }

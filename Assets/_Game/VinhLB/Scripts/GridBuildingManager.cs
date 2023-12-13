@@ -1,82 +1,58 @@
+using System;
 using _Game.Camera;
 using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.Utilities.Grid;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using _Game.GameGrid.Unit;
+using _Game.Managers;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace VinhLB
 {
     public class GridBuildingManager : Singleton<GridBuildingManager>
     {
+        public event System.Action OnBuildingModeChanged;
         public event System.Action OnSelectedChanged;
+
+        private const string HOME_LEVEL_NAME = "L0";
 
         [Header("References")]
         [SerializeField]
-        private PlacedObjectDatabaseSO _placedObjectDatabaseSO;
+        private BuildingUnitDatabaseSO _buildingUnitDatabaseSo;
 
         [Header("Settings")]
         [SerializeField]
-        private bool _debugging;
+        private bool _testing;
+        [SerializeField]
+        private bool _useKeyboard;
         [SerializeField]
         private bool _snapping;
         [SerializeField]
-        private int _homeGridWidth;
-        [SerializeField]
-        private int _homeGridHeight;
-        [SerializeField]
-        private float _homeGridCellSize;
+        private LayerMask _placeableLayerMask;
 
         private Grid<GameGridCell, GameGridCellData> _homeGrid;
 
-        private bool _isOnBuildMode;
-        private int _currentPlacedObjectDataIndex;
+        private bool _isOnBuildingMode;
+        private int _currentBuildingUnitDataId;
         private Direction _currentDirection;
         private Vector3 _lastMousePosition;
+        private BuildingUnitData _currentBuildingUnitData;
+        private bool _isAnyChanged;
 
         public bool Snapping => _snapping;
-        public bool IsOnBuildMode => _isOnBuildMode;
-
-        public PlacedObjectData CurrentPlacedObjectData
-        {
-            get
-            {
-                if (_currentPlacedObjectDataIndex >= 0 &&
-                    _currentPlacedObjectDataIndex < _placedObjectDatabaseSO.BuildingObjectDataList.Count)
-                {
-                    return _placedObjectDatabaseSO.BuildingObjectDataList[_currentPlacedObjectDataIndex];
-                }
-
-                return null;
-            }
-        }
-
-
-        private void Awake()
-        {
-            //Vector3 originPosition = transform.position + new Vector3(-_homeGridWidth, 0, -_homeGridHeight) * _homeGridCellSize * 0.5f;
-            //_homeGrid = new Grid<GridPlacedObject, GameGridCellData>(_homeGridWidth, _homeGridHeight, _homeGridCellSize, originPosition,
-            //    () => new GridPlacedObject(), MapEnum.GridPlane.XZ);
-        }
+        public bool IsOnBuildingMode => _isOnBuildingMode;
+        public BuildingUnitData CurrentBuildingUnitData => _currentBuildingUnitData;
 
         private void Start()
         {
-            _isOnBuildMode = false;
-            _currentPlacedObjectDataIndex = -1;
-            _currentDirection = Direction.Back;
-
-            LevelManager.Ins.OnInit();
-            _homeGrid = LevelManager.Ins.GridMap;
-
-            if (_debugging)
+            if (_testing)
             {
-                var debugGrid = new Grid<GameGridCell, GameGridCellData>.DebugGrid();
-                debugGrid.DrawGrid(_homeGrid, true);
+                OnInit();
             }
-
-            CameraFollow.Ins.ChangeCamera(ECameraType.InGameCamera);
         }
 
         private void Update()
@@ -84,49 +60,149 @@ namespace VinhLB
             HandleControls();
         }
 
-        public void ToggleBuildMode()
+        public void OnInit()
         {
-            _isOnBuildMode = !_isOnBuildMode;
+            _isOnBuildingMode = false;
+            _currentBuildingUnitDataId = -1;
+            _currentDirection = Direction.Back;
 
-            if (_isOnBuildMode)
+            if (_testing)
             {
-                Utilities.TryGetCenterScreenPosition(out _lastMousePosition);
+                LevelManager.Ins.OnInit();
+                _homeGrid = LevelManager.Ins.GridMap;
+
+                var debugGrid = new Grid<GameGridCell, GameGridCellData>.DebugGrid();
+                debugGrid.DrawGrid(_homeGrid, true);
+
+                CameraFollow.Ins.ChangeCamera(ECameraType.InGameCamera);
             }
+            else
+            {
+                _homeGrid = LevelManager.Ins.GridMap;
+            }
+        }
 
-            _currentPlacedObjectDataIndex = -1;
-
-            OnSelectedChanged?.Invoke();
+        public List<BuildingUnitData> GetPlacedObjectDataList()
+        {
+            return _buildingUnitDatabaseSo.BuildingUnitDataList;
         }
 
         public Vector3 GetMouseWorldSnappedPosition()
         {
-            Vector2Int rotationOffset = PlacedObjectData.GetRotationOffset(CurrentPlacedObjectData.Width, 
-                CurrentPlacedObjectData.Height, _currentDirection);
-            Vector3 buildingObjectPosition = _homeGrid.GetWorldPosition(_lastMousePosition) +
-                new Vector3(rotationOffset.x, 0f, rotationOffset.y) * _homeGrid.CellSize;
+            return _homeGrid.GetWorldPosition(_lastMousePosition);
+        }
 
-            return buildingObjectPosition;
+        public Vector3 GetRotationOffset()
+        {
+            Vector2Int rotationOffset = BuildingUnitData.GetRotationOffset(_currentBuildingUnitData.Width,
+                _currentBuildingUnitData.Height, _currentDirection);
+
+            return new Vector3(rotationOffset.x, 0f, rotationOffset.y) * _homeGrid.CellSize;
         }
 
         public Quaternion GetPlacedObjectRotation()
         {
-            return Quaternion.Euler(0, PlacedObjectData.GetRotationAngle(_currentDirection), 0);
+            return Quaternion.Euler(0, BuildingUnitData.GetRotationAngle(_currentDirection), 0);
         }
 
-        public bool CanBuild(out List<GameGridCell> neighborCellList)
+        public void ToggleBuildMode()
         {
+            _isOnBuildingMode = !_isOnBuildingMode;
+
+            if (_isOnBuildingMode)
+            {
+                _isAnyChanged = false;
+                Utilities.TryGetCenterScreenPosition(out _lastMousePosition, _placeableLayerMask);
+            }
+            else
+            {
+                if (_isAnyChanged)
+                {
+                    GridMapFileUtilities.Save(HOME_LEVEL_NAME);
+                }
+            }
+
+            ChangeCurrentObjectDataId(-1);
+
+            OnBuildingModeChanged?.Invoke();
+        }
+
+        public void ChangeCurrentObjectDataId(int id)
+        {
+            _currentBuildingUnitDataId = id;
+            _currentBuildingUnitData = _buildingUnitDatabaseSo.BuildingUnitDataList
+                .FirstOrDefault(data => data.Id == _currentBuildingUnitDataId);
+
+            _currentDirection = Direction.Back;
+
+            OnSelectedChanged?.Invoke();
+        }
+
+        public void ChangePlaceDirection()
+        {
+            _currentDirection = BuildingUnitData.GetNextDirection(_currentDirection);
+        }
+
+        public void PlaceBuilding()
+        {
+            if (CanBuild())
+            {
+                GameGridCell gameGridCell = _homeGrid.GetGridCell(_lastMousePosition);
+                BuildingUnit unit = SimplePool.Spawn<BuildingUnit>(
+                    DataManager.Ins.GetGridUnit(_currentBuildingUnitData.PoolType));
+                unit.OnInit(gameGridCell, GameGridEnum.HeightLevel.One, true, _currentDirection);
+
+                _isAnyChanged = true;
+            }
+        }
+
+        public void DeleteBuilding()
+        {
+            GameGridCell gameGridCell = _homeGrid.GetGridCell(_lastMousePosition);
+            if (gameGridCell != null && gameGridCell.HasBuilding())
+            {
+                gameGridCell.DestroyGridUnits();
+
+                GridUnit unit = gameGridCell.GetGridUnitAtHeight(GameGridEnum.HeightLevel.One);
+                List<GameGridCell> neighborCellList = unit.cellInUnits;
+                for (int i = 0; i < neighborCellList.Count; i++)
+                {
+                    neighborCellList[i].ClearGridUnit();
+                }
+
+                _isAnyChanged = true;
+            }
+        }
+
+        public bool CanBuild()
+        {
+            if (_currentBuildingUnitData == null)
+            {
+                return false;
+            }
+
             bool canBuild = true;
             GameGridCell gameGridCell = _homeGrid.GetGridCell(_lastMousePosition);
-            neighborCellList = gameGridCell.GetNeighborCells( _homeGrid,
-                CurrentPlacedObjectData.Width, CurrentPlacedObjectData.Height, _currentDirection);
+            List<GameGridCell> neighborCellList = gameGridCell.GetNeighborCells(_homeGrid,
+                _currentBuildingUnitData.Width, _currentBuildingUnitData.Height, _currentDirection);
             for (int i = 0; i < neighborCellList.Count; i++)
             {
-                if (neighborCellList[i] == null || !neighborCellList[i].CanBuild())
+                if (neighborCellList[i] == null || !neighborCellList[i].CanBuild(_currentBuildingUnitData.BelowSurfaceType))
                 {
                     canBuild = false;
-            
+
                     break;
                 }
+            }
+
+            if (canBuild && _currentBuildingUnitData.CheckAdjacentCells)
+            {
+                List<GameGridCell> adjacentCellList = gameGridCell.GetAdjacentCells(_homeGrid,
+                    _currentBuildingUnitData.Width, _currentBuildingUnitData.Height, _currentDirection);
+                canBuild = adjacentCellList.Count(cell =>
+                    cell.Data.gridSurface is not null &&
+                    cell.Data.gridSurface.SurfaceType == _currentBuildingUnitData.AdjacentSurfaceType) >=
+                        _currentBuildingUnitData.MinAdjacentCells;
             }
 
             return canBuild;
@@ -139,68 +215,46 @@ namespace VinhLB
                 ToggleBuildMode();
             }
 
-            if (!_isOnBuildMode)
+            if (!_isOnBuildingMode)
             {
                 return;
             }
 
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
-                Utilities.TryGetMouseWorldPosition(out _lastMousePosition);
+                Utilities.TryGetMouseWorldPosition(out _lastMousePosition, _placeableLayerMask);
             }
 
-            if (Input.GetKeyDown(KeyCode.G))
+            if (!_useKeyboard)
             {
-                GameGridCell gameGridCell = _homeGrid.GetGridCell(_lastMousePosition);
-
-                if (CanBuild(out List<GameGridCell> neighborCellList))
-                {
-                    PlacedObject placedObject = PlacedObject.Create(CurrentPlacedObjectData);
-                    placedObject.OnInit(gameGridCell, GameGridEnum.HeightLevel.One, true, _currentDirection);
-
-                    for (int i = 0; i < neighborCellList.Count; i++)
-                    {
-                        neighborCellList[i].AddGridUnit(placedObject);
-                    }
-                }
+                return;
             }
 
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetKeyDown(KeyCode.F))
             {
-                if (Utilities.TryGetMouseWorldPosition(out Vector3 mousePosition))
-                {
-                    GameGridCell gameGridCell = _homeGrid.GetGridCell(mousePosition);
-                    if (gameGridCell != null && gameGridCell.HasBuilding())
-                    {
-                        gameGridCell.DestroyGridUnits();
-                        
-                        GridUnit unit = gameGridCell.GetGridUnitAtHeight(GameGridEnum.HeightLevel.One);
-                        List<GameGridCell> neighborCellList = unit.cellInUnits;
-                        for (int i = 0; i < neighborCellList.Count; i++)
-                        {
-                            neighborCellList[i].ClearGridUnit();
-                        }
-                    }
-                }
+                PlaceBuilding();
+            }
+
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                DeleteBuilding();
             }
 
             if (Input.GetKeyDown(KeyCode.R))
             {
-                _currentDirection = PlacedObjectData.GetNextDirection(_currentDirection);
+                ChangePlaceDirection();
             }
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                _currentPlacedObjectDataIndex = (_currentPlacedObjectDataIndex + 1) % _placedObjectDatabaseSO.BuildingObjectDataList.Count;
-
-                _currentDirection = Direction.Back;
-
-                OnSelectedChanged?.Invoke();
+                int newPlacedObjectDataId =
+                    (_currentBuildingUnitDataId + 1) % _buildingUnitDatabaseSo.BuildingUnitDataList.Count;
+                ChangeCurrentObjectDataId(newPlacedObjectDataId);
             }
 
             if (Input.GetKeyDown(KeyCode.S))
             {
-                
+                GridMapFileUtilities.Save(HOME_LEVEL_NAME);
             }
         }
     }
