@@ -95,11 +95,13 @@ namespace VinhLB
             return gridPositionList;
         }
 
-        public int ID;
+        public int Id;
         public string Name;
-        public int Width;
-        public int Height;
-        public Transform Prefab;
+        public Sprite Sprite;
+        public BuildingUnit Prefab;
         public Transform Visual;
+
+        public int Width => Prefab.Size.x;
+        public int Height => Prefab.Size.z;
     }
 }
