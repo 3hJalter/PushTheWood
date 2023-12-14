@@ -7,6 +7,9 @@ namespace _Game.Camera
     public class CameraFollow : Singleton<CameraFollow>
     {
         [SerializeField] private UnityEngine.Camera mainCamera;
+
+        public UnityEngine.Camera MainCamera => mainCamera;
+
         [SerializeField] private ECameraType currentECameraType = ECameraType.None;
         [SerializeField] private Transform targetTf;
 

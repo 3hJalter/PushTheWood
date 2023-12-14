@@ -3,7 +3,6 @@ using System.IO;
 using _Game.GameGrid;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
-using _Game.GameGrid.Unit.DynamicUnit;
 using _Game.Utilities.Grid;
 using UnityEngine;
 
@@ -18,7 +17,6 @@ public class GridMapDataGenerator : MonoBehaviour
     private GridSurface[,] _gridSurfaceMap;
 
     // Test Init GridUnit
-    private PlayerUnit _pUnit;
     private TextGridData _textGridData;
     private void Start()
     {

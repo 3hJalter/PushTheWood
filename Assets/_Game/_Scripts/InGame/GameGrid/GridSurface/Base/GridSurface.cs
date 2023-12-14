@@ -25,8 +25,5 @@ namespace _Game.GameGrid.GridSurface
             islandID = -1;
             SimplePool.Despawn(this);
         }
-
-        public virtual void OnUnitEnter(Unit.GridUnit gridUnit)
-        { }
     }
 }

@@ -1,171 +1,387 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using _Game.DesignPattern;
+using _Game.DesignPattern.ConditionRule;
+using _Game.DesignPattern.StateMachine;
+using _Game.Utilities.Grid;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Game.GameGrid.Unit
 {
     public abstract class GridUnit : GameUnit
     {
-        [SerializeField] protected Transform skin; // Model location
-        [SerializeField] protected Vector3Int size; // Size of this unit
-        [SerializeField] protected bool isMinusHalfSizeY; // Use when the init size need to be x.5 (ex: 1.5, 2.5, 3.5)
+        // Model of Unit
+        [SerializeField] public Transform skin; // Model location
+
+        // Size of this unit, the X and Z equal to the size of the main cell, the Y equal to height level
+        [SerializeField] protected Vector3Int size;
+
+        // Use when the init size Y need to be x.5 when Up (ex: 1.5, 2.5, 3.5)
+        [SerializeField] protected bool isMinusHalfSizeY;
+
+        // Height level of this unit
         [SerializeField] protected HeightLevel startHeight = HeightLevel.One; // Serialize for test
+
         [SerializeField] protected HeightLevel endHeight; // Serialize for test
-        [SerializeField] protected float yOffsetOnDown = 0.5f; // Offset when unit is down
 
-        public int islandID = -1; // The island that this unit is on
-        public readonly List<GameGridCell> cellInUnits = new(); // All cells that this unit is on
+        // Offset when unit is down
+        [SerializeField] protected float yOffsetOnDown = 0.5f;
 
-        private UnitInitData _unitInitData; // Save init data for despawn and spawn
+        // The island that this unit is on
+        public int islandID = -1;
 
-        protected Direction lastPushedDirection = Direction.None; // The last direction that this unit is pushed
-        protected GameGridCell mainCell; // The main cell that this unit is on
-        protected UnitState nextUnitState; // The next state of this unit
-        [SerializeField] protected UnitState unitState = UnitState.Up; // The current state of this unit (Up or Down), Serialize for test
-        [SerializeField] protected UnitType unitType = UnitType.Both; // The type of this unit (Horizontal, Vertical, Both or None). Serialize for test
+        // The current state of this unit (Up or Down)
+        [FormerlySerializedAs("unitState")] [SerializeField] protected UnitTypeY unitTypeY = UnitTypeY.Up; // Serialize for test
 
+        // The type of this unit (Horizontal, Vertical, Both or None)
+        [FormerlySerializedAs("unitType")] [SerializeField] protected UnitTypeXZ unitTypeXZ = UnitTypeXZ.Both; // Serialize for test
+        
+        // All cells that this unit is on
+        public readonly List<GameGridCell> cellInUnits = new();
 
-        public Vector3Int Size => size;
+        // Position data when this unit enter a cell
+        public readonly EnterCellPosData EnterPosData = new();
 
-        public UnitType UnitType
+        // All neighbor units of this unit
+        [SerializeField] private readonly HashSet<GridUnit> neighborUnits = new();
+        [SerializeField] private readonly HashSet<GridUnit> upperUnits = new();
+        [SerializeField] public readonly HashSet<GridUnit> belowUnits = new();
+
+        // Save init data on first Initialize
+        private UnitInitData _unitInitData;
+        
+        // The last direction that this unit is pushed
+        protected Direction lastPushedDirection = Direction.None;
+
+        // The main cell that this unit is on
+        protected GameGridCell mainCell;
+
+        public Vector3Int Size
         {
-            get => unitType;
-            protected set => unitType = value;
+            get => size;
+            set => size = value;
+        }
+
+        public UnitTypeXZ UnitTypeXZ
+        {
+            get => unitTypeXZ;
+            set => unitTypeXZ = value;
+        }
+        
+        public UnitTypeY UnitTypeY
+        {
+            get => unitTypeY;
+            set => unitTypeY = value;
         }
 
         public GameGridCell MainCell => mainCell;
-        public HeightLevel StartHeight => startHeight;
-        public HeightLevel EndHeight => endHeight;
+        public HeightLevel StartHeight
+        {
+            get => startHeight;
+            set => startHeight = value;
+        }
 
-        protected HeightLevel BelowStartHeight => startHeight - Constants.BELOW_HEIGHT;
-        protected HeightLevel UpperEndHeight => endHeight + Constants.UPPER_HEIGHT;
+        public HeightLevel EndHeight
+        {
+            get => endHeight;
+            set => endHeight = value;
+        }
+
+        public HeightLevel BelowStartHeight => startHeight - Constants.BELOW_HEIGHT;
+        public HeightLevel UpperEndHeight => endHeight + Constants.UPPER_HEIGHT;
 
         private void Awake()
         {
-            SaveInitData(size, unitState, skin);
-        }
-
-        private void SaveInitData(Vector3Int sizeI, UnitState unitStateI, Transform skinI)
-        {
-            _unitInitData = new UnitInitData(sizeI, unitStateI, skinI.localPosition, skinI.localRotation);
-        }
-
-
-        private void GetInitData()
-        {
-            size = _unitInitData.Size;
-            unitState = _unitInitData.UnitState;
-            skin.localPosition = _unitInitData.LocalSkinPos;
-            skin.localRotation = _unitInitData.LocalSkinRot;
+            SaveInitData(size, unitTypeY, skin);
         }
 
         public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
             bool isUseInitData = true)
         {
             if (isUseInitData) GetInitData();
-            nextUnitState = unitState;
             islandID = mainCellIn.IslandID;
             SetHeight(startHeightIn);
-            AddCell(mainCellIn);
-            // Add offset Height to Position
-            Tf.position = mainCell.WorldPos + Vector3.up * (float)startHeight / 2 * Constants.CELL_SIZE;
-            if (unitState is UnitState.Down) Tf.position -= Vector3.up * yOffsetOnDown;
+            SetEnterCellData(Direction.None, mainCellIn, unitTypeY);
+            OnEnterCells(mainCellIn, InitCell(mainCellIn));
+            // Set position
+            Tf.position = EnterPosData.finalPos;
 
         }
 
-        protected void SetHeight(HeightLevel startHeightIn)
+        public virtual bool IsCurrentStateIs(StateEnum stateEnum)
+        {
+            return false;
+        }
+        
+        public HeightLevel CalculateEndHeight(HeightLevel startHeightIn, Vector3Int sizeIn)
+        {
+            HeightLevel endHeightOut = startHeightIn + (sizeIn.y - 1) * 2;
+            if (!isMinusHalfSizeY && unitTypeY == UnitTypeY.Up) endHeightOut += 1;
+            return endHeightOut;
+        }
+
+        public virtual void OnDespawn()
+        {
+            Tf.DOKill(true);
+            OnOutCells();
+            this.Despawn();
+        }
+
+        public virtual void OnPush(Direction direction, ConditionData conditionData = null)
+        {
+            
+        }
+
+        public virtual void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
+        {
+            lastPushedDirection = direction;
+        }
+        
+        public void OnOutCells()
+        {
+            RemoveUnitFromCell();
+            OnOutTrigger();
+            ClearNeighbor();
+            cellInUnits.Clear();
+            mainCell = null;
+        }
+
+        public Vector3 GetUnitWorldPos(GameGridCell cell = null)
+        {
+            cell ??= mainCell;
+            float offsetY = (float)startHeight / 2 * Constants.CELL_SIZE;
+            if (unitTypeY == UnitTypeY.Down) offsetY -= yOffsetOnDown;
+            return cell.WorldPos + Vector3.up * offsetY;
+        }
+
+        public void SetEnterCellData(Direction direction, GameGridCell enterMainCell, UnitTypeY nextUnitTypeY,
+            bool hasInitialOffset = true, List<GameGridCell> enterNextCells = null)
+        {
+            Vector3 initialPos = GetUnitWorldPos(enterMainCell);
+            HeightLevel enterStartHeight = enterNextCells is null ? GetEnterStartHeight(enterMainCell)
+                    : GetEnterStartHeight(enterNextCells);
+            Vector3 finalPos = PredictUnitPos();
+            EnterPosData.SetEnterPosData(direction, enterStartHeight, initialPos, finalPos, yOffsetOnDown, hasInitialOffset);
+            return;
+
+            Vector3 PredictUnitPos()
+            {
+                float offsetY = (float) enterStartHeight / 2 * Constants.CELL_SIZE;
+                if (nextUnitTypeY == UnitTypeY.Down) offsetY -= yOffsetOnDown;
+                return enterMainCell.WorldPos + Vector3.up * offsetY;
+            }
+        }
+        
+        public void OnEnterCells(GameGridCell enterMainCell, List<GameGridCell> enterNextCells = null)
+        {
+            SetHeight(EnterPosData.startHeight);
+            InitCellsToUnit(enterMainCell, enterNextCells);
+            SetNeighbor(LevelManager.Ins.GridMap);
+            return;
+
+            void InitCellsToUnit(GameGridCell enterMainCellIn, List<GameGridCell> enterCells = null)
+            {
+                mainCell = enterMainCellIn;
+                // Add all nextCells to cellInUnits
+                if (enterCells is not null)
+                {
+                    for (int i = 0; i < enterCells.Count; i++)
+                        AddCell(enterCells[i]);
+                }
+                else AddCell(enterMainCellIn);
+            }
+        }
+
+        private void ClearNeighbor()
+        {
+            foreach (GridUnit unit in neighborUnits) unit.neighborUnits.Remove(this);
+            neighborUnits.Clear();
+            foreach (GridUnit unit in upperUnits) unit.belowUnits.Remove(this);
+            upperUnits.Clear();
+            foreach (GridUnit unit in belowUnits) unit.upperUnits.Remove(this);
+            belowUnits.Clear();
+        }
+
+        private void OnOutTrigger()
+        {
+            foreach (GridUnit unit in neighborUnits) unit.OnOutTriggerNeighbor(this);
+            foreach (GridUnit unit in belowUnits) unit.OnOutTriggerUpper(this);
+            foreach (GridUnit unit in upperUnits) unit.OnOutTriggerBelow(this);
+        }
+
+        protected virtual void OnOutTriggerNeighbor(GridUnit triggerUnit)
+        {
+            neighborUnits.Remove(triggerUnit);
+        }
+        
+        protected virtual void OnOutTriggerBelow(GridUnit triggerUnit)
+        {
+            belowUnits.Remove(triggerUnit);
+            // TODO: Falling Logic 
+        }
+        
+        protected virtual void OnOutTriggerUpper(GridUnit triggerUnit)
+        {
+            upperUnits.Remove(triggerUnit);
+        }
+        
+        private void SetNeighbor(Grid<GameGridCell, GameGridCellData> map)
+        {
+            // In direction
+            neighborUnits.UnionWith(this.GetAllNeighborUnits(Direction.Left, map));
+            neighborUnits.UnionWith(this.GetAllNeighborUnits(Direction.Right, map));
+            neighborUnits.UnionWith(this.GetAllNeighborUnits(Direction.Forward, map));
+            neighborUnits.UnionWith(this.GetAllNeighborUnits(Direction.Back, map));
+            foreach (GridUnit unit in neighborUnits) unit.neighborUnits.Add(this);
+            // Upper and Below
+            upperUnits.UnionWith(this.GetAboveUnits());
+            foreach (GridUnit unit in upperUnits) unit.belowUnits.Add(this);
+            belowUnits.UnionWith(this.GetBelowUnits());
+            foreach (GridUnit unit in belowUnits) unit.upperUnits.Add(this);
+        }
+
+        public void OnEnterTrigger(GridUnit gridUnit)
+        {
+            foreach (GridUnit unit in neighborUnits.ToList())
+            {
+                unit.OnEnterTriggerNeighbor(gridUnit);
+            }
+            foreach (GridUnit unit in belowUnits.ToList())
+            {
+                unit.OnEnterTriggerUpper(gridUnit);
+            }
+            foreach (GridUnit unit in upperUnits.ToList())
+            {
+                unit.OnEnterTriggerBelow(gridUnit);
+            }
+        }
+        
+        protected virtual void OnEnterTriggerNeighbor(GridUnit triggerUnit)
+        {
+            
+        }
+        
+        protected virtual void OnEnterTriggerBelow(GridUnit triggerUnit)
+        {
+            
+        }
+        
+        protected virtual void OnEnterTriggerUpper(GridUnit triggerUnit)
+        {
+            
+        }
+
+        private void SetHeight(HeightLevel startHeightIn)
         {
             startHeight = startHeightIn;
             endHeight = CalculateEndHeight(startHeightIn, size);
         }
 
-        public HeightLevel CalculateEndHeight(HeightLevel startHeightIn, Vector3Int sizeIn)
+        private void SaveInitData(Vector3Int sizeI, UnitTypeY unitTypeYi, Transform skinI)
         {
-            HeightLevel endHeightOut = startHeightIn + (sizeIn.y - 1) * 2;
-            if (!isMinusHalfSizeY && nextUnitState == UnitState.Up) endHeightOut += 1;
-            return endHeightOut;
+            _unitInitData = new UnitInitData(sizeI, unitTypeYi, skinI.localPosition, skinI.localRotation);
         }
 
-        private void AddCell(GameGridCell mainCellIn)
+        private void GetInitData()
         {
+            size = _unitInitData.Size;
+            unitTypeY = _unitInitData.UnitTypeY;
+            skin.localPosition = _unitInitData.LocalSkinPos;
+            skin.localRotation = _unitInitData.LocalSkinRot;
+        }
+
+        private List<GameGridCell> InitCell(GameGridCell mainCellIn)
+        {
+            List<GameGridCell> initCells = new();
             mainCell = mainCellIn;
-            cellInUnits.Add(mainCell);
-            AddXCell(mainCell, size.x);
-            for (int i = cellInUnits.Count - 1; i >= 0; i--) AddZCell(cellInUnits[i], size.z);
+            initCells.Add(mainCell);
+            InitXCell(mainCell, size.x);
+            for (int i = initCells.Count - 1; i >= 0; i--) InitZCell(initCells[i], size.z);
             // Add this unit to cells
-            for (int i = 0; i < cellInUnits.Count; i++) cellInUnits[i].AddGridUnit(startHeight, endHeight, this);
-        }
+            for (int i = 0; i < initCells.Count; i++) initCells[i].AddGridUnit(startHeight, endHeight, this);
+            return initCells;
 
-        public Vector3 GetMainCellWorldPos()
-        {
-            return mainCell.WorldPos;
-        }
-
-        public Vector3Int GetSize()
-        {
-            return size;
-        }
-
-
-        public virtual void OnDespawn()
-        {
-            Tf.DOKill(true);
-            for (int i = 0; i < cellInUnits.Count; i++) cellInUnits[i].RemoveGridUnit(this);
-            cellInUnits.Clear();
-            mainCell = null;
-            SimplePool.Despawn(this);
-        }
-
-        public virtual void OnInteract(Direction direction, GridUnit interactUnit = null)
-        {
-            lastPushedDirection = direction;
-        }
-
-        public GridUnit GetBelowUnit()
-        {
-            if (mainCell is not null) return mainCell.GetGridUnitAtHeight(BelowStartHeight);
-            // Get cell from this position
-            Vector3 position = Tf.position;
-            GameGridCell cell =
-                LevelManager.Ins.GetCell(new Vector2Int(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z)));
-            return cell?.GetGridUnitAtHeight(BelowStartHeight);
-        }
-
-        protected GridUnit GetAboveUnit()
-        {
-            return mainCell.GetGridUnitAtHeight(UpperEndHeight);
-        }
-
-        private void AddZCell(GameGridCell cell, int sizeZ)
-        {
-            for (int i = 1; i < sizeZ; i++)
+            void InitXCell(GameGridCell cell, int sizeX)
             {
-                GameGridCell neighbourZ = LevelManager.Ins.GetNeighbourCell(cell, Direction.Forward, i);
-                if (neighbourZ == null) continue;
-                cellInUnits.Add(neighbourZ);
+                for (int i = 1; i < sizeX; i++)
+                {
+                    GameGridCell neighbourX = GridUnitFunc.GetNeighborCell(cell, Direction.Right, i);
+                    if (neighbourX == null || initCells.Contains(neighbourX)) continue;
+                    initCells.Add(neighbourX);
+                }
+            }
+
+            void InitZCell(GameGridCell cell, int sizeZ)
+            {
+                for (int i = 1; i < sizeZ; i++)
+                {
+                    GameGridCell neighbourZ = GridUnitFunc.GetNeighborCell(cell, Direction.Forward, i);
+                    if (neighbourZ == null || initCells.Contains(neighbourZ)) continue;
+                    initCells.Add(neighbourZ);
+                }
             }
         }
 
-        private void AddXCell(GameGridCell cell, int sizeX)
+        private HeightLevel GetEnterStartHeight(GameGridCell enterCell)
         {
-            for (int i = 1; i < sizeX; i++)
+            HeightLevel enterStartHeight = Constants.MIN_HEIGHT;
+            HeightLevel initHeight = Constants.DirFirstHeightOfSurface[enterCell.SurfaceType];
+            if (initHeight > enterStartHeight) enterStartHeight = initHeight;
+            for (HeightLevel heightLevel = initHeight;
+                 heightLevel <= BelowStartHeight;
+                 heightLevel++)
             {
-                GameGridCell neighbourX = LevelManager.Ins.GetNeighbourCell(cell, Direction.Right, i);
-                if (neighbourX == null) continue;
-                cellInUnits.Add(neighbourX);
+                if (enterCell.GetGridUnitAtHeight(heightLevel) is null) continue;
+                if (heightLevel + 1 > enterStartHeight) enterStartHeight = heightLevel + 1;
             }
+
+            return enterStartHeight;
+        }
+
+        public HeightLevel GetEnterStartHeight(List<GameGridCell> enterCells)
+        {
+            HeightLevel enterStartHeight = Constants.MIN_HEIGHT;
+            foreach (GameGridCell cell in enterCells)
+            {
+                HeightLevel initHeight = Constants.DirFirstHeightOfSurface[cell.SurfaceType];
+                if (initHeight > enterStartHeight) enterStartHeight = initHeight;
+                for (HeightLevel heightLevel = initHeight;
+                     heightLevel <= BelowStartHeight;
+                     heightLevel++)
+                {
+                    if (cell.GetGridUnitAtHeight(heightLevel) is null) continue;
+                    if (heightLevel + 1 > enterStartHeight) enterStartHeight = heightLevel + 1;
+                }
+            }
+
+            return enterStartHeight;
+        }
+
+
+        private void RemoveUnitFromCell()
+        {
+            for (int i = cellInUnits.Count - 1; i >= 0; i--)
+                cellInUnits[i].RemoveGridUnit(this);
+        }
+
+        private void AddCell(GameGridCell cell)
+        {
+            cellInUnits.Add(cell);
+            cell.AddGridUnit(this);
         }
     }
 
-    public enum UnitState
+    public enum UnitTypeY
     {
         Up = 0,
         Down = 1
     }
 
-    public enum UnitType
+    public enum UnitTypeXZ
     {
         None = -1,
         Horizontal = 0,
@@ -175,17 +391,38 @@ namespace _Game.GameGrid.Unit
 
     public class UnitInitData
     {
-        public UnitInitData(Vector3Int size, UnitState unitState, Vector3 localSkinPos, Quaternion localSkinRot)
+        public UnitInitData(Vector3Int size, UnitTypeY unitTypeY, Vector3 localSkinPos, Quaternion localSkinRot)
         {
             Size = size;
-            UnitState = unitState;
+            UnitTypeY = unitTypeY;
             LocalSkinPos = localSkinPos;
             LocalSkinRot = localSkinRot;
         }
 
         public Vector3Int Size { get; }
-        public UnitState UnitState { get; }
+        public UnitTypeY UnitTypeY { get; }
         public Vector3 LocalSkinPos { get; }
         public Quaternion LocalSkinRot { get; }
+    }
+
+    public class EnterCellPosData
+    {
+        public HeightLevel startHeight;
+        public Vector3 finalPos; // consider falling
+        public Vector3 initialPos; // not consider falling
+        public bool isFalling;
+
+        public void SetEnterPosData(Direction direction, HeightLevel startHeightIn, Vector3 initialPosIn, 
+            Vector3 finalPosIn, float yOffsetDown, bool hasInitialOffset = true)
+        {
+            startHeight = startHeightIn;
+            initialPos = initialPosIn;
+            finalPos = finalPosIn;
+            isFalling = Math.Abs(finalPosIn.y - initialPosIn.y) > yOffsetDown + 0.01;
+            if (!isFalling) initialPos = finalPos;
+            if (!isFalling || !hasInitialOffset) return; // make falling before go to the center of next cell
+            Vector3Int dirVector3 = Constants.DirVector3[direction];
+            initialPos -= new Vector3(dirVector3.x, 0, dirVector3.z) * Constants.CELL_SIZE / 2;
+        }
     }
 }

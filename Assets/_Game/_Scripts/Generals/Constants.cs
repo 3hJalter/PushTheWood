@@ -34,7 +34,7 @@ public static class Constants
     public const string INIT_ANIM = " ";
 
     public const string IDLE_ANIM = "idle";
-    public const string WALK_ANIM = "walk";
+    public const string MOVE_ANIM = "move";
     public const string JUMP_UP_ANIM = "jumpUp";
     public const string JUMP_DOWN_ANIM = "jumpDown";
     public const string INTERACT_ANIM = "interact";
@@ -42,6 +42,7 @@ public static class Constants
     public const string CUT_TREE_ANIM = "cutTree";
     public const string FALLING_ANIM = "falling";
     public const string DIE_ANIM = "die";
+    public const string HAPPY_ANIM = "happy";
 
     /// <summary>
     ///     UI Animation Trigger
@@ -60,6 +61,7 @@ public static class Constants
     
     public static readonly HeightLevel MaxHeight = (HeightLevel)(Enum.GetValues(typeof(HeightLevel)).Length - 1);
     public const HeightLevel MIN_HEIGHT = HeightLevel.Zero;
+    public const HeightLevel MAX_HEIGHT = HeightLevel.FourPointFive;
     public static readonly Vector3 HorizontalSkinRotation = new(0, 0, 90);
     public static readonly Vector3 VerticalSkinRotation = new(0, -90, 90);
     

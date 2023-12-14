@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using _Game.GameGrid.Unit;
 using _Game.Utilities.Grid;
 using GameGridEnum;
@@ -25,6 +26,16 @@ namespace _Game.GameGrid
         }
 
 
+        public List<GridUnit> GetGridUnits(HeightLevel from, HeightLevel to)
+        {
+            if (to < from) return null;
+            List<GridUnit> units = new();
+            for (int i = (int)from; i <= (int)to; i++)
+                if (data.gridUnits[i] is not null && !units.Contains(data.gridUnits[i]))
+                    units.Add(data.gridUnits[i]);
+            return units;
+        }
+        
         public GridUnit GetGridUnitAtHeight(HeightLevel heightLevel)
         {
             return data.gridUnits[(int)heightLevel];
@@ -46,7 +57,6 @@ namespace _Game.GameGrid
         public void AddGridUnit(GridUnit addUnit)
         {
             for (int i = (int)addUnit.StartHeight; i <= (int)addUnit.EndHeight; i++) data.gridUnits[i] = addUnit;
-            if (data.gridSurface is not null) data.gridSurface.OnUnitEnter(addUnit);
         }
 
         public void RemoveGridUnitAtHeight(HeightLevel heightLevel)
@@ -63,7 +73,6 @@ namespace _Game.GameGrid
         public void AddGridUnit(HeightLevel startHeight, HeightLevel endHeight, GridUnit unit)
         {
             for (int i = (int)startHeight; i <= (int)endHeight; i++) data.gridUnits[i] = unit;
-            if (data.gridSurface is not null) data.gridSurface.OnUnitEnter(unit);
         }
 
         public HeightLevel GetMaxHeight()

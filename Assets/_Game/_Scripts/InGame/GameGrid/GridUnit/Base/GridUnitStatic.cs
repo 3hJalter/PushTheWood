@@ -1,5 +1,4 @@
-﻿using _Game.DesignPattern;
-using GameGridEnum;
+﻿using GameGridEnum;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit
@@ -7,7 +6,6 @@ namespace _Game.GameGrid.Unit
     public abstract class GridUnitStatic : GridUnit
     {
         [SerializeField] protected GridUnitStaticType gridUnitStaticType;
-
         public GridUnitStaticType GridUnitStaticType => gridUnitStaticType;
     }
 }
