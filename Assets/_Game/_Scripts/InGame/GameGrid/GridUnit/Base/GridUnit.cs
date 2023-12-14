@@ -29,7 +29,7 @@ namespace _Game.GameGrid.Unit
         [SerializeField] protected HeightLevel endHeight; // Serialize for test
 
         // Offset when unit is down
-        [SerializeField] protected float yOffsetOnDown = 0.5f;
+        [SerializeField] public float yOffsetOnDown = 0.5f;
 
         // The island that this unit is on
         public int islandID = -1;
