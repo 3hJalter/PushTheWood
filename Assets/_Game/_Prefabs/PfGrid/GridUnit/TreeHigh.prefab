@@ -189,6 +189,9 @@ MonoBehaviour:
     - Name: EnterPosData
       Entry: 7
       Data: 1|_Game.GameGrid.Unit.EnterCellPosData, Assembly-CSharp
+    - Name: startHeight
+      Entry: 3
+      Data: 0
     - Name: finalPos
       Entry: 7
       Data: UnityEngine.Vector3, UnityEngine.CoreModule
@@ -336,7 +339,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &4739241922037237182
 MonoBehaviour:
