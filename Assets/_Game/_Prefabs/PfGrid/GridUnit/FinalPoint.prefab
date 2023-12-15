@@ -74,7 +74,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1885524239494379298}
-  - component: {fileID: 1885524239494379297}
+  - component: {fileID: 2553979289197978373}
   m_Layer: 0
   m_Name: FinalPoint
   m_TagString: Untagged
@@ -98,7 +98,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1885524239494379297
+--- !u!114 &2553979289197978373
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1885524239494379299}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f50d17db85074c04a24ff152786bdc14, type: 3}
+  m_Script: {fileID: 11500000, guid: d5bd74a02d9d4bbba8ac6c0bfd02d24e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
@@ -132,6 +132,45 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+    - Name: EnterPosData
+      Entry: 7
+      Data: 1|_Game.GameGrid.Unit.EnterCellPosData, Assembly-CSharp
+    - Name: finalPos
+      Entry: 7
+      Data: UnityEngine.Vector3, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: initialPos
+      Entry: 7
+      Data: UnityEngine.Vector3, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: isFalling
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
   poolType: 13
   skin: {fileID: 1885524238780609889}
   size: {x: 1, y: 1, z: 1}
@@ -139,10 +178,9 @@ MonoBehaviour:
   startHeight: 2
   endHeight: 0
   yOffsetOnDown: 0.5
-  unitState: 0
-  unitType: 2
   islandID: -1
-  lastPushedDirection: -1
+  unitTypeY: 0
+  unitTypeXZ: 2
   gridUnitStaticType: 5
 --- !u!1 &4184609018542034539
 GameObject:

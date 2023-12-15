@@ -3,6 +3,7 @@ using _Game.GameGrid;
 using _Game.Managers;
 using DG.Tweening;
 using UnityEngine;
+using VinhLB;
 
 namespace _Game.UIs.Screen
 {
@@ -23,6 +24,7 @@ namespace _Game.UIs.Screen
             if (!_isFirstOpen)
             {
                 LevelManager.Ins.OnInit();
+                GridBuildingManager.Ins.OnInit();
                 _isFirstOpen = true;
             }
             UIManager.Ins.OpenUI<InGameScreen>();
