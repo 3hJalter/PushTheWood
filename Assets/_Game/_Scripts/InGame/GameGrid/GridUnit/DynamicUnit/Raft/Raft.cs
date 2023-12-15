@@ -51,11 +51,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
             return _currentState == states[stateEnum];
         }
 
-        public void OnInit(GameGridCell mainCellIn, UnitTypeXZ unitTypeXZIn,
-            HeightLevel startHeightIn = HeightLevel.ZeroPointFive, bool isUseInitData = false)
+        public void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.ZeroPointFive,
+            bool isUseInitData = false, Direction skinDirection = Direction.None)
         {
-            RotateSkin(unitTypeXZIn);
-            base.OnInit(mainCellIn, startHeightIn, isUseInitData);
+            // RotateSkin(unitTypeXZIn);
+            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection);
             if (!_isAddState)
             {
                 _isAddState = true;

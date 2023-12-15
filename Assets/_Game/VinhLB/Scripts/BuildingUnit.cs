@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    public class BuildingUnit : GridUnit
+    public class BuildingUnit : GridUnitStatic
     {
         public static BuildingUnit Create(BuildingUnitData buildingUnitData)
         {

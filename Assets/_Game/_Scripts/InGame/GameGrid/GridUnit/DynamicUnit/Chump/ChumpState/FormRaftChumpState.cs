@@ -56,7 +56,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             if (t.cellInUnits.Count == createRaftCells.Count)
             {
                 Raft.Raft raft = SimplePool.Spawn<Raft.Raft>(t.RaftPrefab);
-                raft.OnInit(t.MainCell, typeXZWhenSpawn);
+                raft.OnInit(t.MainCell, HeightLevel.ZeroPointFive, false, t.TurnOverData.inputDirection);
                 raft.islandID = t.islandID;
                 LevelManager.Ins.AddNewUnitToIsland(raft);
                 spawnUnits.Add(raft);
@@ -66,7 +66,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 for (int i = 0; i < createRaftCells.Count; i++)
                 {
                     Raft.Raft raft = SimplePool.Spawn<Raft.Raft>(DataManager.Ins.GetGridUnit(PoolType.Raft));
-                    raft.OnInit(createRaftCells[i], typeXZWhenSpawn);
+                    raft.OnInit(createRaftCells[i], HeightLevel.ZeroPointFive, false, t.TurnOverData.inputDirection);
                     raft.islandID = t.islandID;
                     LevelManager.Ins.AddNewUnitToIsland(raft);
                     spawnUnits.Add(raft);

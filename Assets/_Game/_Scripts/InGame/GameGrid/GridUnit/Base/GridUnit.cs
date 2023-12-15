@@ -64,7 +64,11 @@ namespace _Game.GameGrid.Unit
         
         protected GameGridCell mainCell;
 
-        public Vector3Int Size;
+        public Vector3Int Size
+        {
+            get => size;
+            set => size = value;
+        }
 
         public UnitTypeXZ UnitTypeXZ
         {
@@ -107,7 +111,7 @@ namespace _Game.GameGrid.Unit
             islandID = mainCellIn.IslandID;
             SetHeight(startHeightIn);
             SetEnterCellData(Direction.None, mainCellIn, unitTypeY);
-            OnEnterCells(mainCellIn, InitCell(mainCellIn));
+            OnEnterCells(mainCellIn, InitCell(mainCellIn, skinDirection));
             // Set position
             Tf.position = EnterPosData.finalPos;
 
@@ -301,13 +305,25 @@ namespace _Game.GameGrid.Unit
             skin.localRotation = _unitInitData.LocalSkinRot;
         }
 
-        private List<GameGridCell> InitCell(GameGridCell mainCellIn)
+        private List<GameGridCell> InitCell(GameGridCell mainCellIn, Direction skinDirection)
         {
             List<GameGridCell> initCells = new();
             mainCell = mainCellIn;
             initCells.Add(mainCell);
-            InitXCell(mainCell, size.x);
-            for (int i = initCells.Count - 1; i >= 0; i--) InitZCell(initCells[i], size.z);
+            switch (skinDirection)
+            {
+                default:
+                case Direction.Back:
+                case Direction.Forward:
+                    InitXCell(mainCell, size.x);
+                    for (int i = initCells.Count - 1; i >= 0; i--) InitZCell(initCells[i], size.z);
+                    break;
+                case Direction.Left:
+                case Direction.Right:
+                    InitXCell(mainCell, size.z);
+                    for (int i = initCells.Count - 1; i >= 0; i--) InitZCell(initCells[i], size.x);
+                    break;
+            }
             // Add this unit to cells
             for (int i = 0; i < initCells.Count; i++) initCells[i].AddGridUnit(startHeight, endHeight, this);
             return initCells;
@@ -316,7 +332,7 @@ namespace _Game.GameGrid.Unit
             {
                 for (int i = 1; i < sizeX; i++)
                 {
-                    GameGridCell neighbourX = GridUnitFunc.GetNeighborCell(cell, Direction.Right, i);
+                    GameGridCell neighbourX = cell.GetNeighborCell(Direction.Right, i);
                     if (neighbourX == null || initCells.Contains(neighbourX)) continue;
                     initCells.Add(neighbourX);
                 }
@@ -326,7 +342,7 @@ namespace _Game.GameGrid.Unit
             {
                 for (int i = 1; i < sizeZ; i++)
                 {
-                    GameGridCell neighbourZ = GridUnitFunc.GetNeighborCell(cell, Direction.Forward, i);
+                    GameGridCell neighbourZ = cell.GetNeighborCell(Direction.Forward, i);
                     if (neighbourZ == null || initCells.Contains(neighbourZ)) continue;
                     initCells.Add(neighbourZ);
                 }

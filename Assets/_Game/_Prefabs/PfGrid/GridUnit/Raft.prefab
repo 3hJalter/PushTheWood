@@ -150,6 +150,19 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+    - Name: _carryUnits
+      Entry: 7
+      Data: 5|System.Collections.Generic.HashSet`1[[_Game.GameGrid.Unit.GridUnit,
+        Assembly-CSharp]], System.Core
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   poolType: 6
   skin: {fileID: 6370191254414802909}
   size: {x: 1, y: 1, z: 1}
@@ -160,6 +173,7 @@ MonoBehaviour:
   islandID: -1
   unitTypeY: 1
   unitTypeXZ: 2
+  skinRotationDirection: -1
   gridUnitDynamicType: 3
   anchor: {fileID: 3502554511443875533}
   player: {fileID: 0}
@@ -254,14 +268,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6989676313889325140}
-  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 25, y: 25, z: 25}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6370191254414802909}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!33 &6765632229711975755
 MeshFilter:
   m_ObjectHideFlags: 0

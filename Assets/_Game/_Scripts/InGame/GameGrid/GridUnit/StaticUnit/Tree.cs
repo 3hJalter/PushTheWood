@@ -57,7 +57,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
                 Vector3 treePos = mainCell.WorldPos;
                 if (Math.Abs(playerPos.x - treePos.x) < 0.01f)
                 {
-                    return playerPos.y > treePos.y ? Direction.Back : Direction.Forward;
+                    return playerPos.z > treePos.z ? Direction.Back : Direction.Forward;
                 }
                 return playerPos.x > treePos.x ? Direction.Left : Direction.Right;
             }
