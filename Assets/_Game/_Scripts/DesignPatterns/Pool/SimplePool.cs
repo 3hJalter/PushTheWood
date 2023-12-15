@@ -317,6 +317,11 @@ namespace _Game.DesignPattern
         Box = 14,
         Bomb = 15,
 
+        // Grid Unit Placed Object
+        HouseMain = 50,
+        Fence = 51,
+        StationFishing = 52,
+
         // From 100 -> Grid Surface List
         SurfaceWater = 100,
         // Medium Ground Surface

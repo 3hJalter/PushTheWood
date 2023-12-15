@@ -86,7 +86,7 @@ namespace _Game.GameGrid.Unit
 
             return nextCells;
         }
-
+        
         // Get all next units from cellInUnits by direction
         public static List<GridUnit> GetAllNeighborUnits(this GridUnit unit, Direction direction,  Grid<GameGridCell, GameGridCellData> map = null)
         {
@@ -178,5 +178,17 @@ namespace _Game.GameGrid.Unit
         }
 
         #endregion
+
+        public static GameGridCell GetNeighbourCell(Grid<GameGridCell, GameGridCellData> grid,
+            GameGridCell cell, Direction direction, int distance = 1)
+        {
+            Vector2Int cellPos = cell.GetCellPosition();
+            Vector2Int dir = Constants.dirVector[direction];
+            Vector2Int neighbourPos = cellPos + dir * distance;
+            Debug.Log(neighbourPos);
+
+            return grid.GetGridCell(neighbourPos.x, neighbourPos.y);
+        }
+        
     }
 }

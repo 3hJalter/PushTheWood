@@ -35,7 +35,7 @@ namespace _Game.GameGrid
         private TextGridData _textGridData;
         private int gridSizeX;
         private int gridSizeY;
-
+        
         public Player Player => _pUnit;
         
         private void Start()
@@ -126,7 +126,7 @@ namespace _Game.GameGrid
         {
             return _gridMap.GetGridCell(position);
         }
-
+        
         public void SetFirstPlayerStepOnIsland(GameGridCell cell)
         {
             _islandDic[_pUnit.islandID].SetFirstPlayerStepCell(cell);
@@ -187,22 +187,23 @@ namespace _Game.GameGrid
             CameraFollow.Ins.SetTarget(_pUnit.Tf);
         }
 
-        private void SpawnPlayerUnit(int x, int y)
+        private void SpawnPlayerUnit(int x, int y, Direction direction)
         {
             GameGridCell cell = _gridMap.GetGridCell(x, y);
             _pUnit = SimplePool.Spawn<Player>(
                 DataManager.Ins.GetGridUnit(PoolType.Player));
-            _pUnit.OnInit(cell);
+            _pUnit.OnInit(cell, HeightLevel.One, true, direction);
             currentPCellViewer.position = cell.WorldPos + Vector3.up * 1.25f;
             _islandDic[cell.Data.gridSurface.IslandID].SetFirstPlayerStepCell(cell);
             _firstPlayerInitCell = cell;
         }
 
-        private void SpawnInitUnit(int x, int y, PoolType type)
+        private void SpawnInitUnit(int x, int y, PoolType type, Direction direction)
         {
             GameGridCell cell = _gridMap.GetGridCell(x, y);
             GridUnit unit = SimplePool.Spawn<GridUnit>(DataManager.Ins.GetGridUnit(type));
-            unit.OnInit(cell);
+            unit.OnInit(cell, HeightLevel.One, true, direction);
+            if (cell.Data.gridSurface == null) return;
             _islandDic[cell.Data.gridSurface.IslandID].AddInitUnitToIsland(unit, type, cell);
         }
 
@@ -228,7 +229,7 @@ namespace _Game.GameGrid
                     if (!int.TryParse(surfaceDataSplit[y], out int cell)) continue;
                     if (!Enum.IsDefined(typeof(PoolType), cell)) continue;
                     GridSurface.GridSurface gridSurface = DataManager.Ins.GetGridSurface((PoolType)cell);
-                    if (gridSurface is null) continue;
+                    if (gridSurface is null) return;
                     GameGridCell gridCell = _gridMap.GetGridCell(x, y);
                     gridCell.SetSurface(
                         SimplePool.Spawn<GridSurface.GridSurface>(gridSurface,
@@ -243,18 +244,25 @@ namespace _Game.GameGrid
             string[] unitData = _textGridData.UnitData.Split('\n');
             // Remove the first line of unitData
             unitData = unitData.Skip(1).ToArray();
+            string[] unitRotationDirectionData = _textGridData.UnitRotationDirectionData.Split('\n');
+            unitRotationDirectionData = unitRotationDirectionData.Skip(1).ToArray();
             for (int x = 0; x < gridSizeX; x++)
             {
                 string[] unitDataSplit = unitData[x].Split(' ');
+                string[] unitRotationDirectionDataSplit = unitRotationDirectionData[x].Split(' ');
                 if (unitDataSplit.Length != gridSizeY) continue;
                 for (int y = 0; y < gridSizeY; y++)
                 {
-                    if (!int.TryParse(unitDataSplit[y], out int cell)) continue;
-                    if (!Enum.IsDefined(typeof(PoolType), cell)) continue;
-                    if ((PoolType)cell is PoolType.Player)
-                        SpawnPlayerUnit(x, y);
+                    if (!int.TryParse(unitDataSplit[y], out int unitCell)) continue;
+                    if (!Enum.IsDefined(typeof(PoolType), unitCell)) continue;
+                    
+                    if (!int.TryParse(unitRotationDirectionDataSplit[y], out int directionCell)) continue;
+                    if (!Enum.IsDefined(typeof(Direction), directionCell)) continue;
+                    
+                    if ((PoolType)unitCell is PoolType.Player)
+                        SpawnPlayerUnit(x, y, (Direction)directionCell);
                     else
-                        SpawnInitUnit(x, y, (PoolType)cell);
+                        SpawnInitUnit(x, y, (PoolType)unitCell, (Direction)directionCell);
                 }
             }
         }

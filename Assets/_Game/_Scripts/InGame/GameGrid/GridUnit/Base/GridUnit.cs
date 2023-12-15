@@ -9,6 +9,7 @@ using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
 using UnityEngine.Serialization;
+using VinhLB;
 
 namespace _Game.GameGrid.Unit
 {
@@ -40,7 +41,9 @@ namespace _Game.GameGrid.Unit
         // The type of this unit (Horizontal, Vertical, Both or None)
         [FormerlySerializedAs("unitType")] [SerializeField] protected UnitTypeXZ unitTypeXZ = UnitTypeXZ.Both; // Serialize for test
         
-        // All cells that this unit is on
+        [SerializeField]
+        protected Direction skinRotationDirection = Direction.None;
+
         public readonly List<GameGridCell> cellInUnits = new();
 
         // Position data when this unit enter a cell
@@ -58,13 +61,10 @@ namespace _Game.GameGrid.Unit
         protected Direction lastPushedDirection = Direction.None;
 
         // The main cell that this unit is on
+        
         protected GameGridCell mainCell;
 
-        public Vector3Int Size
-        {
-            get => size;
-            set => size = value;
-        }
+        public Vector3Int Size;
 
         public UnitTypeXZ UnitTypeXZ
         {
@@ -84,6 +84,7 @@ namespace _Game.GameGrid.Unit
             get => startHeight;
             set => startHeight = value;
         }
+        public Direction SkinRotationDirection => skinRotationDirection;
 
         public HeightLevel EndHeight
         {
@@ -100,7 +101,7 @@ namespace _Game.GameGrid.Unit
         }
 
         public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
-            bool isUseInitData = true)
+            bool isUseInitData = true, Direction skinDirection = Direction.None)
         {
             if (isUseInitData) GetInitData();
             islandID = mainCellIn.IslandID;
@@ -110,13 +111,19 @@ namespace _Game.GameGrid.Unit
             // Set position
             Tf.position = EnterPosData.finalPos;
 
+            skinRotationDirection = skinDirection;
+            skin.rotation = Quaternion.Euler(0f, BuildingUnitData.GetRotationAngle(skinRotationDirection), 0f);
+
+            Vector2Int rotationOffset = BuildingUnitData.GetRotationOffset(size.x, size.z, skinRotationDirection);
+            Vector3 posOffset = new Vector3(rotationOffset.x, 0, rotationOffset.y) * Constants.CELL_SIZE;
+            skin.position += posOffset;
         }
 
         public virtual bool IsCurrentStateIs(StateEnum stateEnum)
         {
             return false;
         }
-        
+
         public HeightLevel CalculateEndHeight(HeightLevel startHeightIn, Vector3Int sizeIn)
         {
             HeightLevel endHeightOut = startHeightIn + (sizeIn.y - 1) * 2;
@@ -130,7 +137,7 @@ namespace _Game.GameGrid.Unit
             OnOutCells();
             this.Despawn();
         }
-
+        
         public virtual void OnPush(Direction direction, ConditionData conditionData = null)
         {
             
