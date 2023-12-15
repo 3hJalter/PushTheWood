@@ -183,7 +183,7 @@ namespace VinhLB
 
             bool canBuild = true;
             GameGridCell gameGridCell = _homeGrid.GetGridCell(_lastMousePosition);
-            List<GameGridCell> neighborCellList = gameGridCell.GetNeighborCells(_homeGrid,
+            List<GameGridCell> neighborCellList = gameGridCell.GetCellsInsideUnitExceptMain(_homeGrid,
                 _currentBuildingUnitData.Width, _currentBuildingUnitData.Height, _currentDirection);
             for (int i = 0; i < neighborCellList.Count; i++)
             {
