@@ -43,6 +43,7 @@ public static class Constants
     public const string FALLING_ANIM = "falling";
     public const string DIE_ANIM = "die";
     public const string HAPPY_ANIM = "happy";
+    public const string OPEN_ANIM = "open";
 
     /// <summary>
     ///     UI Animation Trigger

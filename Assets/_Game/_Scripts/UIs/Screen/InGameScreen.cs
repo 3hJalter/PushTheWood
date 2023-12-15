@@ -18,9 +18,9 @@ namespace _Game.UIs.Screen
         public override void Setup()
         {
             base.Setup();
+            MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.Ins.CurrentChoice); // TODO: Change to use PlayerRef 
             if (CameraFollow.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
             CameraFollow.Ins.ChangeCamera(ECameraType.InGameCamera);
-            MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.Ins.CurrentChoice); // TODO: Change to use PlayerRef 
             blockPanel.enabled = true;
         }
 

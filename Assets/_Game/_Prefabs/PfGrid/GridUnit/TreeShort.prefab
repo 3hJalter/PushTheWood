@@ -162,10 +162,11 @@ MonoBehaviour:
   unitTypeY: 0
   unitTypeXZ: -1
   skinRotationDirection: -1
-  Size: {x: 0, y: 0, z: 0}
   gridUnitStaticType: 3
+  hasInteractBtn: 1
+  btnCanvas: {fileID: 2657434271138430724}
+  interactBtn: {fileID: 4234872148887743206}
   chumpPrefab: {fileID: 8852207134085153055, guid: 7d2d8c26c208e6748835843aee7b2ae7, type: 3}
-  cutTreeCanvas: {fileID: 2657434271138430724}
 --- !u!1 &1972740316197685860
 GameObject:
   m_ObjectHideFlags: 0
@@ -521,6 +522,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2073520842874827295, guid: fc9cb1b8d43db7b4f86d77ceb680745b, type: 3}
   m_PrefabInstance: {fileID: 2739290216686295174}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4234872148887743206 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2073520842874827360, guid: fc9cb1b8d43db7b4f86d77ceb680745b, type: 3}
+  m_PrefabInstance: {fileID: 2739290216686295174}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14929e97a02e4c59a2516a82b7c8002b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4237646118902585906
 PrefabInstance:
   m_ObjectHideFlags: 0

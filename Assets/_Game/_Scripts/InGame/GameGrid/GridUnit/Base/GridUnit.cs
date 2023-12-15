@@ -325,7 +325,7 @@ namespace _Game.GameGrid.Unit
                     break;
             }
             // Add this unit to cells
-            for (int i = 0; i < initCells.Count; i++) initCells[i].AddGridUnit(startHeight, endHeight, this);
+            // for (int i = 0; i < initCells.Count; i++) initCells[i].AddGridUnit(startHeight, endHeight, this);
             return initCells;
 
             void InitXCell(GameGridCell cell, int sizeX)

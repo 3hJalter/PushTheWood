@@ -41,8 +41,8 @@ namespace _Game._Scripts.Managers
                     HSwitch.HideAllTime(true);
                     break;
                 }
-                CurrentChoice = moveChoice;
             }
+            CurrentChoice = moveChoice;
         }
         
         public enum MoveChoice

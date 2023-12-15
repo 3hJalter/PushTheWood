@@ -2,21 +2,29 @@
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
+using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
     public class CutTreePlayerState : IState<Player>
     {
         private bool _isExecuted;
+        private float _timeCounter;
         public void OnEnter(Player t)
         {
+            _timeCounter = 0.5f;
             t.ChangeAnim(Constants.CUT_TREE_ANIM);
             t.LookDirection(t.CutTreeData.inputDirection);
         }
 
         public void OnExecute(Player t)
         {
-            if (t.IsAnimDone(0.5f) && !_isExecuted)
+            if (_timeCounter > 0)
+            {
+                _timeCounter -= Time.fixedDeltaTime;
+                return;
+            }
+            if (!_isExecuted)
             {
                 _isExecuted = true;
                 // Make the tree OnBePushed with direction calculated by position of the Player and the Tree

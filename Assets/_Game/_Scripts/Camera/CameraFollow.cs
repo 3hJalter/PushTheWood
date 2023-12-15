@@ -48,8 +48,13 @@ namespace _Game.Camera
             }
             else
             {
+                // Follow target, but not the y position
+                Vector3 position = targetTf.position;
                 _mainCameraTf.position = Vector3.Lerp(_mainCameraTf.position,
-                    targetTf.position + _currentCamera.offsetPosition, _currentCamera.smooth);
+                    new Vector3(position.x, 0, position.z) +
+                    _currentCamera.offsetPosition, _currentCamera.smooth);
+                // _mainCameraTf.position = Vector3.Lerp(_mainCameraTf.position,
+                //     targetTf.position + _currentCamera.offsetPosition, _currentCamera.smooth);
             }
             _mainCameraTf.rotation = Quaternion.Lerp(_mainCameraTf.rotation, _currentCamera.offsetRotation,
                 _currentCamera.smooth);

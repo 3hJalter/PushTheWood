@@ -19,7 +19,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             t.Tf.DOMove(t.EnterPosData.initialPos, Constants.MOVING_TIME / 2)
                 .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                 {
-                    t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME / 2).SetEase(Ease.Linear)
+                    t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME).SetEase(Ease.Linear)
                         .SetUpdate(UpdateType.Fixed).OnComplete(() =>
                         {
                             t.OnEnterTrigger(t);
