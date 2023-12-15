@@ -17,14 +17,8 @@ namespace VinhLB
 
             public int NumTramplePositions
             {
-                get
-                {
-                    return _numTramplePositions;
-                }
-                set
-                {
-                    _numTramplePositions = value;
-                }
+                get => _numTramplePositions;
+                set => _numTramplePositions = value;
             }
 
             public CustomRenderPass(Vector4[] tramplePositionArray, float[] trampleRadiusArray)

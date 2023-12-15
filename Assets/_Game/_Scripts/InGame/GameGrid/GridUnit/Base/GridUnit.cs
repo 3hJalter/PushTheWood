@@ -78,13 +78,13 @@ namespace _Game.GameGrid.Unit
             if (isUseInitData) GetInitData();
             nextUnitState = unitState;
             islandID = mainCellIn.IslandID;
+            skinRotationDirection = skinDirection;
             SetHeight(startHeightIn);
-            AddCell(mainCellIn, skinDirection);
+            AddCell(mainCellIn, skinRotationDirection);
             // Add offset Height to Position
             Tf.position = mainCell.WorldPos + Vector3.up * (float)startHeight / 2 * Constants.CELL_SIZE;
             if (unitState is UnitState.Down) Tf.position -= Vector3.up * yOffsetOnDown;
 
-            skinRotationDirection = skinDirection;
             skin.rotation = Quaternion.Euler(0f, BuildingUnitData.GetRotationAngle(skinRotationDirection), 0f);
 
             Vector2Int rotationOffset = BuildingUnitData.GetRotationOffset(size.x, size.z, skinRotationDirection);

@@ -43,12 +43,13 @@ public static class BladeGrassBaker
         public Vector3 normal;
         public Vector2 uv;
         public Vector3 bladeAnchor;
+        public Vector3 shadowCastNormal;
     }
 
     // The size of one entry in the various compute buffers
     private const int SOURCE_VERT_STRIDE = sizeof(float) * 3;
     private const int SOURCE_INDEX_STRIDE = sizeof(int);
-    private const int GENERATED_VERT_STRIDE = sizeof(float) * (3 + 3 + 2 + 3);
+    private const int GENERATED_VERT_STRIDE = sizeof(float) * (3 + 3 + 2 + 3 + 3);
     private const int GENERATED_INDEX_STRIDE = sizeof(int);
 
     // This function takes in a mesh and submesh and decomposes it into vertex and index arrays
@@ -90,6 +91,7 @@ public static class BladeGrassBaker
         Vector3[] normals = new Vector3[verts.Length];
         Vector2[] uvs = new Vector2[verts.Length];
         Vector3[] bladeAnchors = new Vector3[verts.Length];
+        Vector3[] shadowCastNormals = new Vector3[verts.Length];
         for (int i = 0; i < verts.Length; i++)
         {
             GeneratedVertex v = verts[i];
@@ -97,11 +99,13 @@ public static class BladeGrassBaker
             normals[i] = v.normal;
             uvs[i] = v.uv;
             bladeAnchors[i] = v.bladeAnchor;
+            shadowCastNormals[i] = v.shadowCastNormal;
         }
         mesh.SetVertices(vertices);
         mesh.SetNormals(normals);
         mesh.SetUVs(0, uvs); // TEXCOORD0
         mesh.SetUVs(1, bladeAnchors); // TEXCOORD1
+        mesh.SetUVs(2, shadowCastNormals); // TEXCOORD2
         mesh.SetIndices(indices, MeshTopology.Triangles, 0, true); // This sets the index list as triangles
         mesh.Optimize(); // Let Unity optimize the buffer orders
         return mesh;
@@ -115,8 +119,8 @@ public static class BladeGrassBaker
 
         // The mesh topology is triangles, so there are three indices per triangle
         int numSourceTriangles = sourceIndices.Length / 3;
-        int numGeneratedVertices = numSourceTriangles * (settings.numBladeSegments * 2 + 1); // 2 vertices per segment, plus the tip
-        int numGeneratedIndices = numSourceTriangles * (settings.numBladeSegments * 2 - 1) * 3;
+        int numGeneratedVertices = numSourceTriangles * (settings.numBladeSegments * 2 + 1) * 2; // 2 vertices per segment, plus the tip, doubled
+        int numGeneratedIndices = numSourceTriangles * (settings.numBladeSegments * 2 - 1) * 3 * 2;
 
         GeneratedVertex[] generatedVertices = new GeneratedVertex[numGeneratedVertices];
         int[] generatedIndices = new int[numGeneratedIndices];

@@ -18,6 +18,9 @@ Shader "Custom/BladeGrass"
         _TrampleFalloff("Trample Falloff", Float) = 1
         _TramplePushStrength("Trample Push Strength", Float) = 1
         _TrampleSquishStrength("Trample Squish Strength", Float) = 1
+        [Header(Shadow)]
+        [Space]
+        _ShadowLightness("Shadow Lightness", Range(0, 1)) = 0
     }
     SubShader
     {
@@ -37,7 +40,6 @@ Shader "Custom/BladeGrass"
             {
                 "LightMode" = "UniversalForward"
             }
-            Cull Off
 
             HLSLPROGRAM
             // Signal this shader requires a compute buffer
@@ -52,6 +54,34 @@ Shader "Custom/BladeGrass"
             // GPU Instancing
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            // Register functions
+            #pragma vertex Vertex
+            #pragma fragment Fragment
+
+            // Include logic file
+            #include "BladeGrass.hlsl"
+            
+            ENDHLSL
+        }
+
+        Pass
+        {
+            Name "ShadowCaster"
+            Tags
+            {
+                "LightMode" = "ShadowCaster"
+            }
+
+            HLSLPROGRAM
+            // Signal this shader requires a compute buffer
+            #pragma prefer_hlslcc gles
+            #pragma exclude_renderers d3d11_9x
+            // GPU Instancing
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            #define SHADOW_CASTER_PASS
 
             // Register functions
             #pragma vertex Vertex

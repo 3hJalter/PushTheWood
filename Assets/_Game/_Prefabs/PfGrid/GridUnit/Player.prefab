@@ -151,7 +151,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 473252897108578051}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -181,6 +181,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _rendererData: {fileID: 11400000, guid: 82b4ed0936573764e945e1fb602913e0, type: 2}
+  _trampleRadius: 1
 --- !u!1 &931134691089142866
 GameObject:
   m_ObjectHideFlags: 0
@@ -781,6 +782,7 @@ MonoBehaviour:
   unitState: 0
   unitType: 2
   islandID: -1
+  skinRotationDirection: -1
   lastPushedDirection: -1
   gridUnitDynamicType: 0
   anchor: {fileID: 1008189588372813436}

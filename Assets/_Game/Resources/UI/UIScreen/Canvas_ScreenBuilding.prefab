@@ -113,7 +113,6 @@ MonoBehaviour:
   _clearButton: {fileID: 5757851647654022028}
   _placeButton: {fileID: 5757851647367182933}
   _deleteButton: {fileID: 5757851648782059013}
-  _buildingPanelGO: {fileID: 5757851646868307416}
   _buildingItemPrefab: {fileID: 6351521943344726337, guid: bc38b138841d1c7438d46a4c506cc3f6, type: 3}
   _contentTransform: {fileID: 5757851647528028135}
 --- !u!1 &5757851646868307416
@@ -981,7 +980,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -80, y: -80}
+  m_SizeDelta: {x: -80, y: -40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5757851647808941783
 MonoBehaviour:
