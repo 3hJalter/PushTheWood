@@ -1976,6 +1976,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1677783669}
   - {fileID: 1661734939}
   - {fileID: 1552975947}
   m_Father: {fileID: 0}
@@ -3357,115 +3358,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0c3a12c00534450b98e76bb50f72b10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: cellInUnits
-      Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[_Game.GameGrid.GameGridCell, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 1|_Game.GameGrid.GameGridCell, Assembly-CSharp
-    - Name: OnValueChange
-      Entry: 7
-      Data: 2|System.Action`2[[System.Int32, mscorlib],[System.Int32, mscorlib]],
-        mscorlib
-    - Name: target
-      Entry: 7
-      Data: 3|_Game.Utilities.Grid.Grid`2[[_Game.GameGrid.GameGridCell, Assembly-CSharp],[_Game.GameGrid.GameGridCellData,
-        Assembly-CSharp]], Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: declaringType
-      Entry: 7
-      Data: 4|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: _Game.Utilities.Grid.Grid`2[[_Game.GameGrid.GameGridCell, Assembly-CSharp],[_Game.GameGrid.GameGridCellData,
-        Assembly-CSharp]], Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: methodName
-      Entry: 1
-      Data: OnGridCellValueChange
-    - Name: delegateType
-      Entry: 7
-      Data: 5|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Action`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: signature
-      Entry: 7
-      Data: 6|System.Type[], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 7
-      Data: 7|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Int32, mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 9
-      Data: 7
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: GridPlaneType
-      Entry: 3
-      Data: 1
-    - Name: worldX
-      Entry: 4
-      Data: 19
-    - Name: worldY
-      Entry: 4
-      Data: 17
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-  poolType: 7
-  skin: {fileID: 1598311676}
-  size: {x: 1, y: 1, z: 1}
-  isMinusHalfSizeY: 1
-  startHeight: 2
-  endHeight: 2
-  yOffsetOnDown: 0.5
-  unitState: 0
-  unitType: 2
-  islandID: 0
-  lastPushedDirection: -1
-  gridUnitStaticType: 0
 --- !u!1 &339810135
 GameObject:
   m_ObjectHideFlags: 0
@@ -6510,115 +6402,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f50d17db85074c04a24ff152786bdc14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: cellInUnits
-      Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[_Game.GameGrid.GameGridCell, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 1|_Game.GameGrid.GameGridCell, Assembly-CSharp
-    - Name: OnValueChange
-      Entry: 7
-      Data: 2|System.Action`2[[System.Int32, mscorlib],[System.Int32, mscorlib]],
-        mscorlib
-    - Name: target
-      Entry: 7
-      Data: 3|_Game.Utilities.Grid.Grid`2[[_Game.GameGrid.GameGridCell, Assembly-CSharp],[_Game.GameGrid.GameGridCellData,
-        Assembly-CSharp]], Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: declaringType
-      Entry: 7
-      Data: 4|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: _Game.Utilities.Grid.Grid`2[[_Game.GameGrid.GameGridCell, Assembly-CSharp],[_Game.GameGrid.GameGridCellData,
-        Assembly-CSharp]], Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: methodName
-      Entry: 1
-      Data: OnGridCellValueChange
-    - Name: delegateType
-      Entry: 7
-      Data: 5|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Action`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: signature
-      Entry: 7
-      Data: 6|System.Type[], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 7
-      Data: 7|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Int32, mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 9
-      Data: 7
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: GridPlaneType
-      Entry: 3
-      Data: 1
-    - Name: worldX
-      Entry: 4
-      Data: 35
-    - Name: worldY
-      Entry: 4
-      Data: 31
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-  poolType: 13
-  skin: {fileID: 1640714890}
-  size: {x: 1, y: 1, z: 1}
-  isMinusHalfSizeY: 0
-  startHeight: 2
-  endHeight: 3
-  yOffsetOnDown: 0.5
-  unitState: 0
-  unitType: 2
-  islandID: 1
-  lastPushedDirection: -1
-  gridUnitStaticType: 5
 --- !u!1001 &635790691
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8220,45 +8003,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beff120ae3db48daa9253ccfb0b2fee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: cellInUnits
-      Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[_Game.GameGrid.GameGridCell, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-  poolType: 14
-  skin: {fileID: 1715111709}
-  size: {x: 1, y: 1, z: 1}
-  isMinusHalfSizeY: 0
-  startHeight: 2
-  endHeight: 3
-  yOffsetOnDown: 0
-  unitState: 0
-  unitType: 2
-  islandID: -1
-  lastPushedDirection: -1
-  gridUnitDynamicType: 5
-  anchor: {fileID: 1474307983}
-  isInAction: 0
-  isLockedAction: 0
-  ruleInteractEngine: {fileID: 0}
-  ruleMovingEngine: {fileID: 0}
 --- !u!1 &757389638
 GameObject:
   m_ObjectHideFlags: 0
@@ -8305,121 +8049,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83f84d6863ab4741a6b487dcec4a6f9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: cellInUnits
-      Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[_Game.GameGrid.GameGridCell, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 1|_Game.GameGrid.GameGridCell, Assembly-CSharp
-    - Name: OnValueChange
-      Entry: 7
-      Data: 2|System.Action`2[[System.Int32, mscorlib],[System.Int32, mscorlib]],
-        mscorlib
-    - Name: target
-      Entry: 7
-      Data: 3|_Game.Utilities.Grid.Grid`2[[_Game.GameGrid.GameGridCell, Assembly-CSharp],[_Game.GameGrid.GameGridCellData,
-        Assembly-CSharp]], Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: declaringType
-      Entry: 7
-      Data: 4|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: _Game.Utilities.Grid.Grid`2[[_Game.GameGrid.GameGridCell, Assembly-CSharp],[_Game.GameGrid.GameGridCellData,
-        Assembly-CSharp]], Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: methodName
-      Entry: 1
-      Data: OnGridCellValueChange
-    - Name: delegateType
-      Entry: 7
-      Data: 5|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Action`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: signature
-      Entry: 7
-      Data: 6|System.Type[], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 7
-      Data: 7|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Int32, mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 9
-      Data: 7
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: GridPlaneType
-      Entry: 3
-      Data: 1
-    - Name: worldX
-      Entry: 4
-      Data: 13
-    - Name: worldY
-      Entry: 4
-      Data: 15
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-  poolType: 3
-  skin: {fileID: 771863632}
-  size: {x: 1, y: 1, z: 1}
-  isMinusHalfSizeY: 0
-  startHeight: 2
-  endHeight: 3
-  yOffsetOnDown: 0.6
-  unitState: 0
-  unitType: 2
-  islandID: 0
-  lastPushedDirection: -1
-  gridUnitDynamicType: 0
-  anchor: {fileID: 1488031196}
-  isInAction: 0
-  isLockedAction: 0
-  animator: {fileID: 464585698}
-  direction: -1
-  movingRuleEngine: {fileID: 11400000, guid: bb103cd6ae208a14b81b3a705bc33625, type: 2}
 --- !u!1 &758078162
 GameObject:
   m_ObjectHideFlags: 0
@@ -12824,120 +12453,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bdf23ade02845fabf27eea708001884, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: cellInUnits
-      Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[_Game.GameGrid.GameGridCell, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 1|_Game.GameGrid.GameGridCell, Assembly-CSharp
-    - Name: OnValueChange
-      Entry: 7
-      Data: 2|System.Action`2[[System.Int32, mscorlib],[System.Int32, mscorlib]],
-        mscorlib
-    - Name: target
-      Entry: 7
-      Data: 3|_Game.Utilities.Grid.Grid`2[[_Game.GameGrid.GameGridCell, Assembly-CSharp],[_Game.GameGrid.GameGridCellData,
-        Assembly-CSharp]], Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: declaringType
-      Entry: 7
-      Data: 4|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: _Game.Utilities.Grid.Grid`2[[_Game.GameGrid.GameGridCell, Assembly-CSharp],[_Game.GameGrid.GameGridCellData,
-        Assembly-CSharp]], Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: methodName
-      Entry: 1
-      Data: OnGridCellValueChange
-    - Name: delegateType
-      Entry: 7
-      Data: 5|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Action`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: signature
-      Entry: 7
-      Data: 6|System.Type[], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 7
-      Data: 7|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Int32, mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 9
-      Data: 7
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: GridPlaneType
-      Entry: 3
-      Data: 1
-    - Name: worldX
-      Entry: 4
-      Data: 19
-    - Name: worldY
-      Entry: 4
-      Data: 15
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-  poolType: 4
-  skin: {fileID: 1793913712}
-  size: {x: 1, y: 1, z: 1}
-  isMinusHalfSizeY: 0
-  startHeight: 2
-  endHeight: 3
-  yOffsetOnDown: 0.4
-  unitState: 0
-  unitType: -1
-  islandID: 0
-  lastPushedDirection: -1
-  gridUnitDynamicType: 1
-  anchor: {fileID: 458343772}
-  isInAction: 0
-  isLockedAction: 0
-  ruleMovingEngine: {fileID: 11400000, guid: d3a8732c9648ec840969f32223452cde, type: 2}
-  ruleInteractEngine: {fileID: 11400000, guid: 43a7477c6d114ec44b26ad6fa0b192f9, type: 2}
 --- !u!1 &1272114914
 GameObject:
   m_ObjectHideFlags: 0
@@ -13385,115 +12900,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0c3a12c00534450b98e76bb50f72b10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: cellInUnits
-      Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[_Game.GameGrid.GameGridCell, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 1|_Game.GameGrid.GameGridCell, Assembly-CSharp
-    - Name: OnValueChange
-      Entry: 7
-      Data: 2|System.Action`2[[System.Int32, mscorlib],[System.Int32, mscorlib]],
-        mscorlib
-    - Name: target
-      Entry: 7
-      Data: 3|_Game.Utilities.Grid.Grid`2[[_Game.GameGrid.GameGridCell, Assembly-CSharp],[_Game.GameGrid.GameGridCellData,
-        Assembly-CSharp]], Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: declaringType
-      Entry: 7
-      Data: 4|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: _Game.Utilities.Grid.Grid`2[[_Game.GameGrid.GameGridCell, Assembly-CSharp],[_Game.GameGrid.GameGridCellData,
-        Assembly-CSharp]], Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: methodName
-      Entry: 1
-      Data: OnGridCellValueChange
-    - Name: delegateType
-      Entry: 7
-      Data: 5|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Action`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: signature
-      Entry: 7
-      Data: 6|System.Type[], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 7
-      Data: 7|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Int32, mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 9
-      Data: 7
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: GridPlaneType
-      Entry: 3
-      Data: 1
-    - Name: worldX
-      Entry: 4
-      Data: 17
-    - Name: worldY
-      Entry: 4
-      Data: 13
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-  poolType: 7
-  skin: {fileID: 1130218823}
-  size: {x: 1, y: 1, z: 1}
-  isMinusHalfSizeY: 1
-  startHeight: 2
-  endHeight: 2
-  yOffsetOnDown: 0.5
-  unitState: 0
-  unitType: 2
-  islandID: 0
-  lastPushedDirection: -1
-  gridUnitStaticType: 0
 --- !u!1 &1320726652
 GameObject:
   m_ObjectHideFlags: 0
@@ -13539,115 +12945,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0c3a12c00534450b98e76bb50f72b10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: cellInUnits
-      Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[_Game.GameGrid.GameGridCell, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 1|_Game.GameGrid.GameGridCell, Assembly-CSharp
-    - Name: OnValueChange
-      Entry: 7
-      Data: 2|System.Action`2[[System.Int32, mscorlib],[System.Int32, mscorlib]],
-        mscorlib
-    - Name: target
-      Entry: 7
-      Data: 3|_Game.Utilities.Grid.Grid`2[[_Game.GameGrid.GameGridCell, Assembly-CSharp],[_Game.GameGrid.GameGridCellData,
-        Assembly-CSharp]], Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: declaringType
-      Entry: 7
-      Data: 4|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: _Game.Utilities.Grid.Grid`2[[_Game.GameGrid.GameGridCell, Assembly-CSharp],[_Game.GameGrid.GameGridCellData,
-        Assembly-CSharp]], Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: methodName
-      Entry: 1
-      Data: OnGridCellValueChange
-    - Name: delegateType
-      Entry: 7
-      Data: 5|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Action`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: signature
-      Entry: 7
-      Data: 6|System.Type[], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 7
-      Data: 7|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Int32, mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 9
-      Data: 7
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: GridPlaneType
-      Entry: 3
-      Data: 1
-    - Name: worldX
-      Entry: 4
-      Data: 23
-    - Name: worldY
-      Entry: 4
-      Data: 15
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-  poolType: 8
-  skin: {fileID: 1977416533}
-  size: {x: 1, y: 1, z: 1}
-  isMinusHalfSizeY: 0
-  startHeight: 2
-  endHeight: 3
-  yOffsetOnDown: 0.5
-  unitState: 0
-  unitType: 2
-  islandID: 0
-  lastPushedDirection: -1
-  gridUnitStaticType: 1
 --- !u!1 &1324555491
 GameObject:
   m_ObjectHideFlags: 0
@@ -14764,115 +14061,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0c3a12c00534450b98e76bb50f72b10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: cellInUnits
-      Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[_Game.GameGrid.GameGridCell, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 1|_Game.GameGrid.GameGridCell, Assembly-CSharp
-    - Name: OnValueChange
-      Entry: 7
-      Data: 2|System.Action`2[[System.Int32, mscorlib],[System.Int32, mscorlib]],
-        mscorlib
-    - Name: target
-      Entry: 7
-      Data: 3|_Game.Utilities.Grid.Grid`2[[_Game.GameGrid.GameGridCell, Assembly-CSharp],[_Game.GameGrid.GameGridCellData,
-        Assembly-CSharp]], Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: declaringType
-      Entry: 7
-      Data: 4|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: _Game.Utilities.Grid.Grid`2[[_Game.GameGrid.GameGridCell, Assembly-CSharp],[_Game.GameGrid.GameGridCellData,
-        Assembly-CSharp]], Assembly-CSharp
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: methodName
-      Entry: 1
-      Data: OnGridCellValueChange
-    - Name: delegateType
-      Entry: 7
-      Data: 5|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Action`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: signature
-      Entry: 7
-      Data: 6|System.Type[], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 7
-      Data: 7|System.RuntimeType, mscorlib
-    - Name: 
-      Entry: 1
-      Data: System.Int32, mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 9
-      Data: 7
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: GridPlaneType
-      Entry: 3
-      Data: 1
-    - Name: worldX
-      Entry: 4
-      Data: 21
-    - Name: worldY
-      Entry: 4
-      Data: 31
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-  poolType: 7
-  skin: {fileID: 1099021647}
-  size: {x: 1, y: 1, z: 1}
-  isMinusHalfSizeY: 1
-  startHeight: 2
-  endHeight: 2
-  yOffsetOnDown: 0.5
-  unitState: 0
-  unitType: 2
-  islandID: 0
-  lastPushedDirection: -1
-  gridUnitStaticType: 0
 --- !u!1 &1405925365
 GameObject:
   m_ObjectHideFlags: 0
@@ -16550,7 +15738,7 @@ Transform:
   - {fileID: 627602042}
   - {fileID: 748847086}
   m_Father: {fileID: 138760512}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &1552975948
 TilemapRenderer:
@@ -17793,7 +16981,7 @@ Transform:
   - {fileID: 1589298640}
   - {fileID: 314347740}
   m_Father: {fileID: 138760512}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &1661734940
 TilemapRenderer:
@@ -18074,6 +17262,103 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6317968097269191130, guid: c5ac8e7a10732714484e1939591f41c0, type: 3}
   m_PrefabInstance: {fileID: 1668774938}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1677783668
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1677783669}
+  - component: {fileID: 1677783672}
+  - component: {fileID: 1677783671}
+  - component: {fileID: 1677783670}
+  m_Layer: 0
+  m_Name: 0-0-Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1677783669
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677783668}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -11, y: 0, z: -11}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 138760512}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1677783670
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677783668}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1677783671
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677783668}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: b558f0e1c612b62418a8707d7d57850c, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1677783672
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677783668}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1686480380
 GameObject:
   m_ObjectHideFlags: 0
@@ -23064,6 +22349,10 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 265177690407606798, guid: 45e143c6a4bb70d418b3554173cdfb32, type: 3}
+    - target: {fileID: 4192934788410237493, guid: 45e143c6a4bb70d418b3554173cdfb32, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 4192934788410237493, guid: 45e143c6a4bb70d418b3554173cdfb32, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45e143c6a4bb70d418b3554173cdfb32, type: 3}
 --- !u!4 &1680276917088235561 stripped
