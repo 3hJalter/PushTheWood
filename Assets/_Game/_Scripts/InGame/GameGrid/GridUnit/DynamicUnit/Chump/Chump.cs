@@ -23,9 +23,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
         public Chump TriggerChump => _triggerChump;
         public Raft.Raft RaftPrefab => raftPrefab;
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
-            bool isUseInitData = true)
+            bool isUseInitData = true, Direction skinDirection = Direction.None)
         {
-            base.OnInit(mainCellIn, startHeightIn, isUseInitData);
+            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection);
             if (!_isAddState)
             {
                 _isAddState = true;

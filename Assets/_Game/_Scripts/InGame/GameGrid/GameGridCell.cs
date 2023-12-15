@@ -126,7 +126,7 @@ namespace _Game.GameGrid
         
         public void DestroyGridUnits()
         {
-            for (int i = (int)Constants.dirFirstHeightOfSurface[data.gridSurfaceType]; i < data.gridUnits.Length; i++)
+            for (int i = (int)Constants.DirFirstHeightOfSurface[data.gridSurfaceType]; i < data.gridUnits.Length; i++)
             {
                 if (data.gridUnits[i] is not null)
                 {

@@ -183,7 +183,7 @@ namespace _Game.GameGrid.Unit
             GameGridCell cell, Direction direction, int distance = 1)
         {
             Vector2Int cellPos = cell.GetCellPosition();
-            Vector2Int dir = Constants.dirVector[direction];
+            Vector2Int dir = Constants.DirVector[direction];
             Vector2Int neighbourPos = cellPos + dir * distance;
             Debug.Log(neighbourPos);
 

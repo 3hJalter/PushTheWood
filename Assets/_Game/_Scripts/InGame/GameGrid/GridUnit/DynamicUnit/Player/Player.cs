@@ -56,9 +56,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             _currentState?.OnExecute(this);
         }
 
-        public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true)
+        public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
+            bool isUseInitData = true, Direction skinDirection = Direction.None)
         {
-            base.OnInit(mainCellIn, startHeightIn, isUseInitData);
+            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection);
             if (!_isAddState)
             {
                 _isAddState = true;

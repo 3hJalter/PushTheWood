@@ -13,9 +13,10 @@ namespace _Game.GameGrid.Unit.StaticUnit
         [SerializeField] public Chump chumpPrefab;
         [SerializeField] private Canvas cutTreeCanvas;
 
-        public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true)
+        public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, 
+            bool isUseInitData = true, Direction skinDirection = Direction.None)
         {
-            base.OnInit(mainCellIn, startHeightIn, isUseInitData);
+            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection);
             cutTreeCanvas.worldCamera = CameraFollow.Ins.MainCamera;
         }
 
