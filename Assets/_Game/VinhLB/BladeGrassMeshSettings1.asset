@@ -22,5 +22,5 @@ MonoBehaviour:
   maxBendAngle: 30
   width: 0.25
   widthVariance: 0.025
-  height: 0.75
-  heightVariance: 0.15
+  height: 0.5
+  heightVariance: 0.1

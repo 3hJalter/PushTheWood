@@ -296,7 +296,7 @@ GameObject:
   - component: {fileID: 6103730369866434205}
   - component: {fileID: 4051681829205825387}
   m_Layer: 0
-  m_Name: BladeGrassMeshNew
+  m_Name: BladeGrassMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

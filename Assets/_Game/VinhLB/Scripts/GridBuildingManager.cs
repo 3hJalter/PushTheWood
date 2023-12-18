@@ -1,4 +1,3 @@
-using System;
 using _Game.Camera;
 using _Game.DesignPattern;
 using _Game.GameGrid;
