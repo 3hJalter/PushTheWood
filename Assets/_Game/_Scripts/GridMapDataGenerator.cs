@@ -3,7 +3,6 @@ using System.IO;
 using _Game.GameGrid;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
-using _Game.GameGrid.Unit.DynamicUnit;
 using _Game.Utilities.Grid;
 using UnityEngine;
 
@@ -18,13 +17,30 @@ public class GridMapDataGenerator : MonoBehaviour
     private GridSurface[,] _gridSurfaceMap;
 
     // Test Init GridUnit
-    private PlayerUnit _pUnit;
     private TextGridData _textGridData;
     private void Start()
     {
         TextAsset gridData = Resources.Load<TextAsset>(mapLevelName);
         TextGridData textGridData = GameGridDataHandler.CreateGridData2(gridData);
         // GenerateMap();
+    }
+
+    [SerializeField] private Transform surfaceContainer;
+    [SerializeField] private Transform unitContainer;
+    
+    [ContextMenu("Set All GroundSurface to Ground Parent and GroundUnit to Unit Parent")]
+    private void SetSurfaceAndUnitToParent()
+    {
+        GridSurface[] gridSurfaces = FindObjectsOfType<GridSurface>();
+        foreach (GridSurface gridSurface in gridSurfaces)
+        {
+            gridSurface.Tf.parent = surfaceContainer;
+        }
+        GridUnit[] gridUnits = FindObjectsOfType<GridUnit>();
+        foreach (GridUnit gridUnit in gridUnits)
+        {
+            gridUnit.Tf.parent = unitContainer;
+        }
     }
     
     [ContextMenu("Save Data as txt file")]

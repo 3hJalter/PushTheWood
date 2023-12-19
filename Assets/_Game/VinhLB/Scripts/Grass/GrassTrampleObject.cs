@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,19 +15,26 @@ namespace VinhLB
 
         public float TrampleRadius => _trampleRadius;
 
+        private GrassTrampleFeature _feature;
+
+        private void Awake()
+        {
+            Utilities.TryGetRendererFeature<GrassTrampleFeature>(_rendererData, out _feature);
+        }
+
         private void OnEnable()
         {
-            if (Utilities.TryGetRendererFeature<GrassTrampleFeature>(_rendererData, out GrassTrampleFeature feature))
+            if (_feature != null)
             {
-                feature.AddTrackedTrampleObject(this);
+                _feature.AddTrackedTrampleObject(this);
             }
         }
         
         private void OnDisable()
         {
-            if (Utilities.TryGetRendererFeature<GrassTrampleFeature>(_rendererData, out GrassTrampleFeature feature))
+            if (_feature != null)
             {
-                feature.RemoveTrackedTrampleObject(this);
+                _feature.RemoveTrackedTrampleObject(this);
             }
         }
     } 

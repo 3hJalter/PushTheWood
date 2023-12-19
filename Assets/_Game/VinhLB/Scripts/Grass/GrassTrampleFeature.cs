@@ -41,7 +41,7 @@ namespace VinhLB
 
         [SerializeField]
         private int _maxTrackedTransform = 8;
-
+        
         private List<GrassTrampleObject> _trackingTrampleObjectList;
         private Vector4[] _tramplePositionArray;
         private float[] _trampleRadiusArray;
@@ -91,6 +91,11 @@ namespace VinhLB
         public void RemoveTrackedTrampleObject(GrassTrampleObject obj)
         {
             _trackingTrampleObjectList.Remove(obj);
+        }
+
+        public void ResetTrackedTrampleList()
+        {
+            _trackingTrampleObjectList.Clear();
         }
     }
 }

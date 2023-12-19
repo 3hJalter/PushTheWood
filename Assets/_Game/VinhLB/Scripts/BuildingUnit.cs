@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    public class BuildingUnit : GridUnit
+    public class BuildingUnit : GridUnitStatic
     {
-        public override void OnInteract(Direction direction, GridUnit interactUnit = null)
-        {
-            base.OnInteract(direction, interactUnit);
-            
-            Debug.Log($"Interact with {gameObject.name}");
-        }
+        // public override void OnInteract(Direction direction, GridUnit interactUnit = null)
+        // {
+        //     base.OnInteract(direction, interactUnit);
+        //     
+        //     Debug.Log($"Interact with {gameObject.name}");
+        // }
     }
 }

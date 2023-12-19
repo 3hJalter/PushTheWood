@@ -24,7 +24,7 @@
 #ifndef GRASS_TRAMPLE_INCLUDED
 #define GRASS_TRAMPLE_INCLUDED
 
-#define MAX_SIZE 8
+#define MAX_SIZE 64
 
 // Trample global variables
 float _NumGrassTramplePositions;

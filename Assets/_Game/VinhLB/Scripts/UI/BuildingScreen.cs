@@ -27,7 +27,7 @@ namespace VinhLB
         private BuildingItem _buildingItemPrefab;
         [SerializeField]
         private Transform _contentTransform;
-
+        
         private void Start()
         {
             _buildModeToggleButton.onClick.AddListener(() =>

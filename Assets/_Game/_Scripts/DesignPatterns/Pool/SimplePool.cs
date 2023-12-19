@@ -109,7 +109,7 @@ namespace _Game.DesignPattern
             return PoolInstanceID[obj.GetInstanceID()].Spawn();
         }
 
-        public static void Despawn(GameUnit obj)
+        public static void Despawn(this GameUnit obj)
         {
             if (obj.gameObject.activeSelf)
             {
@@ -120,7 +120,7 @@ namespace _Game.DesignPattern
             }
         }
 
-        public static void Release(GameUnit obj)
+        public static void Release(this GameUnit obj)
         {
             if (Pools.ContainsKey(obj.GetInstanceID()))
             {
@@ -133,7 +133,7 @@ namespace _Game.DesignPattern
             }
         }
         
-        public static void ReleaseImmediate(GameUnit obj)
+        public static void ReleaseImmediate(this GameUnit obj)
         {
             if (Pools.ContainsKey(obj.GetInstanceID()))
             {
@@ -146,7 +146,7 @@ namespace _Game.DesignPattern
             }
         }
 
-        public static void Collect(GameUnit obj)
+        public static void Collect(this GameUnit obj)
         {
             if (PoolInstanceID.ContainsKey(obj.GetInstanceID()))
                 PoolInstanceID[obj.GetInstanceID()].Collect();
@@ -314,6 +314,9 @@ namespace _Game.DesignPattern
         TreeShort = 10,
         TreeHigh = 11,
         FinalPoint = 13,
+        Box = 14,
+        Bomb = 15,
+
         // Grid Unit Placed Object
         HouseMain = 50,
         Fence = 51,
