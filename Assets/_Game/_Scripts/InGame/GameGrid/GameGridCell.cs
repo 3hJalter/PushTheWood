@@ -88,7 +88,7 @@ namespace _Game.GameGrid
             return maxHeight;
         }
         
-        public List<GameGridCell> GetCellsInsideUnitExceptMain(Grid<GameGridCell, GameGridCellData> grid,
+        public List<GameGridCell> GetCellsInsideUnit(Grid<GameGridCell, GameGridCellData> grid,
             int width, int height, Direction direction)
         {
             List<GameGridCell> gameGridCellList = new List<GameGridCell>();

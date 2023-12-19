@@ -98,6 +98,8 @@ namespace _Game.GameGrid
             _pUnit.OnDespawn();
             _pUnit = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
             _pUnit.OnInit(_firstPlayerInitCell);
+            
+            // FxManager.Ins.ResetTrackedTrampleObjectList();
         }
 
         public GameGridCell GetCell(Vector2Int position)

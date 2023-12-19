@@ -11,7 +11,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         protected override void OnInteractBtnClick()
         {
             ShowAnim(true);
-            LevelManager.Ins.OnWin();
+            DOVirtual.DelayedCall(1f, () => LevelManager.Ins.OnWin());
         }
 
         public override void OnDespawn()
@@ -24,7 +24,11 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             chestAnimator.gameObject.SetActive(isShow);
             chestModel.SetActive(!isShow);
-            if (isShow) chestAnimator.SetTrigger(Constants.OPEN_ANIM);
+            if (isShow)
+            {
+                chestAnimator.SetTrigger(Constants.OPEN_ANIM);
+                btnCanvas.gameObject.SetActive(false);
+            }
         }
         
     }

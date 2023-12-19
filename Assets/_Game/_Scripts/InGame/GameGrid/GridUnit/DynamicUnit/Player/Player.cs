@@ -36,7 +36,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         #endregion
 
-        private Direction _direction;
+        private Direction _direction = Direction.None;
         
         public Direction Direction => _direction;
 

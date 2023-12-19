@@ -13,6 +13,7 @@ struct Attributes
     float3 normalOS : NORMAL;
     float2 uv : TEXCOORD0;
     float3 bladeAnchorOS : TEXCOORD1;
+    float3 shadowCastNormalOS : TEXCOORD2;
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
@@ -42,6 +43,8 @@ CBUFFER_START(UnityPerMaterial)
     float _TrampleFalloff;
     float _TramplePushStrength;
     float _TrampleSquishStrength;
+
+    float _ShadowLightness;
 CBUFFER_END
 
 // Vertex functions
@@ -94,7 +97,8 @@ VertexOutput Vertex(Attributes input)
     output.positionWS = positionWS;
     output.normalWS = normalWS;
     output.uv = input.uv;
-    output.positionCS = TransformWorldToHClip(positionWS);
+    output.positionCS = CalculatePositionCSWithShadowCasterLogic(positionWS,
+        GetVertexNormalInputs(input.shadowCastNormalOS).normalWS);
 
     return output;
 }
@@ -105,6 +109,9 @@ half4 Fragment(VertexOutput input) : SV_Target
 {
     UNITY_SETUP_INSTANCE_ID(input);
 
+#ifdef SHADOW_CASTER_PASS
+    return 0;
+#else
     // Gather some data for the lighting algorithm
     InputData lightingInput = (InputData)0;
     lightingInput.positionWS = input.positionWS;
@@ -116,11 +123,16 @@ half4 Fragment(VertexOutput input) : SV_Target
     float colorLerp = input.uv.y;
     float3 albedo = lerp(_BaseColor.rgb, _TipColor.rgb, colorLerp);
     SurfaceData surfaceData = (SurfaceData)0;
-    surfaceData.albedo = albedo;
+    surfaceData.albedo = albedo * (1 - _ShadowLightness);
+    surfaceData.specular = 1;
+    surfaceData.smoothness = 0;
+    surfaceData.emission = albedo * _ShadowLightness;
+    surfaceData.alpha = 1;
 
     // The URP simple lit algorithm
     // The arguments are lighting input data, albedo color, specular color, smoothness, emission color and alpha
     return UniversalFragmentBlinnPhong(lightingInput, surfaceData);
+#endif
 }
 
 #endif

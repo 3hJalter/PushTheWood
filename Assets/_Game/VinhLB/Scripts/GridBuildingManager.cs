@@ -1,4 +1,3 @@
-using System;
 using _Game.Camera;
 using _Game.DesignPattern;
 using _Game.GameGrid;
@@ -111,6 +110,10 @@ namespace VinhLB
 
             if (_isOnBuildingMode)
             {
+                if (_homeGrid != LevelManager.Ins.GridMap)
+                {
+                    _homeGrid = LevelManager.Ins.GridMap;
+                }
                 _isAnyChanged = false;
                 Utilities.TryGetCenterScreenPosition(out _lastMousePosition, _placeableLayerMask);
             }
@@ -183,7 +186,7 @@ namespace VinhLB
 
             bool canBuild = true;
             GameGridCell gameGridCell = _homeGrid.GetGridCell(_lastMousePosition);
-            List<GameGridCell> neighborCellList = gameGridCell.GetCellsInsideUnitExceptMain(_homeGrid,
+            List<GameGridCell> neighborCellList = gameGridCell.GetCellsInsideUnit(_homeGrid,
                 _currentBuildingUnitData.Width, _currentBuildingUnitData.Height, _currentDirection);
             for (int i = 0; i < neighborCellList.Count; i++)
             {

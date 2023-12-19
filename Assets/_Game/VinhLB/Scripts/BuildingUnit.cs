@@ -7,11 +7,11 @@ namespace VinhLB
 {
     public class BuildingUnit : GridUnitStatic
     {
-        public static BuildingUnit Create(BuildingUnitData buildingUnitData)
-        {
-            BuildingUnit unit = Instantiate(buildingUnitData.Prefab);
-
-            return unit;
-        }
+        // public override void OnInteract(Direction direction, GridUnit interactUnit = null)
+        // {
+        //     base.OnInteract(direction, interactUnit);
+        //     
+        //     Debug.Log($"Interact with {gameObject.name}");
+        // }
     }
 }
