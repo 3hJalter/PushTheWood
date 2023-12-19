@@ -39,11 +39,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         private Direction _direction = Direction.None;
         
         public Direction Direction => _direction;
-
+        public float AnimSpeed => animator.speed;
 
         private bool _isWaitAFrame;
-        
-        private void FixedUpdate()
+        private void Update()
         {
             if (_isWaitAFrame)
             {
@@ -54,6 +53,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             }
             _isWaitAFrame = true;
             _currentState?.OnExecute(this);
+        }
+
+        private void FixedUpdate()
+        {
+            
         }
 
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
@@ -114,6 +118,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             animator.ResetTrigger(_currentAnim);
             _currentAnim = animName;
             animator.SetTrigger(_currentAnim);
+        }
+        public void SetAnimSpeed(float rate)
+        {
+            animator.speed = rate;
         }
         
         public bool IsAnimDone(float time = 1)
