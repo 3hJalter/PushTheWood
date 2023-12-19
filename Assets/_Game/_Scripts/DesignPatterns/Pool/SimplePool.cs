@@ -25,13 +25,9 @@ namespace _Game.DesignPattern
         {
             get
             {
-                if (_root == null)
-                {
-                    _root = Object.FindObjectOfType<PoolController>().transform;
-
-                    if (_root == null) _root = new GameObject(PATH).transform;
-                }
-
+                if (_root is not null) return _root;
+                _root = Object.FindObjectOfType<PoolController>().transform;
+                if (_root == null) _root = new GameObject(PATH).transform;
                 return _root;
             }
         }
@@ -39,7 +35,7 @@ namespace _Game.DesignPattern
         private static void Init(GameUnit prefab = null, int qty = DEFAULT_POOL_SIZE, Transform parent = null,
             bool collect = false, bool clamp = false)
         {
-            if (prefab != null && !IsHasPool(prefab.GetInstanceID()))
+            if (prefab is not null && !IsHasPool(prefab.GetInstanceID()))
                 PoolInstanceID.Add(prefab.GetInstanceID(), new Pool(prefab, qty, parent, collect, clamp));
         }
 
@@ -55,7 +51,7 @@ namespace _Game.DesignPattern
 
             if (prefab == null)
             {
-                if (parent != null) Debug.LogError(parent.name + " : IS EMPTY!!!");
+                if (parent is not null) Debug.LogError(parent.name + " : IS EMPTY!!!");
                 return;
             }
 
@@ -89,7 +85,7 @@ namespace _Game.DesignPattern
             return Spawn(obj) as T;
         }
 
-        public static GameUnit Spawn(GameUnit obj, Vector3 pos, Quaternion rot)
+        private static GameUnit Spawn(GameUnit obj, Vector3 pos, Quaternion rot)
         {
             if (!PoolInstanceID.ContainsKey(obj.GetInstanceID()))
             {
@@ -101,7 +97,7 @@ namespace _Game.DesignPattern
             return PoolInstanceID[obj.GetInstanceID()].Spawn(pos, rot);
         }
 
-        public static GameUnit Spawn(GameUnit obj)
+        private static GameUnit Spawn(GameUnit obj)
         {
             if (!PoolInstanceID.ContainsKey(obj.GetInstanceID()))
             {
@@ -113,7 +109,7 @@ namespace _Game.DesignPattern
             return PoolInstanceID[obj.GetInstanceID()].Spawn();
         }
 
-        public static void Despawn(GameUnit obj)
+        public static void Despawn(this GameUnit obj)
         {
             if (obj.gameObject.activeSelf)
             {
@@ -124,7 +120,7 @@ namespace _Game.DesignPattern
             }
         }
 
-        public static void Release(GameUnit obj)
+        public static void Release(this GameUnit obj)
         {
             if (Pools.ContainsKey(obj.GetInstanceID()))
             {
@@ -137,7 +133,7 @@ namespace _Game.DesignPattern
             }
         }
         
-        public static void ReleaseImmediate(GameUnit obj)
+        public static void ReleaseImmediate(this GameUnit obj)
         {
             if (Pools.ContainsKey(obj.GetInstanceID()))
             {
@@ -150,7 +146,7 @@ namespace _Game.DesignPattern
             }
         }
 
-        public static void Collect(GameUnit obj)
+        public static void Collect(this GameUnit obj)
         {
             if (PoolInstanceID.ContainsKey(obj.GetInstanceID()))
                 PoolInstanceID[obj.GetInstanceID()].Collect();
@@ -292,7 +288,7 @@ namespace _Game.DesignPattern
     }
 
     [Serializable]
-    public class PoolAmount
+    public struct PoolAmount
     {
         [Header("-- Pool Amount --")] public Transform root;
 
@@ -305,10 +301,6 @@ namespace _Game.DesignPattern
     public enum PoolType
     {
         None = -1,
-        // Grid Surface
-        SurfaceWater = 0,
-        SurfaceGround = 1,
-        SurfaceGroundTut = 2,
         // Grid Unit Dynamic
         Player = 3,
         ChumpShort = 4,
@@ -322,7 +314,57 @@ namespace _Game.DesignPattern
         TreeShort = 10,
         TreeHigh = 11,
         FinalPoint = 13,
+        Box = 14,
+        Bomb = 15,
 
+        // Grid Unit Placed Object
+        HouseMain = 50,
+        Fence = 51,
+        StationFishing = 52,
 
+        // From 100 -> Grid Surface List
+        SurfaceWater = 100,
+        // Medium Ground Surface
+        SurfaceGround = 101,
+        SurfaceGroundTop = 102,
+        SurfaceGroundBottom = 103,
+        SurfaceGroundLeft = 104,
+        SurfaceGroundRight = 105,
+        SurfaceGroundConnectTopLeft = 106,
+        SurfaceGroundConnectTopRight = 107,
+        SurfaceGroundConnectBottomLeft = 108,
+        SurfaceGroundConnectBottomRight = 109,
+        SurfaceGroundCornerTopLeft = 110,
+        SurfaceGroundCornerTopRight = 111,
+        SurfaceGroundCornerBottomLeft = 112,
+        SurfaceGroundCornerBottomRight = 113,
+        // Light Ground Surface
+        SurfaceGroundLight = 114,
+        SurfaceGroundLightTop = 115,
+        SurfaceGroundLightBottom = 116,
+        SurfaceGroundLightLeft = 117,
+        SurfaceGroundLightRight = 118,
+        SurfaceGroundLightConnectTopLeft = 119,
+        SurfaceGroundLightConnectTopRight = 120,
+        SurfaceGroundLightConnectBottomLeft = 121,
+        SurfaceGroundLightConnectBottomRight = 122,
+        SurfaceGroundLightCornerTopLeft = 123,
+        SurfaceGroundLightCornerTopRight = 124,
+        SurfaceGroundLightCornerBottomLeft = 125,
+        SurfaceGroundLightCornerBottomRight = 126,
+        // Dark Ground Surface
+        SurfaceGroundDark = 127,
+        SurfaceGroundDarkTop = 128,
+        SurfaceGroundDarkBottom = 129,
+        SurfaceGroundDarkLeft = 130,
+        SurfaceGroundDarkRight = 131,
+        SurfaceGroundDarkConnectTopLeft = 132,
+        SurfaceGroundDarkConnectTopRight = 133,
+        SurfaceGroundDarkConnectBottomLeft = 134,
+        SurfaceGroundDarkConnectBottomRight = 135,
+        SurfaceGroundDarkCornerTopLeft = 136,
+        SurfaceGroundDarkCornerTopRight = 137,
+        SurfaceGroundDarkCornerBottomLeft = 138,
+        SurfaceGroundDarkCornerBottomRight = 139,
     }
 }

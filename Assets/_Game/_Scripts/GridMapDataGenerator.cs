@@ -1,14 +1,9 @@
 using System;
 using System.IO;
-using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.GameGrid.GridSurface;
-using _Game.GameGrid.GridUnit;
-using _Game.GameGrid.GridUnit.DynamicUnit;
-using _Game.Managers;
+using _Game.GameGrid.Unit;
 using _Game.Utilities.Grid;
-using GameGridEnum;
-using MapEnum;
 using UnityEngine;
 
 public class GridMapDataGenerator : MonoBehaviour
@@ -22,7 +17,6 @@ public class GridMapDataGenerator : MonoBehaviour
     private GridSurface[,] _gridSurfaceMap;
 
     // Test Init GridUnit
-    private PlayerUnit _pUnit;
     private TextGridData _textGridData;
     private void Start()
     {
@@ -31,80 +25,21 @@ public class GridMapDataGenerator : MonoBehaviour
         // GenerateMap();
     }
 
-    private void GenerateMap()
+    [SerializeField] private Transform surfaceContainer;
+    [SerializeField] private Transform unitContainer;
+    
+    [ContextMenu("Set All GroundSurface to Ground Parent and GroundUnit to Unit Parent")]
+    private void SetSurfaceAndUnitToParent()
     {
-        // Get gridData.txt from Assets/_Game/Resources/gridData.txt
-        TextAsset gridData = Resources.Load<TextAsset>(mapLevelName);
-        // Split the text into two parts: surfaceData and unitData by @
-        string[] gridDataSplit = gridData.text.Split('@');
-        // Split surfaceData into lines
-        string[] surfaceData = gridDataSplit[0].Split('\n');
-        // remove the last line
-        Array.Resize(ref surfaceData, surfaceData.Length - 1);
-        // Split unitData into lines
-        string[] unitData = gridDataSplit[1].Split('\n');
-        // remove the first line
-        Array.Copy(unitData, 1, unitData, 0, unitData.Length - 1);
-        // remove the last line
-        Array.Resize(ref unitData, unitData.Length - 2);
-        // Get the maximum x and z position of gridSurface
-        _gridSizeX = surfaceData.Length;
-        _gridSizeY = surfaceData[0].Split(' ').Length;
-        _gridSurfaceMap = new GridSurface[_gridSizeX, _gridSizeY];
-        // Create GridMap
-        _gridMap = new Grid<GameGridCell, GameGridCellData>(_gridSizeX, _gridSizeY, Constants.CELL_SIZE, transform.position,
-            () => new GameGridCell(), GridPlane.XZ);
-        _debugGrid = new Grid<GameGridCell, GameGridCellData>.DebugGrid();
-        _debugGrid.DrawGrid(_gridMap);
-        // Spawn GridSurface
-        SpawnGridSurfaceToGrid(surfaceData);
-        // Spawn GridUnit
-        SpawnGridUnitToGrid(unitData);
-    }
-
-    private void SpawnGridUnitToGrid(string[] unitData)
-    {
-        for (int x = 0; x < _gridSizeY; x++)
+        GridSurface[] gridSurfaces = FindObjectsOfType<GridSurface>();
+        foreach (GridSurface gridSurface in gridSurfaces)
         {
-            string[] unitDataSplit = unitData[x].Split(' ');
-            for (int y = 0; y < _gridSizeY; y++)
-            {
-                if (!int.TryParse(unitDataSplit[y], out int cell)) continue;
-                if (Enum.IsDefined(typeof(GridUnitDynamicType), cell))
-                {
-                    GridUnitDynamic gridUnitDynamic = DataManager.Ins.GetGridUnitDynamic((GridUnitDynamicType)cell);
-                    if (gridUnitDynamic is null) continue;
-                    GameGridCell gridCell = _gridMap.GetGridCell(x, y);
-                    SimplePool.Spawn<GridUnitDynamic>(gridUnitDynamic).OnInit(gridCell);
-                } else if (Enum.IsDefined(typeof(GridUnitStaticType), cell))
-                {
-                    GridUnitStatic gridUnitStatic = DataManager.Ins.GetGridUnitStatic((GridUnitStaticType)cell);
-                    if (gridUnitStatic is null) continue;
-                    GameGridCell gridCell = _gridMap.GetGridCell(x, y);
-                   SimplePool.Spawn<GridUnitStatic>(gridUnitStatic).OnInit(gridCell);
-                }
-            }
+            gridSurface.Tf.parent = surfaceContainer;
         }
-    }
-
-    private void SpawnGridSurfaceToGrid(string[] surfaceData)
-    {
-        
-        for (int x = 0; x < _gridSizeX; x++)
+        GridUnit[] gridUnits = FindObjectsOfType<GridUnit>();
+        foreach (GridUnit gridUnit in gridUnits)
         {
-            string[] surfaceDataSplit = surfaceData[x].Split(' ');
-            for (int y = 0; y < _gridSizeY; y++)
-            {
-                if (!int.TryParse(surfaceDataSplit[y], out int cell)) continue;
-                if (!Enum.IsDefined(typeof(GridSurfaceType), cell)) continue;
-                GridSurface gridSurface = DataManager.Ins.GetGridSurface((GridSurfaceType)cell);
-                if (gridSurface is null) continue;
-                GameGridCell gridCell = _gridMap.GetGridCell(x, y);
-                gridCell.SetSurface(
-                    SimplePool.Spawn<GridSurface>(gridSurface,
-                        new Vector3(gridCell.WorldX, 0, gridCell.WorldY), Quaternion.identity));
-                _gridSurfaceMap[x, y] = gridCell.Data.gridSurface;
-            }
+            gridUnit.Tf.parent = unitContainer;
         }
     }
     
@@ -191,7 +126,7 @@ public class GridMapDataGenerator : MonoBehaviour
             Vector3 position = gridSurface.Tf.position;
             int x = (int)(position.x + 1) / 2;
             int z = (int)(position.z + 1) / 2;
-            gridData[x - 1, z - 1] = (int)gridSurface.PoolType;
+            gridData[x - 1, z - 1] = (int)gridSurface.poolType;
         }
 
         // Save the array as txt file in Resources folder
@@ -228,12 +163,7 @@ public class GridMapDataGenerator : MonoBehaviour
                 // Remove the file
                 return;
             }
-            gridData[x - 1, z - 1] = gridUnit switch
-            {
-                GridUnitDynamic { PoolType: not null } gridUnitDynamic => (int)gridUnitDynamic.PoolType,
-                GridUnitStatic { PoolType: not null } gridUnitStatic => (int)gridUnitStatic.PoolType,
-                _ => gridData[x - 1, z - 1]
-            };
+            gridData[x - 1, z - 1] = (int) gridUnit.poolType;
         }
 
         // Write a @ to separate
@@ -246,7 +176,41 @@ public class GridMapDataGenerator : MonoBehaviour
             line = line.Remove(line.Length - 1);
             file.WriteLine(line);
         }
-        file.Close();
         Debug.Log("Save unit: Complete");
+        
+        // Reset the array to all -1
+        for (int i = 0; i < maxX; i++)
+        for (int j = 0; j < maxZ; j++)
+            gridData[i, j] = -1;
+        // Handle gridUnitRotationDirection
+        foreach (GridUnit gridUnit in gridUnits)
+        {
+            Vector3 position = gridUnit.Tf.position;
+            int x = (int)(position.x + 1) / 2;
+            int z = (int)(position.z + 1) / 2;
+            // if x or z larger than size of array, return 
+            if (x > maxX || z > maxZ)
+            {
+                Debug.LogError("Grid Unit must be on Grid Surface");
+                // Close the file then delete it
+                file.Close();
+                File.Delete(path);
+                // Remove the file
+                return;
+            }
+            gridData[x - 1, z - 1] = (int) gridUnit.SkinRotationDirection;
+        }
+        // Write a @ to separate
+        file.WriteLine("@");
+        // Save the array as txt file in Resources folder
+        for (int i = 0; i < maxX; i++)
+        {
+            string line = "";
+            for (int j = 0; j < maxZ; j++) line += gridData[i, j] + " ";
+            line = line.Remove(line.Length - 1);
+            file.WriteLine(line);
+        }
+        file.Close();
+        Debug.Log("Save unit rotation: Complete");
     }
 }

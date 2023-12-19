@@ -63,6 +63,13 @@ namespace _Game.Utilities.Grid
             return GetUnitVector3(x, y) * CellSize + originPosition;
         }
 
+        public Vector3 GetWorldPosition(Vector3 worldPosition)
+        {
+            (int x, int y) = GetGridPosition(worldPosition);
+
+            return GetUnitVector3(x, y) * CellSize + originPosition;
+        }
+
         public (int, int) GetGridPosition(Vector3 worldPosition)
         {
             Vector3 realPos = worldPosition - originPosition;

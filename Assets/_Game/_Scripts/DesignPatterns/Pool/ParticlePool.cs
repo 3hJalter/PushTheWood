@@ -175,7 +175,7 @@ namespace _Game.DesignPattern
     }
 
     [Serializable]
-    public class ParticleAmount
+    public struct ParticleAmount
     {
         public ParticleSystem prefab;
         public int amount;

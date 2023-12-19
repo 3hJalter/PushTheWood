@@ -7,7 +7,6 @@ namespace _Game.GameGrid.GridSurface
     public abstract class GridSurface : GameUnit
     {
         [SerializeField] protected GridSurfaceType surfaceType;
-        public PoolType PoolType => ConvertToPoolType(surfaceType);
         [SerializeField] private int islandID = -1;
 
         public int IslandID
@@ -26,8 +25,5 @@ namespace _Game.GameGrid.GridSurface
             islandID = -1;
             SimplePool.Despawn(this);
         }
-
-        public virtual void OnUnitEnter(GridUnit.GridUnit gridUnit)
-        { }
     }
 }

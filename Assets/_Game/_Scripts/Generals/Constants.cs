@@ -34,7 +34,16 @@ public static class Constants
     public const string INIT_ANIM = " ";
 
     public const string IDLE_ANIM = "idle";
-    public const string WALK_ANIM = "walk";
+    public const string MOVE_ANIM = "move";
+    public const string JUMP_UP_ANIM = "jumpUp";
+    public const string JUMP_DOWN_ANIM = "jumpDown";
+    public const string INTERACT_ANIM = "interact";
+    public const string PUSH_ANIM = "push";
+    public const string CUT_TREE_ANIM = "cutTree";
+    public const string FALLING_ANIM = "falling";
+    public const string DIE_ANIM = "die";
+    public const string HAPPY_ANIM = "happy";
+    public const string OPEN_ANIM = "open";
 
     /// <summary>
     ///     UI Animation Trigger
@@ -51,10 +60,11 @@ public static class Constants
     public const float MOVING_TIME = 0.25f;
     public const float FALLING_TIME = 0.2f;
     
-    public static readonly HeightLevel maxHeight = (HeightLevel)(Enum.GetValues(typeof(HeightLevel)).Length - 1);
+    public static readonly HeightLevel MaxHeight = (HeightLevel)(Enum.GetValues(typeof(HeightLevel)).Length - 1);
     public const HeightLevel MIN_HEIGHT = HeightLevel.Zero;
-    public static readonly Vector3 horizontalSkinRotation = new(0, 0, 90);
-    public static readonly Vector3 verticalSkinRotation = new(0, -90, 90);
+    public const HeightLevel MAX_HEIGHT = HeightLevel.FourPointFive;
+    public static readonly Vector3 HorizontalSkinRotation = new(0, 0, 90);
+    public static readonly Vector3 VerticalSkinRotation = new(0, -90, 90);
     
     // OLD 
     public const float TREE_HEIGHT = 1f;
@@ -68,14 +78,13 @@ public static class Constants
     /// <summary>
     ///  Dictionary
     /// </summary>
-    public static readonly Dictionary<GridSurfaceType, HeightLevel> dirFirstHeightOfSurface = new()
+    public static readonly Dictionary<GridSurfaceType, HeightLevel> DirFirstHeightOfSurface = new()
     {
         { GridSurfaceType.Ground, HeightLevel.One },
-        { GridSurfaceType.GroundTut, HeightLevel.One},
         { GridSurfaceType.Water, HeightLevel.ZeroPointFive }
     };
 
-    public static readonly Dictionary<Direction, Vector3> dirVector3F = new()
+    public static readonly Dictionary<Direction, Vector3> DirVector3F = new()
     {
         { Direction.None, Vector3.zero },
         { Direction.Left, Vector3.left },
@@ -84,7 +93,7 @@ public static class Constants
         { Direction.Back, Vector3.back }
     };
     
-    public static readonly Dictionary<Direction, Vector3Int> dirVector3 = new()
+    public static readonly Dictionary<Direction, Vector3Int> DirVector3 = new()
     {
         { Direction.None, Vector3Int.zero },
         { Direction.Left, Vector3Int.left },
@@ -93,7 +102,7 @@ public static class Constants
         { Direction.Back, Vector3Int.back }
     };
 
-    public static readonly Dictionary<Direction, Vector2Int> dirVector = new()
+    public static readonly Dictionary<Direction, Vector2Int> DirVector = new()
     {
         { Direction.None, Vector2Int.zero },
         { Direction.Left, Vector2Int.left },

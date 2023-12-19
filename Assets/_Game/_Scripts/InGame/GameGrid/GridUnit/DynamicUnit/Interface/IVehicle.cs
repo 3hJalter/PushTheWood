@@ -1,7 +1,7 @@
-﻿namespace _Game.GameGrid.GridUnit.DynamicUnit
+﻿namespace _Game.GameGrid.Unit.DynamicUnit.Interface
 {
     public interface IVehicle
     {
-        void OnMove(Direction direction);
+        void Ride(Direction direction);
     }
 }

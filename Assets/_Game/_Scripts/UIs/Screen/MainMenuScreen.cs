@@ -3,6 +3,7 @@ using _Game.GameGrid;
 using _Game.Managers;
 using DG.Tweening;
 using UnityEngine;
+using VinhLB;
 
 namespace _Game.UIs.Screen
 {
@@ -14,7 +15,7 @@ namespace _Game.UIs.Screen
         {
             base.Open();
             CameraFollow.Ins.ChangeCamera(ECameraType.MainMenuCamera);
-            FxManager.Ins.PlayTweenFog();
+            // FxManager.Ins.PlayTweenFog();
             DOVirtual.Float(0, 1, 1f, value => canvasGroup.alpha = value);
         }
 
@@ -23,10 +24,11 @@ namespace _Game.UIs.Screen
             if (!_isFirstOpen)
             {
                 LevelManager.Ins.OnInit();
+                GridBuildingManager.Ins.OnInit();
                 _isFirstOpen = true;
             }
             UIManager.Ins.OpenUI<InGameScreen>();
-            FxManager.Ins.StopTweenFog();
+            // FxManager.Ins.StopTweenFog();
             Close();
         }
     }

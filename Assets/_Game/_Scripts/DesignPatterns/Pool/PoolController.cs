@@ -1,21 +1,22 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Game.DesignPattern
 {
     public class PoolController : MonoBehaviour
     {
-        [Header("Pool")] public PoolAmount[] Pool;
+        [Header("Pool")] public PoolAmount[] pool;
 
-        [Header("Particle")] public ParticleAmount[] Particle;
+        [Header("Particle")] public ParticleAmount[] particle;
 
 
         public void Awake()
         {
-            for (int i = 0; i < Particle.Length; i++)
-                ParticlePool.Preload(Particle[i].prefab, Particle[i].amount, Particle[i].root);
+            for (int i = 0; i < particle.Length; i++)
+                ParticlePool.Preload(particle[i].prefab, particle[i].amount, particle[i].root);
 
-            for (int i = 0; i < Pool.Length; i++)
-                SimplePool.Preload(Pool[i].prefab, Pool[i].amount, Pool[i].root, Pool[i].collect, Pool[i].clamp);
+            for (int i = 0; i < pool.Length; i++)
+                SimplePool.Preload(pool[i].prefab, pool[i].amount, pool[i].root, pool[i].collect, pool[i].clamp);
 
         }
     }

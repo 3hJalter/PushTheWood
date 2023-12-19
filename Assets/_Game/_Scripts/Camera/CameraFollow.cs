@@ -7,6 +7,9 @@ namespace _Game.Camera
     public class CameraFollow : Singleton<CameraFollow>
     {
         [SerializeField] private UnityEngine.Camera mainCamera;
+
+        public UnityEngine.Camera MainCamera => mainCamera;
+
         [SerializeField] private ECameraType currentECameraType = ECameraType.None;
         [SerializeField] private Transform targetTf;
 
@@ -45,8 +48,13 @@ namespace _Game.Camera
             }
             else
             {
+                // Follow target, but not the y position
+                Vector3 position = targetTf.position;
                 _mainCameraTf.position = Vector3.Lerp(_mainCameraTf.position,
-                    targetTf.position + _currentCamera.offsetPosition, _currentCamera.smooth);
+                    new Vector3(position.x, 0, position.z) +
+                    _currentCamera.offsetPosition, _currentCamera.smooth);
+                // _mainCameraTf.position = Vector3.Lerp(_mainCameraTf.position,
+                //     targetTf.position + _currentCamera.offsetPosition, _currentCamera.smooth);
             }
             _mainCameraTf.rotation = Quaternion.Lerp(_mainCameraTf.rotation, _currentCamera.offsetRotation,
                 _currentCamera.smooth);
