@@ -41,6 +41,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
             if (!_isMove)
             {
                 if (t.MovingData.blockDynamicUnits.Count > 0) t.OnPush(t.MovingData.inputDirection, t.MovingData);
+                t.player.isRideVehicle = false;
                 t.ChangeState(StateEnum.Idle);
             }
             else
@@ -69,7 +70,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
                         }
                         t.OnEnterTrigger(t);
                         t.ChangeState(StateEnum.Idle);
-                        t.Ride(t.rideRaftDirection);
+                        t.Ride(t.rideRaftDirection, t);
                     });
             }
         }

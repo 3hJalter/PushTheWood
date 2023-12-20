@@ -19,7 +19,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 
             if (t.Direction == Direction.None)
             {
-                if (!_isChangeAnim) t.ChangeAnim(Constants.IDLE_ANIM);
+                if (!_isChangeAnim || !t.isRideVehicle) t.ChangeAnim(Constants.IDLE_ANIM);
                 return;
             }
             t.LookDirection(t.Direction);

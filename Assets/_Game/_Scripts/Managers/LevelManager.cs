@@ -60,6 +60,7 @@ namespace _Game.GameGrid
             AddIslandIdToSurface();
             SpawnGridUnitToGrid();
             SetCameraToPlayer();
+            CameraManager.Ins.ChangeCameraTargetPosition(GetCenterIslandPos(_pUnit.islandID));    
         }
 
         public void OnWin()
@@ -112,9 +113,23 @@ namespace _Game.GameGrid
             return _gridMap.GetGridCell(position);
         }
         
+        private Vector3 GetCenterIslandPos(int islandId)
+        {
+            // Get the center position from all cell in island
+            List<GameGridCell> cells = _islandDic[islandId].GridCells;
+            Vector3 centerPos = Vector3.zero;
+            for (int i = 0; i < cells.Count; i++)
+            {
+                centerPos += cells[i].WorldPos;
+            }
+            centerPos /= cells.Count;
+            return centerPos;
+        }
+        
         public void SetFirstPlayerStepOnIsland(GameGridCell cell)
         {
             _islandDic[_pUnit.islandID].SetFirstPlayerStepCell(cell);
+            CameraManager.Ins.ChangeCameraTargetPosition(GetCenterIslandPos(_pUnit.islandID));    
         }
 
         public void AddNewUnitToIsland(GridUnit unit)
@@ -296,6 +311,8 @@ namespace _Game.GameGrid
     public class Island
     {
         private readonly List<GameGridCell> _gridCells = new();
+
+        public List<GameGridCell> GridCells => _gridCells;
 
         private readonly HashSet<GridUnit> _gridUnits = new();
 

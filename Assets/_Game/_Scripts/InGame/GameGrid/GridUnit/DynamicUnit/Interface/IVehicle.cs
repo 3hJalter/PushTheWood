@@ -2,6 +2,6 @@
 {
     public interface IVehicle
     {
-        void Ride(Direction direction);
+        void Ride(Direction direction, GridUnit rideUnit = null);
     }
 }

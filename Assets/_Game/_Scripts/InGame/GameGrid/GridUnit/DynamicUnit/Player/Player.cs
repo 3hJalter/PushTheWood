@@ -36,10 +36,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         #endregion
 
-        private Direction _direction = Direction.None;
-        
-        public Direction Direction => _direction;
-        public Queue<Direction> InputCache = new Queue<Direction>();
+        public Direction Direction { get; private set; } = Direction.None;
+
+        public readonly Queue<Direction> InputCache = new();
         public float AnimSpeed => animator.speed;
 
 
@@ -50,14 +49,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             if (_isWaitAFrame)
             {
                 _isWaitAFrame = false;
-                if(InputCache.Count > 0)
-                {
-                    _direction = InputCache.Dequeue();
-                }
-                else
-                {
-                    _direction = HInputManager.GetDirectionInput();
-                }
+                Direction = InputCache.Count > 0 ? InputCache.Dequeue() : HInputManager.GetDirectionInput();
                 _currentState?.OnExecute(this);
                 return;
             }
@@ -163,9 +155,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             _vehicle = vehicle;
         }
 
+        public bool isRideVehicle;
+        
         public void OnRideVehicle(Direction tDirection)
         {
-            _vehicle.Ride(tDirection);
+            isRideVehicle = true;
+            _vehicle.Ride(tDirection, this);
         }
 
         public bool CanRideVehicle(Direction tDirection)

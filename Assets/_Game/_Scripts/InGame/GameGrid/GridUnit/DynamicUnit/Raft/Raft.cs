@@ -31,9 +31,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
         private MovingData _movingData;
         public MovingData MovingData => _movingData ??= new MovingData(this);
         
-        public void Ride(Direction direction)
+        public void Ride(Direction direction, GridUnit rideUnit)
         {
-            if (!IsCurrentStateIs(StateEnum.Idle)) return;
+            if (!IsCurrentStateIs(StateEnum.Idle) && rideUnit is Player.Player) return;
             // Check if there is a unit in the direction of the raft
             rideRaftDirection = direction;
             ChangeState(StateEnum.Move);
