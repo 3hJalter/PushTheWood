@@ -2,6 +2,7 @@
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
+using DG.Tweening;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
@@ -41,7 +42,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 // Despawn the Tree
                 t.CutTreeData.tree.OnDespawn();
             } 
-            if (t.IsAnimDone()) t.ChangeState(StateEnum.Idle);
+            if (t.IsCurrentAnimDone())
+            {
+                t.ChangeState(StateEnum.Idle);
+            }
         }
 
         public void OnExit(Player t)

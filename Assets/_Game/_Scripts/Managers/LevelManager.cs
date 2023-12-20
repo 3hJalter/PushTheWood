@@ -168,7 +168,8 @@ namespace _Game.GameGrid
 
         private void SetCameraToPlayer()
         {
-            CameraFollow.Ins.SetTarget(_pUnit.Tf);
+            // CameraFollow.Ins.SetTarget(_pUnit.Tf);
+            CameraManager.Ins.ChangeCameraTarget(ECameraType.InGameCamera, _pUnit.Tf);
         }
 
         private void SpawnPlayerUnit(int x, int y, Direction direction)

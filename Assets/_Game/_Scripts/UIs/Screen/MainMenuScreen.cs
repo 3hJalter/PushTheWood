@@ -14,8 +14,9 @@ namespace _Game.UIs.Screen
         public override void Open()
         {
             base.Open();
-            CameraFollow.Ins.ChangeCamera(ECameraType.MainMenuCamera);
+            // CameraFollow.Ins.ChangeCamera(ECameraType.MainMenuCamera);
             // FxManager.Ins.PlayTweenFog();
+            CameraManager.Ins.ChangeCamera(ECameraType.MainMenuCamera);
             DOVirtual.Float(0, 1, 1f, value => canvasGroup.alpha = value);
         }
 

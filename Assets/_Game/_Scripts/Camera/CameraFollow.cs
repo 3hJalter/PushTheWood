@@ -19,6 +19,7 @@ namespace _Game.Camera
 
         private CameraFollower _currentCamera;
         private Transform _mainCameraTf;
+        
 
         private void Awake()
         {
@@ -39,7 +40,7 @@ namespace _Game.Camera
             }
         }
 
-        private void FixedUpdate()
+        private void LateUpdate()
         {
             if (targetTf == Tf || !_currentCamera.isFollowTarget)
             {
@@ -48,16 +49,18 @@ namespace _Game.Camera
             }
             else
             {
-                // Follow target, but not the y position
-                Vector3 position = targetTf.position;
-                _mainCameraTf.position = Vector3.Lerp(_mainCameraTf.position,
-                    new Vector3(position.x, 0, position.z) +
-                    _currentCamera.offsetPosition, _currentCamera.smooth);
+                Vector3 targetPosition = targetTf.TransformPoint(_currentCamera.offsetPosition);
+                Tf.position = Vector3.SmoothDamp(Tf.position, targetPosition, ref _currentCamera.velocity, _currentCamera.smooth);
+                // // Follow target, but not the y position
+                // Vector3 position = targetTf.position;
                 // _mainCameraTf.position = Vector3.Lerp(_mainCameraTf.position,
-                //     targetTf.position + _currentCamera.offsetPosition, _currentCamera.smooth);
+                //     new Vector3(position.x, 0, position.z) +
+                //     _currentCamera.offsetPosition, _currentCamera.smooth);
+                // // _mainCameraTf.position = Vector3.Lerp(_mainCameraTf.position,
+                // //     targetTf.position + _currentCamera.offsetPosition, _currentCamera.smooth);
             }
-            _mainCameraTf.rotation = Quaternion.Lerp(_mainCameraTf.rotation, _currentCamera.offsetRotation,
-                _currentCamera.smooth);
+            // _mainCameraTf.rotation = Quaternion.Lerp(_mainCameraTf.rotation, _currentCamera.offsetRotation,
+            //     _currentCamera.smooth);
         }
 
         // Change to public if need
@@ -85,9 +88,10 @@ namespace _Game.Camera
         public readonly bool isFollowTarget;
         [Range(0,1)]
         public readonly float smooth; // From 0 to 1
+        public Vector3 velocity;
         public Vector3 offsetPosition;
         public Quaternion offsetRotation;
-
+    
         public CameraFollower(Vector3 offsetPosition, Quaternion offsetRotation, float smooth, bool isFollowTarget)
         {
             this.offsetPosition = offsetPosition;

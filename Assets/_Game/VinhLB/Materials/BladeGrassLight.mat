@@ -31,13 +31,13 @@ Material:
     m_Ints: []
     m_Floats:
     - _RandomJitterRadius: 0.1
-    - _ShadowLightness: 0.4
+    - _ShadowLightness: 0.2
     - _TrampleFalloff: 0.75
     - _TrampleMaxDistance: 1
     - _TramplePushStrength: 0.5
     - _TrampleSquishStrength: 1
     - _WindFrequency: 0.025
-    - _WindStrength: 0.1
+    - _WindStrength: 0.2
     m_Colors:
     - _BaseColor: {r: 0.33899966, g: 0.6037736, b: 0.10537558, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}

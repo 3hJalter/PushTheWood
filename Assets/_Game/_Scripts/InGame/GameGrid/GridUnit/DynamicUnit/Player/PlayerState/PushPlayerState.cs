@@ -9,7 +9,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         private bool _isExecuted;
         public void OnEnter(Player t)
         {
-            _counterTime = 0.5f;
+            _counterTime = 0.25f;
             t.ChangeAnim(Constants.PUSH_ANIM);
         }
 
@@ -29,7 +29,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 _isExecuted = true;
                 // Push the block Unit
                 t.OnPush(t.MovingData.inputDirection);
-                DOVirtual.DelayedCall(0.5f, () => t.ChangeState(StateEnum.Idle));
+                DOVirtual.DelayedCall(0.25f, () => t.ChangeState(StateEnum.Idle));
             }
         }
 

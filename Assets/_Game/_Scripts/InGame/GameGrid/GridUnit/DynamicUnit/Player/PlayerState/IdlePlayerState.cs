@@ -16,7 +16,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 
         public void OnExecute(Player t)
         {
-            
+
             if (t.Direction == Direction.None)
             {
                 if (!_isChangeAnim) t.ChangeAnim(Constants.IDLE_ANIM);
