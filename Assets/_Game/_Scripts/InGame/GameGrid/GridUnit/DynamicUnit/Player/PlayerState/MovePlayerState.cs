@@ -22,7 +22,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         {
             if (t.Direction is not Direction.None && t.Direction != direction)
             {
-                t.SetAnimSpeed(initAnimSpeed * Constants.MOVING_TIME / Constants.MOVING_TIME_FAST_RATE);
+                t.SetAnimSpeed(initAnimSpeed / Constants.MOVING_TIME_FAST_RATE);
                 moveTween.Kill();
                 direction = t.Direction;
 
