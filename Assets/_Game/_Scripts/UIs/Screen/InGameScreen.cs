@@ -19,8 +19,10 @@ namespace _Game.UIs.Screen
         {
             base.Setup();
             MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.Ins.CurrentChoice); // TODO: Change to use PlayerRef 
-            if (CameraFollow.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
-            CameraFollow.Ins.ChangeCamera(ECameraType.InGameCamera);
+            // if (CameraFollow.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
+            // CameraFollow.Ins.ChangeCamera(ECameraType.InGameCamera);
+            if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
+            CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
             blockPanel.enabled = true;
         }
 

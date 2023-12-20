@@ -14,9 +14,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 
         public void OnExecute(Player t)
         {
+            if (t.Direction is not Direction.None) t.LookDirection(t.Direction);
             if (_isExecuted) return;
             _isExecuted = true;
-            t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME + 0.1f)
+            t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME)
                 .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                 {
                     t.OnEnterTrigger(t);

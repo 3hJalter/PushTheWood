@@ -4,6 +4,7 @@ using Object = UnityEngine.Object;
 
 namespace UnityEditor
 {
+    [Obsolete("Obsolete")]
     internal class PolyboxShaderGUI : ShaderGUI
     {
         public enum BlendMode

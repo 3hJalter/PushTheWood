@@ -1,5 +1,6 @@
 ﻿using _Game.Camera;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
+using _Game.Managers;
 using GameGridEnum;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -27,7 +28,8 @@ namespace _Game.GameGrid.Unit
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection);
             if (!hasInteractBtn || _isFirstInitDone || btnCanvas is null) return;
             _isFirstInitDone = true;
-            btnCanvas.worldCamera = CameraFollow.Ins.MainCamera;
+            // btnCanvas.worldCamera = CameraFollow.Ins.MainCamera;
+            btnCanvas.worldCamera = CameraManager.Ins.BrainCamera;
             interactBtn.onClick.AddListener(OnInteractBtnClick);
         }
         

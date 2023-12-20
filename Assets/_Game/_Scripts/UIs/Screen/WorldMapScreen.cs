@@ -18,8 +18,9 @@ namespace _Game.UIs.Screen
         public override void Open()
         {
             base.Open();
-            CameraFollow.Ins.ChangeCamera(ECameraType.WorldMapCamera);
+            // CameraFollow.Ins.ChangeCamera(ECameraType.WorldMapCamera);
             // FxManager.Ins.PlayTweenFog(false, 1.5f, 1.5f, ShowUI);
+            CameraManager.Ins.ChangeCamera(ECameraType.WorldMapCamera);
             ShowUI();
         }
 

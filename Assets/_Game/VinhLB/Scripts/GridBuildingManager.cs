@@ -73,7 +73,8 @@ namespace VinhLB
                 var debugGrid = new Grid<GameGridCell, GameGridCellData>.DebugGrid();
                 debugGrid.DrawGrid(_homeGrid, true);
 
-                CameraFollow.Ins.ChangeCamera(ECameraType.InGameCamera);
+                // CameraFollow.Ins.ChangeCamera(ECameraType.InGameCamera);
+                CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
             }
             else
             {

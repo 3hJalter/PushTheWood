@@ -1,4 +1,5 @@
 ﻿using _Game.Camera;
+using _Game.Managers;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit
@@ -12,7 +13,8 @@ namespace _Game.GameGrid.Unit
         {
             gameObject.SetActive(true);
             // Convert unit position to screen position
-            Vector3 screenPos = CameraFollow.Ins.MainCamera.WorldToScreenPoint(gridUnit.transform.position + offset);
+            // Vector3 screenPos = CameraFollow.Ins.MainCamera.WorldToScreenPoint(gridUnit.transform.position + offset);
+            Vector3 screenPos = CameraManager.Ins.BrainCamera.WorldToScreenPoint(gridUnit.transform.position + offset);
             // Set the button position to screen position
             button.transform.position = screenPos;
         }

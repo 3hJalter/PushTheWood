@@ -108,17 +108,18 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             _currentState.OnEnter(this);
         }
 
-        public void ChangeAnim(String animName, bool forceAnim = false)
+        public void ChangeAnim(string animName, float speed = 1, bool forceAnim = false)
         {
             if (!forceAnim) if (_currentAnim.Equals(animName)) return;
             animator.ResetTrigger(_currentAnim);
             _currentAnim = animName;
+            animator.speed = speed;
             animator.SetTrigger(_currentAnim);
         }
-        
-        public bool IsAnimDone(float time = 1)
+
+        public bool IsCurrentAnimDone()
         {
-            return animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= time;
+            return  animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1;
         }
         
         public void LookDirection(Direction directionIn)
