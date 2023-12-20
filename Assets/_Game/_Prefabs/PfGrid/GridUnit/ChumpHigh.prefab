@@ -411,7 +411,7 @@ MonoBehaviour:
   isMinusHalfSizeY: 0
   startHeight: 2
   endHeight: 0
-  yOffsetOnDown: 0.4
+  yOffsetOnDown: 0.3
   islandID: -1
   unitTypeY: 0
   unitTypeXZ: -1
