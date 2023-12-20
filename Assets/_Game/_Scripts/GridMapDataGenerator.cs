@@ -9,15 +9,19 @@ using UnityEngine;
 public class GridMapDataGenerator : MonoBehaviour
 {
     [SerializeField] private string mapLevelName = "level0";
-    private int _gridSizeX;
-    private int _gridSizeY;
+
+    [SerializeField] private Transform surfaceContainer;
+    [SerializeField] private Transform unitContainer;
     private Grid<GameGridCell, GameGridCellData>.DebugGrid _debugGrid;
     private Grid<GameGridCell, GameGridCellData> _gridMap;
+    private int _gridSizeX;
+    private int _gridSizeY;
 
     private GridSurface[,] _gridSurfaceMap;
 
     // Test Init GridUnit
     private TextGridData _textGridData;
+
     private void Start()
     {
         TextAsset gridData = Resources.Load<TextAsset>(mapLevelName);
@@ -25,24 +29,15 @@ public class GridMapDataGenerator : MonoBehaviour
         // GenerateMap();
     }
 
-    [SerializeField] private Transform surfaceContainer;
-    [SerializeField] private Transform unitContainer;
-    
     [ContextMenu("Set All GroundSurface to Ground Parent and GroundUnit to Unit Parent")]
     private void SetSurfaceAndUnitToParent()
     {
         GridSurface[] gridSurfaces = FindObjectsOfType<GridSurface>();
-        foreach (GridSurface gridSurface in gridSurfaces)
-        {
-            gridSurface.Tf.parent = surfaceContainer;
-        }
+        foreach (GridSurface gridSurface in gridSurfaces) gridSurface.Tf.parent = surfaceContainer;
         GridUnit[] gridUnits = FindObjectsOfType<GridUnit>();
-        foreach (GridUnit gridUnit in gridUnits)
-        {
-            gridUnit.Tf.parent = unitContainer;
-        }
+        foreach (GridUnit gridUnit in gridUnits) gridUnit.Tf.parent = unitContainer;
     }
-    
+
     [ContextMenu("Save Data as txt file")]
     private void Setup()
     {
@@ -53,12 +48,14 @@ public class GridMapDataGenerator : MonoBehaviour
             case "":
                 return;
         }
+
         GridSurface[] gridSurfaces = FindObjectsOfType<GridSurface>();
         if (gridSurfaces.Length == 0)
         {
             Debug.LogError("Grid must have at least 1 surface, and all unit must have on a surface");
             return;
         }
+
         GridUnit[] gridUnits = FindObjectsOfType<GridUnit>();
         int minX = int.MaxValue;
         int minZ = int.MaxValue;
@@ -67,11 +64,12 @@ public class GridMapDataGenerator : MonoBehaviour
         foreach (GridSurface gridSurface in gridSurfaces)
         {
             Vector3 position = gridSurface.Tf.position;
-            if (position.x < minX) minX = (int) Math.Round(position.x);
-            if (position.z < minZ) minZ = (int) Math.Round(position.z);
-            if (position.x > maxX) maxX = (int) Math.Round(position.x);
-            if (position.z > maxZ) maxZ = (int) Math.Round(position.z);
+            if (position.x < minX) minX = (int)Math.Round(position.x);
+            if (position.z < minZ) minZ = (int)Math.Round(position.z);
+            if (position.x > maxX) maxX = (int)Math.Round(position.x);
+            if (position.z > maxZ) maxZ = (int)Math.Round(position.z);
         }
+
         // if minX or minY < 11, get the offset and make all position added with this offset so the minX and minY can be 11 (index 1,1)
         if (minX < 11)
         {
@@ -82,15 +80,18 @@ public class GridMapDataGenerator : MonoBehaviour
                 position.x += offsetX;
                 gridSurface.Tf.position = position;
             }
+
             foreach (GridUnit gridUnit in gridUnits)
             {
                 Vector3 position = gridUnit.Tf.position;
                 position.x += offsetX;
                 gridUnit.Tf.position = position;
             }
+
             minX += offsetX;
             maxX += offsetX;
         }
+
         maxX += 10; // add one more cell to maxX and maxY
         if (minZ < 11)
         {
@@ -101,15 +102,18 @@ public class GridMapDataGenerator : MonoBehaviour
                 position.z += offsetZ;
                 gridSurface.Tf.position = position;
             }
+
             foreach (GridUnit gridUnit in gridUnits)
             {
                 Vector3 position = gridUnit.Tf.position;
                 position.z += offsetZ;
                 gridUnit.Tf.position = position;
             }
+
             minZ += offsetZ;
             maxZ += offsetZ;
         }
+
         maxZ += 10;
         const int cellOffset = 1;
         maxX = (maxX + cellOffset) / 2;
@@ -163,7 +167,8 @@ public class GridMapDataGenerator : MonoBehaviour
                 // Remove the file
                 return;
             }
-            gridData[x - 1, z - 1] = (int) gridUnit.poolType;
+
+            gridData[x - 1, z - 1] = (int)gridUnit.poolType;
         }
 
         // Write a @ to separate
@@ -176,8 +181,9 @@ public class GridMapDataGenerator : MonoBehaviour
             line = line.Remove(line.Length - 1);
             file.WriteLine(line);
         }
+
         Debug.Log("Save unit: Complete");
-        
+
         // Reset the array to all -1
         for (int i = 0; i < maxX; i++)
         for (int j = 0; j < maxZ; j++)
@@ -198,8 +204,10 @@ public class GridMapDataGenerator : MonoBehaviour
                 // Remove the file
                 return;
             }
-            gridData[x - 1, z - 1] = (int) gridUnit.SkinRotationDirection;
+
+            gridData[x - 1, z - 1] = (int)gridUnit.SkinRotationDirection;
         }
+
         // Write a @ to separate
         file.WriteLine("@");
         // Save the array as txt file in Resources folder
@@ -210,6 +218,7 @@ public class GridMapDataGenerator : MonoBehaviour
             line = line.Remove(line.Length - 1);
             file.WriteLine(line);
         }
+
         file.Close();
         Debug.Log("Save unit rotation: Complete");
     }

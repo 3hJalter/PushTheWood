@@ -20,32 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System.Collections;
-using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 public static class BladeGrassBaker
 {
-    // The structure to send to the compute shader
-    // This layout kind assures that the data is laid out sequentially
-    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-    private struct SourceVertex
-    {
-        public Vector3 position;
-    }
-
-    // The structure received from the compute shader
-    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-    private struct GeneratedVertex
-    {
-        public Vector3 position;
-        public Vector3 normal;
-        public Vector2 uv;
-        public Vector3 bladeAnchor;
-        public Vector3 shadowCastNormal;
-    }
-
     // The size of one entry in the various compute buffers
     private const int SOURCE_VERT_STRIDE = sizeof(float) * 3;
     private const int SOURCE_INDEX_STRIDE = sizeof(int);
@@ -68,25 +48,24 @@ public static class BladeGrassBaker
         {
             // Find the index in the whole mesh index buffer
             int wholeMeshIndex = i + subMesh.firstVertex;
-            verts[i] = new SourceVertex()
+            verts[i] = new SourceVertex
             {
-                position = allVertices[wholeMeshIndex],
+                position = allVertices[wholeMeshIndex]
             };
         }
+
         for (int i = 0; i < subMesh.indexCount; i++)
-        {
             // We need to offset the indices in the mesh index buffer to match
             // the indices in our new vertex buffer. Subtract by subMesh.firstVertex
             // .baseVertex is an offset Unity may define which is a global
             // offset for all indices in this submesh
             indices[i] = allIndices[i + subMesh.indexStart] + subMesh.baseVertex - subMesh.firstVertex;
-        }
     }
 
     // This function takes a vertex and index list and converts it into a Mesh object
     private static Mesh ComposeMesh(GeneratedVertex[] verts, int[] indices)
     {
-        Mesh mesh = new Mesh();
+        Mesh mesh = new();
         Vector3[] vertices = new Vector3[verts.Length];
         Vector3[] normals = new Vector3[verts.Length];
         Vector2[] uvs = new Vector2[verts.Length];
@@ -101,6 +80,7 @@ public static class BladeGrassBaker
             bladeAnchors[i] = v.bladeAnchor;
             shadowCastNormals[i] = v.shadowCastNormal;
         }
+
         mesh.SetVertices(vertices);
         mesh.SetNormals(normals);
         mesh.SetUVs(0, uvs); // TEXCOORD0
@@ -115,21 +95,28 @@ public static class BladeGrassBaker
     {
         Debug.Assert(settings.numBladeSegments > 0);
         // Decompose the mesh into vertex/index buffers
-        DecomposeMesh(settings.sourceMesh, settings.sourceSubMeshIndex, out var sourceVertices, out var sourceIndices);
+        DecomposeMesh(settings.sourceMesh, settings.sourceSubMeshIndex, out SourceVertex[] sourceVertices,
+            out int[] sourceIndices);
 
         // The mesh topology is triangles, so there are three indices per triangle
         int numSourceTriangles = sourceIndices.Length / 3;
-        int numGeneratedVertices = numSourceTriangles * (settings.numBladeSegments * 2 + 1) * 2; // 2 vertices per segment, plus the tip, doubled
+        int numGeneratedVertices =
+            numSourceTriangles * (settings.numBladeSegments * 2 + 1) *
+            2; // 2 vertices per segment, plus the tip, doubled
         int numGeneratedIndices = numSourceTriangles * (settings.numBladeSegments * 2 - 1) * 3 * 2;
 
         GeneratedVertex[] generatedVertices = new GeneratedVertex[numGeneratedVertices];
         int[] generatedIndices = new int[numGeneratedIndices];
 
         // A graphics buffer is a better version of the compute buffer
-        GraphicsBuffer sourceVertBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, sourceVertices.Length, SOURCE_VERT_STRIDE);
-        GraphicsBuffer sourceIndexBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, sourceIndices.Length, SOURCE_INDEX_STRIDE);
-        GraphicsBuffer genVertBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, generatedVertices.Length, GENERATED_VERT_STRIDE);
-        GraphicsBuffer genIndexBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, generatedIndices.Length, GENERATED_INDEX_STRIDE);
+        GraphicsBuffer sourceVertBuffer =
+            new(GraphicsBuffer.Target.Structured, sourceVertices.Length, SOURCE_VERT_STRIDE);
+        GraphicsBuffer sourceIndexBuffer =
+            new(GraphicsBuffer.Target.Structured, sourceIndices.Length, SOURCE_INDEX_STRIDE);
+        GraphicsBuffer genVertBuffer =
+            new(GraphicsBuffer.Target.Structured, generatedVertices.Length, GENERATED_VERT_STRIDE);
+        GraphicsBuffer genIndexBuffer =
+            new(GraphicsBuffer.Target.Structured, generatedIndices.Length, GENERATED_INDEX_STRIDE);
 
         // Cache the kernel ID
         int idGrassKernel = shader.FindKernel("Main");
@@ -140,7 +127,8 @@ public static class BladeGrassBaker
         shader.SetBuffer(idGrassKernel, "_GeneratedVertices", genVertBuffer);
         shader.SetBuffer(idGrassKernel, "_GeneratedIndices", genIndexBuffer);
         // Convert the scale and rotation settings into a transformation matrix
-        shader.SetMatrix("_Transform", Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(settings.rotation), settings.scale));
+        shader.SetMatrix("_Transform",
+            Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(settings.rotation), settings.scale));
         shader.SetInt("_NumSourceTriangles", numSourceTriangles);
         shader.SetVector("_RandomSeed", settings.randomOffset);
         shader.SetInt("_NumBladeSegments", settings.numBladeSegments);
@@ -177,5 +165,24 @@ public static class BladeGrassBaker
         genIndexBuffer.Release();
 
         return true; // No error
+    }
+
+    // The structure to send to the compute shader
+    // This layout kind assures that the data is laid out sequentially
+    [StructLayout(LayoutKind.Sequential)]
+    private struct SourceVertex
+    {
+        public Vector3 position;
+    }
+
+    // The structure received from the compute shader
+    [StructLayout(LayoutKind.Sequential)]
+    private struct GeneratedVertex
+    {
+        public Vector3 position;
+        public Vector3 normal;
+        public Vector2 uv;
+        public Vector3 bladeAnchor;
+        public Vector3 shadowCastNormal;
     }
 }

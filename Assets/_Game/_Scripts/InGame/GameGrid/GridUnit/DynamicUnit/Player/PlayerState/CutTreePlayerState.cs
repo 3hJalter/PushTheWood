@@ -2,7 +2,6 @@
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
-using DG.Tweening;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
@@ -11,6 +10,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
     {
         private bool _isExecuted;
         private float _timeCounter;
+
         public void OnEnter(Player t)
         {
             _timeCounter = 0.5f;
@@ -25,6 +25,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 _timeCounter -= Time.fixedDeltaTime;
                 return;
             }
+
             if (!_isExecuted)
             {
                 _isExecuted = true;
@@ -41,11 +42,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 chump.OnBePushed(t.CutTreeData.inputDirection, t);
                 // Despawn the Tree
                 t.CutTreeData.tree.OnDespawn();
-            } 
-            if (t.IsCurrentAnimDone())
-            {
-                t.ChangeState(StateEnum.Idle);
             }
+
+            if (t.IsCurrentAnimDone()) t.ChangeState(StateEnum.Idle);
         }
 
         public void OnExit(Player t)

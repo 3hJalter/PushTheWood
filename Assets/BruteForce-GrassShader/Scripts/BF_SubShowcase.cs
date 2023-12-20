@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class BF_SubShowcase : MonoBehaviour
 {
@@ -14,17 +13,7 @@ public class BF_SubShowcase : MonoBehaviour
 
     private UnityAction showcaseChange;
 
-    // Start is called before the first frame update
-    private void OnEnable()
-    {
-        aM.maxSubIndex = subShowcases.Count-1;
-        aM.m_ShowcaseChange.AddListener(ChangeIndex);
-    }
-    private void OnDisable()
-    {
-        aM.m_ShowcaseChange.RemoveListener(ChangeIndex);
-    }
-    void Update()
+    private void Update()
     {
         /*
         if(aM.subShowcaseIndex != oldIndex)
@@ -40,16 +29,24 @@ public class BF_SubShowcase : MonoBehaviour
         */
     }
 
+    // Start is called before the first frame update
+    private void OnEnable()
+    {
+        aM.maxSubIndex = subShowcases.Count - 1;
+        aM.m_ShowcaseChange.AddListener(ChangeIndex);
+    }
+
+    private void OnDisable()
+    {
+        aM.m_ShowcaseChange.RemoveListener(ChangeIndex);
+    }
+
     private void ChangeIndex()
     {
         oldIndex = aM.subShowcaseIndex;
 
-        foreach (GameObject GO in subShowcases)
-        {
-            GO.SetActive(false);
-        }
+        foreach (GameObject GO in subShowcases) GO.SetActive(false);
         subShowcases[oldIndex].SetActive(true);
         uiText.text = nameSubs[oldIndex];
     }
-
 }

@@ -59,6 +59,17 @@ namespace _Game.GameGrid.Unit
             }
         }
 
+        public static GameGridCell GetNeighbourCell(Grid<GameGridCell, GameGridCellData> grid,
+            GameGridCell cell, Direction direction, int distance = 1)
+        {
+            Vector2Int cellPos = cell.GetCellPosition();
+            Vector2Int dir = Constants.DirVector[direction];
+            Vector2Int neighbourPos = cellPos + dir * distance;
+            Debug.Log(neighbourPos);
+
+            return grid.GetGridCell(neighbourPos.x, neighbourPos.y);
+        }
+
         #region Handle Get Neighbor Unit
 
         public static GameGridCell GetNeighborCell(this GameGridCell cell, Direction direction, int distance = 1,
@@ -86,9 +97,10 @@ namespace _Game.GameGrid.Unit
 
             return nextCells;
         }
-        
+
         // Get all next units from cellInUnits by direction
-        public static List<GridUnit> GetAllNeighborUnits(this GridUnit unit, Direction direction,  Grid<GameGridCell, GameGridCellData> map = null)
+        public static List<GridUnit> GetAllNeighborUnits(this GridUnit unit, Direction direction,
+            Grid<GameGridCell, GameGridCellData> map = null)
         {
             map ??= LevelManager.Ins.GridMap;
             List<GridUnit> nextUnits = new();
@@ -104,6 +116,7 @@ namespace _Game.GameGrid.Unit
                     nextUnits.Add(units[j]);
                 }
             }
+
             return nextUnits;
         }
 
@@ -178,17 +191,5 @@ namespace _Game.GameGrid.Unit
         }
 
         #endregion
-
-        public static GameGridCell GetNeighbourCell(Grid<GameGridCell, GameGridCellData> grid,
-            GameGridCell cell, Direction direction, int distance = 1)
-        {
-            Vector2Int cellPos = cell.GetCellPosition();
-            Vector2Int dir = Constants.DirVector[direction];
-            Vector2Int neighbourPos = cellPos + dir * distance;
-            Debug.Log(neighbourPos);
-
-            return grid.GetGridCell(neighbourPos.x, neighbourPos.y);
-        }
-        
     }
 }

@@ -4,88 +4,96 @@ using UnityEngine;
 
 namespace AssetUsageDetectorNamespace
 {
-	public class SearchResultTooltip : EditorWindow
-	{
-		private static SearchResultTooltip mainWindow;
-		private static string tooltip;
+    public class SearchResultTooltip : EditorWindow
+    {
+        private static SearchResultTooltip mainWindow;
+        private static string tooltip;
 
-		private static GUIStyle m_style;
-		internal static GUIStyle Style
-		{
-			get
-			{
-				if( m_style == null )
-				{
-					m_style = (GUIStyle) typeof( EditorStyles ).GetProperty( "tooltip", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static ).GetValue( null, null );
-					m_style.richText = true;
-				}
+        private static GUIStyle m_style;
 
-				return m_style;
-			}
-		}
+        internal static GUIStyle Style
+        {
+            get
+            {
+                if (m_style == null)
+                {
+                    m_style = (GUIStyle)typeof(EditorStyles)
+                        .GetProperty("tooltip", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
+                        .GetValue(null, null);
+                    m_style.richText = true;
+                }
 
-		public static void Show( Rect sourcePosition, string tooltip )
-		{
-			Vector2 preferredSize = Style.CalcSize( new GUIContent( tooltip ) ) + Style.contentOffset + new Vector2( Style.padding.horizontal + Style.margin.horizontal, Style.padding.vertical + Style.margin.vertical );
-			Rect preferredPosition;
+                return m_style;
+            }
+        }
 
-			Rect positionLeft = new Rect( sourcePosition.position - new Vector2( preferredSize.x, 0f ), preferredSize );
-			Rect screenFittedPositionLeft = Utilities.GetScreenFittedRect( positionLeft );
+        private void OnGUI()
+        {
+            // If somehow the tooltip isn't automatically closed, allow closing it by clicking on it
+            if (Event.current.type == EventType.MouseDown)
+            {
+                Hide();
+                GUIUtility.ExitGUI();
+            }
 
-			Vector2 positionOffset = positionLeft.position - screenFittedPositionLeft.position;
-			Vector2 sizeOffset = positionLeft.size - screenFittedPositionLeft.size;
-			if( positionOffset.sqrMagnitude <= 400f && sizeOffset.sqrMagnitude <= 400f )
-				preferredPosition = screenFittedPositionLeft;
-			else
-			{
-				Rect positionRight = new Rect( sourcePosition.position + new Vector2( sourcePosition.width, 0f ), preferredSize );
-				Rect screenFittedPositionRight = Utilities.GetScreenFittedRect( positionRight );
+            GUI.Label(new Rect(Vector2.zero, position.size), tooltip, Style);
+        }
 
-				Vector2 positionOffset2 = positionRight.position - screenFittedPositionRight.position;
-				Vector2 sizeOffset2 = positionRight.size - screenFittedPositionRight.size;
-				if( positionOffset2.magnitude + sizeOffset2.magnitude < positionOffset.magnitude + sizeOffset.magnitude )
-					preferredPosition = screenFittedPositionRight;
-				else
-					preferredPosition = screenFittedPositionLeft;
-			}
+        public static void Show(Rect sourcePosition, string tooltip)
+        {
+            Vector2 preferredSize = Style.CalcSize(new GUIContent(tooltip)) + Style.contentOffset +
+                                    new Vector2(Style.padding.horizontal + Style.margin.horizontal,
+                                        Style.padding.vertical + Style.margin.vertical);
+            Rect preferredPosition;
 
-			// Don't lose focus to the previous window
-			EditorWindow prevFocusedWindow = focusedWindow;
+            Rect positionLeft = new(sourcePosition.position - new Vector2(preferredSize.x, 0f), preferredSize);
+            Rect screenFittedPositionLeft = Utilities.GetScreenFittedRect(positionLeft);
 
-			if( !mainWindow )
-			{
-				mainWindow = CreateInstance<SearchResultTooltip>();
-				mainWindow.ShowPopup();
-			}
+            Vector2 positionOffset = positionLeft.position - screenFittedPositionLeft.position;
+            Vector2 sizeOffset = positionLeft.size - screenFittedPositionLeft.size;
+            if (positionOffset.sqrMagnitude <= 400f && sizeOffset.sqrMagnitude <= 400f)
+            {
+                preferredPosition = screenFittedPositionLeft;
+            }
+            else
+            {
+                Rect positionRight = new(sourcePosition.position + new Vector2(sourcePosition.width, 0f),
+                    preferredSize);
+                Rect screenFittedPositionRight = Utilities.GetScreenFittedRect(positionRight);
 
-			SearchResultTooltip.tooltip = tooltip;
-			mainWindow.minSize = preferredPosition.size;
-			mainWindow.position = preferredPosition;
-			mainWindow.Repaint();
+                Vector2 positionOffset2 = positionRight.position - screenFittedPositionRight.position;
+                Vector2 sizeOffset2 = positionRight.size - screenFittedPositionRight.size;
+                if (positionOffset2.magnitude + sizeOffset2.magnitude < positionOffset.magnitude + sizeOffset.magnitude)
+                    preferredPosition = screenFittedPositionRight;
+                else
+                    preferredPosition = screenFittedPositionLeft;
+            }
 
-			if( prevFocusedWindow )
-				prevFocusedWindow.Focus();
-		}
+            // Don't lose focus to the previous window
+            EditorWindow prevFocusedWindow = focusedWindow;
 
-		public static void Hide()
-		{
-			if( mainWindow )
-			{
-				mainWindow.Close();
-				mainWindow = null;
-			}
-		}
+            if (!mainWindow)
+            {
+                mainWindow = CreateInstance<SearchResultTooltip>();
+                mainWindow.ShowPopup();
+            }
 
-		private void OnGUI()
-		{
-			// If somehow the tooltip isn't automatically closed, allow closing it by clicking on it
-			if( Event.current.type == EventType.MouseDown )
-			{
-				Hide();
-				GUIUtility.ExitGUI();
-			}
+            SearchResultTooltip.tooltip = tooltip;
+            mainWindow.minSize = preferredPosition.size;
+            mainWindow.position = preferredPosition;
+            mainWindow.Repaint();
 
-			GUI.Label( new Rect( Vector2.zero, position.size ), tooltip, Style );
-		}
-	}
+            if (prevFocusedWindow)
+                prevFocusedWindow.Focus();
+        }
+
+        public static void Hide()
+        {
+            if (mainWindow)
+            {
+                mainWindow.Close();
+                mainWindow = null;
+            }
+        }
+    }
 }

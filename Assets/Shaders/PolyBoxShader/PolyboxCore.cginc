@@ -25,7 +25,7 @@ half4 _HeightFogColor;
 half3 NormalizePerVertexNormal(float3 n) // takes float to avoid overflow
 {
     #if (SHADER_TARGET < 30) || UNITY_STANDARD_SIMPLE
-        return normalize(n);
+    return normalize(n);
     #else
     return n; // will normalize per-pixel instead
     #endif
@@ -34,7 +34,7 @@ half3 NormalizePerVertexNormal(float3 n) // takes float to avoid overflow
 half3 NormalizePerPixelNormal(half3 n)
 {
     #if (SHADER_TARGET < 30) || UNITY_STANDARD_SIMPLE
-		return n;
+    return n;
     #else
     return normalize(n);
     #endif
@@ -108,7 +108,7 @@ half3x3 ExtractTangentToWorldPerPixel(half4 tan2world[3])
     half3 b = tan2world[1].xyz;
     half3 n = tan2world[2].xyz;
 
-    #if UNITY_TANGENT_ORTHONORMALIZE
+#if UNITY_TANGENT_ORTHONORMALIZE
 		n = NormalizePerPixelNormal(n);
 
 		// ortho-normalize Tangent
@@ -117,15 +117,15 @@ half3x3 ExtractTangentToWorldPerPixel(half4 tan2world[3])
 		// recalculate Binormal
 		half3 newB = cross(n, t);
 		b = newB * sign (dot (newB, b));
-    #endif
+#endif
 
     return half3x3(t, b, n);
 }
 #else
-	half3x3 ExtractTangentToWorldPerPixel(half4 tan2world[3])
-	{
-		return half3x3(0,0,0,0,0,0,0,0,0);
-	}
+half3x3 ExtractTangentToWorldPerPixel(half4 tan2world[3])
+{
+    return half3x3(0, 0, 0, 0, 0, 0, 0, 0, 0);
+}
 #endif
 
 half3 PerPixelWorldNormal(float4 i_tex, half4 tangentToWorld[3])
@@ -151,7 +151,7 @@ half3 PerPixelWorldNormal(float4 i_tex, half4 tangentToWorld[3])
         tangent * normalTangent.x + binormal * normalTangent.y + normal * normalTangent.z);
     // @TODO: see if we can squeeze this normalize on SM2.0 as well
     #else
-	half3 normalWorld = normalize(tangentToWorld[2].xyz);
+    half3 normalWorld = normalize(tangentToWorld[2].xyz);
     #endif
     return normalWorld;
 }
@@ -160,8 +160,8 @@ half3 PerPixelWorldNormal(float4 i_tex, half4 tangentToWorld[3])
 #define IN_VIEWDIR4PARALLAX(i) NormalizePerPixelNormal(half3(i.tangentToWorldAndParallax[0].w,i.tangentToWorldAndParallax[1].w,i.tangentToWorldAndParallax[2].w))
 #define IN_VIEWDIR4PARALLAX_FWDADD(i) NormalizePerPixelNormal(i.viewDirForParallax.xyz)
 #else
-	#define IN_VIEWDIR4PARALLAX(i) half3(0,0,0)
-	#define IN_VIEWDIR4PARALLAX_FWDADD(i) half3(0,0,0)
+#define IN_VIEWDIR4PARALLAX(i) half3(0,0,0)
+#define IN_VIEWDIR4PARALLAX_FWDADD(i) half3(0,0,0)
 #endif
 
 #if UNITY_REQUIRE_FRAG_WORLDPOS
@@ -399,9 +399,9 @@ VertexOutputForwardBase vertForwardBase(VertexInput v)
     o.tangentToWorldAndParallax[1].xyz = tangentToWorld[1];
     o.tangentToWorldAndParallax[2].xyz = tangentToWorld[2];
     #else
-		o.tangentToWorldAndParallax[0].xyz = 0;
-		o.tangentToWorldAndParallax[1].xyz = 0;
-		o.tangentToWorldAndParallax[2].xyz = normalWorld;
+    o.tangentToWorldAndParallax[0].xyz = 0;
+    o.tangentToWorldAndParallax[1].xyz = 0;
+    o.tangentToWorldAndParallax[2].xyz = normalWorld;
     #endif
     //We need this for shadow receving
     TRANSFER_SHADOW(o);
@@ -507,9 +507,9 @@ VertexOutputForwardAdd vertForwardAdd(VertexInput v)
     o.tangentToWorldAndLightDir[1].xyz = tangentToWorld[1];
     o.tangentToWorldAndLightDir[2].xyz = tangentToWorld[2];
     #else
-		o.tangentToWorldAndLightDir[0].xyz = 0;
-		o.tangentToWorldAndLightDir[1].xyz = 0;
-		o.tangentToWorldAndLightDir[2].xyz = normalWorld;
+    o.tangentToWorldAndLightDir[0].xyz = 0;
+    o.tangentToWorldAndLightDir[1].xyz = 0;
+    o.tangentToWorldAndLightDir[2].xyz = normalWorld;
     #endif
     //We need this for shadow receiving
     TRANSFER_VERTEX_TO_FRAGMENT(o);
@@ -607,9 +607,9 @@ VertexOutputDeferred vertDeferred(VertexInput v)
     o.tangentToWorldAndParallax[1].xyz = tangentToWorld[1];
     o.tangentToWorldAndParallax[2].xyz = tangentToWorld[2];
     #else
-		o.tangentToWorldAndParallax[0].xyz = 0;
-		o.tangentToWorldAndParallax[1].xyz = 0;
-		o.tangentToWorldAndParallax[2].xyz = normalWorld;
+    o.tangentToWorldAndParallax[0].xyz = 0;
+    o.tangentToWorldAndParallax[1].xyz = 0;
+    o.tangentToWorldAndParallax[2].xyz = normalWorld;
     #endif
 
     o.ambientOrLightmapUV = 0;
@@ -646,11 +646,11 @@ void fragDeferred(
 )
 {
     #if (SHADER_TARGET < 30)
-		outGBuffer0 = 1;
-		outGBuffer1 = 1;
-		outGBuffer2 = 0;
-		outEmission = 0;
-		return;
+    outGBuffer0 = 1;
+    outGBuffer1 = 1;
+    outGBuffer2 = 0;
+    outEmission = 0;
+    return;
     #endif
 
     FRAGMENT_SETUP(s)

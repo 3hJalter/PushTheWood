@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using _Game.DesignPattern;
 using GameGridEnum;
@@ -13,9 +13,24 @@ namespace VinhLB
         public List<BuildingUnitData> BuildingUnitDataList;
     }
 
-    [System.Serializable]
+    [Serializable]
     public class BuildingUnitData
     {
+        public int Id;
+        public string Name;
+        public Sprite Sprite;
+        public int Width;
+        public int Height;
+        public BuildingUnit Prefab;
+        public Transform Visual;
+        public PoolType PoolType;
+        public GridSurfaceType BelowSurfaceType;
+        public bool CheckAdjacentCells;
+
+        [ShowIf(nameof(CheckAdjacentCells))] public GridSurfaceType AdjacentSurfaceType;
+
+        [ShowIf(nameof(CheckAdjacentCells))] public int MinAdjacentCells;
+
         public static Direction GetNextDirection(Direction direction)
         {
             switch (direction)
@@ -47,12 +62,12 @@ namespace VinhLB
                     return 180f;
             }
         }
-        
+
         public static Vector2Int GetRotationOffset(int width, int height, Direction direction)
         {
             width = Mathf.Clamp(width - 1, 0, width - 1);
             height = Mathf.Clamp(height - 1, 0, height - 1);
-            
+
             switch (direction)
             {
                 case Direction.Left:
@@ -66,51 +81,29 @@ namespace VinhLB
                     return Vector2Int.zero;
             }
         }
-        
-        public static List<Vector2Int> GetGridPositionList(int width, int height, Vector2Int offset, Direction direction)
+
+        public static List<Vector2Int> GetGridPositionList(int width, int height, Vector2Int offset,
+            Direction direction)
         {
-            List<Vector2Int> gridPositionList = new List<Vector2Int>();
+            List<Vector2Int> gridPositionList = new();
             switch (direction)
             {
                 default:
                 case Direction.Forward:
                 case Direction.Back:
                     for (int i = 0; i < width; i++)
-                    {
-                        for (int j = 0; j < height; j++)
-                        {
-                            gridPositionList.Add(offset + new Vector2Int(i, j));
-                        }
-                    }
+                    for (int j = 0; j < height; j++)
+                        gridPositionList.Add(offset + new Vector2Int(i, j));
                     break;
                 case Direction.Left:
                 case Direction.Right:
                     for (int i = 0; i < height; i++)
-                    {
-                        for (int j = 0; j < width; j++)
-                        {
-                            gridPositionList.Add(offset + new Vector2Int(i, j));
-                        }
-                    }
+                    for (int j = 0; j < width; j++)
+                        gridPositionList.Add(offset + new Vector2Int(i, j));
                     break;
             }
 
             return gridPositionList;
         }
-
-        public int Id;
-        public string Name;
-        public Sprite Sprite;
-        public int Width;
-        public int Height;
-        public BuildingUnit Prefab;
-        public Transform Visual;
-        public PoolType PoolType;
-        public GridSurfaceType BelowSurfaceType;
-        public bool CheckAdjacentCells;
-        [ShowIf(nameof(CheckAdjacentCells))]
-        public GridSurfaceType AdjacentSurfaceType;
-        [ShowIf(nameof(CheckAdjacentCells))]
-        public int MinAdjacentCells;
     }
 }

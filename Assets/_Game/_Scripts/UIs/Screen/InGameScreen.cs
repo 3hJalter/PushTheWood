@@ -14,11 +14,12 @@ namespace _Game.UIs.Screen
     {
         [SerializeField] private Image blockPanel;
         [SerializeField] private CanvasGroup canvasGroup;
-        
+
         public override void Setup()
         {
             base.Setup();
-            MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.Ins.CurrentChoice); // TODO: Change to use PlayerRef 
+            MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.Ins
+                .CurrentChoice); // TODO: Change to use PlayerRef 
             // if (CameraFollow.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
             // CameraFollow.Ins.ChangeCamera(ECameraType.InGameCamera);
             if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
@@ -27,13 +28,10 @@ namespace _Game.UIs.Screen
         }
 
         public override void Open()
-        {   
+        {
             base.Open();
             DOVirtual.Float(0, 1, 1f, value => canvasGroup.alpha = value)
-                .OnComplete(() =>
-                {
-                    blockPanel.enabled = false;
-                });
+                .OnComplete(() => { blockPanel.enabled = false; });
         }
 
         public override void Close()
@@ -62,7 +60,7 @@ namespace _Game.UIs.Screen
         {
             Close();
             UIManager.Ins.OpenUI<BuildingScreen>();
-            
+
             GridBuildingManager.Ins.ToggleBuildMode();
         }
     }

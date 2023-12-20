@@ -38,7 +38,7 @@ namespace _Game._Scripts.UIs.Tutorial
             Destroy(context.gameObject);
             context = null;
         }
-        
+
         public void LoadContext(TutorialContext contextIn)
         {
             context = contextIn;
@@ -47,9 +47,9 @@ namespace _Game._Scripts.UIs.Tutorial
             // set top left right bottom to zero
             context.Rect.offsetMin = Vector2.zero;
             context.Rect.offsetMax = Vector2.zero;
-                
+
         }
-        
+
         private void ChangeBlockPanelActiveStatus(bool status)
         {
             blockPanel.enabled = status;

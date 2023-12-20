@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using _Game._Scripts.InGame.GameCondition.Data;
+﻿using _Game._Scripts.InGame.GameCondition.Data;
 using _Game.DesignPattern.ConditionRule;
 using _Game.GameGrid;
 using _Game.GameGrid.Unit;
@@ -9,7 +7,8 @@ using UnityEngine;
 
 namespace _Game._Scripts.InGame.GameCondition.Condition
 {
-    [CreateAssetMenu(fileName = "IsMoveBlockedByBelowUnit", menuName = "ConditionSO/Moving/IsMoveBlockedByBelowUnit", order = 1)]
+    [CreateAssetMenu(fileName = "IsMoveBlockedByBelowUnit", menuName = "ConditionSO/Moving/IsMoveBlockedByBelowUnit",
+        order = 1)]
     public class IsMoveBlockedByBelowUnit : ScriptableObject, ICondition
     {
         public bool IsApplicable(ConditionData dataIn)
@@ -23,7 +22,7 @@ namespace _Game._Scripts.InGame.GameCondition.Condition
             // Condition
             if (canMoveDirectly) return true;
             if (player.StartHeight <= belowSurfaceStartHeight) return false;
-            GridUnit belowUnit = GridUnitFunc.GetBelowUnitAtMainCell(player);
+            GridUnit belowUnit = player.GetBelowUnitAtMainCell();
             if (!belowUnit) return false;
             // Only Consider the first unit (MainCell)
             return belowUnit.UnitTypeXZ switch

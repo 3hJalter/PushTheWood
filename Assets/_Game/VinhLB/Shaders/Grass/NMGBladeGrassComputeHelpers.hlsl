@@ -48,12 +48,13 @@ float3 GetTriangleCenter(float3 a, float3 b, float3 c)
 {
     return (a + b + c) / 3.0;
 }
+
 float2 GetTriangleCenter(float2 a, float2 b, float2 c)
 {
     return (a + b + c) / 3.0;
 }
 
-// Returns a pseudorandom number. By Ronja Böhringer
+// Returns a pseudorandom number. By Ronja BÃ¶hringer
 float rand(float4 value)
 {
     float4 smallValue = sin(value);
@@ -89,7 +90,7 @@ float3x3 AngleAxis3x3(float angle, float3 axis)
         t * x * x + c, t * x * y - s * z, t * x * z + s * y,
         t * x * y + s * z, t * y * y + c, t * y * z - s * x,
         t * x * z - s * y, t * y * z + s * x, t * z * z + c
-        );
+    );
 }
 
 #endif

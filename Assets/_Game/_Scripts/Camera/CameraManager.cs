@@ -4,7 +4,6 @@ using _Game.DesignPattern;
 using Cinemachine;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _Game.Managers
 {
@@ -12,14 +11,18 @@ namespace _Game.Managers
     {
         private const int CAMERA_PRIORITY_ACTIVE = 99;
         private const int CAMERA_PRIORITY_INACTIVE = 1;
-
-        // ReSharper disable once Unity.RedundantSerializeFieldAttribute
-        // ReSharper disable once CollectionNeverUpdated.Local
-        [SerializeField] private readonly Dictionary<ECameraType, CinemachineVirtualCameraBase> virtualCameraDic = new();
         [SerializeField] private CinemachineVirtualCameraBase currentVirtualCamera;
 
         [SerializeField] private UnityEngine.Camera brainCamera;
         [SerializeField] private Transform cameraTarget;
+
+        [SerializeField] private float cameraMoveTime = 1f;
+
+        // ReSharper disable once Unity.RedundantSerializeFieldAttribute
+        // ReSharper disable once CollectionNeverUpdated.Local
+        [SerializeField]
+        private readonly Dictionary<ECameraType, CinemachineVirtualCameraBase> virtualCameraDic = new();
+
         public UnityEngine.Camera BrainCamera => brainCamera;
 
         public CinemachineVirtualCameraBase CurrentVirtualCamera => currentVirtualCamera;
@@ -36,22 +39,18 @@ namespace _Game.Managers
             currentVirtualCamera.Priority = CAMERA_PRIORITY_ACTIVE;
         }
 
-        [SerializeField] private float cameraMoveTime = 1f;
-        
         public void ChangeCameraTargetPosition(Vector3 position)
         {
             cameraTarget.DOKill();
             cameraTarget.DOMove(position, cameraMoveTime).SetEase(Ease.OutCubic);
-                
+
             // cameraTarget.position = position;
         }
-        
+
         public void ChangeCameraTarget(ECameraType eCameraType, Transform target)
         {
-            // virtualCameraDic[eCameraType].Follow = target;
-            // virtualCameraDic[eCameraType].LookAt = target;
-        }   
+            virtualCameraDic[eCameraType].Follow = target;
+            virtualCameraDic[eCameraType].LookAt = target;
+        }
     }
-
-    
 }

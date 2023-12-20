@@ -19,22 +19,20 @@ namespace _Game.GameGrid
     public class LevelManager : Singleton<LevelManager>
     {
         [SerializeField] private int levelIndex;
-        private int _tutorialIndex;
 
         private readonly Dictionary<int, Island> _islandDic = new();
         private GameGridCell _firstPlayerInitCell;
-        private Grid<GameGridCell, GameGridCellData> _gridMap;
-
-        public Grid<GameGridCell, GameGridCellData> GridMap => _gridMap;
 
         private GridSurface.GridSurface[,] _gridSurfaceMap;
-        private Player _pUnit;
         private TextGridData _textGridData;
+        private int _tutorialIndex;
         private int gridSizeX;
         private int gridSizeY;
-        
-        public Player Player => _pUnit;
-        
+
+        public Grid<GameGridCell, GameGridCellData> GridMap { get; private set; }
+
+        public Player Player { get; private set; }
+
         private void Start()
         {
             // TEST
@@ -60,7 +58,7 @@ namespace _Game.GameGrid
             AddIslandIdToSurface();
             SpawnGridUnitToGrid();
             SetCameraToPlayer();
-            CameraManager.Ins.ChangeCameraTargetPosition(GetCenterIslandPos(_pUnit.islandID));    
+            CameraManager.Ins.ChangeCameraTargetPosition(GetCenterIslandPos(Player.islandID));
         }
 
         public void OnWin()
@@ -96,40 +94,37 @@ namespace _Game.GameGrid
         public void OnRestart()
         {
             ResetAllIsland();
-            _pUnit.OnDespawn();
-            _pUnit = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
-            _pUnit.OnInit(_firstPlayerInitCell);
-            
+            Player.OnDespawn();
+            Player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
+            Player.OnInit(_firstPlayerInitCell);
+
             // FxManager.Ins.ResetTrackedTrampleObjectList();
         }
 
         public GameGridCell GetCell(Vector2Int position)
         {
-            return _gridMap.GetGridCell(position.x, position.y);
+            return GridMap.GetGridCell(position.x, position.y);
         }
 
         public GameGridCell GetCellWorldPos(Vector3 position)
         {
-            return _gridMap.GetGridCell(position);
+            return GridMap.GetGridCell(position);
         }
-        
+
         private Vector3 GetCenterIslandPos(int islandId)
         {
             // Get the center position from all cell in island
             List<GameGridCell> cells = _islandDic[islandId].GridCells;
             Vector3 centerPos = Vector3.zero;
-            for (int i = 0; i < cells.Count; i++)
-            {
-                centerPos += cells[i].WorldPos;
-            }
+            for (int i = 0; i < cells.Count; i++) centerPos += cells[i].WorldPos;
             centerPos /= cells.Count;
             return centerPos;
         }
-        
+
         public void SetFirstPlayerStepOnIsland(GameGridCell cell)
         {
-            _islandDic[_pUnit.islandID].SetFirstPlayerStepCell(cell);
-            CameraManager.Ins.ChangeCameraTargetPosition(GetCenterIslandPos(_pUnit.islandID));    
+            _islandDic[Player.islandID].SetFirstPlayerStepCell(cell);
+            CameraManager.Ins.ChangeCameraTargetPosition(GetCenterIslandPos(Player.islandID));
         }
 
         public void AddNewUnitToIsland(GridUnit unit)
@@ -140,11 +135,11 @@ namespace _Game.GameGrid
 
         public void ResetIslandPlayerOn()
         {
-            if (!_islandDic.ContainsKey(_pUnit.islandID)) return;
-            _islandDic[_pUnit.islandID].ResetIsland();
-            _pUnit.OnDespawn();
-            _pUnit = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
-            _pUnit.OnInit(_islandDic[_pUnit.islandID].FirstPlayerStepCell);
+            if (!_islandDic.ContainsKey(Player.islandID)) return;
+            _islandDic[Player.islandID].ResetIsland();
+            Player.OnDespawn();
+            Player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
+            Player.OnInit(_islandDic[Player.islandID].FirstPlayerStepCell);
         }
 
         private void ResetAllIsland()
@@ -170,36 +165,36 @@ namespace _Game.GameGrid
             }
 
             // Set player to null
-            _pUnit.OnDespawn();
-            _pUnit = null;
+            Player.OnDespawn();
+            Player = null;
             _firstPlayerInitCell = null;
             // Clear all _islandDic data
             _islandDic.Clear();
             // Clear all _gridSurfaceMap data
             _gridSurfaceMap = null;
             // Clear all _gridMap data
-            _gridMap = null;
+            GridMap = null;
         }
 
         private void SetCameraToPlayer()
         {
-            // CameraFollow.Ins.SetTarget(_pUnit.Tf);
-            CameraManager.Ins.ChangeCameraTarget(ECameraType.InGameCamera, _pUnit.Tf);
+            // CameraFollow.Ins.SetTarget(Player.Tf);
+            CameraManager.Ins.ChangeCameraTarget(ECameraType.InGameCamera, Player.Tf);
         }
 
         private void SpawnPlayerUnit(int x, int y, Direction direction)
         {
-            GameGridCell cell = _gridMap.GetGridCell(x, y);
-            _pUnit = SimplePool.Spawn<Player>(
+            GameGridCell cell = GridMap.GetGridCell(x, y);
+            Player = SimplePool.Spawn<Player>(
                 DataManager.Ins.GetGridUnit(PoolType.Player));
-            _pUnit.OnInit(cell, HeightLevel.One, true, direction);
+            Player.OnInit(cell, HeightLevel.One, true, direction);
             _islandDic[cell.Data.gridSurface.IslandID].SetFirstPlayerStepCell(cell);
             _firstPlayerInitCell = cell;
         }
 
         private void SpawnInitUnit(int x, int y, PoolType type, Direction direction)
         {
-            GameGridCell cell = _gridMap.GetGridCell(x, y);
+            GameGridCell cell = GridMap.GetGridCell(x, y);
             GridUnit unit = SimplePool.Spawn<GridUnit>(DataManager.Ins.GetGridUnit(type));
             unit.OnInit(cell, HeightLevel.One, true, direction);
             if (cell.Data.gridSurface == null) return;
@@ -211,7 +206,7 @@ namespace _Game.GameGrid
             Vector2Int size = _textGridData.GetSize();
             gridSizeX = size.x;
             gridSizeY = size.y;
-            _gridMap = new Grid<GameGridCell, GameGridCellData>(gridSizeX, gridSizeY, Constants.CELL_SIZE, Tf.position,
+            GridMap = new Grid<GameGridCell, GameGridCellData>(gridSizeX, gridSizeY, Constants.CELL_SIZE, Tf.position,
                 () => new GameGridCell(), GridPlane.XZ);
         }
 
@@ -229,7 +224,7 @@ namespace _Game.GameGrid
                     if (!Enum.IsDefined(typeof(PoolType), cell)) continue;
                     GridSurface.GridSurface gridSurface = DataManager.Ins.GetGridSurface((PoolType)cell);
                     if (gridSurface is null) return;
-                    GameGridCell gridCell = _gridMap.GetGridCell(x, y);
+                    GameGridCell gridCell = GridMap.GetGridCell(x, y);
                     gridCell.SetSurface(
                         SimplePool.Spawn<GridSurface.GridSurface>(gridSurface,
                             new Vector3(gridCell.WorldX, 0, gridCell.WorldY), Quaternion.identity));
@@ -254,10 +249,10 @@ namespace _Game.GameGrid
                 {
                     if (!int.TryParse(unitDataSplit[y], out int unitCell)) continue;
                     if (!Enum.IsDefined(typeof(PoolType), unitCell)) continue;
-                    
+
                     if (!int.TryParse(unitRotationDirectionDataSplit[y], out int directionCell)) continue;
                     if (!Enum.IsDefined(typeof(Direction), directionCell)) continue;
-                    
+
                     if ((PoolType)unitCell is PoolType.Player)
                         SpawnPlayerUnit(x, y, (Direction)directionCell);
                     else
@@ -283,7 +278,7 @@ namespace _Game.GameGrid
             {
                 gridSurface.IslandID = islandID;
                 _islandDic.TryAdd(islandID, new Island(islandID));
-                _islandDic[islandID].AddGridCell(_gridMap.GetGridCell(x, y));
+                _islandDic[islandID].AddGridCell(GridMap.GetGridCell(x, y));
                 if (IsGridSurfaceHadIsland(x - 1, y, out GridSurface.GridSurface leftGridSurface))
                     FloodFillIslandID(leftGridSurface, x - 1, y, islandID);
                 if (IsGridSurfaceHadIsland(x + 1, y, out GridSurface.GridSurface rightGridSurface))
@@ -310,10 +305,6 @@ namespace _Game.GameGrid
 
     public class Island
     {
-        private readonly List<GameGridCell> _gridCells = new();
-
-        public List<GameGridCell> GridCells => _gridCells;
-
         private readonly HashSet<GridUnit> _gridUnits = new();
 
         private readonly Dictionary<GameGridCell, PoolType> _initGridUnitDic = new();
@@ -324,6 +315,8 @@ namespace _Game.GameGrid
             _islandID = islandID;
         }
 
+        public List<GameGridCell> GridCells { get; } = new();
+
         public GameGridCell FirstPlayerStepCell { get; private set; }
 
         public void SetFirstPlayerStepCell(GameGridCell cell)
@@ -333,7 +326,7 @@ namespace _Game.GameGrid
 
         public void AddGridCell(GameGridCell cell)
         {
-            _gridCells.Add(cell);
+            GridCells.Add(cell);
         }
 
         public void AddInitUnitToIsland(GridUnit unit, PoolType type, GameGridCell cell)
@@ -349,9 +342,9 @@ namespace _Game.GameGrid
 
         public void ClearIsland()
         {
-            for (int i = 0; i < _gridCells.Count; i++)
+            for (int i = 0; i < GridCells.Count; i++)
             {
-                GameGridCell cell = _gridCells[i];
+                GameGridCell cell = GridCells[i];
                 cell.ClearGridUnit();
             }
 

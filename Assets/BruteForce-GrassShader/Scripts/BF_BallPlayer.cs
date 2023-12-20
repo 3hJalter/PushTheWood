@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -9,23 +6,20 @@ using UnityEngine.InputSystem;
 public class BF_BallPlayer : MonoBehaviour
 {
     public Camera cam;
-    private Rigidbody rb;
     private Quaternion camRot;
-    private Vector3 moveDirection;
     private Vector3 inputDirection;
+    private Vector3 moveDirection;
+    private Rigidbody rb;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        rb = this.GetComponent<Rigidbody>();
-        if(cam == null)
-        {
-            cam = Camera.main;
-        }
+        rb = GetComponent<Rigidbody>();
+        if (cam == null) cam = Camera.main;
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         inputDirection = Vector3.zero;
 #if ENABLE_INPUT_SYSTEM
@@ -46,22 +40,10 @@ public class BF_BallPlayer : MonoBehaviour
             inputDirection += new Vector3(-1, 0, 0);
         }
 #else
-        if (Input.GetKey(KeyCode.Q)|| Input.GetKey(KeyCode.A))
-        {
-            inputDirection += new Vector3(0, 0, 1);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            inputDirection += new Vector3(0, 0, -1);
-        }
-        if (Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.W))
-        {
-            inputDirection += new Vector3(1, 0, 0);
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            inputDirection += new Vector3(-1, 0, 0);
-        }
+        if (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.A)) inputDirection += new Vector3(0, 0, 1);
+        if (Input.GetKey(KeyCode.D)) inputDirection += new Vector3(0, 0, -1);
+        if (Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.W)) inputDirection += new Vector3(1, 0, 0);
+        if (Input.GetKey(KeyCode.S)) inputDirection += new Vector3(-1, 0, 0);
 #endif
         MoveBall();
     }
@@ -69,7 +51,8 @@ public class BF_BallPlayer : MonoBehaviour
     private void MoveBall()
     {
         camRot = Quaternion.AngleAxis(cam.transform.rotation.eulerAngles.y, Vector3.up);
-        moveDirection = camRot * new Vector3(Mathf.Clamp(inputDirection.x * 2, -1, 1), 0, Mathf.Clamp(inputDirection.z * 2, -1, 1));
-        rb.AddTorque(moveDirection*7.5f);
+        moveDirection = camRot * new Vector3(Mathf.Clamp(inputDirection.x * 2, -1, 1), 0,
+            Mathf.Clamp(inputDirection.z * 2, -1, 1));
+        rb.AddTorque(moveDirection * 7.5f);
     }
 }

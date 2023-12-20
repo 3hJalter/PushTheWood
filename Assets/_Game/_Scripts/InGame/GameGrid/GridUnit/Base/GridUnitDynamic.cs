@@ -1,5 +1,4 @@
-﻿using _Game.DesignPattern.StateMachine;
-using GameGridEnum;
+﻿using GameGridEnum;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit

@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class BF_FPSDisplay : MonoBehaviour
 {
-    float deltaTime = 0.0f;
+    private float deltaTime;
 
-    private GUIStyle style = null;
+    private bool ShowFps;
 
-    private bool ShowFps = false;
+    private GUIStyle style;
 
     private void Start()
     {
@@ -17,18 +16,15 @@ public class BF_FPSDisplay : MonoBehaviour
         style.normal.textColor = new Color(1.0f, 0.0f, 0.0f, 1.0f);
     }
 
-    void Update()
+    private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            ShowFps = !ShowFps;
-        }
+        if (Input.GetKeyDown(KeyCode.Alpha2)) ShowFps = !ShowFps;
 
-        if(ShowFps)
-        deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
+        if (ShowFps)
+            deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
     }
 
-    void OnGUI()
+    private void OnGUI()
     {
         if (ShowFps)
         {
@@ -36,7 +32,7 @@ public class BF_FPSDisplay : MonoBehaviour
 
             style.fontSize = h * 4 / 100;
 
-            Rect rect = new Rect(0, 0, w, h * 2 / 100);
+            Rect rect = new(0, 0, w, h * 2 / 100);
 
             float msec = deltaTime * 1000.0f;
             float fps = 1.0f / deltaTime;

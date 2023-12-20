@@ -9,5 +9,3 @@ namespace _Game.Utilities.Grid
         public void SetCellValue(T value);
     }
 }
-
-

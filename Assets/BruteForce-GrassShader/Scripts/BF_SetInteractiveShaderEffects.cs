@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [ExecuteInEditMode]
 public class BF_SetInteractiveShaderEffects : MonoBehaviour
@@ -9,8 +7,8 @@ public class BF_SetInteractiveShaderEffects : MonoBehaviour
     public RenderTexture rt;
     public string GlobalTexName = "_GlobalEffectRT";
     public string GlobalOrthoName = "_OrthographicCamSize";
-    private float orthoMem = 0;
-    
+    private float orthoMem;
+
     private void Awake()
     {
         orthoMem = GetComponent<Camera>().orthographicSize;
@@ -18,12 +16,12 @@ public class BF_SetInteractiveShaderEffects : MonoBehaviour
         Shader.SetGlobalTexture(GlobalTexName, rt);
         Shader.SetGlobalFloat("_HasRT", 1);
     }
+
     private void Update()
     {
         if (transformToFollow != null)
-        {
-            transform.position = new Vector3(transformToFollow.position.x, transformToFollow.position.y + 20, transformToFollow.position.z);
-        }
+            transform.position = new Vector3(transformToFollow.position.x, transformToFollow.position.y + 20,
+                transformToFollow.position.z);
         Shader.SetGlobalVector("_Position", transform.position);
         transform.rotation = Quaternion.Euler(new Vector3(90, 0, 0));
     }

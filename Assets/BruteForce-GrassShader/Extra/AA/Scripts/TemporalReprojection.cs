@@ -13,29 +13,22 @@ using UnityEngine;
 [AddComponentMenu("Playdead/TemporalReprojection")]
 public class TemporalReprojection : EffectBase
 {
-    private static RenderBuffer[] mrt = new RenderBuffer[2];
-
-    private Camera _camera;
-    private FrustumJitter _frustumJitter;
-    private VelocityBuffer _velocityBuffer;
-
-    public Shader reprojectionShader;
-    private Material reprojectionMaterial;
-    private RenderTexture[,] reprojectionBuffer;
-    private int[] reprojectionIndex = new int[2] { -1, -1 };
-
     public enum Neighborhood
     {
         MinMax3x3,
         MinMax3x3Rounded,
-        MinMax4TapVarying,
-    };
+        MinMax4TapVarying
+    }
+
+    private static readonly RenderBuffer[] mrt = new RenderBuffer[2];
+
+    public Shader reprojectionShader;
 
     public Neighborhood neighborhood = Neighborhood.MinMax3x3Rounded;
     public bool unjitterColorSamples = true;
-    public bool unjitterNeighborhood = false;
-    public bool unjitterReprojection = false;
-    public bool useYCoCg = false;
+    public bool unjitterNeighborhood;
+    public bool unjitterReprojection;
+    public bool useYCoCg;
     public bool useClipping = true;
     public bool useDilation = true;
     public bool useMotionBlur = true;
@@ -45,32 +38,69 @@ public class TemporalReprojection : EffectBase
     [Range(0.0f, 1.0f)] public float feedbackMax = 0.97f;
 
     public float motionBlurStrength = 1.0f;
-    public bool motionBlurIgnoreFF = false;
+    public bool motionBlurIgnoreFF;
 
-    void Reset()
+    private Camera _camera;
+    private FrustumJitter _frustumJitter;
+    private VelocityBuffer _velocityBuffer;
+    private RenderTexture[,] reprojectionBuffer;
+    private int[] reprojectionIndex = new int[2] { -1, -1 };
+    private Material reprojectionMaterial;
+
+    private void Awake()
+    {
+        Reset();
+        Clear();
+    }
+
+    private void Reset()
     {
         _camera = GetComponent<Camera>();
         _frustumJitter = GetComponent<FrustumJitter>();
         _velocityBuffer = GetComponent<VelocityBuffer>();
     }
 
-    void Clear()
+    private void OnApplicationQuit()
+    {
+        if (reprojectionBuffer != null)
+        {
+            ReleaseRenderTarget(ref reprojectionBuffer[0, 0]);
+            ReleaseRenderTarget(ref reprojectionBuffer[0, 1]);
+            ReleaseRenderTarget(ref reprojectionBuffer[1, 0]);
+            ReleaseRenderTarget(ref reprojectionBuffer[1, 1]);
+        }
+    }
+
+    private void OnRenderImage(RenderTexture source, RenderTexture destination)
+    {
+        if (destination != null &&
+            source.antiAliasing == destination.antiAliasing) // resolve without additional blit when not end of chain
+        {
+            Resolve(source, destination);
+        }
+        else
+        {
+            RenderTexture internalDestination = RenderTexture.GetTemporary(source.width, source.height, 0,
+                RenderTextureFormat.ARGB32, RenderTextureReadWrite.Default, source.antiAliasing);
+            {
+                Resolve(source, internalDestination);
+                Graphics.Blit(internalDestination, destination);
+            }
+            RenderTexture.ReleaseTemporary(internalDestination);
+        }
+    }
+
+    private void Clear()
     {
         EnsureArray(ref reprojectionIndex, 2);
         reprojectionIndex[0] = -1;
         reprojectionIndex[1] = -1;
     }
 
-    void Awake()
-    {
-        Reset();
-        Clear();
-    }
-
-    void Resolve(RenderTexture source, RenderTexture destination)
+    private void Resolve(RenderTexture source, RenderTexture destination)
     {
         EnsureArray(ref reprojectionBuffer, 2, 2);
-        EnsureArray(ref reprojectionIndex, 2, initialValue: -1);
+        EnsureArray(ref reprojectionIndex, 2, -1);
 
         EnsureMaterial(ref reprojectionMaterial, reprojectionShader);
         if (reprojectionMaterial == null)
@@ -80,16 +110,18 @@ public class TemporalReprojection : EffectBase
         }
 
 #if SUPPORT_STEREO
-        int eyeIndex = (_camera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Right) ? 1 : 0;
+        int eyeIndex = _camera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Right ? 1 : 0;
 #else
         int eyeIndex = 0;
 #endif
         int bufferW = source.width;
         int bufferH = source.height;
 
-        if (EnsureRenderTarget(ref reprojectionBuffer[eyeIndex, 0], bufferW, bufferH, RenderTextureFormat.ARGB32, FilterMode.Bilinear, antiAliasing: source.antiAliasing))
+        if (EnsureRenderTarget(ref reprojectionBuffer[eyeIndex, 0], bufferW, bufferH, RenderTextureFormat.ARGB32,
+                FilterMode.Bilinear, antiAliasing: source.antiAliasing))
             Clear();
-        if (EnsureRenderTarget(ref reprojectionBuffer[eyeIndex, 1], bufferW, bufferH, RenderTextureFormat.ARGB32, FilterMode.Bilinear, antiAliasing: source.antiAliasing))
+        if (EnsureRenderTarget(ref reprojectionBuffer[eyeIndex, 1], bufferW, bufferH, RenderTextureFormat.ARGB32,
+                FilterMode.Bilinear, antiAliasing: source.antiAliasing))
             Clear();
 
 #if SUPPORT_STEREO
@@ -116,10 +148,11 @@ public class TemporalReprojection : EffectBase
         EnsureKeyword(reprojectionMaterial, "USE_CLIPPING", useClipping);
         EnsureKeyword(reprojectionMaterial, "USE_DILATION", useDilation);
         EnsureKeyword(reprojectionMaterial, "USE_MOTION_BLUR", useMotionBlur && allowMotionBlur);
-        EnsureKeyword(reprojectionMaterial, "USE_MOTION_BLUR_NEIGHBORMAX", _velocityBuffer.activeVelocityNeighborMax != null);
+        EnsureKeyword(reprojectionMaterial, "USE_MOTION_BLUR_NEIGHBORMAX",
+            _velocityBuffer.activeVelocityNeighborMax != null);
         EnsureKeyword(reprojectionMaterial, "USE_OPTIMIZATIONS", useOptimizations);
 
-        if (reprojectionIndex[eyeIndex] == -1)// bootstrap
+        if (reprojectionIndex[eyeIndex] == -1) // bootstrap
         {
             reprojectionIndex[eyeIndex] = 0;
             reprojectionBuffer[eyeIndex, reprojectionIndex[eyeIndex]].DiscardContents();
@@ -142,7 +175,8 @@ public class TemporalReprojection : EffectBase
         reprojectionMaterial.SetTexture("_PrevTex", reprojectionBuffer[eyeIndex, indexRead]);
         reprojectionMaterial.SetFloat("_FeedbackMin", feedbackMin);
         reprojectionMaterial.SetFloat("_FeedbackMax", feedbackMax);
-        reprojectionMaterial.SetFloat("_MotionScale", motionBlurStrength * (motionBlurIgnoreFF ? Mathf.Min(1.0f, 1.0f / _velocityBuffer.timeScale) : 1.0f));
+        reprojectionMaterial.SetFloat("_MotionScale",
+            motionBlurStrength * (motionBlurIgnoreFF ? Mathf.Min(1.0f, 1.0f / _velocityBuffer.timeScale) : 1.0f));
 
         // reproject frame n-1 into output + history buffer
         {
@@ -156,34 +190,6 @@ public class TemporalReprojection : EffectBase
             DrawFullscreenQuad();
 
             reprojectionIndex[eyeIndex] = indexWrite;
-        }
-    }
-
-    void OnRenderImage(RenderTexture source, RenderTexture destination)
-    {
-        if (destination != null && source.antiAliasing == destination.antiAliasing)// resolve without additional blit when not end of chain
-        {
-            Resolve(source, destination);
-        }
-        else
-        {
-            RenderTexture internalDestination = RenderTexture.GetTemporary(source.width, source.height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Default, source.antiAliasing);
-            {
-                Resolve(source, internalDestination);
-                Graphics.Blit(internalDestination, destination);
-            }
-            RenderTexture.ReleaseTemporary(internalDestination);
-        }
-    }
-
-    void OnApplicationQuit()
-    {
-        if (reprojectionBuffer != null)
-        {
-            ReleaseRenderTarget(ref reprojectionBuffer[0, 0]);
-            ReleaseRenderTarget(ref reprojectionBuffer[0, 1]);
-            ReleaseRenderTarget(ref reprojectionBuffer[1, 0]);
-            ReleaseRenderTarget(ref reprojectionBuffer[1, 1]);
         }
     }
 }

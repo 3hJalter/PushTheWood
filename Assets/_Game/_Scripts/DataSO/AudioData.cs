@@ -24,13 +24,12 @@ namespace AudioEnum
 {
     public enum SfxType
     {
-        None = -1,
+        None = -1
     }
-    
+
     public enum BgmType
     {
         None = -1,
-        MainMenu = 0,
+        MainMenu = 0
     }
 }
-

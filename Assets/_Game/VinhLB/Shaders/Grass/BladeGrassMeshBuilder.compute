@@ -40,6 +40,7 @@ struct SourceVertex
 {
     float3 positionOS;
 };
+
 // Source buffers, arranged as a vertex buffer and index buffer
 StructuredBuffer<SourceVertex> _SourceVertices;
 StructuredBuffer<int> _SourceIndices;
@@ -53,6 +54,7 @@ struct GeneratedVertex
     float3 bladeAnchorOS;
     float3 casterNormalOS;
 };
+
 // Source and index buffers for the generated mesh
 RWStructuredBuffer<GeneratedVertex> _GeneratedVertices;
 RWStructuredBuffer<int> _GeneratedIndices;
@@ -68,12 +70,13 @@ float _BladeHeightVariance; // Variance of blade height
 int _NumBladeSegments; // The maximum number of segments on the blade
 float _BladeCurvature; // Describes how sharply the blade bends
 
-void GetCenterAndBasic(SourceVertex a, SourceVertex b, SourceVertex c, out float3 positionOS, out float3 normalOS, out float3x3 tsToOS)
+void GetCenterAndBasic(SourceVertex a, SourceVertex b, SourceVertex c, out float3 positionOS, out float3 normalOS,
+                       out float3x3 tsToOS)
 {
     float3 posA = mul(_Transform, float4(a.positionOS, 1)).xyz;
     float3 posB = mul(_Transform, float4(b.positionOS, 1)).xyz;
     float3 posC = mul(_Transform, float4(c.positionOS, 1)).xyz;
-    
+
     // Then get the center point
     positionOS = GetTriangleCenter(posA, posB, posC);
     // and the normal vector and TS > OS tranformation matrix
@@ -85,7 +88,7 @@ float2 GetBladeDimensions(float3 positionOS)
     // Calculate the blade width and height, applying random variance
     float width = _BladeWidth + randNegative1to1(positionOS + _RandomSeed, 0) * _BladeWidthVariance;
     float height = _BladeHeight + randNegative1to1(positionOS + _RandomSeed, 1) * _BladeHeightVariance;
-    
+
     return float2(width, height);
 }
 
@@ -106,14 +109,14 @@ GeneratedVertex MakeGeneratedPoint(float3 anchorOS, float3 normalOS, float2 dime
     float3 offsetTS = float3((uv.x - 0.5) * dimensions.x, 0, uv.y * dimensions.y);
     // Calculate the offset in world space using the rotation matrix
     float3 offsetOS = mul(tsToOS, offsetTS);
-    
-    GeneratedVertex output = (GeneratedVertex) 0;
+
+    GeneratedVertex output = (GeneratedVertex)0;
     output.positionOS = anchorOS + offsetOS;
     output.normalOS = normalOS;
     output.uv = uv;
     output.bladeAnchorOS = anchorOS;
     output.casterNormalOS = mul(tsToOS, float3(0, 1, 0));
-    
+
     return output;
 }
 
@@ -152,7 +155,7 @@ void Main(uint3 id : SV_DispatchThreadID)
 {
     // Disptaches can only be in chunks of 128, there might be more threads than number
     // of triangles. Return in that case
-    if ((int) id.x >= _NumSourceTriangles)
+    if ((int)id.x >= _NumSourceTriangles)
     {
         return;
     }
@@ -169,49 +172,49 @@ void Main(uint3 id : SV_DispatchThreadID)
         _SourceVertices[_SourceIndices[sourceTriStart + 1]],
         _SourceVertices[_SourceIndices[sourceTriStart + 2]],
         positionOS, normalOS, tsToOS);
-    
+
     float2 dimensions = GetBladeDimensions(positionOS);
-    
+
     // The twist matrix decides which direction the grass blade will face
     float3x3 twistMatrix = AngleAxis3x3(rand(positionOS + _RandomSeed, 2) * PI * 2, float3(0, 0, 1));
     // This bend angle decides how much the tip bends
     float bendAngle = rand(positionOS + _RandomSeed, 3) * _MaxBendAngle;
-    
+
     int numBladeSegments = min(MAX_BLADE_SEGMENTS, max(1, _NumBladeSegments));
     // Create an array to hold blade points
     GeneratedVertex vertices[MAX_BLADE_POINTS];
-    
+
     // Blade points will be arranged from the bottom up in the array
     // with the point with the minimum u-coordinate in a pair appearing first
-    
+
     // Construct the square segments of the grass blade
     for (int i = 0; i < numBladeSegments; i++)
     {
         // The v rises as the segments increase
-        float v = i / (float) numBladeSegments;
+        float v = i / (float)numBladeSegments;
         // The u of the first vertex. It converges on 0.5 as the segment increases
         float u = 0.5 - (1 - v) * 0.5;
         // Calculate the final transform for this height
         float3x3 transform = CalculateTransformationForHeight(v, tsToOS, twistMatrix, bendAngle);
-        
+
         // Append the first vertex
         vertices[i * 2] = MakeGeneratedPoint(positionOS, normalOS, dimensions, transform, float2(u, v));
         // Append the second vertex
         vertices[i * 2 + 1] = MakeGeneratedPoint(positionOS, normalOS, dimensions, transform, float2(1 - u, v));
     }
-    
+
     // Calculate the transform for blade tip
     float3x3 tipTransform = CalculateTransformationForHeight(1, tsToOS, twistMatrix, bendAngle);
     // Append the tip vertex
     vertices[numBladeSegments * 2] = MakeGeneratedPoint(positionOS, normalOS, dimensions, tipTransform, float2(0.5, 1));
-    
+
     // Calculate the positions to insert these vertices and this triangle into the generated mesh arrays
     int numSideVertices = numBladeSegments * 2 + 1;
     int numSideTriangles = numSideVertices - 2;
     int numSideIndices = numSideTriangles * 3; // Three indices per triangle
     int genIndexStart = id.x * numSideIndices * 2;
     int genVertexStart = id.x * numSideVertices * 2;
-    
+
     for (int i = 0; i < numSideVertices; i++)
     {
         // The reverse side of the blade is stored directly after the front side

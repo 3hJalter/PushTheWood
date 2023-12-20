@@ -1,9 +1,6 @@
-﻿using GameGridEnum;
-
-namespace _Game.GameGrid.GridSurface
+﻿namespace _Game.GameGrid.GridSurface
 {
     public class GroundSurface : GridSurface
     {
-        
     }
 }

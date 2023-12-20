@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class HButton : Button
 {
     public ButtonAnim buttonAnim;
-    
+
     public void Show(bool instant = false)
     {
         gameObject.SetActive(true);

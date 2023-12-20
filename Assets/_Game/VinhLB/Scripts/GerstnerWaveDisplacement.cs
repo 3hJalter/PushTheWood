@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace VinhLB
 {
     public static class GerstnerWaveDisplacement
     {
-        private static Vector3 GerstnerWave(Vector3 position, float steepness, float wavelength, float speed, float direction)
+        private static Vector3 GerstnerWave(Vector3 position, float steepness, float wavelength, float speed,
+            float direction)
         {
             direction = direction * 2.0f - 1.0f;
             Vector2 d = new Vector2(Mathf.Cos(Mathf.PI * direction), Mathf.Sin(Mathf.PI * direction)).normalized;
@@ -17,7 +16,8 @@ namespace VinhLB
             return new Vector3(d.x * a * Mathf.Cos(f), a * Mathf.Sin(f), d.y * a * Mathf.Cos(f));
         }
 
-        public static Vector3 GetWaveDisplacement(Vector3 position, float steepness, float wavelength, float speed, float[] directions)
+        public static Vector3 GetWaveDisplacement(Vector3 position, float steepness, float wavelength, float speed,
+            float[] directions)
         {
             Vector3 offset = Vector3.zero;
 

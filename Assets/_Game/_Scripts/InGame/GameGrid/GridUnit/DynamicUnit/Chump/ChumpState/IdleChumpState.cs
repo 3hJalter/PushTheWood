@@ -6,17 +6,17 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
     {
         public void OnEnter(Chump t)
         {
-            
+
         }
 
         public void OnExecute(Chump t)
         {
-            
+
         }
 
         public void OnExit(Chump t)
         {
-            
+
         }
     }
 }

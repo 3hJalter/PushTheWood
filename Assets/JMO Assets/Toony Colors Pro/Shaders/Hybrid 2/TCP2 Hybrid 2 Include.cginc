@@ -13,15 +13,15 @@
 	#define _WorldSpaceLightPos0 _MainLightPosition
 	#define UnpackScaleNormal UnpackNormalScale
 #else
-	// URP to BIRP
-	#define CopySign(x,s) ((s >= 0) ? abs(x) : -abs(x))
+// URP to BIRP
+#define CopySign(x,s) ((s >= 0) ? abs(x) : -abs(x))
 #endif
 
 #if defined(TCP2_HYBRID_URP)
 
-	#ifndef URP_VERSION
+#ifndef URP_VERSION
 		#error URP version undefined
-	#endif
+#endif
 
 	// #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 	// This would cause a compilation error if URP isn't installed, so instead we use the dedicated
@@ -30,9 +30,9 @@
 
 	#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 	#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
-		#if URP_VERSION >= 12
+#if URP_VERSION >= 12
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DBuffer.hlsl"
-		#endif
+#endif
 
 	#define UNITY_PASS_FORWARDBASE
 #endif
@@ -40,7 +40,7 @@
 #if defined(TCP2_HYBRID_URP) && URP_VERSION >= 14
 	#define IS_LIGHTING_FEATURE_ENABLED(feature)	if (IsLightingFeatureEnabled(feature))
 #else
-	#define IS_LIGHTING_FEATURE_ENABLED(feature)
+#define IS_LIGHTING_FEATURE_ENABLED(feature)
 #endif
 
 #if defined(LOD_FADE_CROSSFADE)
@@ -53,11 +53,11 @@
 	};
 	float Dither4x4(float2 positionCS)
 	{
-		#if SHADER_API_GLES // gles 2.0
+#if SHADER_API_GLES // gles 2.0
 			float index = (floor(positionCS.x) % 4.0) * 4.0 + (floor(positionCS.y) % 4.0);
-		#else
+#else
 			uint index = (uint(positionCS.x) % 4u) * 4u + uint(positionCS.y) % 4u;
-		#endif
+#endif
 		return DITHER_THRESHOLDS_4x4[index];
 	}
 #endif
@@ -71,66 +71,67 @@
 //================================================================================================================================
 
 // Uniforms
-CBUFFER_START(UnityPerMaterial)
-	half _RampSmoothing;
-	half _RampThreshold;
-	half _RampBands;
-	half _RampBandsSmoothing;
-	half _RampScale;
-	half _RampOffset;
+CBUFFER_START (UnityPerMaterial)
+half _RampSmoothing;
+half _RampThreshold;
+half _RampBands;
+half _RampBandsSmoothing;
+half _RampScale;
+half _RampOffset;
 
-	float4 _BumpMap_ST;
-	half _BumpScale;
+float4 _BumpMap_ST;
+half _BumpScale;
 
-	float4 _BaseMap_ST;
+float4 _BaseMap_ST;
 
-	half _Cutoff;
+half _Cutoff;
 
-	half4 _BaseColor;
+half4 _BaseColor;
 
-	float4 _EmissionMap_ST;
-	half _EmissionChannel;
-	half4 _EmissionColor;
+float4 _EmissionMap_ST;
+half _EmissionChannel;
+half4 _EmissionColor;
 
-	half4 _MatCapColor;
-	half _MatCapMaskChannel;
-	half _MatCapType;
+half4 _MatCapColor;
+half _MatCapMaskChannel;
+half _MatCapType;
 
-	half4 _SColor;
-	half4 _HColor;
+half4 _SColor;
+half4 _HColor;
 
-	half _RimMin;
-	half _RimMax;
-	half4 _RimColor;
+half _RimMin;
+half _RimMax;
+half4 _RimColor;
 
-	half _SpecularRoughness;
-	half4 _SpecularColor;
-	half _SpecularMapType;
-	half _SpecularToonSize;
-	half _SpecularToonSmoothness;
+half _SpecularRoughness;
+half4 _SpecularColor;
+half _SpecularMapType;
+half _SpecularToonSize;
+half _SpecularToonSmoothness;
 
-	half _ReflectionSmoothness;
-	half4 _ReflectionColor;
-	half _FresnelMax;
-	half _FresnelMin;
-	half _ReflectionMapType;
+half _ReflectionSmoothness;
+half4 _ReflectionColor;
+half _FresnelMax;
+half _FresnelMin;
+half _ReflectionMapType;
 
-	half _OcclusionStrength;
-	half _OcclusionChannel;
+half _OcclusionStrength;
+half _OcclusionChannel;
 
-	half _IndirectIntensity;
-	half _SingleIndirectColor;
+half _IndirectIntensity;
+half _SingleIndirectColor;
 
-	half _OutlineWidth;
-	half _OutlineMinWidth;
-	half _OutlineMaxWidth;
-	half4 _OutlineColor;
-	half _OutlineTextureLOD;
-	half _DirectIntensityOutline;
-	half _IndirectIntensityOutline;
+half _OutlineWidth;
+half _OutlineMinWidth;
+half _OutlineMaxWidth;
+half4 _OutlineColor;
+half _OutlineTextureLOD;
+half _DirectIntensityOutline;
+half _IndirectIntensityOutline;
 CBUFFER_END
 
 // Samplers
+
 sampler2D _BaseMap;
 sampler2D _Ramp;
 sampler2D _BumpMap;
@@ -150,8 +151,8 @@ sampler2D _MatCapMask;
 //Specular help functions (from UnityStandardBRDF.cginc)
 inline half3 TCP2_SafeNormalize(half3 inVec)
 {
-	half dp3 = max(0.001f, dot(inVec, inVec));
-	return inVec * rsqrt(dp3);
+    half dp3 = max(0.001f, dot(inVec, inVec));
+    return inVec * rsqrt(dp3);
 }
 
 //GGX
@@ -160,106 +161,107 @@ inline half3 TCP2_SafeNormalize(half3 inVec)
 #if defined(SHADER_API_MOBILE)
 	#define TCP2_EPSILON 1e-4f
 #else
-	#define TCP2_EPSILON 1e-7f
+#define TCP2_EPSILON 1e-7f
 #endif
 inline half GGX(half NdotH, half roughness)
 {
-	half a2 = roughness * roughness;
-	half d = (NdotH * a2 - NdotH) * NdotH + 1.0f;
-	return TCP2_INV_PI * a2 / (d * d + TCP2_EPSILON);
+    half a2 = roughness * roughness;
+    half d = (NdotH * a2 - NdotH) * NdotH + 1.0f;
+    return TCP2_INV_PI * a2 / (d * d + TCP2_EPSILON);
 }
 
-float GetOcclusion(sampler2D _OcclusionMap, float2 mainTexcoord, half _OcclusionStrength, half _OcclusionChannel, half4 albedo)
+float GetOcclusion(sampler2D _OcclusionMap, float2 mainTexcoord, half _OcclusionStrength, half _OcclusionChannel,
+                   half4 albedo)
 {
-	#if defined(TCP2_MOBILE)
+    #if defined(TCP2_MOBILE)
 		half occlusion = tex2D(_OcclusionMap, mainTexcoord).a;
-	#else
-		half occlusion = 1.0;
-		if (_OcclusionChannel >= 4)
-		{
-			occlusion = tex2D(_OcclusionMap, mainTexcoord).a;
-		}
-		else if (_OcclusionChannel >= 3)
-		{
-			occlusion = tex2D(_OcclusionMap, mainTexcoord).b;
-		}
-		else if (_OcclusionChannel >= 2)
-		{
-			occlusion = tex2D(_OcclusionMap, mainTexcoord).g;
-		}
-		else if (_OcclusionChannel >= 1)
-		{
-			occlusion = tex2D(_OcclusionMap, mainTexcoord).r;
-		}
-		else
-		{
-			occlusion = albedo.a;
-		}
-	#endif
-	occlusion = lerp(1, occlusion, _OcclusionStrength);
-	return occlusion;
+    #else
+    half occlusion = 1.0;
+    if (_OcclusionChannel >= 4)
+    {
+        occlusion = tex2D(_OcclusionMap, mainTexcoord).a;
+    }
+    else if (_OcclusionChannel >= 3)
+    {
+        occlusion = tex2D(_OcclusionMap, mainTexcoord).b;
+    }
+    else if (_OcclusionChannel >= 2)
+    {
+        occlusion = tex2D(_OcclusionMap, mainTexcoord).g;
+    }
+    else if (_OcclusionChannel >= 1)
+    {
+        occlusion = tex2D(_OcclusionMap, mainTexcoord).r;
+    }
+    else
+    {
+        occlusion = albedo.a;
+    }
+    #endif
+    occlusion = lerp(1, occlusion, _OcclusionStrength);
+    return occlusion;
 }
 
 half3 CalculateRamp(half ndlWrapped)
 {
-	#if defined(TCP2_RAMPTEXT)
+    #if defined(TCP2_RAMPTEXT)
 		half3 ramp = tex2D(_Ramp, _RampOffset + ((ndlWrapped.xx - 0.5) * _RampScale) + 0.5).rgb;
-	#elif defined(TCP2_RAMP_BANDS) || defined(TCP2_RAMP_BANDS_CRISP)
+    #elif defined(TCP2_RAMP_BANDS) || defined(TCP2_RAMP_BANDS_CRISP)
 		half bands = _RampBands;
 
 		half rampThreshold = _RampThreshold;
 		half rampSmooth = _RampSmoothing * 0.5;
 		half x = smoothstep(rampThreshold - rampSmooth, rampThreshold + rampSmooth, ndlWrapped);
 
-		#if defined(TCP2_RAMP_BANDS_CRISP)
+    #if defined(TCP2_RAMP_BANDS_CRISP)
 			half bandsSmooth = fwidth(ndlWrapped) * (2.0 + bands);
-		#else
+    #else
 			half bandsSmooth = _RampBandsSmoothing * 0.5;
-		#endif
+    #endif
 		half3 ramp = saturate((smoothstep(0.5 - bandsSmooth, 0.5 + bandsSmooth, frac(x * bands)) + floor(x * bands)) / bands).xxx;
-	#else
-		#if defined(TCP2_RAMP_CRISP)
+    #else
+    #if defined(TCP2_RAMP_CRISP)
 			half rampSmooth = fwidth(ndlWrapped) * 0.5;
-		#else
-			half rampSmooth = _RampSmoothing * 0.5;
-		#endif
-		half rampThreshold = _RampThreshold;
-		half3 ramp = smoothstep(rampThreshold - rampSmooth, rampThreshold + rampSmooth, ndlWrapped).xxx;
-	#endif
-	return ramp;
+    #else
+    half rampSmooth = _RampSmoothing * 0.5;
+    #endif
+    half rampThreshold = _RampThreshold;
+    half3 ramp = smoothstep(rampThreshold - rampSmooth, rampThreshold + rampSmooth, ndlWrapped).xxx;
+    #endif
+    return ramp;
 }
 
 half CalculateSpecular(half3 lightDir, half3 viewDir, float3 normal, half specularMap)
 {
-	half3 halfDir = TCP2_SafeNormalize(lightDir + viewDir);
-	half nh = saturate(dot(normal, halfDir));
+    half3 halfDir = TCP2_SafeNormalize(lightDir + viewDir);
+    half nh = saturate(dot(normal, halfDir));
 
-	#if defined(TCP2_SPECULAR_STYLIZED) || defined(TCP2_SPECULAR_CRISP)
+    #if defined(TCP2_SPECULAR_STYLIZED) || defined(TCP2_SPECULAR_CRISP)
 		half specSize = 1 - (_SpecularToonSize * specularMap);
 		nh = nh * (1.0 / (1.0 - specSize)) - (specSize / (1.0 - specSize));
 
-		#if defined(TCP2_SPECULAR_CRISP)
+    #if defined(TCP2_SPECULAR_CRISP)
 			float specSmoothness = fwidth(nh);
-		#else
+    #else
 			float specSmoothness = _SpecularToonSmoothness;
-		#endif
+    #endif
 
 		half spec = smoothstep(0, specSmoothness, nh);
-	#else
-		float specularRoughness = max(0.00001,  _SpecularRoughness) * specularMap;
-		half roughness = specularRoughness * specularRoughness;
-		half spec = GGX(nh, saturate(roughness));
-		spec *= TCP2_PI * 0.05;
-		#ifdef UNITY_COLORSPACE_GAMMA
+    #else
+    float specularRoughness = max(0.00001, _SpecularRoughness) * specularMap;
+    half roughness = specularRoughness * specularRoughness;
+    half spec = GGX(nh, saturate(roughness));
+    spec *= TCP2_PI * 0.05;
+    #ifdef UNITY_COLORSPACE_GAMMA
 			spec = max(0, sqrt(max(1e-4h, spec)));
 			half surfaceReduction = 1.0 - 0.28 * roughness * specularRoughness;
-		#else
-			half surfaceReduction = 1.0 / (roughness*roughness + 1.0);
-		#endif
-		spec *= surfaceReduction;
-	#endif
+    #else
+    half surfaceReduction = 1.0 / (roughness * roughness + 1.0);
+    #endif
+    spec *= surfaceReduction;
+    #endif
 
-	return max(0, spec);
+    return max(0, spec);
 }
 
 #if defined(_DBUFFER)
@@ -271,9 +273,9 @@ half CalculateSpecular(half3 lightDir, half3 viewDir, float3 normal, half specul
 		DecalSurfaceData decalSurfaceData = (DecalSurfaceData)0;
 		DECODE_FROM_DBUFFER(DBuffer, decalSurfaceData);
 
-		#if !defined(_DBUFFER_MRT3)
+#if !defined(_DBUFFER_MRT3)
 			decalSurfaceData.MAOSAlpha = 0;
-		#endif
+#endif
 
 		return decalSurfaceData;
 	}
@@ -327,61 +329,66 @@ half CalculateSpecular(half3 lightDir, half3 viewDir, float3 normal, half specul
 // Vertex input
 struct Attributes
 {
-	float4 vertex         : POSITION;
-	float3 normal         : NORMAL;
-	float4 tangent        : TANGENT;
-	float4 texcoord0      : TEXCOORD0;
-	#if defined(NEEDS_TEXCOORD1)
+    float4 vertex : POSITION;
+    float3 normal : NORMAL;
+    float4 tangent : TANGENT;
+    float4 texcoord0 : TEXCOORD0;
+    #if defined(NEEDS_TEXCOORD1)
 		float2 texcoord1  : TEXCOORD1;
-	#endif
-	#if defined(DYNAMICLIGHTMAP_ON) || defined(UNITY_PASS_META)
+    #endif
+    #if defined(DYNAMICLIGHTMAP_ON) || defined(UNITY_PASS_META)
 		float2 texcoord2 : TEXCOORD2;
-	#endif
-	UNITY_VERTEX_INPUT_INSTANCE_ID
+    #endif
+    UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
 // Vertex output / Fragment input
 struct Varyings
 {
-	float4 pos             : SV_POSITION;
-	float3 normal          : NORMAL;
-	float4 worldPos        : TEXCOORD0; /* w = fog coords */
-	float4 texcoords       : TEXCOORD1; /* xy = main texcoords, zw = raw texcoords */
-#if defined(_NORMALMAP) || (defined(TCP2_MOBILE) && (defined(TCP2_RIM_LIGHTING) || (defined(TCP2_REFLECTIONS) && defined(TCP2_REFLECTIONS_FRESNEL)))) // if normalmap or (mobile + rim or fresnel)
+    float4 pos : SV_POSITION;
+    float3 normal : NORMAL;
+    float4 worldPos : TEXCOORD0; /* w = fog coords */
+    float4 texcoords : TEXCOORD1; /* xy = main texcoords, zw = raw texcoords */
+    #if defined(_NORMALMAP) || (defined(TCP2_MOBILE) && (defined(TCP2_RIM_LIGHTING) || (defined(TCP2_REFLECTIONS) && defined(TCP2_REFLECTIONS_FRESNEL)))) // if normalmap or (mobile + rim or fresnel)
+
 	float4 tangentWS       : TEXCOORD2; /* w = ndv (mobile) */
-#endif
-#if defined(_NORMALMAP)
+    #endif
+    #if defined(_NORMALMAP)
 	float4 bitangentWS     : TEXCOORD3;
-#endif
-#if defined(TCP2_MATCAP) && !defined(_NORMALMAP)
+    #endif
+    #if defined(TCP2_MATCAP) && !defined(_NORMALMAP)
 	float4 matcap          : TEXCOORD4;
-#endif
-#if defined(TCP2_HYBRID_URP)
-	#if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
+    #endif
+    #if defined(TCP2_HYBRID_URP)
+    #if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
 		float4 shadowCoord : TEXCOORD5; // compute shadow coord per-vertex for the main light
-	#endif
-	#ifdef _ADDITIONAL_LIGHTS_VERTEX
+    #endif
+    #ifdef _ADDITIONAL_LIGHTS_VERTEX
 		half3 vertexLights : TEXCOORD6;
-	#endif
-	#if defined(DYNAMICLIGHTMAP_ON) || defined(LIGHTMAP_ON)
+    #endif
+    #if defined(DYNAMICLIGHTMAP_ON) || defined(LIGHTMAP_ON)
 		float4 lightmapUV  : TEXCOORD7;
-	#endif
-#else
-	#if defined(DYNAMICLIGHTMAP_ON) || defined(LIGHTMAP_ON)
+    #endif
+    #else
+    #if defined(DYNAMICLIGHTMAP_ON) || defined(LIGHTMAP_ON)
 		float4 lmap        : TEXCOORD5;
-	#endif
-	#if !defined(SHADOW_CASTER_PASS)
-		UNITY_LIGHTING_COORDS(6,7)
-	#endif
-#endif
-	UNITY_VERTEX_INPUT_INSTANCE_ID
-	UNITY_VERTEX_OUTPUT_STEREO
+    #endif
+    #if !defined(SHADOW_CASTER_PASS)
+    UNITY_LIGHTING_COORDS (
+    6
+    ,
+    7
+    )
+    #endif
+    #endif
+    UNITY_VERTEX_INPUT_INSTANCE_ID
+    UNITY_VERTEX_OUTPUT_STEREO
 };
 
 struct Varyings_Meta
 {
-	float4 positionCS   : SV_POSITION;
-	float2 uv    : TEXCOORD0;
+    float4 positionCS : SV_POSITION;
+    float2 uv : TEXCOORD0;
 };
 
 #if USE_FORWARD_PLUS
@@ -396,113 +403,115 @@ struct Varyings_Meta
 #if defined(UNITY_PASS_META)
 	#define VERTEX_OUTPUT Varyings_Meta
 #else
-	#define VERTEX_OUTPUT Varyings
+#define VERTEX_OUTPUT Varyings
 #endif
 
 VERTEX_OUTPUT Vertex(Attributes input)
 {
-	#if defined(UNITY_PASS_META)
+    #if defined(UNITY_PASS_META)
 		Varyings_Meta meta_output;
-		#if defined(TCP2_HYBRID_URP)
+    #if defined(TCP2_HYBRID_URP)
 			meta_output.positionCS = MetaVertexPosition(input.vertex, input.texcoord1, input.texcoord2, unity_LightmapST, unity_DynamicLightmapST);
-		#else
+    #else
 			meta_output.positionCS = UnityMetaVertexPosition(input.vertex, input.texcoord1, input.texcoord2, unity_LightmapST, unity_DynamicLightmapST);
-		#endif
+    #endif
 		meta_output.uv = TRANSFORM_TEX(input.texcoord0, _BaseMap);
 		return meta_output;
-	#else
+    #else
 
-		Varyings output = (Varyings)0;
+    Varyings output = (Varyings)0;
 
-		UNITY_SETUP_INSTANCE_ID(input);
-		UNITY_TRANSFER_INSTANCE_ID(input, output);
-		UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+    UNITY_SETUP_INSTANCE_ID(input);
+    UNITY_TRANSFER_INSTANCE_ID(input, output);
+    UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
-		// Texture Coordinates
-		output.texcoords.xy = input.texcoord0.xy * _BaseMap_ST.xy + _BaseMap_ST.zw;
-		output.texcoords.zw = input.texcoord0.xy;
+    // Texture Coordinates
+    output.texcoords.xy = input.texcoord0.xy * _BaseMap_ST.xy + _BaseMap_ST.zw;
+    output.texcoords.zw = input.texcoord0.xy;
 
-		#if defined(TCP2_HYBRID_URP)
+    #if defined(TCP2_HYBRID_URP)
 			OUTPUT_LIGHTMAP_UV(input.texcoord1, unity_LightmapST, output.lightmapUV);
 
 			VertexPositionInputs vertexInput = GetVertexPositionInputs(input.vertex.xyz);
-			#if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
+    #if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
 				output.shadowCoord = GetShadowCoord(vertexInput);
-			#endif
+    #endif
 			float3 positionWS = vertexInput.positionWS;
 			float4 positionCS = vertexInput.positionCS;
 			output.pos = positionCS;
 
 			VertexNormalInputs vertexNormalInput = GetVertexNormalInputs(input.normal, input.tangent);
 			float3 normalWS = vertexNormalInput.normalWS;
-			#if defined(_NORMALMAP)
+    #if defined(_NORMALMAP)
 				float3 tangentWS = vertexNormalInput.tangentWS;
 				float3 bitangentWS = vertexNormalInput.bitangentWS;
-			#endif
+    #endif
 
-			#ifdef _ADDITIONAL_LIGHTS_VERTEX
+    #ifdef _ADDITIONAL_LIGHTS_VERTEX
 				// Vertex lighting
 				output.vertexLights = VertexLighting(positionWS, normalWS);
-			#endif
-		#else
-			#ifdef LIGHTMAP_ON
+    #endif
+    #else
+    #ifdef LIGHTMAP_ON
 				output.lmap.xy = input.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
 				output.lmap.zw = 0;
-			#endif
-			#ifdef DYNAMICLIGHTMAP_ON
+    #endif
+    #ifdef DYNAMICLIGHTMAP_ON
 				output.lmap.zw = input.texcoord2.xy * unity_DynamicLightmapST.xy + unity_DynamicLightmapST.zw;
-			#endif
+    #endif
 
-			float3 positionWS = mul(unity_ObjectToWorld, input.vertex).xyz;
-			float4 positionCS = UnityWorldToClipPos(positionWS);
-			output.pos = positionCS;
+    float3 positionWS = mul(unity_ObjectToWorld, input.vertex).xyz;
+    float4 positionCS = UnityWorldToClipPos(positionWS);
+    output.pos = positionCS;
 
-			half sign = half(input.tangent.w) * half(unity_WorldTransformParams.w);
-			float3 normalWS = UnityObjectToWorldNormal(input.normal);
-			#if defined(_NORMALMAP)
+    half sign = half(input.tangent.w) * half(unity_WorldTransformParams.w);
+    float3 normalWS = UnityObjectToWorldNormal(input.normal);
+    #if defined(_NORMALMAP)
 				float3 tangentWS = UnityObjectToWorldDir(input.tangent.xyz);
 				float3 bitangentWS = cross(normalWS, tangentWS) * sign;
-			#endif
+    #endif
 
-			#if !defined(SHADOW_CASTER_PASS)
-				// This Unity macro expects the vertex input to be named 'v'
-				#define v input
-				UNITY_TRANSFER_LIGHTING(output, input.texcoord1.xy);
-			#endif
-		#endif
+    #if !defined(SHADOW_CASTER_PASS)
+    // This Unity macro expects the vertex input to be named 'v'
+    #define v input
+    UNITY_TRANSFER_LIGHTING(output, input.texcoord1.xy);
+    #endif
+    #endif
 
-		// world position
-		output.worldPos = float4(positionWS.xyz, 0);
+    // world position
+    output.worldPos = float4(positionWS.xyz, 0);
 
-		// Compute fog factor
-		#if defined(TCP2_HYBRID_URP)
+    // Compute fog factor
+    #if defined(TCP2_HYBRID_URP)
 			output.worldPos.w = ComputeFogFactor(positionCS.z);
-		#else
-			UNITY_TRANSFER_FOG_COMBINED_WITH_WORLD_POS(output, positionCS);
-		#endif
+    #else
+    UNITY_TRANSFER_FOG_COMBINED_WITH_WORLD_POS(output, positionCS);
+    #endif
 
-		// normal
-		output.normal = normalWS;
+    // normal
+    output.normal = normalWS;
 
-		// tangent
-		#if defined(_NORMALMAP) || (defined(TCP2_MOBILE) && (defined(TCP2_RIM_LIGHTING) || (defined(TCP2_REFLECTIONS) && defined(TCP2_REFLECTIONS_FRESNEL)))) // if mobile + rim or fresnel
+    // tangent
+    #if defined(_NORMALMAP) || (defined(TCP2_MOBILE) && (defined(TCP2_RIM_LIGHTING) || (defined(TCP2_REFLECTIONS) && defined(TCP2_REFLECTIONS_FRESNEL)))) // if mobile + rim or fresnel
+
 			output.tangentWS = float4(0, 0, 0, 0);
-		#endif
-		#if defined(_NORMALMAP)
+    #endif
+    #if defined(_NORMALMAP)
 			output.tangentWS.xyz = tangentWS;
 			output.bitangentWS.xyz = bitangentWS;
-		#endif
-		#if defined(TCP2_MOBILE) && (defined(TCP2_RIM_LIGHTING) || (defined(TCP2_REFLECTIONS) && defined(TCP2_REFLECTIONS_FRESNEL))) // if mobile + rim or fresnel
-			// Calculate ndv in vertex shader
-			#if defined(TCP2_HYBRID_URP)
-				half3 viewDirWS = TCP2_SafeNormalize(GetCameraPositionWS() - positionWS);
-			#else
-				half3 viewDirWS = TCP2_SafeNormalize(_WorldSpaceCameraPos.xyz - positionWS);
-			#endif
-			output.tangentWS.w = 1 - max(0, dot(viewDirWS, normalWS));
-		#endif
+    #endif
+    #if defined(TCP2_MOBILE) && (defined(TCP2_RIM_LIGHTING) || (defined(TCP2_REFLECTIONS) && defined(TCP2_REFLECTIONS_FRESNEL))) // if mobile + rim or fresnel
 
-		#if defined(TCP2_MATCAP) && !defined(_NORMALMAP)
+    // Calculate ndv in vertex shader
+    #if defined(TCP2_HYBRID_URP)
+				half3 viewDirWS = TCP2_SafeNormalize(GetCameraPositionWS() - positionWS);
+    #else
+				half3 viewDirWS = TCP2_SafeNormalize(_WorldSpaceCameraPos.xyz - positionWS);
+    #endif
+			output.tangentWS.w = 1 - max(0, dot(viewDirWS, normalWS));
+    #endif
+
+    #if defined(TCP2_MATCAP) && !defined(_NORMALMAP)
 			// MatCap
 			float3 worldNorm = normalize(unity_WorldToObject[0].xyz * input.normal.x + unity_WorldToObject[1].xyz * input.normal.y + unity_WorldToObject[2].xyz * input.normal.z);
 			worldNorm = mul((float3x3)UNITY_MATRIX_V, worldNorm);
@@ -510,33 +519,33 @@ VERTEX_OUTPUT Vertex(Attributes input)
 			float3 perspectiveOffset = (screenPos.xyz / screenPos.w) - 0.5;
 			worldNorm.xy -= (perspectiveOffset.xy * perspectiveOffset.z) * 0.5;
 			output.matcap.xy = worldNorm.xy * 0.5 + 0.5;
-		#endif
+    #endif
 
-		return output;
+    return output;
 
-	#endif
+    #endif
 }
 
 #if defined(TCP2_HYBRID_URP)
 	void ProcessAdditionalLight(Light light, float3 normalWS, half3 albedo, inout half3 color, half lightingFactor
-	#if !defined(TCP2_OUTLINE_PASS)
+#if !defined(TCP2_OUTLINE_PASS)
 		, inout half3 emission
-	#endif
-	#if defined(_SCREEN_SPACE_OCCLUSION)
+#endif
+#if defined(_SCREEN_SPACE_OCCLUSION)
 		, AmbientOcclusionFactor aoFactor
-	#endif
-	#if defined(TCP2_SPECULAR)
+#endif
+#if defined(TCP2_SPECULAR)
 		, half specularMap
 		, half3 viewDirWS
-	#endif
-	#if defined(TCP2_RIM_LIGHTING) && defined(TCP2_RIM_LIGHTING_LIGHTMASK)
+#endif
+#if defined(TCP2_RIM_LIGHTING) && defined(TCP2_RIM_LIGHTING_LIGHTMASK)
 		, half rim
-	#endif
+#endif
 		)
 	{
-		#if defined(_SCREEN_SPACE_OCCLUSION)
+#if defined(_SCREEN_SPACE_OCCLUSION)
 			light.color *= aoFactor.directAmbientOcclusion;
-		#endif
+#endif
 
 		half atten = light.shadowAttenuation * light.distanceAttenuation;
 		half3 lightDir = light.direction;
@@ -552,9 +561,9 @@ VERTEX_OUTPUT Vertex(Attributes input)
 		// Apply attenuation (shadowmaps & point/spot lights attenuation)
 		ramp *= atten;
 
-		#if defined(TCP2_RIM_LIGHTING) && defined(TCP2_RIM_LIGHTING_LIGHTMASK)
+#if defined(TCP2_RIM_LIGHTING) && defined(TCP2_RIM_LIGHTING_LIGHTMASK)
 			half3 rimMask = ramp.xxx * lightColor.rgb;
-		#endif
+#endif
 
 		// Apply highlight color only
 		ramp = lerp(half3(0,0,0), _HColor.rgb, ramp);
@@ -564,16 +573,16 @@ VERTEX_OUTPUT Vertex(Attributes input)
 		color += albedo.rgb * lightColor.rgb * ramp * lightingFactor;
 
 		// Specular
-		#if defined(TCP2_SPECULAR)
+#if defined(TCP2_SPECULAR)
 			half spec = CalculateSpecular(lightDir, viewDirWS, normalWS, specularMap);
 			IS_LIGHTING_FEATURE_ENABLED(DEBUGLIGHTINGFEATUREFLAGS_ADDITIONAL_LIGHTS)
 			emission.rgb += spec * atten * ndl * lightColor.rgb * _SpecularColor.rgb;
-		#endif
-		// Rim Lighting
-		#if defined(TCP2_RIM_LIGHTING) && defined(TCP2_RIM_LIGHTING_LIGHTMASK)
+#endif
+// Rim Lighting
+#if defined(TCP2_RIM_LIGHTING) && defined(TCP2_RIM_LIGHTING_LIGHTMASK)
 			IS_LIGHTING_FEATURE_ENABLED(DEBUGLIGHTINGFEATUREFLAGS_ADDITIONAL_LIGHTS)
 			emission.rgb += rimMask * rim * _RimColor.rgb;
-		#endif
+#endif
 	}
 #endif
 
@@ -581,182 +590,182 @@ VERTEX_OUTPUT Vertex(Attributes input)
 // However it is left out sometimes because some keywords aren't defined for the
 // Forward Add pass (e.g. TCP2_MATCAP, TCP2_REFLECTIONS, ...)
 
-half4 Fragment (
-	Varyings input
-	, half vFace : VFACE
-#ifdef _WRITE_RENDERING_LAYERS
+half4 Fragment(
+    Varyings input
+    , half vFace : VFACE
+    #ifdef _WRITE_RENDERING_LAYERS
 	, out float4 outRenderingLayers : SV_Target1
-#endif
-	) : SV_Target
+    #endif
+) : SV_Target
 {
-	UNITY_SETUP_INSTANCE_ID(input);
-	UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
+    UNITY_SETUP_INSTANCE_ID(input);
+    UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
-	#ifdef _WRITE_RENDERING_LAYERS
+    #ifdef _WRITE_RENDERING_LAYERS
 		outRenderingLayers = float4(0, 0, 0, 0);
-	#endif
+    #endif
 
-	// LOD Crossfading
-	#if defined(LOD_FADE_CROSSFADE)
+    // LOD Crossfading
+    #if defined(LOD_FADE_CROSSFADE)
 		const float dither = Dither4x4(input.pos.xy);
 		const float ditherThreshold = unity_LODFade.x - CopySign(dither, unity_LODFade.x);
 		clip(ditherThreshold);
-	#endif
+    #endif
 
-	// Texture coordinates
-	float2 mainTexcoord = input.texcoords.xy;
-	float2 rawTexcoord = input.texcoords.zw;
+    // Texture coordinates
+    float2 mainTexcoord = input.texcoords.xy;
+    float2 rawTexcoord = input.texcoords.zw;
 
-	// Vectors
-	float3 positionWS = input.worldPos.xyz;
-	float3 normalWS = normalize(input.normal);
-	normalWS.xyz *= (vFace < 0) ? -1.0 : 1.0;
+    // Vectors
+    float3 positionWS = input.worldPos.xyz;
+    float3 normalWS = normalize(input.normal);
+    normalWS.xyz *= (vFace < 0) ? -1.0 : 1.0;
 
-	#if defined(DEBUG_DISPLAY)
+    #if defined(DEBUG_DISPLAY)
 		InputData debugInputData = (InputData)0;
 		debugInputData.positionWS = positionWS;
 		debugInputData.positionCS = input.pos;
 
 		SurfaceData debugSurfaceData = (SurfaceData)0;
-	#endif
+    #endif
 
-	#if defined(TCP2_HYBRID_URP)
+    #if defined(TCP2_HYBRID_URP)
 		half3 viewDirWS = TCP2_SafeNormalize(GetCameraPositionWS() - positionWS);
-	#else
-		half3 viewDirWS = TCP2_SafeNormalize(_WorldSpaceCameraPos.xyz - positionWS);
-	#endif
-	#if defined(_NORMALMAP)
+    #else
+    half3 viewDirWS = TCP2_SafeNormalize(_WorldSpaceCameraPos.xyz - positionWS);
+    #endif
+    #if defined(_NORMALMAP)
 		half3 tangentWS = input.tangentWS.xyz;
 		half3 bitangentWS = input.bitangentWS.xyz;
 		half3x3 tangentToWorldMatrix = half3x3(tangentWS.xyz, bitangentWS.xyz, normalWS.xyz);
-	#endif
+    #endif
 
-	// Lighting
+    // Lighting
 
-	#if defined(TCP2_HYBRID_URP)
-		#if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
+    #if defined(TCP2_HYBRID_URP)
+    #if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
 			float4 shadowCoord = input.shadowCoord;
-		#elif defined(MAIN_LIGHT_CALCULATE_SHADOWS)
+    #elif defined(MAIN_LIGHT_CALCULATE_SHADOWS)
 			float4 shadowCoord = TransformWorldToShadowCoord(positionWS);
-		#else
+    #else
 			float4 shadowCoord = float4(0, 0, 0, 0);
-		#endif
+    #endif
 
-		#if defined(SHADOWS_SHADOWMASK) && defined(LIGHTMAP_ON)
+    #if defined(SHADOWS_SHADOWMASK) && defined(LIGHTMAP_ON)
 			half4 shadowMask = SAMPLE_SHADOWMASK(input.lightmapUV);
-		#elif !defined (LIGHTMAP_ON)
+    #elif !defined (LIGHTMAP_ON)
 			half4 shadowMask = unity_ProbesOcclusion;
-		#else
+    #else
 			half4 shadowMask = half4(1, 1, 1, 1);
-		#endif
+    #endif
 
-		#if defined(DEBUG_DISPLAY)
+    #if defined(DEBUG_DISPLAY)
 			debugInputData.shadowMask = shadowMask;
-		#endif
+    #endif
 
-		#if URP_VERSION >= 14
+    #if URP_VERSION >= 14
 			uint meshRenderingLayers = GetMeshRenderingLayer();
-		#elif URP_VERSION >= 12
+    #elif URP_VERSION >= 12
 			uint meshRenderingLayers = GetMeshRenderingLightLayer();
-		#endif
+    #endif
 
-		#if URP_VERSION <= 7
+    #if URP_VERSION <= 7
 			Light mainLight = GetMainLight(shadowCoord);
-		#else
+    #else
 			Light mainLight = GetMainLight(shadowCoord, positionWS, shadowMask);
-		#endif
+    #endif
 
-		#if defined(_SCREEN_SPACE_OCCLUSION)
+    #if defined(_SCREEN_SPACE_OCCLUSION)
 			float2 normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(input.pos);
 			AmbientOcclusionFactor aoFactor = GetScreenSpaceAmbientOcclusion(normalizedScreenSpaceUV);
 			mainLight.color *= aoFactor.directAmbientOcclusion;
-		#endif
+    #endif
 
-		#if URP_VERSION >= 12
+    #if URP_VERSION >= 12
 			half3 lightDir = half3(0, 1, 0);
 			half3 lightColor = half3(0, 0, 0);
-			#if (URP_VERSION >= 14 && defined(_LIGHT_LAYERS)) || URP_VERSION <= 12
+    #if (URP_VERSION >= 14 && defined(_LIGHT_LAYERS)) || URP_VERSION <= 12
 				if (IsMatchingLightLayer(mainLight.layerMask, meshRenderingLayers))
-			#endif
+    #endif
 				{
 					lightDir = mainLight.direction;
 					lightColor = mainLight.color.rgb;
 				}
-		#else
+    #else
 			half3 lightDir = mainLight.direction;
 			half3 lightColor = mainLight.color.rgb;
-		#endif
+    #endif
 		half atten = mainLight.shadowAttenuation * mainLight.distanceAttenuation;
-	#else
-		half3 lightDir = normalize(UnityWorldSpaceLightDir(positionWS));
-		half3 lightColor = _LightColor0.rgb;
+    #else
+    half3 lightDir = normalize(UnityWorldSpaceLightDir(positionWS));
+    half3 lightColor = _LightColor0.rgb;
 
-		#if defined(SHADOW_CASTER_PASS)
+    #if defined(SHADOW_CASTER_PASS)
 			half atten = 1.0;
-		#else
-			TCP2_LIGHT_ATTENUATION(input, positionWS)
-			#if defined(_RECEIVE_SHADOWS_OFF)
+    #else
+    TCP2_LIGHT_ATTENUATION(input, positionWS)
+    #if defined(_RECEIVE_SHADOWS_OFF)
 				half atten = attenuation;
-			#else
-				half atten = shadow * attenuation;
-			#endif
-		#endif
-	#endif
+    #else
+    half atten = shadow * attenuation;
+    #endif
+    #endif
+    #endif
 
-	// Base
+    // Base
 
-	half4 albedo = tex2D(_BaseMap, mainTexcoord).rgba;
-	albedo.rgb *= _BaseColor.rgb;
-	half alpha = albedo.a * _BaseColor.a;
-	half3 emission = half3(0,0,0);
+    half4 albedo = tex2D(_BaseMap, mainTexcoord).rgba;
+    albedo.rgb *= _BaseColor.rgb;
+    half alpha = albedo.a * _BaseColor.a;
+    half3 emission = half3(0, 0, 0);
 
-	// Normal Mapping
-	#if defined(_NORMALMAP)
+    // Normal Mapping
+    #if defined(_NORMALMAP)
 		half4 normalMap = tex2D(_BumpMap, rawTexcoord * _BumpMap_ST.xy + _BumpMap_ST.zw).rgba;
 		half3 normalTS = UnpackScaleNormal(normalMap, _BumpScale);
 		normalWS = mul(normalTS, tangentToWorldMatrix);
 
-		#if defined(DEBUG_DISPLAY)
+    #if defined(DEBUG_DISPLAY)
 			if (_DebugLightingMode == DEBUGLIGHTINGMODE_LIGHTING_WITHOUT_NORMAL_MAPS || _DebugLightingMode == DEBUGLIGHTINGMODE_REFLECTIONS)
 			{
 				// Cancel normal map for rendering debugger
 				normalWS = normalize(input.normal);
 			}
-		#endif
-	#endif
+    #endif
+    #endif
 
-	// URP Decals
-	#if defined(_DBUFFER)
-		#if defined(_DBUFFER_MRT2) || defined(_DBUFFER_MRT3)
+    // URP Decals
+    #if defined(_DBUFFER)
+    #if defined(_DBUFFER_MRT2) || defined(_DBUFFER_MRT3)
 			#define HAS_DECAL_NORMALS
-		#endif
-		#if defined(_DBUFFER_MRT3)
+    #endif
+    #if defined(_DBUFFER_MRT3)
 			#define HAS_DECAL_MAOS
-		#endif
+    #endif
 
 		DecalSurfaceData decals = GetDecals(input.pos);
 		albedo.rgb = albedo.rgb * decals.baseColor.a + decals.baseColor.rgb;
-		#if defined(HAS_DECAL_NORMALS)
+    #if defined(HAS_DECAL_NORMALS)
 			// Always test the normal as we can have decompression artifact
 			if (decals.normalWS.w < 1.0)
 			{
 				normalWS.xyz = normalize(normalWS.xyz * decals.normalWS.w + decals.normalWS.xyz);
 			}
-		#endif
-	#endif
+    #endif
+    #endif
 
-	// Alpha Testing
-	#if defined(_ALPHATEST_ON)
+    // Alpha Testing
+    #if defined(_ALPHATEST_ON)
 		clip(alpha - _Cutoff);
-	#endif
+    #endif
 
-	// Emission
-	#if defined(_EMISSION)
+    // Emission
+    #if defined(_EMISSION)
 		emission = _EmissionColor.rgb;
-		#if defined(TCP2_MOBILE)
+    #if defined(TCP2_MOBILE)
 			half4 emissionMap = tex2D(_EmissionMap, rawTexcoord * _EmissionMap_ST.xy + _EmissionMap_ST.zw);
 			emission *= emissionMap.rgb;
-		#else
+    #else
 			if (_EmissionChannel < 5)
 			{
 				half4 emissionMap = tex2D(_EmissionMap, rawTexcoord * _EmissionMap_ST.xy + _EmissionMap_ST.zw);
@@ -766,32 +775,32 @@ half4 Fragment (
 				else if (_EmissionChannel >= 1) emission *= emissionMap.g;
 				else							emission *= emissionMap.r;
 			}
-		#endif
-		#if defined(DEBUG_DISPLAY)
+    #endif
+    #if defined(DEBUG_DISPLAY)
 			debugSurfaceData.emission = emission;
-		#endif
-	#endif
+    #endif
+    #endif
 
-	#if defined(UNITY_PASS_META)
+    #if defined(UNITY_PASS_META)
 		half3 meta_albedo = albedo.rgb;
 		half3 meta_emission = emission.rgb;
 		half3 meta_specular = half3(0, 0, 0);
-	#endif
+    #endif
 
-	// MatCap
-	#if defined(TCP2_MATCAP)
-		#if defined(_NORMALMAP)
+    // MatCap
+    #if defined(TCP2_MATCAP)
+    #if defined(_NORMALMAP)
 			half3 matcapCoordsNormal = mul((float3x3)UNITY_MATRIX_V, normalWS);
 			half3 matcap = tex2D(_MatCapTex, matcapCoordsNormal.xy * 0.5 + 0.5).rgb * _MatCapColor.rgb;
-		#else
+    #else
 			half3 matcap = tex2D(_MatCapTex, input.matcap.xy).rgb * _MatCapColor.rgb;
-		#endif
+    #endif
 		half matcapMask = 1.0;
-		#if defined(TCP2_MATCAP_MASK)
+    #if defined(TCP2_MATCAP_MASK)
 			half4 matcapMaskTex = tex2D(_MatCapMask, mainTexcoord);
-			#if defined(TCP2_MOBILE)
+    #if defined(TCP2_MOBILE)
 				matcapMask *= matcapMaskTex.a;
-			#else
+    #else
 				if (_MatCapMaskChannel >= 3)
 				{
 					matcapMask *= matcapMaskTex.a;
@@ -808,12 +817,12 @@ half4 Fragment (
 				{
 					matcapMask *= matcapMaskTex.r;
 				}
-			#endif
-		#endif
+    #endif
+    #endif
 
-		#if defined(TCP2_MOBILE)
+    #if defined(TCP2_MOBILE)
 			emission += matcap * matcapMask;
-		#else
+    #else
 			if (_MatCapType >= 1)
 			{
 				albedo.rgb = lerp(albedo.rgb, matcap.rgb, matcapMask);
@@ -822,49 +831,49 @@ half4 Fragment (
 			{
 				emission += matcap * matcapMask;
 			}
-		#endif
-	#endif
+    #endif
+    #endif
 
-	half ndl = dot(normalWS, lightDir);
-	half ndlWrapped = ndl * 0.5 + 0.5;
-	ndl = saturate(ndl);
+    half ndl = dot(normalWS, lightDir);
+    half ndlWrapped = ndl * 0.5 + 0.5;
+    ndl = saturate(ndl);
 
-	// Calculate ramp
-	half3 ramp = CalculateRamp(ndlWrapped);
+    // Calculate ramp
+    half3 ramp = CalculateRamp(ndlWrapped);
 
-	// Apply attenuation
-	ramp *= atten;
-	#if defined(TCP2_RIM_LIGHTING)
-		#if defined(TCP2_RIM_LIGHTING_LIGHTMASK)
+    // Apply attenuation
+    ramp *= atten;
+    #if defined(TCP2_RIM_LIGHTING)
+    #if defined(TCP2_RIM_LIGHTING_LIGHTMASK)
 			half3 rimMask = ramp.xxx * lightColor.rgb;
-		#else
+    #else
 			half3 rimMask = half3(1, 1, 1);
-		#endif
-	#endif
+    #endif
+    #endif
 
-	// Shadow Albedo
-	#if defined(TCP2_SHADOW_TEXTURE)
+    // Shadow Albedo
+    #if defined(TCP2_SHADOW_TEXTURE)
 		half4 shadowAlbedo = tex2D(_ShadowBaseMap, mainTexcoord).rgba;
 		albedo = lerp(shadowAlbedo, albedo, ramp.x);
-	#endif
+    #endif
 
-	// Highlight/shadow colors
-	#if !defined(TCP2_SHADOW_LIGHT_COLOR)
-		half3 highlightColor = _HColor.rgb * lightColor.rgb;
-	#else
+    // Highlight/shadow colors
+    #if !defined(TCP2_SHADOW_LIGHT_COLOR)
+    half3 highlightColor = _HColor.rgb * lightColor.rgb;
+    #else
 		half3 highlightColor = _HColor.rgb;
-	#endif
-	#if defined(UNITY_PASS_FORWARDBASE) || defined(DIRECTIONAL_COOKIE)
+    #endif
+    #if defined(UNITY_PASS_FORWARDBASE) || defined(DIRECTIONAL_COOKIE)
 		ramp = lerp(_SColor.rgb, highlightColor, ramp);
-	#else
-		ramp = lerp(half3(0, 0, 0), highlightColor, ramp);
-	#endif
+    #else
+    ramp = lerp(half3(0, 0, 0), highlightColor, ramp);
+    #endif
 
-	#if defined(TCP2_SHADOW_LIGHT_COLOR)
+    #if defined(TCP2_SHADOW_LIGHT_COLOR)
 		ramp *= lightColor.rgb;
-	#endif
+    #endif
 
-	#if defined(DEBUG_DISPLAY)
+    #if defined(DEBUG_DISPLAY)
 		// Lighting overlays:
 		if (_DebugLightingMode == DEBUGLIGHTINGMODE_SHADOW_CASCADES)
 		{
@@ -874,35 +883,35 @@ half4 Fragment (
 		{
 			albedo.rgb = half3(1, 1, 1);
 		}
-	#endif
+    #endif
 
-	// Output color
-	half3 color = albedo.rgb * ramp;
+    // Output color
+    half3 color = albedo.rgb * ramp;
 
-	#if defined(DEBUG_DISPLAY)
+    #if defined(DEBUG_DISPLAY)
 		if (!IsLightingFeatureEnabled(DEBUGLIGHTINGFEATUREFLAGS_MAIN_LIGHT))
 		{
 			// Cancel main light for rendering debugger
 			color = 0;
 		}
-	#endif
+    #endif
 
-	// Occlusion
-	#if defined(TCP2_OCCLUSION)
+    // Occlusion
+    #if defined(TCP2_OCCLUSION)
 		half occlusion = GetOcclusion(_OcclusionMap, mainTexcoord, _OcclusionStrength, _OcclusionChannel, albedo);
-	#else
-		half occlusion = 1.0;
-	#endif
-	#if defined(HAS_DECAL_MAOS)
+    #else
+    half occlusion = 1.0;
+    #endif
+    #if defined(HAS_DECAL_MAOS)
 		occlusion = occlusion * decals.MAOSAlpha + decals.occlusion;
-	#endif
+    #endif
 
-	#if defined(TCP2_HYBRID_URP) && defined(_SCREEN_SPACE_OCCLUSION)
+    #if defined(TCP2_HYBRID_URP) && defined(_SCREEN_SPACE_OCCLUSION)
 		occlusion = min(occlusion, aoFactor.indirectAmbientOcclusion);
-	#endif
+    #endif
 
-	// Setup lighting environment (Built-In)
-	#if !defined(TCP2_HYBRID_URP) && defined(UNITY_PASS_FORWARDBASE)
+    // Setup lighting environment (Built-In)
+    #if !defined(TCP2_HYBRID_URP) && defined(UNITY_PASS_FORWARDBASE)
 		UnityGI gi;
 		UNITY_INITIALIZE_OUTPUT(UnityGI, gi);
 		gi.indirect.diffuse = 0;
@@ -917,92 +926,92 @@ half4 Fragment (
 		giInput.worldPos = positionWS;
 		giInput.worldViewDir = viewDirWS;
 		giInput.atten = atten;
-		#if defined(LIGHTMAP_ON) || defined(DYNAMICLIGHTMAP_ON)
+    #if defined(LIGHTMAP_ON) || defined(DYNAMICLIGHTMAP_ON)
 			giInput.lightmapUV = input.lmap;
-		#else
+    #else
 			giInput.lightmapUV = 0.0;
-		#endif
+    #endif
 		giInput.ambient.rgb = 0.0;
 		giInput.probeHDR[0] = unity_SpecCube0_HDR;
 		giInput.probeHDR[1] = unity_SpecCube1_HDR;
-		#if defined(UNITY_SPECCUBE_BLENDING) || defined(UNITY_SPECCUBE_BOX_PROJECTION)
+    #if defined(UNITY_SPECCUBE_BLENDING) || defined(UNITY_SPECCUBE_BOX_PROJECTION)
 			giInput.boxMin[0] = unity_SpecCube0_BoxMin; // .w holds lerp value for blending
-		#endif
-		#ifdef UNITY_SPECCUBE_BOX_PROJECTION
+    #endif
+    #ifdef UNITY_SPECCUBE_BOX_PROJECTION
 			giInput.boxMax[0] = unity_SpecCube0_BoxMax;
 			giInput.probePosition[0] = unity_SpecCube0_ProbePosition;
 			giInput.boxMax[1] = unity_SpecCube1_BoxMax;
 			giInput.boxMin[1] = unity_SpecCube1_BoxMin;
 			giInput.probePosition[1] = unity_SpecCube1_ProbePosition;
-		#endif
+    #endif
 
 		half3 shNormal = (_SingleIndirectColor > 0) ? viewDirWS : normalWS;
-		#if defined(TCP2_REFLECTIONS)
+    #if defined(TCP2_REFLECTIONS)
 			// GI: indirect diffuse & specular
 			half smoothness = _ReflectionSmoothness;
 			Unity_GlossyEnvironmentData g = UnityGlossyEnvironmentSetup(smoothness, giInput.worldViewDir, normalWS, half3(0,0,0));
 			gi = UnityGlobalIllumination(giInput, occlusion, shNormal, g);
-		#else
+    #else
 			// GI: indirect diffuse only
 			gi = UnityGlobalIllumination(giInput, occlusion, shNormal);
-		#endif
+    #endif
 
 		gi.light.color = _LightColor0.rgb; // remove attenuation, taken into account separately
-	#endif
+    #endif
 
-	// Apply ambient/indirect lighting
-	#if defined(UNITY_PASS_FORWARDBASE)
-		#if !defined(TCP2_MOBILE)
+    // Apply ambient/indirect lighting
+    #if defined(UNITY_PASS_FORWARDBASE)
+    #if !defined(TCP2_MOBILE)
 			if (_IndirectIntensity > 0)
-		#endif
+    #endif
 	{
-		#if defined(TCP2_HYBRID_URP)
-			#ifdef LIGHTMAP_ON
+    #if defined(TCP2_HYBRID_URP)
+    #ifdef LIGHTMAP_ON
 				// Normal is required in case Directional lightmaps are baked
 				half3 bakedGI = SampleLightmap(input.lightmapUV.xy, normalWS);
 				MixRealtimeAndBakedGI(mainLight, normalWS, bakedGI, half4(0, 0, 0, 0));
-			#else
+    #else
 				// Sample SH fully per-pixel
 				half3 bakedGI = SampleSH(_SingleIndirectColor > 0 ? viewDirWS : normalWS);
-			#endif
-			#if defined(DEBUG_DISPLAY)
+    #endif
+    #if defined(DEBUG_DISPLAY)
 				debugInputData.bakedGI = bakedGI;
-			#endif
+    #endif
 			half3 indirectDiffuse = bakedGI * occlusion * albedo.rgb * _IndirectIntensity;
 			IS_LIGHTING_FEATURE_ENABLED(DEBUGLIGHTINGFEATUREFLAGS_GLOBAL_ILLUMINATION)
 			color += indirectDiffuse;
-		#else
+    #else
 			half3 indirectDiffuse = gi.indirect.diffuse * albedo.rgb * _IndirectIntensity;
 			color.rgb += indirectDiffuse;
-		#endif
+    #endif
 	}
-	#endif
+    #endif
 
-	// Calculate N.V
-	#if defined(TCP2_RIM_LIGHTING) || (defined(TCP2_REFLECTIONS) && defined(TCP2_REFLECTIONS_FRESNEL))
-		#if defined(TCP2_MOBILE)
+    // Calculate N.V
+    #if defined(TCP2_RIM_LIGHTING) || (defined(TCP2_REFLECTIONS) && defined(TCP2_REFLECTIONS_FRESNEL))
+    #if defined(TCP2_MOBILE)
 			half ndv = input.tangentWS.w;
-		#else
+    #else
 			half ndv = 1 - max(0, dot(viewDirWS, normalWS));
-		#endif
-	#endif
+    #endif
+    #endif
 
-	// Rim Lighting
-	#if defined(TCP2_RIM_LIGHTING)
-		#if defined(UNITY_PASS_FORWARDBASE) || defined(TCP2_RIM_LIGHTING_LIGHTMASK)
+    // Rim Lighting
+    #if defined(TCP2_RIM_LIGHTING)
+    #if defined(UNITY_PASS_FORWARDBASE) || defined(TCP2_RIM_LIGHTING_LIGHTMASK)
 			half rim = smoothstep(_RimMin, _RimMax, ndv);
 			IS_LIGHTING_FEATURE_ENABLED(DEBUGLIGHTINGFEATUREFLAGS_MAIN_LIGHT)
 			emission.rgb += rimMask.rgb * rim * _RimColor.rgb;
-		#endif
-	#endif
+    #endif
+    #endif
 
-	// Specular
-	#if defined(TCP2_SPECULAR)
+    // Specular
+    #if defined(TCP2_SPECULAR)
 
 		half specularMap = 1.0;
-		#if defined(TCP2_MOBILE)
+    #if defined(TCP2_MOBILE)
 			specularMap *= tex2D(_SpecGlossMap, mainTexcoord).a;
-		#else
+    #else
 			if (_SpecularMapType >= 5)
 			{
 				specularMap *= tex2D(_SpecGlossMap, mainTexcoord).a;
@@ -1023,52 +1032,52 @@ half4 Fragment (
 			{
 				specularMap *= albedo.a;
 			}
-		#endif
-		#if defined(HAS_DECAL_MAOS)
+    #endif
+    #if defined(HAS_DECAL_MAOS)
 			specularMap = specularMap * decals.MAOSAlpha + decals.smoothness;
-		#endif
+    #endif
 
 		half spec = CalculateSpecular(lightDir, viewDirWS, normalWS, specularMap);
 		IS_LIGHTING_FEATURE_ENABLED(DEBUGLIGHTINGFEATUREFLAGS_MAIN_LIGHT)
 		emission.rgb += spec * atten * ndl * lightColor.rgb * _SpecularColor.rgb;
 
-		#if defined(DEBUG_DISPLAY)
+    #if defined(DEBUG_DISPLAY)
 			debugSurfaceData.specular = _SpecularColor.rgb;
-		#endif
+    #endif
 
-		#if defined(UNITY_PASS_META)
+    #if defined(UNITY_PASS_META)
 			meta_specular = specularMap * _SpecularColor.rgb;
 			meta_albedo += specularMap * _SpecularColor.rgb * max(0.00001, _SpecularRoughness * _SpecularRoughness) * 0.5;
-		#endif
+    #endif
 
-	#endif
+    #endif
 
-	// Meta pass
-	#if defined(UNITY_PASS_META)
-		#if defined(TCP2_HYBRID_URP)
+    // Meta pass
+    #if defined(UNITY_PASS_META)
+    #if defined(TCP2_HYBRID_URP)
 			MetaInput metaInput;
-		#else
+    #else
 			UnityMetaInput metaInput;
 			UNITY_INITIALIZE_OUTPUT(UnityMetaInput, metaInput);
-		#endif
+    #endif
 		metaInput.Albedo = meta_albedo.rgb;
 		metaInput.Emission = meta_emission.rgb;
-		#if !defined(TCP2_HYBRID_URP)
+    #if !defined(TCP2_HYBRID_URP)
 			metaInput.SpecularColor = meta_specular.rgb;
-		#endif
+    #endif
 
-		#if defined(TCP2_HYBRID_URP)
+    #if defined(TCP2_HYBRID_URP)
 			return MetaFragment(metaInput);
-		#else
+    #else
 			return UnityMetaFragment(metaInput);
-		#endif
-	#endif
+    #endif
+    #endif
 
-	// Additional lights loop
-	#if defined(TCP2_HYBRID_URP) && defined(_ADDITIONAL_LIGHTS)
+    // Additional lights loop
+    #if defined(TCP2_HYBRID_URP) && defined(_ADDITIONAL_LIGHTS)
 		uint pixelLightCount = GetAdditionalLightsCount();
-		#if URP_VERSION >= 12
-			#if USE_FORWARD_PLUS
+    #if URP_VERSION >= 12
+    #if USE_FORWARD_PLUS
 				// Additional directional lights in Forward+
 				for (uint lightIndex = 0; lightIndex < min(URP_FP_DIRECTIONAL_LIGHTS_COUNT, MAX_VISIBLE_LIGHTS); lightIndex++)
 				{
@@ -1076,93 +1085,93 @@ half4 Fragment (
 
 					Light light = GetAdditionalLight(lightIndex, positionWS, shadowMask);
 
-					#ifdef _LIGHT_LAYERS
+    #ifdef _LIGHT_LAYERS
 						if (IsMatchingLightLayer(light.layerMask, meshRenderingLayers))
-					#endif
+    #endif
 					{
 						ProcessAdditionalLight(light, normalWS, albedo.rgb, color, 1.0
-							#if !defined(TCP2_OUTLINE_PASS)
+    #if !defined(TCP2_OUTLINE_PASS)
 								, emission
-							#endif
-							#if defined(_SCREEN_SPACE_OCCLUSION)
+    #endif
+    #if defined(_SCREEN_SPACE_OCCLUSION)
 								, aoFactor
-							#endif
-							#if defined(TCP2_SPECULAR)
+    #endif
+    #if defined(TCP2_SPECULAR)
 								, specularMap
 								, viewDirWS
-							#endif
-							#if defined(TCP2_RIM_LIGHTING) && defined(TCP2_RIM_LIGHTING_LIGHTMASK)
+    #endif
+    #if defined(TCP2_RIM_LIGHTING) && defined(TCP2_RIM_LIGHTING_LIGHTMASK)
 								, rim
-							#endif
+    #endif
 						);
 					}
 				}
 
 				// Data with dummy struct used in Forward+ macro (LIGHT_LOOP_BEGIN)
-				#if !defined(_SCREEN_SPACE_OCCLUSION)
+    #if !defined(_SCREEN_SPACE_OCCLUSION)
 					float2 normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(input.pos);
-				#endif
+    #endif
 				InputDataForwardPlusDummy inputData;
 				inputData.normalizedScreenSpaceUV = normalizedScreenSpaceUV;
 				inputData.positionWS = positionWS;
-			#endif
+    #endif
 
 			LIGHT_LOOP_BEGIN(pixelLightCount)
-		#else
+    #else
 			for (uint lightIndex = 0u; lightIndex < pixelLightCount; ++lightIndex)
 			{
-		#endif
+    #endif
 
-		#if URP_VERSION <= 7
+    #if URP_VERSION <= 7
 				Light light = GetAdditionalLight(lightIndex, positionWS);
-		#else
+    #else
 				Light light = GetAdditionalLight(lightIndex, positionWS, shadowMask);
-		#endif
+    #endif
 
-		#if (URP_VERSION >= 12 && URP_VERSION < 14) || (URP_VERSION >= 14 && defined(_LIGHT_LAYERS))
+    #if (URP_VERSION >= 12 && URP_VERSION < 14) || (URP_VERSION >= 14 && defined(_LIGHT_LAYERS))
 			if (IsMatchingLightLayer(light.layerMask, meshRenderingLayers))
-		#endif
+    #endif
 			{
 				ProcessAdditionalLight(light, normalWS, albedo.rgb, color, 1.0
-					#if !defined(TCP2_OUTLINE_PASS)
+    #if !defined(TCP2_OUTLINE_PASS)
 						, emission
-					#endif
-					#if defined(_SCREEN_SPACE_OCCLUSION)
+    #endif
+    #if defined(_SCREEN_SPACE_OCCLUSION)
 						, aoFactor
-					#endif
-					#if defined(TCP2_SPECULAR)
+    #endif
+    #if defined(TCP2_SPECULAR)
 						, specularMap
 						, viewDirWS
-					#endif
-					#if defined(TCP2_RIM_LIGHTING) && defined(TCP2_RIM_LIGHTING_LIGHTMASK)
+    #endif
+    #if defined(TCP2_RIM_LIGHTING) && defined(TCP2_RIM_LIGHTING_LIGHTMASK)
 						, rim
-					#endif
+    #endif
 				);
 			}
-		#if URP_VERSION >= 12
+    #if URP_VERSION >= 12
 			LIGHT_LOOP_END
-		#else
+    #else
 			}
-		#endif
+    #endif
 
-		#ifdef _ADDITIONAL_LIGHTS_VERTEX
+    #ifdef _ADDITIONAL_LIGHTS_VERTEX
 			IS_LIGHTING_FEATURE_ENABLED(DEBUGLIGHTINGFEATUREFLAGS_VERTEX_LIGHTING)
 			color += input.vertexLights * albedo.rgb;
-		#endif
-	#endif
+    #endif
+    #endif
 
-	// Environment Reflection
-	#if defined(TCP2_REFLECTIONS)
+    // Environment Reflection
+    #if defined(TCP2_REFLECTIONS)
 		half3 reflections = half3(0, 0, 0);
 
 		half reflectionRoughness = _ReflectionSmoothness;
-		#if defined(DEBUG_DISPLAY)
+    #if defined(DEBUG_DISPLAY)
 			if (_DebugLightingMode == DEBUGLIGHTINGMODE_REFLECTIONS) reflectionRoughness = 1.0;
-		#endif
+    #endif
 		half reflectionMask = 1.0;
-		#if defined(TCP2_MOBILE)
+    #if defined(TCP2_MOBILE)
 			reflectionRoughness *= tex2D(_ReflectionTex, mainTexcoord).a;
-		#else
+    #else
 			if (_ReflectionMapType > 0)
 			{
 				if (_ReflectionMapType <= 1)
@@ -1206,56 +1215,56 @@ half4 Fragment (
 					reflectionMask *= tex2D(_ReflectionTex, mainTexcoord).a;
 				}
 			}
-		#endif
-		#if defined(HAS_DECAL_MAOS)
+    #endif
+    #if defined(HAS_DECAL_MAOS)
 			reflectionRoughness = reflectionRoughness * decals.MAOSAlpha + decals.smoothness;
-		#endif
+    #endif
 		reflectionRoughness = 1 - reflectionRoughness;
 
-		#if defined(TCP2_HYBRID_URP)
+    #if defined(TCP2_HYBRID_URP)
 			half3 reflectVector = reflect(-viewDirWS, normalWS);
-			#if USE_FORWARD_PLUS
+    #if USE_FORWARD_PLUS
 				half3 indirectSpecular = GlossyEnvironmentReflection(reflectVector, positionWS, reflectionRoughness, occlusion, normalizedScreenSpaceUV);
-			#else
+    #else
 				half3 indirectSpecular = GlossyEnvironmentReflection(reflectVector, reflectionRoughness, occlusion);
-			#endif
-		#else
+    #endif
+    #else
 			half3 indirectSpecular = gi.indirect.specular;
-		#endif
+    #endif
 		half reflectionRoughness4 = max(pow(reflectionRoughness, 4), 6.103515625e-5);
 		float surfaceReductionRefl = 1.0 / (reflectionRoughness4 + 1.0);
 		reflections += indirectSpecular * reflectionMask * surfaceReductionRefl * _ReflectionColor.rgb;
 
-		#if defined(TCP2_REFLECTIONS_FRESNEL)
+    #if defined(TCP2_REFLECTIONS_FRESNEL)
 			half fresnelTerm = smoothstep(_FresnelMin, _FresnelMax, ndv);
 			reflections *= fresnelTerm;
-		#endif
+    #endif
 
 		IS_LIGHTING_FEATURE_ENABLED(DEBUGLIGHTINGFEATUREFLAGS_GLOBAL_ILLUMINATION)
 		emission.rgb += reflections;
-	#endif
+    #endif
 
-	// Premultiply blending
-	#if defined(_ALPHAPREMULTIPLY_ON)
+    // Premultiply blending
+    #if defined(_ALPHAPREMULTIPLY_ON)
 		color.rgb *= alpha;
-	#else
-		alpha = 1;
-	#endif
+    #else
+    alpha = 1;
+    #endif
 
-	// Rendering Debugger
-	#if defined(DEBUG_DISPLAY)
+    // Rendering Debugger
+    #if defined(DEBUG_DISPLAY)
 		debugInputData.normalWS = normalWS;
 		debugInputData.viewDirectionWS = viewDirWS;
 		debugInputData.shadowCoord = shadowCoord;
 		debugInputData.fogCoord = input.worldPos.w;
 		debugInputData.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(input.pos);
-		#ifdef _ADDITIONAL_LIGHTS_VERTEX
+    #ifdef _ADDITIONAL_LIGHTS_VERTEX
 		debugInputData.vertexLighting = input.vertexLights;
-		#endif
-		#if defined(_NORMALMAP)
+    #endif
+    #if defined(_NORMALMAP)
 		debugInputData.tangentToWorld = tangentToWorldMatrix;
 		debugSurfaceData.normalTS = normalTS;
-		#endif
+    #endif
 
 		debugSurfaceData.albedo = albedo.rgb;
 		debugSurfaceData.occlusion = occlusion;
@@ -1273,30 +1282,30 @@ half4 Fragment (
 		{
 			emission = 0;
 		}
-		#if defined(TCP2_REFLECTIONS)
+    #if defined(TCP2_REFLECTIONS)
 			else if (_DebugLightingMode == DEBUGLIGHTINGMODE_REFLECTIONS || _DebugLightingMode == DEBUGLIGHTINGMODE_REFLECTIONS_WITH_SMOOTHNESS)
 			{
 				color.rgb = half3(0, 0, 0);
 				emission.rgb = reflections;
 			}
-		#endif
-	#endif
+    #endif
+    #endif
 
-	color += emission;
+    color += emission;
 
-	// Fog
-	#if defined(TCP2_HYBRID_URP)
+    // Fog
+    #if defined(TCP2_HYBRID_URP)
 		color = MixFog(color, input.worldPos.w);
-	#else
-		UNITY_EXTRACT_FOG_FROM_WORLD_POS(input);
-		UNITY_APPLY_FOG(_unity_fogCoord, color);
-	#endif
+    #else
+    UNITY_EXTRACT_FOG_FROM_WORLD_POS(input);
+    UNITY_APPLY_FOG(_unity_fogCoord, color);
+    #endif
 
-	#if defined(TCP2_HYBRID_URP) && URP_VERSION >= 14 && defined(_WRITE_RENDERING_LAYERS)
+    #if defined(TCP2_HYBRID_URP) && URP_VERSION >= 14 && defined(_WRITE_RENDERING_LAYERS)
 		outRenderingLayers = float4(EncodeMeshRenderingLayer(meshRenderingLayers), 0, 0, 0);
-	#endif
+    #endif
 
-	return half4(color, alpha);
+    return half4(color, alpha);
 }
 
 //================================================================================================================================
@@ -1313,106 +1322,110 @@ half4 Fragment (
 
 struct Attributes_Outline
 {
-	float4 vertex : POSITION;
-	float3 normal : NORMAL;
-#if defined(TCP2_UV1_AS_NORMALS) || defined(TCP2_OUTLINE_TEXTURED_VERTEX) || defined(TCP2_OUTLINE_TEXTURED_FRAGMENT)
+    float4 vertex : POSITION;
+    float3 normal : NORMAL;
+    #if defined(TCP2_UV1_AS_NORMALS) || defined(TCP2_OUTLINE_TEXTURED_VERTEX) || defined(TCP2_OUTLINE_TEXTURED_FRAGMENT)
 	float4 texcoord0 : TEXCOORD0;
-#endif
-#if defined(NEEDS_TEXCOORD1)
+    #endif
+    #if defined(NEEDS_TEXCOORD1)
 	float4 texcoord1 : TEXCOORD1;
-#endif
-#if defined(TCP2_UV3_AS_NORMALS)
+    #endif
+    #if defined(TCP2_UV3_AS_NORMALS)
 	float4 texcoord2 : TEXCOORD2;
-#endif
-#if defined(TCP2_UV4_AS_NORMALS)
+    #endif
+    #if defined(TCP2_UV4_AS_NORMALS)
 	float4 texcoord3 : TEXCOORD3;
-#endif
-#if defined(TCP2_COLORS_AS_NORMALS)
+    #endif
+    #if defined(TCP2_COLORS_AS_NORMALS)
 	float4 vertexColor : COLOR;
-#endif
-#if defined(TCP2_TANGENT_AS_NORMALS) || (defined(TCP2_OUTLINE_LIGHTING_ALL) && defined(_ADDITIONAL_LIGHTS_VERTEX))
+    #endif
+    #if defined(TCP2_TANGENT_AS_NORMALS) || (defined(TCP2_OUTLINE_LIGHTING_ALL) && defined(_ADDITIONAL_LIGHTS_VERTEX))
 	float4 tangent : TANGENT;
-#endif
-	UNITY_VERTEX_INPUT_INSTANCE_ID
+    #endif
+    UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
 struct Varyings_Outline
 {
-	float4 pos       : SV_POSITION;
-	float4 vcolor    : TEXCOORD0;
-	float4 worldPos  : TEXCOORD1; // xyz = worldPos  w = fogFactor
-#if defined(TCP2_OUTLINE_TEXTURED_FRAGMENT)
+    float4 pos : SV_POSITION;
+    float4 vcolor : TEXCOORD0;
+    float4 worldPos : TEXCOORD1; // xyz = worldPos  w = fogFactor
+    #if defined(TCP2_OUTLINE_TEXTURED_FRAGMENT)
 	float4 texcoord0 : TEXCOORD2;
-#endif
-#if defined(TCP2_OUTLINE_LIGHTING)
+    #endif
+    #if defined(TCP2_OUTLINE_LIGHTING)
 	float3 normal    : TEXCOORD3;
-#endif
-#if defined(TCP2_HYBRID_URP)
-	#if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
+    #endif
+    #if defined(TCP2_HYBRID_URP)
+    #if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
 		float4 shadowCoord    : TEXCOORD4; // compute shadow coord per-vertex for the main light
-	#endif
-	#if defined(TCP2_HYBRID_URP) && defined(TCP2_OUTLINE_LIGHTING_ALL) && defined(_ADDITIONAL_LIGHTS_VERTEX)
+    #endif
+    #if defined(TCP2_HYBRID_URP) && defined(TCP2_OUTLINE_LIGHTING_ALL) && defined(_ADDITIONAL_LIGHTS_VERTEX)
 		half3 vertexLights : TEXCOORD5;
-	#endif
-#else
-	#if !defined(SHADOW_CASTER_PASS)
-		UNITY_LIGHTING_COORDS(5,6)
-	#endif
-#endif
-	UNITY_VERTEX_INPUT_INSTANCE_ID
-	UNITY_VERTEX_OUTPUT_STEREO
+    #endif
+    #else
+    #if !defined(SHADOW_CASTER_PASS)
+    UNITY_LIGHTING_COORDS (
+    5
+    ,
+    6
+    )
+    #endif
+    #endif
+    UNITY_VERTEX_INPUT_INSTANCE_ID
+    UNITY_VERTEX_OUTPUT_STEREO
 };
 
-Varyings_Outline vertex_outline (Attributes_Outline input)
+Varyings_Outline vertex_outline(Attributes_Outline input)
 {
-	Varyings_Outline output = (Varyings_Outline)0;
+    Varyings_Outline output = (Varyings_Outline)0;
 
-	UNITY_SETUP_INSTANCE_ID(input);
-	UNITY_TRANSFER_INSTANCE_ID(input, output);
-	UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+    UNITY_SETUP_INSTANCE_ID(input);
+    UNITY_TRANSFER_INSTANCE_ID(input, output);
+    UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
-	#if defined(TCP2_HYBRID_URP)
+    #if defined(TCP2_HYBRID_URP)
 		VertexPositionInputs vertexInput = GetVertexPositionInputs(input.vertex.xyz);
-		#if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
+    #if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
 			output.shadowCoord = GetShadowCoord(vertexInput);
-		#endif
+    #endif
 		float3 positionWS = vertexInput.positionWS;
-	#else
-		float3 positionWS = mul(unity_ObjectToWorld, input.vertex).xyz;
-		#if !defined(SHADOW_CASTER_PASS)
-			UNITY_TRANSFER_LIGHTING(output, input.texcoord1.xy);
-		#endif
-	#endif
+    #else
+    float3 positionWS = mul(unity_ObjectToWorld, input.vertex).xyz;
+    #if !defined(SHADOW_CASTER_PASS)
+    UNITY_TRANSFER_LIGHTING(output, input.texcoord1.xy);
+    #endif
+    #endif
 
-	#ifdef TCP2_COLORS_AS_NORMALS
+    #ifdef TCP2_COLORS_AS_NORMALS
 		//Vertex Color for Normals
 		float3 normal = (input.vertexColor.xyz*2) - 1;
-	#elif TCP2_TANGENT_AS_NORMALS
+    #elif TCP2_TANGENT_AS_NORMALS
 		//Tangent for Normals
 		float3 normal = input.tangent.xyz;
-	#elif TCP2_UV1_AS_NORMALS || TCP2_UV2_AS_NORMALS || TCP2_UV3_AS_NORMALS || TCP2_UV4_AS_NORMALS
-		#if TCP2_UV1_AS_NORMALS
+    #elif TCP2_UV1_AS_NORMALS || TCP2_UV2_AS_NORMALS || TCP2_UV3_AS_NORMALS || TCP2_UV4_AS_NORMALS
+    #if TCP2_UV1_AS_NORMALS
 			#define uvChannel texcoord0
-		#elif TCP2_UV2_AS_NORMALS
+    #elif TCP2_UV2_AS_NORMALS
 			#define uvChannel texcoord1
-		#elif TCP2_UV3_AS_NORMALS
+    #elif TCP2_UV3_AS_NORMALS
 			#define uvChannel texcoord2
-		#elif TCP2_UV4_AS_NORMALS
+    #elif TCP2_UV4_AS_NORMALS
 			#define uvChannel texcoord3
-		#endif
+    #endif
 
-		#if TCP2_UV_NORMALS_FULL
+    #if TCP2_UV_NORMALS_FULL
 		//UV for Normals, full
 		float3 normal = input.uvChannel.xyz;
-		#else
-		//UV for Normals, compressed
-		#if TCP2_UV_NORMALS_ZW
+    #else
+    //UV for Normals, compressed
+    #if TCP2_UV_NORMALS_ZW
 			#define ch1 z
 			#define ch2 w
-		#else
+    #else
 			#define ch1 x
 			#define ch2 y
-		#endif
+    #endif
 		float3 n;
 		//unpack uvs
 		input.uvChannel.ch1 = input.uvChannel.ch1 * 255.0/16.0;
@@ -1423,32 +1436,32 @@ Varyings_Outline vertex_outline (Attributes_Outline input)
 		//- transform
 		n = n*2 - 1;
 		float3 normal = n;
-		#endif
-	#else
-		float3 normal = input.normal;
-	#endif
+    #endif
+    #else
+    float3 normal = input.normal;
+    #endif
 
-	/// #if TCP2_ZSMOOTH_ON
-		/// //Correct Z artefacts
-		/// normal = UnityObjectToViewPos(normal);
-		/// normal.z = -_ZSmooth;
-	/// #endif
+    /// #if TCP2_ZSMOOTH_ON
+        /// //Correct Z artefacts
+        /// normal = UnityObjectToViewPos(normal);
+        /// normal.z = -_ZSmooth;
+    /// #endif
 
-	#if !defined(SHADOW_CASTER_PASS)
-		output.pos = UnityObjectToClipPos(input.vertex.xyz);
-		normal = mul(unity_ObjectToWorld, float4(normal, 0)).xyz;
-		float2 clipNormals = normalize(mul(UNITY_MATRIX_VP, float4(normal,0)).xy);
-		#if defined(TCP2_OUTLINE_CONST_SIZE)
+    #if !defined(SHADOW_CASTER_PASS)
+    output.pos = UnityObjectToClipPos(input.vertex.xyz);
+    normal = mul(unity_ObjectToWorld, float4(normal, 0)).xyz;
+    float2 clipNormals = normalize(mul(UNITY_MATRIX_VP, float4(normal, 0)).xy);
+    #if defined(TCP2_OUTLINE_CONST_SIZE)
 			float2 outlineWidth = (_OutlineWidth * output.pos.w) / (_ScreenParams.xy / 2.0);
 			output.pos.xy += clipNormals.xy * outlineWidth;
-		#elif defined(TCP2_OUTLINE_MIN_SIZE)
+    #elif defined(TCP2_OUTLINE_MIN_SIZE)
 			float screenRatio = _ScreenParams.x / _ScreenParams.y;
 			float2 outlineWidth = max(
 				(_OutlineMinWidth * output.pos.w) / (_ScreenParams.xy / 2.0),
 				(_OutlineWidth / 100) * float2(1.0, screenRatio)
 			);
 			output.pos.xy += clipNormals.xy * outlineWidth;
-		#elif defined(TCP2_OUTLINE_MIN_MAX_SIZE)
+    #elif defined(TCP2_OUTLINE_MIN_MAX_SIZE)
 			float screenRatio = _ScreenParams.x / _ScreenParams.y;
 			float2 outlineWidth = max(
 				(_OutlineMinWidth * output.pos.w) / (_ScreenParams.xy / 2.0),
@@ -1459,63 +1472,63 @@ Varyings_Outline vertex_outline (Attributes_Outline input)
 		        outlineWidth
 		    );
 			output.pos.xy += clipNormals.xy * outlineWidth;
-		#else
-			float screenRatio = _ScreenParams.x / _ScreenParams.y;
-			output.pos.xy += clipNormals.xy * (_OutlineWidth / 100) * float2(1.0, screenRatio);
-		#endif
-	#else
+    #else
+    float screenRatio = _ScreenParams.x / _ScreenParams.y;
+    output.pos.xy += clipNormals.xy * (_OutlineWidth / 100) * float2(1.0, screenRatio);
+    #endif
+    #else
 		input.vertex = input.vertex + float4(normal,0) * _OutlineWidth * 0.01;
-	#endif
+    #endif
 
-	output.vcolor.rgba = _OutlineColor.rgba;
-	float4 clipPos = output.pos;
+    output.vcolor.rgba = _OutlineColor.rgba;
+    float4 clipPos = output.pos;
 
-	#if defined(TCP2_OUTLINE_LIGHTING_ALL) && defined(_ADDITIONAL_LIGHTS_VERTEX)
+    #if defined(TCP2_OUTLINE_LIGHTING_ALL) && defined(_ADDITIONAL_LIGHTS_VERTEX)
 		// Vertex lighting
 		VertexNormalInputs vertexNormalInput = GetVertexNormalInputs(input.normal, input.tangent);
 		output.vertexLights = VertexLighting(positionWS, vertexNormalInput.normalWS);
-	#endif
+    #endif
 
-	// World Position
-	output.worldPos.xyz = positionWS;
+    // World Position
+    output.worldPos.xyz = positionWS;
 
-	// Compute fog factor
-	#if defined(TCP2_HYBRID_URP)
+    // Compute fog factor
+    #if defined(TCP2_HYBRID_URP)
 		output.worldPos.w = ComputeFogFactor(output.pos.z);
-	#else
-		UNITY_TRANSFER_FOG_COMBINED_WITH_WORLD_POS(output, output.pos);
-	#endif
+    #else
+    UNITY_TRANSFER_FOG_COMBINED_WITH_WORLD_POS(output, output.pos);
+    #endif
 
-	// Lighting & Texture
-	#if defined(TCP2_OUTLINE_LIGHTING)
+    // Lighting & Texture
+    #if defined(TCP2_OUTLINE_LIGHTING)
 		output.normal = normalize(UnityObjectToWorldNormal(input.normal));
-	#endif
+    #endif
 
-	#if defined(TCP2_OUTLINE_TEXTURED_VERTEX)
+    #if defined(TCP2_OUTLINE_TEXTURED_VERTEX)
 		half4 outlineTexture = tex2Dlod(_BaseMap, float4(input.texcoord0.xy * _BaseMap_ST.xy + _BaseMap_ST.zw, 0, _OutlineTextureLOD));
 		output.vcolor *= outlineTexture;
-	#endif
+    #endif
 
-	#if defined(TCP2_OUTLINE_TEXTURED_FRAGMENT)
+    #if defined(TCP2_OUTLINE_TEXTURED_FRAGMENT)
 		output.texcoord0.xy = input.texcoord0.xy * _BaseMap_ST.xy + _BaseMap_ST.zw;
 		output.texcoord0.zw = input.texcoord0.zw;
-	#endif
+    #endif
 
-	return output;
+    return output;
 }
 
-float4 fragment_outline (Varyings_Outline input) : SV_Target
+float4 fragment_outline(Varyings_Outline input) : SV_Target
 {
-	UNITY_SETUP_INSTANCE_ID(input);
-	UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
+    UNITY_SETUP_INSTANCE_ID(input);
+    UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
-	#if defined(LOD_FADE_CROSSFADE)
+    #if defined(LOD_FADE_CROSSFADE)
 		const float dither = Dither4x4(input.pos.xy);
 		const float ditherThreshold = unity_LODFade.x - CopySign(dither, unity_LODFade.x);
 		clip(ditherThreshold);
-	#endif
+    #endif
 
-	#if defined(TCP2_OUTLINE_TEXTURED_FRAGMENT)
+    #if defined(TCP2_OUTLINE_TEXTURED_FRAGMENT)
 		// Manual mip map calculation so that we can apply a max value
 		float2 dx = ddx(input.texcoord0.xy);
 		float2 dy = ddy(input.texcoord0.xy);
@@ -1523,89 +1536,89 @@ float4 fragment_outline (Varyings_Outline input) : SV_Target
 		float mipMapLevel = max(0.5 * log2(delta), _OutlineTextureLOD);
 
 		half4 albedo = tex2Dlod(_BaseMap, float4(input.texcoord0.xy, 0, mipMapLevel));
-	#else
-		half4 albedo = half4(1, 1, 1, 1);
-	#endif
+    #else
+    half4 albedo = half4(1, 1, 1, 1);
+    #endif
 
-	// Output Color
-	half4 outlineColor = half4(1, 1, 1, 1);
+    // Output Color
+    half4 outlineColor = half4(1, 1, 1, 1);
 
-	#if defined(TCP2_OUTLINE_LIGHTING)
+    #if defined(TCP2_OUTLINE_LIGHTING)
 
-			#if defined(_LIGHT_LAYERS)
-				#if URP_VERSION >= 14
+    #if defined(_LIGHT_LAYERS)
+    #if URP_VERSION >= 14
 					uint meshRenderingLayers = GetMeshRenderingLayer();
-				#elif URP_VERSION >= 12
+    #elif URP_VERSION >= 12
 					uint meshRenderingLayers = GetMeshRenderingLightLayer();
-				#endif
-			#endif
+    #endif
+    #endif
 
 			float3 positionWS = input.worldPos.xyz;
 			float3 normalWS = input.normal;
-			#if defined(TCP2_HYBRID_URP)
+    #if defined(TCP2_HYBRID_URP)
 				half3 viewDirWS = TCP2_SafeNormalize(GetCameraPositionWS() - positionWS);
-			#else
+    #else
 				half3 viewDirWS = TCP2_SafeNormalize(_WorldSpaceCameraPos.xyz - positionWS);
-			#endif
+    #endif
 
-		#if defined(TCP2_OUTLINE_LIGHTING_INDIRECT)
+    #if defined(TCP2_OUTLINE_LIGHTING_INDIRECT)
 			// Indirect only
 			outlineColor = half4(0, 0, 0, 1);
-		#else
-			// Main directional light
-			#if defined(TCP2_HYBRID_URP)
-				#if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
+    #else
+    // Main directional light
+    #if defined(TCP2_HYBRID_URP)
+    #if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
 					float4 shadowCoord = input.shadowCoord;
-				#elif defined(MAIN_LIGHT_CALCULATE_SHADOWS)
+    #elif defined(MAIN_LIGHT_CALCULATE_SHADOWS)
 					float4 shadowCoord = TransformWorldToShadowCoord(positionWS);
-				#else
+    #else
 					float4 shadowCoord = float4(0, 0, 0, 0);
-				#endif
+    #endif
 
 				half4 shadowMask = half4(1, 1, 1, 1); // no baked lighting for outlines
 
-				#if URP_VERSION <= 7
+    #if URP_VERSION <= 7
 					Light mainLight = GetMainLight(shadowCoord);
-				#else
+    #else
 					Light mainLight = GetMainLight(shadowCoord, positionWS, shadowMask);
-				#endif
+    #endif
 
-				#if defined(_SCREEN_SPACE_OCCLUSION)
+    #if defined(_SCREEN_SPACE_OCCLUSION)
 					float2 normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(input.pos);
 					AmbientOcclusionFactor aoFactor = GetScreenSpaceAmbientOcclusion(normalizedScreenSpaceUV);
 					mainLight.color *= aoFactor.directAmbientOcclusion;
-				#endif
+    #endif
 
-				#if URP_VERSION >= 12
+    #if URP_VERSION >= 12
 					half3 lightDir = half3(0, 1, 0);
 					half3 lightColor = half3(0, 0, 0);
-					#if (URP_VERSION >= 14 && defined(_LIGHT_LAYERS)) || URP_VERSION <= 12
+    #if (URP_VERSION >= 14 && defined(_LIGHT_LAYERS)) || URP_VERSION <= 12
 						if (IsMatchingLightLayer(mainLight.layerMask, meshRenderingLayers))
-					#endif
+    #endif
 					{
 						lightDir = mainLight.direction;
 						lightColor = mainLight.color.rgb;
 					}
-				#else
+    #else
 					half3 lightDir = mainLight.direction;
 					half3 lightColor = mainLight.color.rgb;
-				#endif
+    #endif
 				half atten = mainLight.shadowAttenuation * mainLight.distanceAttenuation;
-			#else
+    #else
 				half3 lightDir = normalize(UnityWorldSpaceLightDir(positionWS));
 				half3 lightColor = _LightColor0.rgb;
 
-				#if defined(SHADOW_CASTER_PASS)
+    #if defined(SHADOW_CASTER_PASS)
 					half atten = 1.0;
-				#else
+    #else
 					TCP2_LIGHT_ATTENUATION(input, positionWS)
-					#if defined(_RECEIVE_SHADOWS_OFF)
+    #if defined(_RECEIVE_SHADOWS_OFF)
 						half atten = attenuation;
-					#else
+    #else
 						half atten = shadow * attenuation;
-					#endif
-				#endif
-			#endif
+    #endif
+    #endif
+    #endif
 
 			half ndl = dot(normalWS, lightDir);
 			half ndlWrapped = ndl * 0.5 + 0.5;
@@ -1616,32 +1629,32 @@ float4 fragment_outline (Varyings_Outline input) : SV_Target
 			// Apply attenuation
 			ramp *= atten;
 
-			#if defined(TCP2_OUTLINE_TEXTURED_FRAGMENT) && defined(TCP2_SHADOW_TEXTURE)
+    #if defined(TCP2_OUTLINE_TEXTURED_FRAGMENT) && defined(TCP2_SHADOW_TEXTURE)
 				half4 shadowAlbedo = tex2Dlod(_BaseMap, float4(input.texcoord0.xy, 0, mipMapLevel));
 				albedo = lerp(shadowAlbedo, albedo, ramp.x);
-			#endif
+    #endif
 
 			// Highlight/shadow colors
 			ramp = lerp(_SColor.rgb, _HColor.rgb, ramp);
 
 			// Apply ramp
 			outlineColor.rgb *= lerp(half3(1,1,1), ramp, _DirectIntensityOutline) * lightColor;
-		#endif
+    #endif
 
-	#endif
+    #endif
 
-	// Apply albedo
-	outlineColor.rgb *= albedo.rgb;
+    // Apply albedo
+    outlineColor.rgb *= albedo.rgb;
 
-	#if defined(TCP2_OUTLINE_LIGHTING)
+    #if defined(TCP2_OUTLINE_LIGHTING)
 		half occlusion = 1.0;
 
 		// Additional lights loop
-		#if defined(TCP2_HYBRID_URP) && defined(TCP2_OUTLINE_LIGHTING_ALL) && defined(_ADDITIONAL_LIGHTS)
+    #if defined(TCP2_HYBRID_URP) && defined(TCP2_OUTLINE_LIGHTING_ALL) && defined(_ADDITIONAL_LIGHTS)
 			uint pixelLightCount = GetAdditionalLightsCount();
 
-			#if URP_VERSION >= 12
-				#if USE_FORWARD_PLUS
+    #if URP_VERSION >= 12
+    #if USE_FORWARD_PLUS
 					// Additional directional lights in Forward+
 					for (uint lightIndex = 0; lightIndex < min(URP_FP_DIRECTIONAL_LIGHTS_COUNT, MAX_VISIBLE_LIGHTS); lightIndex++)
 					{
@@ -1649,83 +1662,83 @@ float4 fragment_outline (Varyings_Outline input) : SV_Target
 
 						Light light = GetAdditionalLight(lightIndex, positionWS, shadowMask);
 
-						#ifdef _LIGHT_LAYERS
+    #ifdef _LIGHT_LAYERS
 							if (IsMatchingLightLayer(light.layerMask, meshRenderingLayers))
-						#endif
+    #endif
 						{
 							ProcessAdditionalLight(light, normalWS.xyz, albedo.rgb, outlineColor.rgb, _DirectIntensityOutline
-								#if defined(_SCREEN_SPACE_OCCLUSION)
+    #if defined(_SCREEN_SPACE_OCCLUSION)
 									, aoFactor
-								#endif
+    #endif
 							);
 						}
 					}
 
 					// Data with dummy struct used in Forward+ macro (LIGHT_LOOP_BEGIN)
-					#if !defined(_SCREEN_SPACE_OCCLUSION)
+    #if !defined(_SCREEN_SPACE_OCCLUSION)
 						float2 normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(input.pos);
-					#endif
+    #endif
 					InputDataForwardPlusDummy inputData;
 					inputData.normalizedScreenSpaceUV = normalizedScreenSpaceUV;
 					inputData.positionWS = positionWS;
-				#endif
+    #endif
 
 				LIGHT_LOOP_BEGIN(pixelLightCount)
-			#else
+    #else
 				for (uint lightIndex = 0u; lightIndex < pixelLightCount; ++lightIndex)
 				{
-			#endif
+    #endif
 
-			#if URP_VERSION <= 7
+    #if URP_VERSION <= 7
 					Light light = GetAdditionalLight(lightIndex, positionWS);
-			#else
+    #else
 					Light light = GetAdditionalLight(lightIndex, positionWS, shadowMask);
-			#endif
+    #endif
 
-			#if (URP_VERSION >= 12 && URP_VERSION < 14) || (URP_VERSION >= 14 && defined(_LIGHT_LAYERS))
+    #if (URP_VERSION >= 12 && URP_VERSION < 14) || (URP_VERSION >= 14 && defined(_LIGHT_LAYERS))
 				if (IsMatchingLightLayer(light.layerMask, meshRenderingLayers))
-			#endif
+    #endif
 				{
 					ProcessAdditionalLight(light, normalWS.xyz, albedo.rgb, outlineColor.rgb, _DirectIntensityOutline
-						#if defined(_SCREEN_SPACE_OCCLUSION)
+    #if defined(_SCREEN_SPACE_OCCLUSION)
 							, aoFactor
-						#endif
+    #endif
 					);
 				}
-			#if URP_VERSION >= 12
+    #if URP_VERSION >= 12
 				LIGHT_LOOP_END
-			#else
+    #else
 				}
-			#endif
-		#endif
+    #endif
+    #endif
 
-		#if defined(TCP2_OUTLINE_LIGHTING_ALL) && defined(_ADDITIONAL_LIGHTS_VERTEX)
+    #if defined(TCP2_OUTLINE_LIGHTING_ALL) && defined(_ADDITIONAL_LIGHTS_VERTEX)
 			outlineColor.rgb += input.vertexLights * albedo.rgb;
-		#endif
+    #endif
 
-		// Apply ambient/indirect lighting
-		#if defined(TCP2_HYBRID_URP)
+    // Apply ambient/indirect lighting
+    #if defined(TCP2_HYBRID_URP)
 			// Sample SH fully per-pixel
 			half3 bakedGI = SampleSH(_SingleIndirectColor > 0 ? viewDirWS : normalWS);
 			half3 indirectDiffuse = bakedGI * occlusion * albedo.rgb * _IndirectIntensityOutline;
 			outlineColor.rgb += indirectDiffuse;
-		#else
+    #else
 			half3 shNormal = (_SingleIndirectColor > 0) ? viewDirWS : normalWS;
 			half3 bakedGI = ShadeSHPerPixel(shNormal, half3(0,0,0), positionWS);
 			half3 indirectDiffuse = bakedGI * occlusion * albedo.rgb * _IndirectIntensityOutline;
 			outlineColor.rgb += indirectDiffuse;
-		#endif
-	#endif
+    #endif
+    #endif
 
-	outlineColor.rgba *= input.vcolor.rgba;
+    outlineColor.rgba *= input.vcolor.rgba;
 
-	// Fog
-	#if defined(TCP2_HYBRID_URP)
+    // Fog
+    #if defined(TCP2_HYBRID_URP)
 		outlineColor.rgb = MixFog(outlineColor.rgb, input.worldPos.w);
-	#else
-		UNITY_EXTRACT_FOG_FROM_WORLD_POS(input);
-		UNITY_APPLY_FOG(_unity_fogCoord, outlineColor.rgb);
-	#endif
+    #else
+    UNITY_EXTRACT_FOG_FROM_WORLD_POS(input);
+    UNITY_APPLY_FOG(_unity_fogCoord, outlineColor.rgb);
+    #endif
 
-	return outlineColor;
+    return outlineColor;
 }

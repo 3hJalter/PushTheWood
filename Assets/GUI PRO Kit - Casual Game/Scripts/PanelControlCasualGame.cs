@@ -1,22 +1,19 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 namespace LayerLab.CasualGame
 {
     public class PanelControlCasualGame : MonoBehaviour
     {
-        private int page = 0;
-        private bool isReady = false;
-        [SerializeField] private List<GameObject> panels = new List<GameObject>();
-        private TextMeshProUGUI textTitle;
+        [SerializeField] private List<GameObject> panels = new();
         [SerializeField] private Transform panelTransform;
         [SerializeField] private Button buttonPrev;
         [SerializeField] private Button buttonNext;
+        private bool isReady;
+        private int page;
+        private TextMeshProUGUI textTitle;
 
         private void Start()
         {
@@ -36,7 +33,7 @@ namespace LayerLab.CasualGame
             CheckControl();
         }
 
-        void Update()
+        private void Update()
         {
             if (panels.Count <= 0 || !isReady) return;
 
@@ -68,7 +65,7 @@ namespace LayerLab.CasualGame
             CheckControl();
         }
 
-        void SetArrowActive()
+        private void SetArrowActive()
         {
             buttonPrev.gameObject.SetActive(page > 0);
             buttonNext.gameObject.SetActive(page < panels.Count - 1);

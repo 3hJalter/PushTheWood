@@ -1,4 +1,5 @@
-﻿using _Game.DesignPattern.StateMachine;
+﻿using System;
+using _Game.DesignPattern.StateMachine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
@@ -6,17 +7,17 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
     {
         public void OnEnter(Player t)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void OnExecute(Player t)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void OnExit(Player t)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

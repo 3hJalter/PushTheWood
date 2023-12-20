@@ -41,7 +41,7 @@ void GetPerpendicularPlane(float3 normal, out float3 tangent, out float3 bitange
     bitangent = cross(normal, tangent);
 }
 
-// Returns a pseudorandom number. By Ronja Böhringer
+// Returns a pseudorandom number. By Ronja BÃ¶hringer
 float rand(float4 value)
 {
     float4 smallValue = sin(value);
@@ -82,20 +82,20 @@ float4 CalculatePositionCSWithShadowCasterLogic(float3 positionWS, float3 normal
 {
     float4 positionCS;
 
-#ifdef SHADOW_CASTER_PASS
+    #ifdef SHADOW_CASTER_PASS
     // From URP's ShadowCasterPass.hlsl
     // If this is the shadow caster pass, we need to adjust the clip space position to account
     // for shadow bias and offset (this helps reduce shadow artifacts)
     positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, _LightDirection));
-#if UNITY_REVERSED_Z
+    #if UNITY_REVERSED_Z
     positionCS.z = min(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
-#else
+    #else
     positionCS.z = max(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
-#endif
-#else
+    #endif
+    #else
     // This built in function transforms from world space to clip space
     positionCS = TransformWorldToHClip(positionWS);
-#endif
+    #endif
 
     return positionCS;
 }
@@ -104,11 +104,11 @@ float4 CalculatePositionCSWithShadowCasterLogic(float3 positionWS, float3 normal
 float4 CalculateShadowCoord(float3 positionWS, float4 positionCS)
 {
     // Calculate the shadow coordinate depending on the type of shadows currently in use
-#if SHADOWS_SCREEN
+    #if SHADOWS_SCREEN
     return ComputeScreenPos(positionCS);
-#else
+    #else
     return TransformWorldToShadowCoord(positionWS);
-#endif
+    #endif
 }
 
 #endif

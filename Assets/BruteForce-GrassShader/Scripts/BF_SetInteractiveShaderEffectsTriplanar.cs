@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BF_SetInteractiveShaderEffectsTriplanar : MonoBehaviour
 {
@@ -10,14 +8,14 @@ public class BF_SetInteractiveShaderEffectsTriplanar : MonoBehaviour
     public string GlobalOrthoName = "_OrthographicCamSize";
     public Transform player;
     public ParticleSystem pSPlayer;
-    public bool mirrorX = false;
-    public bool mirrorY = false;
-
-    private float orthoMem = 0;
+    public bool mirrorX;
+    public bool mirrorY;
     private BF_BallPlayerTriplanar ballPlayer;
+    private Camera cam;
+
+    private float orthoMem;
     private ParticleSystem psX;
     private ParticleSystem psY;
-    private Camera cam;
 
     private void Awake()
     {
@@ -26,14 +24,14 @@ public class BF_SetInteractiveShaderEffectsTriplanar : MonoBehaviour
         Shader.SetGlobalTexture(GlobalTexName, rt);
         Shader.SetGlobalFloat("_HasRT", 1);
         ballPlayer = player.GetComponent<BF_BallPlayerTriplanar>();
-        cam = this.GetComponent<Camera>();
+        cam = GetComponent<Camera>();
     }
+
     private void Update()
     {
         if (transformToFollow != null)
-        {
-            transform.position = new Vector3(transformToFollow.position.x, transformToFollow.position.y + 20, transformToFollow.position.z);
-        }
+            transform.position = new Vector3(transformToFollow.position.x, transformToFollow.position.y + 20,
+                transformToFollow.position.z);
         Shader.SetGlobalVector("_Position", transform.position);
         // transform.rotation = Quaternion.Euler(new Vector3(90, 0, 0));
         RenderTriplanar();
@@ -45,7 +43,7 @@ public class BF_SetInteractiveShaderEffectsTriplanar : MonoBehaviour
         int layerMask = 1 << 0;
         RaycastHit hit;
 
-        if(Physics.Raycast(player.position, ballPlayer.gravityCustom, out hit,5, layerMask))
+        if (Physics.Raycast(player.position, ballPlayer.gravityCustom, out hit, 5, layerMask))
         {
             Debug.DrawRay(player.position, ballPlayer.gravityCustom);
 
@@ -57,44 +55,27 @@ public class BF_SetInteractiveShaderEffectsTriplanar : MonoBehaviour
 
     private void MirrorPS()
     {
-        if(psX == null && mirrorX)
-        {
+        if (psX == null && mirrorX)
             psX = Instantiate(pSPlayer);
-        }
-        else if(psX != null && !mirrorX)
-        {
-            Destroy(psX);
-        }
-        if(psY == null && mirrorY)
-        {
+        else if (psX != null && !mirrorX) Destroy(psX);
+        if (psY == null && mirrorY)
             psY = Instantiate(pSPlayer);
-        }
-        else if (psY != null && !mirrorY)
-        {
-            Destroy(psY);
-        }
+        else if (psY != null && !mirrorY) Destroy(psY);
 
-        if(psX != null)
+        if (psX != null)
         {
             if (pSPlayer.transform.position.x < cam.transform.position.x)
-            {
-                psX.transform.position = pSPlayer.transform.position + (Vector3.right)* cam.orthographicSize*2;
-            }
+                psX.transform.position = pSPlayer.transform.position + Vector3.right * cam.orthographicSize * 2;
             else
-            {
-                psX.transform.position = pSPlayer.transform.position - (Vector3.right) * cam.orthographicSize * 2;
-            }
+                psX.transform.position = pSPlayer.transform.position - Vector3.right * cam.orthographicSize * 2;
         }
-        if(psY != null)
+
+        if (psY != null)
         {
             if (pSPlayer.transform.position.y < cam.transform.position.y)
-            {
-                psY.transform.position = pSPlayer.transform.position + (Vector3.up)* cam.orthographicSize * 2;
-            }
+                psY.transform.position = pSPlayer.transform.position + Vector3.up * cam.orthographicSize * 2;
             else
-            {
-                psY.transform.position = pSPlayer.transform.position - (Vector3.up) * cam.orthographicSize * 2;
-            }
+                psY.transform.position = pSPlayer.transform.position - Vector3.up * cam.orthographicSize * 2;
         }
     }
 }

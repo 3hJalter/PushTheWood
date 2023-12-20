@@ -7,12 +7,15 @@ namespace _Game._Scripts.InGame.GameCondition.Data
     {
         // InputData
         public Direction inputDirection;
+
         public GridUnit pushUnit;
+
         // Constructor
         public ChumpBeInteractedData(GridUnit owner)
         {
             this.owner = owner;
         }
+
         // Set Data Method
         public void SetData(Direction direction, GridUnit interactedUnitIn)
         {

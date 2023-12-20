@@ -1785,7 +1785,8 @@
         </member>
         <member name="M:Sirenix.Utilities.Editor.GUIHelper.PopContextWidth">
             <summary>
-                Pops a value pushed by<see cref="M:Sirenix.Utilities.Editor.GUIHelper.PushContextWidth(System.Single)"/>
+                Pops a value pushed by
+                <see cref="M:Sirenix.Utilities.Editor.GUIHelper.PushContextWidth(System.Single)"/>
                 .
             </summary>
         </member>
@@ -6665,8 +6666,9 @@
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.EndIndentedHorizontal">
             <summary>
-                Ends a identation horizontal layout group started by<see
-                    cref="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginIndentedHorizontal(UnityEngine.GUILayoutOption[])"/>
+                Ends a identation horizontal layout group started by
+                <see
+                        cref="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginIndentedHorizontal(UnityEngine.GUILayoutOption[])"/>
                 .
             </summary>
         </member>
@@ -6687,8 +6689,9 @@
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.EndIndentedVertical">
             <summary>
-                Ends a identation vertical layout group started by<see
-                    cref="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginIndentedVertical(UnityEngine.GUILayoutOption[])"/>
+                Ends a identation vertical layout group started by
+                <see
+                        cref="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginIndentedVertical(UnityEngine.GUILayoutOption[])"/>
                 .
             </summary>
         </member>
@@ -7037,8 +7040,9 @@
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.EndVerticalList">
             <summary>
-                Ends drawing a vertical list started by<see
-                    cref="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginVerticalList(System.Boolean,System.Boolean,UnityEngine.GUILayoutOption[])"/>
+                Ends drawing a vertical list started by
+                <see
+                        cref="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginVerticalList(System.Boolean,System.Boolean,UnityEngine.GUILayoutOption[])"/>
                 .
             </summary>
         </member>
@@ -7068,8 +7072,9 @@
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.EndListItem">
             <summary>
-                Ends drawing a list item started by<see
-                    cref="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginListItem(System.Boolean,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])"/>
+                Ends drawing a list item started by
+                <see
+                        cref="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginListItem(System.Boolean,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])"/>
                 .
             </summary>
         </member>
@@ -7105,8 +7110,9 @@
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.EndToggleGroup">
             <summary>
-                Ends drawing a toggle group started by<see
-                    cref="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginToggleGroup(System.Object,System.Boolean@,System.Boolean@,System.String,System.Single)"/>
+                Ends drawing a toggle group started by
+                <see
+                        cref="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginToggleGroup(System.Object,System.Boolean@,System.Boolean@,System.String,System.Single)"/>
                 .
             </summary>
         </member>
@@ -7121,8 +7127,9 @@
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorGUI.EndHorizontalAutoScrollBox">
             <summary>
-                Ends drawing a horizontal auto scroll box started by<see
-                    cref="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginHorizontalAutoScrollBox(System.Object,UnityEngine.GUILayoutOption[])"/>
+                Ends drawing a horizontal auto scroll box started by
+                <see
+                        cref="M:Sirenix.Utilities.Editor.SirenixEditorGUI.BeginHorizontalAutoScrollBox(System.Object,UnityEngine.GUILayoutOption[])"/>
                 .
             </summary>
         </member>

@@ -10,7 +10,7 @@ void MainLighting_float(float3 Normal, float3 Position, float3 View, float Smoot
 {
     Specular = 0.0;
 
-#ifndef SHADERGRAPH_PREVIEW
+    #ifndef SHADERGRAPH_PREVIEW
     Smoothness = exp2(10 * Smoothness + 1);
 
     Normal = normalize(Normal);
@@ -18,14 +18,15 @@ void MainLighting_float(float3 Normal, float3 Position, float3 View, float Smoot
 
     Light mainLight = GetMainLight(TransformWorldToShadowCoord(Position));
     Specular = LightingSpecular(mainLight.direction, Normal, View, Smoothness);
-#endif
+    #endif
 }
 
-void AdditionalLighting_float(float3 Normal, float3 Position, float3 View, float Smoothness, float Hardness, out float3 Specular)
+void AdditionalLighting_float(float3 Normal, float3 Position, float3 View, float Smoothness, float Hardness,
+                              out float3 Specular)
 {
     Specular = 0;
 
-#ifndef SHADERGRAPH_PREVIEW
+    #ifndef SHADERGRAPH_PREVIEW
     Smoothness = exp2(10 * Smoothness + 1);
 
     Normal = normalize(Normal);
@@ -44,5 +45,5 @@ void AdditionalLighting_float(float3 Normal, float3 Position, float3 View, float
 
         Specular += specularTerm * attenuatedLight;
     }
-#endif
+    #endif
 }

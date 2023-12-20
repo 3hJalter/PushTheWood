@@ -1,5 +1,4 @@
-﻿
-using _Game.GameGrid;
+﻿using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Screen;
 using UnityEngine;
@@ -12,7 +11,7 @@ namespace _Game.UIs.Popup
         {
             Debug.Log("Click change bgm button");
         }
-        
+
         public void OnClickChangeSfxStatusButton()
         {
             Debug.Log("Click change sfx button");
@@ -27,7 +26,7 @@ namespace _Game.UIs.Popup
         {
             UIManager.Ins.OpenUI<MoveOptionPopup>();
         }
-        
+
         public void OnClickGoMenuButton()
         {
             LevelManager.Ins.OnRestart();

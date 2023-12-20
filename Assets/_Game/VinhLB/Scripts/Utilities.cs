@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -9,8 +8,10 @@ namespace VinhLB
 {
     public static class Utilities
     {
-        public static TextMeshPro CreateWorldText(string text, Transform parent = null, Vector3 localPosition = default, Vector2 size = default,
-            float fontSize = 32f, Color color = default, TextAlignmentOptions alignmentOptions = TextAlignmentOptions.TopLeft, int sortingOrder = 1000)
+        public static TextMeshPro CreateWorldText(string text, Transform parent = null, Vector3 localPosition = default,
+            Vector2 size = default,
+            float fontSize = 32f, Color color = default,
+            TextAlignmentOptions alignmentOptions = TextAlignmentOptions.TopLeft, int sortingOrder = 1000)
         {
             GameObject gameObject = new("WorldText");
             gameObject.transform.SetParent(parent, false);
@@ -26,7 +27,7 @@ namespace VinhLB
             return textMesh;
         }
 
-        public static bool TryGetMouseWorldPosition(out Vector3 mousePosition, 
+        public static bool TryGetMouseWorldPosition(out Vector3 mousePosition,
             Camera camera = null, float distance = Mathf.Infinity, LayerMask layerMask = default)
         {
             mousePosition = Vector3.zero;
@@ -64,13 +65,13 @@ namespace VinhLB
 
             return false;
         }
-        
+
         public static bool TryGetCenterScreenPosition(out Vector3 mousePosition, LayerMask layerMask)
         {
             return TryGetCenterScreenPosition(out mousePosition, null, Mathf.Infinity, layerMask);
         }
 
-        public static bool TryGetRendererFeature<T>(ScriptableRendererData rendererData, out T rendererFeature) 
+        public static bool TryGetRendererFeature<T>(ScriptableRendererData rendererData, out T rendererFeature)
             where T : ScriptableRendererFeature
         {
             rendererFeature = rendererData.rendererFeatures.OfType<T>().FirstOrDefault();
@@ -78,19 +79,18 @@ namespace VinhLB
             return rendererFeature != null;
         }
 
-        public static bool TryGetRendererFeature<T>(ScriptableRendererData rendererData, string featureName, out T rendererFeature)
+        public static bool TryGetRendererFeature<T>(ScriptableRendererData rendererData, string featureName,
+            out T rendererFeature)
             where T : ScriptableRendererFeature
         {
-            var rendererFeatures = rendererData.rendererFeatures.OfType<T>();
+            IEnumerable<T> rendererFeatures = rendererData.rendererFeatures.OfType<T>();
             foreach (T feature in rendererFeatures)
-            {
                 if (feature.name.Equals(featureName))
                 {
                     rendererFeature = feature;
 
                     return true;
                 }
-            }
 
             rendererFeature = null;
 

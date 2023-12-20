@@ -5,11 +5,11 @@ namespace HControls
     public class HInputManager
     {
         private static HInputManager _instance;
-        private static HInputManager Instance => _instance ??= new HInputManager();
+        private Direction _direction = Direction.None;
 
         private float _horizontalInput;
         private float _verticalInput;
-        private Direction _direction = Direction.None;
+        private static HInputManager Instance => _instance ??= new HInputManager();
 
         public static void SetDefault()
         {
@@ -17,7 +17,7 @@ namespace HControls
             Instance._verticalInput = 0f;
             Instance._direction = Direction.None;
         }
-        
+
         public static void SetHorizontalInput(float value)
         {
             Instance._horizontalInput = value;
@@ -32,17 +32,17 @@ namespace HControls
         {
             Instance._direction = direction;
         }
-        
+
         public static void SetDirectionInput(float thresholdP2)
         {
             Instance._direction = GetDirectionInput(thresholdP2);
         }
-        
+
         public static Direction GetDirectionInput()
         {
             return Instance._direction;
         }
-        
+
         private static Direction GetDirectionInput(float thresholdP2)
         {
             Vector2 moveInput = new(Instance._horizontalInput, Instance._verticalInput);

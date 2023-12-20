@@ -1,6 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using MEC;
+using UnityEngine;
 using UnityEngine.Assertions;
+using Object = UnityEngine.Object;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -28,108 +33,129 @@ namespace MEC
     public class Timing : MonoBehaviour
     {
         /// <summary>
-        /// The time between calls to SlowUpdate.
+        ///     The time between calls to SlowUpdate.
         /// </summary>
         [Tooltip("How quickly the SlowUpdate segment ticks.")]
         public float TimeBetweenSlowUpdateCalls = 1f / 7f;
+
         /// <summary>
-        /// The amount that each coroutine should be seperated inside the Unity profiler. NOTE: When the profiler window
-        /// is not open this value is ignored and all coroutines behave as if "None" is selected.
+        ///     The amount that each coroutine should be seperated inside the Unity profiler. NOTE: When the profiler window
+        ///     is not open this value is ignored and all coroutines behave as if "None" is selected.
         /// </summary>
         [Tooltip("How much data should be sent to the profiler window when it's open.")]
         public DebugInfoType ProfilerDebugAmount;
+
         /// <summary>
-        /// Whether the manual timeframe should automatically trigger during the update segment.
+        ///     Whether the manual timeframe should automatically trigger during the update segment.
         /// </summary>
-        [Tooltip("When using manual timeframe, should it run automatically after the update loop or only when TriggerManualTimframeUpdate is called.")]
+        [Tooltip(
+            "When using manual timeframe, should it run automatically after the update loop or only when TriggerManualTimframeUpdate is called.")]
         public bool AutoTriggerManualTimeframe = true;
+
         /// <summary>
-        /// The number of coroutines that are being run in the Update segment.
+        ///     The number of coroutines that are being run in the Update segment.
         /// </summary>
-        [Tooltip("A count of the number of Update coroutines that are currently running."), Space(12)]
+        [Tooltip("A count of the number of Update coroutines that are currently running.")] [Space(12)]
         public int UpdateCoroutines;
+
         /// <summary>
-        /// The number of coroutines that are being run in the FixedUpdate segment.
+        ///     The number of coroutines that are being run in the FixedUpdate segment.
         /// </summary>
         [Tooltip("A count of the number of FixedUpdate coroutines that are currently running.")]
         public int FixedUpdateCoroutines;
+
         /// <summary>
-        /// The number of coroutines that are being run in the LateUpdate segment.
+        ///     The number of coroutines that are being run in the LateUpdate segment.
         /// </summary>
         [Tooltip("A count of the number of LateUpdate coroutines that are currently running.")]
         public int LateUpdateCoroutines;
+
         /// <summary>
-        /// The number of coroutines that are being run in the SlowUpdate segment.
+        ///     The number of coroutines that are being run in the SlowUpdate segment.
         /// </summary>
         [Tooltip("A count of the number of SlowUpdate coroutines that are currently running.")]
         public int SlowUpdateCoroutines;
+
         /// <summary>
-        /// The number of coroutines that are being run in the RealtimeUpdate segment.
+        ///     The number of coroutines that are being run in the RealtimeUpdate segment.
         /// </summary>
         [Tooltip("A count of the number of RealtimeUpdate coroutines that are currently running.")]
         public int RealtimeUpdateCoroutines;
+
         /// <summary>
-        /// The number of coroutines that are being run in the EditorUpdate segment.
+        ///     The number of coroutines that are being run in the EditorUpdate segment.
         /// </summary>
         [Tooltip("A count of the number of EditorUpdate coroutines that are currently running.")]
         public int EditorUpdateCoroutines;
+
         /// <summary>
-        /// The number of coroutines that are being run in the EditorSlowUpdate segment.
+        ///     The number of coroutines that are being run in the EditorSlowUpdate segment.
         /// </summary>
         [Tooltip("A count of the number of EditorSlowUpdate coroutines that are currently running.")]
         public int EditorSlowUpdateCoroutines;
+
         /// <summary>
-        /// The number of coroutines that are being run in the EndOfFrame segment.
+        ///     The number of coroutines that are being run in the EndOfFrame segment.
         /// </summary>
         [Tooltip("A count of the number of EndOfFrame coroutines that are currently running.")]
         public int EndOfFrameCoroutines;
+
         /// <summary>
-        /// The number of coroutines that are being run in the ManualTimeframe segment.
+        ///     The number of coroutines that are being run in the ManualTimeframe segment.
         /// </summary>
         [Tooltip("A count of the number of ManualTimeframe coroutines that are currently running.")]
         public int ManualTimeframeCoroutines;
 
         /// <summary>
-        /// The time in seconds that the current segment has been running.
+        ///     The time in seconds that the current segment has been running.
         /// </summary>
-        [System.NonSerialized]
-        public float localTime;
+        [NonSerialized] public float localTime;
+
         /// <summary>
-        /// The time in seconds that the current segment has been running.
+        ///     The time in seconds that the current segment has been running.
         /// </summary>
-        public static float LocalTime { get { return Instance.localTime; } }
+        public static float LocalTime => Instance.localTime;
+
         /// <summary>
-        /// The amount of time in fractional seconds that elapsed between this frame and the last frame.
+        ///     The amount of time in fractional seconds that elapsed between this frame and the last frame.
         /// </summary>
-        [System.NonSerialized]
-        public float deltaTime;
+        [NonSerialized] public float deltaTime;
+
         /// <summary>
-        /// The amount of time in fractional seconds that elapsed between this frame and the last frame.
+        ///     The amount of time in fractional seconds that elapsed between this frame and the last frame.
         /// </summary>
-        public static float DeltaTime { get { return Instance.deltaTime; } }
+        public static float DeltaTime => Instance.deltaTime;
+
         /// <summary>
-        /// When defined, this function will be called every time manual timeframe needs to be set. The last manual timeframe time is passed in, and
-        /// the new manual timeframe time needs to be returned. If this function is left as null, manual timeframe will be set to the current Time.time.
+        ///     When defined, this function will be called every time manual timeframe needs to be set. The last manual timeframe
+        ///     time is passed in, and
+        ///     the new manual timeframe time needs to be returned. If this function is left as null, manual timeframe will be set
+        ///     to the current Time.time.
         /// </summary>
-        public System.Func<float, float> SetManualTimeframeTime;
+        public Func<float, float> SetManualTimeframeTime;
+
         /// <summary>
-        /// Used for advanced coroutine control.
+        ///     Used for advanced coroutine control.
         /// </summary>
-        public static System.Func<IEnumerator<float>, CoroutineHandle, IEnumerator<float>> ReplacementFunction;
+        public static Func<IEnumerator<float>, CoroutineHandle, IEnumerator<float>> ReplacementFunction;
+
         /// <summary>
-        /// This event fires just before each segment is run.
+        ///     This event fires just before each segment is run.
         /// </summary>
-        public static event System.Action OnPreExecute;
+        public static event Action OnPreExecute;
+
         /// <summary>
-        /// You can use "yield return Timing.WaitForOneFrame;" inside a coroutine function to go to the next frame. 
+        ///     You can use "yield return Timing.WaitForOneFrame;" inside a coroutine function to go to the next frame.
         /// </summary>
         public const float WaitForOneFrame = float.NegativeInfinity;
+
         /// <summary>
-        /// The main thread that (almost) everything in unity runs in.
+        ///     The main thread that (almost) everything in unity runs in.
         /// </summary>
-        public static System.Threading.Thread MainThread { get; private set; }
+        public static Thread MainThread { get; private set; }
+
         /// <summary>
-        /// The handle of the current coroutine that is running.
+        ///     The handle of the current coroutine that is running.
         /// </summary>
         public static CoroutineHandle CurrentCoroutine
         {
@@ -138,11 +164,12 @@ namespace MEC
                 for (int i = 0; i < ActiveInstances.Length; i++)
                     if (ActiveInstances[i] != null && ActiveInstances[i].currentCoroutine.IsValid)
                         return ActiveInstances[i].currentCoroutine;
-                return default(CoroutineHandle);
+                return default;
             }
         }
+
         /// <summary>
-        /// The handle of the current coroutine that is running.
+        ///     The handle of the current coroutine that is running.
         /// </summary>
         public CoroutineHandle currentCoroutine { get; private set; }
 
@@ -195,20 +222,19 @@ namespace MEC
         private float _lastManualTimeframeDeltaTime;
         private ushort _framesSinceUpdate;
         private ushort _expansions = 1;
-        [SerializeField, HideInInspector]
-        private byte _instanceID;
+        [SerializeField] [HideInInspector] private byte _instanceID;
         private bool _EOFPumpRan;
 
-        private static readonly Dictionary<CoroutineHandle, HashSet<CoroutineHandle>> Links = new Dictionary<CoroutineHandle, HashSet<CoroutineHandle>>();
-        private static readonly WaitForEndOfFrame EofWaitObject = new WaitForEndOfFrame();
-        private readonly Dictionary<CoroutineHandle, HashSet<CoroutineHandle>> _waitingTriggers = new Dictionary<CoroutineHandle, HashSet<CoroutineHandle>>();
-        private readonly HashSet<CoroutineHandle> _allWaiting = new HashSet<CoroutineHandle>();
-        private readonly Dictionary<CoroutineHandle, ProcessIndex> _handleToIndex = new Dictionary<CoroutineHandle, ProcessIndex>();
-        private readonly Dictionary<ProcessIndex, CoroutineHandle> _indexToHandle = new Dictionary<ProcessIndex, CoroutineHandle>();
-        private readonly Dictionary<CoroutineHandle, string> _processTags = new Dictionary<CoroutineHandle, string>();
-        private readonly Dictionary<string, HashSet<CoroutineHandle>> _taggedProcesses = new Dictionary<string, HashSet<CoroutineHandle>>();
-        private readonly Dictionary<CoroutineHandle, int> _processLayers = new Dictionary<CoroutineHandle, int>();
-        private readonly Dictionary<int, HashSet<CoroutineHandle>> _layeredProcesses = new Dictionary<int, HashSet<CoroutineHandle>>();
+        private static readonly Dictionary<CoroutineHandle, HashSet<CoroutineHandle>> Links = new();
+        private static readonly WaitForEndOfFrame EofWaitObject = new();
+        private readonly Dictionary<CoroutineHandle, HashSet<CoroutineHandle>> _waitingTriggers = new();
+        private readonly HashSet<CoroutineHandle> _allWaiting = new();
+        private readonly Dictionary<CoroutineHandle, ProcessIndex> _handleToIndex = new();
+        private readonly Dictionary<ProcessIndex, CoroutineHandle> _indexToHandle = new();
+        private readonly Dictionary<CoroutineHandle, string> _processTags = new();
+        private readonly Dictionary<string, HashSet<CoroutineHandle>> _taggedProcesses = new();
+        private readonly Dictionary<CoroutineHandle, int> _processLayers = new();
+        private readonly Dictionary<int, HashSet<CoroutineHandle>> _layeredProcesses = new();
 
         private IEnumerator<float>[] UpdateProcesses = new IEnumerator<float>[InitialBufferSizeLarge];
         private IEnumerator<float>[] LateUpdateProcesses = new IEnumerator<float>[InitialBufferSizeSmall];
@@ -248,8 +274,9 @@ namespace MEC
         private const int InitialBufferSizeSmall = 8;
 
 
-        private static Timing[] ActiveInstances = new Timing[16];
+        private static readonly Timing[] ActiveInstances = new Timing[16];
         private static Timing _instance;
+
         public static Timing Instance
         {
             get
@@ -281,16 +308,16 @@ namespace MEC
             set { _instance = value; }
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             if (_instance == this)
                 _instance = null;
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             if (MainThread == null)
-                MainThread = System.Threading.Thread.CurrentThread;
+                MainThread = Thread.CurrentThread;
 
             if (_nextEditorUpdateProcessSlot > 0 || _nextEditorSlowUpdateProcessSlot > 0)
                 OnEditorStart();
@@ -301,7 +328,7 @@ namespace MEC
                 RunCoroutineSingletonOnInstance(_EOFPumpWatcher(), "MEC_EOFPumpWatcher", SingletonBehavior.Abort);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (_instanceID < ActiveInstances.Length)
                 ActiveInstances[_instanceID] = null;
@@ -319,7 +346,8 @@ namespace MEC
                     if (_instanceID == 0x10)
                     {
                         GameObject.Destroy(gameObject);
-                        throw new System.OverflowException("You are only allowed 15 different contexts for MEC to run inside at one time.");
+                        throw new OverflowException(
+                            "You are only allowed 15 different contexts for MEC to run inside at one time.");
                     }
 
                     if (ActiveInstances[_instanceID] == null)
@@ -331,45 +359,53 @@ namespace MEC
             }
         }
 
-        void Update()
+        private void Update()
         {
             if (OnPreExecute != null)
                 OnPreExecute();
 
-            if (_lastSlowUpdateTime + TimeBetweenSlowUpdateCalls < Time.realtimeSinceStartup && _nextSlowUpdateProcessSlot > 0)
+            if (_lastSlowUpdateTime + TimeBetweenSlowUpdateCalls < Time.realtimeSinceStartup &&
+                _nextSlowUpdateProcessSlot > 0)
             {
-                ProcessIndex coindex = new ProcessIndex { seg = Segment.SlowUpdate };
+                ProcessIndex coindex = new() { seg = Segment.SlowUpdate };
                 if (UpdateTimeValues(coindex.seg))
                     _lastSlowUpdateProcessSlot = _nextSlowUpdateProcessSlot;
 
                 for (coindex.i = 0; coindex.i < _lastSlowUpdateProcessSlot; coindex.i++)
-                {
                     try
                     {
-                        if (!SlowUpdatePaused[coindex.i] && !SlowUpdateHeld[coindex.i] && SlowUpdateProcesses[coindex.i] != null && !(localTime < SlowUpdateProcesses[coindex.i].Current))
+                        if (!SlowUpdatePaused[coindex.i] && !SlowUpdateHeld[coindex.i] &&
+                            SlowUpdateProcesses[coindex.i] != null &&
+                            !(localTime < SlowUpdateProcesses[coindex.i].Current))
                         {
                             currentCoroutine = _indexToHandle[coindex];
 
                             if (ProfilerDebugAmount != DebugInfoType.None && _indexToHandle.ContainsKey(coindex))
-                            {
-                                Profiler.BeginSample(ProfilerDebugAmount == DebugInfoType.SeperateTags ? ("Processing Coroutine (Slow Update), " +
-                                        (_processLayers.ContainsKey(_indexToHandle[coindex]) ? "layer " + _processLayers[_indexToHandle[coindex]] : "no layer") +
-                                        (_processTags.ContainsKey(_indexToHandle[coindex]) ? ", tag " + _processTags[_indexToHandle[coindex]] : ", no tag"))
-                                        : "Processing Coroutine (Slow Update)");
-                            }
+                                Profiler.BeginSample(ProfilerDebugAmount == DebugInfoType.SeperateTags
+                                    ? "Processing Coroutine (Slow Update), " +
+                                      (_processLayers.ContainsKey(_indexToHandle[coindex])
+                                          ? "layer " + _processLayers[_indexToHandle[coindex]]
+                                          : "no layer") +
+                                      (_processTags.ContainsKey(_indexToHandle[coindex])
+                                          ? ", tag " + _processTags[_indexToHandle[coindex]]
+                                          : ", no tag")
+                                    : "Processing Coroutine (Slow Update)");
 
                             if (!SlowUpdateProcesses[coindex.i].MoveNext())
                             {
                                 if (_indexToHandle.ContainsKey(coindex))
                                     KillCoroutinesOnInstance(_indexToHandle[coindex]);
                             }
-                            else if (SlowUpdateProcesses[coindex.i] != null && float.IsNaN(SlowUpdateProcesses[coindex.i].Current))
+                            else if (SlowUpdateProcesses[coindex.i] != null &&
+                                     float.IsNaN(SlowUpdateProcesses[coindex.i].Current))
                             {
                                 if (ReplacementFunction != null)
                                 {
-                                    SlowUpdateProcesses[coindex.i] = ReplacementFunction(SlowUpdateProcesses[coindex.i], _indexToHandle[coindex]);
+                                    SlowUpdateProcesses[coindex.i] = ReplacementFunction(SlowUpdateProcesses[coindex.i],
+                                        _indexToHandle[coindex]);
                                     ReplacementFunction = null;
                                 }
+
                                 coindex.i--;
                             }
 
@@ -377,51 +413,59 @@ namespace MEC
                                 Profiler.EndSample();
                         }
                     }
-                    catch (System.Exception ex)
+                    catch (Exception ex)
                     {
                         Debug.LogException(ex);
 
                         if (ex is MissingReferenceException)
-                            Debug.LogError("This exception can probably be fixed by adding \"CancelWith(gameObject)\" when you run the coroutine.\n"
+                            Debug.LogError(
+                                "This exception can probably be fixed by adding \"CancelWith(gameObject)\" when you run the coroutine.\n"
                                 + "Example: Timing.RunCoroutine(_foo().CancelWith(gameObject), Segment.SlowUpdate);");
                     }
-                }
             }
 
             if (_nextRealtimeUpdateProcessSlot > 0)
             {
-                ProcessIndex coindex = new ProcessIndex { seg = Segment.RealtimeUpdate };
+                ProcessIndex coindex = new() { seg = Segment.RealtimeUpdate };
                 if (UpdateTimeValues(coindex.seg))
                     _lastRealtimeUpdateProcessSlot = _nextRealtimeUpdateProcessSlot;
 
                 for (coindex.i = 0; coindex.i < _lastRealtimeUpdateProcessSlot; coindex.i++)
-                {
                     try
                     {
-                        if (!RealtimeUpdatePaused[coindex.i] && !RealtimeUpdateHeld[coindex.i] && RealtimeUpdateProcesses[coindex.i] != null && !(localTime < RealtimeUpdateProcesses[coindex.i].Current))
+                        if (!RealtimeUpdatePaused[coindex.i] && !RealtimeUpdateHeld[coindex.i] &&
+                            RealtimeUpdateProcesses[coindex.i] != null &&
+                            !(localTime < RealtimeUpdateProcesses[coindex.i].Current))
                         {
                             currentCoroutine = _indexToHandle[coindex];
 
                             if (ProfilerDebugAmount != DebugInfoType.None && _indexToHandle.ContainsKey(coindex))
-                            {
-                                Profiler.BeginSample(ProfilerDebugAmount == DebugInfoType.SeperateTags ? ("Processing Coroutine (Realtime Update), " +
-                                        (_processLayers.ContainsKey(_indexToHandle[coindex]) ? "layer " + _processLayers[_indexToHandle[coindex]] : "no layer") +
-                                        (_processTags.ContainsKey(_indexToHandle[coindex]) ? ", tag " + _processTags[_indexToHandle[coindex]] : ", no tag"))
-                                        : "Processing Coroutine (Realtime Update)");
-                            }
+                                Profiler.BeginSample(ProfilerDebugAmount == DebugInfoType.SeperateTags
+                                    ? "Processing Coroutine (Realtime Update), " +
+                                      (_processLayers.ContainsKey(_indexToHandle[coindex])
+                                          ? "layer " + _processLayers[_indexToHandle[coindex]]
+                                          : "no layer") +
+                                      (_processTags.ContainsKey(_indexToHandle[coindex])
+                                          ? ", tag " + _processTags[_indexToHandle[coindex]]
+                                          : ", no tag")
+                                    : "Processing Coroutine (Realtime Update)");
 
                             if (!RealtimeUpdateProcesses[coindex.i].MoveNext())
                             {
                                 if (_indexToHandle.ContainsKey(coindex))
                                     KillCoroutinesOnInstance(_indexToHandle[coindex]);
                             }
-                            else if (RealtimeUpdateProcesses[coindex.i] != null && float.IsNaN(RealtimeUpdateProcesses[coindex.i].Current))
+                            else if (RealtimeUpdateProcesses[coindex.i] != null &&
+                                     float.IsNaN(RealtimeUpdateProcesses[coindex.i].Current))
                             {
                                 if (ReplacementFunction != null)
                                 {
-                                    RealtimeUpdateProcesses[coindex.i] = ReplacementFunction(RealtimeUpdateProcesses[coindex.i], _indexToHandle[coindex]);
+                                    RealtimeUpdateProcesses[coindex.i] =
+                                        ReplacementFunction(RealtimeUpdateProcesses[coindex.i],
+                                            _indexToHandle[coindex]);
                                     ReplacementFunction = null;
                                 }
+
                                 coindex.i--;
                             }
 
@@ -429,51 +473,57 @@ namespace MEC
                                 Profiler.EndSample();
                         }
                     }
-                    catch (System.Exception ex)
+                    catch (Exception ex)
                     {
                         Debug.LogException(ex);
 
                         if (ex is MissingReferenceException)
-                            Debug.LogError("This exception can probably be fixed by adding \"CancelWith(gameObject)\" when you run the coroutine.\n"
+                            Debug.LogError(
+                                "This exception can probably be fixed by adding \"CancelWith(gameObject)\" when you run the coroutine.\n"
                                 + "Example: Timing.RunCoroutine(_foo().CancelWith(gameObject), Segment.RealtimeUpdate);");
                     }
-                }
             }
 
             if (_nextUpdateProcessSlot > 0)
             {
-                ProcessIndex coindex = new ProcessIndex { seg = Segment.Update };
+                ProcessIndex coindex = new() { seg = Segment.Update };
                 if (UpdateTimeValues(coindex.seg))
                     _lastUpdateProcessSlot = _nextUpdateProcessSlot;
 
                 for (coindex.i = 0; coindex.i < _lastUpdateProcessSlot; coindex.i++)
-                {
                     try
                     {
-                        if (!UpdatePaused[coindex.i] && !UpdateHeld[coindex.i] && UpdateProcesses[coindex.i] != null && !(localTime < UpdateProcesses[coindex.i].Current))
+                        if (!UpdatePaused[coindex.i] && !UpdateHeld[coindex.i] && UpdateProcesses[coindex.i] != null &&
+                            !(localTime < UpdateProcesses[coindex.i].Current))
                         {
                             currentCoroutine = _indexToHandle[coindex];
 
                             if (ProfilerDebugAmount != DebugInfoType.None && _indexToHandle.ContainsKey(coindex))
-                            {
-                                Profiler.BeginSample(ProfilerDebugAmount == DebugInfoType.SeperateTags ? ("Processing Coroutine, " +
-                                        (_processLayers.ContainsKey(_indexToHandle[coindex]) ? "layer " + _processLayers[_indexToHandle[coindex]] : "no layer") +
-                                        (_processTags.ContainsKey(_indexToHandle[coindex]) ? ", tag " + _processTags[_indexToHandle[coindex]] : ", no tag"))
-                                        : "Processing Coroutine");
-                            }
+                                Profiler.BeginSample(ProfilerDebugAmount == DebugInfoType.SeperateTags
+                                    ? "Processing Coroutine, " +
+                                      (_processLayers.ContainsKey(_indexToHandle[coindex])
+                                          ? "layer " + _processLayers[_indexToHandle[coindex]]
+                                          : "no layer") +
+                                      (_processTags.ContainsKey(_indexToHandle[coindex])
+                                          ? ", tag " + _processTags[_indexToHandle[coindex]]
+                                          : ", no tag")
+                                    : "Processing Coroutine");
 
                             if (!UpdateProcesses[coindex.i].MoveNext())
                             {
                                 if (_indexToHandle.ContainsKey(coindex))
                                     KillCoroutinesOnInstance(_indexToHandle[coindex]);
                             }
-                            else if (UpdateProcesses[coindex.i] != null && float.IsNaN(UpdateProcesses[coindex.i].Current))
+                            else if (UpdateProcesses[coindex.i] != null &&
+                                     float.IsNaN(UpdateProcesses[coindex.i].Current))
                             {
                                 if (ReplacementFunction != null)
                                 {
-                                    UpdateProcesses[coindex.i] = ReplacementFunction(UpdateProcesses[coindex.i], _indexToHandle[coindex]);
+                                    UpdateProcesses[coindex.i] = ReplacementFunction(UpdateProcesses[coindex.i],
+                                        _indexToHandle[coindex]);
                                     ReplacementFunction = null;
                                 }
+
                                 coindex.i--;
                             }
 
@@ -481,15 +531,15 @@ namespace MEC
                                 Profiler.EndSample();
                         }
                     }
-                    catch (System.Exception ex)
+                    catch (Exception ex)
                     {
                         Debug.LogException(ex);
 
                         if (ex is MissingReferenceException)
-                            Debug.LogError("This exception can probably be fixed by adding \"CancelWith(gameObject)\" when you run the coroutine.\n"
+                            Debug.LogError(
+                                "This exception can probably be fixed by adding \"CancelWith(gameObject)\" when you run the coroutine.\n"
                                 + "Example: Timing.RunCoroutine(_foo().CancelWith(gameObject), Segment.Update);");
                     }
-                }
             }
 
             if (AutoTriggerManualTimeframe)
@@ -512,49 +562,56 @@ namespace MEC
                 }
             }
 
-            currentCoroutine = default(CoroutineHandle);
+            currentCoroutine = default;
 
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (OnPreExecute != null)
                 OnPreExecute();
 
             if (_nextFixedUpdateProcessSlot > 0)
             {
-                ProcessIndex coindex = new ProcessIndex { seg = Segment.FixedUpdate };
+                ProcessIndex coindex = new() { seg = Segment.FixedUpdate };
                 if (UpdateTimeValues(coindex.seg))
                     _lastFixedUpdateProcessSlot = _nextFixedUpdateProcessSlot;
 
                 for (coindex.i = 0; coindex.i < _lastFixedUpdateProcessSlot; coindex.i++)
-                {
                     try
                     {
-                        if (!FixedUpdatePaused[coindex.i] && !FixedUpdateHeld[coindex.i] && FixedUpdateProcesses[coindex.i] != null && !(localTime < FixedUpdateProcesses[coindex.i].Current))
+                        if (!FixedUpdatePaused[coindex.i] && !FixedUpdateHeld[coindex.i] &&
+                            FixedUpdateProcesses[coindex.i] != null &&
+                            !(localTime < FixedUpdateProcesses[coindex.i].Current))
                         {
                             currentCoroutine = _indexToHandle[coindex];
 
                             if (ProfilerDebugAmount != DebugInfoType.None && _indexToHandle.ContainsKey(coindex))
-                            {
-                                Profiler.BeginSample(ProfilerDebugAmount == DebugInfoType.SeperateTags ? ("Processing Coroutine, " +
-                                        (_processLayers.ContainsKey(_indexToHandle[coindex]) ? "layer " + _processLayers[_indexToHandle[coindex]] : "no layer") +
-                                        (_processTags.ContainsKey(_indexToHandle[coindex]) ? ", tag " + _processTags[_indexToHandle[coindex]] : ", no tag"))
-                                        : "Processing Coroutine");
-                            }
+                                Profiler.BeginSample(ProfilerDebugAmount == DebugInfoType.SeperateTags
+                                    ? "Processing Coroutine, " +
+                                      (_processLayers.ContainsKey(_indexToHandle[coindex])
+                                          ? "layer " + _processLayers[_indexToHandle[coindex]]
+                                          : "no layer") +
+                                      (_processTags.ContainsKey(_indexToHandle[coindex])
+                                          ? ", tag " + _processTags[_indexToHandle[coindex]]
+                                          : ", no tag")
+                                    : "Processing Coroutine");
 
                             if (!FixedUpdateProcesses[coindex.i].MoveNext())
                             {
                                 if (_indexToHandle.ContainsKey(coindex))
                                     KillCoroutinesOnInstance(_indexToHandle[coindex]);
                             }
-                            else if (FixedUpdateProcesses[coindex.i] != null && float.IsNaN(FixedUpdateProcesses[coindex.i].Current))
+                            else if (FixedUpdateProcesses[coindex.i] != null &&
+                                     float.IsNaN(FixedUpdateProcesses[coindex.i].Current))
                             {
                                 if (ReplacementFunction != null)
                                 {
-                                    FixedUpdateProcesses[coindex.i] = ReplacementFunction(FixedUpdateProcesses[coindex.i], _indexToHandle[coindex]);
+                                    FixedUpdateProcesses[coindex.i] =
+                                        ReplacementFunction(FixedUpdateProcesses[coindex.i], _indexToHandle[coindex]);
                                     ReplacementFunction = null;
                                 }
+
                                 coindex.i--;
                             }
 
@@ -562,59 +619,66 @@ namespace MEC
                                 Profiler.EndSample();
                         }
                     }
-                    catch (System.Exception ex)
+                    catch (Exception ex)
                     {
                         Debug.LogException(ex);
 
                         if (ex is MissingReferenceException)
-                            Debug.LogError("This exception can probably be fixed by adding \"CancelWith(gameObject)\" when you run the coroutine.\n"
+                            Debug.LogError(
+                                "This exception can probably be fixed by adding \"CancelWith(gameObject)\" when you run the coroutine.\n"
                                 + "Example: Timing.RunCoroutine(_foo().CancelWith(gameObject), Segment.FixedUpdate);");
                     }
-                }
 
-                currentCoroutine = default(CoroutineHandle);
+                currentCoroutine = default;
             }
         }
 
-        void LateUpdate()
+        private void LateUpdate()
         {
             if (OnPreExecute != null)
                 OnPreExecute();
 
             if (_nextLateUpdateProcessSlot > 0)
             {
-                ProcessIndex coindex = new ProcessIndex { seg = Segment.LateUpdate };
+                ProcessIndex coindex = new() { seg = Segment.LateUpdate };
                 if (UpdateTimeValues(coindex.seg))
                     _lastLateUpdateProcessSlot = _nextLateUpdateProcessSlot;
 
                 for (coindex.i = 0; coindex.i < _lastLateUpdateProcessSlot; coindex.i++)
-                {
                     try
                     {
-                        if (!LateUpdatePaused[coindex.i] && !LateUpdateHeld[coindex.i] && LateUpdateProcesses[coindex.i] != null && !(localTime < LateUpdateProcesses[coindex.i].Current))
+                        if (!LateUpdatePaused[coindex.i] && !LateUpdateHeld[coindex.i] &&
+                            LateUpdateProcesses[coindex.i] != null &&
+                            !(localTime < LateUpdateProcesses[coindex.i].Current))
                         {
                             currentCoroutine = _indexToHandle[coindex];
 
                             if (ProfilerDebugAmount != DebugInfoType.None && _indexToHandle.ContainsKey(coindex))
-                            {
-                                Profiler.BeginSample(ProfilerDebugAmount == DebugInfoType.SeperateTags ? ("Processing Coroutine, " +
-                                        (_processLayers.ContainsKey(_indexToHandle[coindex]) ? "layer " + _processLayers[_indexToHandle[coindex]] : "no layer") +
-                                        (_processTags.ContainsKey(_indexToHandle[coindex]) ? ", tag " + _processTags[_indexToHandle[coindex]] : ", no tag"))
-                                        : "Processing Coroutine");
-                            }
+                                Profiler.BeginSample(ProfilerDebugAmount == DebugInfoType.SeperateTags
+                                    ? "Processing Coroutine, " +
+                                      (_processLayers.ContainsKey(_indexToHandle[coindex])
+                                          ? "layer " + _processLayers[_indexToHandle[coindex]]
+                                          : "no layer") +
+                                      (_processTags.ContainsKey(_indexToHandle[coindex])
+                                          ? ", tag " + _processTags[_indexToHandle[coindex]]
+                                          : ", no tag")
+                                    : "Processing Coroutine");
 
                             if (!LateUpdateProcesses[coindex.i].MoveNext())
                             {
                                 if (_indexToHandle.ContainsKey(coindex))
                                     KillCoroutinesOnInstance(_indexToHandle[coindex]);
                             }
-                            else if (LateUpdateProcesses[coindex.i] != null && float.IsNaN(LateUpdateProcesses[coindex.i].Current))
+                            else if (LateUpdateProcesses[coindex.i] != null &&
+                                     float.IsNaN(LateUpdateProcesses[coindex.i].Current))
                             {
                                 if (ReplacementFunction != null)
                                 {
-                                    LateUpdateProcesses[coindex.i] = ReplacementFunction(LateUpdateProcesses[coindex.i], _indexToHandle[coindex]);
+                                    LateUpdateProcesses[coindex.i] = ReplacementFunction(LateUpdateProcesses[coindex.i],
+                                        _indexToHandle[coindex]);
                                     ReplacementFunction = null;
                                 }
+
                                 coindex.i--;
                             }
 
@@ -622,24 +686,26 @@ namespace MEC
                                 Profiler.EndSample();
                         }
                     }
-                    catch (System.Exception ex)
+                    catch (Exception ex)
                     {
                         Debug.LogException(ex);
 
                         if (ex is MissingReferenceException)
-                            Debug.LogError("This exception can probably be fixed by adding \"CancelWith(gameObject)\" when you run the coroutine.\n"
+                            Debug.LogError(
+                                "This exception can probably be fixed by adding \"CancelWith(gameObject)\" when you run the coroutine.\n"
                                 + "Example: Timing.RunCoroutine(_foo().CancelWith(gameObject), Segment.LateUpdate);");
                     }
-                }
 
-                currentCoroutine = default(CoroutineHandle);
+                currentCoroutine = default;
             }
         }
 
         /// <summary>
-        /// This will trigger an update in the manual timeframe segment. If the AutoTriggerManualTimeframeDuringUpdate variable is set to true
-        /// then this function will be automitically called every Update, so you would normally want to set that variable to false before
-        /// calling this function yourself.
+        ///     This will trigger an update in the manual timeframe segment. If the AutoTriggerManualTimeframeDuringUpdate variable
+        ///     is set to true
+        ///     then this function will be automitically called every Update, so you would normally want to set that variable to
+        ///     false before
+        ///     calling this function yourself.
         /// </summary>
         public void TriggerManualTimeframeUpdate()
         {
@@ -648,39 +714,46 @@ namespace MEC
 
             if (_nextManualTimeframeProcessSlot > 0)
             {
-                ProcessIndex coindex = new ProcessIndex { seg = Segment.ManualTimeframe };
+                ProcessIndex coindex = new() { seg = Segment.ManualTimeframe };
                 if (UpdateTimeValues(coindex.seg))
                     _lastManualTimeframeProcessSlot = _nextManualTimeframeProcessSlot;
 
                 for (coindex.i = 0; coindex.i < _lastManualTimeframeProcessSlot; coindex.i++)
-                {
                     try
                     {
-                        if (!ManualTimeframePaused[coindex.i] && !ManualTimeframeHeld[coindex.i] && ManualTimeframeProcesses[coindex.i] != null &&
+                        if (!ManualTimeframePaused[coindex.i] && !ManualTimeframeHeld[coindex.i] &&
+                            ManualTimeframeProcesses[coindex.i] != null &&
                             !(localTime < ManualTimeframeProcesses[coindex.i].Current))
                         {
                             currentCoroutine = _indexToHandle[coindex];
 
                             if (ProfilerDebugAmount != DebugInfoType.None && _indexToHandle.ContainsKey(coindex))
-                            {
-                                Profiler.BeginSample(ProfilerDebugAmount == DebugInfoType.SeperateTags ? ("Processing Coroutine (Manual Timeframe), " +
-                                        (_processLayers.ContainsKey(_indexToHandle[coindex]) ? "layer " + _processLayers[_indexToHandle[coindex]] : "no layer") +
-                                        (_processTags.ContainsKey(_indexToHandle[coindex]) ? ", tag " + _processTags[_indexToHandle[coindex]] : ", no tag"))
-                                        : "Processing Coroutine (Manual Timeframe)");
-                            }
+                                Profiler.BeginSample(ProfilerDebugAmount == DebugInfoType.SeperateTags
+                                    ? "Processing Coroutine (Manual Timeframe), " +
+                                      (_processLayers.ContainsKey(_indexToHandle[coindex])
+                                          ? "layer " + _processLayers[_indexToHandle[coindex]]
+                                          : "no layer") +
+                                      (_processTags.ContainsKey(_indexToHandle[coindex])
+                                          ? ", tag " + _processTags[_indexToHandle[coindex]]
+                                          : ", no tag")
+                                    : "Processing Coroutine (Manual Timeframe)");
 
                             if (!ManualTimeframeProcesses[coindex.i].MoveNext())
                             {
                                 if (_indexToHandle.ContainsKey(coindex))
                                     KillCoroutinesOnInstance(_indexToHandle[coindex]);
                             }
-                            else if (ManualTimeframeProcesses[coindex.i] != null && float.IsNaN(ManualTimeframeProcesses[coindex.i].Current))
+                            else if (ManualTimeframeProcesses[coindex.i] != null &&
+                                     float.IsNaN(ManualTimeframeProcesses[coindex.i].Current))
                             {
                                 if (ReplacementFunction != null)
                                 {
-                                    ManualTimeframeProcesses[coindex.i] = ReplacementFunction(ManualTimeframeProcesses[coindex.i], _indexToHandle[coindex]);
+                                    ManualTimeframeProcesses[coindex.i] =
+                                        ReplacementFunction(ManualTimeframeProcesses[coindex.i],
+                                            _indexToHandle[coindex]);
                                     ReplacementFunction = null;
                                 }
+
                                 coindex.i--;
                             }
 
@@ -688,15 +761,15 @@ namespace MEC
                                 Profiler.EndSample();
                         }
                     }
-                    catch (System.Exception ex)
+                    catch (Exception ex)
                     {
                         Debug.LogException(ex);
 
                         if (ex is MissingReferenceException)
-                            Debug.LogError("This exception can probably be fixed by adding \"CancelWith(gameObject)\" when you run the coroutine.\n"
+                            Debug.LogError(
+                                "This exception can probably be fixed by adding \"CancelWith(gameObject)\" when you run the coroutine.\n"
                                 + "Example: Timing.RunCoroutine(_foo().CancelWith(gameObject), Segment.ManualTimeframe);");
                     }
-                }
             }
 
             if (++_framesSinceUpdate > FramesUntilMaintenance)
@@ -712,7 +785,7 @@ namespace MEC
                     Profiler.EndSample();
             }
 
-            currentCoroutine = default(CoroutineHandle);
+            currentCoroutine = default;
         }
 
         private bool OnEditorStart()
@@ -756,9 +829,10 @@ namespace MEC
                 _instance = null;
             }
 
-            if (_lastEditorSlowUpdateTime + TimeBetweenSlowUpdateCalls < EditorApplication.timeSinceStartup && _nextEditorSlowUpdateProcessSlot > 0)
+            if (_lastEditorSlowUpdateTime + TimeBetweenSlowUpdateCalls < EditorApplication.timeSinceStartup &&
+                _nextEditorSlowUpdateProcessSlot > 0)
             {
-                ProcessIndex coindex = new ProcessIndex { seg = Segment.EditorSlowUpdate };
+                ProcessIndex coindex = new() { seg = Segment.EditorSlowUpdate };
                 if (UpdateTimeValues(coindex.seg))
                     _lastEditorSlowUpdateProcessSlot = _nextEditorSlowUpdateProcessSlot;
 
@@ -768,7 +842,8 @@ namespace MEC
 
                     try
                     {
-                        if (!EditorSlowUpdatePaused[coindex.i] && !EditorSlowUpdateHeld[coindex.i] && EditorSlowUpdateProcesses[coindex.i] != null &&
+                        if (!EditorSlowUpdatePaused[coindex.i] && !EditorSlowUpdateHeld[coindex.i] &&
+                            EditorSlowUpdateProcesses[coindex.i] != null &&
                             !(EditorApplication.timeSinceStartup < EditorSlowUpdateProcesses[coindex.i].Current))
                         {
                             if (!EditorSlowUpdateProcesses[coindex.i].MoveNext())
@@ -776,23 +851,28 @@ namespace MEC
                                 if (_indexToHandle.ContainsKey(coindex))
                                     KillCoroutinesOnInstance(_indexToHandle[coindex]);
                             }
-                            else if (EditorSlowUpdateProcesses[coindex.i] != null && float.IsNaN(EditorSlowUpdateProcesses[coindex.i].Current))
+                            else if (EditorSlowUpdateProcesses[coindex.i] != null &&
+                                     float.IsNaN(EditorSlowUpdateProcesses[coindex.i].Current))
                             {
                                 if (ReplacementFunction != null)
                                 {
-                                    EditorSlowUpdateProcesses[coindex.i] = ReplacementFunction(EditorSlowUpdateProcesses[coindex.i], _indexToHandle[coindex]);
+                                    EditorSlowUpdateProcesses[coindex.i] =
+                                        ReplacementFunction(EditorSlowUpdateProcesses[coindex.i],
+                                            _indexToHandle[coindex]);
                                     ReplacementFunction = null;
                                 }
+
                                 coindex.i--;
                             }
                         }
                     }
-                    catch (System.Exception ex)
+                    catch (Exception ex)
                     {
                         Debug.LogException(ex);
 
                         if (ex is MissingReferenceException)
-                            Debug.LogError("This exception can probably be fixed by adding \"CancelWith(gameObject)\" when you run the coroutine.\n"
+                            Debug.LogError(
+                                "This exception can probably be fixed by adding \"CancelWith(gameObject)\" when you run the coroutine.\n"
                                 + "Example: Timing.RunCoroutine(_foo().CancelWith(gameObject), Segment.EditorUpdate);");
                     }
                 }
@@ -800,7 +880,7 @@ namespace MEC
 
             if (_nextEditorUpdateProcessSlot > 0)
             {
-                ProcessIndex coindex = new ProcessIndex { seg = Segment.EditorUpdate };
+                ProcessIndex coindex = new() { seg = Segment.EditorUpdate };
                 if (UpdateTimeValues(coindex.seg))
                     _lastEditorUpdateProcessSlot = _nextEditorUpdateProcessSlot;
 
@@ -810,7 +890,8 @@ namespace MEC
 
                     try
                     {
-                        if (!EditorUpdatePaused[coindex.i] && !EditorUpdateHeld[coindex.i] && EditorUpdateProcesses[coindex.i] != null &&
+                        if (!EditorUpdatePaused[coindex.i] && !EditorUpdateHeld[coindex.i] &&
+                            EditorUpdateProcesses[coindex.i] != null &&
                             !(EditorApplication.timeSinceStartup < EditorUpdateProcesses[coindex.i].Current))
                         {
                             if (!EditorUpdateProcesses[coindex.i].MoveNext())
@@ -818,23 +899,27 @@ namespace MEC
                                 if (_indexToHandle.ContainsKey(coindex))
                                     KillCoroutinesOnInstance(_indexToHandle[coindex]);
                             }
-                            else if (EditorUpdateProcesses[coindex.i] != null && float.IsNaN(EditorUpdateProcesses[coindex.i].Current))
+                            else if (EditorUpdateProcesses[coindex.i] != null &&
+                                     float.IsNaN(EditorUpdateProcesses[coindex.i].Current))
                             {
                                 if (ReplacementFunction != null)
                                 {
-                                    EditorUpdateProcesses[coindex.i] = ReplacementFunction(EditorUpdateProcesses[coindex.i], _indexToHandle[coindex]);
+                                    EditorUpdateProcesses[coindex.i] =
+                                        ReplacementFunction(EditorUpdateProcesses[coindex.i], _indexToHandle[coindex]);
                                     ReplacementFunction = null;
                                 }
+
                                 coindex.i--;
                             }
                         }
                     }
-                    catch (System.Exception ex)
+                    catch (Exception ex)
                     {
                         Debug.LogException(ex);
 
                         if (ex is MissingReferenceException)
-                            Debug.LogError("This exception can probably be fixed by adding \"CancelWith(gameObject)\" when you run the coroutine.\n"
+                            Debug.LogError(
+                                "This exception can probably be fixed by adding \"CancelWith(gameObject)\" when you run the coroutine.\n"
                                 + "Example: Timing.RunCoroutine(_foo().CancelWith(gameObject), Segment.EditorUpdate);");
                     }
                 }
@@ -847,7 +932,7 @@ namespace MEC
                 EditorRemoveUnused();
             }
 
-            currentCoroutine = default(CoroutineHandle);
+            currentCoroutine = default;
         }
 #endif
 
@@ -866,7 +951,7 @@ namespace MEC
             _EOFPumpRan = false;
         }
 
-        private System.Collections.IEnumerator _EOFPump()
+        private IEnumerator _EOFPump()
         {
             while (_nextEndOfFrameProcessSlot > 0)
             {
@@ -875,39 +960,46 @@ namespace MEC
                 if (OnPreExecute != null)
                     OnPreExecute();
 
-                ProcessIndex coindex = new ProcessIndex { seg = Segment.EndOfFrame };
+                ProcessIndex coindex = new() { seg = Segment.EndOfFrame };
                 _EOFPumpRan = true;
                 if (UpdateTimeValues(coindex.seg))
                     _lastEndOfFrameProcessSlot = _nextEndOfFrameProcessSlot;
 
                 for (coindex.i = 0; coindex.i < _lastEndOfFrameProcessSlot; coindex.i++)
-                {
                     try
                     {
-                        if (!EndOfFramePaused[coindex.i] && !EndOfFrameHeld[coindex.i] && EndOfFrameProcesses[coindex.i] != null && !(localTime < EndOfFrameProcesses[coindex.i].Current))
+                        if (!EndOfFramePaused[coindex.i] && !EndOfFrameHeld[coindex.i] &&
+                            EndOfFrameProcesses[coindex.i] != null &&
+                            !(localTime < EndOfFrameProcesses[coindex.i].Current))
                         {
                             currentCoroutine = _indexToHandle[coindex];
 
                             if (ProfilerDebugAmount != DebugInfoType.None && _indexToHandle.ContainsKey(coindex))
-                            {
-                                Profiler.BeginSample(ProfilerDebugAmount == DebugInfoType.SeperateTags ? ("Processing Coroutine, " +
-                                        (_processLayers.ContainsKey(_indexToHandle[coindex]) ? "layer " + _processLayers[_indexToHandle[coindex]] : "no layer") +
-                                        (_processTags.ContainsKey(_indexToHandle[coindex]) ? ", tag " + _processTags[_indexToHandle[coindex]] : ", no tag"))
-                                        : "Processing Coroutine");
-                            }
+                                Profiler.BeginSample(ProfilerDebugAmount == DebugInfoType.SeperateTags
+                                    ? "Processing Coroutine, " +
+                                      (_processLayers.ContainsKey(_indexToHandle[coindex])
+                                          ? "layer " + _processLayers[_indexToHandle[coindex]]
+                                          : "no layer") +
+                                      (_processTags.ContainsKey(_indexToHandle[coindex])
+                                          ? ", tag " + _processTags[_indexToHandle[coindex]]
+                                          : ", no tag")
+                                    : "Processing Coroutine");
 
                             if (!EndOfFrameProcesses[coindex.i].MoveNext())
                             {
                                 if (_indexToHandle.ContainsKey(coindex))
                                     KillCoroutinesOnInstance(_indexToHandle[coindex]);
                             }
-                            else if (EndOfFrameProcesses[coindex.i] != null && float.IsNaN(EndOfFrameProcesses[coindex.i].Current))
+                            else if (EndOfFrameProcesses[coindex.i] != null &&
+                                     float.IsNaN(EndOfFrameProcesses[coindex.i].Current))
                             {
                                 if (ReplacementFunction != null)
                                 {
-                                    EndOfFrameProcesses[coindex.i] = ReplacementFunction(EndOfFrameProcesses[coindex.i], _indexToHandle[coindex]);
+                                    EndOfFrameProcesses[coindex.i] = ReplacementFunction(EndOfFrameProcesses[coindex.i],
+                                        _indexToHandle[coindex]);
                                     ReplacementFunction = null;
                                 }
+
                                 coindex.i--;
                             }
 
@@ -915,23 +1007,24 @@ namespace MEC
                                 Profiler.EndSample();
                         }
                     }
-                    catch (System.Exception ex)
+                    catch (Exception ex)
                     {
                         Debug.LogException(ex);
 
                         if (ex is MissingReferenceException)
-                            Debug.LogError("This exception can probably be fixed by adding \"CancelWith(gameObject)\" when you run the coroutine.\n"
+                            Debug.LogError(
+                                "This exception can probably be fixed by adding \"CancelWith(gameObject)\" when you run the coroutine.\n"
                                 + "Example: Timing.RunCoroutine(_foo().CancelWith(gameObject), Segment.EndOfFrame);");
                     }
-                }
             }
 
-            currentCoroutine = default(CoroutineHandle);
+            currentCoroutine = default;
         }
 
         private void RemoveUnused()
         {
-            var waitTrigsEnum = _waitingTriggers.GetEnumerator();
+            Dictionary<CoroutineHandle, HashSet<CoroutineHandle>>.Enumerator waitTrigsEnum =
+                _waitingTriggers.GetEnumerator();
             while (waitTrigsEnum.MoveNext())
             {
                 if (waitTrigsEnum.Current.Value.Count == 0)
@@ -941,7 +1034,8 @@ namespace MEC
                     continue;
                 }
 
-                if (_handleToIndex.ContainsKey(waitTrigsEnum.Current.Key) && CoindexIsNull(_handleToIndex[waitTrigsEnum.Current.Key]))
+                if (_handleToIndex.ContainsKey(waitTrigsEnum.Current.Key) &&
+                    CoindexIsNull(_handleToIndex[waitTrigsEnum.Current.Key]))
                 {
                     CloseWaitingProcess(waitTrigsEnum.Current.Key);
                     waitTrigsEnum = _waitingTriggers.GetEnumerator();
@@ -951,7 +1045,6 @@ namespace MEC
             ProcessIndex outer, inner;
             outer.seg = inner.seg = Segment.Update;
             for (outer.i = inner.i = 0; outer.i < _nextUpdateProcessSlot; outer.i++)
-            {
                 if (UpdateProcesses[outer.i] != null)
                 {
                     if (outer.i != inner.i)
@@ -971,9 +1064,10 @@ namespace MEC
                         _indexToHandle.Add(inner, _indexToHandle[outer]);
                         _indexToHandle.Remove(outer);
                     }
+
                     inner.i++;
                 }
-            }
+
             for (outer.i = inner.i; outer.i < _nextUpdateProcessSlot; outer.i++)
             {
                 UpdateProcesses[outer.i] = null;
@@ -991,7 +1085,6 @@ namespace MEC
 
             outer.seg = inner.seg = Segment.FixedUpdate;
             for (outer.i = inner.i = 0; outer.i < _nextFixedUpdateProcessSlot; outer.i++)
-            {
                 if (FixedUpdateProcesses[outer.i] != null)
                 {
                     if (outer.i != inner.i)
@@ -1011,9 +1104,10 @@ namespace MEC
                         _indexToHandle.Add(inner, _indexToHandle[outer]);
                         _indexToHandle.Remove(outer);
                     }
+
                     inner.i++;
                 }
-            }
+
             for (outer.i = inner.i; outer.i < _nextFixedUpdateProcessSlot; outer.i++)
             {
                 FixedUpdateProcesses[outer.i] = null;
@@ -1032,7 +1126,6 @@ namespace MEC
 
             outer.seg = inner.seg = Segment.LateUpdate;
             for (outer.i = inner.i = 0; outer.i < _nextLateUpdateProcessSlot; outer.i++)
-            {
                 if (LateUpdateProcesses[outer.i] != null)
                 {
                     if (outer.i != inner.i)
@@ -1052,9 +1145,10 @@ namespace MEC
                         _indexToHandle.Add(inner, _indexToHandle[outer]);
                         _indexToHandle.Remove(outer);
                     }
+
                     inner.i++;
                 }
-            }
+
             for (outer.i = inner.i; outer.i < _nextLateUpdateProcessSlot; outer.i++)
             {
                 LateUpdateProcesses[outer.i] = null;
@@ -1073,7 +1167,6 @@ namespace MEC
 
             outer.seg = inner.seg = Segment.SlowUpdate;
             for (outer.i = inner.i = 0; outer.i < _nextSlowUpdateProcessSlot; outer.i++)
-            {
                 if (SlowUpdateProcesses[outer.i] != null)
                 {
                     if (outer.i != inner.i)
@@ -1093,9 +1186,10 @@ namespace MEC
                         _indexToHandle.Add(inner, _indexToHandle[outer]);
                         _indexToHandle.Remove(outer);
                     }
+
                     inner.i++;
                 }
-            }
+
             for (outer.i = inner.i; outer.i < _nextSlowUpdateProcessSlot; outer.i++)
             {
                 SlowUpdateProcesses[outer.i] = null;
@@ -1114,7 +1208,6 @@ namespace MEC
 
             outer.seg = inner.seg = Segment.RealtimeUpdate;
             for (outer.i = inner.i = 0; outer.i < _nextRealtimeUpdateProcessSlot; outer.i++)
-            {
                 if (RealtimeUpdateProcesses[outer.i] != null)
                 {
                     if (outer.i != inner.i)
@@ -1134,9 +1227,10 @@ namespace MEC
                         _indexToHandle.Add(inner, _indexToHandle[outer]);
                         _indexToHandle.Remove(outer);
                     }
+
                     inner.i++;
                 }
-            }
+
             for (outer.i = inner.i; outer.i < _nextRealtimeUpdateProcessSlot; outer.i++)
             {
                 RealtimeUpdateProcesses[outer.i] = null;
@@ -1155,7 +1249,6 @@ namespace MEC
 
             outer.seg = inner.seg = Segment.EndOfFrame;
             for (outer.i = inner.i = 0; outer.i < _nextEndOfFrameProcessSlot; outer.i++)
-            {
                 if (EndOfFrameProcesses[outer.i] != null)
                 {
                     if (outer.i != inner.i)
@@ -1175,9 +1268,10 @@ namespace MEC
                         _indexToHandle.Add(inner, _indexToHandle[outer]);
                         _indexToHandle.Remove(outer);
                     }
+
                     inner.i++;
                 }
-            }
+
             for (outer.i = inner.i; outer.i < _nextEndOfFrameProcessSlot; outer.i++)
             {
                 EndOfFrameProcesses[outer.i] = null;
@@ -1196,7 +1290,6 @@ namespace MEC
 
             outer.seg = inner.seg = Segment.ManualTimeframe;
             for (outer.i = inner.i = 0; outer.i < _nextManualTimeframeProcessSlot; outer.i++)
-            {
                 if (ManualTimeframeProcesses[outer.i] != null)
                 {
                     if (outer.i != inner.i)
@@ -1216,9 +1309,10 @@ namespace MEC
                         _indexToHandle.Add(inner, _indexToHandle[outer]);
                         _indexToHandle.Remove(outer);
                     }
+
                     inner.i++;
                 }
-            }
+
             for (outer.i = inner.i; outer.i < _nextManualTimeframeProcessSlot; outer.i++)
             {
                 ManualTimeframeProcesses[outer.i] = null;
@@ -1238,20 +1332,19 @@ namespace MEC
 
         private void EditorRemoveUnused()
         {
-            var waitTrigsEnum = _waitingTriggers.GetEnumerator();
+            Dictionary<CoroutineHandle, HashSet<CoroutineHandle>>.Enumerator waitTrigsEnum =
+                _waitingTriggers.GetEnumerator();
             while (waitTrigsEnum.MoveNext())
-            {
-                if (_handleToIndex.ContainsKey(waitTrigsEnum.Current.Key) && CoindexIsNull(_handleToIndex[waitTrigsEnum.Current.Key]))
+                if (_handleToIndex.ContainsKey(waitTrigsEnum.Current.Key) &&
+                    CoindexIsNull(_handleToIndex[waitTrigsEnum.Current.Key]))
                 {
                     CloseWaitingProcess(waitTrigsEnum.Current.Key);
                     waitTrigsEnum = _waitingTriggers.GetEnumerator();
                 }
-            }
 
             ProcessIndex outer, inner;
             outer.seg = inner.seg = Segment.EditorUpdate;
             for (outer.i = inner.i = 0; outer.i < _nextEditorUpdateProcessSlot; outer.i++)
-            {
                 if (EditorUpdateProcesses[outer.i] != null)
                 {
                     if (outer.i != inner.i)
@@ -1271,9 +1364,10 @@ namespace MEC
                         _indexToHandle.Add(inner, _indexToHandle[outer]);
                         _indexToHandle.Remove(outer);
                     }
+
                     inner.i++;
                 }
-            }
+
             for (outer.i = inner.i; outer.i < _nextEditorUpdateProcessSlot; outer.i++)
             {
                 EditorUpdateProcesses[outer.i] = null;
@@ -1292,7 +1386,6 @@ namespace MEC
 
             outer.seg = inner.seg = Segment.EditorSlowUpdate;
             for (outer.i = inner.i = 0; outer.i < _nextEditorSlowUpdateProcessSlot; outer.i++)
-            {
                 if (EditorSlowUpdateProcesses[outer.i] != null)
                 {
                     if (outer.i != inner.i)
@@ -1312,9 +1405,10 @@ namespace MEC
                         _indexToHandle.Add(inner, _indexToHandle[outer]);
                         _indexToHandle.Remove(outer);
                     }
+
                     inner.i++;
                 }
-            }
+
             for (outer.i = inner.i; outer.i < _nextEditorSlowUpdateProcessSlot; outer.i++)
             {
                 EditorSlowUpdateProcesses[outer.i] = null;
@@ -1333,54 +1427,63 @@ namespace MEC
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment.
+        ///     Run a new coroutine in the Update segment.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public static CoroutineHandle RunCoroutine(IEnumerator<float> coroutine)
         {
-            return coroutine == null ? new CoroutineHandle()
-                : Instance.RunCoroutineInternal(coroutine, Segment.Update, 0, false, null, new CoroutineHandle(Instance._instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : Instance.RunCoroutineInternal(coroutine, Segment.Update, 0, false, null,
+                    new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment.
+        ///     Run a new coroutine in the Update segment.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public static CoroutineHandle RunCoroutine(IEnumerator<float> coroutine, GameObject gameObj)
         {
-            return coroutine == null ? new CoroutineHandle() : Instance.RunCoroutineInternal(coroutine, Segment.Update,
-                gameObj == null ? 0 : gameObj.GetInstanceID(), gameObj != null, null, new CoroutineHandle(Instance._instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : Instance.RunCoroutineInternal(coroutine, Segment.Update,
+                    gameObj == null ? 0 : gameObj.GetInstanceID(), gameObj != null, null,
+                    new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment.
+        ///     Run a new coroutine in the Update segment.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="layer">An optional layer to attach to the coroutine which can later be used to identify this coroutine.</param>
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public static CoroutineHandle RunCoroutine(IEnumerator<float> coroutine, int layer)
         {
-            return coroutine == null ? new CoroutineHandle()
-                : Instance.RunCoroutineInternal(coroutine, Segment.Update, layer, true, null, new CoroutineHandle(Instance._instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : Instance.RunCoroutineInternal(coroutine, Segment.Update, layer, true, null,
+                    new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment.
+        ///     Run a new coroutine in the Update segment.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="tag">An optional tag to attach to the coroutine which can later be used to identify this coroutine.</param>
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public static CoroutineHandle RunCoroutine(IEnumerator<float> coroutine, string tag)
         {
-            return coroutine == null ? new CoroutineHandle()
-                : Instance.RunCoroutineInternal(coroutine, Segment.Update, 0, false, tag, new CoroutineHandle(Instance._instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : Instance.RunCoroutineInternal(coroutine, Segment.Update, 0, false, tag,
+                    new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment.
+        ///     Run a new coroutine in the Update segment.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
@@ -1388,12 +1491,15 @@ namespace MEC
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public static CoroutineHandle RunCoroutine(IEnumerator<float> coroutine, GameObject gameObj, string tag)
         {
-            return coroutine == null ? new CoroutineHandle() : Instance.RunCoroutineInternal(coroutine, Segment.Update,
-                gameObj == null ? 0 : gameObj.GetInstanceID(), gameObj != null, tag, new CoroutineHandle(Instance._instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : Instance.RunCoroutineInternal(coroutine, Segment.Update,
+                    gameObj == null ? 0 : gameObj.GetInstanceID(), gameObj != null, tag,
+                    new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment.
+        ///     Run a new coroutine in the Update segment.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="layer">An optional layer to attach to the coroutine which can later be used to identify this coroutine.</param>
@@ -1401,24 +1507,28 @@ namespace MEC
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public static CoroutineHandle RunCoroutine(IEnumerator<float> coroutine, int layer, string tag)
         {
-            return coroutine == null ? new CoroutineHandle()
-                : Instance.RunCoroutineInternal(coroutine, Segment.Update, layer, true, tag, new CoroutineHandle(Instance._instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : Instance.RunCoroutineInternal(coroutine, Segment.Update, layer, true, tag,
+                    new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine.
+        ///     Run a new coroutine.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public static CoroutineHandle RunCoroutine(IEnumerator<float> coroutine, Segment segment)
         {
-            return coroutine == null ? new CoroutineHandle()
-                : Instance.RunCoroutineInternal(coroutine, segment, 0, false, null, new CoroutineHandle(Instance._instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : Instance.RunCoroutineInternal(coroutine, segment, 0, false, null,
+                    new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine.
+        ///     Run a new coroutine.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
@@ -1426,12 +1536,15 @@ namespace MEC
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public static CoroutineHandle RunCoroutine(IEnumerator<float> coroutine, Segment segment, GameObject gameObj)
         {
-            return coroutine == null ? new CoroutineHandle() : Instance.RunCoroutineInternal(coroutine, segment,
-                gameObj == null ? 0 : gameObj.GetInstanceID(), gameObj != null, null, new CoroutineHandle(Instance._instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : Instance.RunCoroutineInternal(coroutine, segment,
+                    gameObj == null ? 0 : gameObj.GetInstanceID(), gameObj != null, null,
+                    new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine.
+        ///     Run a new coroutine.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
@@ -1439,12 +1552,14 @@ namespace MEC
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public static CoroutineHandle RunCoroutine(IEnumerator<float> coroutine, Segment segment, int layer)
         {
-            return coroutine == null ? new CoroutineHandle()
-                 : Instance.RunCoroutineInternal(coroutine, segment, layer, true, null, new CoroutineHandle(Instance._instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : Instance.RunCoroutineInternal(coroutine, segment, layer, true, null,
+                    new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine.
+        ///     Run a new coroutine.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
@@ -1452,26 +1567,32 @@ namespace MEC
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public static CoroutineHandle RunCoroutine(IEnumerator<float> coroutine, Segment segment, string tag)
         {
-            return coroutine == null ? new CoroutineHandle()
-                 : Instance.RunCoroutineInternal(coroutine, segment, 0, false, tag, new CoroutineHandle(Instance._instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : Instance.RunCoroutineInternal(coroutine, segment, 0, false, tag,
+                    new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine.
+        ///     Run a new coroutine.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
         /// <param name="tag">An optional tag to attach to the coroutine which can later be used to identify this coroutine.</param>
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
-        public static CoroutineHandle RunCoroutine(IEnumerator<float> coroutine, Segment segment, GameObject gameObj, string tag)
+        public static CoroutineHandle RunCoroutine(IEnumerator<float> coroutine, Segment segment, GameObject gameObj,
+            string tag)
         {
-            return coroutine == null ? new CoroutineHandle() : Instance.RunCoroutineInternal(coroutine, segment,
-                gameObj == null ? 0 : gameObj.GetInstanceID(), gameObj != null, tag, new CoroutineHandle(Instance._instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : Instance.RunCoroutineInternal(coroutine, segment,
+                    gameObj == null ? 0 : gameObj.GetInstanceID(), gameObj != null, tag,
+                    new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine.
+        ///     Run a new coroutine.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
@@ -1480,59 +1601,70 @@ namespace MEC
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public static CoroutineHandle RunCoroutine(IEnumerator<float> coroutine, Segment segment, int layer, string tag)
         {
-            return coroutine == null ? new CoroutineHandle()
-                 : Instance.RunCoroutineInternal(coroutine, segment, layer, true, tag, new CoroutineHandle(Instance._instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : Instance.RunCoroutineInternal(coroutine, segment, layer, true, tag,
+                    new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine on this Timing instance in the Update segment.
+        ///     Run a new coroutine on this Timing instance in the Update segment.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public CoroutineHandle RunCoroutineOnInstance(IEnumerator<float> coroutine)
         {
-            return coroutine == null ? new CoroutineHandle()
-                 : RunCoroutineInternal(coroutine, Segment.Update, 0, false, null, new CoroutineHandle(_instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : RunCoroutineInternal(coroutine, Segment.Update, 0, false, null, new CoroutineHandle(_instanceID),
+                    true);
         }
 
         /// <summary>
-        /// Run a new coroutine on this Timing instance in the Update segment.
+        ///     Run a new coroutine on this Timing instance in the Update segment.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public CoroutineHandle RunCoroutineOnInstance(IEnumerator<float> coroutine, GameObject gameObj)
         {
-            return coroutine == null ? new CoroutineHandle() : RunCoroutineInternal(coroutine, Segment.Update,
-                gameObj == null ? 0 : gameObj.GetInstanceID(), gameObj != null, null, new CoroutineHandle(_instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : RunCoroutineInternal(coroutine, Segment.Update,
+                    gameObj == null ? 0 : gameObj.GetInstanceID(), gameObj != null, null,
+                    new CoroutineHandle(_instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine on this Timing instance in the Update segment.
+        ///     Run a new coroutine on this Timing instance in the Update segment.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="layer">An optional layer to attach to the coroutine which can later be used to identify this coroutine.</param>
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public CoroutineHandle RunCoroutineOnInstance(IEnumerator<float> coroutine, int layer)
         {
-            return coroutine == null ? new CoroutineHandle()
-                 : RunCoroutineInternal(coroutine, Segment.Update, layer, true, null, new CoroutineHandle(_instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : RunCoroutineInternal(coroutine, Segment.Update, layer, true, null, new CoroutineHandle(_instanceID),
+                    true);
         }
 
         /// <summary>
-        /// Run a new coroutine on this Timing instance in the Update segment.
+        ///     Run a new coroutine on this Timing instance in the Update segment.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="tag">An optional tag to attach to the coroutine which can later be used to identify this coroutine.</param>
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public CoroutineHandle RunCoroutineOnInstance(IEnumerator<float> coroutine, string tag)
         {
-            return coroutine == null ? new CoroutineHandle()
-                 : RunCoroutineInternal(coroutine, Segment.Update, 0, false, tag, new CoroutineHandle(_instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : RunCoroutineInternal(coroutine, Segment.Update, 0, false, tag, new CoroutineHandle(_instanceID),
+                    true);
         }
 
         /// <summary>
-        /// Run a new coroutine on this Timing instance in the Update segment.
+        ///     Run a new coroutine on this Timing instance in the Update segment.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
@@ -1540,12 +1672,15 @@ namespace MEC
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public CoroutineHandle RunCoroutineOnInstance(IEnumerator<float> coroutine, GameObject gameObj, string tag)
         {
-            return coroutine == null ? new CoroutineHandle() : RunCoroutineInternal(coroutine, Segment.Update,
-                gameObj == null ? 0 : gameObj.GetInstanceID(), gameObj != null, tag, new CoroutineHandle(_instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : RunCoroutineInternal(coroutine, Segment.Update,
+                    gameObj == null ? 0 : gameObj.GetInstanceID(), gameObj != null, tag,
+                    new CoroutineHandle(_instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine on this Timing instance in the Update segment.
+        ///     Run a new coroutine on this Timing instance in the Update segment.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="layer">An optional layer to attach to the coroutine which can later be used to identify this coroutine.</param>
@@ -1553,24 +1688,27 @@ namespace MEC
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public CoroutineHandle RunCoroutineOnInstance(IEnumerator<float> coroutine, int layer, string tag)
         {
-            return coroutine == null ? new CoroutineHandle()
-                 : RunCoroutineInternal(coroutine, Segment.Update, layer, true, tag, new CoroutineHandle(_instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : RunCoroutineInternal(coroutine, Segment.Update, layer, true, tag, new CoroutineHandle(_instanceID),
+                    true);
         }
 
         /// <summary>
-        /// Run a new coroutine on this Timing instance.
+        ///     Run a new coroutine on this Timing instance.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public CoroutineHandle RunCoroutineOnInstance(IEnumerator<float> coroutine, Segment segment)
         {
-            return coroutine == null ? new CoroutineHandle()
-                 : RunCoroutineInternal(coroutine, segment, 0, false, null, new CoroutineHandle(_instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : RunCoroutineInternal(coroutine, segment, 0, false, null, new CoroutineHandle(_instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine on this Timing instance.
+        ///     Run a new coroutine on this Timing instance.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
@@ -1578,12 +1716,15 @@ namespace MEC
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public CoroutineHandle RunCoroutineOnInstance(IEnumerator<float> coroutine, Segment segment, GameObject gameObj)
         {
-            return coroutine == null ? new CoroutineHandle() : RunCoroutineInternal(coroutine, segment,
-                gameObj == null ? 0 : gameObj.GetInstanceID(), gameObj != null, null, new CoroutineHandle(_instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : RunCoroutineInternal(coroutine, segment,
+                    gameObj == null ? 0 : gameObj.GetInstanceID(), gameObj != null, null,
+                    new CoroutineHandle(_instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine on this Timing instance.
+        ///     Run a new coroutine on this Timing instance.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
@@ -1591,12 +1732,13 @@ namespace MEC
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public CoroutineHandle RunCoroutineOnInstance(IEnumerator<float> coroutine, Segment segment, int layer)
         {
-            return coroutine == null ? new CoroutineHandle()
-                 : RunCoroutineInternal(coroutine, segment, layer, true, null, new CoroutineHandle(_instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : RunCoroutineInternal(coroutine, segment, layer, true, null, new CoroutineHandle(_instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine on this Timing instance.
+        ///     Run a new coroutine on this Timing instance.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
@@ -1604,56 +1746,63 @@ namespace MEC
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
         public CoroutineHandle RunCoroutineOnInstance(IEnumerator<float> coroutine, Segment segment, string tag)
         {
-            return coroutine == null ? new CoroutineHandle()
-                 : RunCoroutineInternal(coroutine, segment, 0, false, tag, new CoroutineHandle(_instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : RunCoroutineInternal(coroutine, segment, 0, false, tag, new CoroutineHandle(_instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine on this Timing instance.
+        ///     Run a new coroutine on this Timing instance.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
         /// <param name="tag">An optional tag to attach to the coroutine which can later be used to identify this coroutine.</param>
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
-        public CoroutineHandle RunCoroutineOnInstance(IEnumerator<float> coroutine, Segment segment, GameObject gameObj, string tag)
+        public CoroutineHandle RunCoroutineOnInstance(IEnumerator<float> coroutine, Segment segment, GameObject gameObj,
+            string tag)
         {
-            return coroutine == null ? new CoroutineHandle() : RunCoroutineInternal(coroutine, segment,
-                gameObj == null ? 0 : gameObj.GetInstanceID(), gameObj != null, tag, new CoroutineHandle(_instanceID), true);
+            return coroutine == null
+                ? new CoroutineHandle()
+                : RunCoroutineInternal(coroutine, segment,
+                    gameObj == null ? 0 : gameObj.GetInstanceID(), gameObj != null, tag,
+                    new CoroutineHandle(_instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine on this Timing instance.
+        ///     Run a new coroutine on this Timing instance.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="layer">An optional layer to attach to the coroutine which can later be used to identify this coroutine.</param>
         /// <param name="tag">An optional tag to attach to the coroutine which can later be used to identify this coroutine.</param>
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
-        public CoroutineHandle RunCoroutineOnInstance(IEnumerator<float> coroutine, Segment segment, int layer, string tag)
+        public CoroutineHandle RunCoroutineOnInstance(IEnumerator<float> coroutine, Segment segment, int layer,
+            string tag)
         {
-            return coroutine == null ? new CoroutineHandle()
+            return coroutine == null
+                ? new CoroutineHandle()
                 : RunCoroutineInternal(coroutine, segment, layer, true, tag, new CoroutineHandle(_instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment, but not while the coroutine with the supplied handle is running.
+        ///     Run a new coroutine in the Update segment, but not while the coroutine with the supplied handle is running.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="handle">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, CoroutineHandle handle, SingletonBehavior behaviorOnCollision)
+        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, CoroutineHandle handle,
+            SingletonBehavior behaviorOnCollision)
         {
             if (coroutine == null) return new CoroutineHandle();
 
             if (behaviorOnCollision == SingletonBehavior.Overwrite)
-            {
                 KillCoroutines(handle);
-            }
             else if (IsRunning(handle))
-            {
                 switch (behaviorOnCollision)
                 {
                     case SingletonBehavior.Abort:
@@ -1662,39 +1811,50 @@ namespace MEC
                         ResumeCoroutines(handle);
                         return handle;
                     case SingletonBehavior.Wait:
-                        CoroutineHandle newCoroutineHandle = Instance.RunCoroutineInternal(coroutine, Segment.Update, 0, false, null,
+                        CoroutineHandle newCoroutineHandle = Instance.RunCoroutineInternal(coroutine, Segment.Update, 0,
+                            false, null,
                             new CoroutineHandle(Instance._instanceID), false);
                         WaitForOtherHandles(newCoroutineHandle, handle, false);
                         return newCoroutineHandle;
 
                 }
-            }
 
-            return Instance.RunCoroutineInternal(coroutine, Segment.Update, 0, false, null, new CoroutineHandle(Instance._instanceID), true);
+            return Instance.RunCoroutineInternal(coroutine, Segment.Update, 0, false, null,
+                new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment with the supplied layer unless there is already one or more coroutines running with that layer.
+        ///     Run a new coroutine in the Update segment with the supplied layer unless there is already one or more coroutines
+        ///     running with that layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, GameObject gameObj, SingletonBehavior behaviorOnCollision)
+        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, GameObject gameObj,
+            SingletonBehavior behaviorOnCollision)
         {
-            return gameObj == null ? RunCoroutine(coroutine) : RunCoroutineSingleton(coroutine, gameObj.GetInstanceID(), behaviorOnCollision);
+            return gameObj == null
+                ? RunCoroutine(coroutine)
+                : RunCoroutineSingleton(coroutine, gameObj.GetInstanceID(), behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment with the supplied layer unless there is already one or more coroutines running with that layer.
+        ///     Run a new coroutine in the Update segment with the supplied layer unless there is already one or more coroutines
+        ///     running with that layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="layer">A layer to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, int layer, SingletonBehavior behaviorOnCollision)
+        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, int layer,
+            SingletonBehavior behaviorOnCollision)
         {
             if (coroutine == null) return new CoroutineHandle();
 
@@ -1711,7 +1871,8 @@ namespace MEC
                 {
                     case SingletonBehavior.Abort:
                     case SingletonBehavior.AbortAndUnpause:
-                        var indexEnum = Instance._layeredProcesses[layer].GetEnumerator();
+                        HashSet<CoroutineHandle>.Enumerator indexEnum =
+                            Instance._layeredProcesses[layer].GetEnumerator();
 
                         while (indexEnum.MoveNext())
                             if (IsRunning(indexEnum.Current))
@@ -1719,25 +1880,31 @@ namespace MEC
 
                         break;
                     case SingletonBehavior.Wait:
-                        CoroutineHandle newCoroutineHandle = Instance.RunCoroutineInternal(coroutine, Segment.Update, layer, true, null,
+                        CoroutineHandle newCoroutineHandle = Instance.RunCoroutineInternal(coroutine, Segment.Update,
+                            layer, true, null,
                             new CoroutineHandle(Instance._instanceID), false);
                         WaitForOtherHandles(newCoroutineHandle, _instance._layeredProcesses[layer], false);
                         return newCoroutineHandle;
                 }
             }
 
-            return Instance.RunCoroutineInternal(coroutine, Segment.Update, layer, true, null, new CoroutineHandle(Instance._instanceID), true);
+            return Instance.RunCoroutineInternal(coroutine, Segment.Update, layer, true, null,
+                new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment with the supplied tag unless there is already one or more coroutines running with that tag.
+        ///     Run a new coroutine in the Update segment with the supplied tag unless there is already one or more coroutines
+        ///     running with that tag.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="tag">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, string tag, SingletonBehavior behaviorOnCollision)
+        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, string tag,
+            SingletonBehavior behaviorOnCollision)
         {
             if (coroutine == null) return new CoroutineHandle();
 
@@ -1754,7 +1921,7 @@ namespace MEC
                 {
                     case SingletonBehavior.Abort:
                     case SingletonBehavior.AbortAndUnpause:
-                        var indexEnum = Instance._taggedProcesses[tag].GetEnumerator();
+                        HashSet<CoroutineHandle>.Enumerator indexEnum = Instance._taggedProcesses[tag].GetEnumerator();
 
                         while (indexEnum.MoveNext())
                             if (IsRunning(indexEnum.Current))
@@ -1762,106 +1929,124 @@ namespace MEC
 
                         break;
                     case SingletonBehavior.Wait:
-                        CoroutineHandle newCoroutineHandle = Instance.RunCoroutineInternal(coroutine, Segment.Update, 0, false, tag,
+                        CoroutineHandle newCoroutineHandle = Instance.RunCoroutineInternal(coroutine, Segment.Update, 0,
+                            false, tag,
                             new CoroutineHandle(Instance._instanceID), false);
                         WaitForOtherHandles(newCoroutineHandle, _instance._taggedProcesses[tag], false);
                         return newCoroutineHandle;
                 }
             }
 
-            return Instance.RunCoroutineInternal(coroutine, Segment.Update, 0, false, tag, new CoroutineHandle(Instance._instanceID), true);
+            return Instance.RunCoroutineInternal(coroutine, Segment.Update, 0, false, tag,
+                new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment with the supplied graffitti unless there is already one or more coroutines running with both that 
-        /// tag and layer.
+        ///     Run a new coroutine in the Update segment with the supplied graffitti unless there is already one or more
+        ///     coroutines running with both that
+        ///     tag and layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
         /// <param name="tag">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, GameObject gameObj, string tag, SingletonBehavior behaviorOnCollision)
+        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, GameObject gameObj,
+            string tag, SingletonBehavior behaviorOnCollision)
         {
-            return gameObj == null ? RunCoroutineSingleton(coroutine, tag, behaviorOnCollision)
+            return gameObj == null
+                ? RunCoroutineSingleton(coroutine, tag, behaviorOnCollision)
                 : RunCoroutineSingleton(coroutine, gameObj.GetInstanceID(), tag, behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment with the supplied graffitti unless there is already one or more coroutines running with both that 
-        /// tag and layer.
+        ///     Run a new coroutine in the Update segment with the supplied graffitti unless there is already one or more
+        ///     coroutines running with both that
+        ///     tag and layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="layer">A layer to attach to the coroutine, and to check for existing instances.</param>
         /// <param name="tag">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, int layer, string tag, SingletonBehavior behaviorOnCollision)
-        {
-            if (coroutine == null) return new CoroutineHandle();
-
-            if (behaviorOnCollision == SingletonBehavior.Overwrite)
-            {
-                KillCoroutines(layer, tag);
-                return Instance.RunCoroutineInternal(coroutine, Segment.Update, layer, true, tag, new CoroutineHandle(Instance._instanceID), true);
-            }
-
-            if (!Instance._taggedProcesses.ContainsKey(tag) || !Instance._layeredProcesses.ContainsKey(layer))
-                return Instance.RunCoroutineInternal(coroutine, Segment.Update, layer, true, tag, new CoroutineHandle(Instance._instanceID), true);
-
-            if (behaviorOnCollision == SingletonBehavior.AbortAndUnpause)
-                ResumeCoroutines(layer, tag);
-            
-            if (behaviorOnCollision == SingletonBehavior.Abort || behaviorOnCollision == SingletonBehavior.AbortAndUnpause)
-            {
-                var matchesEnum = Instance._taggedProcesses[tag].GetEnumerator();
-                while (matchesEnum.MoveNext())
-                    if (_instance._processLayers.ContainsKey(matchesEnum.Current) && _instance._processLayers[matchesEnum.Current] == layer)
-                        return matchesEnum.Current;
-            }
-
-            if (behaviorOnCollision == SingletonBehavior.Wait)
-            {
-                List<CoroutineHandle> matches = new List<CoroutineHandle>();
-                var matchesEnum = Instance._taggedProcesses[tag].GetEnumerator();
-                while (matchesEnum.MoveNext())
-                    if (Instance._processLayers.ContainsKey(matchesEnum.Current) && Instance._processLayers[matchesEnum.Current] == layer)
-                        matches.Add(matchesEnum.Current);
-
-                if (matches.Count > 0)
-                {
-                    CoroutineHandle newCoroutineHandle = _instance.RunCoroutineInternal(coroutine, Segment.Update, layer, true, tag,
-                         new CoroutineHandle(_instance._instanceID), false);
-                    WaitForOtherHandles(newCoroutineHandle, matches, false);
-                    return newCoroutineHandle;
-                }
-            }
-
-            return Instance.RunCoroutineInternal(coroutine, Segment.Update, layer, true, tag, new CoroutineHandle(Instance._instanceID), true);
-        }
-
-        /// <summary>
-        /// Run a new coroutine, but not while the coroutine with the supplied handle is running.
-        /// </summary>
-        /// <param name="coroutine">The new coroutine's handle.</param>
-        /// <param name="segment">The segment that the coroutine should run in.</param>
-        /// <param name="handle">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
-        /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, CoroutineHandle handle, Segment segment,
+        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, int layer, string tag,
             SingletonBehavior behaviorOnCollision)
         {
             if (coroutine == null) return new CoroutineHandle();
 
             if (behaviorOnCollision == SingletonBehavior.Overwrite)
             {
-                KillCoroutines(handle);
+                KillCoroutines(layer, tag);
+                return Instance.RunCoroutineInternal(coroutine, Segment.Update, layer, true, tag,
+                    new CoroutineHandle(Instance._instanceID), true);
             }
-            else if (IsRunning(handle))
+
+            if (!Instance._taggedProcesses.ContainsKey(tag) || !Instance._layeredProcesses.ContainsKey(layer))
+                return Instance.RunCoroutineInternal(coroutine, Segment.Update, layer, true, tag,
+                    new CoroutineHandle(Instance._instanceID), true);
+
+            if (behaviorOnCollision == SingletonBehavior.AbortAndUnpause)
+                ResumeCoroutines(layer, tag);
+
+            if (behaviorOnCollision == SingletonBehavior.Abort ||
+                behaviorOnCollision == SingletonBehavior.AbortAndUnpause)
             {
+                HashSet<CoroutineHandle>.Enumerator matchesEnum = Instance._taggedProcesses[tag].GetEnumerator();
+                while (matchesEnum.MoveNext())
+                    if (_instance._processLayers.ContainsKey(matchesEnum.Current) &&
+                        _instance._processLayers[matchesEnum.Current] == layer)
+                        return matchesEnum.Current;
+            }
+
+            if (behaviorOnCollision == SingletonBehavior.Wait)
+            {
+                List<CoroutineHandle> matches = new();
+                HashSet<CoroutineHandle>.Enumerator matchesEnum = Instance._taggedProcesses[tag].GetEnumerator();
+                while (matchesEnum.MoveNext())
+                    if (Instance._processLayers.ContainsKey(matchesEnum.Current) &&
+                        Instance._processLayers[matchesEnum.Current] == layer)
+                        matches.Add(matchesEnum.Current);
+
+                if (matches.Count > 0)
+                {
+                    CoroutineHandle newCoroutineHandle = _instance.RunCoroutineInternal(coroutine, Segment.Update,
+                        layer, true, tag,
+                        new CoroutineHandle(_instance._instanceID), false);
+                    WaitForOtherHandles(newCoroutineHandle, matches, false);
+                    return newCoroutineHandle;
+                }
+            }
+
+            return Instance.RunCoroutineInternal(coroutine, Segment.Update, layer, true, tag,
+                new CoroutineHandle(Instance._instanceID), true);
+        }
+
+        /// <summary>
+        ///     Run a new coroutine, but not while the coroutine with the supplied handle is running.
+        /// </summary>
+        /// <param name="coroutine">The new coroutine's handle.</param>
+        /// <param name="segment">The segment that the coroutine should run in.</param>
+        /// <param name="handle">A tag to attach to the coroutine, and to check for existing instances.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
+        /// <returns>The newly created or existing handle.</returns>
+        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, CoroutineHandle handle,
+            Segment segment,
+            SingletonBehavior behaviorOnCollision)
+        {
+            if (coroutine == null) return new CoroutineHandle();
+
+            if (behaviorOnCollision == SingletonBehavior.Overwrite)
+                KillCoroutines(handle);
+            else if (IsRunning(handle))
                 switch (behaviorOnCollision)
                 {
                     case SingletonBehavior.Abort:
@@ -1870,42 +2055,51 @@ namespace MEC
                         ResumeCoroutines(handle);
                         return handle;
                     case SingletonBehavior.Wait:
-                        CoroutineHandle newCoroutineHandle = Instance.RunCoroutineInternal(coroutine, segment, 0, false, null,
+                        CoroutineHandle newCoroutineHandle = Instance.RunCoroutineInternal(coroutine, segment, 0, false,
+                            null,
                             new CoroutineHandle(Instance._instanceID), false);
                         WaitForOtherHandles(newCoroutineHandle, handle, false);
                         return newCoroutineHandle;
 
                 }
-            }
 
-            return Instance.RunCoroutineInternal(coroutine, segment, 0, false, null, new CoroutineHandle(Instance._instanceID), true);
+            return Instance.RunCoroutineInternal(coroutine, segment, 0, false, null,
+                new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine with the supplied layer unless there is already one or more coroutines running with that layer.
+        ///     Run a new coroutine with the supplied layer unless there is already one or more coroutines running with that layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, Segment segment, GameObject gameObj,
+        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, Segment segment,
+            GameObject gameObj,
             SingletonBehavior behaviorOnCollision)
         {
-            return gameObj == null ? RunCoroutine(coroutine, segment) : RunCoroutineSingleton(coroutine, segment, gameObj.GetInstanceID(), behaviorOnCollision);
+            return gameObj == null
+                ? RunCoroutine(coroutine, segment)
+                : RunCoroutineSingleton(coroutine, segment, gameObj.GetInstanceID(), behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine with the supplied layer unless there is already one or more coroutines running with that layer.
+        ///     Run a new coroutine with the supplied layer unless there is already one or more coroutines running with that layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="layer">A layer to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, Segment segment, int layer, SingletonBehavior behaviorOnCollision)
+        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, Segment segment, int layer,
+            SingletonBehavior behaviorOnCollision)
         {
             if (coroutine == null) return new CoroutineHandle();
 
@@ -1922,7 +2116,8 @@ namespace MEC
                 {
                     case SingletonBehavior.Abort:
                     case SingletonBehavior.AbortAndUnpause:
-                        var indexEnum = Instance._layeredProcesses[layer].GetEnumerator();
+                        HashSet<CoroutineHandle>.Enumerator indexEnum =
+                            Instance._layeredProcesses[layer].GetEnumerator();
 
                         while (indexEnum.MoveNext())
                             if (IsRunning(indexEnum.Current))
@@ -1930,26 +2125,31 @@ namespace MEC
 
                         break;
                     case SingletonBehavior.Wait:
-                        CoroutineHandle newCoroutineHandle = Instance.RunCoroutineInternal(coroutine, segment, layer, true, null,
+                        CoroutineHandle newCoroutineHandle = Instance.RunCoroutineInternal(coroutine, segment, layer,
+                            true, null,
                             new CoroutineHandle(Instance._instanceID), false);
                         WaitForOtherHandles(newCoroutineHandle, _instance._layeredProcesses[layer], false);
                         return newCoroutineHandle;
                 }
             }
 
-            return Instance.RunCoroutineInternal(coroutine, segment, layer, true, null, new CoroutineHandle(Instance._instanceID), true);
+            return Instance.RunCoroutineInternal(coroutine, segment, layer, true, null,
+                new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine with the supplied tag unless there is already one or more coroutines running with that tag.
+        ///     Run a new coroutine with the supplied tag unless there is already one or more coroutines running with that tag.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="tag">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, Segment segment, string tag, SingletonBehavior behaviorOnCollision)
+        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, Segment segment, string tag,
+            SingletonBehavior behaviorOnCollision)
         {
             if (coroutine == null)
                 return new CoroutineHandle();
@@ -1967,7 +2167,7 @@ namespace MEC
                 {
                     case SingletonBehavior.Abort:
                     case SingletonBehavior.AbortAndUnpause:
-                        var indexEnum = Instance._taggedProcesses[tag].GetEnumerator();
+                        HashSet<CoroutineHandle>.Enumerator indexEnum = Instance._taggedProcesses[tag].GetEnumerator();
 
                         while (indexEnum.MoveNext())
                             if (IsRunning(indexEnum.Current))
@@ -1975,44 +2175,55 @@ namespace MEC
 
                         break;
                     case SingletonBehavior.Wait:
-                        CoroutineHandle newCoroutineHandle = Instance.RunCoroutineInternal(coroutine, segment, 0, false, tag,
+                        CoroutineHandle newCoroutineHandle = Instance.RunCoroutineInternal(coroutine, segment, 0, false,
+                            tag,
                             new CoroutineHandle(Instance._instanceID), false);
                         WaitForOtherHandles(newCoroutineHandle, _instance._taggedProcesses[tag], false);
                         return newCoroutineHandle;
                 }
             }
 
-            return Instance.RunCoroutineInternal(coroutine, segment, 0, false, tag, new CoroutineHandle(Instance._instanceID), true);
+            return Instance.RunCoroutineInternal(coroutine, segment, 0, false, tag,
+                new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine with the supplied graffitti unless there is already one or more coroutines running with both that tag and layer.
+        ///     Run a new coroutine with the supplied graffitti unless there is already one or more coroutines running with both
+        ///     that tag and layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
         /// <param name="tag">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, Segment segment, GameObject gameObj, string tag,
+        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, Segment segment,
+            GameObject gameObj, string tag,
             SingletonBehavior behaviorOnCollision)
         {
-            return gameObj == null ? RunCoroutineSingleton(coroutine, segment, tag, behaviorOnCollision)
+            return gameObj == null
+                ? RunCoroutineSingleton(coroutine, segment, tag, behaviorOnCollision)
                 : RunCoroutineSingleton(coroutine, segment, gameObj.GetInstanceID(), tag, behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine with the supplied graffitti unless there is already one or more coroutines running with both that tag and layer.
+        ///     Run a new coroutine with the supplied graffitti unless there is already one or more coroutines running with both
+        ///     that tag and layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="layer">A layer to attach to the coroutine, and to check for existing instances.</param>
         /// <param name="tag">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, Segment segment, int layer, string tag,
+        public static CoroutineHandle RunCoroutineSingleton(IEnumerator<float> coroutine, Segment segment, int layer,
+            string tag,
             SingletonBehavior behaviorOnCollision)
         {
             if (coroutine == null) return new CoroutineHandle();
@@ -2020,60 +2231,67 @@ namespace MEC
             if (behaviorOnCollision == SingletonBehavior.Overwrite)
             {
                 KillCoroutines(layer, tag);
-                return Instance.RunCoroutineInternal(coroutine, segment, layer, true, tag, new CoroutineHandle(Instance._instanceID), true);
+                return Instance.RunCoroutineInternal(coroutine, segment, layer, true, tag,
+                    new CoroutineHandle(Instance._instanceID), true);
             }
 
             if (!Instance._taggedProcesses.ContainsKey(tag) || !Instance._layeredProcesses.ContainsKey(layer))
-                return Instance.RunCoroutineInternal(coroutine, segment, layer, true, tag, new CoroutineHandle(Instance._instanceID), true);
+                return Instance.RunCoroutineInternal(coroutine, segment, layer, true, tag,
+                    new CoroutineHandle(Instance._instanceID), true);
 
             if (behaviorOnCollision == SingletonBehavior.AbortAndUnpause)
                 ResumeCoroutines(layer, tag);
 
-            if (behaviorOnCollision == SingletonBehavior.Abort || behaviorOnCollision == SingletonBehavior.AbortAndUnpause)
+            if (behaviorOnCollision == SingletonBehavior.Abort ||
+                behaviorOnCollision == SingletonBehavior.AbortAndUnpause)
             {
-                var matchesEnum = Instance._taggedProcesses[tag].GetEnumerator();
+                HashSet<CoroutineHandle>.Enumerator matchesEnum = Instance._taggedProcesses[tag].GetEnumerator();
                 while (matchesEnum.MoveNext())
-                    if (_instance._processLayers.ContainsKey(matchesEnum.Current) && _instance._processLayers[matchesEnum.Current] == layer)
+                    if (_instance._processLayers.ContainsKey(matchesEnum.Current) &&
+                        _instance._processLayers[matchesEnum.Current] == layer)
                         return matchesEnum.Current;
             }
             else if (behaviorOnCollision == SingletonBehavior.Wait)
             {
-                List<CoroutineHandle> matches = new List<CoroutineHandle>();
-                var matchesEnum = Instance._taggedProcesses[tag].GetEnumerator();
+                List<CoroutineHandle> matches = new();
+                HashSet<CoroutineHandle>.Enumerator matchesEnum = Instance._taggedProcesses[tag].GetEnumerator();
                 while (matchesEnum.MoveNext())
-                    if (_instance._processLayers.ContainsKey(matchesEnum.Current) && _instance._processLayers[matchesEnum.Current] == layer)
+                    if (_instance._processLayers.ContainsKey(matchesEnum.Current) &&
+                        _instance._processLayers[matchesEnum.Current] == layer)
                         matches.Add(matchesEnum.Current);
 
                 if (matches.Count > 0)
                 {
-                    CoroutineHandle newCoroutineHandle = _instance.RunCoroutineInternal(coroutine, segment, layer, true, tag,
+                    CoroutineHandle newCoroutineHandle = _instance.RunCoroutineInternal(coroutine, segment, layer, true,
+                        tag,
                         new CoroutineHandle(_instance._instanceID), false);
                     WaitForOtherHandles(newCoroutineHandle, matches, false);
                     return newCoroutineHandle;
                 }
             }
 
-            return Instance.RunCoroutineInternal(coroutine, segment, layer, true, tag, new CoroutineHandle(Instance._instanceID), true);
+            return Instance.RunCoroutineInternal(coroutine, segment, layer, true, tag,
+                new CoroutineHandle(Instance._instanceID), true);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment, but not while the coroutine with the supplied handle is running.
+        ///     Run a new coroutine in the Update segment, but not while the coroutine with the supplied handle is running.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="handle">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, CoroutineHandle handle, SingletonBehavior behaviorOnCollision)
+        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, CoroutineHandle handle,
+            SingletonBehavior behaviorOnCollision)
         {
             if (coroutine == null) return new CoroutineHandle();
 
             if (behaviorOnCollision == SingletonBehavior.Overwrite)
-            {
                 KillCoroutinesOnInstance(handle);
-            }
             else if (_handleToIndex.ContainsKey(handle) && !CoindexIsNull(_handleToIndex[handle]))
-            {
                 switch (behaviorOnCollision)
                 {
                     case SingletonBehavior.Abort:
@@ -2082,40 +2300,50 @@ namespace MEC
                         ResumeCoroutinesOnInstance(handle);
                         return handle;
                     case SingletonBehavior.Wait:
-                        CoroutineHandle newCoroutineHandle = RunCoroutineInternal(coroutine, Segment.Update, 0, false, null,
+                        CoroutineHandle newCoroutineHandle = RunCoroutineInternal(coroutine, Segment.Update, 0, false,
+                            null,
                             new CoroutineHandle(_instanceID), false);
                         WaitForOtherHandles(newCoroutineHandle, handle, false);
                         return newCoroutineHandle;
 
                 }
-            }
 
-            return RunCoroutineInternal(coroutine, Segment.Update, 0, false, null, new CoroutineHandle(_instanceID), true);
+            return RunCoroutineInternal(coroutine, Segment.Update, 0, false, null, new CoroutineHandle(_instanceID),
+                true);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment with the supplied layer unless there is already one or more coroutines running with that layer.
+        ///     Run a new coroutine in the Update segment with the supplied layer unless there is already one or more coroutines
+        ///     running with that layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, GameObject gameObj, SingletonBehavior behaviorOnCollision)
+        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, GameObject gameObj,
+            SingletonBehavior behaviorOnCollision)
         {
-            return gameObj == null ? RunCoroutineOnInstance(coroutine)
+            return gameObj == null
+                ? RunCoroutineOnInstance(coroutine)
                 : RunCoroutineSingletonOnInstance(coroutine, gameObj.GetInstanceID(), behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment with the supplied layer unless there is already one or more coroutines running with that layer.
+        ///     Run a new coroutine in the Update segment with the supplied layer unless there is already one or more coroutines
+        ///     running with that layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="layer">A layer to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, int layer, SingletonBehavior behaviorOnCollision)
+        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, int layer,
+            SingletonBehavior behaviorOnCollision)
         {
             if (coroutine == null) return new CoroutineHandle();
 
@@ -2132,7 +2360,7 @@ namespace MEC
                 {
                     case SingletonBehavior.Abort:
                     case SingletonBehavior.AbortAndUnpause:
-                        var indexEnum = _layeredProcesses[layer].GetEnumerator();
+                        HashSet<CoroutineHandle>.Enumerator indexEnum = _layeredProcesses[layer].GetEnumerator();
 
                         while (indexEnum.MoveNext())
                             if (IsRunning(indexEnum.Current))
@@ -2140,25 +2368,31 @@ namespace MEC
 
                         break;
                     case SingletonBehavior.Wait:
-                        CoroutineHandle newCoroutineHandle = RunCoroutineInternal(coroutine, Segment.Update, layer, true, null,
+                        CoroutineHandle newCoroutineHandle = RunCoroutineInternal(coroutine, Segment.Update, layer,
+                            true, null,
                             new CoroutineHandle(_instanceID), false);
                         WaitForOtherHandles(newCoroutineHandle, _layeredProcesses[layer], false);
                         return newCoroutineHandle;
                 }
             }
 
-            return RunCoroutineInternal(coroutine, Segment.Update, layer, true, null, new CoroutineHandle(_instanceID), true);
+            return RunCoroutineInternal(coroutine, Segment.Update, layer, true, null, new CoroutineHandle(_instanceID),
+                true);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment with the supplied tag unless there is already one or more coroutines running with that tag.
+        ///     Run a new coroutine in the Update segment with the supplied tag unless there is already one or more coroutines
+        ///     running with that tag.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="tag">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, string tag, SingletonBehavior behaviorOnCollision)
+        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, string tag,
+            SingletonBehavior behaviorOnCollision)
         {
             if (coroutine == null) return new CoroutineHandle();
 
@@ -2175,7 +2409,7 @@ namespace MEC
                 {
                     case SingletonBehavior.Abort:
                     case SingletonBehavior.AbortAndUnpause:
-                        var indexEnum = _taggedProcesses[tag].GetEnumerator();
+                        HashSet<CoroutineHandle>.Enumerator indexEnum = _taggedProcesses[tag].GetEnumerator();
 
                         while (indexEnum.MoveNext())
                             if (IsRunning(indexEnum.Current))
@@ -2183,62 +2417,76 @@ namespace MEC
 
                         break;
                     case SingletonBehavior.Wait:
-                        CoroutineHandle newCoroutineHandle = RunCoroutineInternal(coroutine, Segment.Update, 0, false, tag,
+                        CoroutineHandle newCoroutineHandle = RunCoroutineInternal(coroutine, Segment.Update, 0, false,
+                            tag,
                             new CoroutineHandle(_instanceID), false);
                         WaitForOtherHandles(newCoroutineHandle, _taggedProcesses[tag], false);
                         return newCoroutineHandle;
                 }
             }
 
-            return RunCoroutineInternal(coroutine, Segment.Update, 0, false, tag, new CoroutineHandle(_instanceID), true);
+            return RunCoroutineInternal(coroutine, Segment.Update, 0, false, tag, new CoroutineHandle(_instanceID),
+                true);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment with the supplied graffitti unless there is already one or more coroutines running with both that 
-        /// tag and layer.
+        ///     Run a new coroutine in the Update segment with the supplied graffitti unless there is already one or more
+        ///     coroutines running with both that
+        ///     tag and layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
         /// <param name="tag">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, GameObject gameObj, string tag,
+        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, GameObject gameObj,
+            string tag,
             SingletonBehavior behaviorOnCollision)
         {
-            return gameObj == null ? RunCoroutineSingletonOnInstance(coroutine, tag, behaviorOnCollision)
+            return gameObj == null
+                ? RunCoroutineSingletonOnInstance(coroutine, tag, behaviorOnCollision)
                 : RunCoroutineSingletonOnInstance(coroutine, gameObj.GetInstanceID(), tag, behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment with the supplied graffitti unless there is already one or more coroutines running with both that 
-        /// tag and layer.
+        ///     Run a new coroutine in the Update segment with the supplied graffitti unless there is already one or more
+        ///     coroutines running with both that
+        ///     tag and layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="layer">A layer to attach to the coroutine, and to check for existing instances.</param>
         /// <param name="tag">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, int layer, string tag, SingletonBehavior behaviorOnCollision)
+        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, int layer, string tag,
+            SingletonBehavior behaviorOnCollision)
         {
             if (coroutine == null) return new CoroutineHandle();
 
             if (behaviorOnCollision == SingletonBehavior.Overwrite)
             {
                 KillCoroutinesOnInstance(layer, tag);
-                return RunCoroutineInternal(coroutine, Segment.Update, layer, true, tag, new CoroutineHandle(_instanceID), true);
+                return RunCoroutineInternal(coroutine, Segment.Update, layer, true, tag,
+                    new CoroutineHandle(_instanceID), true);
             }
 
             if (!_taggedProcesses.ContainsKey(tag) || !_layeredProcesses.ContainsKey(layer))
-                return RunCoroutineInternal(coroutine, Segment.Update, layer, true, tag, new CoroutineHandle(_instanceID), true);
+                return RunCoroutineInternal(coroutine, Segment.Update, layer, true, tag,
+                    new CoroutineHandle(_instanceID), true);
 
             if (behaviorOnCollision == SingletonBehavior.AbortAndUnpause)
                 ResumeCoroutinesOnInstance(layer, tag);
 
-            if (behaviorOnCollision == SingletonBehavior.Abort || behaviorOnCollision == SingletonBehavior.AbortAndUnpause)
+            if (behaviorOnCollision == SingletonBehavior.Abort ||
+                behaviorOnCollision == SingletonBehavior.AbortAndUnpause)
             {
-                var matchesEnum = _taggedProcesses[tag].GetEnumerator();
+                HashSet<CoroutineHandle>.Enumerator matchesEnum = _taggedProcesses[tag].GetEnumerator();
                 while (matchesEnum.MoveNext())
                     if (_processLayers.ContainsKey(matchesEnum.Current) && _processLayers[matchesEnum.Current] == layer)
                         return matchesEnum.Current;
@@ -2246,49 +2494,58 @@ namespace MEC
 
             if (behaviorOnCollision == SingletonBehavior.Wait)
             {
-                List<CoroutineHandle> matches = new List<CoroutineHandle>();
-                var matchesEnum = _taggedProcesses[tag].GetEnumerator();
+                List<CoroutineHandle> matches = new();
+                HashSet<CoroutineHandle>.Enumerator matchesEnum = _taggedProcesses[tag].GetEnumerator();
                 while (matchesEnum.MoveNext())
                     if (_processLayers.ContainsKey(matchesEnum.Current) && _processLayers[matchesEnum.Current] == layer)
                         matches.Add(matchesEnum.Current);
 
                 if (matches.Count > 0)
                 {
-                    CoroutineHandle newCoroutineHandle = RunCoroutineInternal(coroutine, Segment.Update, layer, true, tag, new CoroutineHandle(_instanceID), false);
+                    CoroutineHandle newCoroutineHandle = RunCoroutineInternal(coroutine, Segment.Update, layer, true,
+                        tag, new CoroutineHandle(_instanceID), false);
                     WaitForOtherHandles(newCoroutineHandle, matches, false);
                     return newCoroutineHandle;
                 }
             }
 
-            return RunCoroutineInternal(coroutine, Segment.Update, layer, true, tag, new CoroutineHandle(_instanceID), true);
+            return RunCoroutineInternal(coroutine, Segment.Update, layer, true, tag, new CoroutineHandle(_instanceID),
+                true);
         }
 
         /// <summary>
-        /// Run a new coroutine with the supplied layer unless there is already one or more coroutines running with that layer.
+        ///     Run a new coroutine with the supplied layer unless there is already one or more coroutines running with that layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, Segment segment, GameObject gameObj,
+        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, Segment segment,
+            GameObject gameObj,
             SingletonBehavior behaviorOnCollision)
         {
-            return gameObj == null ? RunCoroutineOnInstance(coroutine, segment)
+            return gameObj == null
+                ? RunCoroutineOnInstance(coroutine, segment)
                 : RunCoroutineSingletonOnInstance(coroutine, segment, gameObj.GetInstanceID(), behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine with the supplied layer unless there is already one or more coroutines running with that layer.
+        ///     Run a new coroutine with the supplied layer unless there is already one or more coroutines running with that layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="layer">A layer to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, Segment segment, int layer, SingletonBehavior behaviorOnCollision)
+        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, Segment segment, int layer,
+            SingletonBehavior behaviorOnCollision)
         {
             if (coroutine == null) return new CoroutineHandle();
 
@@ -2305,7 +2562,7 @@ namespace MEC
                 {
                     case SingletonBehavior.Abort:
                     case SingletonBehavior.AbortAndUnpause:
-                        var indexEnum = _layeredProcesses[layer].GetEnumerator();
+                        HashSet<CoroutineHandle>.Enumerator indexEnum = _layeredProcesses[layer].GetEnumerator();
 
                         while (indexEnum.MoveNext())
                             if (IsRunning(indexEnum.Current))
@@ -2324,15 +2581,18 @@ namespace MEC
         }
 
         /// <summary>
-        /// Run a new coroutine with the supplied tag unless there is already one or more coroutines running with that tag.
+        ///     Run a new coroutine with the supplied tag unless there is already one or more coroutines running with that tag.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="tag">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, Segment segment, string tag, SingletonBehavior behaviorOnCollision)
+        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, Segment segment,
+            string tag, SingletonBehavior behaviorOnCollision)
         {
             if (coroutine == null)
                 return new CoroutineHandle();
@@ -2350,7 +2610,7 @@ namespace MEC
                 {
                     case SingletonBehavior.Abort:
                     case SingletonBehavior.AbortAndUnpause:
-                        var indexEnum = _taggedProcesses[tag].GetEnumerator();
+                        HashSet<CoroutineHandle>.Enumerator indexEnum = _taggedProcesses[tag].GetEnumerator();
 
                         while (indexEnum.MoveNext())
                             if (IsRunning(indexEnum.Current))
@@ -2369,33 +2629,41 @@ namespace MEC
         }
 
         /// <summary>
-        /// Run a new coroutine with the supplied tag unless there is already one or more coroutines running with that tag.
+        ///     Run a new coroutine with the supplied tag unless there is already one or more coroutines running with that tag.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
         /// <param name="tag">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, Segment segment, GameObject gameObj, string tag,
+        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, Segment segment,
+            GameObject gameObj, string tag,
             SingletonBehavior behaviorOnCollision)
         {
-            return gameObj == null ? RunCoroutineSingletonOnInstance(coroutine, segment, tag, behaviorOnCollision)
-                : RunCoroutineSingletonOnInstance(coroutine, segment, gameObj.GetInstanceID(), tag, behaviorOnCollision);
+            return gameObj == null
+                ? RunCoroutineSingletonOnInstance(coroutine, segment, tag, behaviorOnCollision)
+                : RunCoroutineSingletonOnInstance(coroutine, segment, gameObj.GetInstanceID(), tag,
+                    behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine with the supplied tag unless there is already one or more coroutines running with that tag.
+        ///     Run a new coroutine with the supplied tag unless there is already one or more coroutines running with that tag.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="layer">A layer to attach to the coroutine, and to check for existing instances.</param>
         /// <param name="tag">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, Segment segment, int layer, string tag,
+        public CoroutineHandle RunCoroutineSingletonOnInstance(IEnumerator<float> coroutine, Segment segment, int layer,
+            string tag,
             SingletonBehavior behaviorOnCollision)
         {
             if (coroutine == null) return new CoroutineHandle();
@@ -2403,33 +2671,37 @@ namespace MEC
             if (behaviorOnCollision == SingletonBehavior.Overwrite)
             {
                 KillCoroutinesOnInstance(layer, tag);
-                return RunCoroutineInternal(coroutine, segment, layer, true, tag, new CoroutineHandle(_instanceID), true);
+                return RunCoroutineInternal(coroutine, segment, layer, true, tag, new CoroutineHandle(_instanceID),
+                    true);
             }
 
             if (!_taggedProcesses.ContainsKey(tag) || !_layeredProcesses.ContainsKey(layer))
-                return RunCoroutineInternal(coroutine, segment, layer, true, tag, new CoroutineHandle(_instanceID), true);
+                return RunCoroutineInternal(coroutine, segment, layer, true, tag, new CoroutineHandle(_instanceID),
+                    true);
 
             if (behaviorOnCollision == SingletonBehavior.AbortAndUnpause)
                 ResumeCoroutinesOnInstance(layer, tag);
 
-            if (behaviorOnCollision == SingletonBehavior.Abort || behaviorOnCollision == SingletonBehavior.AbortAndUnpause)
+            if (behaviorOnCollision == SingletonBehavior.Abort ||
+                behaviorOnCollision == SingletonBehavior.AbortAndUnpause)
             {
-                var matchesEnum = _taggedProcesses[tag].GetEnumerator();
+                HashSet<CoroutineHandle>.Enumerator matchesEnum = _taggedProcesses[tag].GetEnumerator();
                 while (matchesEnum.MoveNext())
                     if (_processLayers.ContainsKey(matchesEnum.Current) && _processLayers[matchesEnum.Current] == layer)
                         return matchesEnum.Current;
             }
             else if (behaviorOnCollision == SingletonBehavior.Wait)
             {
-                List<CoroutineHandle> matches = new List<CoroutineHandle>();
-                var matchesEnum = _taggedProcesses[tag].GetEnumerator();
+                List<CoroutineHandle> matches = new();
+                HashSet<CoroutineHandle>.Enumerator matchesEnum = _taggedProcesses[tag].GetEnumerator();
                 while (matchesEnum.MoveNext())
                     if (_processLayers.ContainsKey(matchesEnum.Current) && _processLayers[matchesEnum.Current] == layer)
                         matches.Add(matchesEnum.Current);
 
                 if (matches.Count > 0)
                 {
-                    CoroutineHandle newCoroutineHandle = RunCoroutineInternal(coroutine, segment, layer, true, tag, new CoroutineHandle(_instanceID), false);
+                    CoroutineHandle newCoroutineHandle = RunCoroutineInternal(coroutine, segment, layer, true, tag,
+                        new CoroutineHandle(_instanceID), false);
                     WaitForOtherHandles(newCoroutineHandle, matches, false);
                     return newCoroutineHandle;
                 }
@@ -2439,9 +2711,10 @@ namespace MEC
         }
 
 
-        private CoroutineHandle RunCoroutineInternal(IEnumerator<float> coroutine, Segment segment, int layer, bool layerHasValue, string tag, CoroutineHandle handle, bool prewarm)
+        private CoroutineHandle RunCoroutineInternal(IEnumerator<float> coroutine, Segment segment, int layer,
+            bool layerHasValue, string tag, CoroutineHandle handle, bool prewarm)
         {
-            ProcessIndex slot = new ProcessIndex { seg = segment };
+            ProcessIndex slot = new() { seg = segment };
 
             if (_handleToIndex.ContainsKey(handle))
             {
@@ -2466,7 +2739,8 @@ namespace MEC
                             bool[] oldPausedArray = UpdatePaused;
                             bool[] oldHeldArray = UpdateHeld;
 
-                            UpdateProcesses = new IEnumerator<float>[UpdateProcesses.Length + (ProcessArrayChunkSize * _expansions++)];
+                            UpdateProcesses =
+                                new IEnumerator<float>[UpdateProcesses.Length + ProcessArrayChunkSize * _expansions++];
                             UpdatePaused = new bool[UpdateProcesses.Length];
                             UpdateHeld = new bool[UpdateProcesses.Length];
 
@@ -2494,7 +2768,6 @@ namespace MEC
                         _handleToIndex.Add(handle, slot);
 
                         while (prewarm)
-                        {
                             if (!UpdateProcesses[slot.i].MoveNext())
                             {
                                 if (_indexToHandle.ContainsKey(slot))
@@ -2506,16 +2779,17 @@ namespace MEC
                             {
                                 if (ReplacementFunction != null)
                                 {
-                                    UpdateProcesses[slot.i] = ReplacementFunction(UpdateProcesses[slot.i], _indexToHandle[slot]);
+                                    UpdateProcesses[slot.i] =
+                                        ReplacementFunction(UpdateProcesses[slot.i], _indexToHandle[slot]);
                                     ReplacementFunction = null;
                                 }
+
                                 prewarm = !UpdatePaused[slot.i] && !UpdateHeld[slot.i];
                             }
                             else
                             {
                                 prewarm = false;
                             }
-                        }
 
                         break;
 
@@ -2527,7 +2801,9 @@ namespace MEC
                             bool[] oldPausedArray = FixedUpdatePaused;
                             bool[] oldHeldArray = FixedUpdateHeld;
 
-                            FixedUpdateProcesses = new IEnumerator<float>[FixedUpdateProcesses.Length + (ProcessArrayChunkSize * _expansions++)];
+                            FixedUpdateProcesses =
+                                new IEnumerator<float>[FixedUpdateProcesses.Length +
+                                                       ProcessArrayChunkSize * _expansions++];
                             FixedUpdatePaused = new bool[FixedUpdateProcesses.Length];
                             FixedUpdateHeld = new bool[FixedUpdateProcesses.Length];
 
@@ -2555,7 +2831,6 @@ namespace MEC
                         _handleToIndex.Add(handle, slot);
 
                         while (prewarm)
-                        {
                             if (!FixedUpdateProcesses[slot.i].MoveNext())
                             {
                                 if (_indexToHandle.ContainsKey(slot))
@@ -2563,20 +2838,22 @@ namespace MEC
 
                                 prewarm = false;
                             }
-                            else if (FixedUpdateProcesses[slot.i] != null && float.IsNaN(FixedUpdateProcesses[slot.i].Current))
+                            else if (FixedUpdateProcesses[slot.i] != null &&
+                                     float.IsNaN(FixedUpdateProcesses[slot.i].Current))
                             {
                                 if (ReplacementFunction != null)
                                 {
-                                    FixedUpdateProcesses[slot.i] = ReplacementFunction(FixedUpdateProcesses[slot.i], _indexToHandle[slot]);
+                                    FixedUpdateProcesses[slot.i] = ReplacementFunction(FixedUpdateProcesses[slot.i],
+                                        _indexToHandle[slot]);
                                     ReplacementFunction = null;
                                 }
+
                                 prewarm = !FixedUpdatePaused[slot.i] && !FixedUpdateHeld[slot.i];
                             }
                             else
                             {
                                 prewarm = false;
                             }
-                        }
 
                         break;
 
@@ -2588,7 +2865,9 @@ namespace MEC
                             bool[] oldPausedArray = LateUpdatePaused;
                             bool[] oldHeldArray = LateUpdateHeld;
 
-                            LateUpdateProcesses = new IEnumerator<float>[LateUpdateProcesses.Length + (ProcessArrayChunkSize * _expansions++)];
+                            LateUpdateProcesses =
+                                new IEnumerator<float>[LateUpdateProcesses.Length +
+                                                       ProcessArrayChunkSize * _expansions++];
                             LateUpdatePaused = new bool[LateUpdateProcesses.Length];
                             LateUpdateHeld = new bool[LateUpdateProcesses.Length];
 
@@ -2616,7 +2895,6 @@ namespace MEC
                         _handleToIndex.Add(handle, slot);
 
                         while (prewarm)
-                        {
                             if (!LateUpdateProcesses[slot.i].MoveNext())
                             {
                                 if (_indexToHandle.ContainsKey(slot))
@@ -2624,20 +2902,22 @@ namespace MEC
 
                                 prewarm = false;
                             }
-                            else if (LateUpdateProcesses[slot.i] != null && float.IsNaN(LateUpdateProcesses[slot.i].Current))
+                            else if (LateUpdateProcesses[slot.i] != null &&
+                                     float.IsNaN(LateUpdateProcesses[slot.i].Current))
                             {
                                 if (ReplacementFunction != null)
                                 {
-                                    LateUpdateProcesses[slot.i] = ReplacementFunction(LateUpdateProcesses[slot.i], _indexToHandle[slot]);
+                                    LateUpdateProcesses[slot.i] = ReplacementFunction(LateUpdateProcesses[slot.i],
+                                        _indexToHandle[slot]);
                                     ReplacementFunction = null;
                                 }
+
                                 prewarm = !LateUpdatePaused[slot.i] && !LateUpdateHeld[slot.i];
                             }
                             else
                             {
                                 prewarm = false;
                             }
-                        }
 
                         break;
 
@@ -2649,7 +2929,9 @@ namespace MEC
                             bool[] oldPausedArray = SlowUpdatePaused;
                             bool[] oldHeldArray = SlowUpdateHeld;
 
-                            SlowUpdateProcesses = new IEnumerator<float>[SlowUpdateProcesses.Length + (ProcessArrayChunkSize * _expansions++)];
+                            SlowUpdateProcesses =
+                                new IEnumerator<float>[SlowUpdateProcesses.Length +
+                                                       ProcessArrayChunkSize * _expansions++];
                             SlowUpdatePaused = new bool[SlowUpdateProcesses.Length];
                             SlowUpdateHeld = new bool[SlowUpdateProcesses.Length];
 
@@ -2677,7 +2959,6 @@ namespace MEC
                         _handleToIndex.Add(handle, slot);
 
                         while (prewarm)
-                        {
                             if (!SlowUpdateProcesses[slot.i].MoveNext())
                             {
                                 if (_indexToHandle.ContainsKey(slot))
@@ -2685,20 +2966,22 @@ namespace MEC
 
                                 prewarm = false;
                             }
-                            else if (SlowUpdateProcesses[slot.i] != null && float.IsNaN(SlowUpdateProcesses[slot.i].Current))
+                            else if (SlowUpdateProcesses[slot.i] != null &&
+                                     float.IsNaN(SlowUpdateProcesses[slot.i].Current))
                             {
                                 if (ReplacementFunction != null)
                                 {
-                                    SlowUpdateProcesses[slot.i] = ReplacementFunction(SlowUpdateProcesses[slot.i], _indexToHandle[slot]);
+                                    SlowUpdateProcesses[slot.i] = ReplacementFunction(SlowUpdateProcesses[slot.i],
+                                        _indexToHandle[slot]);
                                     ReplacementFunction = null;
                                 }
+
                                 prewarm = !SlowUpdatePaused[slot.i] && !SlowUpdateHeld[slot.i];
                             }
                             else
                             {
                                 prewarm = false;
                             }
-                        }
 
                         break;
 
@@ -2710,7 +2993,8 @@ namespace MEC
                             bool[] oldPausedArray = RealtimeUpdatePaused;
                             bool[] oldHeldArray = RealtimeUpdateHeld;
 
-                            RealtimeUpdateProcesses = new IEnumerator<float>[RealtimeUpdateProcesses.Length + (ProcessArrayChunkSize * _expansions++)];
+                            RealtimeUpdateProcesses = new IEnumerator<float>[RealtimeUpdateProcesses.Length +
+                                                                             ProcessArrayChunkSize * _expansions++];
                             RealtimeUpdatePaused = new bool[RealtimeUpdateProcesses.Length];
                             RealtimeUpdateHeld = new bool[RealtimeUpdateProcesses.Length];
 
@@ -2738,7 +3022,6 @@ namespace MEC
                         _handleToIndex.Add(handle, slot);
 
                         while (prewarm)
-                        {
                             if (!RealtimeUpdateProcesses[slot.i].MoveNext())
                             {
                                 if (_indexToHandle.ContainsKey(slot))
@@ -2746,20 +3029,22 @@ namespace MEC
 
                                 prewarm = false;
                             }
-                            else if (RealtimeUpdateProcesses[slot.i] != null && float.IsNaN(RealtimeUpdateProcesses[slot.i].Current))
+                            else if (RealtimeUpdateProcesses[slot.i] != null &&
+                                     float.IsNaN(RealtimeUpdateProcesses[slot.i].Current))
                             {
                                 if (ReplacementFunction != null)
                                 {
-                                    RealtimeUpdateProcesses[slot.i] = ReplacementFunction(RealtimeUpdateProcesses[slot.i], _indexToHandle[slot]);
+                                    RealtimeUpdateProcesses[slot.i] =
+                                        ReplacementFunction(RealtimeUpdateProcesses[slot.i], _indexToHandle[slot]);
                                     ReplacementFunction = null;
                                 }
+
                                 prewarm = !RealtimeUpdatePaused[slot.i] && !RealtimeUpdateHeld[slot.i];
                             }
                             else
                             {
                                 prewarm = false;
                             }
-                        }
 
                         break;
 #if UNITY_EDITOR
@@ -2777,7 +3062,8 @@ namespace MEC
                             bool[] oldPausedArray = EditorUpdatePaused;
                             bool[] oldHeldArray = EditorUpdateHeld;
 
-                            EditorUpdateProcesses = new IEnumerator<float>[EditorUpdateProcesses.Length + (ProcessArrayChunkSize * _expansions++)];
+                            EditorUpdateProcesses = new IEnumerator<float>[EditorUpdateProcesses.Length +
+                                                                           ProcessArrayChunkSize * _expansions++];
                             EditorUpdatePaused = new bool[EditorUpdateProcesses.Length];
                             EditorUpdateHeld = new bool[EditorUpdateProcesses.Length];
 
@@ -2805,7 +3091,6 @@ namespace MEC
                         _handleToIndex.Add(handle, slot);
 
                         while (prewarm)
-                        {
                             if (!EditorUpdateProcesses[slot.i].MoveNext())
                             {
                                 if (_indexToHandle.ContainsKey(slot))
@@ -2813,20 +3098,22 @@ namespace MEC
 
                                 prewarm = false;
                             }
-                            else if (EditorUpdateProcesses[slot.i] != null && float.IsNaN(EditorUpdateProcesses[slot.i].Current))
+                            else if (EditorUpdateProcesses[slot.i] != null &&
+                                     float.IsNaN(EditorUpdateProcesses[slot.i].Current))
                             {
                                 if (ReplacementFunction != null)
                                 {
-                                    EditorUpdateProcesses[slot.i] = ReplacementFunction(EditorUpdateProcesses[slot.i], _indexToHandle[slot]);
+                                    EditorUpdateProcesses[slot.i] = ReplacementFunction(EditorUpdateProcesses[slot.i],
+                                        _indexToHandle[slot]);
                                     ReplacementFunction = null;
                                 }
+
                                 prewarm = !EditorUpdatePaused[slot.i] && !EditorUpdateHeld[slot.i];
                             }
                             else
                             {
                                 prewarm = false;
                             }
-                        }
 
                         break;
 
@@ -2844,7 +3131,8 @@ namespace MEC
                             bool[] oldPausedArray = EditorSlowUpdatePaused;
                             bool[] oldHeldArray = EditorSlowUpdateHeld;
 
-                            EditorSlowUpdateProcesses = new IEnumerator<float>[EditorSlowUpdateProcesses.Length + (ProcessArrayChunkSize * _expansions++)];
+                            EditorSlowUpdateProcesses = new IEnumerator<float>[EditorSlowUpdateProcesses.Length +
+                                                                               ProcessArrayChunkSize * _expansions++];
                             EditorSlowUpdatePaused = new bool[EditorSlowUpdateProcesses.Length];
                             EditorSlowUpdateHeld = new bool[EditorSlowUpdateProcesses.Length];
 
@@ -2872,7 +3160,6 @@ namespace MEC
                         _handleToIndex.Add(handle, slot);
 
                         while (prewarm)
-                        {
                             if (!EditorSlowUpdateProcesses[slot.i].MoveNext())
                             {
                                 if (_indexToHandle.ContainsKey(slot))
@@ -2880,20 +3167,22 @@ namespace MEC
 
                                 prewarm = false;
                             }
-                            else if (EditorSlowUpdateProcesses[slot.i] != null && float.IsNaN(EditorSlowUpdateProcesses[slot.i].Current))
+                            else if (EditorSlowUpdateProcesses[slot.i] != null &&
+                                     float.IsNaN(EditorSlowUpdateProcesses[slot.i].Current))
                             {
                                 if (ReplacementFunction != null)
                                 {
-                                    EditorSlowUpdateProcesses[slot.i] = ReplacementFunction(EditorSlowUpdateProcesses[slot.i], _indexToHandle[slot]);
+                                    EditorSlowUpdateProcesses[slot.i] =
+                                        ReplacementFunction(EditorSlowUpdateProcesses[slot.i], _indexToHandle[slot]);
                                     ReplacementFunction = null;
                                 }
+
                                 prewarm = !EditorSlowUpdatePaused[slot.i] && !EditorSlowUpdateHeld[slot.i];
                             }
                             else
                             {
                                 prewarm = false;
                             }
-                        }
 
                         break;
 #endif
@@ -2905,7 +3194,9 @@ namespace MEC
                             bool[] oldPausedArray = EndOfFramePaused;
                             bool[] oldHeldArray = EndOfFrameHeld;
 
-                            EndOfFrameProcesses = new IEnumerator<float>[EndOfFrameProcesses.Length + (ProcessArrayChunkSize * _expansions++)];
+                            EndOfFrameProcesses =
+                                new IEnumerator<float>[EndOfFrameProcesses.Length +
+                                                       ProcessArrayChunkSize * _expansions++];
                             EndOfFramePaused = new bool[EndOfFrameProcesses.Length];
                             EndOfFrameHeld = new bool[EndOfFrameProcesses.Length];
 
@@ -2932,7 +3223,8 @@ namespace MEC
                         _indexToHandle.Add(slot, handle);
                         _handleToIndex.Add(handle, slot);
 
-                        _eofWatcherHandle = RunCoroutineSingletonOnInstance(_EOFPumpWatcher(), _eofWatcherHandle, SingletonBehavior.Abort);
+                        _eofWatcherHandle = RunCoroutineSingletonOnInstance(_EOFPumpWatcher(), _eofWatcherHandle,
+                            SingletonBehavior.Abort);
 
                         break;
 
@@ -2944,7 +3236,8 @@ namespace MEC
                             bool[] oldPausedArray = ManualTimeframePaused;
                             bool[] oldHeldArray = ManualTimeframeHeld;
 
-                            ManualTimeframeProcesses = new IEnumerator<float>[ManualTimeframeProcesses.Length + (ProcessArrayChunkSize * _expansions++)];
+                            ManualTimeframeProcesses = new IEnumerator<float>[ManualTimeframeProcesses.Length +
+                                                                              ProcessArrayChunkSize * _expansions++];
                             ManualTimeframePaused = new bool[ManualTimeframeProcesses.Length];
                             ManualTimeframeHeld = new bool[ManualTimeframeProcesses.Length];
 
@@ -2978,7 +3271,7 @@ namespace MEC
                         break;
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Debug.LogException(ex);
             }
@@ -2989,11 +3282,12 @@ namespace MEC
 
             return handle;
         }
+
         /// <summary>
-        /// This will kill all coroutines running on the main MEC instance and reset the context.
-        /// NOTE: If you call this function from within a running coroutine then you MUST end the current
-        /// coroutine. If the running coroutine has more work to do you may run a new "part 2" coroutine 
-        /// function to complete the task before ending the current one.
+        ///     This will kill all coroutines running on the main MEC instance and reset the context.
+        ///     NOTE: If you call this function from within a running coroutine then you MUST end the current
+        ///     coroutine. If the running coroutine has more work to do you may run a new "part 2" coroutine
+        ///     function to complete the task before ending the current one.
         /// </summary>
         /// <returns>The number of coroutines that were killed.</returns>
         public static int KillCoroutines()
@@ -3002,16 +3296,18 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will kill all coroutines running on the current MEC instance and reset the context. 
-        /// NOTE: If you call this function from within a running coroutine then you MUST end the current
-        /// coroutine. If the running coroutine has more work to do you may run a new "part 2" coroutine 
-        /// function to complete the task before ending the current one.
+        ///     This will kill all coroutines running on the current MEC instance and reset the context.
+        ///     NOTE: If you call this function from within a running coroutine then you MUST end the current
+        ///     coroutine. If the running coroutine has more work to do you may run a new "part 2" coroutine
+        ///     function to complete the task before ending the current one.
         /// </summary>
         /// <returns>The number of coroutines that were killed.</returns>
         public int KillCoroutinesOnInstance()
         {
-            int retVal = _nextUpdateProcessSlot + _nextLateUpdateProcessSlot + _nextFixedUpdateProcessSlot + _nextSlowUpdateProcessSlot +
-                         _nextRealtimeUpdateProcessSlot + _nextEditorUpdateProcessSlot + _nextEditorSlowUpdateProcessSlot +
+            int retVal = _nextUpdateProcessSlot + _nextLateUpdateProcessSlot + _nextFixedUpdateProcessSlot +
+                         _nextSlowUpdateProcessSlot +
+                         _nextRealtimeUpdateProcessSlot + _nextEditorUpdateProcessSlot +
+                         _nextEditorSlowUpdateProcessSlot +
                          _nextEndOfFrameProcessSlot + _nextManualTimeframeProcessSlot;
 
             UpdateProcesses = new IEnumerator<float>[InitialBufferSizeLarge];
@@ -3075,7 +3371,7 @@ namespace MEC
             _handleToIndex.Clear();
             _indexToHandle.Clear();
             _waitingTriggers.Clear();
-            _expansions = (ushort)((_expansions / 2) + 1);
+            _expansions = (ushort)(_expansions / 2 + 1);
             Links.Clear();
 
 #if UNITY_EDITOR
@@ -3085,33 +3381,35 @@ namespace MEC
         }
 
         /// <summary>
-        /// Kills the coroutine that you pass in (ignores it if the handle is invalid or isn't running).
+        ///     Kills the coroutine that you pass in (ignores it if the handle is invalid or isn't running).
         /// </summary>
         /// <param name="handles">A list of handles to be killed.</param>
         /// <returns>The number of coroutines that were found and killed.</returns>
         public static int KillCoroutines(CoroutineHandle handle)
         {
             return ActiveInstances[handle.Key] != null
-                ? GetInstance(handle.Key).KillCoroutinesOnInstance(handle) : 0;
+                ? GetInstance(handle.Key).KillCoroutinesOnInstance(handle)
+                : 0;
         }
 
         /// <summary>
-        /// Kills all the coroutines that you pass in (ignores any that aren't running).
+        ///     Kills all the coroutines that you pass in (ignores any that aren't running).
         /// </summary>
         /// <param name="handles">A list of handles to be killed.</param>
         /// <returns>The number of coroutines that were found and killed.</returns>
         public static int KillCoroutines(params CoroutineHandle[] handles)
         {
             int count = 0;
-            for (int i = 0;i < handles.Length;i++)
-                count += ActiveInstances[handles[i].Key] != null 
-                    ? GetInstance(handles[i].Key).KillCoroutinesOnInstance(handles[i]) : 0;
+            for (int i = 0; i < handles.Length; i++)
+                count += ActiveInstances[handles[i].Key] != null
+                    ? GetInstance(handles[i].Key).KillCoroutinesOnInstance(handles[i])
+                    : 0;
 
             return count;
         }
 
         /// <summary>
-        /// Kills the instance of the coroutine handle on this Timing instance if it exists.
+        ///     Kills the instance of the coroutine handle on this Timing instance if it exists.
         /// </summary>
         /// <param name="handle">The handle of the coroutine to kill.</param>
         /// <returns>The number of coroutines that were found and killed (Normally 0 or 1).</returns>
@@ -3131,7 +3429,7 @@ namespace MEC
 
             if (Links.ContainsKey(handle))
             {
-                var linksEnum = Links[handle].GetEnumerator();
+                HashSet<CoroutineHandle>.Enumerator linksEnum = Links[handle].GetEnumerator();
                 Links.Remove(handle);
                 while (linksEnum.MoveNext())
                     count += KillCoroutines(linksEnum.Current);
@@ -3141,7 +3439,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Kills all coroutines on the given layer.
+        ///     Kills all coroutines on the given layer.
         /// </summary>
         /// <param name="gameObj">All coroutines on the layer corresponding with this GameObject will be killed.</param>
         /// <returns>The number of coroutines that were found and killed.</returns>
@@ -3150,8 +3448,8 @@ namespace MEC
             return _instance == null ? 0 : _instance.KillCoroutinesOnInstance(gameObj.GetInstanceID());
         }
 
-        /// <summary> 
-        /// Kills all coroutines on the given layer.
+        /// <summary>
+        ///     Kills all coroutines on the given layer.
         /// </summary>
         /// <param name="gameObj">All coroutines on the layer corresponding with this GameObject will be killed.</param>
         /// <returns>The number of coroutines that were found and killed.</returns>
@@ -3161,7 +3459,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Kills all coroutines on the given layer.
+        ///     Kills all coroutines on the given layer.
         /// </summary>
         /// <param name="layer">All coroutines on this layer will be killed.</param>
         /// <returns>The number of coroutines that were found and killed.</returns>
@@ -3170,8 +3468,8 @@ namespace MEC
             return _instance == null ? 0 : _instance.KillCoroutinesOnInstance(layer);
         }
 
-        /// <summary> 
-        /// Kills all coroutines on the given layer.
+        /// <summary>
+        ///     Kills all coroutines on the given layer.
         /// </summary>
         /// <param name="layer">All coroutines on this layer will be killed.</param>
         /// <returns>The number of coroutines that were found and killed.</returns>
@@ -3181,7 +3479,7 @@ namespace MEC
 
             while (_layeredProcesses.ContainsKey(layer))
             {
-                var matchEnum = _layeredProcesses[layer].GetEnumerator();
+                HashSet<CoroutineHandle>.Enumerator matchEnum = _layeredProcesses[layer].GetEnumerator();
                 matchEnum.MoveNext();
 
                 if (Nullify(matchEnum.Current))
@@ -3196,7 +3494,7 @@ namespace MEC
 
                 if (Links.ContainsKey(matchEnum.Current))
                 {
-                    var linksEnum = Links[matchEnum.Current].GetEnumerator();
+                    HashSet<CoroutineHandle>.Enumerator linksEnum = Links[matchEnum.Current].GetEnumerator();
                     Links.Remove(matchEnum.Current);
                     while (linksEnum.MoveNext())
                         numberFound += KillCoroutines(linksEnum.Current);
@@ -3207,7 +3505,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Kills all coroutines that have the given tag.
+        ///     Kills all coroutines that have the given tag.
         /// </summary>
         /// <param name="tag">All coroutines with this tag will be killed.</param>
         /// <returns>The number of coroutines that were found and killed.</returns>
@@ -3216,8 +3514,8 @@ namespace MEC
             return _instance == null ? 0 : _instance.KillCoroutinesOnInstance(tag);
         }
 
-        /// <summary> 
-        /// Kills all coroutines that have the given tag.
+        /// <summary>
+        ///     Kills all coroutines that have the given tag.
         /// </summary>
         /// <param name="tag">All coroutines with this tag will be killed.</param>
         /// <returns>The number of coroutines that were found and killed.</returns>
@@ -3228,7 +3526,7 @@ namespace MEC
 
             while (_taggedProcesses.ContainsKey(tag))
             {
-                var matchEnum = _taggedProcesses[tag].GetEnumerator();
+                HashSet<CoroutineHandle>.Enumerator matchEnum = _taggedProcesses[tag].GetEnumerator();
                 matchEnum.MoveNext();
 
                 if (Nullify(_handleToIndex[matchEnum.Current]))
@@ -3243,7 +3541,7 @@ namespace MEC
 
                 if (Links.ContainsKey(matchEnum.Current))
                 {
-                    var linksEnum = Links[matchEnum.Current].GetEnumerator();
+                    HashSet<CoroutineHandle>.Enumerator linksEnum = Links[matchEnum.Current].GetEnumerator();
                     Links.Remove(matchEnum.Current);
                     while (linksEnum.MoveNext())
                         numberFound += KillCoroutines(linksEnum.Current);
@@ -3254,7 +3552,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Kills all coroutines with the given tag on the given layer.
+        ///     Kills all coroutines with the given tag on the given layer.
         /// </summary>
         /// <param name="gameObj">All coroutines on the layer corresponding with this GameObject will be killed.</param>
         /// <param name="tag">All coroutines with this tag on the given layer will be killed.</param>
@@ -3264,8 +3562,8 @@ namespace MEC
             return _instance == null ? 0 : _instance.KillCoroutinesOnInstance(gameObj.GetInstanceID(), tag);
         }
 
-        /// <summary> 
-        /// Kills all coroutines with the given tag on the given layer.
+        /// <summary>
+        ///     Kills all coroutines with the given tag on the given layer.
         /// </summary>
         /// <param name="gameObj">All coroutines on the layer corresponding with this GameObject will be killed.</param>
         /// <param name="tag">All coroutines with this tag on the given layer will be killed.</param>
@@ -3276,7 +3574,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Kills all coroutines with the given tag on the given layer.
+        ///     Kills all coroutines with the given tag on the given layer.
         /// </summary>
         /// <param name="layer">All coroutines on this layer with the given tag will be killed.</param>
         /// <param name="tag">All coroutines with this tag on the given layer will be killed.</param>
@@ -3286,8 +3584,8 @@ namespace MEC
             return _instance == null ? 0 : _instance.KillCoroutinesOnInstance(layer, tag);
         }
 
-        /// <summary> 
-        /// Kills all coroutines with the given tag on the given layer.
+        /// <summary>
+        ///     Kills all coroutines with the given tag on the given layer.
         /// </summary>
         /// <param name="layer">All coroutines on this layer with the given tag will be killed.</param>
         /// <param name="tag">All coroutines with this tag on the given layer will be killed.</param>
@@ -3300,10 +3598,11 @@ namespace MEC
                 return 0;
             int count = 0;
 
-            var indexesEnum = _taggedProcesses[tag].GetEnumerator();
+            HashSet<CoroutineHandle>.Enumerator indexesEnum = _taggedProcesses[tag].GetEnumerator();
             while (indexesEnum.MoveNext())
             {
-                if (CoindexIsNull(_handleToIndex[indexesEnum.Current]) || !_layeredProcesses[layer].Contains(indexesEnum.Current) ||
+                if (CoindexIsNull(_handleToIndex[indexesEnum.Current]) ||
+                    !_layeredProcesses[layer].Contains(indexesEnum.Current) ||
                     !Nullify(indexesEnum.Current))
                     continue;
 
@@ -3315,7 +3614,7 @@ namespace MEC
 
                 if (Links.ContainsKey(indexesEnum.Current))
                 {
-                    var linksEnum = Links[indexesEnum.Current].GetEnumerator();
+                    HashSet<CoroutineHandle>.Enumerator linksEnum = Links[indexesEnum.Current].GetEnumerator();
                     Links.Remove(indexesEnum.Current);
                     while (linksEnum.MoveNext())
                         KillCoroutines(linksEnum.Current);
@@ -3331,7 +3630,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Retrieves the MEC manager that corresponds to the supplied instance id.
+        ///     Retrieves the MEC manager that corresponds to the supplied instance id.
         /// </summary>
         /// <param name="ID">The instance ID.</param>
         /// <returns>The manager, or null if not found.</returns>
@@ -3343,7 +3642,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use "yield return Timing.WaitForSeconds(time);" to wait for the specified number of seconds.
+        ///     Use "yield return Timing.WaitForSeconds(time);" to wait for the specified number of seconds.
         /// </summary>
         /// <param name="waitTime">Number of seconds to wait.</param>
         public static float WaitForSeconds(float waitTime)
@@ -3353,7 +3652,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use "yield return timingInstance.WaitForSecondsOnInstance(time);" to wait for the specified number of seconds.
+        ///     Use "yield return timingInstance.WaitForSecondsOnInstance(time);" to wait for the specified number of seconds.
         /// </summary>
         /// <param name="waitTime">Number of seconds to wait.</param>
         public float WaitForSecondsOnInstance(float waitTime)
@@ -3375,12 +3674,10 @@ namespace MEC
                         _currentUpdateFrame = Time.frameCount;
                         return true;
                     }
-                    else
-                    {
-                        deltaTime = Time.deltaTime;
-                        localTime = _lastUpdateTime;
-                        return false;
-                    }
+
+                    deltaTime = Time.deltaTime;
+                    localTime = _lastUpdateTime;
+                    return false;
                 case Segment.LateUpdate:
                     if (_currentLateUpdateFrame != Time.frameCount)
                     {
@@ -3390,12 +3687,10 @@ namespace MEC
                         _currentLateUpdateFrame = Time.frameCount;
                         return true;
                     }
-                    else
-                    {
-                        deltaTime = Time.deltaTime;
-                        localTime = _lastLateUpdateTime;
-                        return false;
-                    }
+
+                    deltaTime = Time.deltaTime;
+                    localTime = _lastLateUpdateTime;
+                    return false;
                 case Segment.FixedUpdate:
                     deltaTime = Time.fixedDeltaTime;
                     localTime = Time.fixedTime;
@@ -3415,12 +3710,10 @@ namespace MEC
                         _currentSlowUpdateFrame = Time.frameCount;
                         return true;
                     }
-                    else
-                    {
-                        localTime = _lastSlowUpdateTime;
-                        deltaTime = _lastSlowUpdateDeltaTime;
-                        return false;
-                    }
+
+                    localTime = _lastSlowUpdateTime;
+                    deltaTime = _lastSlowUpdateDeltaTime;
+                    return false;
                 case Segment.RealtimeUpdate:
                     if (_currentRealtimeUpdateFrame != Time.frameCount)
                     {
@@ -3430,12 +3723,10 @@ namespace MEC
                         _currentRealtimeUpdateFrame = Time.frameCount;
                         return true;
                     }
-                    else
-                    {
-                        deltaTime = Time.unscaledDeltaTime;
-                        localTime = _lastRealtimeUpdateTime;
-                        return false;
-                    }
+
+                    deltaTime = Time.unscaledDeltaTime;
+                    localTime = _lastRealtimeUpdateTime;
+                    return false;
 #if UNITY_EDITOR
                 case Segment.EditorUpdate:
                     if (_lastEditorUpdateTime + 0.0001 < EditorApplication.timeSinceStartup)
@@ -3448,26 +3739,23 @@ namespace MEC
                         localTime = _lastEditorUpdateTime = (float)EditorApplication.timeSinceStartup;
                         return true;
                     }
-                    else
-                    {
-                        deltaTime = _lastEditorUpdateDeltaTime;
-                        localTime = _lastEditorUpdateTime;
-                        return false;
-                    }
+
+                    deltaTime = _lastEditorUpdateDeltaTime;
+                    localTime = _lastEditorUpdateTime;
+                    return false;
                 case Segment.EditorSlowUpdate:
                     if (_lastEditorSlowUpdateTime + 0.0001 < EditorApplication.timeSinceStartup)
                     {
-                        _lastEditorSlowUpdateDeltaTime = (float)EditorApplication.timeSinceStartup - _lastEditorSlowUpdateTime;
+                        _lastEditorSlowUpdateDeltaTime =
+                            (float)EditorApplication.timeSinceStartup - _lastEditorSlowUpdateTime;
                         deltaTime = _lastEditorSlowUpdateDeltaTime;
                         localTime = _lastEditorSlowUpdateTime = (float)EditorApplication.timeSinceStartup;
                         return true;
                     }
-                    else
-                    {
-                        deltaTime = _lastEditorSlowUpdateDeltaTime;
-                        localTime = _lastEditorSlowUpdateTime;
-                        return false;
-                    }
+
+                    deltaTime = _lastEditorSlowUpdateDeltaTime;
+                    localTime = _lastEditorSlowUpdateTime;
+                    return false;
 #endif
                 case Segment.EndOfFrame:
                     if (_currentEndOfFrameFrame != Time.frameCount)
@@ -3478,15 +3766,16 @@ namespace MEC
                         _currentEndOfFrameFrame = Time.frameCount;
                         return true;
                     }
-                    else
-                    {
-                        deltaTime = Time.deltaTime;
-                        localTime = _lastEndOfFrameTime;
-                        return false;
-                    }
+
+                    deltaTime = Time.deltaTime;
+                    localTime = _lastEndOfFrameTime;
+                    return false;
                 case Segment.ManualTimeframe:
-                    float timeCalculated = SetManualTimeframeTime == null ? Time.time : SetManualTimeframeTime(_lastManualTimeframeTime);
-                    if (_lastManualTimeframeTime + 0.0001 < timeCalculated && _lastManualTimeframeTime - 0.0001 > timeCalculated)
+                    float timeCalculated = SetManualTimeframeTime == null
+                        ? Time.time
+                        : SetManualTimeframeTime(_lastManualTimeframeTime);
+                    if (_lastManualTimeframeTime + 0.0001 < timeCalculated &&
+                        _lastManualTimeframeTime - 0.0001 > timeCalculated)
                     {
                         localTime = timeCalculated;
                         deltaTime = localTime - _lastManualTimeframeTime;
@@ -3498,13 +3787,12 @@ namespace MEC
                         _lastManualTimeframeTime = timeCalculated;
                         return true;
                     }
-                    else
-                    {
-                        deltaTime = _lastManualTimeframeDeltaTime;
-                        localTime = _lastManualTimeframeTime;
-                        return false;
-                    }
+
+                    deltaTime = _lastManualTimeframeDeltaTime;
+                    localTime = _lastManualTimeframeTime;
+                    return false;
             }
+
             return true;
         }
 
@@ -3515,13 +3803,11 @@ namespace MEC
                 case Segment.Update:
                     if (_currentUpdateFrame == Time.frameCount)
                         return _lastUpdateTime;
-                    else
-                        return _lastUpdateTime + Time.deltaTime;
+                    return _lastUpdateTime + Time.deltaTime;
                 case Segment.LateUpdate:
                     if (_currentUpdateFrame == Time.frameCount)
                         return _lastLateUpdateTime;
-                    else
-                        return _lastLateUpdateTime + Time.deltaTime;
+                    return _lastLateUpdateTime + Time.deltaTime;
                 case Segment.FixedUpdate:
                     return Time.fixedTime;
                 case Segment.SlowUpdate:
@@ -3529,8 +3815,7 @@ namespace MEC
                 case Segment.RealtimeUpdate:
                     if (_currentRealtimeUpdateFrame == Time.frameCount)
                         return _lastRealtimeUpdateTime;
-                    else
-                        return _lastRealtimeUpdateTime + Time.unscaledDeltaTime;
+                    return _lastRealtimeUpdateTime + Time.unscaledDeltaTime;
 #if UNITY_EDITOR
                 case Segment.EditorUpdate:
                 case Segment.EditorSlowUpdate:
@@ -3539,8 +3824,7 @@ namespace MEC
                 case Segment.EndOfFrame:
                     if (_currentUpdateFrame == Time.frameCount)
                         return _lastEndOfFrameTime;
-                    else
-                        return _lastEndOfFrameTime + Time.deltaTime;
+                    return _lastEndOfFrameTime + Time.deltaTime;
                 case Segment.ManualTimeframe:
                     return _lastManualTimeframeTime;
                 default:
@@ -3549,7 +3833,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will pause all coroutines running on the main MEC instance until ResumeCoroutines is called.
+        ///     This will pause all coroutines running on the main MEC instance until ResumeCoroutines is called.
         /// </summary>
         /// <returns>The number of coroutines that were paused.</returns>
         public static int PauseCoroutines()
@@ -3558,7 +3842,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will pause all coroutines running on this MEC instance until ResumeCoroutinesOnInstance is called.
+        ///     This will pause all coroutines running on this MEC instance until ResumeCoroutinesOnInstance is called.
         /// </summary>
         /// <returns>The number of coroutines that were paused.</returns>
         public int PauseCoroutinesOnInstance()
@@ -3566,7 +3850,6 @@ namespace MEC
             int count = 0;
             int i;
             for (i = 0; i < _nextUpdateProcessSlot; i++)
-            {
                 if (!UpdatePaused[i] && UpdateProcesses[i] != null)
                 {
                     count++;
@@ -3576,10 +3859,8 @@ namespace MEC
                         UpdateProcesses[i] = _InjectDelay(UpdateProcesses[i],
                             UpdateProcesses[i].Current - GetSegmentTime(Segment.Update));
                 }
-            }
 
             for (i = 0; i < _nextLateUpdateProcessSlot; i++)
-            {
                 if (!LateUpdatePaused[i] && LateUpdateProcesses[i] != null)
                 {
                     count++;
@@ -3589,10 +3870,8 @@ namespace MEC
                         LateUpdateProcesses[i] = _InjectDelay(LateUpdateProcesses[i],
                             LateUpdateProcesses[i].Current - GetSegmentTime(Segment.LateUpdate));
                 }
-            }
 
             for (i = 0; i < _nextFixedUpdateProcessSlot; i++)
-            {
                 if (!FixedUpdatePaused[i] && FixedUpdateProcesses[i] != null)
                 {
                     count++;
@@ -3602,10 +3881,8 @@ namespace MEC
                         FixedUpdateProcesses[i] = _InjectDelay(FixedUpdateProcesses[i],
                             FixedUpdateProcesses[i].Current - GetSegmentTime(Segment.FixedUpdate));
                 }
-            }
 
             for (i = 0; i < _nextSlowUpdateProcessSlot; i++)
-            {
                 if (!SlowUpdatePaused[i] && SlowUpdateProcesses[i] != null)
                 {
                     count++;
@@ -3615,10 +3892,8 @@ namespace MEC
                         SlowUpdateProcesses[i] = _InjectDelay(SlowUpdateProcesses[i],
                             SlowUpdateProcesses[i].Current - GetSegmentTime(Segment.SlowUpdate));
                 }
-            }
 
             for (i = 0; i < _nextRealtimeUpdateProcessSlot; i++)
-            {
                 if (!RealtimeUpdatePaused[i] && RealtimeUpdateProcesses[i] != null)
                 {
                     count++;
@@ -3628,10 +3903,8 @@ namespace MEC
                         RealtimeUpdateProcesses[i] = _InjectDelay(RealtimeUpdateProcesses[i],
                             RealtimeUpdateProcesses[i].Current - GetSegmentTime(Segment.RealtimeUpdate));
                 }
-            }
 
             for (i = 0; i < _nextEditorUpdateProcessSlot; i++)
-            {
                 if (!EditorUpdatePaused[i] && EditorUpdateProcesses[i] != null)
                 {
                     count++;
@@ -3641,10 +3914,8 @@ namespace MEC
                         EditorUpdateProcesses[i] = _InjectDelay(EditorUpdateProcesses[i],
                             EditorUpdateProcesses[i].Current - GetSegmentTime(Segment.EditorUpdate));
                 }
-            }
 
             for (i = 0; i < _nextEditorSlowUpdateProcessSlot; i++)
-            {
                 if (!EditorSlowUpdatePaused[i] && EditorSlowUpdateProcesses[i] != null)
                 {
                     count++;
@@ -3654,10 +3925,8 @@ namespace MEC
                         EditorSlowUpdateProcesses[i] = _InjectDelay(EditorSlowUpdateProcesses[i],
                             EditorSlowUpdateProcesses[i].Current - GetSegmentTime(Segment.EditorSlowUpdate));
                 }
-            }
 
             for (i = 0; i < _nextEndOfFrameProcessSlot; i++)
-            {
                 if (!EndOfFramePaused[i] && EndOfFrameProcesses[i] != null)
                 {
                     count++;
@@ -3667,10 +3936,8 @@ namespace MEC
                         EndOfFrameProcesses[i] = _InjectDelay(EndOfFrameProcesses[i],
                             EndOfFrameProcesses[i].Current - GetSegmentTime(Segment.EndOfFrame));
                 }
-            }
 
             for (i = 0; i < _nextManualTimeframeProcessSlot; i++)
-            {
                 if (!ManualTimeframePaused[i] && ManualTimeframeProcesses[i] != null)
                 {
                     count++;
@@ -3680,14 +3947,13 @@ namespace MEC
                         ManualTimeframeProcesses[i] = _InjectDelay(ManualTimeframeProcesses[i],
                             ManualTimeframeProcesses[i].Current - GetSegmentTime(Segment.ManualTimeframe));
                 }
-            }
 
-            var indexesEnum = Links.GetEnumerator();
+            Dictionary<CoroutineHandle, HashSet<CoroutineHandle>>.Enumerator indexesEnum = Links.GetEnumerator();
             while (indexesEnum.MoveNext())
             {
                 if (!_handleToIndex.ContainsKey(indexesEnum.Current.Key)) continue;
 
-                var linksEnum = indexesEnum.Current.Value.GetEnumerator();
+                HashSet<CoroutineHandle>.Enumerator linksEnum = indexesEnum.Current.Value.GetEnumerator();
                 while (linksEnum.MoveNext())
                     count += PauseCoroutines(linksEnum.Current);
             }
@@ -3696,7 +3962,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will pause any matching coroutines running on this MEC instance until ResumeCoroutinesOnInstance is called.
+        ///     This will pause any matching coroutines running on this MEC instance until ResumeCoroutinesOnInstance is called.
         /// </summary>
         /// <param name="handle">The handle of the coroutine to pause.</param>
         /// <returns>The number of coroutines that were paused (Normally 0 or 1).</returns>
@@ -3704,14 +3970,15 @@ namespace MEC
         {
             int count = 0;
 
-            if (_handleToIndex.ContainsKey(handle) && !CoindexIsNull(_handleToIndex[handle]) && !SetPause(_handleToIndex[handle], true))
+            if (_handleToIndex.ContainsKey(handle) && !CoindexIsNull(_handleToIndex[handle]) &&
+                !SetPause(_handleToIndex[handle], true))
                 count++;
 
             if (Links.ContainsKey(handle))
             {
-                var links = Links[handle];
+                HashSet<CoroutineHandle> links = Links[handle];
                 Links.Remove(handle);
-                var linksEnum = links.GetEnumerator();
+                HashSet<CoroutineHandle>.Enumerator linksEnum = links.GetEnumerator();
                 while (linksEnum.MoveNext())
                     count += PauseCoroutines(linksEnum.Current);
                 Links.Add(handle, links);
@@ -3721,7 +3988,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will pause any matching coroutines until ResumeCoroutines is called.
+        ///     This will pause any matching coroutines until ResumeCoroutines is called.
         /// </summary>
         /// <param name="handles">A list of handles to coroutines you want to pause.</param>
         /// <returns>The number of coroutines that were paused.</returns>
@@ -3731,21 +3998,22 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will pause any matching coroutines until ResumeCoroutines is called.
+        ///     This will pause any matching coroutines until ResumeCoroutines is called.
         /// </summary>
         /// <param name="handles">A list of handles to coroutines you want to pause.</param>
         /// <returns>The number of coroutines that were paused.</returns>
         public static int PauseCoroutines(params CoroutineHandle[] handles)
         {
             int total = 0;
-            for (int i = 0;i < handles.Length;i++)
-                total += ActiveInstances[handles[i].Key] != null 
-                    ? GetInstance(handles[i].Key).PauseCoroutinesOnInstance(handles[i]) : 0;
+            for (int i = 0; i < handles.Length; i++)
+                total += ActiveInstances[handles[i].Key] != null
+                    ? GetInstance(handles[i].Key).PauseCoroutinesOnInstance(handles[i])
+                    : 0;
             return total;
         }
 
         /// <summary>
-        /// This will pause any matching coroutines running on the current MEC instance until ResumeCoroutines is called.
+        ///     This will pause any matching coroutines running on the current MEC instance until ResumeCoroutines is called.
         /// </summary>
         /// <param name="gameObj">All coroutines on the layer corresponding with this GameObject will be paused.</param>
         /// <returns>The number of coroutines that were paused.</returns>
@@ -3755,7 +4023,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will pause any matching coroutines running on this MEC instance until ResumeCoroutinesOnInstance is called.
+        ///     This will pause any matching coroutines running on this MEC instance until ResumeCoroutinesOnInstance is called.
         /// </summary>
         /// <param name="gameObj">All coroutines on the layer corresponding with this GameObject will be paused.</param>
         /// <returns>The number of coroutines that were paused.</returns>
@@ -3765,7 +4033,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will pause any matching coroutines running on the current MEC instance until ResumeCoroutines is called.
+        ///     This will pause any matching coroutines running on the current MEC instance until ResumeCoroutines is called.
         /// </summary>
         /// <param name="layer">Any coroutines on the matching layer will be paused.</param>
         /// <returns>The number of coroutines that were paused.</returns>
@@ -3775,7 +4043,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will pause any matching coroutines running on this MEC instance until ResumeCoroutinesOnInstance is called.
+        ///     This will pause any matching coroutines running on this MEC instance until ResumeCoroutinesOnInstance is called.
         /// </summary>
         /// <param name="layer">Any coroutines on the matching layer will be paused.</param>
         /// <returns>The number of coroutines that were paused.</returns>
@@ -3785,18 +4053,19 @@ namespace MEC
                 return 0;
 
             int count = 0;
-            var matchesEnum = _layeredProcesses[layer].GetEnumerator();
+            HashSet<CoroutineHandle>.Enumerator matchesEnum = _layeredProcesses[layer].GetEnumerator();
 
             while (matchesEnum.MoveNext())
             {
-                if (!CoindexIsNull(_handleToIndex[matchesEnum.Current]) && !SetPause(_handleToIndex[matchesEnum.Current], true))
+                if (!CoindexIsNull(_handleToIndex[matchesEnum.Current]) &&
+                    !SetPause(_handleToIndex[matchesEnum.Current], true))
                     count++;
 
                 if (Links.ContainsKey(matchesEnum.Current))
                 {
-                    var links = Links[matchesEnum.Current];
+                    HashSet<CoroutineHandle> links = Links[matchesEnum.Current];
                     Links.Remove(matchesEnum.Current);
-                    var linksEnum = links.GetEnumerator();
+                    HashSet<CoroutineHandle>.Enumerator linksEnum = links.GetEnumerator();
                     while (linksEnum.MoveNext())
                         count += PauseCoroutines(linksEnum.Current);
                     Links.Add(matchesEnum.Current, links);
@@ -3807,7 +4076,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will pause any matching coroutines running on the current MEC instance until ResumeCoroutines is called.
+        ///     This will pause any matching coroutines running on the current MEC instance until ResumeCoroutines is called.
         /// </summary>
         /// <param name="tag">Any coroutines with a matching tag will be paused.</param>
         /// <returns>The number of coroutines that were paused.</returns>
@@ -3817,7 +4086,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will pause any matching coroutines running on this MEC instance until ResumeCoroutinesOnInstance is called.
+        ///     This will pause any matching coroutines running on this MEC instance until ResumeCoroutinesOnInstance is called.
         /// </summary>
         /// <param name="tag">Any coroutines with a matching tag will be paused.</param>
         /// <returns>The number of coroutines that were paused.</returns>
@@ -3827,18 +4096,19 @@ namespace MEC
                 return 0;
 
             int count = 0;
-            var matchesEnum = _taggedProcesses[tag].GetEnumerator();
+            HashSet<CoroutineHandle>.Enumerator matchesEnum = _taggedProcesses[tag].GetEnumerator();
 
             while (matchesEnum.MoveNext())
             {
-                if (!CoindexIsNull(_handleToIndex[matchesEnum.Current]) && !SetPause(_handleToIndex[matchesEnum.Current], true))
+                if (!CoindexIsNull(_handleToIndex[matchesEnum.Current]) &&
+                    !SetPause(_handleToIndex[matchesEnum.Current], true))
                     count++;
 
                 if (Links.ContainsKey(matchesEnum.Current))
                 {
-                    var links = Links[matchesEnum.Current];
+                    HashSet<CoroutineHandle> links = Links[matchesEnum.Current];
                     Links.Remove(matchesEnum.Current);
-                    var linksEnum = links.GetEnumerator();
+                    HashSet<CoroutineHandle>.Enumerator linksEnum = links.GetEnumerator();
                     while (linksEnum.MoveNext())
                         count += PauseCoroutines(linksEnum.Current);
                     Links.Add(matchesEnum.Current, links);
@@ -3849,7 +4119,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will pause any matching coroutines running on the current MEC instance until ResumeCoroutines is called.
+        ///     This will pause any matching coroutines running on the current MEC instance until ResumeCoroutines is called.
         /// </summary>
         /// <param name="gameObj">All coroutines on the layer corresponding with this GameObject will be paused.</param>
         /// <param name="tag">Any coroutines with a matching tag will be paused.</param>
@@ -3860,7 +4130,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will pause any matching coroutines running on this MEC instance until ResumeCoroutinesOnInstance is called.
+        ///     This will pause any matching coroutines running on this MEC instance until ResumeCoroutinesOnInstance is called.
         /// </summary>
         /// <param name="gameObj">All coroutines on the layer corresponding with this GameObject will be paused.</param>
         /// <param name="tag">Any coroutines with a matching tag will be paused.</param>
@@ -3871,7 +4141,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will pause any matching coroutines running on the current MEC instance until ResumeCoroutines is called.
+        ///     This will pause any matching coroutines running on the current MEC instance until ResumeCoroutines is called.
         /// </summary>
         /// <param name="layer">Any coroutines on the matching layer will be paused.</param>
         /// <param name="tag">Any coroutines with a matching tag will be paused.</param>
@@ -3882,7 +4152,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will pause any matching coroutines running on this MEC instance until ResumeCoroutinesOnInstance is called.
+        ///     This will pause any matching coroutines running on this MEC instance until ResumeCoroutinesOnInstance is called.
         /// </summary>
         /// <param name="layer">Any coroutines on the matching layer will be paused.</param>
         /// <param name="tag">Any coroutines with a matching tag will be paused.</param>
@@ -3896,34 +4166,33 @@ namespace MEC
                 return 0;
 
             int count = 0;
-            var matchesEnum = _taggedProcesses[tag].GetEnumerator();
+            HashSet<CoroutineHandle>.Enumerator matchesEnum = _taggedProcesses[tag].GetEnumerator();
 
             while (matchesEnum.MoveNext())
-            {
                 if (_processLayers.ContainsKey(matchesEnum.Current) && _processLayers[matchesEnum.Current] == layer
-                    && !CoindexIsNull(_handleToIndex[matchesEnum.Current]))
+                                                                    && !CoindexIsNull(
+                                                                        _handleToIndex[matchesEnum.Current]))
                 {
                     if (!SetPause(_handleToIndex[matchesEnum.Current], true))
                         count++;
 
                     if (Links.ContainsKey(matchesEnum.Current))
                     {
-                        var links = Links[matchesEnum.Current];
+                        HashSet<CoroutineHandle> links = Links[matchesEnum.Current];
                         Links.Remove(matchesEnum.Current);
-                        var linksEnum = links.GetEnumerator();
+                        HashSet<CoroutineHandle>.Enumerator linksEnum = links.GetEnumerator();
                         while (linksEnum.MoveNext())
                             count += PauseCoroutines(linksEnum.Current);
                         Links.Add(matchesEnum.Current, links);
                     }
                 }
-            }
 
             return count;
         }
 
         /// <summary>
-        /// This resumes all coroutines on the current MEC instance if they are currently paused, otherwise it has
-        /// no effect.
+        ///     This resumes all coroutines on the current MEC instance if they are currently paused, otherwise it has
+        ///     no effect.
         /// </summary>
         /// <returns>The number of coroutines that were resumed.</returns>
         public static int ResumeCoroutines()
@@ -3932,7 +4201,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This resumes all coroutines on this MEC instance if they are currently paused, otherwise it has no effect.
+        ///     This resumes all coroutines on this MEC instance if they are currently paused, otherwise it has no effect.
         /// </summary>
         /// <returns>The number of coroutines that were resumed.</returns>
         public int ResumeCoroutinesOnInstance()
@@ -3940,92 +4209,82 @@ namespace MEC
             int count = 0;
             ProcessIndex coindex;
             for (coindex.i = 0, coindex.seg = Segment.Update; coindex.i < _nextUpdateProcessSlot; coindex.i++)
-            {
                 if (UpdatePaused[coindex.i] && UpdateProcesses[coindex.i] != null)
                 {
                     UpdatePaused[coindex.i] = false;
                     count++;
                 }
-            }
 
             for (coindex.i = 0, coindex.seg = Segment.LateUpdate; coindex.i < _nextLateUpdateProcessSlot; coindex.i++)
-            {
                 if (LateUpdatePaused[coindex.i] && LateUpdateProcesses[coindex.i] != null)
                 {
                     LateUpdatePaused[coindex.i] = false;
                     count++;
                 }
-            }
 
             for (coindex.i = 0, coindex.seg = Segment.FixedUpdate; coindex.i < _nextFixedUpdateProcessSlot; coindex.i++)
-            {
                 if (FixedUpdatePaused[coindex.i] && FixedUpdateProcesses[coindex.i] != null)
                 {
                     FixedUpdatePaused[coindex.i] = false;
                     count++;
                 }
-            }
 
             for (coindex.i = 0, coindex.seg = Segment.SlowUpdate; coindex.i < _nextSlowUpdateProcessSlot; coindex.i++)
-            {
                 if (SlowUpdatePaused[coindex.i] && SlowUpdateProcesses[coindex.i] != null)
                 {
                     SlowUpdatePaused[coindex.i] = false;
                     count++;
                 }
-            }
 
-            for (coindex.i = 0, coindex.seg = Segment.RealtimeUpdate; coindex.i < _nextRealtimeUpdateProcessSlot; coindex.i++)
-            {
+            for (coindex.i = 0, coindex.seg = Segment.RealtimeUpdate;
+                 coindex.i < _nextRealtimeUpdateProcessSlot;
+                 coindex.i++)
                 if (RealtimeUpdatePaused[coindex.i] && RealtimeUpdateProcesses[coindex.i] != null)
                 {
                     RealtimeUpdatePaused[coindex.i] = false;
                     count++;
                 }
-            }
 
-            for (coindex.i = 0, coindex.seg = Segment.EditorUpdate; coindex.i < _nextEditorUpdateProcessSlot; coindex.i++)
-            {
+            for (coindex.i = 0, coindex.seg = Segment.EditorUpdate;
+                 coindex.i < _nextEditorUpdateProcessSlot;
+                 coindex.i++)
                 if (EditorUpdatePaused[coindex.i] && EditorUpdateProcesses[coindex.i] != null)
                 {
                     EditorUpdatePaused[coindex.i] = false;
                     count++;
                 }
-            }
 
-            for (coindex.i = 0, coindex.seg = Segment.EditorSlowUpdate; coindex.i < _nextEditorSlowUpdateProcessSlot; coindex.i++)
-            {
+            for (coindex.i = 0, coindex.seg = Segment.EditorSlowUpdate;
+                 coindex.i < _nextEditorSlowUpdateProcessSlot;
+                 coindex.i++)
                 if (EditorSlowUpdatePaused[coindex.i] && EditorSlowUpdateProcesses[coindex.i] != null)
                 {
                     EditorSlowUpdatePaused[coindex.i] = false;
                     count++;
                 }
-            }
 
             for (coindex.i = 0, coindex.seg = Segment.EndOfFrame; coindex.i < _nextEndOfFrameProcessSlot; coindex.i++)
-            {
                 if (EndOfFramePaused[coindex.i] && EndOfFrameProcesses[coindex.i] != null)
                 {
                     EndOfFramePaused[coindex.i] = false;
                     count++;
                 }
-            }
 
-            for (coindex.i = 0, coindex.seg = Segment.ManualTimeframe; coindex.i < _nextManualTimeframeProcessSlot; coindex.i++)
-            {
+            for (coindex.i = 0, coindex.seg = Segment.ManualTimeframe;
+                 coindex.i < _nextManualTimeframeProcessSlot;
+                 coindex.i++)
                 if (ManualTimeframePaused[coindex.i] && ManualTimeframeProcesses[coindex.i] != null)
                 {
                     ManualTimeframePaused[coindex.i] = false;
                     count++;
                 }
-            }
 
-            var indexesEnum = Links.GetEnumerator();
+            Dictionary<CoroutineHandle, HashSet<CoroutineHandle>>.Enumerator indexesEnum = Links.GetEnumerator();
             while (indexesEnum.MoveNext())
             {
                 if (!_handleToIndex.ContainsKey(indexesEnum.Current.Key)) continue;
 
-                var linksEnum = indexesEnum.Current.Value.GetEnumerator();
+                HashSet<CoroutineHandle>.Enumerator linksEnum = indexesEnum.Current.Value.GetEnumerator();
                 while (linksEnum.MoveNext())
                     count += ResumeCoroutines(linksEnum.Current);
             }
@@ -4034,7 +4293,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will resume any matching coroutines that are paused.
+        ///     This will resume any matching coroutines that are paused.
         /// </summary>
         /// <param name="handles">A list of handles to coroutines you want to resume.</param>
         /// <returns>The number of coroutines that were resumed.</returns>
@@ -4042,9 +4301,9 @@ namespace MEC
         {
             return _instance == null ? 0 : _instance.ResumeCoroutinesOnInstance(handle);
         }
-        
+
         /// <summary>
-        /// This will resume any matching coroutines that are paused.
+        ///     This will resume any matching coroutines that are paused.
         /// </summary>
         /// <param name="handles">A list of handles to coroutines you want to resume.</param>
         /// <returns>The number of coroutines that were resumed.</returns>
@@ -4053,12 +4312,13 @@ namespace MEC
             int count = 0;
             for (int i = 0; i < handles.Length; i++)
                 count += ActiveInstances[handles[i].Key] != null
-                    ? GetInstance(handles[i].Key).ResumeCoroutinesOnInstance(handles[i]) : 0;
+                    ? GetInstance(handles[i].Key).ResumeCoroutinesOnInstance(handles[i])
+                    : 0;
             return count;
         }
 
         /// <summary>
-        /// This will resume any matching coroutines that are paused and running on this MEC instance.
+        ///     This will resume any matching coroutines that are paused and running on this MEC instance.
         /// </summary>
         /// <param name="handle">The handle of the coroutine to resume.</param>
         /// <returns>The number of coroutines that were resumed. (Normally 0 or 1)</returns>
@@ -4066,14 +4326,15 @@ namespace MEC
         {
             int count = 0;
 
-            if (_handleToIndex.ContainsKey(handle) && !CoindexIsNull(_handleToIndex[handle]) && SetPause(_handleToIndex[handle], false))
+            if (_handleToIndex.ContainsKey(handle) && !CoindexIsNull(_handleToIndex[handle]) &&
+                SetPause(_handleToIndex[handle], false))
                 count++;
 
             if (Links.ContainsKey(handle))
             {
-                var links = Links[handle];
+                HashSet<CoroutineHandle> links = Links[handle];
                 Links.Remove(handle);
-                var linksEnum = links.GetEnumerator();
+                HashSet<CoroutineHandle>.Enumerator linksEnum = links.GetEnumerator();
                 while (linksEnum.MoveNext())
                     count += ResumeCoroutines(linksEnum.Current);
                 Links.Add(handle, links);
@@ -4083,22 +4344,22 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will resume any matching coroutines running on this MEC instance.
+        ///     This will resume any matching coroutines running on this MEC instance.
         /// </summary>
         /// <param name="handles">A list of handles to coroutines you want to resume.</param>
         /// <returns>The number of coroutines that were resumed.</returns>
         public int ResumeCoroutinesOnInstance(IEnumerable<CoroutineHandle> handles)
         {
             int count = 0;
-            var handlesEnum = handles.GetEnumerator();
+            IEnumerator<CoroutineHandle> handlesEnum = handles.GetEnumerator();
             while (!handlesEnum.MoveNext())
                 ResumeCoroutinesOnInstance(handlesEnum.Current);
             return count;
         }
 
         /// <summary>
-        /// This resumes any matching coroutines on the current MEC instance if they are currently paused, otherwise it has
-        /// no effect.
+        ///     This resumes any matching coroutines on the current MEC instance if they are currently paused, otherwise it has
+        ///     no effect.
         /// </summary>
         /// <param name="gameObj">All coroutines on the layer corresponding with this GameObject will be resumed.</param>
         /// <returns>The number of coroutines that were resumed.</returns>
@@ -4108,7 +4369,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This resumes any matching coroutines on this MEC instance if they are currently paused, otherwise it has no effect.
+        ///     This resumes any matching coroutines on this MEC instance if they are currently paused, otherwise it has no effect.
         /// </summary>
         /// <param name="gameObj">All coroutines on the layer corresponding with this GameObject will be resumed.</param>
         /// <returns>The number of coroutines that were resumed.</returns>
@@ -4118,8 +4379,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// This resumes any matching coroutines on the current MEC instance if they are currently paused, otherwise it has
-        /// no effect.
+        ///     This resumes any matching coroutines on the current MEC instance if they are currently paused, otherwise it has
+        ///     no effect.
         /// </summary>
         /// <param name="layer">Any coroutines previously paused on the matching layer will be resumend.</param>
         /// <returns>The number of coroutines that were resumed.</returns>
@@ -4129,7 +4390,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This resumes any matching coroutines on this MEC instance if they are currently paused, otherwise it has no effect.
+        ///     This resumes any matching coroutines on this MEC instance if they are currently paused, otherwise it has no effect.
         /// </summary>
         /// <param name="layer">Any coroutines previously paused on the matching layer will be resumend.</param>
         /// <returns>The number of coroutines that were resumed.</returns>
@@ -4139,19 +4400,17 @@ namespace MEC
                 return 0;
             int count = 0;
 
-            var indexesEnum = _layeredProcesses[layer].GetEnumerator();
+            HashSet<CoroutineHandle>.Enumerator indexesEnum = _layeredProcesses[layer].GetEnumerator();
             while (indexesEnum.MoveNext())
             {
-                if (!CoindexIsNull(_handleToIndex[indexesEnum.Current]) && SetPause(_handleToIndex[indexesEnum.Current], false))
-                {
-                    count++;
-                }
+                if (!CoindexIsNull(_handleToIndex[indexesEnum.Current]) &&
+                    SetPause(_handleToIndex[indexesEnum.Current], false)) count++;
 
                 if (Links.ContainsKey(indexesEnum.Current))
                 {
-                    var links = Links[indexesEnum.Current];
+                    HashSet<CoroutineHandle> links = Links[indexesEnum.Current];
                     Links.Remove(indexesEnum.Current);
-                    var linksEnum = links.GetEnumerator();
+                    HashSet<CoroutineHandle>.Enumerator linksEnum = links.GetEnumerator();
                     while (linksEnum.MoveNext())
                         count += ResumeCoroutines(linksEnum.Current);
                     Links.Add(indexesEnum.Current, links);
@@ -4162,7 +4421,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// This resumes any matching coroutines on the current MEC instance if they are currently paused, otherwise it has no effect.
+        ///     This resumes any matching coroutines on the current MEC instance if they are currently paused, otherwise it has no
+        ///     effect.
         /// </summary>
         /// <param name="tag">Any coroutines previously paused with a matching tag will be resumend.</param>
         /// <returns>The number of coroutines that were resumed.</returns>
@@ -4172,7 +4432,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This resumes any matching coroutines on this MEC instance if they are currently paused, otherwise it has no effect.
+        ///     This resumes any matching coroutines on this MEC instance if they are currently paused, otherwise it has no effect.
         /// </summary>
         /// <param name="tag">Any coroutines previously paused with a matching tag will be resumend.</param>
         /// <returns>The number of coroutines that were resumed.</returns>
@@ -4182,19 +4442,17 @@ namespace MEC
                 return 0;
             int count = 0;
 
-            var indexesEnum = _taggedProcesses[tag].GetEnumerator();
+            HashSet<CoroutineHandle>.Enumerator indexesEnum = _taggedProcesses[tag].GetEnumerator();
             while (indexesEnum.MoveNext())
             {
-                if (!CoindexIsNull(_handleToIndex[indexesEnum.Current]) && SetPause(_handleToIndex[indexesEnum.Current], false))
-                {
-                    count++;
-                }
+                if (!CoindexIsNull(_handleToIndex[indexesEnum.Current]) &&
+                    SetPause(_handleToIndex[indexesEnum.Current], false)) count++;
 
                 if (Links.ContainsKey(indexesEnum.Current))
                 {
-                    var links = Links[indexesEnum.Current];
+                    HashSet<CoroutineHandle> links = Links[indexesEnum.Current];
                     Links.Remove(indexesEnum.Current);
-                    var linksEnum = links.GetEnumerator();
+                    HashSet<CoroutineHandle>.Enumerator linksEnum = links.GetEnumerator();
                     while (linksEnum.MoveNext())
                         count += ResumeCoroutines(linksEnum.Current);
                     Links.Add(indexesEnum.Current, links);
@@ -4205,8 +4463,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// This resumes any matching coroutines on the current MEC instance if they are currently paused, otherwise it has
-        /// no effect.
+        ///     This resumes any matching coroutines on the current MEC instance if they are currently paused, otherwise it has
+        ///     no effect.
         /// </summary>
         /// <param name="gameObj">All coroutines on the layer corresponding with this GameObject will be resumed.</param>
         /// <param name="tag">Any coroutines previously paused with a matching tag will be resumend.</param>
@@ -4217,7 +4475,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This resumes any matching coroutines on this MEC instance if they are currently paused, otherwise it has no effect.
+        ///     This resumes any matching coroutines on this MEC instance if they are currently paused, otherwise it has no effect.
         /// </summary>
         /// <param name="gameObj">All coroutines on the layer corresponding with this GameObject will be resumed.</param>
         /// <param name="tag">Any coroutines previously paused with a matching tag will be resumend.</param>
@@ -4228,8 +4486,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// This resumes any matching coroutines on the current MEC instance if they are currently paused, otherwise it has
-        /// no effect.
+        ///     This resumes any matching coroutines on the current MEC instance if they are currently paused, otherwise it has
+        ///     no effect.
         /// </summary>
         /// <param name="layer">Any coroutines previously paused on the matching layer will be resumend.</param>
         /// <param name="tag">Any coroutines previously paused with a matching tag will be resumend.</param>
@@ -4240,7 +4498,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// This resumes any matching coroutines on this MEC instance if they are currently paused, otherwise it has no effect.
+        ///     This resumes any matching coroutines on this MEC instance if they are currently paused, otherwise it has no effect.
         /// </summary>
         /// <param name="layer">Any coroutines previously paused on the matching layer will be resumend.</param>
         /// <param name="tag">Any coroutines previously paused with a matching tag will be resumend.</param>
@@ -4253,31 +4511,30 @@ namespace MEC
                 return 0;
             int count = 0;
 
-            var indexesEnum = _taggedProcesses[tag].GetEnumerator();
+            HashSet<CoroutineHandle>.Enumerator indexesEnum = _taggedProcesses[tag].GetEnumerator();
             while (indexesEnum.MoveNext())
-            {
-                if (!CoindexIsNull(_handleToIndex[indexesEnum.Current]) && _layeredProcesses[layer].Contains(indexesEnum.Current))
+                if (!CoindexIsNull(_handleToIndex[indexesEnum.Current]) &&
+                    _layeredProcesses[layer].Contains(indexesEnum.Current))
                 {
                     if (SetPause(_handleToIndex[indexesEnum.Current], false))
                         count++;
 
                     if (Links.ContainsKey(indexesEnum.Current))
                     {
-                        var links = Links[indexesEnum.Current];
+                        HashSet<CoroutineHandle> links = Links[indexesEnum.Current];
                         Links.Remove(indexesEnum.Current);
-                        var linksEnum = links.GetEnumerator();
+                        HashSet<CoroutineHandle>.Enumerator linksEnum = links.GetEnumerator();
                         while (linksEnum.MoveNext())
                             count += ResumeCoroutines(linksEnum.Current);
                         Links.Add(indexesEnum.Current, links);
                     }
                 }
-            }
 
             return count;
         }
 
         /// <summary>
-        /// Returns the tag associated with the coroutine that the given handle points to, if it is running.
+        ///     Returns the tag associated with the coroutine that the given handle points to, if it is running.
         /// </summary>
         /// <param name="handle">The handle to the coroutine.</param>
         /// <returns>The coroutine's tag, or null if there is no matching tag.</returns>
@@ -4285,11 +4542,12 @@ namespace MEC
         {
             Timing inst = GetInstance(handle.Key);
             return inst != null && inst._handleToIndex.ContainsKey(handle) && inst._processTags.ContainsKey(handle)
-                 ? inst._processTags[handle] : null;
+                ? inst._processTags[handle]
+                : null;
         }
 
         /// <summary>
-        /// Returns the layer associated with the coroutine that the given handle points to, if it is running.
+        ///     Returns the layer associated with the coroutine that the given handle points to, if it is running.
         /// </summary>
         /// <param name="handle">The handle to the coroutine.</param>
         /// <returns>The coroutine's layer as a nullable integer, or null if there is no matching layer.</returns>
@@ -4297,11 +4555,12 @@ namespace MEC
         {
             Timing inst = GetInstance(handle.Key);
             return inst != null && inst._handleToIndex.ContainsKey(handle) && inst._processLayers.ContainsKey(handle)
-                  ? inst._processLayers[handle] : (int?)null;
+                ? inst._processLayers[handle]
+                : null;
         }
 
         /// <summary>
-        /// Returns >NET's name for the coroutine that the handle points to.
+        ///     Returns >NET's name for the coroutine that the handle points to.
         /// </summary>
         /// <param name="handle">The handle to the coroutine.</param>
         /// <returns>The underlying debug name of the coroutine, or info about the state of the coroutine.</returns>
@@ -4319,18 +4578,20 @@ namespace MEC
         }
 
         /// <summary>
-        /// Returns the segment that the coroutine with the given handle is running on.
+        ///     Returns the segment that the coroutine with the given handle is running on.
         /// </summary>
         /// <param name="handle">The handle to the coroutine.</param>
         /// <returns>The coroutine's segment, or Segment.Invalid if it's not found.</returns>
         public static Segment GetSegment(CoroutineHandle handle)
         {
             Timing inst = GetInstance(handle.Key);
-            return inst != null && inst._handleToIndex.ContainsKey(handle) ? inst._handleToIndex[handle].seg : Segment.Invalid;
+            return inst != null && inst._handleToIndex.ContainsKey(handle)
+                ? inst._handleToIndex[handle].seg
+                : Segment.Invalid;
         }
 
         /// <summary>
-        /// Sets the coroutine that the handle points to to have the given tag.
+        ///     Sets the coroutine that the handle points to to have the given tag.
         /// </summary>
         /// <param name="handle">The handle to the coroutine.</param>
         /// <param name="newTag">The new tag to assign, or null to clear the tag.</param>
@@ -4339,7 +4600,8 @@ namespace MEC
         public static bool SetTag(CoroutineHandle handle, string newTag, bool overwriteExisting = true)
         {
             Timing inst = GetInstance(handle.Key);
-            if (inst == null || !inst._handleToIndex.ContainsKey(handle) || inst.CoindexIsNull(inst._handleToIndex[handle])
+            if (inst == null || !inst._handleToIndex.ContainsKey(handle) ||
+                inst.CoindexIsNull(inst._handleToIndex[handle])
                 || (!overwriteExisting && inst._processTags.ContainsKey(handle)))
                 return false;
 
@@ -4350,7 +4612,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Sets the coroutine that the handle points to to have the given layer.
+        ///     Sets the coroutine that the handle points to to have the given layer.
         /// </summary>
         /// <param name="handle">The handle to the coroutine.</param>
         /// <param name="newLayer">The new tag to assign.</param>
@@ -4359,7 +4621,8 @@ namespace MEC
         public static bool SetLayer(CoroutineHandle handle, int newLayer, bool overwriteExisting = true)
         {
             Timing inst = GetInstance(handle.Key);
-            if (inst == null || !inst._handleToIndex.ContainsKey(handle) || inst.CoindexIsNull(inst._handleToIndex[handle])
+            if (inst == null || !inst._handleToIndex.ContainsKey(handle) ||
+                inst.CoindexIsNull(inst._handleToIndex[handle])
                 || (!overwriteExisting && inst._processLayers.ContainsKey(handle)))
                 return false;
 
@@ -4370,7 +4633,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Sets the segment for the coroutine with the given handle.
+        ///     Sets the segment for the coroutine with the given handle.
         /// </summary>
         /// <param name="handle">The handle to the coroutine.</param>
         /// <param name="newSegment">The new segment to run the coroutine in.</param>
@@ -4378,7 +4641,8 @@ namespace MEC
         public static bool SetSegment(CoroutineHandle handle, Segment newSegment)
         {
             Timing inst = GetInstance(handle.Key);
-            if (inst == null || !inst._handleToIndex.ContainsKey(handle) || inst.CoindexIsNull(inst._handleToIndex[handle]))
+            if (inst == null || !inst._handleToIndex.ContainsKey(handle) ||
+                inst.CoindexIsNull(inst._handleToIndex[handle]))
                 return false;
 
             ProcessIndex coindex = inst._handleToIndex[handle];
@@ -4399,7 +4663,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Sets the coroutine that the handle points to to have the given tag.
+        ///     Sets the coroutine that the handle points to to have the given tag.
         /// </summary>
         /// <param name="handle">The handle to the coroutine.</param>
         /// <returns>Whether the tag was removed successfully.</returns>
@@ -4409,14 +4673,15 @@ namespace MEC
         }
 
         /// <summary>
-        /// Sets the coroutine that the handle points to to have the given layer.
+        ///     Sets the coroutine that the handle points to to have the given layer.
         /// </summary>
         /// <param name="handle">The handle to the coroutine.</param>
         /// <returns>Whether the layer was removed successfully.</returns>
         public static bool RemoveLayer(CoroutineHandle handle)
         {
             Timing inst = GetInstance(handle.Key);
-            if (inst == null || !inst._handleToIndex.ContainsKey(handle) || inst.CoindexIsNull(inst._handleToIndex[handle]))
+            if (inst == null || !inst._handleToIndex.ContainsKey(handle) ||
+                inst.CoindexIsNull(inst._handleToIndex[handle]))
                 return false;
 
             inst.RemoveLayerOnInstance(handle);
@@ -4425,26 +4690,29 @@ namespace MEC
         }
 
         /// <summary>
-        /// Tests to see if the handle you have points to a valid coroutine that is currently running. Paused or held coroutines count as running.
+        ///     Tests to see if the handle you have points to a valid coroutine that is currently running. Paused or held
+        ///     coroutines count as running.
         /// </summary>
         /// <param name="handle">The handle to test.</param>
         /// <returns>Whether it's a valid coroutine.</returns>
         public static bool IsRunning(CoroutineHandle handle)
         {
             Timing inst = GetInstance(handle.Key);
-            return inst != null && inst._handleToIndex.ContainsKey(handle) && !inst.CoindexIsNull(inst._handleToIndex[handle]);
+            return inst != null && inst._handleToIndex.ContainsKey(handle) &&
+                   !inst.CoindexIsNull(inst._handleToIndex[handle]);
         }
 
         /// <summary>
-        /// Tests to see if the handle you have points to a coroutine that has not ended but is paused.
+        ///     Tests to see if the handle you have points to a coroutine that has not ended but is paused.
         /// </summary>
         /// <param name="handle">The handle to test.</param>
         /// <returns>Whether it's a paused coroutine.</returns>
         public static bool IsAliveAndPaused(CoroutineHandle handle)
         {
             Timing inst = GetInstance(handle.Key);
-            return inst != null && inst._handleToIndex.ContainsKey(handle) && !inst.CoindexIsNull(inst._handleToIndex[handle]) &&
-                inst.CoindexIsPaused(inst._handleToIndex[handle]);
+            return inst != null && inst._handleToIndex.ContainsKey(handle) &&
+                   !inst.CoindexIsNull(inst._handleToIndex[handle]) &&
+                   inst.CoindexIsPaused(inst._handleToIndex[handle]);
         }
 
         private void AddTagOnInstance(string tag, CoroutineHandle handle)
@@ -4872,7 +5140,8 @@ namespace MEC
                     UpdateHeld[coindex.i] = true;
 
                     if (UpdateProcesses[coindex.i].Current > GetSegmentTime(coindex.seg))
-                        coptr = _InjectDelay(UpdateProcesses[coindex.i], UpdateProcesses[coindex.i].Current - GetSegmentTime(coindex.seg));
+                        coptr = _InjectDelay(UpdateProcesses[coindex.i],
+                            UpdateProcesses[coindex.i].Current - GetSegmentTime(coindex.seg));
 
                     return coptr;
                 case Segment.FixedUpdate:
@@ -5033,8 +5302,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.WaitUntilDone(newCoroutine);" to start a new coroutine and pause the
-        /// current one until it finishes.
+        ///     Use the command "yield return Timing.WaitUntilDone(newCoroutine);" to start a new coroutine and pause the
+        ///     current one until it finishes.
         /// </summary>
         /// <param name="newCoroutine">The coroutine to pause for.</param>
         public static float WaitUntilDone(IEnumerator<float> newCoroutine)
@@ -5043,8 +5312,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.WaitUntilDone(newCoroutine);" to start a new coroutine and pause the
-        /// current one until it finishes.
+        ///     Use the command "yield return Timing.WaitUntilDone(newCoroutine);" to start a new coroutine and pause the
+        ///     current one until it finishes.
         /// </summary>
         /// <param name="newCoroutine">The coroutine to pause for.</param>
         /// <param name="tag">An optional tag to attach to the coroutine which can later be used to identify this coroutine.</param>
@@ -5054,8 +5323,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.WaitUntilDone(newCoroutine);" to start a new coroutine and pause the
-        /// current one until it finishes.
+        ///     Use the command "yield return Timing.WaitUntilDone(newCoroutine);" to start a new coroutine and pause the
+        ///     current one until it finishes.
         /// </summary>
         /// <param name="newCoroutine">The coroutine to pause for.</param>
         /// <param name="layer">An optional layer to attach to the coroutine which can later be used to identify this coroutine.</param>
@@ -5065,8 +5334,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.WaitUntilDone(newCoroutine);" to start a new coroutine and pause the
-        /// current one until it finishes.
+        ///     Use the command "yield return Timing.WaitUntilDone(newCoroutine);" to start a new coroutine and pause the
+        ///     current one until it finishes.
         /// </summary>
         /// <param name="newCoroutine">The coroutine to pause for.</param>
         /// <param name="layer">An optional layer to attach to the coroutine which can later be used to identify this coroutine.</param>
@@ -5077,8 +5346,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.WaitUntilDone(newCoroutine);" to start a new coroutine and pause the
-        /// current one until it finishes.
+        ///     Use the command "yield return Timing.WaitUntilDone(newCoroutine);" to start a new coroutine and pause the
+        ///     current one until it finishes.
         /// </summary>
         /// <param name="newCoroutine">The coroutine to pause for.</param>
         /// <param name="segment">The segment that the new coroutine should run in.</param>
@@ -5088,8 +5357,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.WaitUntilDone(newCoroutine);" to start a new coroutine and pause the
-        /// current one until it finishes.
+        ///     Use the command "yield return Timing.WaitUntilDone(newCoroutine);" to start a new coroutine and pause the
+        ///     current one until it finishes.
         /// </summary>
         /// <param name="newCoroutine">The coroutine to pause for.</param>
         /// <param name="segment">The segment that the new coroutine should run in.</param>
@@ -5100,8 +5369,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.WaitUntilDone(newCoroutine);" to start a new coroutine and pause the
-        /// current one until it finishes.
+        ///     Use the command "yield return Timing.WaitUntilDone(newCoroutine);" to start a new coroutine and pause the
+        ///     current one until it finishes.
         /// </summary>
         /// <param name="newCoroutine">The coroutine to pause for.</param>
         /// <param name="segment">The segment that the new coroutine should run in.</param>
@@ -5112,8 +5381,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.WaitUntilDone(newCoroutine);" to start a new coroutine and pause the
-        /// current one until it finishes.
+        ///     Use the command "yield return Timing.WaitUntilDone(newCoroutine);" to start a new coroutine and pause the
+        ///     current one until it finishes.
         /// </summary>
         /// <param name="newCoroutine">The coroutine to pause for.</param>
         /// <param name="segment">The segment that the new coroutine should run in.</param>
@@ -5125,8 +5394,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.WaitUntilDone(otherCoroutine);" to pause the current 
-        /// coroutine until otherCoroutine is done.
+        ///     Use the command "yield return Timing.WaitUntilDone(otherCoroutine);" to pause the current
+        ///     coroutine until otherCoroutine is done.
         /// </summary>
         /// <param name="otherCoroutine">The coroutine to pause for.</param>
         public static float WaitUntilDone(CoroutineHandle otherCoroutine)
@@ -5135,8 +5404,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.WaitUntilDone(otherCoroutine, false);" to pause the current 
-        /// coroutine until otherCoroutine is done, supressing warnings.
+        ///     Use the command "yield return Timing.WaitUntilDone(otherCoroutine, false);" to pause the current
+        ///     coroutine until otherCoroutine is done, supressing warnings.
         /// </summary>
         /// <param name="otherCoroutine">The coroutine to pause for.</param>
         /// <param name="warnOnIssue">Post a warning if no hold action was actually performed.</param>
@@ -5161,6 +5430,7 @@ namespace MEC
                     Assert.IsFalse(warnOnIssue, "A coroutine cannot wait for itself.");
                     return WaitForOneFrame;
                 }
+
                 if (!inst.currentCoroutine.IsValid)
                 {
                     Assert.IsFalse(warnOnIssue, "The two coroutines are not running on the same MEC instance.");
@@ -5176,17 +5446,20 @@ namespace MEC
                 return float.NaN;
             }
 
-            Assert.IsFalse(warnOnIssue, "WaitUntilDone cannot hold, the coroutine handle that was passed in is invalid: " + otherCoroutine);
+            Assert.IsFalse(warnOnIssue,
+                "WaitUntilDone cannot hold, the coroutine handle that was passed in is invalid: " + otherCoroutine);
             return 0f;
         }
 
         /// <summary>
-        /// This will pause one coroutine until another coroutine finishes running. Note: This is NOT used with a yield return statement.
+        ///     This will pause one coroutine until another coroutine finishes running. Note: This is NOT used with a yield return
+        ///     statement.
         /// </summary>
         /// <param name="handle">The coroutine that should be paused.</param>
         /// <param name="otherHandle">The coroutine that will be waited for.</param>
         /// <param name="warnOnIssue">Whether a warning should be logged if there is a problem.</param>
-        public static void WaitForOtherHandles(CoroutineHandle handle, CoroutineHandle otherHandle, bool warnOnIssue = true)
+        public static void WaitForOtherHandles(CoroutineHandle handle, CoroutineHandle otherHandle,
+            bool warnOnIssue = true)
         {
             if (!IsRunning(handle) || !IsRunning(otherHandle))
                 return;
@@ -5199,13 +5472,15 @@ namespace MEC
 
             if (handle.Key != otherHandle.Key)
             {
-                Assert.IsFalse(warnOnIssue, "A coroutine cannot wait for another coroutine on a different MEC instance.");
+                Assert.IsFalse(warnOnIssue,
+                    "A coroutine cannot wait for another coroutine on a different MEC instance.");
                 return;
             }
 
             Timing inst = GetInstance(handle.Key);
 
-            if (inst != null && inst._handleToIndex.ContainsKey(handle) && inst._handleToIndex.ContainsKey(otherHandle) &&
+            if (inst != null && inst._handleToIndex.ContainsKey(handle) &&
+                inst._handleToIndex.ContainsKey(otherHandle) &&
                 !inst.CoindexIsNull(inst._handleToIndex[otherHandle]))
             {
                 if (!inst._waitingTriggers.ContainsKey(otherHandle))
@@ -5224,19 +5499,21 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will pause one coroutine until the other coroutines finish running. Note: This is NOT used with a yield return statement.
+        ///     This will pause one coroutine until the other coroutines finish running. Note: This is NOT used with a yield return
+        ///     statement.
         /// </summary>
         /// <param name="handle">The coroutine that should be paused.</param>
         /// <param name="otherHandles">A list of coroutines to be waited for.</param>
         /// <param name="warnOnIssue">Whether a warning should be logged if there is a problem.</param>
-        public static void WaitForOtherHandles(CoroutineHandle handle, IEnumerable<CoroutineHandle> otherHandles, bool warnOnIssue = true)
+        public static void WaitForOtherHandles(CoroutineHandle handle, IEnumerable<CoroutineHandle> otherHandles,
+            bool warnOnIssue = true)
         {
             if (!IsRunning(handle))
                 return;
 
             Timing inst = GetInstance(handle.Key);
 
-            var othersEnum = otherHandles.GetEnumerator();
+            IEnumerator<CoroutineHandle> othersEnum = otherHandles.GetEnumerator();
             while (othersEnum.MoveNext())
             {
                 if (!IsRunning(othersEnum.Current))
@@ -5250,14 +5527,16 @@ namespace MEC
 
                 if (handle.Key != othersEnum.Current.Key)
                 {
-                    Assert.IsFalse(warnOnIssue, "A coroutine cannot wait for another coroutine on a different MEC instance.");
+                    Assert.IsFalse(warnOnIssue,
+                        "A coroutine cannot wait for another coroutine on a different MEC instance.");
                     continue;
                 }
 
                 if (!inst._waitingTriggers.ContainsKey(othersEnum.Current))
                 {
                     inst.CoindexReplace(inst._handleToIndex[othersEnum.Current],
-                        inst._StartWhenDone(othersEnum.Current, inst.CoindexPeek(inst._handleToIndex[othersEnum.Current])));
+                        inst._StartWhenDone(othersEnum.Current,
+                            inst.CoindexPeek(inst._handleToIndex[othersEnum.Current])));
                     inst._waitingTriggers.Add(othersEnum.Current, new HashSet<CoroutineHandle>());
                 }
 
@@ -5295,17 +5574,18 @@ namespace MEC
 
             if (_waitingTriggers.ContainsKey(lastHandle))
             {
-                var trigsEnum = _waitingTriggers[lastHandle].GetEnumerator();
+                HashSet<CoroutineHandle>.Enumerator trigsEnum = _waitingTriggers[lastHandle].GetEnumerator();
                 while (trigsEnum.MoveNext())
                     SwapToLast(lastHandle, trigsEnum.Current);
             }
 
             if (_allWaiting.Contains(firstHandle))
             {
-                var keyEnum = _waitingTriggers.GetEnumerator();
+                Dictionary<CoroutineHandle, HashSet<CoroutineHandle>>.Enumerator keyEnum =
+                    _waitingTriggers.GetEnumerator();
                 while (keyEnum.MoveNext())
                 {
-                    var valueEnum = keyEnum.Current.Value.GetEnumerator();
+                    HashSet<CoroutineHandle>.Enumerator valueEnum = keyEnum.Current.Value.GetEnumerator();
                     while (valueEnum.MoveNext())
                         if (valueEnum.Current == firstHandle)
                             SwapToLast(keyEnum.Current.Key, firstHandle);
@@ -5335,22 +5615,21 @@ namespace MEC
         {
             if (!_waitingTriggers.ContainsKey(handle)) return;
 
-            var tasksEnum = _waitingTriggers[handle].GetEnumerator();
+            HashSet<CoroutineHandle>.Enumerator tasksEnum = _waitingTriggers[handle].GetEnumerator();
             _waitingTriggers.Remove(handle);
 
             while (tasksEnum.MoveNext())
-            {
                 if (_handleToIndex.ContainsKey(tasksEnum.Current) && !HandleIsInWaitingList(tasksEnum.Current))
                 {
                     SetHeld(_handleToIndex[tasksEnum.Current], false);
                     _allWaiting.Remove(tasksEnum.Current);
                 }
-            }
         }
 
         private bool HandleIsInWaitingList(CoroutineHandle handle)
         {
-            var triggersEnum = _waitingTriggers.GetEnumerator();
+            Dictionary<CoroutineHandle, HashSet<CoroutineHandle>>.Enumerator triggersEnum =
+                _waitingTriggers.GetEnumerator();
             while (triggersEnum.MoveNext())
                 if (triggersEnum.Current.Value.Contains(handle))
                     return true;
@@ -5395,8 +5674,8 @@ namespace MEC
 #endif
 
         /// <summary>
-        /// Use the command "yield return Timing.WaitUntilDone(operation);" to pause the current 
-        /// coroutine until the operation is done.
+        ///     Use the command "yield return Timing.WaitUntilDone(operation);" to pause the current
+        ///     coroutine until the operation is done.
         /// </summary>
         /// <param name="operation">The operation variable returned.</param>
         public static float WaitUntilDone(AsyncOperation operation)
@@ -5423,8 +5702,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.WaitUntilDone(operation);" to pause the current 
-        /// coroutine until the operation is done.
+        ///     Use the command "yield return Timing.WaitUntilDone(operation);" to pause the current
+        ///     coroutine until the operation is done.
         /// </summary>
         /// <param name="operation">The operation variable returned.</param>
         public static float WaitUntilDone(CustomYieldInstruction operation)
@@ -5440,7 +5719,8 @@ namespace MEC
             return float.NaN;
         }
 
-        private static IEnumerator<float> _StartWhenDone(CustomYieldInstruction operation, IEnumerator<float> pausedProc)
+        private static IEnumerator<float> _StartWhenDone(CustomYieldInstruction operation,
+            IEnumerator<float> pausedProc)
         {
             while (operation.keepWaiting)
                 yield return WaitForOneFrame;
@@ -5451,11 +5731,11 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.WaitUntilTrue(evaluatorFunc);" to pause the current 
-        /// coroutine until the evaluator function returns true.
+        ///     Use the command "yield return Timing.WaitUntilTrue(evaluatorFunc);" to pause the current
+        ///     coroutine until the evaluator function returns true.
         /// </summary>
         /// <param name="evaluatorFunc">The evaluator function.</param>
-        public static float WaitUntilTrue(System.Func<bool> evaluatorFunc)
+        public static float WaitUntilTrue(Func<bool> evaluatorFunc)
         {
             if (evaluatorFunc == null || evaluatorFunc()) return float.NaN;
             _tmpRef = evaluatorFunc;
@@ -5465,15 +5745,15 @@ namespace MEC
 
         private static IEnumerator<float> WaitUntilTrueHelper(IEnumerator<float> coptr, CoroutineHandle handle)
         {
-            return _StartWhenDone(_tmpRef as System.Func<bool>, false, coptr);
+            return _StartWhenDone(_tmpRef as Func<bool>, false, coptr);
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.WaitUntilFalse(evaluatorFunc);" to pause the current 
-        /// coroutine until the evaluator function returns false.
+        ///     Use the command "yield return Timing.WaitUntilFalse(evaluatorFunc);" to pause the current
+        ///     coroutine until the evaluator function returns false.
         /// </summary>
         /// <param name="evaluatorFunc">The evaluator function.</param>
-        public static float WaitUntilFalse(System.Func<bool> evaluatorFunc)
+        public static float WaitUntilFalse(Func<bool> evaluatorFunc)
         {
             if (evaluatorFunc == null || !evaluatorFunc()) return float.NaN;
             _tmpRef = evaluatorFunc;
@@ -5483,10 +5763,11 @@ namespace MEC
 
         private static IEnumerator<float> WaitUntilFalseHelper(IEnumerator<float> coptr, CoroutineHandle handle)
         {
-            return _StartWhenDone(_tmpRef as System.Func<bool>, true, coptr);
+            return _StartWhenDone(_tmpRef as Func<bool>, true, coptr);
         }
 
-        private static IEnumerator<float> _StartWhenDone(System.Func<bool> evaluatorFunc, bool continueOn, IEnumerator<float> pausedProc)
+        private static IEnumerator<float> _StartWhenDone(Func<bool> evaluatorFunc, bool continueOn,
+            IEnumerator<float> pausedProc)
         {
             while (evaluatorFunc() == continueOn)
                 yield return WaitForOneFrame;
@@ -5506,7 +5787,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Keeps this coroutine from executing until UnlockCoroutine is called with a matching key.
+        ///     Keeps this coroutine from executing until UnlockCoroutine is called with a matching key.
         /// </summary>
         /// <param name="coroutine">The handle to the coroutine to be locked.</param>
         /// <param name="key">The key to use. A new key can be generated by calling "new CoroutineHandle(0)".</param>
@@ -5529,7 +5810,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Unlocks a coroutine that has been locked, so long as the key matches.
+        ///     Unlocks a coroutine that has been locked, so long as the key matches.
         /// </summary>
         /// <param name="coroutine">The handle to the coroutine to be unlocked.</param>
         /// <param name="key">The key that the coroutine was previously locked with.</param>
@@ -5555,20 +5836,19 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will create a one way link between two handles. If the master coroutine ends for any reason or is paused or resumed
-        /// that will also happen to the slave coroutine. If a two way link is desired then just call this funciton twice with 
-        /// parameters reversed.
+        ///     This will create a one way link between two handles. If the master coroutine ends for any reason or is paused or
+        ///     resumed
+        ///     that will also happen to the slave coroutine. If a two way link is desired then just call this funciton twice with
+        ///     parameters reversed.
         /// </summary>
         /// <param name="master">The coroutine that generates the link events</param>
         /// <param name="slave">The coroutine that recieves the link events</param>
         /// <returns>The number of coroutines that were linked.</returns>
         public static int LinkCoroutines(CoroutineHandle master, CoroutineHandle slave)
         {
-            if (!IsRunning(slave) || !master.IsValid)
-            {
-                return 0;
-            }
-            else if (!IsRunning(master))
+            if (!IsRunning(slave) || !master.IsValid) return 0;
+
+            if (!IsRunning(master))
             {
                 KillCoroutines(slave);
                 return 1;
@@ -5581,20 +5861,16 @@ namespace MEC
                     Links[master].Add(slave);
                     return 1;
                 }
-                else
-                {
-                    return 0;
-                }
+
+                return 0;
             }
-            else
-            {
-                Links.Add(master, new HashSet<CoroutineHandle> { slave });
-                return 1;
-            }
+
+            Links.Add(master, new HashSet<CoroutineHandle> { slave });
+            return 1;
         }
 
         /// <summary>
-        /// This will remove the link between two coroutine handles if one exists.
+        ///     This will remove the link between two coroutine handles if one exists.
         /// </summary>
         /// <param name="master">The coroutine that generates the link events</param>
         /// <param name="slave">The coroutine that recieves the link events</param>
@@ -5626,8 +5902,8 @@ namespace MEC
             return count;
         }
 
-        [System.Obsolete("Use Timing.CurrentCoroutine instead.", false)]
-        public static float GetMyHandle(System.Action<CoroutineHandle> reciever)
+        [Obsolete("Use Timing.CurrentCoroutine instead.", false)]
+        public static float GetMyHandle(Action<CoroutineHandle> reciever)
         {
             _tmpRef = reciever;
             ReplacementFunction = GetHandleHelper;
@@ -5636,15 +5912,15 @@ namespace MEC
 
         private static IEnumerator<float> GetHandleHelper(IEnumerator<float> input, CoroutineHandle handle)
         {
-            System.Action<CoroutineHandle> reciever = _tmpRef as System.Action<CoroutineHandle>;
+            Action<CoroutineHandle> reciever = _tmpRef as Action<CoroutineHandle>;
             if (reciever != null)
                 reciever(handle);
             return input;
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.SwitchCoroutine(segment);" to switch this coroutine to
-        /// the given segment on the default instance.
+        ///     Use the command "yield return Timing.SwitchCoroutine(segment);" to switch this coroutine to
+        ///     the given segment on the default instance.
         /// </summary>
         /// <param name="newSegment">The new segment to run in.</param>
         public static float SwitchCoroutine(Segment newSegment)
@@ -5663,8 +5939,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.SwitchCoroutine(segment, tag);" to switch this coroutine to
-        /// the given values.
+        ///     Use the command "yield return Timing.SwitchCoroutine(segment, tag);" to switch this coroutine to
+        ///     the given values.
         /// </summary>
         /// <param name="newSegment">The new segment to run in.</param>
         /// <param name="newTag">The new tag to apply, or null to remove this coroutine's tag.</param>
@@ -5681,15 +5957,15 @@ namespace MEC
         {
             Timing instance = GetInstance(handle.Key);
             instance.RemoveTagOnInstance(handle);
-            if ((_tmpRef as string) != null)
+            if (_tmpRef as string != null)
                 instance.AddTagOnInstance((string)_tmpRef, handle);
             instance.RunCoroutineInternal(coptr, _tmpSegment, 0, false, null, handle, false);
             return null;
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.SwitchCoroutine(segment, layer);" to switch this coroutine to
-        /// the given values.
+        ///     Use the command "yield return Timing.SwitchCoroutine(segment, layer);" to switch this coroutine to
+        ///     the given values.
         /// </summary>
         /// <param name="newSegment">The new segment to run in.</param>
         /// <param name="newLayer">The new layer to apply.</param>
@@ -5712,8 +5988,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.SwitchCoroutine(segment, layer, tag);" to switch this coroutine to
-        /// the given values.
+        ///     Use the command "yield return Timing.SwitchCoroutine(segment, layer, tag);" to switch this coroutine to
+        ///     the given values.
         /// </summary>
         /// <param name="newSegment">The new segment to run in.</param>
         /// <param name="newLayer">The new layer to apply.</param>
@@ -5732,7 +6008,7 @@ namespace MEC
         {
             Timing instance = GetInstance(handle.Key);
             instance.RemoveTagOnInstance(handle);
-            if ((_tmpRef as string) != null)
+            if (_tmpRef as string != null)
                 instance.AddTagOnInstance((string)_tmpRef, handle);
             RemoveLayer(handle);
             instance.AddLayerOnInstance(_tmpInt, handle);
@@ -5741,8 +6017,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.SwitchCoroutine(tag);" to switch this coroutine to
-        /// the given tag.
+        ///     Use the command "yield return Timing.SwitchCoroutine(tag);" to switch this coroutine to
+        ///     the given tag.
         /// </summary>
         /// <param name="newTag">The new tag to apply, or null to remove this coroutine's tag.</param>
         public static float SwitchCoroutine(string newTag)
@@ -5757,14 +6033,14 @@ namespace MEC
         {
             Timing instance = GetInstance(handle.Key);
             instance.RemoveTagOnInstance(handle);
-            if ((_tmpRef as string) != null)
+            if (_tmpRef as string != null)
                 instance.AddTagOnInstance((string)_tmpRef, handle);
             return coptr;
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.SwitchCoroutine(layer);" to switch this coroutine to
-        /// the given layer.
+        ///     Use the command "yield return Timing.SwitchCoroutine(layer);" to switch this coroutine to
+        ///     the given layer.
         /// </summary>
         /// <param name="newLayer">The new layer to apply.</param>
         public static float SwitchCoroutine(int newLayer)
@@ -5783,8 +6059,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return Timing.SwitchCoroutine(layer, tag);" to switch this coroutine to
-        /// the given tag.
+        ///     Use the command "yield return Timing.SwitchCoroutine(layer, tag);" to switch this coroutine to
+        ///     the given tag.
         /// </summary>
         /// <param name="newLayer">The new layer to apply.</param>
         /// <param name="newTag">The new tag to apply, or null to remove this coroutine's tag.</param>
@@ -5803,61 +6079,69 @@ namespace MEC
             instance.RemoveLayerOnInstance(handle);
             instance.AddLayerOnInstance(_tmpInt, handle);
             instance.RemoveTagOnInstance(handle);
-            if ((_tmpRef as string) != null)
+            if (_tmpRef as string != null)
                 instance.AddTagOnInstance((string)_tmpRef, handle);
 
             return coptr;
         }
 
         /// <summary>
-        /// Calls the specified action after a specified number of seconds.
+        ///     Calls the specified action after a specified number of seconds.
         /// </summary>
         /// <param name="delay">The number of seconds to wait before calling the action.</param>
         /// <param name="action">The action to call.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public static CoroutineHandle CallDelayed(float delay, System.Action action)
+        public static CoroutineHandle CallDelayed(float delay, Action action)
         {
             return action == null ? new CoroutineHandle() : RunCoroutine(Instance._DelayedCall(delay, action, null));
         }
 
         /// <summary>
-        /// Calls the specified action after a specified number of seconds.
+        ///     Calls the specified action after a specified number of seconds.
         /// </summary>
         /// <param name="delay">The number of seconds to wait before calling the action.</param>
         /// <param name="action">The action to call.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public CoroutineHandle CallDelayedOnInstance(float delay, System.Action action)
+        public CoroutineHandle CallDelayedOnInstance(float delay, Action action)
         {
             return action == null ? new CoroutineHandle() : RunCoroutineOnInstance(_DelayedCall(delay, action, null));
         }
 
         /// <summary>
-        /// Calls the specified action after a specified number of seconds.
+        ///     Calls the specified action after a specified number of seconds.
         /// </summary>
         /// <param name="delay">The number of seconds to wait before calling the action.</param>
         /// <param name="action">The action to call.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed 
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed
+        ///     before calling the action.
+        /// </param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public static CoroutineHandle CallDelayed(float delay, System.Action action, GameObject gameObject)
+        public static CoroutineHandle CallDelayed(float delay, Action action, GameObject gameObject)
         {
-            return action == null ? new CoroutineHandle() : RunCoroutine(Instance._DelayedCall(delay, action, gameObject), gameObject);
+            return action == null
+                ? new CoroutineHandle()
+                : RunCoroutine(Instance._DelayedCall(delay, action, gameObject), gameObject);
         }
 
         /// <summary>
-        /// Calls the specified action after a specified number of seconds.
+        ///     Calls the specified action after a specified number of seconds.
         /// </summary>
         /// <param name="delay">The number of seconds to wait before calling the action.</param>
         /// <param name="action">The action to call.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed 
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed
+        ///     before calling the action.
+        /// </param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public CoroutineHandle CallDelayedOnInstance(float delay, System.Action action, GameObject gameObject)
+        public CoroutineHandle CallDelayedOnInstance(float delay, Action action, GameObject gameObject)
         {
-            return action == null ? new CoroutineHandle() : RunCoroutineOnInstance(_DelayedCall(delay, action, gameObject), gameObject);
+            return action == null
+                ? new CoroutineHandle()
+                : RunCoroutineOnInstance(_DelayedCall(delay, action, gameObject), gameObject);
         }
 
-        private IEnumerator<float> _DelayedCall(float delay, System.Action action, GameObject cancelWith)
+        private IEnumerator<float> _DelayedCall(float delay, Action action, GameObject cancelWith)
         {
             yield return WaitForSecondsOnInstance(delay);
 
@@ -5866,141 +6150,184 @@ namespace MEC
         }
 
         /// <summary>
-        /// Calls the specified action after a specified number of seconds.
+        ///     Calls the specified action after a specified number of seconds.
         /// </summary>
         /// <param name="delay">The number of seconds to wait before calling the action.</param>
         /// <param name="action">The action to call.</param>
         /// <param name="segment">The timing segment that the call should be made in.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public static CoroutineHandle CallDelayed(float delay, Segment segment, System.Action action)
+        public static CoroutineHandle CallDelayed(float delay, Segment segment, Action action)
         {
-            return action == null ? new CoroutineHandle() : RunCoroutine(Instance._DelayedCall(delay, action, null), segment);
+            return action == null
+                ? new CoroutineHandle()
+                : RunCoroutine(Instance._DelayedCall(delay, action, null), segment);
         }
 
         /// <summary>
-        /// Calls the specified action after a specified number of seconds.
+        ///     Calls the specified action after a specified number of seconds.
         /// </summary>
         /// <param name="delay">The number of seconds to wait before calling the action.</param>
         /// <param name="action">The action to call.</param>
         /// <param name="segment">The timing segment that the call should be made in.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public CoroutineHandle CallDelayedOnInstance(float delay, Segment segment, System.Action action)
+        public CoroutineHandle CallDelayedOnInstance(float delay, Segment segment, Action action)
         {
-            return action == null ? new CoroutineHandle() : RunCoroutineOnInstance(_DelayedCall(delay, action, null), segment);
+            return action == null
+                ? new CoroutineHandle()
+                : RunCoroutineOnInstance(_DelayedCall(delay, action, null), segment);
         }
 
         /// <summary>
-        /// Calls the specified action after a specified number of seconds.
+        ///     Calls the specified action after a specified number of seconds.
         /// </summary>
         /// <param name="delay">The number of seconds to wait before calling the action.</param>
         /// <param name="action">The action to call.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed 
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed
+        ///     before calling the action.
+        /// </param>
         /// <param name="segment">The timing segment that the call should be made in.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public static CoroutineHandle CallDelayed(float delay, Segment segment, System.Action action, GameObject gameObject)
+        public static CoroutineHandle CallDelayed(float delay, Segment segment, Action action, GameObject gameObject)
         {
-            return action == null ? new CoroutineHandle() : RunCoroutine(Instance._DelayedCall(delay, action, gameObject), segment, gameObject);
+            return action == null
+                ? new CoroutineHandle()
+                : RunCoroutine(Instance._DelayedCall(delay, action, gameObject), segment, gameObject);
         }
 
         /// <summary>
-        /// Calls the specified action after a specified number of seconds.
+        ///     Calls the specified action after a specified number of seconds.
         /// </summary>
         /// <param name="delay">The number of seconds to wait before calling the action.</param>
         /// <param name="action">The action to call.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed 
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed
+        ///     before calling the action.
+        /// </param>
         /// <param name="segment">The timing segment that the call should be made in.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public CoroutineHandle CallDelayedOnInstance(float delay, Segment segment, System.Action action, GameObject gameObject)
+        public CoroutineHandle CallDelayedOnInstance(float delay, Segment segment, Action action, GameObject gameObject)
         {
-            return action == null ? new CoroutineHandle() : RunCoroutineOnInstance(_DelayedCall(delay, action, gameObject), segment, gameObject);
+            return action == null
+                ? new CoroutineHandle()
+                : RunCoroutineOnInstance(_DelayedCall(delay, action, gameObject), segment, gameObject);
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="period">The amount of time between calls.</param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public static CoroutineHandle CallPeriodically(float timeframe, float period, System.Action action, System.Action onDone = null)
+        public static CoroutineHandle CallPeriodically(float timeframe, float period, Action action,
+            Action onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle() : RunCoroutine(Instance._CallContinuously(period, action, null));
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
+                : RunCoroutine(Instance._CallContinuously(period, action, null));
             if (!float.IsPositiveInfinity(timeframe))
                 RunCoroutine(Instance._WatchCall(timeframe, handle, null, onDone));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="period">The amount of time between calls.</param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public CoroutineHandle CallPeriodicallyOnInstance(float timeframe, float period, System.Action action, System.Action onDone = null)
+        public CoroutineHandle CallPeriodicallyOnInstance(float timeframe, float period, Action action,
+            Action onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle() : RunCoroutineOnInstance(_CallContinuously(period, action, null));
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
+                : RunCoroutineOnInstance(_CallContinuously(period, action, null));
             if (!float.IsPositiveInfinity(timeframe))
                 RunCoroutineOnInstance(_WatchCall(timeframe, handle, null, onDone));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="period">The amount of time between calls.</param>
         /// <param name="action">The action to call every frame.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
+        ///     before calling the action.
+        /// </param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public static CoroutineHandle CallPeriodically(float timeframe, float period, System.Action action,
-            GameObject gameObject, System.Action onDone = null)
+        public static CoroutineHandle CallPeriodically(float timeframe, float period, Action action,
+            GameObject gameObject, Action onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutine(Instance._CallContinuously(period, action, gameObject), gameObject);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutine(Instance._WatchCall(timeframe, handle, gameObject, onDone), gameObject));
+                LinkCoroutines(handle,
+                    RunCoroutine(Instance._WatchCall(timeframe, handle, gameObject, onDone), gameObject));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="period">The amount of time between calls.</param>
         /// <param name="action">The action to call every frame.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
+        ///     before calling the action.
+        /// </param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public CoroutineHandle CallPeriodicallyOnInstance(float timeframe, float period, System.Action action,
-            GameObject gameObject, System.Action onDone = null)
+        public CoroutineHandle CallPeriodicallyOnInstance(float timeframe, float period, Action action,
+            GameObject gameObject, Action onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutineOnInstance(_CallContinuously(period, action, gameObject), gameObject);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutineOnInstance(_WatchCall(timeframe, handle, gameObject, onDone), gameObject));
+                LinkCoroutines(handle,
+                    RunCoroutineOnInstance(_WatchCall(timeframe, handle, gameObject, onDone), gameObject));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="period">The amount of time between calls.</param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="timing">The timing segment to run in.</param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public static CoroutineHandle CallPeriodically(float timeframe, float period, System.Action action, Segment timing, System.Action onDone = null)
+        public static CoroutineHandle CallPeriodically(float timeframe, float period, Action action, Segment timing,
+            Action onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutine(Instance._CallContinuously(period, action, null), timing);
             if (!float.IsPositiveInfinity(timeframe))
                 RunCoroutine(Instance._WatchCall(timeframe, handle, null, onDone), timing);
@@ -6008,17 +6335,22 @@ namespace MEC
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="period">The amount of time between calls.</param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="timing">The timing segment to run in.</param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public CoroutineHandle CallPeriodicallyOnInstance(float timeframe, float period, System.Action action, Segment timing, System.Action onDone = null)
+        public CoroutineHandle CallPeriodicallyOnInstance(float timeframe, float period, Action action, Segment timing,
+            Action onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutineOnInstance(_CallContinuously(period, action, null), timing);
             if (!float.IsPositiveInfinity(timeframe))
                 LinkCoroutines(handle, RunCoroutineOnInstance(_WatchCall(timeframe, handle, null, onDone), timing));
@@ -6026,184 +6358,253 @@ namespace MEC
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="period">The amount of time between calls.</param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="timing">The timing segment to run in.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
+        ///     before calling the action.
+        /// </param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public static CoroutineHandle CallPeriodically(float timeframe, float period, System.Action action, Segment timing,
-            GameObject gameObject, System.Action onDone = null)
+        public static CoroutineHandle CallPeriodically(float timeframe, float period, Action action, Segment timing,
+            GameObject gameObject, Action onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutine(Instance._CallContinuously(period, action, gameObject), timing, gameObject);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutine(Instance._WatchCall(timeframe, handle, gameObject, onDone), timing, gameObject));
+                LinkCoroutines(handle,
+                    RunCoroutine(Instance._WatchCall(timeframe, handle, gameObject, onDone), timing, gameObject));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="period">The amount of time between calls.</param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="timing">The timing segment to run in.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
+        ///     before calling the action.
+        /// </param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public CoroutineHandle CallPeriodicallyOnInstance(float timeframe, float period, System.Action action, Segment timing,
-            GameObject gameObject, System.Action onDone = null)
+        public CoroutineHandle CallPeriodicallyOnInstance(float timeframe, float period, Action action, Segment timing,
+            GameObject gameObject, Action onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutineOnInstance(_CallContinuously(period, action, gameObject), timing, gameObject);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutineOnInstance(_WatchCall(timeframe, handle, gameObject, onDone), timing, gameObject));
+                LinkCoroutines(handle,
+                    RunCoroutineOnInstance(_WatchCall(timeframe, handle, gameObject, onDone), timing, gameObject));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public static CoroutineHandle CallContinuously(float timeframe, System.Action action, System.Action onDone = null)
+        public static CoroutineHandle CallContinuously(float timeframe, Action action, Action onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle() : RunCoroutine(Instance._CallContinuously(0f, action, null));
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
+                : RunCoroutine(Instance._CallContinuously(0f, action, null));
             if (!float.IsPositiveInfinity(timeframe))
                 LinkCoroutines(handle, RunCoroutine(Instance._WatchCall(timeframe, handle, null, onDone)));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public CoroutineHandle CallContinuouslyOnInstance(float timeframe, System.Action action, System.Action onDone = null)
+        public CoroutineHandle CallContinuouslyOnInstance(float timeframe, Action action, Action onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle() : RunCoroutineOnInstance(_CallContinuously(0f, action, null));
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
+                : RunCoroutineOnInstance(_CallContinuously(0f, action, null));
             if (!float.IsPositiveInfinity(timeframe))
                 LinkCoroutines(handle, RunCoroutineOnInstance(_WatchCall(timeframe, handle, null, onDone)));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="action">The action to call every frame.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
+        ///     before calling the action.
+        /// </param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public static CoroutineHandle CallContinuously(float timeframe, System.Action action, GameObject gameObject, System.Action onDone = null)
+        public static CoroutineHandle CallContinuously(float timeframe, Action action, GameObject gameObject,
+            Action onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle() : RunCoroutine(Instance._CallContinuously(0f, action, gameObject), gameObject);
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
+                : RunCoroutine(Instance._CallContinuously(0f, action, gameObject), gameObject);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutine(Instance._WatchCall(timeframe, handle, gameObject, onDone), gameObject));
+                LinkCoroutines(handle,
+                    RunCoroutine(Instance._WatchCall(timeframe, handle, gameObject, onDone), gameObject));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="action">The action to call every frame.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
+        ///     before calling the action.
+        /// </param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public CoroutineHandle CallContinuouslyOnInstance(float timeframe, System.Action action, GameObject gameObject, System.Action onDone = null)
+        public CoroutineHandle CallContinuouslyOnInstance(float timeframe, Action action, GameObject gameObject,
+            Action onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle() : RunCoroutineOnInstance(_CallContinuously(0f, action, gameObject), gameObject);
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
+                : RunCoroutineOnInstance(_CallContinuously(0f, action, gameObject), gameObject);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutineOnInstance(_WatchCall(timeframe, handle, gameObject, onDone), gameObject));
+                LinkCoroutines(handle,
+                    RunCoroutineOnInstance(_WatchCall(timeframe, handle, gameObject, onDone), gameObject));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action every frame for a given number of seconds.
+        ///     Calls the supplied action every frame for a given number of seconds.
         /// </summary>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="timing">The timing segment to run in.</param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public static CoroutineHandle CallContinuously(float timeframe, System.Action action, Segment timing, System.Action onDone = null)
+        public static CoroutineHandle CallContinuously(float timeframe, Action action, Segment timing,
+            Action onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle() : RunCoroutine(Instance._CallContinuously(0f, action, null), timing);
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
+                : RunCoroutine(Instance._CallContinuously(0f, action, null), timing);
             if (!float.IsPositiveInfinity(timeframe))
                 LinkCoroutines(handle, RunCoroutine(Instance._WatchCall(timeframe, handle, null, onDone), timing));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action every frame for a given number of seconds.
+        ///     Calls the supplied action every frame for a given number of seconds.
         /// </summary>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="timing">The timing segment to run in.</param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public CoroutineHandle CallContinuouslyOnInstance(float timeframe, System.Action action, Segment timing, System.Action onDone = null)
+        public CoroutineHandle CallContinuouslyOnInstance(float timeframe, Action action, Segment timing,
+            Action onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle() : RunCoroutineOnInstance(_CallContinuously(0f, action, null), timing);
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
+                : RunCoroutineOnInstance(_CallContinuously(0f, action, null), timing);
             if (!float.IsPositiveInfinity(timeframe))
                 LinkCoroutines(handle, RunCoroutineOnInstance(_WatchCall(timeframe, handle, null, onDone), timing));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action every frame for a given number of seconds.
+        ///     Calls the supplied action every frame for a given number of seconds.
         /// </summary>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="timing">The timing segment to run in.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
+        ///     before calling the action.
+        /// </param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public static CoroutineHandle CallContinuously(float timeframe, System.Action action, Segment timing,
-            GameObject gameObject, System.Action onDone = null)
+        public static CoroutineHandle CallContinuously(float timeframe, Action action, Segment timing,
+            GameObject gameObject, Action onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutine(Instance._CallContinuously(0f, action, gameObject), timing, gameObject);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutine(Instance._WatchCall(timeframe, handle, gameObject, onDone), timing, gameObject));
+                LinkCoroutines(handle,
+                    RunCoroutine(Instance._WatchCall(timeframe, handle, gameObject, onDone), timing, gameObject));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action every frame for a given number of seconds.
+        ///     Calls the supplied action every frame for a given number of seconds.
         /// </summary>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="timing">The timing segment to run in.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
+        ///     before calling the action.
+        /// </param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public CoroutineHandle CallContinuouslyOnInstance(float timeframe, System.Action action, Segment timing,
-            GameObject gameObject, System.Action onDone = null)
+        public CoroutineHandle CallContinuouslyOnInstance(float timeframe, Action action, Segment timing,
+            GameObject gameObject, Action onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutineOnInstance(_CallContinuously(0f, action, gameObject), timing, gameObject);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutineOnInstance(_WatchCall(timeframe, handle, gameObject, onDone), timing, gameObject));
+                LinkCoroutines(handle,
+                    RunCoroutineOnInstance(_WatchCall(timeframe, handle, gameObject, onDone), timing, gameObject));
             return handle;
         }
 
-        private IEnumerator<float> _WatchCall(float timeframe, CoroutineHandle handle, GameObject gObject, System.Action onDone)
+        private IEnumerator<float> _WatchCall(float timeframe, CoroutineHandle handle, GameObject gObject,
+            Action onDone)
         {
             yield return WaitForSecondsOnInstance(timeframe);
 
@@ -6213,7 +6614,7 @@ namespace MEC
                 onDone();
         }
 
-        private IEnumerator<float> _CallContinuously(float period, System.Action action, GameObject gObject)
+        private IEnumerator<float> _CallContinuously(float period, Action action, GameObject gObject)
         {
             while (ReferenceEquals(gObject, null) || gObject != null)
             {
@@ -6225,320 +6626,425 @@ namespace MEC
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
         /// <param name="reference">A value that will be passed in to the supplied action each period.</param>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="period">The amount of time between calls.</param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
         public static CoroutineHandle CallPeriodically<T>(T reference, float timeframe, float period,
-            System.Action<T> action, System.Action<T> onDone = null)
+            Action<T> action, Action<T> onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle() : RunCoroutine(Instance._CallContinuously(reference, period, action, null));
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
+                : RunCoroutine(Instance._CallContinuously(reference, period, action, null));
             if (!float.IsPositiveInfinity(timeframe))
                 LinkCoroutines(handle, RunCoroutine(Instance._WatchCall(reference, timeframe, handle, null, onDone)));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
         /// <param name="reference">A value that will be passed in to the supplied action each period.</param>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="period">The amount of time between calls.</param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
         public CoroutineHandle CallPeriodicallyOnInstance<T>(T reference, float timeframe, float period,
-            System.Action<T> action, System.Action<T> onDone = null)
+            Action<T> action, Action<T> onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle() : RunCoroutineOnInstance(_CallContinuously(reference, period, action, null));
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
+                : RunCoroutineOnInstance(_CallContinuously(reference, period, action, null));
             if (!float.IsPositiveInfinity(timeframe))
                 LinkCoroutines(handle, RunCoroutineOnInstance(_WatchCall(reference, timeframe, handle, null, onDone)));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
         /// <param name="reference">A value that will be passed in to the supplied action each period.</param>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="period">The amount of time between calls.</param>
         /// <param name="action">The action to call every frame.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
+        ///     before calling the action.
+        /// </param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
         public static CoroutineHandle CallPeriodically<T>(T reference, float timeframe, float period,
-            System.Action<T> action, GameObject gameObject, System.Action<T> onDone = null)
+            Action<T> action, GameObject gameObject, Action<T> onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutine(Instance._CallContinuously(reference, period, action, gameObject), gameObject);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutine(Instance._WatchCall(reference, timeframe, handle, gameObject, onDone), gameObject));
+                LinkCoroutines(handle,
+                    RunCoroutine(Instance._WatchCall(reference, timeframe, handle, gameObject, onDone), gameObject));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
         /// <param name="reference">A value that will be passed in to the supplied action each period.</param>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="period">The amount of time between calls.</param>
         /// <param name="action">The action to call every frame.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
+        ///     before calling the action.
+        /// </param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
         public CoroutineHandle CallPeriodicallyOnInstance<T>(T reference, float timeframe, float period,
-            System.Action<T> action, GameObject gameObject, System.Action<T> onDone = null)
+            Action<T> action, GameObject gameObject, Action<T> onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutineOnInstance(_CallContinuously(reference, period, action, gameObject), gameObject);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutineOnInstance(_WatchCall(reference, timeframe, handle, gameObject, onDone), gameObject));
+                LinkCoroutines(handle,
+                    RunCoroutineOnInstance(_WatchCall(reference, timeframe, handle, gameObject, onDone), gameObject));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
         /// <param name="reference">A value that will be passed in to the supplied action each period.</param>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="period">The amount of time between calls.</param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="timing">The timing segment to run in.</param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public static CoroutineHandle CallPeriodically<T>(T reference, float timeframe, float period, System.Action<T> action,
-            Segment timing, System.Action<T> onDone = null)
+        public static CoroutineHandle CallPeriodically<T>(T reference, float timeframe, float period, Action<T> action,
+            Segment timing, Action<T> onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutine(Instance._CallContinuously(reference, period, action, null), timing);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutine(Instance._WatchCall(reference, timeframe, handle, null, onDone), timing));
+                LinkCoroutines(handle,
+                    RunCoroutine(Instance._WatchCall(reference, timeframe, handle, null, onDone), timing));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
         /// <param name="reference">A value that will be passed in to the supplied action each period.</param>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="period">The amount of time between calls.</param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="timing">The timing segment to run in.</param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public CoroutineHandle CallPeriodicallyOnInstance<T>(T reference, float timeframe, float period, System.Action<T> action,
-            Segment timing, System.Action<T> onDone = null)
+        public CoroutineHandle CallPeriodicallyOnInstance<T>(T reference, float timeframe, float period,
+            Action<T> action,
+            Segment timing, Action<T> onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutineOnInstance(_CallContinuously(reference, period, action, null), timing);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutineOnInstance(_WatchCall(reference, timeframe, handle, null, onDone), timing));
+                LinkCoroutines(handle,
+                    RunCoroutineOnInstance(_WatchCall(reference, timeframe, handle, null, onDone), timing));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
         /// <param name="reference">A value that will be passed in to the supplied action each period.</param>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="period">The amount of time between calls.</param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="timing">The timing segment to run in.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
+        ///     before calling the action.
+        /// </param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public static CoroutineHandle CallPeriodically<T>(T reference, float timeframe, float period, System.Action<T> action,
-            Segment timing, GameObject gameObject, System.Action<T> onDone = null)
+        public static CoroutineHandle CallPeriodically<T>(T reference, float timeframe, float period, Action<T> action,
+            Segment timing, GameObject gameObject, Action<T> onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutine(Instance._CallContinuously(reference, period, action, gameObject), timing, gameObject);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutine(Instance._WatchCall(reference, timeframe, handle, gameObject, onDone), timing, gameObject));
+                LinkCoroutines(handle,
+                    RunCoroutine(Instance._WatchCall(reference, timeframe, handle, gameObject, onDone), timing,
+                        gameObject));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action at the given rate for a given number of seconds.
+        ///     Calls the supplied action at the given rate for a given number of seconds.
         /// </summary>
         /// <param name="reference">A value that will be passed in to the supplied action each period.</param>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="period">The amount of time between calls.</param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="timing">The timing segment to run in.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
+        ///     before calling the action.
+        /// </param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public CoroutineHandle CallPeriodicallyOnInstance<T>(T reference, float timeframe, float period, System.Action<T> action,
-            Segment timing, GameObject gameObject, System.Action<T> onDone = null)
+        public CoroutineHandle CallPeriodicallyOnInstance<T>(T reference, float timeframe, float period,
+            Action<T> action,
+            Segment timing, GameObject gameObject, Action<T> onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutineOnInstance(_CallContinuously(reference, period, action, gameObject), timing, gameObject);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutineOnInstance(_WatchCall(reference, timeframe, handle, gameObject, onDone), timing, gameObject));
+                LinkCoroutines(handle,
+                    RunCoroutineOnInstance(_WatchCall(reference, timeframe, handle, gameObject, onDone), timing,
+                        gameObject));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action every frame for a given number of seconds.
+        ///     Calls the supplied action every frame for a given number of seconds.
         /// </summary>
         /// <param name="reference">A value that will be passed in to the supplied action each frame.</param>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public static CoroutineHandle CallContinuously<T>(T reference, float timeframe, System.Action<T> action, System.Action<T> onDone = null)
+        public static CoroutineHandle CallContinuously<T>(T reference, float timeframe, Action<T> action,
+            Action<T> onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle() : RunCoroutine(Instance._CallContinuously(reference, 0f, action, null));
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
+                : RunCoroutine(Instance._CallContinuously(reference, 0f, action, null));
             if (!float.IsPositiveInfinity(timeframe))
                 LinkCoroutines(handle, RunCoroutine(Instance._WatchCall(reference, timeframe, handle, null, onDone)));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action every frame for a given number of seconds.
+        ///     Calls the supplied action every frame for a given number of seconds.
         /// </summary>
         /// <param name="reference">A value that will be passed in to the supplied action each frame.</param>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public CoroutineHandle CallContinuouslyOnInstance<T>(T reference, float timeframe, System.Action<T> action, System.Action<T> onDone = null)
+        public CoroutineHandle CallContinuouslyOnInstance<T>(T reference, float timeframe, Action<T> action,
+            Action<T> onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle() : RunCoroutineOnInstance(_CallContinuously(reference, 0f, action, null));
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
+                : RunCoroutineOnInstance(_CallContinuously(reference, 0f, action, null));
             if (!float.IsPositiveInfinity(timeframe))
                 LinkCoroutines(handle, RunCoroutineOnInstance(_WatchCall(reference, timeframe, handle, null, onDone)));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action every frame for a given number of seconds.
+        ///     Calls the supplied action every frame for a given number of seconds.
         /// </summary>
         /// <param name="reference">A value that will be passed in to the supplied action each frame.</param>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="action">The action to call every frame.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
+        ///     before calling the action.
+        /// </param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public static CoroutineHandle CallContinuously<T>(T reference, float timeframe, System.Action<T> action,
-            GameObject gameObject, System.Action<T> onDone = null)
+        public static CoroutineHandle CallContinuously<T>(T reference, float timeframe, Action<T> action,
+            GameObject gameObject, Action<T> onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutine(Instance._CallContinuously(reference, 0f, action, gameObject), gameObject);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutine(Instance._WatchCall(reference, timeframe, handle, gameObject, onDone), gameObject));
+                LinkCoroutines(handle,
+                    RunCoroutine(Instance._WatchCall(reference, timeframe, handle, gameObject, onDone), gameObject));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action every frame for a given number of seconds.
+        ///     Calls the supplied action every frame for a given number of seconds.
         /// </summary>
         /// <param name="reference">A value that will be passed in to the supplied action each frame.</param>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="action">The action to call every frame.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
+        ///     before calling the action.
+        /// </param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public CoroutineHandle CallContinuouslyOnInstance<T>(T reference, float timeframe, System.Action<T> action,
-            GameObject gameObject, System.Action<T> onDone = null)
+        public CoroutineHandle CallContinuouslyOnInstance<T>(T reference, float timeframe, Action<T> action,
+            GameObject gameObject, Action<T> onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutineOnInstance(_CallContinuously(reference, 0f, action, gameObject), gameObject);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutineOnInstance(_WatchCall(reference, timeframe, handle, gameObject, onDone), gameObject));
+                LinkCoroutines(handle,
+                    RunCoroutineOnInstance(_WatchCall(reference, timeframe, handle, gameObject, onDone), gameObject));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action every frame for a given number of seconds.
+        ///     Calls the supplied action every frame for a given number of seconds.
         /// </summary>
         /// <param name="reference">A value that will be passed in to the supplied action each frame.</param>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="timing">The timing segment to run in.</param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public static CoroutineHandle CallContinuously<T>(T reference, float timeframe, System.Action<T> action,
-            Segment timing, System.Action<T> onDone = null)
+        public static CoroutineHandle CallContinuously<T>(T reference, float timeframe, Action<T> action,
+            Segment timing, Action<T> onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutine(Instance._CallContinuously(reference, 0f, action, null), timing);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutine(Instance._WatchCall(reference, timeframe, handle, null, onDone), timing));
+                LinkCoroutines(handle,
+                    RunCoroutine(Instance._WatchCall(reference, timeframe, handle, null, onDone), timing));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action every frame for a given number of seconds.
+        ///     Calls the supplied action every frame for a given number of seconds.
         /// </summary>
         /// <param name="reference">A value that will be passed in to the supplied action each frame.</param>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="timing">The timing segment to run in.</param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public CoroutineHandle CallContinuouslyOnInstance<T>(T reference, float timeframe, System.Action<T> action,
-            Segment timing, System.Action<T> onDone = null)
+        public CoroutineHandle CallContinuouslyOnInstance<T>(T reference, float timeframe, Action<T> action,
+            Segment timing, Action<T> onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutineOnInstance(_CallContinuously(reference, 0f, action, null), timing);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutineOnInstance(_WatchCall(reference, timeframe, handle, null, onDone), timing));
+                LinkCoroutines(handle,
+                    RunCoroutineOnInstance(_WatchCall(reference, timeframe, handle, null, onDone), timing));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action every frame for a given number of seconds.
+        ///     Calls the supplied action every frame for a given number of seconds.
         /// </summary>
         /// <param name="reference">A value that will be passed in to the supplied action each frame.</param>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="timing">The timing segment to run in.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
+        ///     before calling the action.
+        /// </param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public static CoroutineHandle CallContinuously<T>(T reference, float timeframe, System.Action<T> action,
-            Segment timing, GameObject gameObject, System.Action<T> onDone = null)
+        public static CoroutineHandle CallContinuously<T>(T reference, float timeframe, Action<T> action,
+            Segment timing, GameObject gameObject, Action<T> onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutine(Instance._CallContinuously(reference, 0f, action, gameObject), timing, gameObject);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutine(Instance._WatchCall(reference, timeframe, handle, gameObject, onDone), timing, gameObject));
+                LinkCoroutines(handle,
+                    RunCoroutine(Instance._WatchCall(reference, timeframe, handle, gameObject, onDone), timing,
+                        gameObject));
             return handle;
         }
 
         /// <summary>
-        /// Calls the supplied action every frame for a given number of seconds.
+        ///     Calls the supplied action every frame for a given number of seconds.
         /// </summary>
         /// <param name="reference">A value that will be passed in to the supplied action each frame.</param>
-        /// <param name="timeframe">The number of seconds that this function should run. Use float.PositiveInfinity to run indefinitely.</param>
+        /// <param name="timeframe">
+        ///     The number of seconds that this function should run. Use float.PositiveInfinity to run
+        ///     indefinitely.
+        /// </param>
         /// <param name="action">The action to call every frame.</param>
         /// <param name="timing">The timing segment to run in.</param>
-        /// <param name="gameObject">A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
-        /// before calling the action.</param>
+        /// <param name="gameObject">
+        ///     A GameObject that will be tagged onto the coroutine and checked to make sure it hasn't been destroyed or disabled
+        ///     before calling the action.
+        /// </param>
         /// <param name="onDone">An optional action to call when this function finishes.</param>
         /// <returns>The handle to the coroutine that is started by this function.</returns>
-        public CoroutineHandle CallContinuouslyOnInstance<T>(T reference, float timeframe, System.Action<T> action,
-            Segment timing, GameObject gameObject, System.Action<T> onDone = null)
+        public CoroutineHandle CallContinuouslyOnInstance<T>(T reference, float timeframe, Action<T> action,
+            Segment timing, GameObject gameObject, Action<T> onDone = null)
         {
-            CoroutineHandle handle = action == null ? new CoroutineHandle()
+            CoroutineHandle handle = action == null
+                ? new CoroutineHandle()
                 : RunCoroutineOnInstance(_CallContinuously(reference, 0f, action, gameObject), timing, gameObject);
             if (!float.IsPositiveInfinity(timeframe))
-                LinkCoroutines(handle, RunCoroutineOnInstance(_WatchCall(reference, timeframe, handle, gameObject, onDone), timing, gameObject));
+                LinkCoroutines(handle,
+                    RunCoroutineOnInstance(_WatchCall(reference, timeframe, handle, gameObject, onDone), timing,
+                        gameObject));
             return handle;
         }
 
-        private IEnumerator<float> _WatchCall<T>(T reference, float timeframe, CoroutineHandle handle, GameObject gObject, System.Action<T> onDone)
+        private IEnumerator<float> _WatchCall<T>(T reference, float timeframe, CoroutineHandle handle,
+            GameObject gObject, Action<T> onDone)
         {
             yield return WaitForSecondsOnInstance(timeframe);
 
@@ -6548,9 +7054,9 @@ namespace MEC
                 onDone(reference);
         }
 
-        private IEnumerator<float> _CallContinuously<T>(T reference, float period, System.Action<T> action, GameObject gObject)
+        private IEnumerator<float> _CallContinuously<T>(T reference, float period, Action<T> action, GameObject gObject)
         {
-            while ((ReferenceEquals(gObject, null) || gObject != null))
+            while (ReferenceEquals(gObject, null) || gObject != null)
             {
                 yield return WaitForSecondsOnInstance(period);
 
@@ -6559,7 +7065,7 @@ namespace MEC
             }
         }
 
-        private struct ProcessIndex : System.IEquatable<ProcessIndex>
+        private struct ProcessIndex : IEquatable<ProcessIndex>
         {
             public Segment seg;
             public int i;
@@ -6588,178 +7094,245 @@ namespace MEC
 
             public override int GetHashCode()
             {
-                return (((int)seg - 4) * (int.MaxValue / 7)) + i;
+                return ((int)seg - 4) * (int.MaxValue / 7) + i;
             }
         }
 
-        [System.Obsolete("Unity coroutine function, use RunCoroutine instead.", true)]
-        public new Coroutine StartCoroutine(System.Collections.IEnumerator routine) { return null; }
+        [Obsolete("Unity coroutine function, use RunCoroutine instead.", true)]
+        public new Coroutine StartCoroutine(IEnumerator routine)
+        {
+            return null;
+        }
 
-        [System.Obsolete("Unity coroutine function, use RunCoroutine instead.", true)]
-        public new Coroutine StartCoroutine(string methodName, object value) { return null; }
+        [Obsolete("Unity coroutine function, use RunCoroutine instead.", true)]
+        public new Coroutine StartCoroutine(string methodName, object value)
+        {
+            return null;
+        }
 
-        [System.Obsolete("Unity coroutine function, use RunCoroutine instead.", true)]
-        public new Coroutine StartCoroutine(string methodName) { return null; }
+        [Obsolete("Unity coroutine function, use RunCoroutine instead.", true)]
+        public new Coroutine StartCoroutine(string methodName)
+        {
+            return null;
+        }
 
-        [System.Obsolete("Unity coroutine function, use RunCoroutine instead.", true)]
-        public new Coroutine StartCoroutine_Auto(System.Collections.IEnumerator routine) { return null; }
+        [Obsolete("Unity coroutine function, use RunCoroutine instead.", true)]
+        public new Coroutine StartCoroutine_Auto(IEnumerator routine)
+        {
+            return null;
+        }
 
-        [System.Obsolete("Unity coroutine function, use KillCoroutines instead.", true)]
-        public new void StopCoroutine(string methodName) { }
+        [Obsolete("Unity coroutine function, use KillCoroutines instead.", true)]
+        public new void StopCoroutine(string methodName)
+        {
+        }
 
-        [System.Obsolete("Unity coroutine function, use KillCoroutines instead.", true)]
-        public new void StopCoroutine(System.Collections.IEnumerator routine) { }
+        [Obsolete("Unity coroutine function, use KillCoroutines instead.", true)]
+        public new void StopCoroutine(IEnumerator routine)
+        {
+        }
 
-        [System.Obsolete("Unity coroutine function, use KillCoroutines instead.", true)]
-        public new void StopCoroutine(Coroutine routine) { }
+        [Obsolete("Unity coroutine function, use KillCoroutines instead.", true)]
+        public new void StopCoroutine(Coroutine routine)
+        {
+        }
 
-        [System.Obsolete("Unity coroutine function, use KillCoroutines instead.", true)]
-        public new void StopAllCoroutines() { }
+        [Obsolete("Unity coroutine function, use KillCoroutines instead.", true)]
+        public new void StopAllCoroutines()
+        {
+        }
 
-        [System.Obsolete("Use your own GameObject for this.", true)]
-        public new static void Destroy(Object obj) { }
+        [Obsolete("Use your own GameObject for this.", true)]
+        public new static void Destroy(Object obj)
+        {
+        }
 
-        [System.Obsolete("Use your own GameObject for this.", true)]
-        public new static void Destroy(Object obj, float f) { }
+        [Obsolete("Use your own GameObject for this.", true)]
+        public new static void Destroy(Object obj, float f)
+        {
+        }
 
-        [System.Obsolete("Use your own GameObject for this.", true)]
-        public new static void DestroyObject(Object obj) { }
+        [Obsolete("Use your own GameObject for this.", true)]
+        public new static void DestroyObject(Object obj)
+        {
+        }
 
-        [System.Obsolete("Use your own GameObject for this.", true)]
-        public new static void DestroyObject(Object obj, float f) { }
+        [Obsolete("Use your own GameObject for this.", true)]
+        public new static void DestroyObject(Object obj, float f)
+        {
+        }
 
-        [System.Obsolete("Use your own GameObject for this.", true)]
-        public new static void DestroyImmediate(Object obj) { }
+        [Obsolete("Use your own GameObject for this.", true)]
+        public new static void DestroyImmediate(Object obj)
+        {
+        }
 
-        [System.Obsolete("Use your own GameObject for this.", true)]
-        public new static void DestroyImmediate(Object obj, bool b) { }
+        [Obsolete("Use your own GameObject for this.", true)]
+        public new static void DestroyImmediate(Object obj, bool b)
+        {
+        }
 
-        [System.Obsolete("Use your own GameObject for this.", true)]
-        public new static void Instantiate(Object obj) { }
+        [Obsolete("Use your own GameObject for this.", true)]
+        public new static void Instantiate(Object obj)
+        {
+        }
 
-        [System.Obsolete("Use your own GameObject for this.", true)]
-        public new static void Instantiate(Object original, Vector3 position, Quaternion rotation) { }
+        [Obsolete("Use your own GameObject for this.", true)]
+        public new static void Instantiate(Object original, Vector3 position, Quaternion rotation)
+        {
+        }
 
-        [System.Obsolete("Use your own GameObject for this.", true)]
-        public new static void Instantiate<T>(T original) where T : Object { }
+        [Obsolete("Use your own GameObject for this.", true)]
+        public new static void Instantiate<T>(T original) where T : Object
+        {
+        }
 
-        [System.Obsolete("Just.. no.", true)]
-        public new static T FindObjectOfType<T>() where T : Object { return null; }
+        [Obsolete("Just.. no.", true)]
+        public new static T FindObjectOfType<T>() where T : Object
+        {
+            return null;
+        }
 
-        [System.Obsolete("Just.. no.", true)]
-        public new static Object FindObjectOfType(System.Type t) { return null; }
+        [Obsolete("Just.. no.", true)]
+        public new static Object FindObjectOfType(Type t)
+        {
+            return null;
+        }
 
-        [System.Obsolete("Just.. no.", true)]
-        public new static T[] FindObjectsOfType<T>() where T : Object { return null; }
+        [Obsolete("Just.. no.", true)]
+        public new static T[] FindObjectsOfType<T>() where T : Object
+        {
+            return null;
+        }
 
-        [System.Obsolete("Just.. no.", true)]
-        public new static Object[] FindObjectsOfType(System.Type t) { return null; }
+        [Obsolete("Just.. no.", true)]
+        public new static Object[] FindObjectsOfType(Type t)
+        {
+            return null;
+        }
 
-        [System.Obsolete("Just.. no.", true)]
-        public new static void print(object message) { }
+        [Obsolete("Just.. no.", true)]
+        public new static void print(object message)
+        {
+        }
     }
 
     /// <summary>
-    /// The timing segment that a coroutine is running in or should be run in.
+    ///     The timing segment that a coroutine is running in or should be run in.
     /// </summary>
     public enum Segment
     {
         /// <summary>
-        /// Sometimes returned as an error state
+        ///     Sometimes returned as an error state
         /// </summary>
         Invalid = -1,
+
         /// <summary>
-        /// This is the default timing segment
+        ///     This is the default timing segment
         /// </summary>
         Update,
+
         /// <summary>
-        /// This is primarily used for physics calculations
+        ///     This is primarily used for physics calculations
         /// </summary>
         FixedUpdate,
+
         /// <summary>
-        /// This is run immediately after update
+        ///     This is run immediately after update
         /// </summary>
         LateUpdate,
+
         /// <summary>
-        /// This executes, by default, about as quickly as the eye can detect changes in a text field
+        ///     This executes, by default, about as quickly as the eye can detect changes in a text field
         /// </summary>
         SlowUpdate,
+
         /// <summary>
-        /// This is the same as update, but it ignores Unity's timescale
+        ///     This is the same as update, but it ignores Unity's timescale
         /// </summary>
         RealtimeUpdate,
+
         /// <summary>
-        /// This is a coroutine that runs in the unity editor while your app is not in play mode
+        ///     This is a coroutine that runs in the unity editor while your app is not in play mode
         /// </summary>
         EditorUpdate,
+
         /// <summary>
-        /// This executes in the unity editor about as quickly as the eye can detect changes in a text field
+        ///     This executes in the unity editor about as quickly as the eye can detect changes in a text field
         /// </summary>
         EditorSlowUpdate,
+
         /// <summary>
-        /// This segment executes as the very last action before the frame is done
+        ///     This segment executes as the very last action before the frame is done
         /// </summary>
         EndOfFrame,
+
         /// <summary>
-        /// This segment can be configured to execute and/or define its notion of time in custom ways
+        ///     This segment can be configured to execute and/or define its notion of time in custom ways
         /// </summary>
         ManualTimeframe
     }
 
     /// <summary>
-    /// How much debug info should be sent to the Unity profiler. NOTE: Setting this to anything above none shows up in the profiler as a 
-    /// decrease in performance and a memory alloc. Those effects do not translate onto device.
+    ///     How much debug info should be sent to the Unity profiler. NOTE: Setting this to anything above none shows up in the
+    ///     profiler as a
+    ///     decrease in performance and a memory alloc. Those effects do not translate onto device.
     /// </summary>
     public enum DebugInfoType
     {
         /// <summary>
-        /// None coroutines will be separated in the Unity profiler
+        ///     None coroutines will be separated in the Unity profiler
         /// </summary>
         None,
+
         /// <summary>
-        /// The Unity profiler will identify each coroutine individually
+        ///     The Unity profiler will identify each coroutine individually
         /// </summary>
         SeperateCoroutines,
+
         /// <summary>
-        /// Coroutines will be separated and any tags or layers will be identified
+        ///     Coroutines will be separated and any tags or layers will be identified
         /// </summary>
         SeperateTags
     }
 
     /// <summary>
-    /// How the new coroutine should act if there are any existing coroutines running.
+    ///     How the new coroutine should act if there are any existing coroutines running.
     /// </summary>
     public enum SingletonBehavior
     {
         /// <summary>
-        /// Don't run this corutine if there are any matches
+        ///     Don't run this corutine if there are any matches
         /// </summary>
         Abort,
+
         /// <summary>
-        /// Kill any matching coroutines when this one runs
+        ///     Kill any matching coroutines when this one runs
         /// </summary>
         Overwrite,
+
         /// <summary>
-        /// Run this coroutine once all matches finish running
+        ///     Run this coroutine once all matches finish running
         /// </summary>
         Wait,
+
         /// <summary>
-        /// Don't run this coroutine if there are any matches, but unpause the matches if they're paused. 
-        /// (Does not resume any coroutines in a WaitUntilDone state.)
+        ///     Don't run this coroutine if there are any matches, but unpause the matches if they're paused.
+        ///     (Does not resume any coroutines in a WaitUntilDone state.)
         /// </summary>
         AbortAndUnpause
     }
 
     /// <summary>
-    /// A handle for a MEC coroutine.
+    ///     A handle for a MEC coroutine.
     /// </summary>
-    public struct CoroutineHandle : System.IEquatable<CoroutineHandle>
+    public struct CoroutineHandle : IEquatable<CoroutineHandle>
     {
         private const byte ReservedSpace = 0x0F;
-        private readonly static int[] NextIndex = { ReservedSpace + 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        private static readonly int[] NextIndex = { ReservedSpace + 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         private readonly int _id;
 
-        public byte Key { get { return (byte)(_id & ReservedSpace); } }
+        public byte Key => (byte)(_id & ReservedSpace);
 
         public CoroutineHandle(byte ind)
         {
@@ -6808,33 +7381,29 @@ namespace MEC
             {
                 if (Timing.GetLayer(this) == null)
                     return Timing.GetDebugName(this);
-                else
-                    return Timing.GetDebugName(this) + " Layer: " + Timing.GetLayer(this);
+                return Timing.GetDebugName(this) + " Layer: " + Timing.GetLayer(this);
             }
-            else
-            {
-                if (Timing.GetLayer(this) == null)
-                    return Timing.GetDebugName(this) + " Tag: " + Timing.GetTag(this);
-                else
-                    return Timing.GetDebugName(this) + " Tag: " + Timing.GetTag(this) + " Layer: " + Timing.GetLayer(this);
-            }
+
+            if (Timing.GetLayer(this) == null)
+                return Timing.GetDebugName(this) + " Tag: " + Timing.GetTag(this);
+            return Timing.GetDebugName(this) + " Tag: " + Timing.GetTag(this) + " Layer: " + Timing.GetLayer(this);
         }
 
         /// <summary>
-        /// Get or set the corrosponding coroutine's tag. Null removes the tag or represents no tag assigned.
+        ///     Get or set the corrosponding coroutine's tag. Null removes the tag or represents no tag assigned.
         /// </summary>
         public string Tag
         {
-            get { return Timing.GetTag(this); }
-            set { Timing.SetTag(this, value); }
+            get => Timing.GetTag(this);
+            set => Timing.SetTag(this, value);
         }
 
         /// <summary>
-        /// Get or set the corrosponding coroutine's layer. Null removes the layer or represents no layer assigned.
+        ///     Get or set the corrosponding coroutine's layer. Null removes the layer or represents no layer assigned.
         /// </summary>
         public int? Layer
         {
-            get { return Timing.GetLayer(this); }
+            get => Timing.GetLayer(this);
             set
             {
                 if (value == null)
@@ -6845,51 +7414,59 @@ namespace MEC
         }
 
         /// <summary>
-        /// Get or set the coorsponding coroutine's segment.
+        ///     Get or set the coorsponding coroutine's segment.
         /// </summary>
         public Segment Segment
         {
-            get { return Timing.GetSegment(this); }
-            set { Timing.SetSegment(this, value); }
+            get => Timing.GetSegment(this);
+            set => Timing.SetSegment(this, value);
         }
 
         /// <summary>
-        /// Is true until the coroutine function ends or is killed. Paused or waiting coroutines count as running. 
-        /// Setting this to false will kill the coroutine.
+        ///     Is true until the coroutine function ends or is killed. Paused or waiting coroutines count as running.
+        ///     Setting this to false will kill the coroutine.
         /// </summary>
         public bool IsRunning
         {
-            get { return Timing.IsRunning(this); }
-            set { if (!value) Timing.KillCoroutines(this); }
+            get => Timing.IsRunning(this);
+            set
+            {
+                if (!value) Timing.KillCoroutines(this);
+            }
         }
 
         /// <summary>
-        /// Is true while the coroutine is paused. Setting this value will pause or resume the coroutine. 
+        ///     Is true while the coroutine is paused. Setting this value will pause or resume the coroutine.
         /// </summary>
         public bool IsAliveAndPaused
         {
-            get { return Timing.IsAliveAndPaused(this); }
-            set { if (value) Timing.PauseCoroutines(this); else Timing.ResumeCoroutines(this); }
+            get => Timing.IsAliveAndPaused(this);
+            set
+            {
+                if (value) Timing.PauseCoroutines(this);
+                else Timing.ResumeCoroutines(this);
+            }
         }
 
         /// <summary>
-        /// Is true if this handle may have been a valid handle at some point. (i.e. is not an uninitialized handle, error handle, or a key to a coroutine lock)
+        ///     Is true if this handle may have been a valid handle at some point. (i.e. is not an uninitialized handle, error
+        ///     handle, or a key to a coroutine lock)
         /// </summary>
-        public bool IsValid
-        {
-            get { return Key != 0; }
-        }
+        public bool IsValid => Key != 0;
 
         /// <summary>
-        /// This will execute the function you pass in once the coroutine this handle is pointing to is ended. This works whether this 
-        /// coroutine gets to the end of its function, throws an exception, or is the target of a KillCoroutines command. NOTE: It is 
-        /// generally a bad idea to use this function on any coroutine that you would use a CancelWith command on, because that will
-        /// typically lead to exceptions when the gameObject is destroyed.
+        ///     This will execute the function you pass in once the coroutine this handle is pointing to is ended. This works
+        ///     whether this
+        ///     coroutine gets to the end of its function, throws an exception, or is the target of a KillCoroutines command. NOTE:
+        ///     It is
+        ///     generally a bad idea to use this function on any coroutine that you would use a CancelWith command on, because that
+        ///     will
+        ///     typically lead to exceptions when the gameObject is destroyed.
         /// </summary>
         /// <param name="action">The function that you want to execute after this coroutine ends.</param>
         /// <param name="segment">The timing segment that the OnDestroy action should be executed in.</param>
         /// <returns></returns>
-        public CoroutineHandle OnDestroy(System.Action action, Segment segment = Segment.Update)
+        public CoroutineHandle OnDestroy(Action action, Segment segment = Segment.Update)
         {
             Timing inst = Timing.GetInstance(Key);
             if (action == null || inst == null)
@@ -6899,10 +7476,13 @@ namespace MEC
         }
 
         /// <summary>
-        /// This will execute the coroutine you pass in once the coroutine this handle is pointing to is ended. This works whether this 
-        /// coroutine gets to the end of its function, throws an exception, or is the target of a KillCoroutines command. NOTE: It is 
-        /// generally a bad idea to use this function on any coroutine that you would use a CancelWith command on, because that will
-        /// typically lead to exceptions when the gameObject is destroyed.
+        ///     This will execute the coroutine you pass in once the coroutine this handle is pointing to is ended. This works
+        ///     whether this
+        ///     coroutine gets to the end of its function, throws an exception, or is the target of a KillCoroutines command. NOTE:
+        ///     It is
+        ///     generally a bad idea to use this function on any coroutine that you would use a CancelWith command on, because that
+        ///     will
+        ///     typically lead to exceptions when the gameObject is destroyed.
         /// </summary>
         /// <param name="action">The coroutine that you want to execute after this coroutine ends.</param>
         /// <param name="segment">The timing segment that the OnDestroy coroutine should be executed in.</param>
@@ -6916,7 +7496,7 @@ namespace MEC
             return inst.RunCoroutineOnInstance(_OnDestroy(this, action), segment);
         }
 
-        private static IEnumerator<float> _OnDestroy(CoroutineHandle watched, System.Action action)
+        private static IEnumerator<float> _OnDestroy(CoroutineHandle watched, Action action)
         {
             while (watched.IsRunning)
                 yield return Timing.WaitForOneFrame;
@@ -6937,7 +7517,7 @@ namespace MEC
     public static class MECExtensionMethods1
     {
         /// <summary>
-        /// Run a new coroutine in the Update segment.
+        ///     Run a new coroutine in the Update segment.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
@@ -6947,7 +7527,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment.
+        ///     Run a new coroutine in the Update segment.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
@@ -6958,7 +7538,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment.
+        ///     Run a new coroutine in the Update segment.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="layer">An optional layer to attach to the coroutine which can later be used to identify this coroutine.</param>
@@ -6969,7 +7549,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment.
+        ///     Run a new coroutine in the Update segment.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="tag">An optional tag to attach to the coroutine which can later be used to identify this coroutine.</param>
@@ -6980,7 +7560,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment.
+        ///     Run a new coroutine in the Update segment.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
@@ -6992,7 +7572,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment.
+        ///     Run a new coroutine in the Update segment.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="layer">An optional layer to attach to the coroutine which can later be used to identify this coroutine.</param>
@@ -7004,7 +7584,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Run a new coroutine.
+        ///     Run a new coroutine.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
@@ -7015,19 +7595,20 @@ namespace MEC
         }
 
         /// <summary>
-        /// Run a new coroutine.
+        ///     Run a new coroutine.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
-        public static CoroutineHandle RunCoroutine(this IEnumerator<float> coroutine, Segment segment, GameObject gameObj)
+        public static CoroutineHandle RunCoroutine(this IEnumerator<float> coroutine, Segment segment,
+            GameObject gameObj)
         {
             return Timing.RunCoroutine(coroutine, segment, gameObj);
         }
 
         /// <summary>
-        /// Run a new coroutine.
+        ///     Run a new coroutine.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
@@ -7039,7 +7620,7 @@ namespace MEC
         }
 
         /// <summary>
-        /// Run a new coroutine.
+        ///     Run a new coroutine.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
@@ -7051,212 +7632,261 @@ namespace MEC
         }
 
         /// <summary>
-        /// Run a new coroutine.
+        ///     Run a new coroutine.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
         /// <param name="tag">An optional tag to attach to the coroutine which can later be used to identify this coroutine.</param>
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
-        public static CoroutineHandle RunCoroutine(this IEnumerator<float> coroutine, Segment segment, GameObject gameObj, string tag)
+        public static CoroutineHandle RunCoroutine(this IEnumerator<float> coroutine, Segment segment,
+            GameObject gameObj, string tag)
         {
             return Timing.RunCoroutine(coroutine, segment, gameObj, tag);
         }
 
         /// <summary>
-        /// Run a new coroutine.
+        ///     Run a new coroutine.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="layer">An optional layer to attach to the coroutine which can later be used to identify this coroutine.</param>
         /// <param name="tag">An optional tag to attach to the coroutine which can later be used to identify this coroutine.</param>
         /// <returns>The coroutine's handle, which can be used for Wait and Kill operations.</returns>
-        public static CoroutineHandle RunCoroutine(this IEnumerator<float> coroutine, Segment segment, int layer, string tag)
+        public static CoroutineHandle RunCoroutine(this IEnumerator<float> coroutine, Segment segment, int layer,
+            string tag)
         {
             return Timing.RunCoroutine(coroutine, segment, layer, tag);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment, but not while the coroutine with the supplied handle is running.
+        ///     Run a new coroutine in the Update segment, but not while the coroutine with the supplied handle is running.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="handle">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, CoroutineHandle handle, SingletonBehavior behaviorOnCollision)
+        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, CoroutineHandle handle,
+            SingletonBehavior behaviorOnCollision)
         {
             return Timing.RunCoroutineSingleton(coroutine, handle, behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment with the supplied layer unless there is already one or more coroutines running with that layer.
+        ///     Run a new coroutine in the Update segment with the supplied layer unless there is already one or more coroutines
+        ///     running with that layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, GameObject gameObj, SingletonBehavior behaviorOnCollision)
+        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, GameObject gameObj,
+            SingletonBehavior behaviorOnCollision)
         {
-            return gameObj == null ? Timing.RunCoroutine(coroutine) :
-                Timing.RunCoroutineSingleton(coroutine, gameObj.GetInstanceID(), behaviorOnCollision);
+            return gameObj == null
+                ? Timing.RunCoroutine(coroutine)
+                : Timing.RunCoroutineSingleton(coroutine, gameObj.GetInstanceID(), behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment with the supplied layer unless there is already one or more coroutines running with that layer.
+        ///     Run a new coroutine in the Update segment with the supplied layer unless there is already one or more coroutines
+        ///     running with that layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="layer">A layer to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, int layer, SingletonBehavior behaviorOnCollision)
+        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, int layer,
+            SingletonBehavior behaviorOnCollision)
         {
             return Timing.RunCoroutineSingleton(coroutine, layer, behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment with the supplied tag unless there is already one or more coroutines running with that tag.
+        ///     Run a new coroutine in the Update segment with the supplied tag unless there is already one or more coroutines
+        ///     running with that tag.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="tag">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, string tag, SingletonBehavior behaviorOnCollision)
+        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, string tag,
+            SingletonBehavior behaviorOnCollision)
         {
             return Timing.RunCoroutineSingleton(coroutine, tag, behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment with the supplied graffitti unless there is already one or more coroutines running with both that 
-        /// tag and layer.
+        ///     Run a new coroutine in the Update segment with the supplied graffitti unless there is already one or more
+        ///     coroutines running with both that
+        ///     tag and layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
         /// <param name="tag">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, GameObject gameObj, string tag, SingletonBehavior behaviorOnCollision)
+        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, GameObject gameObj,
+            string tag, SingletonBehavior behaviorOnCollision)
         {
-            return gameObj == null ? Timing.RunCoroutineSingleton(coroutine, tag, behaviorOnCollision)
+            return gameObj == null
+                ? Timing.RunCoroutineSingleton(coroutine, tag, behaviorOnCollision)
                 : Timing.RunCoroutineSingleton(coroutine, gameObj.GetInstanceID(), tag, behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine in the Update segment with the supplied graffitti unless there is already one or more coroutines running with both that 
-        /// tag and layer.
+        ///     Run a new coroutine in the Update segment with the supplied graffitti unless there is already one or more
+        ///     coroutines running with both that
+        ///     tag and layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="layer">A layer to attach to the coroutine, and to check for existing instances.</param>
         /// <param name="tag">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, int layer, string tag, SingletonBehavior behaviorOnCollision)
+        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, int layer, string tag,
+            SingletonBehavior behaviorOnCollision)
         {
             return Timing.RunCoroutineSingleton(coroutine, layer, tag, behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine, but not while the coroutine with the supplied handle is running.
+        ///     Run a new coroutine, but not while the coroutine with the supplied handle is running.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="handle">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, CoroutineHandle handle, Segment segment,
+        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, CoroutineHandle handle,
+            Segment segment,
             SingletonBehavior behaviorOnCollision)
         {
             return Timing.RunCoroutineSingleton(coroutine, handle, segment, behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine with the supplied layer unless there is already one or more coroutines running with that layer.
+        ///     Run a new coroutine with the supplied layer unless there is already one or more coroutines running with that layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, Segment segment, GameObject gameObj,
+        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, Segment segment,
+            GameObject gameObj,
             SingletonBehavior behaviorOnCollision)
         {
-            return gameObj == null ? Timing.RunCoroutine(coroutine, segment) :
-                Timing.RunCoroutineSingleton(coroutine, segment, gameObj.GetInstanceID(), behaviorOnCollision);
+            return gameObj == null
+                ? Timing.RunCoroutine(coroutine, segment)
+                : Timing.RunCoroutineSingleton(coroutine, segment, gameObj.GetInstanceID(), behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine with the supplied layer unless there is already one or more coroutines running with that layer.
+        ///     Run a new coroutine with the supplied layer unless there is already one or more coroutines running with that layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="layer">A layer to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, Segment segment, int layer,
+        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, Segment segment,
+            int layer,
             SingletonBehavior behaviorOnCollision)
         {
             return Timing.RunCoroutineSingleton(coroutine, segment, layer, behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine with the supplied tag unless there is already one or more coroutines running with that tag.
+        ///     Run a new coroutine with the supplied tag unless there is already one or more coroutines running with that tag.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="tag">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, Segment segment, string tag,
+        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, Segment segment,
+            string tag,
             SingletonBehavior behaviorOnCollision)
         {
             return Timing.RunCoroutineSingleton(coroutine, segment, tag, behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine with the supplied graffitti unless there is already one or more coroutines running with both that tag and layer.
+        ///     Run a new coroutine with the supplied graffitti unless there is already one or more coroutines running with both
+        ///     that tag and layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="gameObj">The new coroutine will be put on a layer corresponding to this gameObject.</param>
         /// <param name="tag">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, Segment segment, GameObject gameObj, string tag,
+        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, Segment segment,
+            GameObject gameObj, string tag,
             SingletonBehavior behaviorOnCollision)
         {
-            return gameObj == null ? Timing.RunCoroutineSingleton(coroutine, segment, tag, behaviorOnCollision)
+            return gameObj == null
+                ? Timing.RunCoroutineSingleton(coroutine, segment, tag, behaviorOnCollision)
                 : Timing.RunCoroutineSingleton(coroutine, segment, gameObj.GetInstanceID(), tag, behaviorOnCollision);
         }
 
         /// <summary>
-        /// Run a new coroutine with the supplied graffitti unless there is already one or more coroutines running with both that tag and layer.
+        ///     Run a new coroutine with the supplied graffitti unless there is already one or more coroutines running with both
+        ///     that tag and layer.
         /// </summary>
         /// <param name="coroutine">The new coroutine's handle.</param>
         /// <param name="segment">The segment that the coroutine should run in.</param>
         /// <param name="layer">A layer to attach to the coroutine, and to check for existing instances.</param>
         /// <param name="tag">A tag to attach to the coroutine, and to check for existing instances.</param>
-        /// <param name="behaviorOnCollision">Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are 
-        /// currently running.</param>
+        /// <param name="behaviorOnCollision">
+        ///     Should this coroutine fail to start, overwrite, or wait for any coroutines to finish if any matches are
+        ///     currently running.
+        /// </param>
         /// <returns>The newly created or existing handle.</returns>
-        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, Segment segment, int layer, string tag,
+        public static CoroutineHandle RunCoroutineSingleton(this IEnumerator<float> coroutine, Segment segment,
+            int layer, string tag,
             SingletonBehavior behaviorOnCollision)
         {
             return Timing.RunCoroutineSingleton(coroutine, segment, layer, tag, behaviorOnCollision);
         }
 
         /// <summary>
-        /// Use the command "yield return newCoroutine().WaitUntilDone();" to start a new coroutine and pause the
-        /// current one until it finishes.
+        ///     Use the command "yield return newCoroutine().WaitUntilDone();" to start a new coroutine and pause the
+        ///     current one until it finishes.
         /// </summary>
         /// <param name="newCoroutine">The coroutine to pause for.</param>
         public static float WaitUntilDone(this IEnumerator<float> newCoroutine)
@@ -7265,8 +7895,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return newCoroutine().WaitUntilDone();" to start a new coroutine and pause the
-        /// current one until it finishes.
+        ///     Use the command "yield return newCoroutine().WaitUntilDone();" to start a new coroutine and pause the
+        ///     current one until it finishes.
         /// </summary>
         /// <param name="newCoroutine">The coroutine to pause for.</param>
         /// <param name="tag">An optional tag to attach to the coroutine which can later be used to identify this coroutine.</param>
@@ -7276,8 +7906,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return newCoroutine().WaitUntilDone();" to start a new coroutine and pause the
-        /// current one until it finishes.
+        ///     Use the command "yield return newCoroutine().WaitUntilDone();" to start a new coroutine and pause the
+        ///     current one until it finishes.
         /// </summary>
         /// <param name="newCoroutine">The coroutine to pause for.</param>
         /// <param name="layer">An optional layer to attach to the coroutine which can later be used to identify this coroutine.</param>
@@ -7287,8 +7917,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return newCoroutine().WaitUntilDone();" to start a new coroutine and pause the
-        /// current one until it finishes.
+        ///     Use the command "yield return newCoroutine().WaitUntilDone();" to start a new coroutine and pause the
+        ///     current one until it finishes.
         /// </summary>
         /// <param name="newCoroutine">The coroutine to pause for.</param>
         /// <param name="layer">An optional layer to attach to the coroutine which can later be used to identify this coroutine.</param>
@@ -7299,8 +7929,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return newCoroutine().WaitUntilDone();" to start a new coroutine and pause the
-        /// current one until it finishes.
+        ///     Use the command "yield return newCoroutine().WaitUntilDone();" to start a new coroutine and pause the
+        ///     current one until it finishes.
         /// </summary>
         /// <param name="newCoroutine">The coroutine to pause for.</param>
         /// <param name="segment">The segment that the new coroutine should run in.</param>
@@ -7310,8 +7940,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return newCoroutine().WaitUntilDone();" to start a new coroutine and pause the
-        /// current one until it finishes.
+        ///     Use the command "yield return newCoroutine().WaitUntilDone();" to start a new coroutine and pause the
+        ///     current one until it finishes.
         /// </summary>
         /// <param name="newCoroutine">The coroutine to pause for.</param>
         /// <param name="segment">The segment that the new coroutine should run in.</param>
@@ -7322,8 +7952,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return newCoroutine().WaitUntilDone();" to start a new coroutine and pause the
-        /// current one until it finishes.
+        ///     Use the command "yield return newCoroutine().WaitUntilDone();" to start a new coroutine and pause the
+        ///     current one until it finishes.
         /// </summary>
         /// <param name="newCoroutine">The coroutine to pause for.</param>
         /// <param name="segment">The segment that the new coroutine should run in.</param>
@@ -7334,8 +7964,8 @@ namespace MEC
         }
 
         /// <summary>
-        /// Use the command "yield return newCoroutine().WaitUntilDone();" to start a new coroutine and pause the
-        /// current one until it finishes.
+        ///     Use the command "yield return newCoroutine().WaitUntilDone();" to start a new coroutine and pause the
+        ///     current one until it finishes.
         /// </summary>
         /// <param name="newCoroutine">The coroutine to pause for.</param>
         /// <param name="segment">The segment that the new coroutine should run in.</param>
@@ -7351,26 +7981,26 @@ namespace MEC
 public static class MECExtensionMethods2
 {
     /// <summary>
-    /// Adds a delay to the beginning of this coroutine.
+    ///     Adds a delay to the beginning of this coroutine.
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="timeToDelay">The number of seconds to delay this coroutine.</param>
     /// <returns>The modified coroutine handle.</returns>
     public static IEnumerator<float> Delay(this IEnumerator<float> coroutine, float timeToDelay)
     {
-        yield return MEC.Timing.WaitForSeconds(timeToDelay);
+        yield return Timing.WaitForSeconds(timeToDelay);
 
         while (coroutine.MoveNext())
             yield return coroutine.Current;
     }
 
     /// <summary>
-    /// Adds a delay to the beginning of this coroutine until a function returns true.
+    ///     Adds a delay to the beginning of this coroutine until a function returns true.
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="condition">The coroutine will be paused until this function returns true.</param>
     /// <returns>The modified coroutine handle.</returns>
-    public static IEnumerator<float> Delay(this IEnumerator<float> coroutine, System.Func<bool> condition)
+    public static IEnumerator<float> Delay(this IEnumerator<float> coroutine, Func<bool> condition)
     {
         while (!condition())
             yield return 0f;
@@ -7380,13 +8010,13 @@ public static class MECExtensionMethods2
     }
 
     /// <summary>
-    /// Adds a delay to the beginning of this coroutine until a function returns true.
+    ///     Adds a delay to the beginning of this coroutine until a function returns true.
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="data">A variable that will be passed into the condition function each time it is tested.</param>
     /// <param name="condition">The coroutine will be paused until this function returns true.</param>
     /// <returns>The modified coroutine handle.</returns>
-    public static IEnumerator<float> Delay<T>(this IEnumerator<float> coroutine, T data, System.Func<T, bool> condition)
+    public static IEnumerator<float> Delay<T>(this IEnumerator<float> coroutine, T data, Func<T, bool> condition)
     {
         while (!condition(data))
             yield return 0f;
@@ -7396,7 +8026,7 @@ public static class MECExtensionMethods2
     }
 
     /// <summary>
-    /// Adds a delay to the beginning of this coroutine in frames.
+    ///     Adds a delay to the beginning of this coroutine in frames.
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="framesToDelay">The number of frames to delay this coroutine.</param>
@@ -7411,34 +8041,37 @@ public static class MECExtensionMethods2
     }
 
     /// <summary>
-    /// Cancels this coroutine when the supplied game object is destroyed or made inactive.
+    ///     Cancels this coroutine when the supplied game object is destroyed or made inactive.
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="gameObject">The GameObject to test.</param>
     /// <returns>The modified coroutine handle.</returns>
     public static IEnumerator<float> CancelWith(this IEnumerator<float> coroutine, GameObject gameObject)
     {
-        while (MEC.Timing.MainThread != System.Threading.Thread.CurrentThread ||
-                (gameObject && gameObject.activeInHierarchy && coroutine.MoveNext()))
+        while (Timing.MainThread != Thread.CurrentThread ||
+               (gameObject && gameObject.activeInHierarchy && coroutine.MoveNext()))
             yield return coroutine.Current;
     }
 
     /// <summary>
-    /// Cancels this coroutine when either of the supplied game objects are destroyed or made inactive.
+    ///     Cancels this coroutine when either of the supplied game objects are destroyed or made inactive.
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="gameObject1">The first GameObject to test.</param>
     /// <param name="gameObject2">The second GameObject to test</param>
     /// <returns>The modified coroutine handle.</returns>
-    public static IEnumerator<float> CancelWith(this IEnumerator<float> coroutine, GameObject gameObject1, GameObject gameObject2)
+    public static IEnumerator<float> CancelWith(this IEnumerator<float> coroutine, GameObject gameObject1,
+        GameObject gameObject2)
     {
-        while (MEC.Timing.MainThread != System.Threading.Thread.CurrentThread || (gameObject1 && gameObject1.activeInHierarchy &&
-                gameObject2 && gameObject2.activeInHierarchy && coroutine.MoveNext()))
+        while (Timing.MainThread != Thread.CurrentThread || (gameObject1 && gameObject1.activeInHierarchy &&
+                                                             gameObject2 && gameObject2.activeInHierarchy &&
+                                                             coroutine.MoveNext()))
             yield return coroutine.Current;
     }
 
     /// <summary>
-    /// Cancels this coroutine when the supplied monobehavior is removed from its game object, or the game object is made inactive or destroyed.
+    ///     Cancels this coroutine when the supplied monobehavior is removed from its game object, or the game object is made
+    ///     inactive or destroyed.
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="gameObject">The GameObject to test.</param>
@@ -7447,35 +8080,34 @@ public static class MECExtensionMethods2
     {
         GameObject myGO = script.gameObject;
 
-        while (MEC.Timing.MainThread != System.Threading.Thread.CurrentThread ||
-                (myGO && myGO.activeInHierarchy && script != null && coroutine.MoveNext()))
+        while (Timing.MainThread != Thread.CurrentThread ||
+               (myGO && myGO.activeInHierarchy && script != null && coroutine.MoveNext()))
             yield return coroutine.Current;
     }
 
     /// <summary>
-    /// Cancels this coroutine when the supplied function returns false.
+    ///     Cancels this coroutine when the supplied function returns false.
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="condition">The test function. True for continue, false to stop.</param>
     /// <returns>The modified coroutine handle.</returns>
-    public static IEnumerator<float> CancelWith(this IEnumerator<float> coroutine, System.Func<bool> condition)
+    public static IEnumerator<float> CancelWith(this IEnumerator<float> coroutine, Func<bool> condition)
     {
         if (condition == null) yield break;
 
-        while (MEC.Timing.MainThread != System.Threading.Thread.CurrentThread || (condition() && coroutine.MoveNext()))
+        while (Timing.MainThread != Thread.CurrentThread || (condition() && coroutine.MoveNext()))
             yield return coroutine.Current;
     }
 
     /// <summary>
-    /// Cancels this coroutine when the supplied game object is destroyed, but only pauses it while it's inactive.
+    ///     Cancels this coroutine when the supplied game object is destroyed, but only pauses it while it's inactive.
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="gameObject">The GameObject to test.</param>
     /// <returns>The modified coroutine handle.</returns>
     public static IEnumerator<float> PauseWith(this IEnumerator<float> coroutine, GameObject gameObject)
     {
-        while (MEC.Timing.MainThread == System.Threading.Thread.CurrentThread && gameObject)
-        {
+        while (Timing.MainThread == Thread.CurrentThread && gameObject)
             if (gameObject.activeInHierarchy)
             {
                 if (coroutine.MoveNext())
@@ -7485,22 +8117,22 @@ public static class MECExtensionMethods2
             }
             else
             {
-                yield return MEC.Timing.WaitForOneFrame;
+                yield return Timing.WaitForOneFrame;
             }
-        }
     }
 
     /// <summary>
-    /// Cancels this coroutine when either of the supplied game objects are destroyed, but only pauses them while they're inactive.
+    ///     Cancels this coroutine when either of the supplied game objects are destroyed, but only pauses them while they're
+    ///     inactive.
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="gameObject1">The first GameObject to test.</param>
     /// <param name="gameObject2">The second GameObject to test</param>
     /// <returns>The modified coroutine handle.</returns>
-    public static IEnumerator<float> PauseWith(this IEnumerator<float> coroutine, GameObject gameObject1, GameObject gameObject2)
+    public static IEnumerator<float> PauseWith(this IEnumerator<float> coroutine, GameObject gameObject1,
+        GameObject gameObject2)
     {
-        while (MEC.Timing.MainThread == System.Threading.Thread.CurrentThread && gameObject1 && gameObject2)
-        {
+        while (Timing.MainThread == Thread.CurrentThread && gameObject1 && gameObject2)
             if (gameObject1.activeInHierarchy && gameObject2.activeInHierarchy)
             {
                 if (coroutine.MoveNext())
@@ -7510,14 +8142,14 @@ public static class MECExtensionMethods2
             }
             else
             {
-                yield return MEC.Timing.WaitForOneFrame;
+                yield return Timing.WaitForOneFrame;
             }
-        }
     }
 
     /// <summary>
-    /// Cancels this coroutine when the supplied monobehavior is removed from its game object, or the game object is destroyed. Pauses the coroutine 
-    /// if the game object or script is disabled.
+    ///     Cancels this coroutine when the supplied monobehavior is removed from its game object, or the game object is
+    ///     destroyed. Pauses the coroutine
+    ///     if the game object or script is disabled.
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="gameObject">The GameObject to test.</param>
@@ -7526,8 +8158,7 @@ public static class MECExtensionMethods2
     {
         GameObject myGO = script.gameObject;
 
-        while (MEC.Timing.MainThread == System.Threading.Thread.CurrentThread && myGO && myGO.GetComponent<T>() != null)
-        {
+        while (Timing.MainThread == Thread.CurrentThread && myGO && myGO.GetComponent<T>() != null)
             if (myGO.activeInHierarchy && script.enabled)
             {
                 if (coroutine.MoveNext())
@@ -7537,39 +8168,38 @@ public static class MECExtensionMethods2
             }
             else
             {
-                yield return MEC.Timing.WaitForOneFrame;
+                yield return Timing.WaitForOneFrame;
             }
-        }
     }
 
     /// <summary>
-    /// Pauses this coroutine whenever the supplied function returns false.
+    ///     Pauses this coroutine whenever the supplied function returns false.
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="condition">The test function. True for continue, false to stop.</param>
     /// <returns>The modified coroutine handle.</returns>
-    public static IEnumerator<float> PauseWith(this IEnumerator<float> coroutine, System.Func<bool> condition)
+    public static IEnumerator<float> PauseWith(this IEnumerator<float> coroutine, Func<bool> condition)
     {
         if (condition == null) yield break;
 
-        while (MEC.Timing.MainThread != System.Threading.Thread.CurrentThread || (condition() && coroutine.MoveNext()))
+        while (Timing.MainThread != Thread.CurrentThread || (condition() && coroutine.MoveNext()))
             yield return coroutine.Current;
     }
 
     /// <summary>
-    /// Watches the supplied handle and ends this coroutine when the other coroutine ends.
+    ///     Watches the supplied handle and ends this coroutine when the other coroutine ends.
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="otherCoroutine">A handle to the coroutine that should be watched.</param>
     /// <returns>The modified coroutine handle.</returns>
-    public static IEnumerator<float> KillWith(this IEnumerator<float> coroutine, MEC.CoroutineHandle otherCoroutine)
+    public static IEnumerator<float> KillWith(this IEnumerator<float> coroutine, CoroutineHandle otherCoroutine)
     {
         while (otherCoroutine.IsRunning && coroutine.MoveNext())
             yield return coroutine.Current;
     }
 
     /// <summary>
-    /// Runs the supplied coroutine immediately after this one.
+    ///     Runs the supplied coroutine immediately after this one.
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="nextCoroutine">The coroutine to run next.</param>
@@ -7586,12 +8216,12 @@ public static class MECExtensionMethods2
     }
 
     /// <summary>
-    /// Runs the supplied function immediately after this coroutine finishes.
+    ///     Runs the supplied function immediately after this coroutine finishes.
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="onDone">The action to run after this coroutine finishes.</param>
     /// <returns>The modified coroutine handle.</returns>
-    public static IEnumerator<float> Append(this IEnumerator<float> coroutine, System.Action onDone)
+    public static IEnumerator<float> Append(this IEnumerator<float> coroutine, Action onDone)
     {
         while (coroutine.MoveNext())
             yield return coroutine.Current;
@@ -7601,7 +8231,7 @@ public static class MECExtensionMethods2
     }
 
     /// <summary>
-    /// Runs the supplied coroutine immediately before this one.
+    ///     Runs the supplied coroutine immediately before this one.
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="lastCoroutine">The coroutine to run first.</param>
@@ -7617,12 +8247,12 @@ public static class MECExtensionMethods2
     }
 
     /// <summary>
-    /// Runs the supplied function immediately before this coroutine starts.
+    ///     Runs the supplied function immediately before this coroutine starts.
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="onStart">The action to run before this coroutine starts.</param>
     /// <returns>The modified coroutine handle.</returns>
-    public static IEnumerator<float> Prepend(this IEnumerator<float> coroutine, System.Action onStart)
+    public static IEnumerator<float> Prepend(this IEnumerator<float> coroutine, Action onStart)
     {
         if (onStart != null)
             onStart();
@@ -7632,24 +8262,25 @@ public static class MECExtensionMethods2
     }
 
     /// <summary>
-    /// Combines the this coroutine with another and runs them in a combined handle.
+    ///     Combines the this coroutine with another and runs them in a combined handle.
     /// </summary>
     /// <param name="coroutineA">The coroutine handle to act upon.</param>
     /// <param name="coroutineB">The coroutine handle to combine.</param>
     /// <returns>The modified coroutine handle.</returns>
     public static IEnumerator<float> Superimpose(this IEnumerator<float> coroutineA, IEnumerator<float> coroutineB)
     {
-        return Superimpose(coroutineA, coroutineB, MEC.Timing.Instance);
+        return Superimpose(coroutineA, coroutineB, Timing.Instance);
     }
 
     /// <summary>
-    /// Combines the this coroutine with another and runs them in a combined handle.
+    ///     Combines the this coroutine with another and runs them in a combined handle.
     /// </summary>
     /// <param name="coroutineA">The coroutine handle to act upon.</param>
     /// <param name="coroutineB">The coroutine handle to combine.</param>
     /// <param name="instance">The timing instance that this will be run in, if not the default instance.</param>
     /// <returns>The modified coroutine handle.</returns>
-    public static IEnumerator<float> Superimpose(this IEnumerator<float> coroutineA, IEnumerator<float> coroutineB, MEC.Timing instance)
+    public static IEnumerator<float> Superimpose(this IEnumerator<float> coroutineA, IEnumerator<float> coroutineB,
+        Timing instance)
     {
         while (coroutineA != null || coroutineB != null)
         {
@@ -7659,7 +8290,8 @@ public static class MECExtensionMethods2
             if (coroutineB != null && !(instance.localTime < coroutineB.Current) && !coroutineB.MoveNext())
                 coroutineB = null;
 
-            if ((coroutineA != null && float.IsNaN(coroutineA.Current)) || (coroutineB != null && float.IsNaN(coroutineB.Current)))
+            if ((coroutineA != null && float.IsNaN(coroutineA.Current)) ||
+                (coroutineB != null && float.IsNaN(coroutineB.Current)))
                 yield return float.NaN;
             else if (coroutineA != null && coroutineB != null)
                 yield return coroutineA.Current < coroutineB.Current ? coroutineA.Current : coroutineB.Current;
@@ -7671,12 +8303,12 @@ public static class MECExtensionMethods2
     }
 
     /// <summary>
-    /// Uses the passed in function to change the return values of this coroutine.
+    ///     Uses the passed in function to change the return values of this coroutine.
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="newReturn">A function that takes the current return value and returns the new return.</param>
     /// <returns>The modified coroutine handle.</returns>
-    public static IEnumerator<float> Hijack(this IEnumerator<float> coroutine, System.Func<float, float> newReturn)
+    public static IEnumerator<float> Hijack(this IEnumerator<float> coroutine, Func<float, float> newReturn)
     {
         if (newReturn == null) yield break;
 
@@ -7685,23 +8317,26 @@ public static class MECExtensionMethods2
     }
 
     /// <summary>
-    /// This will send any exceptions thrown in this coroutine to the exception handler you define. If you pass in null then your exceptions 
-    /// will go unreported. NOTE: Any exceptions thrown will still terminate that coroutine function. The only way to avoid termination is
-    /// to catch the exception inside your function (avoiding any yield return statements).
+    ///     This will send any exceptions thrown in this coroutine to the exception handler you define. If you pass in null
+    ///     then your exceptions
+    ///     will go unreported. NOTE: Any exceptions thrown will still terminate that coroutine function. The only way to avoid
+    ///     termination is
+    ///     to catch the exception inside your function (avoiding any yield return statements).
     /// </summary>
     /// <param name="coroutine">The coroutine handle to act upon.</param>
     /// <param name="exceptionHandler">The function to be called when an exception occurs.</param>
     /// <returns>The modified coroutine handle.</returns>
-    public static IEnumerator<float> RerouteExceptions(this IEnumerator<float> coroutine, System.Action<System.Exception> exceptionHandler)
+    public static IEnumerator<float> RerouteExceptions(this IEnumerator<float> coroutine,
+        Action<Exception> exceptionHandler)
     {
-        while(true)
+        while (true)
         {
             try
             {
                 if (!coroutine.MoveNext())
                     yield break;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 if (exceptionHandler != null)
                     exceptionHandler(ex);

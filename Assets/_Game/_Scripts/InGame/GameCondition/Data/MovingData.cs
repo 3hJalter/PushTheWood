@@ -8,13 +8,17 @@ namespace _Game._Scripts.InGame.GameCondition.Data
 {
     public class MovingData : ConditionData
     {
-        // Input Data
-        public Direction inputDirection;
-        // Generate after SetData
-        public GameGridCell enterMainCell;
-        public readonly List<GameGridCell> enterCells;
         public readonly List<GridUnitDynamic> blockDynamicUnits;
         public readonly List<GridUnitStatic> blockStaticUnits;
+
+        public readonly List<GameGridCell> enterCells;
+
+        // Generate after SetData
+        public GameGridCell enterMainCell;
+
+        // Input Data
+        public Direction inputDirection;
+
         // Constructor
         public MovingData(GridUnit owner)
         {
@@ -23,6 +27,7 @@ namespace _Game._Scripts.InGame.GameCondition.Data
             blockDynamicUnits = new List<GridUnitDynamic>();
             blockStaticUnits = new List<GridUnitStatic>();
         }
+
         // Set Data Method
         public virtual void SetData(Direction direction)
         {
@@ -49,6 +54,7 @@ namespace _Game._Scripts.InGame.GameCondition.Data
                             break;
                     }
                 }
+
                 if (!enterCells.Contains(neighbour)) enterCells.Add(neighbour);
             }
         }

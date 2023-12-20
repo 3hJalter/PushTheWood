@@ -7,7 +7,8 @@ using UnityEngine;
 
 namespace _Game._Scripts.InGame.GameCondition.Condition
 {
-    [CreateAssetMenu(fileName = "IsMoveBlockedByNextBelowUnit", menuName = "ConditionSO/Moving/IsMoveBlockedByNextBelowUnit",
+    [CreateAssetMenu(fileName = "IsMoveBlockedByNextBelowUnit",
+        menuName = "ConditionSO/Moving/IsMoveBlockedByNextBelowUnit",
         order = 1)]
     public class IsMoveBlockedByNextBelowUnit : ScriptableObject, ICondition
     {
@@ -28,10 +29,7 @@ namespace _Game._Scripts.InGame.GameCondition.Condition
             }
 
             // if no objects
-            if (unitsInNextCell.Count == 0)
-            {
-                return player.StartHeight - 2 <= belowSurfaceStartHeight && canMoveDirectly;
-            }
+            if (unitsInNextCell.Count == 0) return player.StartHeight - 2 <= belowSurfaceStartHeight && canMoveDirectly;
 
             GridUnit firstUnit = unitsInNextCell[0];
             HeightLevel firstObjectEndHeight = firstUnit.EndHeight;
@@ -65,6 +63,7 @@ namespace _Game._Scripts.InGame.GameCondition.Condition
                                     data.blockStaticUnits.Add(staticUnit);
                                     break;
                             }
+
                             return false;
                         case UnitTypeXZ.Both:
                         case UnitTypeXZ.Vertical when data.inputDirection is Direction.Forward or Direction.Back:
@@ -81,6 +80,7 @@ namespace _Game._Scripts.InGame.GameCondition.Condition
                                     data.blockStaticUnits.Add(staticUnit);
                                     break;
                             }
+
                             return false;
                         case UnitTypeXZ.Horizontal when data.inputDirection is Direction.Left or Direction.Right:
                             return true;
@@ -96,6 +96,7 @@ namespace _Game._Scripts.InGame.GameCondition.Condition
                                     data.blockStaticUnits.Add(staticUnit);
                                     break;
                             }
+
                             return false;
                         default:
                             return true;

@@ -1,4 +1,3 @@
-using _Game.Camera;
 using _Game.DesignPattern;
 using _Game.UIs.Screen;
 using DG.Tweening;

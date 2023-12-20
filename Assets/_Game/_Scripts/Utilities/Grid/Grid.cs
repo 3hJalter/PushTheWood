@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using _Game;
 using MapEnum;
 using UnityEngine;
 
@@ -159,7 +158,8 @@ namespace _Game.Utilities.Grid
                 {
                     if (isPositionShow)
                     {
-                        grid.debugTextArray[x, y] = GridUtilities.CreateWorldText(grid.gridArray[x, y].GetCellPosition().ToString(), null
+                        grid.debugTextArray[x, y] = GridUtilities.CreateWorldText(
+                            grid.gridArray[x, y].GetCellPosition().ToString(), null
                             , grid.GetWorldPosition(x, y) + new Vector3(grid.CellSize / 2, grid.CellSize / 2), 5,
                             Color.white, TextAnchor.MiddleCenter);
                         // Rotate text base on the gridPlane
@@ -172,12 +172,13 @@ namespace _Game.Utilities.Grid
                         };
 
                     }
+
                     Debug.DrawLine(grid.GetWorldPosition(x, y), grid.GetWorldPosition(x, y + 1), Color.white, 100f,
                         true);
                     Debug.DrawLine(grid.GetWorldPosition(x, y), grid.GetWorldPosition(x + 1, y), Color.white, 100f,
                         true);
                 }
-                
+
                 Debug.DrawLine(grid.GetWorldPosition(0, grid.Height), grid.GetWorldPosition(grid.Width, grid.Height),
                     Color.white, 100f);
                 Debug.DrawLine(grid.GetWorldPosition(grid.Width, 0), grid.GetWorldPosition(grid.Width, grid.Height),

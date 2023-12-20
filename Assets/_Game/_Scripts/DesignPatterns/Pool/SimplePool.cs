@@ -129,10 +129,10 @@ namespace _Game.DesignPattern
             }
             else
             {
-               Object.Destroy(obj.gameObject);
+                Object.Destroy(obj.gameObject);
             }
         }
-        
+
         public static void ReleaseImmediate(this GameUnit obj)
         {
             if (Pools.ContainsKey(obj.GetInstanceID()))
@@ -301,12 +301,14 @@ namespace _Game.DesignPattern
     public enum PoolType
     {
         None = -1,
+
         // Grid Unit Dynamic
         Player = 3,
         ChumpShort = 4,
         ChumpHigh = 5,
         Raft = 6,
         RaftLong = 12,
+
         // Grid Unit Static
         RockShort = 7,
         RockHigh = 8,
@@ -324,6 +326,7 @@ namespace _Game.DesignPattern
 
         // From 100 -> Grid Surface List
         SurfaceWater = 100,
+
         // Medium Ground Surface
         SurfaceGround = 101,
         SurfaceGroundTop = 102,
@@ -338,6 +341,7 @@ namespace _Game.DesignPattern
         SurfaceGroundCornerTopRight = 111,
         SurfaceGroundCornerBottomLeft = 112,
         SurfaceGroundCornerBottomRight = 113,
+
         // Light Ground Surface
         SurfaceGroundLight = 114,
         SurfaceGroundLightTop = 115,
@@ -352,6 +356,7 @@ namespace _Game.DesignPattern
         SurfaceGroundLightCornerTopRight = 124,
         SurfaceGroundLightCornerBottomLeft = 125,
         SurfaceGroundLightCornerBottomRight = 126,
+
         // Dark Ground Surface
         SurfaceGroundDark = 127,
         SurfaceGroundDarkTop = 128,
@@ -365,6 +370,6 @@ namespace _Game.DesignPattern
         SurfaceGroundDarkCornerTopLeft = 136,
         SurfaceGroundDarkCornerTopRight = 137,
         SurfaceGroundDarkCornerBottomLeft = 138,
-        SurfaceGroundDarkCornerBottomRight = 139,
+        SurfaceGroundDarkCornerBottomRight = 139
     }
 }

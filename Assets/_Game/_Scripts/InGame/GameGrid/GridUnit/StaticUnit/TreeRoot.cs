@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace _Game.GameGrid.Unit.StaticUnit
+﻿namespace _Game.GameGrid.Unit.StaticUnit
 {
     public class TreeRoot : GridUnitStatic
     {
-        
         // public bool CanMoveFromUnit(Direction direction, GridUnit pushUnit = null)
         // {
         //     if (pushUnit is null) return false;

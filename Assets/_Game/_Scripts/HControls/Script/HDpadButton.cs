@@ -5,7 +5,7 @@ namespace HControls
     [RequireComponent(typeof(GameObject))]
     public class HDpadButton : HMonoBehaviour
     {
-        [SerializeField] private Direction direction;    
+        [SerializeField] private Direction direction;
         [SerializeField] private GameObject pointerDownImg;
 
         public Direction Direction => direction;
@@ -16,7 +16,5 @@ namespace HControls
         {
             pointerDownImg.SetActive(false);
         }
-
-        
     }
 }

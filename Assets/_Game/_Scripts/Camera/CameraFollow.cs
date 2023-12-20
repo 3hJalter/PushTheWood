@@ -8,8 +8,6 @@ namespace _Game.Camera
     {
         [SerializeField] private UnityEngine.Camera mainCamera;
 
-        public UnityEngine.Camera MainCamera => mainCamera;
-
         [SerializeField] private ECameraType currentECameraType = ECameraType.None;
         [SerializeField] private Transform targetTf;
 
@@ -19,7 +17,9 @@ namespace _Game.Camera
 
         private CameraFollower _currentCamera;
         private Transform _mainCameraTf;
-        
+
+        public UnityEngine.Camera MainCamera => mainCamera;
+
 
         private void Awake()
         {
@@ -44,13 +44,14 @@ namespace _Game.Camera
         {
             if (targetTf == Tf || !_currentCamera.isFollowTarget)
             {
-                _mainCameraTf.position = Vector3.Lerp(_mainCameraTf.position,_currentCamera.offsetPosition, 
+                _mainCameraTf.position = Vector3.Lerp(_mainCameraTf.position, _currentCamera.offsetPosition,
                     _currentCamera.smooth);
             }
             else
             {
                 Vector3 targetPosition = targetTf.TransformPoint(_currentCamera.offsetPosition);
-                Tf.position = Vector3.SmoothDamp(Tf.position, targetPosition, ref _currentCamera.velocity, _currentCamera.smooth);
+                Tf.position = Vector3.SmoothDamp(Tf.position, targetPosition, ref _currentCamera.velocity,
+                    _currentCamera.smooth);
                 // // Follow target, but not the y position
                 // Vector3 position = targetTf.position;
                 // _mainCameraTf.position = Vector3.Lerp(_mainCameraTf.position,
@@ -68,30 +69,31 @@ namespace _Game.Camera
         {
             targetTf = target ? target : Tf;
         }
-        
+
         public void ChangeCamera(ECameraType eCameraType, Transform target = null)
         {
             currentECameraType = eCameraType;
             _currentCamera = _cameraDic[eCameraType];
             if (target is not null && (targetTf == Tf || targetTf != target)) SetTarget(target);
         }
-        
+
         public bool IsCurrentCameraIs(ECameraType eCameraType)
-         {
-             return _currentCamera == _cameraDic[eCameraType];
-         }
+        {
+            return _currentCamera == _cameraDic[eCameraType];
+        }
     }
 
     // ReSharper disable once ClassNeverInstantiated.Global
     public class CameraFollower
     {
         public readonly bool isFollowTarget;
-        [Range(0,1)]
-        public readonly float smooth; // From 0 to 1
-        public Vector3 velocity;
+
+        [Range(0, 1)] public readonly float smooth; // From 0 to 1
+
         public Vector3 offsetPosition;
         public Quaternion offsetRotation;
-    
+        public Vector3 velocity;
+
         public CameraFollower(Vector3 offsetPosition, Quaternion offsetRotation, float smooth, bool isFollowTarget)
         {
             this.offsetPosition = offsetPosition;

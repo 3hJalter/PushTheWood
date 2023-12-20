@@ -32,6 +32,27 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
         _hcBtn.buttonAnim = this;
     }
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        AudioManager.Ins.PlaySfx(btnSound);
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (!_hcBtn.interactable)
+            return;
+
+        PointerDownAnim();
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (!_hcBtn.interactable)
+            return;
+
+        PointerUpAnim();
+    }
+
     public void ShowAnim(Action onComplete = null)
     {
         _canvasGroup.DOKill();
@@ -193,7 +214,7 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
             return;
 
         Tf.DOKill();
-        Vector3 pressedTargetScaleI = this.pressedTargetScale;
+        Vector3 pressedTargetScaleI = pressedTargetScale;
         pressedTargetScaleI.z = 1;
         Ease doTweenEase = (Ease)pressAnimEasingType;
 
@@ -235,27 +256,6 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
     }
 
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        if (!_hcBtn.interactable)
-            return;
-
-        PointerDownAnim();
-    }
-
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        if (!_hcBtn.interactable)
-            return;
-
-        PointerUpAnim();
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        AudioManager.Ins.PlaySfx(btnSound);
-    }
-    
     #region Enums
 
     private enum ShowAnimType

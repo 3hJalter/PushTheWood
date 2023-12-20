@@ -1,6 +1,4 @@
-using System;
 using _Game.DesignPattern;
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using VinhLB;
@@ -15,18 +13,23 @@ namespace _Game.Managers
         [Header("Grass")] [SerializeField] private UniversalRendererData rendererData;
 
         private GrassTrampleFeature feature;
-        
+
         private void Awake()
         {
             water.SetActive(true);
-            grid.SetActive(true);
-            
+            grid.SetActive(false);
+
             VinhLB.Utilities.TryGetRendererFeature(rendererData, out feature);
         }
 
         public void ResetTrackedTrampleObjectList()
         {
             feature.ResetTrackedTrampleList();
+        }
+
+        public void SwitchGridActive()
+        {
+            grid.SetActive(!grid.activeSelf);
         }
     }
 }

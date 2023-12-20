@@ -6,14 +6,17 @@ using UnityEngine;
 
 namespace _Game._Scripts.InGame.GameCondition.Condition
 {
-    [CreateAssetMenu(fileName = "IsMoveBlockedByNextUnit", menuName = "ConditionSO/Moving/IsMoveBlockedByNextUnit", order = 1)]
+    [CreateAssetMenu(fileName = "IsMoveBlockedByNextUnit", menuName = "ConditionSO/Moving/IsMoveBlockedByNextUnit",
+        order = 1)]
     public class IsMoveBlockedByNextUnit : ScriptableObject, ICondition
     {
         public bool IsApplicable(ConditionData data)
         {
 
             #region verify data
+
             if (data is not MovingData movingData) return false;
+
             #endregion
 
             return movingData.blockDynamicUnits.Count switch

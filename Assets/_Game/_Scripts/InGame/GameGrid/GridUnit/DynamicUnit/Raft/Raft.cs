@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using _Game._Scripts.InGame.GameCondition.Data;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
@@ -12,25 +11,24 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
 {
     public class Raft : GridUnitDynamic, IVehicle
     {
-        public HashSet<GridUnit> _carryUnits = new();
-
-        private readonly Dictionary<StateEnum, IState<Raft>> states = new();
-        private IState<Raft> _currentState;
-        private bool _isAddState;
-        private bool _isFirstSpawnDone;
-        private UnitTypeXZ _lastSpawnType = UnitTypeXZ.None;
-
         public Player.Player player;
 
         public List<GridUnit> blockDirectionUnits = new();
-        
+
         public Direction rideRaftDirection;
-        
+
         [SerializeField] private ConditionMerge conditionMergeOnBePushed;
-        public ConditionMerge ConditionMergeOnBePushed => conditionMergeOnBePushed;
+
+        private readonly Dictionary<StateEnum, IState<Raft>> states = new();
+        public HashSet<GridUnit> _carryUnits = new();
+        private IState<Raft> _currentState;
+        private bool _isAddState;
+        private bool _isFirstSpawnDone;
+        private Direction _lastDirectionSpawn = Direction.None;
         private MovingData _movingData;
+        public ConditionMerge ConditionMergeOnBePushed => conditionMergeOnBePushed;
         public MovingData MovingData => _movingData ??= new MovingData(this);
-        
+
         public void Ride(Direction direction, GridUnit rideUnit)
         {
             if (!IsCurrentStateIs(StateEnum.Idle) && rideUnit is Player.Player) return;
@@ -54,13 +52,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
             bool isUseInitData = true, Direction skinDirection = Direction.None)
         {
-            // RotateSkin(unitTypeXZIn);
+            RotateSize(skinDirection);
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection);
             if (!_isAddState)
             {
                 _isAddState = true;
                 AddState();
             }
+
             ChangeState(StateEnum.Idle);
         }
 
@@ -78,13 +77,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
         }
 
         protected override void OnEnterTriggerUpper(GridUnit triggerUnit)
-        {   
+        {
             if (!IsCurrentStateIs(StateEnum.Idle)) return;
             if (triggerUnit is Player.Player playerIn)
             {
                 playerIn.SetVehicle(this);
                 player = playerIn;
             }
+
             _carryUnits.Add(triggerUnit);
         }
 
@@ -96,27 +96,24 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
                 playerIn.SetVehicle(null);
                 player = null;
             }
+
             _carryUnits.Remove(triggerUnit);
         }
 
-        private void RotateSkin(UnitTypeXZ type)
+        private void RotateSize(Direction direction)
         {
-            skin.localRotation =
-                Quaternion.Euler(type is UnitTypeXZ.Horizontal
-                    ? Constants.HorizontalSkinRotation
-                    : Constants.VerticalSkinRotation);
             switch (_isFirstSpawnDone)
             {
-                case false when type is UnitTypeXZ.Vertical:
+                case false when direction is Direction.Forward or Direction.Back:
                     size = new Vector3Int(size.z, size.y, size.x);
                     _isFirstSpawnDone = true;
                     break;
-                case true when _lastSpawnType != type:
+                case true when _lastDirectionSpawn != direction:
                     size = new Vector3Int(size.z, size.y, size.x);
                     break;
             }
 
-            _lastSpawnType = type;
+            _lastDirectionSpawn = direction;
         }
     }
 }

@@ -11,18 +11,19 @@ using UnityEngine;
 
 namespace ToonyColorsPro
 {
-	namespace Runtime
-	{
-		public class TCP2_ShaderUpdateUnityTime : MonoBehaviour
-		{
-			static readonly int UnityTime = Shader.PropertyToID("unityTime");
-			static readonly int CustomTime = Shader.PropertyToID("_CustomTime");
+    namespace Runtime
+    {
+        public class TCP2_ShaderUpdateUnityTime : MonoBehaviour
+        {
+            private static readonly int UnityTime = Shader.PropertyToID("unityTime");
+            private static readonly int CustomTime = Shader.PropertyToID("_CustomTime");
 
-			void LateUpdate()
-			{
-				Shader.SetGlobalFloat(UnityTime, Time.time);
-				Shader.SetGlobalVector(CustomTime, new Vector4(Time.time / 20f, Time.time, Time.time * 2, Time.time * 3));
-			}
-		}
-	}
+            private void LateUpdate()
+            {
+                Shader.SetGlobalFloat(UnityTime, Time.time);
+                Shader.SetGlobalVector(CustomTime,
+                    new Vector4(Time.time / 20f, Time.time, Time.time * 2, Time.time * 3));
+            }
+        }
+    }
 }

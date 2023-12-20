@@ -6,6 +6,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
     public class JumpUpPlayerState : IState<Player>
     {
         private bool _isExecuted;
+
         public void OnEnter(Player t)
         {
             t.ChangeAnim(Constants.JUMP_UP_ANIM);

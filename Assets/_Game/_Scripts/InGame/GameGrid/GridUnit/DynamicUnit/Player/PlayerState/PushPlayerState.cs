@@ -6,24 +6,26 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
     public class PushPlayerState : IState<Player>
     {
+        private float _counterTime;
         private bool _isExecuted;
+
         public void OnEnter(Player t)
         {
             _counterTime = 0.25f;
             t.ChangeAnim(Constants.PUSH_ANIM);
         }
 
-        private float _counterTime;
-        
         public void OnExecute(Player t)
         {
             // BUG: The time checks Idle anim instead of Push anim
             if (_counterTime > 0)
-            {   _counterTime -= Time.fixedDeltaTime;
+            {
+                _counterTime -= Time.fixedDeltaTime;
                 if (_isExecuted || t.Direction == t.MovingData.inputDirection || t.Direction == Direction.None) return;
                 t.ChangeState(StateEnum.Idle);
                 return;
             }
+
             if (!_isExecuted)
             {
                 _isExecuted = true;
@@ -35,7 +37,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 
         public void OnExit(Player t)
         {
-           _isExecuted = false;
+            _isExecuted = false;
         }
     }
 }

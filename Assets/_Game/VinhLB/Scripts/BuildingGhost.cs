@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
@@ -13,34 +10,32 @@ namespace VinhLB
         //private const string GHOST_RENDER_FEATURE = "Ghost";
         private const string GHOST_LAYER_NAME = "Ghost";
 
-        [Header("References")]
-        [SerializeField]
+        [Header("References")] [SerializeField]
         private UniversalRendererData _rendererData;
-        [SerializeField]
-        private Material _validMaterial;
-        [SerializeField]
-        private Material _invalidMaterial;
-        [SerializeField]
-        private Transform _visualHolderTransform;
-        [SerializeField]
-        private Transform _cursorIndicatorTransform;
-        [SerializeField]
-        private Transform _cursorIndicatorVisualTransform;
 
-        [Header("Settings")]
-        [SerializeField]
-        private float _heightOffset = 1f;
-        [SerializeField]
-        private float _animationSpeed = 15f;
+        [SerializeField] private Material _validMaterial;
+
+        [SerializeField] private Material _invalidMaterial;
+
+        [SerializeField] private Transform _visualHolderTransform;
+
+        [SerializeField] private Transform _cursorIndicatorTransform;
+
+        [SerializeField] private Transform _cursorIndicatorVisualTransform;
+
+        [Header("Settings")] [SerializeField] private float _heightOffset = 1f;
+
+        [SerializeField] private float _animationSpeed = 15f;
+
+        private Vector3 _cursorIndicatorVisualLocalPosition;
 
         private RenderObjects _ghostRenderObjects;
-        private Transform _visual;
         private bool _isValid;
-        private Vector3 _cursorIndicatorVisualLocalPosition;
+        private Transform _visual;
 
         private void Start()
         {
-            Utilities.TryGetRendererFeature<RenderObjects>(_rendererData, out _ghostRenderObjects);
+            Utilities.TryGetRendererFeature(_rendererData, out _ghostRenderObjects);
 
             _isValid = true;
 
@@ -56,24 +51,21 @@ namespace VinhLB
             GridBuildingManager_OnSelectedChanged();
         }
 
-        private void GridBuildingManager_OnOnBuildingModeChanged()
-        {
-            _cursorIndicatorTransform.gameObject.SetActive(GridBuildingManager.Ins.IsOnBuildingMode);
-        }
-
         private void LateUpdate()
         {
             UpdateGhostPositionAndRotation(GridBuildingManager.Ins.Snapping);
         }
 
+        private void GridBuildingManager_OnOnBuildingModeChanged()
+        {
+            _cursorIndicatorTransform.gameObject.SetActive(GridBuildingManager.Ins.IsOnBuildingMode);
+        }
+
         private void UpdateGhostPositionAndRotation(bool instant)
         {
-            if (!GridBuildingManager.Ins.IsOnBuildingMode)
-            {
-                return;
-            }
+            if (!GridBuildingManager.Ins.IsOnBuildingMode) return;
 
-            if (GridBuildingManager.Ins.CurrentBuildingUnitData != null && 
+            if (GridBuildingManager.Ins.CurrentBuildingUnitData != null &&
                 _isValid != GridBuildingManager.Ins.CanBuild())
             {
                 _isValid = GridBuildingManager.Ins.CanBuild();
@@ -90,7 +82,7 @@ namespace VinhLB
             if (GridBuildingManager.Ins.CurrentBuildingUnitData != null)
             {
                 targetRotation = GridBuildingManager.Ins.GetPlacedObjectRotation();
-                
+
                 visualTargetPosition = Quaternion.Inverse(targetRotation) * GridBuildingManager.Ins.GetRotationOffset();
                 visualTargetPosition.y = _visualHolderTransform.localPosition.y;
 
@@ -102,7 +94,7 @@ namespace VinhLB
             {
                 Tf.position = targetPosition;
                 Tf.rotation = targetRotation;
-                
+
                 _visualHolderTransform.localPosition = visualTargetPosition;
                 _cursorIndicatorVisualTransform.localPosition = cursorIndicatorVisualPosition;
             }
@@ -110,11 +102,12 @@ namespace VinhLB
             {
                 Tf.position = Vector3.Lerp(Tf.position, targetPosition, _animationSpeed * Time.deltaTime);
                 Tf.rotation = Quaternion.Lerp(Tf.rotation, targetRotation, _animationSpeed * Time.deltaTime);
-                
+
                 _visualHolderTransform.localPosition = Vector3.Lerp(
                     _visualHolderTransform.localPosition, visualTargetPosition, _animationSpeed * Time.deltaTime);
                 _cursorIndicatorVisualTransform.localPosition = Vector3.Lerp(
-                    _cursorIndicatorVisualTransform.localPosition, cursorIndicatorVisualPosition, _animationSpeed * Time.deltaTime);
+                    _cursorIndicatorVisualTransform.localPosition, cursorIndicatorVisualPosition,
+                    _animationSpeed * Time.deltaTime);
             }
         }
 
@@ -133,18 +126,18 @@ namespace VinhLB
                 _visual.localPosition = Vector3.zero;
                 _visual.localRotation = Quaternion.identity;
                 _visual.SetLayer(LayerMask.NameToLayer(GHOST_LAYER_NAME), true);
-                
+
                 _cursorIndicatorVisualLocalPosition = new Vector3(
                     -(buildingUnitData.Width - 1),
                     0f,
                     -(buildingUnitData.Height - 1));
-                Vector3 cursorIndicatorVisualLocalScale = new Vector3(
+                Vector3 cursorIndicatorVisualLocalScale = new(
                     buildingUnitData.Width * Constants.CELL_SIZE,
                     buildingUnitData.Height * Constants.CELL_SIZE,
                     buildingUnitData.Height * Constants.CELL_SIZE);
                 _cursorIndicatorVisualTransform.localPosition = _cursorIndicatorVisualLocalPosition;
                 _cursorIndicatorVisualTransform.localScale = cursorIndicatorVisualLocalScale;
-                
+
                 UpdateGhostPositionAndRotation(true);
             }
             else
@@ -157,13 +150,9 @@ namespace VinhLB
         private void UpdateGhostMaterial()
         {
             if (_isValid)
-            {
                 _ghostRenderObjects.settings.overrideMaterial = _validMaterial;
-            }
             else
-            {
                 _ghostRenderObjects.settings.overrideMaterial = _invalidMaterial;
-            }
 
             _rendererData.SetDirty();
         }

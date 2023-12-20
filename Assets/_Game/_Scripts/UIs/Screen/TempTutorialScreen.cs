@@ -13,8 +13,8 @@ namespace _Game.UIs.Screen
         [SerializeField] private int tutorialDone;
         [SerializeField] private TMP_Text tutorialText;
         [SerializeField] private Image blockPanel;
-        
-        
+
+
         private void Start()
         {
             tutorialDone = 0;
@@ -41,7 +41,7 @@ namespace _Game.UIs.Screen
             TapContinue();
             UIManager.Ins.OpenUI<InGameScreen>();
         }
-        
+
         private void ChangeBlockPanelActiveStatus(bool status)
         {
             blockPanel.enabled = status;

@@ -7,13 +7,14 @@
         YZ = 2
     }
 }
+
 public enum Direction
 {
     None = -1,
     Left = 0,
     Right = 1,
     Forward = 2,
-    Back = 3,
+    Back = 3
 }
 
 namespace TweenTypeEnum
@@ -73,15 +74,17 @@ namespace GameGridEnum
         Three = 6,
         ThreePointFive = 7,
         Four = 8,
-        FourPointFive = 9,
+        FourPointFive = 9
     }
+
     public enum GridSurfaceType
     {
         // Default value of all GameGridCell is Water, so no need to create a WaterGridSurface
         // Other GridSurfaceType must be created when needed (e.g. GroundGridSurface) to overwrite the default value
-        Water = 0, 
-        Ground = 1,
+        Water = 0,
+        Ground = 1
     }
+
     public enum GridUnitStaticType
     {
         None = -1,
@@ -90,8 +93,9 @@ namespace GameGridEnum
         TreeRoot = 2,
         TreeShort = 3,
         TreeHigh = 4,
-        FinalPoint = 5,
+        FinalPoint = 5
     }
+
     public enum GridUnitDynamicType
     {
         None = -1,
@@ -101,8 +105,6 @@ namespace GameGridEnum
         Raft = 3,
         RaftLong = 4,
         Box = 5,
-        Bomb = 6,
+        Bomb = 6
     }
-    
 }
-

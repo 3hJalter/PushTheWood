@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace VinhLB
@@ -11,22 +9,15 @@ namespace VinhLB
             transform.gameObject.layer = layer;
 
             if (recursive)
-            {
                 for (int i = transform.childCount - 1; i >= 0; i--)
-                {
                     transform.GetChild(i).SetLayer(layer, true);
-                }
-            }
         }
 
         public static Transform ClearChildren(this Transform transform)
         {
-            for (int i = transform.childCount - 1; i >= 0; i--)
-            {
-                GameObject.Destroy(transform.GetChild(i).gameObject);
-            }
+            for (int i = transform.childCount - 1; i >= 0; i--) Object.Destroy(transform.GetChild(i).gameObject);
 
             return transform;
         }
-    } 
+    }
 }
