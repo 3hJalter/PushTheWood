@@ -24,6 +24,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             {
                 if (t.TurnOverData.blockDynamicUnits.Count > 0) t.OnPush(t.TurnOverData.inputDirection, t.TurnOverData);
                 t.ChangeState(StateEnum.Idle);
+                //Play Anim Block
             }
             else
             {

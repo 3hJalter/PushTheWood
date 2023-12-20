@@ -24,6 +24,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     t.OnPush(t.MovingData.inputDirection, t.MovingData);
                 }
                 t.ChangeState(StateEnum.Idle);
+                //NOTE: Play Anim Block
             }
             else
             {

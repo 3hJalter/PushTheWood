@@ -1,78 +1,131 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using UnityEngine.Events;
 using UnityEngine;
+using System;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace _Game.Utilities.Timer
 {
     [DefaultExecutionOrder(-100)]
     public class TimerManager : MonoBehaviour
     {
-        public enum LoopType
+        private static TimerManager inst;
+        public static TimerManager Inst => inst;
+        public enum LOOP_TYPE
         {
-            Update = 0,
-            FixedUpdate = 1
+            UPDATE = 0,
+            FIXED_UPDATE = 1
         }
-
         private const int INIT_STIMER = 50;
-        private readonly List<STimer> inUseSTimers = new();
-        private readonly Queue<STimer> sTimers = new();
-        public static TimerManager Inst { get; private set; }
+        private const int INIT_STIMER_DATA = 50;
+        [HideInInspector]
+        public event Action TimerUpdate;
+        [HideInInspector]
+        public event Action TimerFixedUpdate;
+        [HideInInspector]
+        public event Action TimerLateUpdate;
 
+        private Queue<STimer> sTimers = new Queue<STimer>();
+        private List<STimer> inUseSTimers = new List<STimer>();
+
+        private List<STimerData> scaleTimeSTimerDatas = new List<STimerData>();
+        private List<STimerData> unScaleTimeSTimerDatas = new List<STimerData>();
         private void Awake()
         {
-            if (Inst != null)
+            if (inst != null)
             {
                 Destroy(gameObject);
                 return;
             }
-
-            Inst = this;
+            inst = this;
             DontDestroyOnLoad(gameObject);
             AddSTimerToPool();
         }
-
         private void Update()
         {
             TimerUpdate?.Invoke();
         }
-
         private void FixedUpdate()
         {
             TimerFixedUpdate?.Invoke();
         }
-
         private void LateUpdate()
         {
+            if (scaleTimeSTimerDatas.Count > 0)
+            {
+                StartWaitForTime(scaleTimeSTimerDatas, false);
+            }
+
+            if (unScaleTimeSTimerDatas.Count > 0)
+            {
+                StartWaitForTime(unScaleTimeSTimerDatas, true);
+            }
             TimerLateUpdate?.Invoke();
         }
 
-        [HideInInspector] public event Action TimerUpdate;
+        private void StartWaitForTime(List<STimerData> stimerData, bool isUnscaleTime = false)
+        {
+            //NOTE: Scale Timer
+            if (stimerData.Count > 1)
+            {
+                STimer timer = PopSTimer();
+                timer.IsUnscaleTime = isUnscaleTime;
+                List<Action> actions = new List<Action>();
+                List<float> times = new List<float>();
+                stimerData.Sort(STimerData.Comparer);
 
-        [HideInInspector] public event Action TimerFixedUpdate;
+                float lastTime = stimerData[stimerData.Count - 1].Time;
+                for (int i = 0; i < stimerData.Count; i++)
+                {
+                    actions.Add(stimerData[i].Action);
+                    times.Add(stimerData[i].Time);
+                }
+                actions.Add(() => PushSTimer(timer));
+                times.Add(lastTime);
 
-        [HideInInspector] public event Action TimerLateUpdate;
+                timer.Start(times, actions);
+                stimerData.Clear();
+            }
+            else if (stimerData.Count == 1)
+            {
+                STimer timer = PopSTimer();
+                timer.IsUnscaleTime = false;
+                Action lastAction = stimerData[0].Action;
+                Action callBack = () =>
+                {
+                    lastAction?.Invoke();
+                    PushSTimer(timer);
+                };
+                timer.Start(stimerData[0].Time, callBack);
+                stimerData.RemoveAt(0);
+            }
+        }
 
         public STimer PopSTimer()
         {
             AddSTimerToPool();
             STimer timer = sTimers.Dequeue();
             inUseSTimers.Add(timer);
+            //MGDebug.Log(DevId.Hung, $"STimer-Pool: {sTimers.Count} - STimer-Run: {inUseSTimers.Count}");
             return timer;
         }
-
         public void PushSTimer(STimer timer, bool checkDuplicated = true) //DEV: Can using Heap to optimize
         {
             if (timer == null) return;
             if (checkDuplicated)
+            {
                 if (sTimers.Contains(timer))
+                {
                     return;
+                }
+            }
 
             timer.IsUnscaleTime = false;
+            timer.TimeScale = 1f;
             sTimers.Enqueue(timer);
             inUseSTimers.Remove(timer);
         }
-
-        public void WaitForFrame(int frame, Action action)
+        public void WaitForFrame(int frame, Action action) 
         {
             STimer timer = PopSTimer();
             Action timerAction = () =>
@@ -82,26 +135,23 @@ namespace _Game.Utilities.Timer
             };
             timer.Start(frame, timerAction);
         }
-
-        public void WaitForTime(float time, Action action, bool isUncaleTime = false)
+        public void WaitForTime(float time, Action action, bool isUncaleTime = false) 
         {
-            STimer timer = PopSTimer();
-            timer.IsUnscaleTime = isUncaleTime;
-            Action timerAction = () =>
+            if (!isUncaleTime)
             {
-                action?.Invoke();
-                PushSTimer(timer, false);
-            };
-            timer.Start(time, timerAction);
+                scaleTimeSTimerDatas.Add(new STimerData(time, action));
+            }
+            else
+            {
+                unScaleTimeSTimerDatas.Add(new STimerData(time, action));
+            }
         }
-
         public STimer WaitForTime(List<float> times, List<Action> events)
         {
             STimer timer = PopSTimer();
             timer.Start(times, events, () => PushSTimer(timer));
             return timer;
         }
-
         public void TriggerLoopAction(Action action, float time, int num = 0, bool isUnscaleTime = false)
         {
             if (action == null || num <= 0) return;
@@ -111,14 +161,16 @@ namespace _Game.Utilities.Timer
             int i = 1;
             Action timerAction = () =>
             {
-                if (i >= num) StopTimer(ref timer);
+                if (i >= num)
+                {
+                    StopTimer(ref timer);
+                }
                 action?.Invoke();
                 i++;
             };
 
             timer.Start(time, timerAction, true);
         }
-
         public void StopTimer(ref STimer timer)
         {
             if (timer == null) return;
@@ -127,47 +179,50 @@ namespace _Game.Utilities.Timer
             PushSTimer(timer);
             timer = null;
         }
-
-        public void TriggerLoopAction(Action action, int frame, LoopType type) //NOTE: How it works???
+        public void TriggerLoopAction(Action action, int frame, LOOP_TYPE type) //NOTE: How it works???
         {
             STimer timer = PopSTimer();
-            if (type == LoopType.Update)
+            if (type == LOOP_TYPE.UPDATE)
             {
-                timer.ClearEvent(STimer.EventType.FrameUpdate);
+                timer.ClearEvent(STimer.EVENT_TYPE.FRAME_UPDATE);
                 timer.FrameUpdate += action;
 
                 Action timerAction = () => PushSTimer(timer, false);
                 timer.Start(frame, timerAction);
             }
-            else if (type == LoopType.FixedUpdate)
+            else if(type == LOOP_TYPE.FIXED_UPDATE)
             {
-                timer.ClearEvent(STimer.EventType.FrameFixedUpdate);
+                timer.ClearEvent(STimer.EVENT_TYPE.FRAME_FIXED_UPDATE);
                 timer.FrameFixedUpdate += action;
-                Action timerAction = () => { PushSTimer(timer, false); };
-                timer.Start(frame, timerAction, STimer.EventType.FrameFixedUpdate);
+                Action timerAction = () =>
+                {
+                    PushSTimer(timer, false);
+                };
+                timer.Start(frame, timerAction, STimer.EVENT_TYPE.FRAME_FIXED_UPDATE);
             }
         }
-
-        public void RecallAllSTimer()
+        public void RecallAllSData()
         {
-            for (int i = 0; i < inUseSTimers.Count; i++)
+            for(int i = 0; i < inUseSTimers.Count; i++)
             {
                 STimer timer = inUseSTimers[i];
                 timer.Stop();
                 sTimers.Enqueue(timer);
             }
-
             inUseSTimers.Clear();
         }
-
         private void AddSTimerToPool()
         {
             if (sTimers.Count == 0)
+            {
                 for (int i = 0; i < INIT_STIMER; i++)
                 {
-                    STimer timer = new();
+                    STimer timer = new STimer();
                     sTimers.Enqueue(timer);
                 }
+            }
         }
     }
+
+        
 }

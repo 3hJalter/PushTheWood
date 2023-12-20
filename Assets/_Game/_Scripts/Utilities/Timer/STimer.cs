@@ -1,20 +1,64 @@
-﻿using System;
+﻿using UnityEngine;
+using UnityEngine.Events;
+using System;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace _Game.Utilities.Timer
 {
-    public class STimer
+    public class STimer 
     {
-        public enum EventType
+        public enum EVENT_TYPE
         {
-            FrameUpdate = 0,
-            FrameFixedUpdate = 1
+            FRAME_UPDATE = 0,
+            FRAME_FIXED_UPDATE = 1
         }
+
+        public enum CAL_TYPE
+        {
+            SEQUENCE = 0,
+            ADD = 1,
+        }
+
+        #region Multiple Event Calls
+        private List<Action> events;
+        private List<float> times;
+        private List<float> timeAdds;
+        private List<STimerData> sTimerData;
+        private float maxTime;
+        private int eventIndex = 0;
+        #endregion
+
+        #region Event
+        private event Action CallBack;
+        public event Action FrameUpdate;
+        public event Action FrameFixedUpdate;
+        public event Action<int> TimeOut;   
+        #endregion
+
+        #region Property
+        private bool isStart = false;
+        private float timeRemaining = 0;
+        private int timeFrame = 0;
+        private int timeFixedFrame = 0;
+        private int code = -1;
+        private bool isUnscaleTime = false;
+
+        private bool isLoop = false;
+        private float loopTime = 0;
+        private int loopFrame = 0;
+        public float TimeRemaining => timeRemaining;
+        public bool IsStart => isStart;
+        public bool IsUnscaleTime
+        {
+            get => isUnscaleTime;
+            set => isUnscaleTime = value;
+        }
+        public float TimeScale = 1f;
+        #endregion
         // Start is called before the first frame update
 
-        private bool isStartFrame;
-
+        private bool isStartFrame = false;
         public STimer()
         {
             TimerManager.Inst.TimerUpdate += Update;
@@ -27,50 +71,44 @@ namespace _Game.Utilities.Timer
             this.code = code;
             Start(time);
         }
-
-        public void Start(int frame, int code = -1, EventType type = EventType.FrameUpdate)
+        public void Start(int frame, int code = -1, EVENT_TYPE type = EVENT_TYPE.FRAME_UPDATE)
         {
             this.code = code;
             Start(frame, type);
         }
-
-        public void Start(int frame, Action action, EventType type = EventType.FrameUpdate)
+        public void Start(int frame, Action action, EVENT_TYPE type = EVENT_TYPE.FRAME_UPDATE)
         {
-            CallBack = action;
+            this.CallBack = action;
             Start(frame, type);
         }
-
         public void Start(float time, Action action, bool isLoop = false)
         {
             this.isLoop = isLoop;
             loopTime = time;
-            CallBack = action;
+            this.CallBack = action;
             Start(time);
         }
-
         public void Start(float time)
         {
-            if (time > 0)
+            if(time > 0)
             {
-                IsStart = true;
-                TimeRemaining = time;
+                isStart = true;
+                timeRemaining = time;
             }
             else
             {
                 TriggerEvent();
                 Stop();
             }
-
             isStartFrame = true;
         }
-
-        public void Start(int frame, EventType type)
-        {
-            if (type == EventType.FrameUpdate)
+        public void Start(int frame, EVENT_TYPE type)
+        {           
+            if(type == EVENT_TYPE.FRAME_UPDATE)
             {
                 if (frame > 0)
                 {
-                    IsStart = true;
+                    isStart = true;
                     timeFrame = frame;
                     FrameUpdate?.Invoke();
                 }
@@ -80,11 +118,11 @@ namespace _Game.Utilities.Timer
                     Stop();
                 }
             }
-            else if (type == EventType.FrameFixedUpdate)
+            else if(type == EVENT_TYPE.FRAME_FIXED_UPDATE)
             {
                 if (frame > 0)
                 {
-                    IsStart = true;
+                    isStart = true;
                     timeFixedFrame = frame;
                     FrameFixedUpdate?.Invoke();
                 }
@@ -94,101 +132,152 @@ namespace _Game.Utilities.Timer
                     Stop();
                 }
             }
-
             isStartFrame = true;
         }
-
-        public void Start(List<float> times, List<Action> events, Action callBack = null)
+        public void Start(List<float> times, List<Action> events, Action callBack = null,CAL_TYPE type = CAL_TYPE.SEQUENCE)
         {
-            //NOTE: Init time list and action list if it null
-            if (this.times == null)
-            {
-                this.times = new List<float>();
-                this.events = new List<Action>();
-            }
+            //NOTE:Reference new data
+            this.times = times;
+            this.events = events;
 
-            //NOTE:Clear and add new data
-            this.times.Clear();
-            this.events.Clear();
-            for (int i = 0; i < times.Count; i++)
+            if(type == CAL_TYPE.ADD)
             {
-                this.times.Add(times[i]);
-                this.events.Add(events[i]);
+                float time = 0;
+                if(timeAdds == null)
+                {
+                    timeAdds = new List<float>();
+                }
+                timeAdds.Clear();
+                for (int i = 0; i < times.Count; i++)
+                {
+                    time += times[i];
+                    timeAdds.Add(time);
+                }
+                this.times = timeAdds;
             }
 
             //NOTE: Starting STimer
-            IsStart = false;
+            isStart = false;
             CallBack = callBack;
-            maxTime = times[times.Count - 1];
+            maxTime = this.times[this.times.Count - 1];
             eventIndex = 0;
 
             //CASE: One time and one event or all events happens in 0
-            if (maxTime > 0)
+            if(maxTime > 0)
+            {
                 Start(maxTime);
+            }
             else
-                for (int i = 0; i < events.Count; i++)
+            {
+                for(int i = 0; i < events.Count; i++)
+                {
                     events[i]?.Invoke();
-
+                }
+            }
+            
         }
+        public void Start(List<STimerData> sTimerData, Action callBack = null)
+        {
+            this.sTimerData = sTimerData;
 
+            isStart = false;
+            CallBack = callBack;
+            maxTime = sTimerData[sTimerData.Count - 1].Time;
+            eventIndex = 0;
+
+            if(maxTime > 0)
+            {
+                Start(maxTime);
+            }
+            else
+            {
+                for(int i = 0; i < sTimerData.Count; i++)
+                {
+                    sTimerData[i].Action?.Invoke();
+                }
+            }
+        }
         public void Stop()
         {
-            IsStart = false;
+            isStart = false;
             events = null;
             times = null;
-            TimeRemaining = 0;
+            sTimerData = null;
+            timeRemaining = 0;
             timeFrame = 0;
-            eventIndex = 0;
             CallBack = null;
             isLoop = false;
         }
-
         private void Update()
         {
-            if (IsStart) CounterUpdate();
+            if (isStart)
+            {
+                CounterUpdate();
+            }
         }
 
         private void FixedUpdate()
         {
-            if (IsStart) CounterFixedUpdate();
+            if (isStart)
+            {
+                CounterFixedUpdate();
+            }
         }
-
         private void LateUpdate()
         {
             isStartFrame = false;
         }
-
         private void CounterUpdate()
         {
-            if (TimeRemaining > 0)
+            if (timeRemaining > 0)
             {
-                if (!IsUnscaleTime)
-                    TimeRemaining -= Time.deltaTime;
+                if(!isUnscaleTime)
+                    timeRemaining -= Time.deltaTime * TimeScale;
                 else
-                    TimeRemaining -= Time.unscaledDeltaTime;
-                if (times != null && events != null)
+                    timeRemaining -= Time.unscaledDeltaTime * TimeScale;
+
+                if(times != null && events != null)
                 {
                     int maxEventIndex = events.Count;
-                    for (; eventIndex < maxEventIndex;)
-                        if (maxTime - TimeRemaining >= times[eventIndex])
+                    for(; eventIndex < maxEventIndex;)
+                    {
+                        if (maxTime - timeRemaining >= times[eventIndex])
                         {
                             eventIndex += 1;
-                            events[eventIndex - 1].Invoke();
+                            events[eventIndex - 1].Invoke();               
                         }
                         else
                         {
                             break;
                         }
+                    }
+                    
+                }
+                if (sTimerData != null)
+                {
+                    int maxEventIndex = sTimerData.Count;
+                    for (; eventIndex < maxEventIndex;)
+                    {
+                        if (maxTime - timeRemaining >= sTimerData[eventIndex].Time)
+                        {
+                            eventIndex += 1;
+                            sTimerData[eventIndex - 1].Action.Invoke();
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
 
                 }
 
-                if (TimeRemaining <= 0)
-                {
+                if (timeRemaining <= 0)
+                {                    
                     TriggerEvent();
                     if (!isLoop)
                         Stop();
                     else
-                        TimeRemaining = loopTime;
+                        timeRemaining = loopTime;
                 }
             }
 
@@ -196,7 +285,7 @@ namespace _Game.Utilities.Timer
             {
                 timeFrame -= 1;
                 if (timeFrame <= 0)
-                {
+                {                    
                     TriggerEvent();
                     if (!isLoop)
                         Stop();
@@ -204,18 +293,16 @@ namespace _Game.Utilities.Timer
                         timeFrame = loopFrame;
                 }
             }
-
-            if (!isStartFrame)
+            if(!isStartFrame)
                 FrameUpdate?.Invoke();
         }
-
         private void CounterFixedUpdate()
         {
             if (timeFixedFrame > 0)
             {
                 timeFixedFrame -= 1;
                 if (timeFixedFrame <= 0)
-                {
+                {                  
                     TriggerEvent();
                     if (!isLoop)
                         Stop();
@@ -223,70 +310,73 @@ namespace _Game.Utilities.Timer
                         timeFixedFrame = loopFrame;
                 }
             }
-
             if (!isStartFrame)
                 FrameFixedUpdate?.Invoke();
         }
-
         private void TriggerEvent()
         {
             TimeOut?.Invoke(code);
             CallBack?.Invoke();
         }
 
-        public void ClearEvent(EventType type)
+        public void ClearEvent(EVENT_TYPE type)
         {
             switch (type)
             {
-                case EventType.FrameUpdate:
+                case EVENT_TYPE.FRAME_UPDATE:
                     FrameUpdate = null;
                     break;
-                case EventType.FrameFixedUpdate:
+                case EVENT_TYPE.FRAME_FIXED_UPDATE:
                     FrameFixedUpdate = null;
                     break;
             }
         }
-
         ~STimer()
         {
             TimerManager.Inst.TimerUpdate -= Update;
             TimerManager.Inst.TimerFixedUpdate -= FixedUpdate;
             TimerManager.Inst.TimerLateUpdate -= LateUpdate;
         }
+        
+    }
+    public class STimerData
+    {
+        public float Time;
+        public Action Action;
+        public static STimerDataComparer Comparer = new STimerDataComparer();
 
-        #region Multiple Event Calls
+        public STimerData()
+        {
 
-        private List<Action> events;
-        private List<float> times;
-        private float maxTime;
-        private int eventIndex;
+        }
+        public STimerData(float time, Action action)
+        {
+            this.Time = time;
+            this.Action = action;
+        }
+        public void SetData(float time, Action action)
+        {
+            Time = time;
+            Action = action;
+        }
+    }
+    public class STimerDataComparer : IComparer<STimerData>
+    {
+        public int Compare(STimerData x, STimerData y)
+        {
+            if(x.Action == null && y.Action != null)
+            {
+                return 1;
+            }
+            else if(x.Action != null && y.Action == null)
+            {
+                return -1;
+            }
+            else
+            {
+                return x.Time.CompareTo(y.Time);
 
-        #endregion
-
-        #region Event
-
-        private event Action CallBack;
-        public event Action FrameUpdate;
-        public event Action FrameFixedUpdate;
-        public event Action<int> TimeOut;
-
-        #endregion
-
-        #region Property
-
-        private int timeFrame;
-        private int timeFixedFrame;
-        private int code = -1;
-
-        private bool isLoop;
-        private float loopTime;
-        private readonly int loopFrame = 0;
-        public float TimeRemaining { get; private set; }
-
-        public bool IsStart { get; private set; }
-
-        public bool IsUnscaleTime { get; set; } = false;
-
-        #endregion
+            }
+        }
     }
 }
