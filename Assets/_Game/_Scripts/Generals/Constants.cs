@@ -58,6 +58,7 @@ public static class Constants
 
     public const float DELAY_INTERACT_TIME = 0.25f;
     public const float MOVING_TIME = 0.25f;
+    public const float MOVING_TIME_FAST_RATE = 0.5f;
     public const float FALLING_TIME = 0.2f;
     
     public static readonly HeightLevel MaxHeight = (HeightLevel)(Enum.GetValues(typeof(HeightLevel)).Length - 1);

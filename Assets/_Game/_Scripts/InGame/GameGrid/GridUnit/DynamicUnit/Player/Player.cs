@@ -39,6 +39,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         private Direction _direction = Direction.None;
         
         public Direction Direction => _direction;
+        public Queue<Direction> InputCache = new Queue<Direction>();
+        public float AnimSpeed => animator.speed;
 
 
         private bool _isWaitAFrame;
@@ -48,7 +50,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             if (_isWaitAFrame)
             {
                 _isWaitAFrame = false;
-                _direction = HInputManager.GetDirectionInput();
+                if(InputCache.Count > 0)
+                {
+                    _direction = InputCache.Dequeue();
+                }
+                else
+                {
+                    _direction = HInputManager.GetDirectionInput();
+                }
                 _currentState?.OnExecute(this);
                 return;
             }
@@ -115,6 +124,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             _currentAnim = animName;
             animator.speed = speed;
             animator.SetTrigger(_currentAnim);
+        }
+
+        public void SetAnimSpeed(float speed)
+        {
+            animator.speed = speed;
         }
 
         public bool IsCurrentAnimDone()
