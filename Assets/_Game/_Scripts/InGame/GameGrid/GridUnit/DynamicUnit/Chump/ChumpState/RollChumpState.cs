@@ -20,7 +20,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             if (!_isRoll)
             {
                 if (t.MovingData.blockDynamicUnits.Count > 0) t.OnPush(t.MovingData.inputDirection, t.MovingData);
-                t.ChangeState(StateEnum.Idle);
+                t.ChangeState(StateEnum.RollBlock);
             }
             else
             {

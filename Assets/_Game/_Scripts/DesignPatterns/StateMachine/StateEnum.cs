@@ -16,6 +16,7 @@
         Move = 9, // Move also for Player
         Roll = 10,
         TurnOver = 11,
-        FormRaft = 12
+        FormRaft = 12,
+        RollBlock = 13, 
     }
 }

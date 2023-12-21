@@ -8,30 +8,33 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 {
     public class RollBlockChumpState : IState<Chump>
     {
+        Vector3 axis;
+        float lastAngle = 0;
         public void OnEnter(Chump t)
-        {           
+        {         
+
             switch (t.UnitTypeY)
             {
                 case UnitTypeY.Up:
                     //NOTE: Blocking when chump is up
-                    Vector3 axis = Vector3.Cross(Vector3.up, Constants.DirVector3[t.TurnOverData.inputDirection]);
-                    float lastAngle = 0;
-                    DOVirtual.Float(0, 90, Constants.MOVING_TIME / 1.5f, i =>
+                    axis = Vector3.Cross(Vector3.up, Constants.DirVector3[t.TurnOverData.inputDirection]);
+                    lastAngle = 0;
+                    DOVirtual.Float(0, 45, Constants.MOVING_TIME * 0.45f, i =>
                     {
-                        //NOTE: Rotate Back
-                        if(i >= 45)
-                        {
-                            i = 90 - i;
-                        }
                         t.skin.RotateAround(t.anchor.Tf.position, axis, i - lastAngle);
                         lastAngle = i;
-                    }).SetUpdate(UpdateType.Fixed).SetEase(Ease.Linear)
+                    }).SetUpdate(UpdateType.Fixed)
+                    .SetEase(Ease.Linear)
+                    .SetLoops(2, LoopType.Yoyo)
                     .OnComplete(() => t.ChangeState(StateEnum.Idle));          
                     break;
                 case UnitTypeY.Down:
-                    t.Tf.DOShakePosition(0.15f, 0.1f, 100, 50, false, true, ShakeRandomnessMode.Harmonic)
-                        .OnComplete(() => t.ChangeState(StateEnum.Idle));
                     //NOTE: Blocking when chump is down
+                    Vector3 originPos = t.Tf.position;
+                    t.Tf.DOMove(originPos + Constants.DirVector3[t.MovingData.inputDirection] * Constants.CELL_SIZE / 2, Constants.MOVING_TIME * 0.45f)
+                        .SetEase(Ease.Linear)
+                        .SetLoops(2, LoopType.Yoyo)
+                        .OnComplete(() => t.ChangeState(StateEnum.Idle));
                     break;
             }
         }
@@ -43,7 +46,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
         public void OnExit(Chump t)
         {
-          
+            
         }
 
     }
