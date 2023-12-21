@@ -3,205 +3,212 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace AssetUsageDetectorNamespace
 {
-	public partial class AssetUsageDetector
-	{
-		#region Helper Classes
-		private class CacheEntry
-		{
-			public enum Result { Unknown = 0, No = 1, Yes = 2 };
+    public partial class AssetUsageDetector
+    {
+        // An optimization to fetch the dependencies of an asset only once (key is the path of the asset)
+        private Dictionary<string, CacheEntry> assetDependencyCache;
+        private CacheEntry lastRefreshedCacheEntry;
 
-			public string hash;
-			public string[] dependencies;
-			public long[] fileSizes;
+        private string CachePath =>
+            Application.dataPath + "/../Library/AssetUsageDetector.cache"; // Path of the cache file
 
-			public bool verified;
-			public Result searchResult;
+        public void SaveCache()
+        {
+            if (assetDependencyCache == null)
+                return;
 
-			public CacheEntry( string path )
-			{
-				Verify( path );
-			}
+            try
+            {
+                using (FileStream stream = new(CachePath, FileMode.Create))
+                using (BinaryWriter writer = new(stream))
+                {
+                    writer.Write(assetDependencyCache.Count);
 
-			public CacheEntry( string hash, string[] dependencies, long[] fileSizes )
-			{
-				this.hash = hash;
-				this.dependencies = dependencies;
-				this.fileSizes = fileSizes;
-			}
+                    foreach (KeyValuePair<string, CacheEntry> keyValuePair in assetDependencyCache)
+                    {
+                        CacheEntry cacheEntry = keyValuePair.Value;
+                        string[] dependencies = cacheEntry.dependencies;
+                        long[] fileSizes = cacheEntry.fileSizes;
 
-			public void Verify( string path )
-			{
-				string hash = AssetDatabase.GetAssetDependencyHash( path ).ToString();
-				if( this.hash != hash )
-				{
-					this.hash = hash;
-					Refresh( path );
-				}
+                        writer.Write(keyValuePair.Key);
+                        writer.Write(cacheEntry.hash);
+                        writer.Write(dependencies.Length);
 
-				verified = true;
-			}
+                        for (int i = 0; i < dependencies.Length; i++)
+                        {
+                            writer.Write(dependencies[i]);
+                            writer.Write(fileSizes[i]);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
 
-			public void Refresh( string path )
-			{
-				dependencies = AssetDatabase.GetDependencies( path, false );
-				if( fileSizes == null || fileSizes.Length != dependencies.Length )
-					fileSizes = new long[dependencies.Length];
+        private void LoadCache()
+        {
+            if (File.Exists(CachePath))
+                using (FileStream stream = new(CachePath, FileMode.Open, FileAccess.Read))
+                using (BinaryReader reader = new(stream))
+                {
+                    try
+                    {
+                        int cacheSize = reader.ReadInt32();
+                        assetDependencyCache = new Dictionary<string, CacheEntry>(cacheSize);
 
-				int length = dependencies.Length;
-				for( int i = 0; i < length; i++ )
-				{
-					if( !string.IsNullOrEmpty( dependencies[i] ) )
-					{
-						FileInfo assetFile = new FileInfo( dependencies[i] );
-						fileSizes[i] = assetFile.Exists ? assetFile.Length : 0L;
-					}
-					else
-					{
-						// This dependency is empty which causes issues when passed to FileInfo constructor
-						// Find a non-empty dependency and move it to this index
-						for( int j = length - 1; j > i; j--, length-- )
-						{
-							if( !string.IsNullOrEmpty( dependencies[j] ) )
-							{
-								dependencies[i--] = dependencies[j];
-								break;
-							}
-						}
+                        for (int i = 0; i < cacheSize; i++)
+                        {
+                            string assetPath = reader.ReadString();
+                            string hash = reader.ReadString();
 
-						length--;
-					}
-				}
+                            int dependenciesLength = reader.ReadInt32();
+                            string[] dependencies = new string[dependenciesLength];
+                            long[] fileSizes = new long[dependenciesLength];
+                            for (int j = 0; j < dependenciesLength; j++)
+                            {
+                                dependencies[j] = reader.ReadString();
+                                fileSizes[j] = reader.ReadInt64();
+                            }
 
-				if( length != fileSizes.Length )
-				{
-					Array.Resize( ref dependencies, length );
-					Array.Resize( ref fileSizes, length );
-				}
-			}
-		}
-		#endregion
+                            assetDependencyCache[assetPath] = new CacheEntry(hash, dependencies, fileSizes);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        assetDependencyCache = null;
+                        Debug.LogWarning(
+                            "Couldn't load cache (probably cache format has changed in an update), will regenerate cache.\n" +
+                            e);
+                    }
+                }
 
-		// An optimization to fetch the dependencies of an asset only once (key is the path of the asset)
-		private Dictionary<string, CacheEntry> assetDependencyCache;
-		private CacheEntry lastRefreshedCacheEntry;
+            // Generate cache for all assets for the first time
+            if (assetDependencyCache == null)
+            {
+                assetDependencyCache = new Dictionary<string, CacheEntry>(1024 * 8);
 
-		private string CachePath { get { return Application.dataPath + "/../Library/AssetUsageDetector.cache"; } } // Path of the cache file
+                string[] allAssets = AssetDatabase.GetAllAssetPaths();
+                if (allAssets.Length > 0)
+                {
+                    double startTime = EditorApplication.timeSinceStartup;
 
-		public void SaveCache()
-		{
-			if( assetDependencyCache == null )
-				return;
+                    try
+                    {
+                        for (int i = 0; i < allAssets.Length; i++)
+                        {
+                            if (i % 30 == 0 && EditorUtility.DisplayCancelableProgressBar("Please wait...",
+                                    "Generating cache for the first time (optional)", (float)i / allAssets.Length))
+                            {
+                                EditorUtility.ClearProgressBar();
+                                Debug.LogWarning(
+                                    "Initial cache generation cancelled, cache will be generated on the fly as more and more assets are searched.");
+                                break;
+                            }
 
-			try
-			{
-				using( FileStream stream = new FileStream( CachePath, FileMode.Create ) )
-				using( BinaryWriter writer = new BinaryWriter( stream ) )
-				{
-					writer.Write( assetDependencyCache.Count );
+                            assetDependencyCache[allAssets[i]] = new CacheEntry(allAssets[i]);
+                        }
 
-					foreach( var keyValuePair in assetDependencyCache )
-					{
-						CacheEntry cacheEntry = keyValuePair.Value;
-						string[] dependencies = cacheEntry.dependencies;
-						long[] fileSizes = cacheEntry.fileSizes;
+                        EditorUtility.ClearProgressBar();
 
-						writer.Write( keyValuePair.Key );
-						writer.Write( cacheEntry.hash );
-						writer.Write( dependencies.Length );
+                        Debug.Log("Cache generated in " +
+                                  (EditorApplication.timeSinceStartup - startTime).ToString("F2") + " seconds");
+                        Debug.Log("You can always reset the cache by deleting " + Path.GetFullPath(CachePath));
 
-						for( int i = 0; i < dependencies.Length; i++ )
-						{
-							writer.Write( dependencies[i] );
-							writer.Write( fileSizes[i] );
-						}
-					}
-				}
-			}
-			catch( Exception e )
-			{
-				Debug.LogException( e );
-			}
-		}
+                        SaveCache();
+                    }
+                    catch (Exception e)
+                    {
+                        EditorUtility.ClearProgressBar();
+                        Debug.LogException(e);
+                    }
+                }
+            }
+        }
 
-		private void LoadCache()
-		{
-			if( File.Exists( CachePath ) )
-			{
-				using( FileStream stream = new FileStream( CachePath, FileMode.Open, FileAccess.Read ) )
-				using( BinaryReader reader = new BinaryReader( stream ) )
-				{
-					try
-					{
-						int cacheSize = reader.ReadInt32();
-						assetDependencyCache = new Dictionary<string, CacheEntry>( cacheSize );
+        #region Helper Classes
 
-						for( int i = 0; i < cacheSize; i++ )
-						{
-							string assetPath = reader.ReadString();
-							string hash = reader.ReadString();
+        private class CacheEntry
+        {
+            public enum Result
+            {
+                Unknown = 0,
+                No = 1,
+                Yes = 2
+            }
 
-							int dependenciesLength = reader.ReadInt32();
-							string[] dependencies = new string[dependenciesLength];
-							long[] fileSizes = new long[dependenciesLength];
-							for( int j = 0; j < dependenciesLength; j++ )
-							{
-								dependencies[j] = reader.ReadString();
-								fileSizes[j] = reader.ReadInt64();
-							}
+            public string[] dependencies;
+            public long[] fileSizes;
 
-							assetDependencyCache[assetPath] = new CacheEntry( hash, dependencies, fileSizes );
-						}
-					}
-					catch( Exception e )
-					{
-						assetDependencyCache = null;
-						Debug.LogWarning( "Couldn't load cache (probably cache format has changed in an update), will regenerate cache.\n" + e.ToString() );
-					}
-				}
-			}
+            public string hash;
+            public Result searchResult;
 
-			// Generate cache for all assets for the first time
-			if( assetDependencyCache == null )
-			{
-				assetDependencyCache = new Dictionary<string, CacheEntry>( 1024 * 8 );
+            public bool verified;
 
-				string[] allAssets = AssetDatabase.GetAllAssetPaths();
-				if( allAssets.Length > 0 )
-				{
-					double startTime = EditorApplication.timeSinceStartup;
+            public CacheEntry(string path)
+            {
+                Verify(path);
+            }
 
-					try
-					{
-						for( int i = 0; i < allAssets.Length; i++ )
-						{
-							if( i % 30 == 0 && EditorUtility.DisplayCancelableProgressBar( "Please wait...", "Generating cache for the first time (optional)", (float) i / allAssets.Length ) )
-							{
-								EditorUtility.ClearProgressBar();
-								Debug.LogWarning( "Initial cache generation cancelled, cache will be generated on the fly as more and more assets are searched." );
-								break;
-							}
+            public CacheEntry(string hash, string[] dependencies, long[] fileSizes)
+            {
+                this.hash = hash;
+                this.dependencies = dependencies;
+                this.fileSizes = fileSizes;
+            }
 
-							assetDependencyCache[allAssets[i]] = new CacheEntry( allAssets[i] );
-						}
+            public void Verify(string path)
+            {
+                string hash = AssetDatabase.GetAssetDependencyHash(path).ToString();
+                if (this.hash != hash)
+                {
+                    this.hash = hash;
+                    Refresh(path);
+                }
 
-						EditorUtility.ClearProgressBar();
+                verified = true;
+            }
 
-						Debug.Log( "Cache generated in " + ( EditorApplication.timeSinceStartup - startTime ).ToString( "F2" ) + " seconds" );
-						Debug.Log( "You can always reset the cache by deleting " + Path.GetFullPath( CachePath ) );
+            public void Refresh(string path)
+            {
+                dependencies = AssetDatabase.GetDependencies(path, false);
+                if (fileSizes == null || fileSizes.Length != dependencies.Length)
+                    fileSizes = new long[dependencies.Length];
 
-						SaveCache();
-					}
-					catch( Exception e )
-					{
-						EditorUtility.ClearProgressBar();
-						Debug.LogException( e );
-					}
-				}
-			}
-		}
-	}
+                int length = dependencies.Length;
+                for (int i = 0; i < length; i++)
+                    if (!string.IsNullOrEmpty(dependencies[i]))
+                    {
+                        FileInfo assetFile = new(dependencies[i]);
+                        fileSizes[i] = assetFile.Exists ? assetFile.Length : 0L;
+                    }
+                    else
+                    {
+                        // This dependency is empty which causes issues when passed to FileInfo constructor
+                        // Find a non-empty dependency and move it to this index
+                        for (int j = length - 1; j > i; j--, length--)
+                            if (!string.IsNullOrEmpty(dependencies[j]))
+                            {
+                                dependencies[i--] = dependencies[j];
+                                break;
+                            }
+
+                        length--;
+                    }
+
+                if (length != fileSizes.Length)
+                {
+                    Array.Resize(ref dependencies, length);
+                    Array.Resize(ref fileSizes, length);
+                }
+            }
+        }
+
+        #endregion
+    }
 }

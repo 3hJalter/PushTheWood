@@ -15,6 +15,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 t.ChangeState(StateEnum.Idle);
                 return;
             }
+
             OnExecute(t);
         }
 

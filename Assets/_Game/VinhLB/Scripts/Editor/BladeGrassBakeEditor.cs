@@ -36,7 +36,7 @@ public class GrassBladeBakeEditor : Editor
         if (GUILayout.Button("Create"))
         {
             // Find the unique ID for our compute shader
-            var shaderGUID = AssetDatabase.FindAssets("BladeGrassMeshBuilder").FirstOrDefault();
+            string shaderGUID = AssetDatabase.FindAssets("BladeGrassMeshBuilder").FirstOrDefault();
             if (string.IsNullOrEmpty(shaderGUID))
             {
                 Debug.LogError("Cannot find compute shader: BladeGrassMeshBuilder.compute");
@@ -44,13 +44,14 @@ public class GrassBladeBakeEditor : Editor
             else
             {
                 // Turn the GUID into the actual compute shader object
-                var shader = AssetDatabase.LoadAssetAtPath<ComputeShader>(AssetDatabase.GUIDToAssetPath(shaderGUID));
+                ComputeShader shader =
+                    AssetDatabase.LoadAssetAtPath<ComputeShader>(AssetDatabase.GUIDToAssetPath(shaderGUID));
 
                 // Opens a progress bar window
                 EditorUtility.DisplayProgressBar("Building mesh", "", 0);
                 // Run the baker
-                var settings = serializedObject.targetObject as BladeGrassBakeSettings;
-                bool success = BladeGrassBaker.Run(shader, settings, out var generatedMesh);
+                BladeGrassBakeSettings settings = serializedObject.targetObject as BladeGrassBakeSettings;
+                bool success = BladeGrassBaker.Run(shader, settings, out Mesh generatedMesh);
 
                 EditorUtility.ClearProgressBar();
 
@@ -72,10 +73,7 @@ public class GrassBladeBakeEditor : Editor
         // Opens a file save dialog window
         string path = EditorUtility.SaveFilePanel("Save Mesh Asset", "Assets/_Game/VinhLB", name, "asset");
         // Path is empty if the user exits out of the window
-        if (string.IsNullOrEmpty(path))
-        {
-            return;
-        }
+        if (string.IsNullOrEmpty(path)) return;
 
         // Transforms the path to a full system path, to help minimize bugs
         path = FileUtil.GetProjectRelativePath(path);
@@ -83,7 +81,7 @@ public class GrassBladeBakeEditor : Editor
         // Check if this path already contains a mesh
         // If yes, we want to replace that mesh with the baked mesh while keeping the same GUID,
         // so any other object using it will automatically update
-        var oldMesh = AssetDatabase.LoadAssetAtPath<Mesh>(path);
+        Mesh oldMesh = AssetDatabase.LoadAssetAtPath<Mesh>(path);
         if (oldMesh != null)
         {
             // Clear all mesh data on the old mesh, readying it to receive new data

@@ -797,8 +797,9 @@
             </summary>
             <param name="name">The name of the reference node.</param>
             <param name="type">The type of the reference node. If null, no type metadata will be written.</param>
-            <param name="id">The id of the reference node. This id is acquired by calling<see
-                    cref="M:Sirenix.Serialization.SerializationContext.TryRegisterInternalReference(System.Object,System.Int32@)"/>
+            <param name="id">The id of the reference node. This id is acquired by calling
+                <see
+                        cref="M:Sirenix.Serialization.SerializationContext.TryRegisterInternalReference(System.Object,System.Int32@)"/>
                 .
             </param>
         </member>
@@ -1653,8 +1654,9 @@
             </summary>
             <param name="name">The name of the reference node.</param>
             <param name="type">The type of the reference node. If null, no type metadata will be written.</param>
-            <param name="id">The id of the reference node. This id is acquired by calling<see
-                    cref="M:Sirenix.Serialization.SerializationContext.TryRegisterInternalReference(System.Object,System.Int32@)"/>
+            <param name="id">The id of the reference node. This id is acquired by calling
+                <see
+                        cref="M:Sirenix.Serialization.SerializationContext.TryRegisterInternalReference(System.Object,System.Int32@)"/>
                 .
             </param>
         </member>
@@ -2854,8 +2856,9 @@
             </summary>
             <param name="name">The name of the reference node.</param>
             <param name="type">The type of the reference node. If null, no type metadata will be written.</param>
-            <param name="id">The id of the reference node. This id is acquired by calling<see
-                    cref="M:Sirenix.Serialization.SerializationContext.TryRegisterInternalReference(System.Object,System.Int32@)"/>
+            <param name="id">The id of the reference node. This id is acquired by calling
+                <see
+                        cref="M:Sirenix.Serialization.SerializationContext.TryRegisterInternalReference(System.Object,System.Int32@)"/>
                 .
             </param>
         </member>
@@ -3793,8 +3796,9 @@
             </summary>
             <param name="name">The name of the reference node.</param>
             <param name="type">The type of the reference node. If null, no type metadata will be written.</param>
-            <param name="id">The id of the reference node. This id is acquired by calling<see
-                    cref="M:Sirenix.Serialization.SerializationContext.TryRegisterInternalReference(System.Object,System.Int32@)"/>
+            <param name="id">The id of the reference node. This id is acquired by calling
+                <see
+                        cref="M:Sirenix.Serialization.SerializationContext.TryRegisterInternalReference(System.Object,System.Int32@)"/>
                 .
             </param>
         </member>
@@ -6473,7 +6477,8 @@
         </member>
         <member name="T:Sirenix.Serialization.EntryType">
             <summary>
-                An entry type which is part of a stream being read by a<see cref="T:Sirenix.Serialization.IDataReader"/>
+                An entry type which is part of a stream being read by a
+                <see cref="T:Sirenix.Serialization.IDataReader"/>
                 .
             </summary>
         </member>
@@ -9308,8 +9313,9 @@
                 <para/>
                 Note that THE VALUES RETURNED BY THIS INTERFACE WILL OVERRIDE THE PARAMETERS PASSED TO
                 <see cref="M:Sirenix.Serialization.UnitySerializationUtility.SerializeUnityObject(UnityEngine.Object,Sirenix.Serialization.SerializationData@,System.Boolean,Sirenix.Serialization.SerializationContext)"/>
-                and<see
-                    cref="M:Sirenix.Serialization.UnitySerializationUtility.DeserializeUnityObject(UnityEngine.Object,Sirenix.Serialization.SerializationData@,Sirenix.Serialization.DeserializationContext)"/>
+                and
+                <see
+                        cref="M:Sirenix.Serialization.UnitySerializationUtility.DeserializeUnityObject(UnityEngine.Object,Sirenix.Serialization.SerializationData@,Sirenix.Serialization.DeserializationContext)"/>
                 .
             </summary>
         </member>

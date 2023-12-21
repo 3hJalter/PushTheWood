@@ -9,28 +9,32 @@ using UnityEngine;
 [AddComponentMenu("Playdead/VelocityBufferTag")]
 public class VelocityBufferTag : MonoBehaviour
 {
+    private const int framesNotRenderedSleepThreshold = 60;
 #if UNITY_5_6_OR_NEWER
-    private static List<Vector3> temporaryVertexStorage = new List<Vector3>(512);
+    private static readonly List<Vector3> temporaryVertexStorage = new(512);
 #endif
-    public static List<VelocityBufferTag> activeObjects = new List<VelocityBufferTag>(128);
+    public static List<VelocityBufferTag> activeObjects = new(128);
 
     private Transform _transform;
-
-    [NonSerialized, HideInInspector] public SkinnedMeshRenderer meshSmr;
-    [NonSerialized, HideInInspector] public bool meshSmrActive;
-    [NonSerialized, HideInInspector] public Mesh mesh;
-    [NonSerialized, HideInInspector] public Matrix4x4 localToWorldPrev;
-    [NonSerialized, HideInInspector] public Matrix4x4 localToWorldCurr;
-
-    private const int framesNotRenderedSleepThreshold = 60;
     private int framesNotRendered = framesNotRenderedSleepThreshold;
-    public bool rendering { get { return (framesNotRendered < framesNotRenderedSleepThreshold); } }
+    [NonSerialized] [HideInInspector] public Matrix4x4 localToWorldCurr;
+    [NonSerialized] [HideInInspector] public Matrix4x4 localToWorldPrev;
+    [NonSerialized] [HideInInspector] public Mesh mesh;
 
-    void Reset()
+    [NonSerialized] [HideInInspector] public SkinnedMeshRenderer meshSmr;
+    [NonSerialized] [HideInInspector] public bool meshSmrActive;
+    public bool rendering => framesNotRendered < framesNotRenderedSleepThreshold;
+
+    private void Awake()
     {
-        _transform = this.transform;
+        Reset();
+    }
 
-        var smr = GetComponent<SkinnedMeshRenderer>();
+    private void Reset()
+    {
+        _transform = transform;
+
+        SkinnedMeshRenderer smr = GetComponent<SkinnedMeshRenderer>();
         if (smr != null)
         {
             if (mesh == null || meshSmrActive == false)
@@ -44,7 +48,7 @@ public class VelocityBufferTag : MonoBehaviour
         }
         else
         {
-            var mf = GetComponent<MeshFilter>();
+            MeshFilter mf = GetComponent<MeshFilter>();
             if (mf != null)
                 mesh = mf.sharedMesh;
             else
@@ -58,17 +62,42 @@ public class VelocityBufferTag : MonoBehaviour
         framesNotRendered = framesNotRenderedSleepThreshold;
     }
 
-    void Awake()
+    private void LateUpdate()
     {
-        Reset();
+        if (framesNotRendered < framesNotRenderedSleepThreshold)
+        {
+            framesNotRendered++;
+            TagUpdate(false);
+        }
     }
 
-    void TagUpdate(bool restart)
+    private void OnEnable()
     {
-        if (meshSmrActive && meshSmr == null)
-        {
-            Reset();
-        }
+        activeObjects.Add(this);
+    }
+
+    private void OnDisable()
+    {
+        activeObjects.Remove(this);
+
+        // force restart
+        framesNotRendered = framesNotRenderedSleepThreshold;
+    }
+
+    private void OnWillRenderObject()
+    {
+        if (Camera.current != Camera.main)
+            return; // ignore anything but main cam
+
+        if (framesNotRendered >= framesNotRenderedSleepThreshold)
+            TagUpdate(true);
+
+        framesNotRendered = 0;
+    }
+
+    private void TagUpdate(bool restart)
+    {
+        if (meshSmrActive && meshSmr == null) Reset();
 
         if (meshSmrActive)
         {
@@ -106,38 +135,5 @@ public class VelocityBufferTag : MonoBehaviour
             localToWorldPrev = localToWorldCurr;
             localToWorldCurr = _transform.localToWorldMatrix;
         }
-    }
-
-    void LateUpdate()
-    {
-        if (framesNotRendered < framesNotRenderedSleepThreshold)
-        {
-            framesNotRendered++;
-            TagUpdate(restart: false);
-        }
-    }
-
-    void OnWillRenderObject()
-    {
-        if (Camera.current != Camera.main)
-            return;// ignore anything but main cam
-
-        if (framesNotRendered >= framesNotRenderedSleepThreshold)
-            TagUpdate(restart: true);
-
-        framesNotRendered = 0;
-    }
-
-    void OnEnable()
-    {
-        activeObjects.Add(this);
-    }
-
-    void OnDisable()
-    {
-        activeObjects.Remove(this);
-
-        // force restart
-        framesNotRendered = framesNotRenderedSleepThreshold;
     }
 }

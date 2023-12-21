@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using _Game.DesignPattern.StateMachine;
 using DG.Tweening;
+using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
 {
@@ -41,14 +42,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
             if (!_isMove)
             {
                 if (t.MovingData.blockDynamicUnits.Count > 0) t.OnPush(t.MovingData.inputDirection, t.MovingData);
+                t.player.isRideVehicle = false;
                 t.ChangeState(StateEnum.Idle);
             }
             else
             {
-                foreach (GridUnit unit in t._carryUnits)
-                {
-                    unit.Tf.SetParent(t.Tf);
-                }
+                foreach (GridUnit unit in t._carryUnits) unit.Tf.SetParent(t.Tf);
                 t.SetEnterCellData(t.MovingData.inputDirection, t.MovingData.enterMainCell, t.UnitTypeY, false,
                     t.MovingData.enterCells);
                 t.OnOutCells();
@@ -67,9 +66,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
                             unit.OnEnterCells(nextMainCellIn, nextCellsIn);
                             unit.OnEnterTrigger(unit);
                         }
+
                         t.OnEnterTrigger(t);
                         t.ChangeState(StateEnum.Idle);
-                        t.Ride(t.rideRaftDirection);
+                        t.Ride(t.rideRaftDirection, t);
                     });
             }
         }

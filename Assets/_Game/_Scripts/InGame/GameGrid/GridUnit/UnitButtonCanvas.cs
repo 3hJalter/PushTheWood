@@ -1,5 +1,4 @@
-﻿using _Game.Camera;
-using _Game.Managers;
+﻿using _Game.Managers;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit
@@ -8,7 +7,7 @@ namespace _Game.GameGrid.Unit
     {
         [SerializeField] private Vector3 offset;
         [SerializeField] private HButton button;
-        
+
         public void OnShow(GridUnit gridUnit)
         {
             gameObject.SetActive(true);
@@ -18,7 +17,7 @@ namespace _Game.GameGrid.Unit
             // Set the button position to screen position
             button.transform.position = screenPos;
         }
-        
+
         public void OnHide()
         {
             gameObject.SetActive(false);

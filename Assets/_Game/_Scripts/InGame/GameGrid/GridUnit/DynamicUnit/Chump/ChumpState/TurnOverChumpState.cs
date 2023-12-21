@@ -36,6 +36,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     tr.UpHeight(t, t.TurnOverData.inputDirection);
                     hasTreeRoot = true;
                 }
+
                 #region Handle Cell Data
 
                 t.anchor.ChangeAnchorPos(t, t.TurnOverData.inputDirection);
@@ -50,10 +51,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     (t.TurnOverData.enterMainCell.SurfaceType is not GridSurfaceType.Water &&
                      t.UnitTypeY is UnitTypeY.Down))
                     t.SwitchType(t.TurnOverData.inputDirection);
-                else if (t.TurnOverData.enterMainCell.SurfaceType is GridSurfaceType.Water 
-                         &&  t.TurnOverData.enterMainCell.GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]) is not null)
+                else if (t.TurnOverData.enterMainCell.SurfaceType is GridSurfaceType.Water
+                         && t.TurnOverData.enterMainCell.GetGridUnitAtHeight(
+                             Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]) is not null)
                     t.SwitchType(t.TurnOverData.inputDirection);
-                else 
+                else
                     isFallToWater = true;
                 t.OnEnterCells(t.TurnOverData.enterMainCell, t.TurnOverData.enterCells);
 
@@ -67,9 +69,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 if (hasTreeRoot)
                 {
                     Vector3 position = t.Tf.position;
-                    t.Tf.DOMove(new Vector3(position.x, t.EnterPosData.finalPos.y, position.z), Constants.MOVING_TIME).SetEase(Ease.Linear)
+                    t.Tf.DOMove(new Vector3(position.x, t.EnterPosData.finalPos.y, position.z), Constants.MOVING_TIME)
+                        .SetEase(Ease.Linear)
                         .SetUpdate(UpdateType.Fixed);
                 }
+
                 DOVirtual.Float(0, 90, Constants.MOVING_TIME, i =>
                 {
                     t.skin.RotateAround(t.anchor.Tf.position, axis, i - lastAngle);

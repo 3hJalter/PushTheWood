@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
@@ -10,8 +7,9 @@ using UnityEngine.InputSystem.UI;
 public class InputSystemSwitcher : MonoBehaviour
 {
     public GameObject eventS;
+
     // Start is called before the first frame update
-    void Awake()
+    private void Awake()
     {
 
 #if ENABLE_INPUT_SYSTEM

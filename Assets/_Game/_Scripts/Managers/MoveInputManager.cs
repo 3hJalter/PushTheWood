@@ -6,21 +6,28 @@ namespace _Game._Scripts.Managers
 {
     public class MoveInputManager : Singleton<MoveInputManager>
     {
+        public enum MoveChoice
+        {
+            DPad,
+            Switch,
+            Swipe
+        }
+
         [SerializeField] private HSwitch hSwitch;
         [SerializeField] private HDpad dpad;
 
         private HSwitch HSwitch => hSwitch;
         private GameObject DpadObj => dpad.gameObject;
-        
+
         public MoveChoice CurrentChoice { get; private set; }
-        
+
         public void HideButton()
         {
             HInputManager.SetDefault();
             DpadObj.SetActive(false);
             HSwitch.gameObject.SetActive(false);
         }
-        
+
         public void OnChangeMoveChoice(MoveChoice moveChoice)
         {
             HideButton();
@@ -42,14 +49,8 @@ namespace _Game._Scripts.Managers
                     break;
                 }
             }
+
             CurrentChoice = moveChoice;
-        }
-        
-        public enum MoveChoice
-        {
-            DPad,
-            Switch,
-            Swipe
         }
     }
 }

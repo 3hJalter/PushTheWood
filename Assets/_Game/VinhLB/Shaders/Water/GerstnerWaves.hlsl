@@ -1,4 +1,5 @@
-float3 GerstnerWave(float3 position, float steepness, float wavelength, float speed, float direction, inout float3 tangent, inout float3 binormal)
+float3 GerstnerWave(float3 position, float steepness, float wavelength, float speed, float direction,
+                    inout float3 tangent, inout float3 binormal)
 {
     direction = direction * 2 - 1;
     float2 d = normalize(float2(cos(3.14 * direction), sin(3.14 * direction)));
@@ -25,7 +26,8 @@ float3 GerstnerWave(float3 position, float steepness, float wavelength, float sp
     );
 }
 
-void GerstnerWaves_float(float3 position, float steepness, float wavelength, float speed, float4 directions, out float3 offset, out float3 normal)
+void GerstnerWaves_float(float3 position, float steepness, float wavelength, float speed, float4 directions,
+                         out float3 offset, out float3 normal)
 {
     offset = 0;
     float3 tangent = float3(1, 0, 0);

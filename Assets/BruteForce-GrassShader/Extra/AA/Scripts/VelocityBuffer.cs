@@ -6,6 +6,7 @@
 #define SUPPORT_STEREO
 #endif
 
+using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
@@ -35,64 +36,63 @@ public class VelocityBuffer : EffectBase
     private Matrix4x4[] paramPrevVP_NoFlip;
 
     private int activeEyeIndex = -1;
-    public RenderTexture activeVelocityBuffer { get { return (activeEyeIndex != -1) ? velocityBuffer[activeEyeIndex] : null; } }
-    public RenderTexture activeVelocityNeighborMax { get { return (activeEyeIndex != -1) ? velocityNeighborMax[activeEyeIndex] : null; } }
+    public RenderTexture activeVelocityBuffer => activeEyeIndex != -1 ? velocityBuffer[activeEyeIndex] : null;
+    public RenderTexture activeVelocityNeighborMax => activeEyeIndex != -1 ? velocityNeighborMax[activeEyeIndex] : null;
 
     public enum NeighborMaxSupport
     {
         TileSize10,
         TileSize20,
-        TileSize40,
-    };
+        TileSize40
+    }
 
-    public bool neighborMaxGen = false;
+    public bool neighborMaxGen;
     public NeighborMaxSupport neighborMaxSupport = NeighborMaxSupport.TileSize20;
 
     private float timeScaleNextFrame;
     public float timeScale { get; private set; }
 
 #if UNITY_EDITOR
-    [Header("Stats")]
-    public int numResident = 0;
-    public int numRendered = 0;
-    public int numDrawCalls = 0;
+    [Header("Stats")] public int numResident;
+    public int numRendered;
+    public int numDrawCalls;
 #endif
 
-    void Reset()
+    private void Reset()
     {
         _camera = GetComponent<Camera>();
         _frustumJitter = GetComponent<FrustumJitter>();
     }
 
-    void Clear()
+    private void Clear()
     {
         EnsureArray(ref paramInitialized, 2);
         paramInitialized[0] = false;
         paramInitialized[1] = false;
     }
 
-    void Awake()
+    private void Awake()
     {
         Reset();
         Clear();
     }
 
-    void Start()
+    private void Start()
     {
         timeScaleNextFrame = Time.timeScale;
     }
 
-    void OnPreRender()
+    private void OnPreRender()
     {
         EnsureDepthTexture(_camera);
     }
 
-    void OnPostRender()
+    private void OnPostRender()
     {
         EnsureArray(ref velocityBuffer, 2);
         EnsureArray(ref velocityNeighborMax, 2);
 
-        EnsureArray(ref paramInitialized, 2, initialValue: false);
+        EnsureArray(ref paramInitialized, 2);
         EnsureArray(ref paramProjectionExtents, 2);
         EnsureArray(ref paramCurrV, 2);
         EnsureArray(ref paramCurrVP, 2);
@@ -104,17 +104,17 @@ public class VelocityBuffer : EffectBase
             return;
 
         timeScale = timeScaleNextFrame;
-        timeScaleNextFrame = (Time.timeScale == 0.0f) ? timeScaleNextFrame : Time.timeScale;
+        timeScaleNextFrame = Time.timeScale == 0.0f ? timeScaleNextFrame : Time.timeScale;
 
 #if SUPPORT_STEREO
-        int eyeIndex = (_camera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Right) ? 1 : 0;
+        int eyeIndex = _camera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Right ? 1 : 0;
 #else
         int eyeIndex = 0;
 #endif
         int bufferW = _camera.pixelWidth;
         int bufferH = _camera.pixelHeight;
 
-        if (EnsureRenderTarget(ref velocityBuffer[eyeIndex], bufferW, bufferH, velocityFormat, FilterMode.Point, depthBits: 16))
+        if (EnsureRenderTarget(ref velocityBuffer[eyeIndex], bufferW, bufferH, velocityFormat, FilterMode.Point, 16))
             Clear();
 
         EnsureKeyword(velocityMaterial, "CAMERA_PERSPECTIVE", !_camera.orthographic);
@@ -153,7 +153,9 @@ public class VelocityBuffer : EffectBase
             Matrix4x4 prevV = paramInitialized[0] ? paramCurrV[0] : currV;
 
             paramInitialized[0] = true;
-            paramProjectionExtents[0] = _frustumJitter.enabled ? _camera.GetProjectionExtents(_frustumJitter.activeSample.x, _frustumJitter.activeSample.y) : _camera.GetProjectionExtents();
+            paramProjectionExtents[0] = _frustumJitter.enabled
+                ? _camera.GetProjectionExtents(_frustumJitter.activeSample.x, _frustumJitter.activeSample.y)
+                : _camera.GetProjectionExtents();
             paramCurrV[0] = currV;
             paramCurrVP[0] = currP * currV;
             paramPrevVP[0] = currP * prevV;
@@ -189,7 +191,7 @@ public class VelocityBuffer : EffectBase
             DrawFullscreenQuad();
 
             // 1 + 2: vertices + vertices skinned
-            var obs = VelocityBufferTag.activeObjects;
+            List<VelocityBufferTag> obs = VelocityBufferTag.activeObjects;
 #if UNITY_EDITOR
             numResident = obs.Count;
             numRendered = 0;
@@ -197,7 +199,7 @@ public class VelocityBuffer : EffectBase
 #endif
             for (int i = 0, n = obs.Count; i != n; i++)
             {
-                var ob = obs[i];
+                VelocityBufferTag ob = obs[i];
                 if (ob != null && ob.rendering && ob.mesh != null)
                 {
                     velocityMaterial.SetMatrix("_CurrM", ob.localToWorldCurr);
@@ -224,22 +226,30 @@ public class VelocityBuffer : EffectBase
 
                 switch (neighborMaxSupport)
                 {
-                    case NeighborMaxSupport.TileSize10: tileSize = 10; break;
-                    case NeighborMaxSupport.TileSize20: tileSize = 20; break;
-                    case NeighborMaxSupport.TileSize40: tileSize = 40; break;
+                    case NeighborMaxSupport.TileSize10:
+                        tileSize = 10;
+                        break;
+                    case NeighborMaxSupport.TileSize20:
+                        tileSize = 20;
+                        break;
+                    case NeighborMaxSupport.TileSize40:
+                        tileSize = 40;
+                        break;
                 }
 
                 int neighborMaxW = bufferW / tileSize;
                 int neighborMaxH = bufferH / tileSize;
 
-                EnsureRenderTarget(ref velocityNeighborMax[eyeIndex], neighborMaxW, neighborMaxH, velocityFormat, FilterMode.Bilinear);
+                EnsureRenderTarget(ref velocityNeighborMax[eyeIndex], neighborMaxW, neighborMaxH, velocityFormat,
+                    FilterMode.Bilinear);
 
                 // tilemax
                 RenderTexture tileMax = RenderTexture.GetTemporary(neighborMaxW, neighborMaxH, 0, velocityFormat);
                 RenderTexture.active = tileMax;
                 {
                     velocityMaterial.SetTexture("_VelocityTex", velocityBuffer[eyeIndex]);
-                    velocityMaterial.SetVector("_VelocityTex_TexelSize", new Vector4(1.0f / bufferW, 1.0f / bufferH, 0.0f, 0.0f));
+                    velocityMaterial.SetVector("_VelocityTex_TexelSize",
+                        new Vector4(1.0f / bufferW, 1.0f / bufferH, 0.0f, 0.0f));
                     velocityMaterial.SetPass(kTileMax);
                     DrawFullscreenQuad();
                 }
@@ -248,7 +258,8 @@ public class VelocityBuffer : EffectBase
                 RenderTexture.active = velocityNeighborMax[eyeIndex];
                 {
                     velocityMaterial.SetTexture("_VelocityTex", tileMax);
-                    velocityMaterial.SetVector("_VelocityTex_TexelSize", new Vector4(1.0f / neighborMaxW, 1.0f / neighborMaxH, 0.0f, 0.0f));
+                    velocityMaterial.SetVector("_VelocityTex_TexelSize",
+                        new Vector4(1.0f / neighborMaxW, 1.0f / neighborMaxH, 0.0f, 0.0f));
                     velocityMaterial.SetPass(kNeighborMax);
                     DrawFullscreenQuad();
                 }
@@ -266,13 +277,14 @@ public class VelocityBuffer : EffectBase
         activeEyeIndex = eyeIndex;
     }
 
-    void OnApplicationQuit()
+    private void OnApplicationQuit()
     {
         if (velocityBuffer != null)
         {
             ReleaseRenderTarget(ref velocityBuffer[0]);
             ReleaseRenderTarget(ref velocityBuffer[1]);
         }
+
         if (velocityNeighborMax != null)
         {
             ReleaseRenderTarget(ref velocityNeighborMax[0]);

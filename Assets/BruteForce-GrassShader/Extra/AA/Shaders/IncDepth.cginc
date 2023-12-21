@@ -18,53 +18,53 @@ uniform float4 _CameraDepthTexture_TexelSize;
 
 float depth_resolve_linear(float z)
 {
-#if CAMERA_ORTHOGRAPHIC
-	#if UNITY_REVERSED_Z
+    #if CAMERA_ORTHOGRAPHIC
+    #if UNITY_REVERSED_Z
 		return (1.0 - z) * (_ProjectionParams.z - _ProjectionParams.y) + _ProjectionParams.y;
-	#else
+    #else
 		return z * (_ProjectionParams.z - _ProjectionParams.y) + _ProjectionParams.y;
-	#endif
-#else
-	return LinearEyeDepth(z);
-#endif
+    #endif
+    #else
+    return LinearEyeDepth(z);
+    #endif
 }
 
 float depth_sample_linear(float2 uv)
 {
-	return depth_resolve_linear(tex2D(_CameraDepthTexture, uv).x);
+    return depth_resolve_linear(tex2D(_CameraDepthTexture, uv).x);
 }
 
 float3 find_closest_fragment_3x3(float2 uv)
 {
-	float2 dd = abs(_CameraDepthTexture_TexelSize.xy);
-	float2 du = float2(dd.x, 0.0);
-	float2 dv = float2(0.0, dd.y);
+    float2 dd = abs(_CameraDepthTexture_TexelSize.xy);
+    float2 du = float2(dd.x, 0.0);
+    float2 dv = float2(0.0, dd.y);
 
-	float3 dtl = float3(-1, -1, tex2D(_CameraDepthTexture, uv - dv - du).x);
-	float3 dtc = float3( 0, -1, tex2D(_CameraDepthTexture, uv - dv).x);
-	float3 dtr = float3( 1, -1, tex2D(_CameraDepthTexture, uv - dv + du).x);
+    float3 dtl = float3(-1, -1, tex2D(_CameraDepthTexture, uv - dv - du).x);
+    float3 dtc = float3(0, -1, tex2D(_CameraDepthTexture, uv - dv).x);
+    float3 dtr = float3(1, -1, tex2D(_CameraDepthTexture, uv - dv + du).x);
 
-	float3 dml = float3(-1, 0, tex2D(_CameraDepthTexture, uv - du).x);
-	float3 dmc = float3( 0, 0, tex2D(_CameraDepthTexture, uv).x);
-	float3 dmr = float3( 1, 0, tex2D(_CameraDepthTexture, uv + du).x);
+    float3 dml = float3(-1, 0, tex2D(_CameraDepthTexture, uv - du).x);
+    float3 dmc = float3(0, 0, tex2D(_CameraDepthTexture, uv).x);
+    float3 dmr = float3(1, 0, tex2D(_CameraDepthTexture, uv + du).x);
 
-	float3 dbl = float3(-1, 1, tex2D(_CameraDepthTexture, uv + dv - du).x);
-	float3 dbc = float3( 0, 1, tex2D(_CameraDepthTexture, uv + dv).x);
-	float3 dbr = float3( 1, 1, tex2D(_CameraDepthTexture, uv + dv + du).x);
+    float3 dbl = float3(-1, 1, tex2D(_CameraDepthTexture, uv + dv - du).x);
+    float3 dbc = float3(0, 1, tex2D(_CameraDepthTexture, uv + dv).x);
+    float3 dbr = float3(1, 1, tex2D(_CameraDepthTexture, uv + dv + du).x);
 
-	float3 dmin = dtl;
-	if (ZCMP_GT(dmin.z, dtc.z)) dmin = dtc;
-	if (ZCMP_GT(dmin.z, dtr.z)) dmin = dtr;
+    float3 dmin = dtl;
+    if (ZCMP_GT(dmin.z, dtc.z)) dmin = dtc;
+    if (ZCMP_GT(dmin.z, dtr.z)) dmin = dtr;
 
-	if (ZCMP_GT(dmin.z, dml.z)) dmin = dml;
-	if (ZCMP_GT(dmin.z, dmc.z)) dmin = dmc;
-	if (ZCMP_GT(dmin.z, dmr.z)) dmin = dmr;
+    if (ZCMP_GT(dmin.z, dml.z)) dmin = dml;
+    if (ZCMP_GT(dmin.z, dmc.z)) dmin = dmc;
+    if (ZCMP_GT(dmin.z, dmr.z)) dmin = dmr;
 
-	if (ZCMP_GT(dmin.z, dbl.z)) dmin = dbl;
-	if (ZCMP_GT(dmin.z, dbc.z)) dmin = dbc;
-	if (ZCMP_GT(dmin.z, dbr.z)) dmin = dbr;
+    if (ZCMP_GT(dmin.z, dbl.z)) dmin = dbl;
+    if (ZCMP_GT(dmin.z, dbc.z)) dmin = dbc;
+    if (ZCMP_GT(dmin.z, dbr.z)) dmin = dbr;
 
-	return float3(uv + dd.xy * dmin.xy, dmin.z);
+    return float3(uv + dd.xy * dmin.xy, dmin.z);
 }
 
 /* UNUSED: tested slower than branching
@@ -110,30 +110,46 @@ float2 find_closest_fragment_3x3_packed(in float2 uv)
 
 float3 find_closest_fragment_5tap(float2 uv)
 {
-	float2 dd = abs(_CameraDepthTexture_TexelSize.xy);
-	float2 du = float2(dd.x, 0.0);
-	float2 dv = float2(0.0, dd.y);
+    float2 dd = abs(_CameraDepthTexture_TexelSize.xy);
+    float2 du = float2(dd.x, 0.0);
+    float2 dv = float2(0.0, dd.y);
 
-	float2 tl = -dv - du;
-	float2 tr = -dv + du;
-	float2 bl =  dv - du;
-	float2 br =  dv + du;
+    float2 tl = -dv - du;
+    float2 tr = -dv + du;
+    float2 bl = dv - du;
+    float2 br = dv + du;
 
-	float dtl = tex2D(_CameraDepthTexture, uv + tl).x;
-	float dtr = tex2D(_CameraDepthTexture, uv + tr).x;
-	float dmc = tex2D(_CameraDepthTexture, uv).x;
-	float dbl = tex2D(_CameraDepthTexture, uv + bl).x;
-	float dbr = tex2D(_CameraDepthTexture, uv + br).x;
+    float dtl = tex2D(_CameraDepthTexture, uv + tl).x;
+    float dtr = tex2D(_CameraDepthTexture, uv + tr).x;
+    float dmc = tex2D(_CameraDepthTexture, uv).x;
+    float dbl = tex2D(_CameraDepthTexture, uv + bl).x;
+    float dbr = tex2D(_CameraDepthTexture, uv + br).x;
 
-	float dmin = dmc;
-	float2 dif = 0.0;
+    float dmin = dmc;
+    float2 dif = 0.0;
 
-	if (ZCMP_GT(dmin, dtl)) { dmin = dtl; dif = tl; }
-	if (ZCMP_GT(dmin, dtr)) { dmin = dtr; dif = tr; }
-	if (ZCMP_GT(dmin, dbl)) { dmin = dbl; dif = bl; }
-	if (ZCMP_GT(dmin, dbr)) { dmin = dbr; dif = br; }
+    if (ZCMP_GT(dmin, dtl))
+    {
+        dmin = dtl;
+        dif = tl;
+    }
+    if (ZCMP_GT(dmin, dtr))
+    {
+        dmin = dtr;
+        dif = tr;
+    }
+    if (ZCMP_GT(dmin, dbl))
+    {
+        dmin = dbl;
+        dif = bl;
+    }
+    if (ZCMP_GT(dmin, dbr))
+    {
+        dmin = dbr;
+        dif = br;
+    }
 
-	return float3(uv + dif, dmin);
+    return float3(uv + dif, dmin);
 }
 
 #endif//__DEPTH_CGINC__

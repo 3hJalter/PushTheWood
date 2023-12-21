@@ -18,12 +18,13 @@ namespace _Game.GameGrid.GridSurface
                 if (surfaceType != GridSurfaceType.Water) islandID = value;
             }
         }
+
         public GridSurfaceType SurfaceType => surfaceType;
 
         public virtual void OnDespawn()
         {
             islandID = -1;
-            SimplePool.Despawn(this);
+            this.Despawn();
         }
     }
 }

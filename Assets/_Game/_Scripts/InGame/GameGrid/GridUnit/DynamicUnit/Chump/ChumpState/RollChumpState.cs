@@ -1,5 +1,4 @@
-﻿using System;
-using _Game.DesignPattern.StateMachine;
+﻿using _Game.DesignPattern.StateMachine;
 using DG.Tweening;
 using UnityEngine;
 
@@ -8,6 +7,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
     public class RollChumpState : IState<Chump>
     {
         private bool _isRoll;
+
         public void OnEnter(Chump t)
         {
             t.MovingData.SetData(t.ChumpBeInteractedData.inputDirection);
@@ -19,25 +19,24 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         {
             if (!_isRoll)
             {
-                if (t.MovingData.blockDynamicUnits.Count > 0)
-                {
-                    t.OnPush(t.MovingData.inputDirection, t.MovingData);
-                }
-                t.ChangeState(StateEnum.RollBlock);
-                //NOTE: Play Anim Block
+                if (t.MovingData.blockDynamicUnits.Count > 0) t.OnPush(t.MovingData.inputDirection, t.MovingData);
+                t.ChangeState(StateEnum.Idle);
             }
             else
             {
-                
-                t.SetEnterCellData(t.MovingData.inputDirection, t.MovingData.enterMainCell, t.UnitTypeY, false, t.MovingData.enterCells);
+
+                t.SetEnterCellData(t.MovingData.inputDirection, t.MovingData.enterMainCell, t.UnitTypeY, false,
+                    t.MovingData.enterCells);
                 t.OnOutCells();
                 t.OnEnterCells(t.MovingData.enterMainCell, t.MovingData.enterCells);
                 // Animation and complete
                 // TODO: rotate in place animation for skin
-                t.Tf.DOMove(t.EnterPosData.initialPos, t.EnterPosData.isFalling ? Constants.MOVING_TIME / 2 : Constants.MOVING_TIME)
+                t.Tf.DOMove(t.EnterPosData.initialPos,
+                        t.EnterPosData.isFalling ? Constants.MOVING_TIME / 2 : Constants.MOVING_TIME)
                     .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                     {
                         if (t.EnterPosData.isFalling)
+                        {
                             t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME).SetEase(Ease.Linear)
                                 .SetUpdate(UpdateType.Fixed).OnComplete(() =>
                                 {
@@ -45,11 +44,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                                     t.OnEnterTrigger(t);
                                     t.ChangeState(StateEnum.Idle);
                                 });
+                        }
                         else
                         {
                             t.OnEnterTrigger(t);
                             t.ChangeState(StateEnum.Idle);
-                            if (t.gameObject.activeSelf) t.OnBePushed(t.ChumpBeInteractedData.inputDirection, t.ChumpBeInteractedData.pushUnit);
+                            if (t.gameObject.activeSelf)
+                                t.OnBePushed(t.ChumpBeInteractedData.inputDirection, t.ChumpBeInteractedData.pushUnit);
                         }
                     });
             }
@@ -57,7 +58,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
         public void OnExit(Chump t)
         {
-            
+
         }
 
         private Vector3 GetRotateAxis(GridUnit t, Direction direction)

@@ -1,24 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEditor;
 using UnityEngine;
-using UnityEditor;
-using UnityEditor.UI;
 
 public class BF_MowingManagerEditor : Editor
 {
     [CustomEditor(typeof(BF_MowingManager))]
-    class MowingEditor : Editor
+    private class MowingEditor : Editor
     {
-        SerializedProperty precisionValue;
-        SerializedProperty marginError;
+        private bool isDebugShown;
+        private SerializedProperty marginError;
+        private SerializedProperty precisionValue;
         private GUIStyle style;
         private GUIStyle styleDebug;
-        private bool isDebugShown = false;
-        void OnEnable()
+
+        private void OnEnable()
         {
             precisionValue = serializedObject.FindProperty("precisionValue");
             marginError = serializedObject.FindProperty("marginError");
         }
+
         public override void OnInspectorGUI()
         {
             BF_MowingManager myTarget = (BF_MowingManager)target;
@@ -30,6 +29,7 @@ public class BF_MowingManagerEditor : Editor
                 style = new GUIStyle(GUI.skin.button);
                 styleDebug = new GUIStyle(GUI.skin.button);
             }
+
             if (GUILayout.Button("Generate Markers", style))
             {
                 myTarget.CreateMowingMarker(isDebugShown, precisionValue.intValue);
@@ -52,6 +52,7 @@ public class BF_MowingManagerEditor : Editor
                     isDebugShown = false;
                 }
             }
+
             myTarget.changeDebugState(isDebugShown);
 
             serializedObject.ApplyModifiedProperties();

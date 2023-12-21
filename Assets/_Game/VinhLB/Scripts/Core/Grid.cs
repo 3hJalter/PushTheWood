@@ -1,64 +1,52 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace VinhLB
 {
     public class Grid<T>
     {
-        private int _width;
-        private int _height;
-        private float _cellSize;
-        private Vector3 _originPosition;
-        private GridPlaneType _planeType;
-        private T[,] _gridArray;
-        private TextMeshPro[,] _debugTextArray;
-        private Transform _debugTextParentTransform;
-
-        public float CellSize => _cellSize;
+        private readonly TextMeshPro[,] _debugTextArray;
+        private readonly Transform _debugTextParentTransform;
+        private readonly T[,] _gridArray;
+        private readonly int _height;
+        private readonly Vector3 _originPosition;
+        private readonly GridPlaneType _planeType;
+        private readonly int _width;
 
         public Grid(int width, int height, float cellSize,
-            Vector3 originPosition = default, Func<Grid<T>, int, int, T> createFunc = null, GridPlaneType planeType = GridPlaneType.XY)
+            Vector3 originPosition = default, Func<Grid<T>, int, int, T> createFunc = null,
+            GridPlaneType planeType = GridPlaneType.XY)
         {
             _width = width;
             _height = height;
-            _cellSize = cellSize;
+            CellSize = cellSize;
             _originPosition = originPosition;
             _planeType = planeType;
 
             _gridArray = new T[_width, _height];
             if (createFunc != null)
-            {
                 for (int i = 0; i < _gridArray.GetLength(0); i++)
-                {
-                    for (int j = 0; j < _gridArray.GetLength(1); j++)
-                    {
-                        _gridArray[i, j] = createFunc(this, i, j);
-                    }
-                }
-            }
+                for (int j = 0; j < _gridArray.GetLength(1); j++)
+                    _gridArray[i, j] = createFunc(this, i, j);
 
             _debugTextArray = new TextMeshPro[_width, _height];
             _debugTextParentTransform = new GameObject("GridDebugTexts").GetComponent<Transform>();
         }
 
+        public float CellSize { get; }
+
         ~Grid()
         {
-            UnityEngine.Object.Destroy(_debugTextParentTransform.gameObject);
+            Object.Destroy(_debugTextParentTransform.gameObject);
         }
 
         public T GetCellValue(int i, int j)
         {
             if (i >= 0 && j >= 0 && i < _width && j < _height)
-            {
                 return _gridArray[i, j];
-            }
-            else
-            {
-                return default;
-            }
+            return default;
         }
 
         public T GetCellValue(Vector3 worldPosition)
@@ -70,10 +58,7 @@ namespace VinhLB
 
         public void SetCellValue(int i, int j, T value)
         {
-            if (i >= 0 && j >= 0 && i < _width && j < _height)
-            {
-                _gridArray[i, j] = value;
-            }
+            if (i >= 0 && j >= 0 && i < _width && j < _height) _gridArray[i, j] = value;
         }
 
         public void SetCellValue(Vector3 worldPosition, T value)
@@ -102,7 +87,7 @@ namespace VinhLB
                     break;
             }
 
-            return position * _cellSize + _originPosition;
+            return position * CellSize + _originPosition;
         }
 
         public Vector3 GetGridWorldPosition(Vector3 worldPosition)
@@ -115,9 +100,9 @@ namespace VinhLB
         public void GetGridPosition(Vector3 worldPosition, out int i, out int j)
         {
             Vector3 actualPosition = worldPosition - _originPosition;
-            int intX = Mathf.FloorToInt(actualPosition.x / _cellSize);
-            int intY = Mathf.FloorToInt(actualPosition.y / _cellSize);
-            int intZ = Mathf.FloorToInt(actualPosition.z / _cellSize);
+            int intX = Mathf.FloorToInt(actualPosition.x / CellSize);
+            int intY = Mathf.FloorToInt(actualPosition.y / CellSize);
+            int intZ = Mathf.FloorToInt(actualPosition.z / CellSize);
             switch (_planeType)
             {
                 case GridPlaneType.XY:
@@ -142,17 +127,16 @@ namespace VinhLB
         public void DrawGrid()
         {
             for (int i = 0; i < _gridArray.GetLength(0); i++)
+            for (int j = 0; j < _gridArray.GetLength(1); j++)
             {
-                for (int j = 0; j < _gridArray.GetLength(1); j++)
-                {
-                    Vector3 textPosition = GetGridWorldPosition(i, j) + GetOffset(_cellSize * 0.5f);
-                    _debugTextArray[i, j] = Utilities.CreateWorldText($"({i}, {j})",
-                        null, textPosition, Vector2.one * _cellSize, 2f * _cellSize, Color.white, TextAlignmentOptions.Center);
-                    _debugTextArray[i, j].transform.forward = GetGridPlaneNormal();
+                Vector3 textPosition = GetGridWorldPosition(i, j) + GetOffset(CellSize * 0.5f);
+                _debugTextArray[i, j] = Utilities.CreateWorldText($"({i}, {j})",
+                    null, textPosition, Vector2.one * CellSize, 2f * CellSize, Color.white,
+                    TextAlignmentOptions.Center);
+                _debugTextArray[i, j].transform.forward = GetGridPlaneNormal();
 
-                    Debug.DrawLine(GetGridWorldPosition(i, j), GetGridWorldPosition(i, j + 1), Color.white, 100f);
-                    Debug.DrawLine(GetGridWorldPosition(i, j), GetGridWorldPosition(i + 1, j), Color.white, 100f);
-                }
+                Debug.DrawLine(GetGridWorldPosition(i, j), GetGridWorldPosition(i, j + 1), Color.white, 100f);
+                Debug.DrawLine(GetGridWorldPosition(i, j), GetGridWorldPosition(i + 1, j), Color.white, 100f);
             }
 
             Debug.DrawLine(GetGridWorldPosition(0, _height), GetGridWorldPosition(_width, _height), Color.white, 100f);

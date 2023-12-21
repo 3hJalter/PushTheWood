@@ -18,15 +18,13 @@ namespace _Game.GameGrid.Unit.StaticUnit
             player.CutTreeData.SetData(GetDirectionFromPlayer(), this);
             player.ChangeState(StateEnum.CutTree);
             return;
-            
+
             Direction GetDirectionFromPlayer()
             {
                 Vector3 playerPos = player.MainCell.WorldPos;
                 Vector3 treePos = mainCell.WorldPos;
                 if (Math.Abs(playerPos.x - treePos.x) < 0.01f)
-                {
                     return playerPos.z > treePos.z ? Direction.Back : Direction.Forward;
-                }
                 return playerPos.x > treePos.x ? Direction.Left : Direction.Right;
             }
         }

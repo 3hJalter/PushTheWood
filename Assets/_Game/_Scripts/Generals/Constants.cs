@@ -8,26 +8,29 @@ public static class Constants
     public const int CELL_SIZE = 2;
 
     // String Constants
-    
+
     /// <summary>
     ///     Player Prefab Path
     /// </summary>
     public const string LEVEL_INDEX = "levelIndex";
+
     public const string TUTORIAL_INDEX = "tutorialIndex";
-    
+
     /// <summary>
     ///     Path to the folder in Resources
     /// </summary>
     public const string POOL_PATH = "Pool";
+
     public const string UI_PATH = "UI/";
 
     /// <summary>
     ///     Control input axis
     /// </summary>
     public const string HORIZONTAL = "Horizontal";
+
     public const string VERTICAL = "Vertical";
     public const float INPUT_THRESHOLD_P2 = 0.09f; // Threshold Power 2 from 0 to 1 -> Default = 0.16
-    
+
     /// <summary>
     ///     Player Animation
     /// </summary>
@@ -49,35 +52,37 @@ public static class Constants
     ///     UI Animation Trigger
     /// </summary>
     public const string OPEN = "Open";
+
     public const string CLOSE = "Close";
 
-    
+
     // Value Constants
     public const int UPPER_HEIGHT = 1;
     public const int BELOW_HEIGHT = 1;
 
     public const float DELAY_INTERACT_TIME = 0.25f;
     public const float MOVING_TIME = 0.25f;
-    public const float MOVING_TIME_FAST_RATE = 0.5f;
+    public const float MOVING_TIME_FAST_RATE = 1f;
     public const float FALLING_TIME = 0.2f;
-    
-    public static readonly HeightLevel MaxHeight = (HeightLevel)(Enum.GetValues(typeof(HeightLevel)).Length - 1);
     public const HeightLevel MIN_HEIGHT = HeightLevel.Zero;
     public const HeightLevel MAX_HEIGHT = HeightLevel.FourPointFive;
-    public static readonly Vector3 HorizontalSkinRotation = new(0, 0, 90);
-    public static readonly Vector3 VerticalSkinRotation = new(0, -90, 90);
-    
+
     // OLD 
     public const float TREE_HEIGHT = 1f;
     public const float MOVING_TIME2 = 0.25f;
     public const float MOVING_LOG_TIME = 0.01f;
+
+    public static readonly HeightLevel MaxHeight = (HeightLevel)(Enum.GetValues(typeof(HeightLevel)).Length - 1);
+    public static readonly Vector3 HorizontalSkinRotation = new(0, 0, 90);
+
+    public static readonly Vector3 VerticalSkinRotation = new(0, -90, 90);
     //
-    
-    
+
+
     // Dictionary constants
-    
+
     /// <summary>
-    ///  Dictionary
+    ///     Dictionary
     /// </summary>
     public static readonly Dictionary<GridSurfaceType, HeightLevel> DirFirstHeightOfSurface = new()
     {
@@ -93,7 +98,7 @@ public static class Constants
         { Direction.Forward, Vector3.forward },
         { Direction.Back, Vector3.back }
     };
-    
+
     public static readonly Dictionary<Direction, Vector3Int> DirVector3 = new()
     {
         { Direction.None, Vector3Int.zero },

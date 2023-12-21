@@ -7,23 +7,16 @@ namespace HControls
 {
     public class HSwitch : HMonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
     {
-        [Flags]
-        private enum ControlMovementDirection
-        {
-            Horizontal = 0x1,
-            Vertical = 0x2,
-            Both = Horizontal | Vertical
-        }
-
         [SerializeField] private float movementRange = 40f;
         [SerializeField] private bool hideOnRelease = true;
         [SerializeField] private bool snapToFinger = true;
         [SerializeField] private bool isHighlight = true;
-        [Tooltip("Highlight the direction of the switch")]
-        [SerializeField] private SwitchDirectionHandler switchDirectionHandler;
 
-        [Tooltip("Constraints on the switch movement axis")]
-        [SerializeField] private ControlMovementDirection switchMoveAxis = ControlMovementDirection.Both;
+        [Tooltip("Highlight the direction of the switch")] [SerializeField]
+        private SwitchDirectionHandler switchDirectionHandler;
+
+        [Tooltip("Constraints on the switch movement axis")] [SerializeField]
+        private ControlMovementDirection switchMoveAxis = ControlMovementDirection.Both;
 
         [Tooltip("Image of the switch base")] public Image switchBase;
 
@@ -59,7 +52,7 @@ namespace HControls
             _baseTransform.anchoredPosition = _initialBasePosition;
 
             _oneOverMovementRange = 1f / movementRange;
-            
+
             if (hideOnRelease) HideOnRelease(true);
             HInputManager.SetDefault();
         }
@@ -174,6 +167,14 @@ namespace HControls
                 stick.color.g, stick.color.b, !isHidden ? 1 : 0);
             isHighlight = !isHidden;
             switchDirectionHandler.gameObject.SetActive(isHighlight);
+        }
+
+        [Flags]
+        private enum ControlMovementDirection
+        {
+            Horizontal = 0x1,
+            Vertical = 0x2,
+            Both = Horizontal | Vertical
         }
     }
 }

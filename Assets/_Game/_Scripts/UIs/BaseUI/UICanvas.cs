@@ -15,7 +15,7 @@ public class UICanvas : MonoBehaviour
 
     [ShowIf("useAnimator")] [SerializeField]
     private Animator animator;
-    
+
     private string _currentAnim = " ";
 
     private RectTransform _mRectTransform;

@@ -5,15 +5,15 @@ public class TutorialContext : HMonoBehaviour
 {
     [SerializeField] private RectTransform rect;
 
-    public RectTransform Rect => rect;
-
     private TutorialScreen _tutorialScreen;
+
+    public RectTransform Rect => rect;
 
     public TutorialScreen TutorialScreen
     {
         set => _tutorialScreen = value;
     }
-    
+
     public void OnClose()
     {
         _tutorialScreen.Close();

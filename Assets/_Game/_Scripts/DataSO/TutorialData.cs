@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using _Game._Scripts.UIs.Tutorial;
 using UnityEngine;
 
 namespace _Game.Data
@@ -8,12 +7,12 @@ namespace _Game.Data
     public class TutorialData : ScriptableObject
     {
         [SerializeField] private List<TutorialContext> tutorialContext = new();
-        
+
+        public int CountTutorial => tutorialContext.Count;
+
         public TutorialContext GetTutorial(int index)
         {
             return tutorialContext[index];
         }
-        
-        public int CountTutorial => tutorialContext.Count;
     }
 }

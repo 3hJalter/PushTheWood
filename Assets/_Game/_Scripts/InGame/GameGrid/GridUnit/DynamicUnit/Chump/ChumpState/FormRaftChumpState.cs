@@ -10,9 +10,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 {
     public class FormRaftChumpState : IState<Chump>
     {
-        private List<GameGridCell> createRaftCells = new();
+        private readonly List<GameGridCell> createRaftCells = new();
         private List<GameGridCell> createChumpCells = new();
-        
+
         public void OnEnter(Chump t)
         {
             InitData(t);
@@ -43,6 +43,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 createRaftCells.Add(t.cellInUnits[i]);
                 cells.Remove(t.cellInUnits[i]);
             }
+
             // createChumpCells is all cell in cells
             createChumpCells = cells.ToList();
         }
@@ -52,7 +53,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             HashSet<GridUnit> spawnUnits = new();
             // Chose what the UnitTypeXZ of RaftPrefab and ChumpPrefab
             UnitTypeXZ typeXZWhenSpawn = t.UnitTypeY is UnitTypeY.Up ? t.belowUnits.First().UnitTypeXZ : t.UnitTypeXZ;
-            
+
             if (t.cellInUnits.Count == createRaftCells.Count)
             {
                 Raft.Raft raft = SimplePool.Spawn<Raft.Raft>(t.RaftPrefab);
@@ -72,6 +73,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     spawnUnits.Add(raft);
                 }
             }
+
             for (int i = 0; i < createChumpCells.Count; i++)
             {
                 Chump chumpUnit =
@@ -88,10 +90,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 spawnUnits.Add(chumpUnit);
             }
 
-            foreach (GridUnit unit in t.belowUnits.ToList().Where(unit => !spawnUnits.Contains(unit)))
-            {
-                unit.OnDespawn();
-            }
+            foreach (GridUnit unit in t.belowUnits.ToList().Where(unit => !spawnUnits.Contains(unit))) unit.OnDespawn();
             t.OnDespawn();
         }
     }

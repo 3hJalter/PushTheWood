@@ -98,7 +98,8 @@ VertexOutput Vertex(Attributes input)
     output.normalWS = normalWS;
     output.uv = input.uv;
     output.positionCS = CalculatePositionCSWithShadowCasterLogic(positionWS,
-        GetVertexNormalInputs(input.shadowCastNormalOS).normalWS);
+                                                                 GetVertexNormalInputs(input.shadowCastNormalOS).
+                                                                 normalWS);
 
     return output;
 }
@@ -109,9 +110,9 @@ half4 Fragment(VertexOutput input) : SV_Target
 {
     UNITY_SETUP_INSTANCE_ID(input);
 
-#ifdef SHADOW_CASTER_PASS
+    #ifdef SHADOW_CASTER_PASS
     return 0;
-#else
+    #else
     // Gather some data for the lighting algorithm
     InputData lightingInput = (InputData)0;
     lightingInput.positionWS = input.positionWS;
@@ -132,7 +133,7 @@ half4 Fragment(VertexOutput input) : SV_Target
     // The URP simple lit algorithm
     // The arguments are lighting input data, albedo color, specular color, smoothness, emission color and alpha
     return UniversalFragmentBlinnPhong(lightingInput, surfaceData);
-#endif
+    #endif
 }
 
 #endif

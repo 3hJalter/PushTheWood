@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _Game.GameGrid.Unit.StaticUnit
 {
@@ -8,6 +7,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
     {
         [SerializeField] private Animator chestAnimator;
         [SerializeField] private GameObject chestModel;
+
         protected override void OnInteractBtnClick()
         {
             ShowAnim(true);
@@ -30,6 +30,5 @@ namespace _Game.GameGrid.Unit.StaticUnit
                 btnCanvas.gameObject.SetActive(false);
             }
         }
-        
     }
 }

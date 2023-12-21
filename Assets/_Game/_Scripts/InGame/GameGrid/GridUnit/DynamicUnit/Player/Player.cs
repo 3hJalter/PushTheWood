@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using _Game._Scripts.InGame.GameCondition.Data;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
@@ -16,53 +15,42 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
     public class Player : GridUnitDynamic, IJumpTreeRootUnit
     {
         [SerializeField] private Animator animator;
-        private string _currentAnim = Constants.INIT_ANIM;
-        
+
+        public bool isRideVehicle;
+
+        public readonly Queue<Direction> InputCache = new();
+
         private readonly Dictionary<StateEnum, IState<Player>> states = new();
+        private string _currentAnim = Constants.INIT_ANIM;
         private IState<Player> _currentState;
-        private IState<Player> _lastState;
-        private IVehicle _vehicle;
 
         private bool _isAddState;
 
-        #region Rule
-
-        public ConditionMerge conditionMergeOnMoving;
-        private MovingData _movingData;
-        private CutTreeData _cutTreeData;
-
-        public MovingData MovingData => _movingData ??= new MovingData(this);
-        public CutTreeData CutTreeData => _cutTreeData ??= new CutTreeData(this);
-
-        #endregion
-
-        private Direction _direction = Direction.None;
-        
-        public Direction Direction => _direction;
-        public Queue<Direction> InputCache = new Queue<Direction>();
-        public float AnimSpeed => animator.speed;
-
 
         private bool _isWaitAFrame;
-        
+        private IState<Player> _lastState;
+        private IVehicle _vehicle;
+
+        public Direction Direction { get; private set; } = Direction.None;
+        public float AnimSpeed => animator.speed;
+
         private void FixedUpdate()
         {
             if (_isWaitAFrame)
             {
                 _isWaitAFrame = false;
-                if(InputCache.Count > 0)
-                {
-                    _direction = InputCache.Dequeue();
-                }
-                else
-                {
-                    _direction = HInputManager.GetDirectionInput();
-                }
+                Direction = InputCache.Count > 0 ? InputCache.Dequeue() : HInputManager.GetDirectionInput();
                 _currentState?.OnExecute(this);
                 return;
             }
+
             _isWaitAFrame = true;
             _currentState?.OnExecute(this);
+        }
+
+        public bool CanJumpOnTreeRoot(Direction direction = Direction.None)
+        {
+            return true;
         }
 
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
@@ -74,6 +62,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 _isAddState = true;
                 AddState();
             }
+
             ChangeState(StateEnum.Idle);
         }
 
@@ -99,16 +88,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public override void OnPush(Direction direction, ConditionData conditionData = null)
         {
             for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
-            {
                 MovingData.blockDynamicUnits[i].OnBePushed(direction, this);
-            }
         }
 
         public override bool IsCurrentStateIs(StateEnum stateEnum)
         {
             return _currentState == states[stateEnum];
         }
-        
+
         public void ChangeState(StateEnum stateEnum)
         {
             _currentState?.OnExit(this);
@@ -119,7 +106,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         public void ChangeAnim(string animName, float speed = 1, bool forceAnim = false)
         {
-            if (!forceAnim) if (_currentAnim.Equals(animName)) return;
+            if (!forceAnim)
+                if (_currentAnim.Equals(animName))
+                    return;
             animator.ResetTrigger(_currentAnim);
             _currentAnim = animName;
             animator.speed = speed;
@@ -133,29 +122,24 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         public bool IsCurrentAnimDone()
         {
-            return  animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1;
+            return animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1;
         }
-        
+
         public void LookDirection(Direction directionIn)
         {
             skin.DOLookAt(Tf.position + Constants.DirVector3[directionIn], 0.2f, AxisConstraint.Y, Vector3.up);
         }
-        
+
         public bool HasVehicle()
         {
             return _vehicle is not null;
         }
-        
+
         public void SetIslandId(GameGridCell nextMainCell)
         {
             if (islandID == nextMainCell.IslandID || nextMainCell.IslandID == -1) return;
             islandID = nextMainCell.IslandID;
             LevelManager.Ins.SetFirstPlayerStepOnIsland(nextMainCell);
-        }
-
-        public bool CanJumpOnTreeRoot(Direction direction = Direction.None)
-        {
-            return true;
         }
 
         public void SetVehicle(IVehicle vehicle)
@@ -165,7 +149,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         public void OnRideVehicle(Direction tDirection)
         {
-            _vehicle.Ride(tDirection);
+            isRideVehicle = true;
+            _vehicle.Ride(tDirection, this);
         }
 
         public bool CanRideVehicle(Direction tDirection)
@@ -185,5 +170,16 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             r.blockDirectionUnits = units;
             return true;
         }
+
+        #region Rule
+
+        public ConditionMerge conditionMergeOnMoving;
+        private MovingData _movingData;
+        private CutTreeData _cutTreeData;
+
+        public MovingData MovingData => _movingData ??= new MovingData(this);
+        public CutTreeData CutTreeData => _cutTreeData ??= new CutTreeData(this);
+
+        #endregion
     }
 }

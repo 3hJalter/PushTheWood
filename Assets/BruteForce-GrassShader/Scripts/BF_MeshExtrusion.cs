@@ -1,45 +1,37 @@
-﻿  
-using UnityEngine; 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 [ExecuteInEditMode]
-public class BF_MeshExtrusion : MonoBehaviour {
-
+public class BF_MeshExtrusion : MonoBehaviour
+{
     public Mesh originalMesh;
-    private MeshFilter meshFilter;
 
     public float offsetValue = 1f;
     public Vector3 offsetVector = Vector3.zero;
+    public int numberOfStacks = 1;
+    private readonly List<Color> cols = new();
+
+    private readonly List<int> triangles = new();
+    private readonly List<Vector2> uvs = new();
+    private readonly List<Vector3> vertexs = new();
+    private MeshFilter meshFilter;
+    private int numberOfStacksMem = 1;
     private float offsetValueMem = 1f;
     private Vector3 offsetVectorMem = Vector3.zero;
-    public int numberOfStacks = 1;
-    private int numberOfStacksMem = 1;
-    private int[] oldTri;
-    private Vector3[] oldVert;
     private Vector3[] oldNorm;
+    private int[] oldTri;
     private Vector2[] oldUV;
+    private Vector3[] oldVert;
 
-    private List<int> triangles = new List<int>();
-    private List<Vector3> vertexs = new List<Vector3>();
-    private List<Vector2> uvs = new List<Vector2>();
-    private List<Color> cols = new List<Color>();
-    
-    void Awake()
+    private void Awake()
     {
         CheckValues();
         BuildGeometry();
     }
 
-    private void OnEnable()
-    {
-        CheckValues();
-    }
-
     private void Update()
     {
-        if(offsetValueMem != offsetValue || numberOfStacks != numberOfStacksMem || offsetVectorMem != offsetVector)
+        if (offsetValueMem != offsetValue || numberOfStacks != numberOfStacksMem || offsetVectorMem != offsetVector)
         {
             ClearGeometry();
             BuildGeometry();
@@ -47,6 +39,11 @@ public class BF_MeshExtrusion : MonoBehaviour {
             offsetVectorMem = offsetVector;
             numberOfStacksMem = numberOfStacks;
         }
+    }
+
+    private void OnEnable()
+    {
+        CheckValues();
     }
 
     private void CheckValues()
@@ -75,26 +72,25 @@ public class BF_MeshExtrusion : MonoBehaviour {
 
     private void BuildGeometry()
     {
-        if(meshFilter == null)
-        {
-            meshFilter = gameObject.GetComponent<MeshFilter>();
-        }
-        Mesh mesh = new Mesh();
+        if (meshFilter == null) meshFilter = gameObject.GetComponent<MeshFilter>();
+        Mesh mesh = new();
         meshFilter.mesh = mesh;
 
-        int faces = Mathf.Min(numberOfStacks,100);
+        int faces = Mathf.Min(numberOfStacks, 100);
         for (int i = 0; i < faces; i++)
         {
             int triangleOffset = i * oldVert.Length;
             int indexNewV = 0;
             foreach (Vector3 v in oldVert)
             {
-                vertexs.Add(v + (oldNorm[indexNewV]) * offsetValue*0.01f * i + (offsetVectorMem * 0.01f * i));
+                vertexs.Add(v + oldNorm[indexNewV] * offsetValue * 0.01f * i + offsetVectorMem * 0.01f * i);
                 uvs.Add(oldUV[indexNewV]);
-                cols.Add(new Color(1 * ((float)i / (float)(faces-1)), 1 * ((float)i / (float)(faces - 1)), 1 * ((float)i / (float)(faces - 1))));
+                cols.Add(new Color(1 * (i / (float)(faces - 1)), 1 * (i / (float)(faces - 1)),
+                    1 * (i / (float)(faces - 1))));
 
                 indexNewV++;
             }
+
             indexNewV = 0;
             foreach (int innt in oldTri)
             {
@@ -103,6 +99,7 @@ public class BF_MeshExtrusion : MonoBehaviour {
                 indexNewV++;
             }
         }
+
         mesh.vertices = vertexs.ToArray();
         mesh.triangles = triangles.ToArray();
         mesh.uv = uvs.ToArray();

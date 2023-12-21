@@ -3,6 +3,7 @@ using System.IO;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace VinhLB
 {
@@ -18,14 +19,14 @@ namespace VinhLB
                     return;
             }
 
-            GridSurface[] gridSurfaces = UnityEngine.Object.FindObjectsOfType<GridSurface>();
+            GridSurface[] gridSurfaces = Object.FindObjectsOfType<GridSurface>();
             if (gridSurfaces.Length == 0)
             {
                 Debug.LogError("Grid must have at least 1 surface, and all unit must have on a surface");
                 return;
             }
 
-            GridUnit[] gridUnits = UnityEngine.Object.FindObjectsOfType<GridUnit>();
+            GridUnit[] gridUnits = Object.FindObjectsOfType<GridUnit>();
             int minX = int.MaxValue;
             int minZ = int.MaxValue;
             int maxX = int.MinValue;

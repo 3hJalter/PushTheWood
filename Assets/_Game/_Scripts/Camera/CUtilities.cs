@@ -1,4 +1,6 @@
-﻿namespace _Game.Camera
+﻿using UnityEngine;
+
+namespace _Game.Camera
 {
     public enum ECameraType
     {
@@ -6,9 +8,9 @@
         MainMenuCamera = 0,
         InGameCamera = 1,
         WorldMapCamera = 2,
-        ShopCamera = 3,
+        ShopCamera = 3
     }
-    
+
     public static class CUtilities
     {
         public const string DEFAULT_LAYER = "Default";
@@ -16,33 +18,33 @@
         public const string IGNORE_RAYCAST_LAYER = "Ignore Raycast";
         public const string WATER_LAYER = "Water";
         public const string UI_LAYER = "UI";
-        
+
         public static void SetCullingMask(UnityEngine.Camera camera, string layerName, bool isOn)
         {
             if (isOn) AddCullingMask(camera, layerName);
             else RemoveCullingMask(camera, layerName);
         }
-        
+
         public static void SetCullingMaskEverything(UnityEngine.Camera camera)
         {
             camera.cullingMask = -1;
         }
-        
+
         public static void SetCullingMaskNothing(UnityEngine.Camera camera)
         {
             camera.cullingMask = 0;
         }
-        
+
         private static void AddCullingMask(UnityEngine.Camera camera, string layerName)
         {
-            camera.cullingMask |= (1 << UnityEngine.LayerMask.NameToLayer(layerName));
+            camera.cullingMask |= 1 << LayerMask.NameToLayer(layerName);
         }
-        
+
         private static void RemoveCullingMask(UnityEngine.Camera camera, string layerName)
         {
-            camera.cullingMask &= ~(1 << UnityEngine.LayerMask.NameToLayer(layerName));
+            camera.cullingMask &= ~(1 << LayerMask.NameToLayer(layerName));
         }
-        
+
         // // cullingMask everything
         // mainCamera.cullingMask = -1;
         // // cullingMask nothing

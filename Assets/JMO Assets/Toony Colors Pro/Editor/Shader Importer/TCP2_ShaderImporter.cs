@@ -11,13 +11,14 @@ using ToonyColorsPro.ShaderGenerator;
 using ToonyColorsPro.Utilities;
 using UnityEditor;
 using UnityEditor.Rendering;
+using UnityEditorInternal;
 using UnityEngine;
+using Object = UnityEngine.Object;
 #if UNITY_2020_2_OR_NEWER
 using UnityEditor.AssetImporters;
 #else
 using UnityEditor.Experimental.AssetImporters;
 #endif
-using UnityEngine.Rendering;
 
 namespace ToonyColorsPro
 {
@@ -29,7 +30,7 @@ namespace ToonyColorsPro
             public const string FILE_EXTENSION = "tcp2shader";
 
             public string detectedRenderPipeline = "Built-In Render Pipeline";
-            public int strippedLinesCount = 0;
+            public int strippedLinesCount;
             public string shaderSourceCode;
             public string shaderName;
             public string[] shaderErrors;
@@ -37,13 +38,14 @@ namespace ToonyColorsPro
             public ulong variantCountUsed;
 
             [SerializeField] internal List<ShaderOption> availableOptions;
-            [SerializeField] internal List<string> toggledOptions = new List<string>();
+            [SerializeField] internal List<string> toggledOptions = new();
 
             internal enum ShaderOptionCategory
             {
                 Unity,
                 TCP2
             }
+
             [Serializable]
             internal class ShaderOption
             {
@@ -65,7 +67,7 @@ namespace ToonyColorsPro
                 }
             }
 
-            enum ComparisonOperator
+            private enum ComparisonOperator
             {
                 Equal,
                 Greater,
@@ -77,7 +79,7 @@ namespace ToonyColorsPro
 #if UNITY_2022_2_OR_NEWER
             const int URP_VERSION = 14;
 #elif UNITY_2021_2_OR_NEWER
-            const int URP_VERSION = 12;
+            private const int URP_VERSION = 12;
 #elif UNITY_2021_1_OR_NEWER
             const int URP_VERSION = 11;
 #elif UNITY_2020_3_OR_NEWER
@@ -86,7 +88,7 @@ namespace ToonyColorsPro
             const int URP_VERSION = 7;
 #endif
 
-            static ComparisonOperator ParseComparisonOperator(string symbols)
+            private static ComparisonOperator ParseComparisonOperator(string symbols)
             {
                 switch (symbols)
                 {
@@ -99,7 +101,7 @@ namespace ToonyColorsPro
                 }
             }
 
-            static bool CompareWithOperator(int value1, int value2, ComparisonOperator comparisonOperator)
+            private static bool CompareWithOperator(int value1, int value2, ComparisonOperator comparisonOperator)
             {
                 switch (comparisonOperator)
                 {
@@ -112,23 +114,25 @@ namespace ToonyColorsPro
                 }
             }
 
-            bool StartsOrEndWithSpecialTag(string line)
+            private bool StartsOrEndWithSpecialTag(string line)
             {
-                bool startsWithTag = (line.Length > 4 && line[0] == '/' && line[1] == '*' && line[2] == '*' && line[3] == '*');
+                bool startsWithTag = line.Length > 4 && line[0] == '/' && line[1] == '*' && line[2] == '*' &&
+                                     line[3] == '*';
                 if (startsWithTag) return true;
 
-                int l = line.Length-1;
-                bool endsWithTag = (line.Length > 4 && line[l] == '/' && line[l-1] == '*' && line[l-2] == '*' && line[l-3] == '*');
+                int l = line.Length - 1;
+                bool endsWithTag = line.Length > 4 && line[l] == '/' && line[l - 1] == '*' && line[l - 2] == '*' &&
+                                   line[l - 3] == '*';
                 return endsWithTag;
             }
 
-            ShaderOption ParseOptionFromLine(string line)
+            private ShaderOption ParseOptionFromLine(string line)
             {
                 string singleLineOptionText = null;
                 return ParseOptionFromLine(line, ref singleLineOptionText);
             }
 
-            ShaderOption ParseOptionFromLine(string line, ref string singleLineOptionText)
+            private ShaderOption ParseOptionFromLine(string line, ref string singleLineOptionText)
             {
                 int tagStart = line.IndexOf("/***", StringComparison.Ordinal);
                 int firstQuote = line.IndexOf('"') + 1;
@@ -140,19 +144,19 @@ namespace ToonyColorsPro
                 string tooltip = null;
                 if (expression.Contains("|"))
                 {
-                    var split = expression.Split('|');
+                    string[] split = expression.Split('|');
                     expression = split[0].Trim('"');
                     tooltip = split[1].Trim('"');
                 }
 
-                var category = ShaderOptionCategory.Unity;
+                ShaderOptionCategory category = ShaderOptionCategory.Unity;
                 if (expression.StartsWith("TCP2"))
                 {
                     category = ShaderOptionCategory.TCP2;
                     expression = expression.Replace("TCP2 ", "");
                 }
 
-                return new ShaderOption()
+                return new ShaderOption
                 {
                     label = new GUIContent(expression, tooltip),
                     category = category,
@@ -166,9 +170,9 @@ namespace ToonyColorsPro
 
                 detectedRenderPipeline = isUsingURP ? "Universal Render Pipeline" : "Built-In Render Pipeline";
 
-                StringWriter shaderSource = new StringWriter();
+                StringWriter shaderSource = new();
                 string[] sourceLines = File.ReadAllLines(context.assetPath);
-                Stack<bool> excludeCurrentLines = new Stack<bool>();
+                Stack<bool> excludeCurrentLines = new();
                 strippedLinesCount = 0;
 
                 // Prepass
@@ -178,18 +182,19 @@ namespace ToonyColorsPro
                 {
                     string line = sourceLines[i];
                     if (StartsOrEndWithSpecialTag(line))
-                    {
                         if (line.StartsWith("/*** OPTION") || (line.EndsWith("***/") && line.Contains("/*** OPTION")))
                         {
-                            var option = ParseOptionFromLine(line);
+                            ShaderOption option = ParseOptionFromLine(line);
                             if (!availableOptions.Exists(o => o.label.text == option.label.text))
-                            {
                                 availableOptions.Add(option);
-                            }
                         }
-                    }
                 }
-                availableOptions.Sort((item1, item2) => { return String.Compare( item1.category + item1.label.text, item2.category + item2.label.text, StringComparison.Ordinal); });
+
+                availableOptions.Sort((item1, item2) =>
+                {
+                    return string.Compare(item1.category + item1.label.text, item2.category + item2.label.text,
+                        StringComparison.Ordinal);
+                });
 
                 for (int i = 0; i < sourceLines.Length; i++)
                 {
@@ -213,7 +218,7 @@ namespace ToonyColorsPro
                             string version = subline.Substring(spaceIndex, subline.LastIndexOf(' ') - spaceIndex);
                             string op = subline.Substring(0, spaceIndex);
 
-                            var compOp = ParseComparisonOperator(op);
+                            ComparisonOperator compOp = ParseComparisonOperator(op);
                             int compVersion = int.Parse(version);
 
                             bool isCorrectURP = CompareWithOperator(URP_VERSION, compVersion, compOp);
@@ -221,33 +226,23 @@ namespace ToonyColorsPro
                         }
                         else if (line.StartsWith("/*** OPTION"))
                         {
-                            var option = ParseOptionFromLine(line);
+                            ShaderOption option = ParseOptionFromLine(line);
                             bool exclude = toggledOptions.Contains(option.label.text);
-                            if (line.StartsWith("/*** OPTION_OFF:"))
-                            {
-                                exclude = !exclude;
-                            }
+                            if (line.StartsWith("/*** OPTION_OFF:")) exclude = !exclude;
                             excludeCurrentLines.Push(excludeThisLine || exclude);
                         }
                         else if (line.EndsWith("***/") && line.Contains("/*** OPTION"))
                         {
                             // OPTION modifier on single line
                             string singleLine = null;
-                            var option = ParseOptionFromLine(line, ref singleLine);
+                            ShaderOption option = ParseOptionFromLine(line, ref singleLine);
                             bool exclude = toggledOptions.Contains(option.label.text);
-                            if (line.Contains("/*** OPTION_OFF:"))
-                            {
-                                exclude = !exclude;
-                            }
+                            if (line.Contains("/*** OPTION_OFF:")) exclude = !exclude;
 
                             if (!excludeThisLine && !exclude)
-                            {
                                 shaderSource.WriteLine(singleLine);
-                            }
                             else
-                            {
                                 strippedLinesCount++;
-                            }
                         }
                         else if (excludeThisLine && line.StartsWith("/*** END"))
                         {
@@ -277,26 +272,25 @@ namespace ToonyColorsPro
                 shaderName = shaderSourceCode.Substring(idx, idx2 - idx);
                 shaderErrors = null;
 
-                var shader = ShaderUtil.CreateShaderAsset(context, shaderSourceCode, true);
+                Shader shader = ShaderUtil.CreateShaderAsset(context, shaderSourceCode, true);
 
                 if (ShaderUtil.ShaderHasError(shader))
                 {
-                    string[] shaderSourceLines = shaderSourceCode.Split(new char[] {'\n'}, StringSplitOptions.None);
-                    var errors = ShaderUtil.GetShaderMessages(shader);
-                    shaderErrors = System.Array.ConvertAll(errors, err => string.Format("{0} (line {1})", err.message, err.line));
+                    string[] shaderSourceLines = shaderSourceCode.Split(new[] { '\n' }, StringSplitOptions.None);
+                    ShaderMessage[] errors = ShaderUtil.GetShaderMessages(shader);
+                    shaderErrors = Array.ConvertAll(errors,
+                        err => string.Format("{0} (line {1})", err.message, err.line));
                     foreach (ShaderMessage error in errors)
                     {
-                        string message = error.line <= 0 ?
-                            string.Format("Shader Error in '{0}' (in file '{2}')\nError: {1}\n", shaderName, error.message, error.file) :
-                            string.Format("Shader Error in '{0}' (line {2} in file '{3}')\nError: {1}\nLine: {4}\n", shaderName, error.message, error.line, error.file, shaderSourceLines[error.line-1]);
+                        string message = error.line <= 0
+                            ? string.Format("Shader Error in '{0}' (in file '{2}')\nError: {1}\n", shaderName,
+                                error.message, error.file)
+                            : string.Format("Shader Error in '{0}' (line {2} in file '{3}')\nError: {1}\nLine: {4}\n",
+                                shaderName, error.message, error.line, error.file, shaderSourceLines[error.line - 1]);
                         if (error.severity == ShaderCompilerMessageSeverity.Warning)
-                        {
                             Debug.LogWarning(message);
-                        }
                         else
-                        {
                             Debug.LogError(message);
-                        }
                     }
                 }
                 else
@@ -311,46 +305,47 @@ namespace ToonyColorsPro
                 // internal static extern ulong GetVariantCount(Shader s, bool usedBySceneOnly);
                 variantCount = 0;
                 variantCountUsed = 0;
-                var getVariantCountReflection = typeof(ShaderUtil).GetMethod("GetVariantCount", BindingFlags.Static | BindingFlags.NonPublic);
+                MethodInfo getVariantCountReflection =
+                    typeof(ShaderUtil).GetMethod("GetVariantCount", BindingFlags.Static | BindingFlags.NonPublic);
                 if (getVariantCountReflection != null)
-                {
                     try
                     {
-                        object result = getVariantCountReflection.Invoke(null, new object[] {shader, false});
+                        object result = getVariantCountReflection.Invoke(null, new object[] { shader, false });
                         variantCount = (ulong)result;
-                        result = getVariantCountReflection.Invoke(null, new object[] {shader, true});
+                        result = getVariantCountReflection.Invoke(null, new object[] { shader, true });
                         variantCountUsed = (ulong)result;
                     }
                     catch
                     {
                         // ignored
                     }
-                }
             }
         }
 
         namespace Inspector
         {
-            [CustomEditor(typeof(TCP2_ShaderImporter)), CanEditMultipleObjects]
+            [CustomEditor(typeof(TCP2_ShaderImporter))]
+            [CanEditMultipleObjects]
             public class TCP2ShaderImporter_Editor : Editor
             {
-                TCP2_ShaderImporter Importer { get { return (TCP2_ShaderImporter) this.target; } }
+                private bool hasModifications;
 
-                List<string> tempDisabledOptions = new List<string>();
-                bool hasModifications;
+                private List<string> tempDisabledOptions = new();
+                private TCP2_ShaderImporter Importer => (TCP2_ShaderImporter)target;
 
-                void CheckModifications()
-                {
-                    hasModifications = tempDisabledOptions.Count != Importer.toggledOptions.Count || tempDisabledOptions.Except(Importer.toggledOptions).Any();
-                }
-
-                void OnEnable()
+                private void OnEnable()
                 {
                     tempDisabledOptions = new List<string>(Importer.toggledOptions);
                 }
 
+                private void CheckModifications()
+                {
+                    hasModifications = tempDisabledOptions.Count != Importer.toggledOptions.Count ||
+                                       tempDisabledOptions.Except(Importer.toggledOptions).Any();
+                }
+
                 // From: UnityEditor.ShaderInspectorPlatformsPopup
-                static string FormatCount(ulong count)
+                private static string FormatCount(ulong count)
                 {
                     bool flag = count > 1000000000uL;
                     string result;
@@ -363,21 +358,20 @@ namespace ToonyColorsPro
                         bool flag2 = count > 1000000uL;
                         if (flag2)
                         {
-                            result = (count / 1000000.0).ToString("f2", CultureInfo.InvariantCulture.NumberFormat) + "M";
+                            result = (count / 1000000.0).ToString("f2", CultureInfo.InvariantCulture.NumberFormat) +
+                                     "M";
                         }
                         else
                         {
                             bool flag3 = count > 1000uL;
                             if (flag3)
-                            {
-                                result = (count / 1000.0).ToString("f2", CultureInfo.InvariantCulture.NumberFormat) + "k";
-                            }
+                                result = (count / 1000.0).ToString("f2", CultureInfo.InvariantCulture.NumberFormat) +
+                                         "k";
                             else
-                            {
                                 result = count.ToString();
-                            }
                         }
                     }
+
                     return result;
                 }
 
@@ -389,10 +383,12 @@ namespace ToonyColorsPro
                     GUILayout.Label(TCP2_GUI.TempContent(Importer.shaderName));
                     string variantsText = "";
                     if (Importer.variantCount > 0 && Importer.variantCountUsed > 0)
-                    {
-                        variantsText = string.Format("\nVariants (currently used): <b>{0}</b>\nVariants (including unused): <b>{1}</b>", FormatCount(Importer.variantCountUsed), FormatCount(Importer.variantCount));
-                    }
-                    GUILayout.Label(TCP2_GUI.TempContent(string.Format("Detected render pipeline: <b>{0}</b>\nStripped lines: <b>{1}</b>{2}",
+                        variantsText =
+                            string.Format(
+                                "\nVariants (currently used): <b>{0}</b>\nVariants (including unused): <b>{1}</b>",
+                                FormatCount(Importer.variantCountUsed), FormatCount(Importer.variantCount));
+                    GUILayout.Label(TCP2_GUI.TempContent(string.Format(
+                        "Detected render pipeline: <b>{0}</b>\nStripped lines: <b>{1}</b>{2}",
                         Importer.detectedRenderPipeline,
                         Importer.strippedLinesCount,
                         variantsText)
@@ -401,9 +397,11 @@ namespace ToonyColorsPro
                     if (Importer.shaderErrors != null && Importer.shaderErrors.Length > 0)
                     {
                         GUILayout.Space(4);
-                        var color = GUI.color;
+                        Color color = GUI.color;
                         GUI.color = new Color32(0xFF, 0x80, 0x80, 0xFF);
-                        GUILayout.Label(TCP2_GUI.TempContent(string.Format("<b>Errors:</b>\n{0}", string.Join("\n", Importer.shaderErrors))), TCP2_GUI.HelpBoxRichTextStyle);
+                        GUILayout.Label(
+                            TCP2_GUI.TempContent(string.Format("<b>Errors:</b>\n{0}",
+                                string.Join("\n", Importer.shaderErrors))), TCP2_GUI.HelpBoxRichTextStyle);
                         GUI.color = color;
                     }
 
@@ -413,11 +411,10 @@ namespace ToonyColorsPro
                         GUILayout.Space(4);
                         Color guiColor = GUI.color;
                         GUI.color *= Color.yellow;
-                        EditorGUILayout.HelpBox("The detected render pipeline doesn't match the pipeline this shader was compiled for!\nPlease reimport the shaders for them to work in the current render pipeline.", MessageType.Warning);
-                        if (GUILayout.Button("Reimport Shader"))
-                        {
-                            ReimportShader();
-                        }
+                        EditorGUILayout.HelpBox(
+                            "The detected render pipeline doesn't match the pipeline this shader was compiled for!\nPlease reimport the shaders for them to work in the current render pipeline.",
+                            MessageType.Warning);
+                        if (GUILayout.Button("Reimport Shader")) ReimportShader();
                         GUI.color = guiColor;
                     }
 
@@ -425,15 +422,13 @@ namespace ToonyColorsPro
 
                     if (GUILayout.Button(TCP2_GUI.TempContent("View Source"), GUILayout.ExpandWidth(false)))
                     {
-                        string path = Application.temporaryCachePath + "/" + Importer.shaderName.Replace("/", "-") + "_Source.shader";
-                        if (File.Exists(path))
-                        {
-                            File.SetAttributes(path, FileAttributes.Normal);
-                        }
+                        string path = Application.temporaryCachePath + "/" + Importer.shaderName.Replace("/", "-") +
+                                      "_Source.shader";
+                        if (File.Exists(path)) File.SetAttributes(path, FileAttributes.Normal);
 
                         File.WriteAllText(path, Importer.shaderSourceCode);
                         File.SetAttributes(path, FileAttributes.ReadOnly);
-                        UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(path, 0);
+                        InternalEditorUtility.OpenFileAtLineExternal(path, 0);
                     }
 
 #if SHOW_EXPORT_BUTTON
@@ -443,7 +438,8 @@ namespace ToonyColorsPro
                     {
                         if (GUILayout.Button("Export .shader file", GUILayout.ExpandWidth(false)))
                         {
-                            string savePath = EditorUtility.SaveFilePanel("Export TCP2 shader", Application.dataPath, "Hybrid Shader","shader");
+                            string savePath =
+ EditorUtility.SaveFilePanel("Export TCP2 shader", Application.dataPath, "Hybrid Shader","shader");
                             if (!string.IsNullOrEmpty(savePath))
                             {
                                 File.WriteAllText(savePath, importer.shaderSourceCode);
@@ -460,32 +456,29 @@ namespace ToonyColorsPro
                         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                         {
                             GUILayout.Label(TCP2_GUI.TempContent("Options:"));
-                            GUILayout.Label(TCP2_GUI.TempContent("Disable options you know you won't use to reduce the number of shader variants and improve compilation times, built file size and runtime memory usage."), SGUILayout.Styles.GrayMiniLabelWrap);
+                            GUILayout.Label(
+                                TCP2_GUI.TempContent(
+                                    "Disable options you know you won't use to reduce the number of shader variants and improve compilation times, built file size and runtime memory usage."),
+                                SGUILayout.Styles.GrayMiniLabelWrap);
                             GUILayout.Space(4);
                             int lastCategory = -1;
-                            foreach (var option in Importer.availableOptions)
+                            foreach (TCP2_ShaderImporter.ShaderOption option in Importer.availableOptions)
                             {
-                                if (option.label.text.Contains("URP") && !isUsingURP)
-                                {
-                                    continue;
-                                }
+                                if (option.label.text.Contains("URP") && !isUsingURP) continue;
 
-                                if ((int) option.category != lastCategory)
+                                if ((int)option.category != lastCategory)
                                 {
                                     lastCategory = (int)option.category;
-                                    GUILayout.Label( TCP2_GUI.TempContent(option.GetCategoryLabel()), SGUILayout.Styles.OrangeBoldLabel);
+                                    GUILayout.Label(TCP2_GUI.TempContent(option.GetCategoryLabel()),
+                                        SGUILayout.Styles.OrangeBoldLabel);
                                 }
 
                                 bool disabled = tempDisabledOptions.Contains(option.label.text);
                                 bool change;
                                 if (option.isOffOption)
-                                {
                                     change = GUILayout.Toggle(disabled, option.label, GUILayout.ExpandWidth(false));
-                                }
                                 else
-                                {
                                     change = !GUILayout.Toggle(!disabled, option.label, GUILayout.ExpandWidth(false));
-                                }
 
                                 if (change != disabled)
                                 {
@@ -515,13 +508,13 @@ namespace ToonyColorsPro
 
                                     if (GUILayout.Button("Apply"))
                                     {
-                                        var disabledOptionsProperty = serializedObject.FindProperty(nameof(TCP2_ShaderImporter.toggledOptions));
+                                        SerializedProperty disabledOptionsProperty =
+                                            serializedObject.FindProperty(nameof(TCP2_ShaderImporter.toggledOptions));
                                         disabledOptionsProperty.ClearArray();
                                         disabledOptionsProperty.arraySize = tempDisabledOptions.Count;
                                         for (int i = 0; i < tempDisabledOptions.Count; i++)
-                                        {
-                                            disabledOptionsProperty.GetArrayElementAtIndex(i).stringValue = tempDisabledOptions[i];
-                                        }
+                                            disabledOptionsProperty.GetArrayElementAtIndex(i).stringValue =
+                                                tempDisabledOptions[i];
                                         serializedObject.ApplyModifiedProperties();
                                         ReimportShader();
                                     }
@@ -544,13 +537,14 @@ namespace ToonyColorsPro
                     serializedObject.ApplyModifiedProperties();
                 }
 
-                void ReimportShader()
+                private void ReimportShader()
                 {
-                    foreach (UnityEngine.Object t in targets)
+                    foreach (Object t in targets)
                     {
                         string path = AssetDatabase.GetAssetPath(t);
                         AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
                     }
+
                     OnEnable();
                     CheckModifications();
                 }

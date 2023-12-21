@@ -10,7 +10,8 @@ namespace _Game.UIs.Screen
     public class MainMenuScreen : UICanvas
     {
         [SerializeField] private CanvasGroup canvasGroup;
-        private bool _isFirstOpen = false;
+        private bool _isFirstOpen;
+
         public override void Open()
         {
             base.Open();
@@ -28,6 +29,7 @@ namespace _Game.UIs.Screen
                 GridBuildingManager.Ins.OnInit();
                 _isFirstOpen = true;
             }
+
             UIManager.Ins.OpenUI<InGameScreen>();
             // FxManager.Ins.StopTweenFog();
             Close();

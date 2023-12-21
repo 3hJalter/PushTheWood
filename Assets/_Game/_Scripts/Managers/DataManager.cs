@@ -1,11 +1,8 @@
-﻿using _Game._Scripts.UIs.Tutorial;
-using _Game.Data;
+﻿using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
-using GameGridEnum;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _Game.Managers
 {
@@ -16,18 +13,18 @@ namespace _Game.Managers
         [SerializeField] private GridData gridData;
 
         [SerializeField] private TutorialData tutorialData;
-        
+
+        public int CountTutorial => tutorialData.CountTutorial;
+
+        public AudioData AudioData => audioData;
+
+        public int CountLevel => gridData.CountLevel;
+
         public TutorialContext GetTutorial(int index)
         {
             return tutorialData.GetTutorial(index);
         }
-        
-        public int CountTutorial => tutorialData.CountTutorial;
-        
-        public AudioData AudioData => audioData;
 
-        public int CountLevel => gridData.CountLevel;
-        
         public TextAsset GetGridTextData(int index)
         {
             return gridData.GetGridTextData(index);

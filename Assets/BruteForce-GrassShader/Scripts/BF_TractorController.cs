@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -9,10 +7,6 @@ public class BF_TractorController : MonoBehaviour
 {
     private const string HORIZONTAL = "Horizontal";
     private const string VERTICAL = "Vertical";
-
-    private float horizontalInput;
-    private float verticalInput;
-    private float currentSteerAngle;
 
     [SerializeField] private float motorForce;
     [SerializeField] private float maxSteerAngle;
@@ -26,6 +20,10 @@ public class BF_TractorController : MonoBehaviour
     [SerializeField] private Transform frontRightWheeTransform;
     [SerializeField] private Transform rearLeftWheelTransform;
     [SerializeField] private Transform rearRightWheelTransform;
+    private float currentSteerAngle;
+
+    private float horizontalInput;
+    private float verticalInput;
 
     private void FixedUpdate()
     {
@@ -58,22 +56,10 @@ public class BF_TractorController : MonoBehaviour
             verticalInput += -1f;
         }
 #else
-        if (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.A))
-        {
-            horizontalInput += -1;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            horizontalInput += 1;
-        }
-        if (Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.W))
-        {
-            verticalInput += 1f;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            verticalInput += -1f;
-        }
+        if (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.A)) horizontalInput += -1;
+        if (Input.GetKey(KeyCode.D)) horizontalInput += 1;
+        if (Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.W)) verticalInput += 1f;
+        if (Input.GetKey(KeyCode.S)) verticalInput += -1f;
 #endif
         horizontalInput = Mathf.Clamp(horizontalInput, -1, 1);
         verticalInput = Mathf.Clamp(verticalInput, -1, 1);
@@ -105,7 +91,7 @@ public class BF_TractorController : MonoBehaviour
     private void UpdateSingleWheel(WheelCollider wheelCollider, Transform wheelTransform)
     {
         Vector3 pos;
-        Quaternion rot; 
+        Quaternion rot;
         wheelCollider.GetWorldPose(out pos, out rot);
         wheelTransform.rotation = rot;
         wheelTransform.position = pos;

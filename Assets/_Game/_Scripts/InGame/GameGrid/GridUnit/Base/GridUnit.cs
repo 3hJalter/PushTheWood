@@ -36,13 +36,16 @@ namespace _Game.GameGrid.Unit
         public int islandID = -1;
 
         // The current state of this unit (Up or Down)
-        [FormerlySerializedAs("unitState")] [SerializeField] protected UnitTypeY unitTypeY = UnitTypeY.Up; // Serialize for test
+        [FormerlySerializedAs("unitState")] [SerializeField]
+        protected UnitTypeY unitTypeY = UnitTypeY.Up; // Serialize for test
 
         // The type of this unit (Horizontal, Vertical, Both or None)
-        [FormerlySerializedAs("unitType")] [SerializeField] protected UnitTypeXZ unitTypeXZ = UnitTypeXZ.Both; // Serialize for test
-        
-        [SerializeField]
-        protected Direction skinRotationDirection = Direction.None;
+        [FormerlySerializedAs("unitType")] [SerializeField]
+        protected UnitTypeXZ unitTypeXZ = UnitTypeXZ.Both; // Serialize for test
+
+        [SerializeField] protected Direction skinRotationDirection = Direction.None;
+
+        [SerializeField] public readonly HashSet<GridUnit> belowUnits = new();
 
         public readonly List<GameGridCell> cellInUnits = new();
 
@@ -52,16 +55,15 @@ namespace _Game.GameGrid.Unit
         // All neighbor units of this unit
         [SerializeField] private readonly HashSet<GridUnit> neighborUnits = new();
         [SerializeField] private readonly HashSet<GridUnit> upperUnits = new();
-        [SerializeField] public readonly HashSet<GridUnit> belowUnits = new();
 
         // Save init data on first Initialize
         private UnitInitData _unitInitData;
-        
+
         // The last direction that this unit is pushed
         protected Direction lastPushedDirection = Direction.None;
 
         // The main cell that this unit is on
-        
+
         protected GameGridCell mainCell;
 
         public Vector3Int Size
@@ -75,7 +77,7 @@ namespace _Game.GameGrid.Unit
             get => unitTypeXZ;
             set => unitTypeXZ = value;
         }
-        
+
         public UnitTypeY UnitTypeY
         {
             get => unitTypeY;
@@ -83,11 +85,13 @@ namespace _Game.GameGrid.Unit
         }
 
         public GameGridCell MainCell => mainCell;
+
         public HeightLevel StartHeight
         {
             get => startHeight;
             set => startHeight = value;
         }
+
         public Direction SkinRotationDirection => skinRotationDirection;
 
         public HeightLevel EndHeight
@@ -141,17 +145,17 @@ namespace _Game.GameGrid.Unit
             OnOutCells();
             this.Despawn();
         }
-        
+
         public virtual void OnPush(Direction direction, ConditionData conditionData = null)
         {
-            
+
         }
 
         public virtual void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
         {
             lastPushedDirection = direction;
         }
-        
+
         public void OnOutCells()
         {
             RemoveUnitFromCell();
@@ -173,20 +177,22 @@ namespace _Game.GameGrid.Unit
             bool hasInitialOffset = true, List<GameGridCell> enterNextCells = null)
         {
             Vector3 initialPos = GetUnitWorldPos(enterMainCell);
-            HeightLevel enterStartHeight = enterNextCells is null ? GetEnterStartHeight(enterMainCell)
-                    : GetEnterStartHeight(enterNextCells);
+            HeightLevel enterStartHeight = enterNextCells is null
+                ? GetEnterStartHeight(enterMainCell)
+                : GetEnterStartHeight(enterNextCells);
             Vector3 finalPos = PredictUnitPos();
-            EnterPosData.SetEnterPosData(direction, enterStartHeight, initialPos, finalPos, yOffsetOnDown, hasInitialOffset);
+            EnterPosData.SetEnterPosData(direction, enterStartHeight, initialPos, finalPos, yOffsetOnDown,
+                hasInitialOffset);
             return;
 
             Vector3 PredictUnitPos()
             {
-                float offsetY = (float) enterStartHeight / 2 * Constants.CELL_SIZE;
+                float offsetY = (float)enterStartHeight / 2 * Constants.CELL_SIZE;
                 if (nextUnitTypeY == UnitTypeY.Down) offsetY -= yOffsetOnDown;
                 return enterMainCell.WorldPos + Vector3.up * offsetY;
             }
         }
-        
+
         public void OnEnterCells(GameGridCell enterMainCell, List<GameGridCell> enterNextCells = null)
         {
             SetHeight(EnterPosData.startHeight);
@@ -199,10 +205,8 @@ namespace _Game.GameGrid.Unit
                 mainCell = enterMainCellIn;
                 // Add all nextCells to cellInUnits
                 if (enterCells is not null)
-                {
                     for (int i = 0; i < enterCells.Count; i++)
                         AddCell(enterCells[i]);
-                }
                 else AddCell(enterMainCellIn);
             }
         }
@@ -228,18 +232,18 @@ namespace _Game.GameGrid.Unit
         {
             neighborUnits.Remove(triggerUnit);
         }
-        
+
         protected virtual void OnOutTriggerBelow(GridUnit triggerUnit)
         {
             belowUnits.Remove(triggerUnit);
             // TODO: Falling Logic 
         }
-        
+
         protected virtual void OnOutTriggerUpper(GridUnit triggerUnit)
         {
             upperUnits.Remove(triggerUnit);
         }
-        
+
         private void SetNeighbor(Grid<GameGridCell, GameGridCellData> map)
         {
             // In direction
@@ -257,33 +261,24 @@ namespace _Game.GameGrid.Unit
 
         public void OnEnterTrigger(GridUnit gridUnit)
         {
-            foreach (GridUnit unit in neighborUnits.ToList())
-            {
-                unit.OnEnterTriggerNeighbor(gridUnit);
-            }
-            foreach (GridUnit unit in belowUnits.ToList())
-            {
-                unit.OnEnterTriggerUpper(gridUnit);
-            }
-            foreach (GridUnit unit in upperUnits.ToList())
-            {
-                unit.OnEnterTriggerBelow(gridUnit);
-            }
+            foreach (GridUnit unit in neighborUnits.ToList()) unit.OnEnterTriggerNeighbor(gridUnit);
+            foreach (GridUnit unit in belowUnits.ToList()) unit.OnEnterTriggerUpper(gridUnit);
+            foreach (GridUnit unit in upperUnits.ToList()) unit.OnEnterTriggerBelow(gridUnit);
         }
-        
+
         protected virtual void OnEnterTriggerNeighbor(GridUnit triggerUnit)
         {
-            
+
         }
-        
+
         protected virtual void OnEnterTriggerBelow(GridUnit triggerUnit)
         {
-            
+
         }
-        
+
         protected virtual void OnEnterTriggerUpper(GridUnit triggerUnit)
         {
-            
+
         }
 
         private void SetHeight(HeightLevel startHeightIn)
@@ -320,10 +315,11 @@ namespace _Game.GameGrid.Unit
                     break;
                 case Direction.Left:
                 case Direction.Right:
-                    InitXCell(mainCell, size.z);
-                    for (int i = initCells.Count - 1; i >= 0; i--) InitZCell(initCells[i], size.x);
+                    InitZCell(mainCell, size.z);
+                    for (int i = initCells.Count - 1; i >= 0; i--) InitXCell(initCells[i], size.x);
                     break;
             }
+
             // Add this unit to cells
             // for (int i = 0; i < initCells.Count; i++) initCells[i].AddGridUnit(startHeight, endHeight, this);
             return initCells;
@@ -430,12 +426,12 @@ namespace _Game.GameGrid.Unit
 
     public class EnterCellPosData
     {
-        public HeightLevel startHeight;
         public Vector3 finalPos; // consider falling
         public Vector3 initialPos; // not consider falling
         public bool isFalling;
+        public HeightLevel startHeight;
 
-        public void SetEnterPosData(Direction direction, HeightLevel startHeightIn, Vector3 initialPosIn, 
+        public void SetEnterPosData(Direction direction, HeightLevel startHeightIn, Vector3 initialPosIn,
             Vector3 finalPosIn, float yOffsetDown, bool hasInitialOffset = true)
         {
             startHeight = startHeightIn;

@@ -6,17 +6,17 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
     {
         public void OnEnter(Raft t)
         {
-            
+
         }
 
         public void OnExecute(Raft t)
         {
-            
+
         }
 
         public void OnExit(Raft t)
         {
-            
+
         }
     }
 }

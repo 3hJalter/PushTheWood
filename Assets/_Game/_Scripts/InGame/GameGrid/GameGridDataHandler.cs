@@ -1,5 +1,4 @@
-﻿using System;
-using _Game.Managers;
+﻿using _Game.Managers;
 using UnityEngine;
 
 namespace _Game.GameGrid

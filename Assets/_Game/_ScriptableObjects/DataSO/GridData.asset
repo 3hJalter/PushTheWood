@@ -16,6 +16,22 @@ MonoBehaviour:
     SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects:
+    - {fileID: -684823040248915490, guid: 4c4972374503a684ba75a09118924d31, type: 3}
+    - {fileID: -5441964512500297059, guid: fd2f6663f9d4bd54c86f8293b86544b0, type: 3}
+    - {fileID: -5441964512500297059, guid: 07204eebc6a6cf6459a4188f1f724e0e, type: 3}
+    - {fileID: 8852207134085153055, guid: 7d2d8c26c208e6748835843aee7b2ae7, type: 3}
+    - {fileID: 7647206204666446339, guid: 5e5fc1739cee3984a986bc928a5ee956, type: 3}
+    - {fileID: 3780414313974276900, guid: 51ad1b81b0eaa9941be47c8dd14ffc74, type: 3}
+    - {fileID: 6327509876160083874, guid: 3b857625abbc05c4c81a32e5b76cbaad, type: 3}
+    - {fileID: 8702753697021536225, guid: c5ac8e7a10732714484e1939591f41c0, type: 3}
+    - {fileID: 8368909918796036227, guid: 5f8837cd89bbb344aaa92a1648fbf1fa, type: 3}
+    - {fileID: 4192934788410237493, guid: 45e143c6a4bb70d418b3554173cdfb32, type: 3}
+    - {fileID: 7475919495590875395, guid: 1ba27f3e7bc228d43a21f1ea8d0fa763, type: 3}
+    - {fileID: 2102487067434064595, guid: 5cf5e71fc2800db45ae76bcef98f8244, type: 3}
+    - {fileID: 7789844500435204612, guid: 72e538945521e3c4c96af32e03a4e60c, type: 3}
+    - {fileID: 6339097340024965215, guid: 4cc5494473a645e4f9730d044b789132, type: 3}
+    - {fileID: 8538035402792478575, guid: e51b66539c236b94386021d95f746ece, type: 3}
+    - {fileID: 2553979289197978373, guid: 1bce3ee87a601454ea022ac203bf1dc9, type: 3}
     - {fileID: 102013178864016840, guid: ab9433af9a9b5964c89ffa2236dabec2, type: 3}
     - {fileID: -6854614982196888322, guid: 3683c6a1ad51e5646ab7e2a25b32da79, type: 3}
     - {fileID: 7600875300675774787, guid: d41f0ada912bdea40945d4663d2e6e69, type: 3}
@@ -55,35 +71,281 @@ MonoBehaviour:
     - {fileID: 7312154810147563638, guid: 9e290227485ae314f8af687e3c5868b4, type: 3}
     - {fileID: 3040232941731799545, guid: 615110da4d833d34781aefe509ba0f7a, type: 3}
     - {fileID: 3025389501297600349, guid: 872e3501f0bb80d469f9169ff7557743, type: 3}
-    - {fileID: 7475919495590875395, guid: 1ba27f3e7bc228d43a21f1ea8d0fa763, type: 3}
-    - {fileID: 2102487067434064595, guid: 5cf5e71fc2800db45ae76bcef98f8244, type: 3}
-    - {fileID: 7789844500435204612, guid: 72e538945521e3c4c96af32e03a4e60c, type: 3}
-    - {fileID: 6339097340024965215, guid: 4cc5494473a645e4f9730d044b789132, type: 3}
-    - {fileID: 8538035402792478575, guid: e51b66539c236b94386021d95f746ece, type: 3}
-    - {fileID: 2553979289197978373, guid: 1bce3ee87a601454ea022ac203bf1dc9, type: 3}
-    - {fileID: 8852207134085153055, guid: 7d2d8c26c208e6748835843aee7b2ae7, type: 3}
-    - {fileID: 7647206204666446339, guid: 5e5fc1739cee3984a986bc928a5ee956, type: 3}
-    - {fileID: 3780414313974276900, guid: 51ad1b81b0eaa9941be47c8dd14ffc74, type: 3}
-    - {fileID: 6327509876160083874, guid: 3b857625abbc05c4c81a32e5b76cbaad, type: 3}
-    - {fileID: 8702753697021536225, guid: c5ac8e7a10732714484e1939591f41c0, type: 3}
-    - {fileID: 8368909918796036227, guid: 5f8837cd89bbb344aaa92a1648fbf1fa, type: 3}
-    - {fileID: 4192934788410237493, guid: 45e143c6a4bb70d418b3554173cdfb32, type: 3}
-    - {fileID: -684823040248915490, guid: 4c4972374503a684ba75a09118924d31, type: 3}
-    - {fileID: -5441964512500297059, guid: fd2f6663f9d4bd54c86f8293b86544b0, type: 3}
-    - {fileID: -5441964512500297059, guid: 07204eebc6a6cf6459a4188f1f724e0e, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: _surfaceDic
+    - Name: _buildingUnitDic
       Entry: 7
       Data: 0|System.Collections.Generic.Dictionary`2[[_Game.DesignPattern.PoolType,
+        Assembly-CSharp],[VinhLB.BuildingUnit, Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[_Game.DesignPattern.PoolType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 50
+    - Name: $v
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 51
+    - Name: $v
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 52
+    - Name: $v
+      Entry: 10
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _dynamicUnitDic
+      Entry: 7
+      Data: 2|System.Collections.Generic.Dictionary`2[[_Game.DesignPattern.PoolType,
+        Assembly-CSharp],[_Game.GameGrid.Unit.GridUnitDynamic, Assembly-CSharp]],
+        mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[_Game.DesignPattern.PoolType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 7
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 4
+    - Name: $v
+      Entry: 10
+      Data: 3
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 5
+    - Name: $v
+      Entry: 10
+      Data: 4
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 3
+    - Name: $v
+      Entry: 10
+      Data: 5
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 6
+    - Name: $v
+      Entry: 10
+      Data: 6
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 12
+    - Name: $v
+      Entry: 10
+      Data: 7
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 14
+    - Name: $v
+      Entry: 10
+      Data: 8
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 15
+    - Name: $v
+      Entry: 10
+      Data: 9
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _staticUnitDic
+      Entry: 7
+      Data: 4|System.Collections.Generic.Dictionary`2[[_Game.DesignPattern.PoolType,
+        Assembly-CSharp],[_Game.GameGrid.Unit.GridUnitStatic, Assembly-CSharp]],
+        mscorlib
+    - Name: comparer
+      Entry: 9
+      Data: 3
+    - Name: 
+      Entry: 12
+      Data: 6
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 10
+    - Name: $v
+      Entry: 10
+      Data: 10
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 9
+    - Name: $v
+      Entry: 10
+      Data: 11
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 11
+    - Name: $v
+      Entry: 10
+      Data: 12
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 8
+    - Name: $v
+      Entry: 10
+      Data: 13
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 7
+    - Name: $v
+      Entry: 10
+      Data: 14
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 13
+    - Name: $v
+      Entry: 10
+      Data: 15
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _surfaceDic
+      Entry: 7
+      Data: 5|System.Collections.Generic.Dictionary`2[[_Game.DesignPattern.PoolType,
         Assembly-CSharp],[_Game.GameGrid.GridSurface.GridSurface, Assembly-CSharp]],
         mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[_Game.DesignPattern.PoolType,
+      Data: 6|System.Collections.Generic.EnumEqualityComparer`1[[_Game.DesignPattern.PoolType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -105,7 +367,7 @@ MonoBehaviour:
       Data: 114
     - Name: $v
       Entry: 10
-      Data: 0
+      Data: 16
     - Name: 
       Entry: 8
       Data: 
@@ -117,7 +379,7 @@ MonoBehaviour:
       Data: 115
     - Name: $v
       Entry: 10
-      Data: 1
+      Data: 17
     - Name: 
       Entry: 8
       Data: 
@@ -129,7 +391,7 @@ MonoBehaviour:
       Data: 116
     - Name: $v
       Entry: 10
-      Data: 2
+      Data: 18
     - Name: 
       Entry: 8
       Data: 
@@ -141,7 +403,7 @@ MonoBehaviour:
       Data: 117
     - Name: $v
       Entry: 10
-      Data: 3
+      Data: 19
     - Name: 
       Entry: 8
       Data: 
@@ -153,7 +415,7 @@ MonoBehaviour:
       Data: 118
     - Name: $v
       Entry: 10
-      Data: 4
+      Data: 20
     - Name: 
       Entry: 8
       Data: 
@@ -165,7 +427,7 @@ MonoBehaviour:
       Data: 121
     - Name: $v
       Entry: 10
-      Data: 5
+      Data: 21
     - Name: 
       Entry: 8
       Data: 
@@ -177,7 +439,7 @@ MonoBehaviour:
       Data: 122
     - Name: $v
       Entry: 10
-      Data: 6
+      Data: 22
     - Name: 
       Entry: 8
       Data: 
@@ -189,7 +451,7 @@ MonoBehaviour:
       Data: 119
     - Name: $v
       Entry: 10
-      Data: 7
+      Data: 23
     - Name: 
       Entry: 8
       Data: 
@@ -201,7 +463,7 @@ MonoBehaviour:
       Data: 120
     - Name: $v
       Entry: 10
-      Data: 8
+      Data: 24
     - Name: 
       Entry: 8
       Data: 
@@ -213,7 +475,7 @@ MonoBehaviour:
       Data: 125
     - Name: $v
       Entry: 10
-      Data: 9
+      Data: 25
     - Name: 
       Entry: 8
       Data: 
@@ -225,7 +487,7 @@ MonoBehaviour:
       Data: 126
     - Name: $v
       Entry: 10
-      Data: 10
+      Data: 26
     - Name: 
       Entry: 8
       Data: 
@@ -237,7 +499,7 @@ MonoBehaviour:
       Data: 123
     - Name: $v
       Entry: 10
-      Data: 11
+      Data: 27
     - Name: 
       Entry: 8
       Data: 
@@ -249,7 +511,7 @@ MonoBehaviour:
       Data: 124
     - Name: $v
       Entry: 10
-      Data: 12
+      Data: 28
     - Name: 
       Entry: 8
       Data: 
@@ -261,7 +523,7 @@ MonoBehaviour:
       Data: 101
     - Name: $v
       Entry: 10
-      Data: 13
+      Data: 29
     - Name: 
       Entry: 8
       Data: 
@@ -273,7 +535,7 @@ MonoBehaviour:
       Data: 102
     - Name: $v
       Entry: 10
-      Data: 14
+      Data: 30
     - Name: 
       Entry: 8
       Data: 
@@ -285,7 +547,7 @@ MonoBehaviour:
       Data: 103
     - Name: $v
       Entry: 10
-      Data: 15
+      Data: 31
     - Name: 
       Entry: 8
       Data: 
@@ -297,7 +559,7 @@ MonoBehaviour:
       Data: 104
     - Name: $v
       Entry: 10
-      Data: 16
+      Data: 32
     - Name: 
       Entry: 8
       Data: 
@@ -309,7 +571,7 @@ MonoBehaviour:
       Data: 105
     - Name: $v
       Entry: 10
-      Data: 17
+      Data: 33
     - Name: 
       Entry: 8
       Data: 
@@ -321,7 +583,7 @@ MonoBehaviour:
       Data: 113
     - Name: $v
       Entry: 10
-      Data: 18
+      Data: 34
     - Name: 
       Entry: 8
       Data: 
@@ -333,7 +595,7 @@ MonoBehaviour:
       Data: 112
     - Name: $v
       Entry: 10
-      Data: 19
+      Data: 35
     - Name: 
       Entry: 8
       Data: 
@@ -345,7 +607,7 @@ MonoBehaviour:
       Data: 111
     - Name: $v
       Entry: 10
-      Data: 20
+      Data: 36
     - Name: 
       Entry: 8
       Data: 
@@ -357,7 +619,7 @@ MonoBehaviour:
       Data: 110
     - Name: $v
       Entry: 10
-      Data: 21
+      Data: 37
     - Name: 
       Entry: 8
       Data: 
@@ -369,7 +631,7 @@ MonoBehaviour:
       Data: 127
     - Name: $v
       Entry: 10
-      Data: 22
+      Data: 38
     - Name: 
       Entry: 8
       Data: 
@@ -381,7 +643,7 @@ MonoBehaviour:
       Data: 128
     - Name: $v
       Entry: 10
-      Data: 23
+      Data: 39
     - Name: 
       Entry: 8
       Data: 
@@ -393,7 +655,7 @@ MonoBehaviour:
       Data: 129
     - Name: $v
       Entry: 10
-      Data: 24
+      Data: 40
     - Name: 
       Entry: 8
       Data: 
@@ -405,7 +667,7 @@ MonoBehaviour:
       Data: 130
     - Name: $v
       Entry: 10
-      Data: 25
+      Data: 41
     - Name: 
       Entry: 8
       Data: 
@@ -417,7 +679,7 @@ MonoBehaviour:
       Data: 131
     - Name: $v
       Entry: 10
-      Data: 26
+      Data: 42
     - Name: 
       Entry: 8
       Data: 
@@ -429,7 +691,7 @@ MonoBehaviour:
       Data: 132
     - Name: $v
       Entry: 10
-      Data: 27
+      Data: 43
     - Name: 
       Entry: 8
       Data: 
@@ -441,7 +703,7 @@ MonoBehaviour:
       Data: 133
     - Name: $v
       Entry: 10
-      Data: 28
+      Data: 44
     - Name: 
       Entry: 8
       Data: 
@@ -453,7 +715,7 @@ MonoBehaviour:
       Data: 134
     - Name: $v
       Entry: 10
-      Data: 29
+      Data: 45
     - Name: 
       Entry: 8
       Data: 
@@ -465,7 +727,7 @@ MonoBehaviour:
       Data: 135
     - Name: $v
       Entry: 10
-      Data: 30
+      Data: 46
     - Name: 
       Entry: 8
       Data: 
@@ -477,7 +739,7 @@ MonoBehaviour:
       Data: 136
     - Name: $v
       Entry: 10
-      Data: 31
+      Data: 47
     - Name: 
       Entry: 8
       Data: 
@@ -489,7 +751,7 @@ MonoBehaviour:
       Data: 137
     - Name: $v
       Entry: 10
-      Data: 32
+      Data: 48
     - Name: 
       Entry: 8
       Data: 
@@ -501,7 +763,7 @@ MonoBehaviour:
       Data: 138
     - Name: $v
       Entry: 10
-      Data: 33
+      Data: 49
     - Name: 
       Entry: 8
       Data: 
@@ -513,7 +775,7 @@ MonoBehaviour:
       Data: 139
     - Name: $v
       Entry: 10
-      Data: 34
+      Data: 50
     - Name: 
       Entry: 8
       Data: 
@@ -525,7 +787,7 @@ MonoBehaviour:
       Data: 106
     - Name: $v
       Entry: 10
-      Data: 35
+      Data: 51
     - Name: 
       Entry: 8
       Data: 
@@ -537,7 +799,7 @@ MonoBehaviour:
       Data: 107
     - Name: $v
       Entry: 10
-      Data: 36
+      Data: 52
     - Name: 
       Entry: 8
       Data: 
@@ -549,268 +811,6 @@ MonoBehaviour:
       Data: 108
     - Name: $v
       Entry: 10
-      Data: 37
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 109
-    - Name: $v
-      Entry: 10
-      Data: 38
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: _staticUnitDic
-      Entry: 7
-      Data: 2|System.Collections.Generic.Dictionary`2[[_Game.DesignPattern.PoolType,
-        Assembly-CSharp],[_Game.GameGrid.Unit.GridUnitStatic, Assembly-CSharp]],
-        mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[_Game.DesignPattern.PoolType,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 6
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 10
-    - Name: $v
-      Entry: 10
-      Data: 39
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 9
-    - Name: $v
-      Entry: 10
-      Data: 40
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 11
-    - Name: $v
-      Entry: 10
-      Data: 41
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 8
-    - Name: $v
-      Entry: 10
-      Data: 42
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 7
-    - Name: $v
-      Entry: 10
-      Data: 43
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 13
-    - Name: $v
-      Entry: 10
-      Data: 44
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: _dynamicUnitDic
-      Entry: 7
-      Data: 4|System.Collections.Generic.Dictionary`2[[_Game.DesignPattern.PoolType,
-        Assembly-CSharp],[_Game.GameGrid.Unit.GridUnitDynamic, Assembly-CSharp]],
-        mscorlib
-    - Name: comparer
-      Entry: 9
-      Data: 3
-    - Name: 
-      Entry: 12
-      Data: 7
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 4
-    - Name: $v
-      Entry: 10
-      Data: 45
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 5
-    - Name: $v
-      Entry: 10
-      Data: 46
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 3
-    - Name: $v
-      Entry: 10
-      Data: 47
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 6
-    - Name: $v
-      Entry: 10
-      Data: 48
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 12
-    - Name: $v
-      Entry: 10
-      Data: 49
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 14
-    - Name: $v
-      Entry: 10
-      Data: 50
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 15
-    - Name: $v
-      Entry: 10
-      Data: 51
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: _buildingUnitDic
-      Entry: 7
-      Data: 5|System.Collections.Generic.Dictionary`2[[_Game.DesignPattern.PoolType,
-        Assembly-CSharp],[VinhLB.BuildingUnit, Assembly-CSharp]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 6|System.Collections.Generic.EnumEqualityComparer`1[[_Game.DesignPattern.PoolType,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 3
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 50
-    - Name: $v
-      Entry: 10
-      Data: 52
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 51
-    - Name: $v
-      Entry: 10
       Data: 53
     - Name: 
       Entry: 8
@@ -820,7 +820,7 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 3
-      Data: 52
+      Data: 109
     - Name: $v
       Entry: 10
       Data: 54
@@ -835,7 +835,6 @@ MonoBehaviour:
       Data: 
   gridTextDataList:
   - {fileID: 4900000, guid: f1b64cf69e0c45a4e9460ad31603471e, type: 3}
-  - {fileID: 4900000, guid: fc7404194948a4b4ca5196b4d87ef3fc, type: 3}
+  - {fileID: 4900000, guid: 01bc77d52fcfad64c8ff7759b80e9950, type: 3}
   - {fileID: 4900000, guid: 65e5aa94724de454b94e53cff2f1a7ca, type: 3}
   - {fileID: 4900000, guid: 40948bdb2a03b4d45bbaf162d2468bed, type: 3}
-  - {fileID: 4900000, guid: 01bc77d52fcfad64c8ff7759b80e9950, type: 3}

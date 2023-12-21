@@ -3,9 +3,9 @@ using System.Linq;
 using _Game._Scripts.InGame.GameCondition.Data;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
+using _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState;
 using GameGridEnum;
 using UnityEngine;
-using _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Chump
 {
@@ -13,15 +13,31 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
     {
         [SerializeField] private StateEnum onBePushedStraightState;
         [SerializeField] private StateEnum onBePushedPerpendicularState;
+        [SerializeField] private Raft.Raft raftPrefab;
 
         private readonly Dictionary<StateEnum, IState<Chump>> states = new();
         private IState<Chump> _currentState;
+
         private bool _isAddState;
+
         // Hand
-        private Chump _triggerChump; // Set trigger chump to use in SpawnRaftChumpState
-        [SerializeField] private Raft.Raft raftPrefab;
-        public Chump TriggerChump => _triggerChump;
+        public Chump TriggerChump { get; private set; }
+
         public Raft.Raft RaftPrefab => raftPrefab;
+
+        public bool CanJumpOnTreeRoot(Direction direction = Direction.None)
+        {
+            if (gridUnitDynamicType is GridUnitDynamicType.ChumpHigh) return false;
+            return direction switch
+            {
+                Direction.Forward or Direction.Back when UnitTypeXZ is UnitTypeXZ.None
+                    or UnitTypeXZ.Vertical => true,
+                Direction.Left or Direction.Right when UnitTypeXZ is UnitTypeXZ.None
+                    or UnitTypeXZ.Horizontal => true,
+                _ => false
+            };
+        }
+
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
             bool isUseInitData = true, Direction skinDirection = Direction.None)
         {
@@ -55,15 +71,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
 
         public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
         {
+
             #region Check Condition
 
             ChumpBeInteractedData.SetData(direction, pushUnit);
             if (!conditionMergeOnBeInteracted.IsApplicable(ChumpBeInteractedData))
-            {
                 // if (_currentState != states[StateEnum.Idle])
                 //     ChangeState(StateEnum.Idle); 
                 return;
-            }
 
             #endregion
 
@@ -94,10 +109,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
         protected override void OnOutTriggerBelow(GridUnit triggerUnit)
         {
             base.OnOutTriggerBelow(triggerUnit);
-            if (IsCurrentStateIs(StateEnum.Idle))
-            {
-                ChangeState(StateEnum.Fall);
-            }
+            if (IsCurrentStateIs(StateEnum.Idle)) ChangeState(StateEnum.Fall);
         }
 
         protected override void OnEnterTriggerUpper(GridUnit triggerUnit)
@@ -115,8 +127,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
                 if (triggerChump.UnitTypeY is UnitTypeY.Up) continue;
                 if (triggerChump.UnitTypeXZ != belowUnit.UnitTypeXZ) return;
             }
-            _triggerChump = triggerChump;
-            _triggerChump.ChangeState(StateEnum.FormRaft);
+
+            TriggerChump = triggerChump;
+            TriggerChump.ChangeState(StateEnum.FormRaft);
         }
 
         private bool IsOnWater()
@@ -125,77 +138,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
                    cellInUnits.All(t => t.SurfaceType is GridSurfaceType.Water);
 
         }
-
-        // public override bool CanMoveFromUnit(Direction direction, GridUnit pushUnit = null)
-        // {
-        //     if (!IsCurrentStateIs(StateEnum.Idle)) return false;
-        //     ChumpBeInteractedData.SetData(direction, pushUnit);
-        //     if (!conditionMergeOnBeInteracted.IsApplicable(ChumpBeInteractedData)) return false;
-        //     if (unitTypeY is UnitTypeY.Up)
-        //     {
-        //         TurnOverData.SetData(ChumpBeInteractedData.inputDirection);
-        //         return ConditionMergeOnBePushed.IsApplicable(TurnOverData);
-        //     }
-        //
-        //     if (unitTypeXZ is UnitTypeXZ.Horizontal)
-        //     {
-        //         if (direction is Direction.Left or Direction.Right)
-        //         {
-        //             if (onBePushedStraightState is StateEnum.TurnOver)
-        //             {
-        //                 TurnOverData.SetData(ChumpBeInteractedData.inputDirection);
-        //                 return ConditionMergeOnBePushed.IsApplicable(TurnOverData);
-        //             }
-        //
-        //             if (onBePushedStraightState is StateEnum.Move)
-        //             {
-        //                 MovingData.SetData(ChumpBeInteractedData.inputDirection);
-        //                 return ConditionMergeOnBePushed.IsApplicable(MovingData);
-        //             }
-        //
-        //             return false;
-        //         }
-        //
-        //         if (direction is Direction.Forward or Direction.Back &&
-        //             onBePushedPerpendicularState is StateEnum.Roll)
-        //         {
-        //             MovingData.SetData(ChumpBeInteractedData.inputDirection);
-        //             return ConditionMergeOnBePushed.IsApplicable(MovingData);
-        //         }
-        //
-        //         return false;
-        //     }
-        //
-        //     if (unitTypeXZ is UnitTypeXZ.Vertical)
-        //     {
-        //         if (direction is Direction.Left or Direction.Right && onBePushedPerpendicularState is StateEnum.Roll)
-        //         {
-        //             MovingData.SetData(ChumpBeInteractedData.inputDirection);
-        //             return ConditionMergeOnBePushed.IsApplicable(MovingData);
-        //         }
-        //
-        //         if (direction is Direction.Forward or Direction.Back)
-        //         {
-        //             if (onBePushedStraightState is StateEnum.TurnOver)
-        //             {
-        //                 TurnOverData.SetData(ChumpBeInteractedData.inputDirection);
-        //                 return ConditionMergeOnBePushed.IsApplicable(TurnOverData);
-        //             }
-        //
-        //             if (onBePushedStraightState is StateEnum.Move)
-        //             {
-        //                 MovingData.SetData(ChumpBeInteractedData.inputDirection);
-        //                 return ConditionMergeOnBePushed.IsApplicable(MovingData);
-        //             }
-        //
-        //             return false;
-        //         }
-        //
-        //         return false;
-        //     }
-        //
-        //     return false;
-        // }
 
         public override bool IsCurrentStateIs(StateEnum stateEnum)
         {
@@ -247,18 +189,5 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
         public MovingData MovingData => _movingData ??= new MovingData(this);
 
         #endregion
-
-        public bool CanJumpOnTreeRoot(Direction direction = Direction.None)
-        {
-            if (gridUnitDynamicType is GridUnitDynamicType.ChumpHigh) return false;
-            return direction switch
-            {
-                Direction.Forward or Direction.Back when UnitTypeXZ is UnitTypeXZ.None
-                    or UnitTypeXZ.Vertical => true,
-                Direction.Left or Direction.Right when UnitTypeXZ is UnitTypeXZ.None
-                    or UnitTypeXZ.Horizontal => true,
-                _ => false
-            };
-        }
     }
 }

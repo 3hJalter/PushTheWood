@@ -13,90 +13,210 @@ using UnityEngine;
 [AddComponentMenu("Playdead/FrustumJitter")]
 public class FrustumJitter : MonoBehaviour
 {
+    public Pattern pattern = Pattern.Halton_2_3_X16;
+    public float patternScale = 1.0f;
+
+    public Vector4 activeSample = Vector4.zero; // xy = current sample, zw = previous sample
+    public int activeIndex = -2;
+
+    private Camera _camera;
+    private Vector3 focalMotionDir = Vector3.right;
+
+    private Vector3 focalMotionPos = Vector3.zero;
+
+    private void Awake()
+    {
+        Reset();
+        Clear();
+    }
+
+    private void Reset()
+    {
+        _camera = GetComponent<Camera>();
+    }
+
+    private void OnDisable()
+    {
+        Clear();
+    }
+
+    private void OnPreCull()
+    {
+        // update motion dir
+        {
+            Vector3 oldWorld = focalMotionPos;
+            Vector3 newWorld = _camera.transform.TransformVector(_camera.nearClipPlane * Vector3.forward);
+
+            Vector3 oldPoint = _camera.worldToCameraMatrix * oldWorld;
+            Vector3 newPoint = _camera.worldToCameraMatrix * newWorld;
+            Vector3 newDelta = (newPoint - oldPoint).WithZ(0.0f);
+
+            float mag = newDelta.magnitude;
+            if (mag != 0.0f)
+            {
+                Vector3
+                    dir = newDelta /
+                          mag; // yes, apparently this is necessary instead of newDelta.normalized... because facepalm
+                if (dir.sqrMagnitude != 0.0f)
+                {
+                    focalMotionPos = newWorld;
+                    focalMotionDir = Vector3.Slerp(focalMotionDir, dir, 0.2f);
+                    //Debug.Log("CHANGE focalMotionDir " + focalMotionDir.ToString("G4") + " delta was " + newDelta.ToString("G4") + " delta.mag " + newDelta.magnitude);
+                }
+            }
+        }
+
+        // update jitter
+#if SUPPORT_STEREO
+        if (_camera.stereoEnabled)
+        {
+            Clear();
+        }
+        else
+#endif
+        {
+            if (activeIndex == -2)
+            {
+                activeSample = Vector4.zero;
+                activeIndex += 1;
+
+                _camera.projectionMatrix = _camera.GetProjectionMatrix();
+            }
+            else
+            {
+                activeIndex += 1;
+                activeIndex %= AccessLength(pattern);
+
+                Vector2 sample = Sample(pattern, activeIndex);
+                activeSample.z = activeSample.x;
+                activeSample.w = activeSample.y;
+                activeSample.x = sample.x;
+                activeSample.y = sample.y;
+
+                _camera.projectionMatrix = _camera.GetProjectionMatrix(sample.x, sample.y);
+            }
+        }
+    }
+
+    private void Clear()
+    {
+        _camera.ResetProjectionMatrix();
+
+        activeSample = Vector4.zero;
+        activeIndex = -2;
+    }
+
     #region Static point data
-    private static float[] points_Still = new float[] {
-         0.5f, 0.5f,
+
+    private static readonly float[] points_Still =
+    {
+        0.5f, 0.5f
     };
-    private static float[] points_Uniform2 = new float[] {
-        -0.25f, -0.25f,//ll
-         0.25f,  0.25f,//ur
+
+    private static readonly float[] points_Uniform2 =
+    {
+        -0.25f, -0.25f, //ll
+        0.25f, 0.25f //ur
     };
-    private static float[] points_Uniform4 = new float[] {
-	    -0.25f, -0.25f,//ll
-         0.25f, -0.25f,//lr
-	     0.25f,  0.25f,//ur
-        -0.25f,  0.25f,//ul
+
+    private static readonly float[] points_Uniform4 =
+    {
+        -0.25f, -0.25f, //ll
+        0.25f, -0.25f, //lr
+        0.25f, 0.25f, //ur
+        -0.25f, 0.25f //ul
     };
-    private static float[] points_Uniform4_Helix = new float[] {
-	    -0.25f, -0.25f,//ll  3  1
-	     0.25f,  0.25f,//ur   \/|
-         0.25f, -0.25f,//lr   /\|
-        -0.25f,  0.25f,//ul  0  2
+
+    private static readonly float[] points_Uniform4_Helix =
+    {
+        -0.25f, -0.25f, //ll  3  1
+        0.25f, 0.25f, //ur   \/|
+        0.25f, -0.25f, //lr   /\|
+        -0.25f, 0.25f //ul  0  2
     };
-    private static float[] points_Uniform4_DoubleHelix = new float[] {
-	    -0.25f, -0.25f,//ll  3  1
-	     0.25f,  0.25f,//ur   \/|
-         0.25f, -0.25f,//lr   /\|
-        -0.25f,  0.25f,//ul  0  2
-	    -0.25f, -0.25f,//ll  6--7
-         0.25f, -0.25f,//lr   \
-        -0.25f,  0.25f,//ul    \
-	     0.25f,  0.25f,//ur  4--5
+
+    private static readonly float[] points_Uniform4_DoubleHelix =
+    {
+        -0.25f, -0.25f, //ll  3  1
+        0.25f, 0.25f, //ur   \/|
+        0.25f, -0.25f, //lr   /\|
+        -0.25f, 0.25f, //ul  0  2
+        -0.25f, -0.25f, //ll  6--7
+        0.25f, -0.25f, //lr   \
+        -0.25f, 0.25f, //ul    \
+        0.25f, 0.25f //ur  4--5
     };
-    private static float[] points_SkewButterfly = new float[] {
+
+    private static readonly float[] points_SkewButterfly =
+    {
         -0.250f, -0.250f,
-         0.250f,  0.250f,
-         0.125f, -0.125f,
-        -0.125f,  0.125f,
+        0.250f, 0.250f,
+        0.125f, -0.125f,
+        -0.125f, 0.125f
     };
-    private static float[] points_Rotated4 = new float[] {
-	    -0.125f, -0.375f,//ll
-         0.375f, -0.125f,//lr
-	     0.125f,  0.375f,//ur
-        -0.375f,  0.125f,//ul
+
+    private static readonly float[] points_Rotated4 =
+    {
+        -0.125f, -0.375f, //ll
+        0.375f, -0.125f, //lr
+        0.125f, 0.375f, //ur
+        -0.375f, 0.125f //ul
     };
-    private static float[] points_Rotated4_Helix = new float[] {
-	    -0.125f, -0.375f,//ll  3  1
-	     0.125f,  0.375f,//ur   \/|
-         0.375f, -0.125f,//lr   /\|
-        -0.375f,  0.125f,//ul  0  2
+
+    private static readonly float[] points_Rotated4_Helix =
+    {
+        -0.125f, -0.375f, //ll  3  1
+        0.125f, 0.375f, //ur   \/|
+        0.375f, -0.125f, //lr   /\|
+        -0.375f, 0.125f //ul  0  2
     };
-    private static float[] points_Rotated4_Helix2 = new float[] {
-	    -0.125f, -0.375f,//ll  2--1
-	     0.125f,  0.375f,//ur   \/
-        -0.375f,  0.125f,//ul   /\
-         0.375f, -0.125f,//lr  0  3
+
+    private static readonly float[] points_Rotated4_Helix2 =
+    {
+        -0.125f, -0.375f, //ll  2--1
+        0.125f, 0.375f, //ur   \/
+        -0.375f, 0.125f, //ul   /\
+        0.375f, -0.125f //lr  0  3
     };
-    private static float[] points_Poisson10 = new float[] {
-        -0.16795960f*0.25f,  0.65544910f*0.25f,
-        -0.69096030f*0.25f,  0.59015970f*0.25f,
-         0.49843820f*0.25f,  0.83099720f*0.25f,
-         0.17230150f*0.25f, -0.03882703f*0.25f,
-        -0.60772670f*0.25f, -0.06013587f*0.25f,
-         0.65606390f*0.25f,  0.24007600f*0.25f,
-         0.80348370f*0.25f, -0.48096900f*0.25f,
-         0.33436540f*0.25f, -0.73007030f*0.25f,
-        -0.47839520f*0.25f, -0.56005300f*0.25f,
-        -0.12388120f*0.25f, -0.96633990f*0.25f,
+
+    private static readonly float[] points_Poisson10 =
+    {
+        -0.16795960f * 0.25f, 0.65544910f * 0.25f,
+        -0.69096030f * 0.25f, 0.59015970f * 0.25f,
+        0.49843820f * 0.25f, 0.83099720f * 0.25f,
+        0.17230150f * 0.25f, -0.03882703f * 0.25f,
+        -0.60772670f * 0.25f, -0.06013587f * 0.25f,
+        0.65606390f * 0.25f, 0.24007600f * 0.25f,
+        0.80348370f * 0.25f, -0.48096900f * 0.25f,
+        0.33436540f * 0.25f, -0.73007030f * 0.25f,
+        -0.47839520f * 0.25f, -0.56005300f * 0.25f,
+        -0.12388120f * 0.25f, -0.96633990f * 0.25f
     };
-    private static float[] points_Pentagram = new float[] {
-         0.000000f*0.5f,  0.525731f*0.5f,// head
-        -0.309017f*0.5f, -0.425325f*0.5f,// lleg
-         0.500000f*0.5f,  0.162460f*0.5f,// rarm
-        -0.500000f*0.5f,  0.162460f*0.5f,// larm
-         0.309017f*0.5f, -0.425325f*0.5f,// rleg
+
+    private static readonly float[] points_Pentagram =
+    {
+        0.000000f * 0.5f, 0.525731f * 0.5f, // head
+        -0.309017f * 0.5f, -0.425325f * 0.5f, // lleg
+        0.500000f * 0.5f, 0.162460f * 0.5f, // rarm
+        -0.500000f * 0.5f, 0.162460f * 0.5f, // larm
+        0.309017f * 0.5f, -0.425325f * 0.5f // rleg
     };
-    private static float[] points_Halton_2_3_x8 = new float[8 * 2];
-    private static float[] points_Halton_2_3_x16 = new float[16 * 2];
-    private static float[] points_Halton_2_3_x32 = new float[32 * 2];
-    private static float[] points_Halton_2_3_x256 = new float[256 * 2];
-    private static float[] points_MotionPerp2 = new float[] {
-         0.00f, -0.25f,
-         0.00f,  0.25f,
+
+    private static readonly float[] points_Halton_2_3_x8 = new float[8 * 2];
+    private static readonly float[] points_Halton_2_3_x16 = new float[16 * 2];
+    private static readonly float[] points_Halton_2_3_x32 = new float[32 * 2];
+    private static readonly float[] points_Halton_2_3_x256 = new float[256 * 2];
+
+    private static readonly float[] points_MotionPerp2 =
+    {
+        0.00f, -0.25f,
+        0.00f, 0.25f
     };
+
     #endregion
 
     #region Static point data, static initialization
+
     private static void TransformPattern(float[] seq, float theta, float scale)
     {
         float cs = Mathf.Cos(theta);
@@ -111,7 +231,7 @@ public class FrustumJitter : MonoBehaviour
     }
 
     // http://en.wikipedia.org/wiki/Halton_sequence
-    private static float HaltonSeq(int prime, int index = 1/* NOT! zero-based */)
+    private static float HaltonSeq(int prime, int index = 1 /* NOT! zero-based */)
     {
         float r = 0.0f;
         float f = 1.0f;
@@ -122,6 +242,7 @@ public class FrustumJitter : MonoBehaviour
             r += f * (i % prime);
             i = (int)Mathf.Floor(i / (float)prime);
         }
+
         return r;
     }
 
@@ -139,8 +260,8 @@ public class FrustumJitter : MonoBehaviour
     static FrustumJitter()
     {
         // points_Pentagram
-        Vector2 vh = new Vector2(points_Pentagram[0] - points_Pentagram[2], points_Pentagram[1] - points_Pentagram[3]);
-        Vector2 vu = new Vector2(0.0f, 1.0f);
+        Vector2 vh = new(points_Pentagram[0] - points_Pentagram[2], points_Pentagram[1] - points_Pentagram[3]);
+        Vector2 vu = new(0.0f, 1.0f);
         TransformPattern(points_Pentagram, Mathf.Deg2Rad * (0.5f * Vector2.Angle(vu, vh)), 1.0f);
 
         // points_Halton_2_3_xN
@@ -149,9 +270,11 @@ public class FrustumJitter : MonoBehaviour
         InitializeHalton_2_3(points_Halton_2_3_x32);
         InitializeHalton_2_3(points_Halton_2_3_x256);
     }
+
     #endregion
 
     #region Static point data accessors
+
     public enum Pattern
     {
         Still,
@@ -169,8 +292,8 @@ public class FrustumJitter : MonoBehaviour
         Halton_2_3_X16,
         Halton_2_3_X32,
         Halton_2_3_X256,
-        MotionPerp2,
-    };
+        MotionPerp2
+    }
 
     private static float[] AccessPointData(Pattern pattern)
     {
@@ -230,99 +353,8 @@ public class FrustumJitter : MonoBehaviour
 
         if (pattern != Pattern.MotionPerp2)
             return new Vector2(x, y);
-        else
-            return new Vector2(x, y).Rotate(Vector2.right.SignedAngle(focalMotionDir));
+        return new Vector2(x, y).Rotate(Vector2.right.SignedAngle(focalMotionDir));
     }
+
     #endregion
-
-    private Camera _camera;
-
-    private Vector3 focalMotionPos = Vector3.zero;
-    private Vector3 focalMotionDir = Vector3.right;
-
-    public Pattern pattern = Pattern.Halton_2_3_X16;
-    public float patternScale = 1.0f;
-
-    public Vector4 activeSample = Vector4.zero;// xy = current sample, zw = previous sample
-    public int activeIndex = -2;
-
-    void Reset()
-    {
-        _camera = GetComponent<Camera>();
-    }
-
-    void Clear()
-    {
-        _camera.ResetProjectionMatrix();
-
-        activeSample = Vector4.zero;
-        activeIndex = -2;
-    }
-
-    void Awake()
-    {
-        Reset();
-        Clear();
-    }
-
-    void OnPreCull()
-    {
-        // update motion dir
-        {
-            Vector3 oldWorld = focalMotionPos;
-            Vector3 newWorld = _camera.transform.TransformVector(_camera.nearClipPlane * Vector3.forward);
-
-            Vector3 oldPoint = (_camera.worldToCameraMatrix * oldWorld);
-            Vector3 newPoint = (_camera.worldToCameraMatrix * newWorld);
-            Vector3 newDelta = (newPoint - oldPoint).WithZ(0.0f);
-
-            var mag = newDelta.magnitude;
-            if (mag != 0.0f)
-            {
-                var dir = newDelta / mag;// yes, apparently this is necessary instead of newDelta.normalized... because facepalm
-                if (dir.sqrMagnitude != 0.0f)
-                {
-                    focalMotionPos = newWorld;
-                    focalMotionDir = Vector3.Slerp(focalMotionDir, dir, 0.2f);
-                    //Debug.Log("CHANGE focalMotionDir " + focalMotionDir.ToString("G4") + " delta was " + newDelta.ToString("G4") + " delta.mag " + newDelta.magnitude);
-                }
-            }
-        }
-
-        // update jitter
-#if SUPPORT_STEREO
-        if (_camera.stereoEnabled)
-        {
-            Clear();
-        }
-        else
-#endif
-        {
-            if (activeIndex == -2)
-            {
-                activeSample = Vector4.zero;
-                activeIndex += 1;
-
-                _camera.projectionMatrix = _camera.GetProjectionMatrix();
-            }
-            else
-            {
-                activeIndex += 1;
-                activeIndex %= AccessLength(pattern);
-
-                Vector2 sample = Sample(pattern, activeIndex);
-                activeSample.z = activeSample.x;
-                activeSample.w = activeSample.y;
-                activeSample.x = sample.x;
-                activeSample.y = sample.y;
-
-                _camera.projectionMatrix = _camera.GetProjectionMatrix(sample.x, sample.y);
-            }
-        }
-    }
-
-    void OnDisable()
-    {
-        Clear();
-    }
 }

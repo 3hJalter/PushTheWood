@@ -29,7 +29,7 @@ namespace _Game.UIs.Screen
             DOVirtual.Float(0, 1, 0.5f, value => canvasGroup.alpha = value)
                 .SetEase(Ease.Linear);
         }
-        
+
         public void OnClickCloseButton()
         {
             Close();

@@ -33,11 +33,11 @@ float4 _GrassTramplePositions[MAX_SIZE];
 float _GrassTrampleRadius[MAX_SIZE];
 
 void CalculateTrample_float(float3 WorldPosition, float Falloff, float PushAwayStrength, float PushDownStrength,
-    out float3 Offset, out float WindMultiplier)
+                            out float3 Offset, out float WindMultiplier)
 {
     Offset = 0;
     WindMultiplier = 1;
-#ifndef SHADERGRAPH_PREVIEW
+    #ifndef SHADERGRAPH_PREVIEW
     // For each trample position
     for (int i = 0; i < _NumGrassTramplePositions; i++)
     {
@@ -60,7 +60,7 @@ void CalculateTrample_float(float3 WorldPosition, float Falloff, float PushAwayS
         // Calculate a wind multiplier to suppress wind when this grass is being trampled
         WindMultiplier = min(WindMultiplier, 1 - strength);
     }
-#endif
+    #endif
 }
 
 #endif
