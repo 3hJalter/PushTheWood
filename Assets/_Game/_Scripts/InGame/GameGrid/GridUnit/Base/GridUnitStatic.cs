@@ -30,10 +30,10 @@ namespace _Game.GameGrid.Unit
             _isFirstInitDone = true;
             // btnCanvas.worldCamera = CameraFollow.Ins.MainCamera;
             btnCanvas.worldCamera = CameraManager.Ins.BrainCamera;
-            interactBtn.onClick.AddListener(OnInteractBtnClick);
+            interactBtn.onClick.AddListener(OnInteract);
         }
 
-        protected virtual void OnInteractBtnClick()
+        public virtual void OnInteract()
         {
 
         }

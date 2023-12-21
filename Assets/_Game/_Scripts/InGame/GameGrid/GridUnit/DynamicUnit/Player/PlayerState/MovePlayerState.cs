@@ -18,7 +18,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             initAnimSpeed = t.AnimSpeed;
             direction = t.Direction;
         }
-
         public void OnExecute(Player t)
         {
             if (t.Direction is not Direction.None && t.Direction != direction)
@@ -57,7 +56,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                        Mathf.Sqrt(remainingDistance / OriginMovingDistance);
             }
         }
-
         public void OnExit(Player t)
         {
             _isExecuted = false;

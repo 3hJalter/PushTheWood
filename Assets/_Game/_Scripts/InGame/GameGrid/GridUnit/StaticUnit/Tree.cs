@@ -10,7 +10,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
     {
         [SerializeField] public Chump chumpPrefab;
 
-        protected override void OnInteractBtnClick()
+        public override void OnInteract()
         {
             // Get the Player from Level Manager
             Player player = LevelManager.Ins.Player;

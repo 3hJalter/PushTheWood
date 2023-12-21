@@ -4,6 +4,8 @@ using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.StaticUnit;
 using UnityEngine;
 
+using Tree = _Game.GameGrid.Unit.StaticUnit.Tree;
+
 namespace _Game._Scripts.InGame.GameCondition.Condition
 {
     [CreateAssetMenu(fileName = "IsMoveBlockedByNextUnit", menuName = "ConditionSO/Moving/IsMoveBlockedByNextUnit",
@@ -23,9 +25,9 @@ namespace _Game._Scripts.InGame.GameCondition.Condition
             {
                 0 when movingData.blockStaticUnits.Count == 0 => true,
                 0 when movingData.blockStaticUnits.Count == 1 && movingData.blockStaticUnits[0] is TreeRoot =>
-                    movingData.owner is IJumpTreeRootUnit jumpTreeRootUnit &&
-                    jumpTreeRootUnit.CanJumpOnTreeRoot(movingData.inputDirection),
-                _ => false
+                    movingData.owner is IJumpTreeRootUnit jumpTreeRootUnit && jumpTreeRootUnit.CanJumpOnTreeRoot(movingData.inputDirection),               
+                0 when movingData.blockStaticUnits.Count == 1 && movingData.blockStaticUnits[0] is Tree => true,
+                _ => false,
             };
             // Temporary for handle TreeRoot
             // for (int i = 0; i < movingData.blockDynamicUnits.Count; i++)

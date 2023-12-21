@@ -8,6 +8,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 {
     public class RollBlockChumpState : IState<Chump>
     {
+        private const int DEGREE = 60;
         Vector3 axis;
         float lastAngle = 0;
         public void OnEnter(Chump t)
@@ -19,20 +20,20 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     //NOTE: Blocking when chump is up
                     axis = Vector3.Cross(Vector3.up, Constants.DirVector3[t.TurnOverData.inputDirection]);
                     lastAngle = 0;
-                    DOVirtual.Float(0, 45, Constants.MOVING_TIME * 0.45f, i =>
+                    DOVirtual.Float(0, DEGREE, Constants.MOVING_TIME * 0.5f, i =>
                     {
                         t.skin.RotateAround(t.anchor.Tf.position, axis, i - lastAngle);
                         lastAngle = i;
                     }).SetUpdate(UpdateType.Fixed)
-                    .SetEase(Ease.Linear)
+                    .SetEase(Ease.InQuad)
                     .SetLoops(2, LoopType.Yoyo)
                     .OnComplete(() => t.ChangeState(StateEnum.Idle));          
                     break;
                 case UnitTypeY.Down:
                     //NOTE: Blocking when chump is down
                     Vector3 originPos = t.Tf.position;
-                    t.Tf.DOMove(originPos + Constants.DirVector3[t.MovingData.inputDirection] * Constants.CELL_SIZE / 2, Constants.MOVING_TIME * 0.45f)
-                        .SetEase(Ease.Linear)
+                    t.Tf.DOMove(originPos + Constants.DirVector3[t.MovingData.inputDirection] * Constants.CELL_SIZE / 2, Constants.MOVING_TIME * 0.5f)
+                        .SetEase(Ease.InQuad)
                         .SetLoops(2, LoopType.Yoyo)
                         .OnComplete(() => t.ChangeState(StateEnum.Idle));
                     break;

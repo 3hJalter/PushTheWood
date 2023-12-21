@@ -27,28 +27,28 @@ namespace HControls
             HInputManager.SetDirectionInput(Direction.None);
         }
 
-        // private void Update()
-        // {
-        //     if(Input.GetKey(KeyCode.A))
-        //     {
-        //         HInputManager.SetDirectionInput(Direction.Left);
-        //     }
-        //     else if (Input.GetKey(KeyCode.W))
-        //     {
-        //         HInputManager.SetDirectionInput(Direction.Forward);
-        //     }
-        //     else if (Input.GetKey(KeyCode.D))
-        //     {
-        //         HInputManager.SetDirectionInput(Direction.Right);
-        //     }
-        //     else if (Input.GetKey(KeyCode.S))
-        //     {
-        //         HInputManager.SetDirectionInput(Direction.Back);
-        //     }
-        //     else
-        //     {
-        //         HInputManager.SetDirectionInput(Direction.None);
-        //     }
-        // }
+        private void Update()
+        {
+            if (Input.GetKey(KeyCode.A))
+            {
+                HInputManager.SetDirectionInput(Direction.Left);
+            }
+            else if (Input.GetKey(KeyCode.W))
+            {
+                HInputManager.SetDirectionInput(Direction.Forward);
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                HInputManager.SetDirectionInput(Direction.Right);
+            }
+            else if (Input.GetKey(KeyCode.S))
+            {
+                HInputManager.SetDirectionInput(Direction.Back);
+            }
+            else
+            {
+                HInputManager.SetDirectionInput(Direction.None);
+            }
+        }
     }
 }
