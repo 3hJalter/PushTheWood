@@ -53,11 +53,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             HashSet<GridUnit> spawnUnits = new();
             // Chose what the UnitTypeXZ of RaftPrefab and ChumpPrefab
             UnitTypeXZ typeXZWhenSpawn = t.UnitTypeY is UnitTypeY.Up ? t.belowUnits.First().UnitTypeXZ : t.UnitTypeXZ;
-
+            // Raft direction for rotate skin is right if UnitTypeXZ is Horizontal, Back if UnitTypeXZ is Vertical
+            Direction spawnRaftDirection =
+                typeXZWhenSpawn == UnitTypeXZ.Horizontal ? Direction.Right : Direction.Back;
             if (t.cellInUnits.Count == createRaftCells.Count)
             {
                 Raft.Raft raft = SimplePool.Spawn<Raft.Raft>(t.RaftPrefab);
-                raft.OnInit(t.MainCell, HeightLevel.ZeroPointFive, false, t.TurnOverData.inputDirection);
+                raft.OnInit(t.MainCell, HeightLevel.ZeroPointFive, false, spawnRaftDirection);
                 raft.islandID = t.islandID;
                 LevelManager.Ins.AddNewUnitToIsland(raft);
                 spawnUnits.Add(raft);
@@ -67,7 +69,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 for (int i = 0; i < createRaftCells.Count; i++)
                 {
                     Raft.Raft raft = SimplePool.Spawn<Raft.Raft>(DataManager.Ins.GetGridUnit(PoolType.Raft));
-                    raft.OnInit(createRaftCells[i], HeightLevel.ZeroPointFive, false, t.TurnOverData.inputDirection);
+                    raft.OnInit(createRaftCells[i], HeightLevel.ZeroPointFive, false, spawnRaftDirection);
                     raft.islandID = t.islandID;
                     LevelManager.Ins.AddNewUnitToIsland(raft);
                     spawnUnits.Add(raft);
