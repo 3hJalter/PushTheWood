@@ -1,5 +1,15 @@
 {
   "dependencies": {
+    "com.tojynick.shaders.stylizedwater": {
+      "version": "https://github.com/tojynick/Stylized-Water-Shader-Unity-URP.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.render-pipelines.universal": "12.0.0",
+        "com.unity.probuilder": "5.0.0"
+      },
+      "hash": "4a4beb2ce1df30f578f4eb116856d3017186a926"
+    },
     "com.unity.2d.animation": {
       "version": "7.0.9",
       "depth": 1,
