@@ -23,7 +23,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 {
                     t.OnPush(t.MovingData.inputDirection, t.MovingData);
                 }
-                t.ChangeState(StateEnum.Idle);
+                t.ChangeState(StateEnum.RollBlock);
                 //NOTE: Play Anim Block
             }
             else
