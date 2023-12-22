@@ -35,17 +35,36 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                     t.OnRideVehicle(t.Direction);
                     return;
                 }
-            //NOTE: Checking to push an dynamic object
             t.MovingData.SetData(t.Direction);
             if (!t.conditionMergeOnMoving.IsApplicable(t.MovingData))
             {
+                //NOTE: Checking to push an dynamic object
                 if (t.MovingData.blockDynamicUnits.Count > 0)
-                    t.ChangeState(StateEnum.Push);
+                    t.ChangeState(StateEnum.Push);               
                 else if (!_isChangeAnim) t.ChangeAnim(Constants.IDLE_ANIM);
+
+                //NOTE: Checking to push an static object
+                if (t.MovingData.blockStaticUnits.Count > 0)
+                {
+                    switch (t.MovingData.blockStaticUnits[0])
+                    {
+                        case StaticUnit.Tree tree:
+                            if (isFirstStop)
+                            {
+                                //NOTE: Checking button down of player input
+                                if (t.InputDetection.InputAction != InputAction.ButtonHold) isFirstStop = false;
+                                if (!_isChangeAnim) t.ChangeAnim(Constants.IDLE_ANIM);
+                            }
+                            else
+                            {
+                                tree.OnInteract();
+                            }
+                            break;
+                    }
+                }
                 return;
             }
 
-            //NOTE: Checking to push an static object
             hasTreeRoot = false;
             if (t.MovingData.blockStaticUnits.Count == 1) 
             {
@@ -55,20 +74,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                         hasTreeRoot = true;
                         treeRoot.UpHeight(t, t.MovingData.inputDirection);
                         break;
-                    case StaticUnit.Tree tree:
-                        if (isFirstStop)
-                        {
-                            //NOTE: Checking button down of player input
-                            if(t.InputDetection.InputAction != InputAction.ButtonHold) isFirstStop = false;                           
-                            if (!_isChangeAnim) t.ChangeAnim(Constants.IDLE_ANIM);
-                        }
-                        else
-                        {
-                            tree.OnInteract();
-                        }
-                        return;
-                }
-                
+                }               
             }
 
             t.SetEnterCellData(t.MovingData.inputDirection, t.MovingData.enterMainCell, t.UnitTypeY);
