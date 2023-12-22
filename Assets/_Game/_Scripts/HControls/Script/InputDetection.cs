@@ -6,12 +6,9 @@ namespace HControls
 {
     public class InputDetection
     {
-        public InputAction InputAction {  get; private set; }
+        public InputAction InputAction {  get; private set; } = InputAction.None;
         private Direction oldDirection = Direction.None;
-        public InputDetection()
-        {
-            InputAction = InputAction.None;
-        }
+
         public void GetInput(Direction direction)
         {
             switch(direction)

@@ -129,6 +129,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         public void LookDirection(Direction directionIn)
         {
+            if (directionIn is Direction.None) return;
             skin.DOLookAt(Tf.position + Constants.DirVector3[directionIn], 0.2f, AxisConstraint.Y, Vector3.up);
         }
 

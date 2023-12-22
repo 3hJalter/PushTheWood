@@ -60,7 +60,7 @@ namespace _Game.GameGrid
             SetCameraToPlayer();
             CameraManager.Ins.ChangeCameraTargetPosition(GetCenterIslandPos(Player.islandID));
         }
-
+    
         public void OnWin()
         {
             // Show win screen

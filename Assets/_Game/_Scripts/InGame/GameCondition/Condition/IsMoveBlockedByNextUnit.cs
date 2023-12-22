@@ -26,7 +26,6 @@ namespace _Game._Scripts.InGame.GameCondition.Condition
                 0 when movingData.blockStaticUnits.Count == 0 => true,
                 0 when movingData.blockStaticUnits.Count == 1 && movingData.blockStaticUnits[0] is TreeRoot =>
                     movingData.owner is IJumpTreeRootUnit jumpTreeRootUnit && jumpTreeRootUnit.CanJumpOnTreeRoot(movingData.inputDirection),               
-                0 when movingData.blockStaticUnits.Count == 1 && movingData.blockStaticUnits[0] is Tree => true,
                 _ => false,
             };
             // Temporary for handle TreeRoot
