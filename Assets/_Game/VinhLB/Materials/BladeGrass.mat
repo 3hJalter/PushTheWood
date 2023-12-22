@@ -39,9 +39,9 @@ Material:
     - _WindFrequency: 0.025
     - _WindStrength: 0.1
     m_Colors:
-    - _BaseColor: {r: 0.3490957, g: 0.6226415, b: 0.09692062, a: 1}
+    - _BaseColor: {r: 0.31827205, g: 0.5849056, b: 0.0744927, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _TipColor: {r: 0.45366314, g: 0.8679245, b: 0.11053756, a: 1}
+    - _TipColor: {r: 0.44102147, g: 0.8679245, b: 0.08597365, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &3491717857063969027
 MonoBehaviour:

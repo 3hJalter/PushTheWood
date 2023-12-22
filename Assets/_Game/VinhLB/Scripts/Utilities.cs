@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Rendering.Universal;
 
 namespace VinhLB
@@ -25,6 +27,16 @@ namespace VinhLB
             textMesh.GetComponent<MeshRenderer>().sortingOrder = sortingOrder;
 
             return textMesh;
+        }
+
+        public static bool IsPointerOverUIGameObject()
+        {
+            PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+            eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+            List<RaycastResult> resultList = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventDataCurrentPosition, resultList);
+            
+            return resultList.Count > 0;
         }
 
         public static bool TryGetMouseWorldPosition(out Vector3 mousePosition,
@@ -83,14 +95,16 @@ namespace VinhLB
             out T rendererFeature)
             where T : ScriptableRendererFeature
         {
-            IEnumerable<T> rendererFeatures = rendererData.rendererFeatures.OfType<T>();
+            var rendererFeatures = rendererData.rendererFeatures.OfType<T>();
             foreach (T feature in rendererFeatures)
+            {
                 if (feature.name.Equals(featureName))
                 {
                     rendererFeature = feature;
 
                     return true;
                 }
+            }
 
             rendererFeature = null;
 
