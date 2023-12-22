@@ -37,7 +37,8 @@ namespace _Game.GameGrid.Unit.StaticUnit
                 return playerPos.x > treePos.x ? Direction.Left : Direction.Right;
             }
         }
-        public override void OnBlock(Direction direction)
+
+        public override void OnBlock(Direction direction = Direction.None)
         {
             //NOTE: Refactor
             //NOTE: Play Shake Animation
