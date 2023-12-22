@@ -16,7 +16,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             switch (t.UnitTypeY)
             {
                 case UnitTypeY.Up:
-                    //NOTE: Blocking when chump is up
+                    //NOTE: Blocking when chump is up 
                     axis = Vector3.Cross(Vector3.up, Constants.DirVector3[t.TurnOverData.inputDirection]);
                     lastAngle = 0;
                     DOVirtual.Float(0, 45, Constants.MOVING_TIME * 0.45f, i =>
