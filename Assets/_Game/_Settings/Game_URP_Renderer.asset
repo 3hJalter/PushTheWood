@@ -36,7 +36,7 @@ MonoBehaviour:
         serializedVersion: 2
         m_Bits: 64
       PassNames: []
-    overrideMaterial: {fileID: 2100000, guid: 3a25177d4b56ad44c834aa9722f984bb, type: 2}
+    overrideMaterial: {fileID: 2100000, guid: 28d843af418c865429929dcf9e429129, type: 2}
     overrideMaterialPassIndex: 0
     overrideDepthState: 0
     depthCompareFunction: 4
@@ -70,7 +70,8 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: -1055597973872900538}
   - {fileID: -7997019382842246423}
-  m_RendererFeatureMap: 4606af4d3cc359f1e93ac6c73de10491
+  - {fileID: 4814385627394010894}
+  m_RendererFeatureMap: 4606af4d3cc359f1e93ac6c73de104910eef906c3822d042
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -108,3 +109,30 @@ MonoBehaviour:
   m_ClusteredRendering: 0
   m_TileSize: 32
   m_IntermediateTextureMode: 1
+--- !u!114 &4814385627394010894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cc9b7066b894627bca47e35347f3636, type: 3}
+  m_Name: ScreenEffectBlit
+  m_EditorClassIdentifier: 
+  m_Active: 0
+  settings:
+    Event: 500
+    blitMaterial: {fileID: 2100000, guid: d62f5348378bb204b99ea442069120aa, type: 2}
+    blitMaterialPassIndex: 0
+    setInverseViewMatrix: 0
+    requireDepthNormals: 0
+    srcType: 0
+    srcTextureId: _CameraColorTexture
+    srcTextureObject: {fileID: 0}
+    dstType: 0
+    dstTextureId: _BlitPassTexture
+    dstTextureObject: {fileID: 0}
+    overrideGraphicsFormat: 0
+    graphicsFormat: 4

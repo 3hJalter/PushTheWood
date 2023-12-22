@@ -31,17 +31,17 @@ Material:
     m_Ints: []
     m_Floats:
     - _RandomJitterRadius: 0.1
-    - _ShadowLightness: 0.2
+    - _ShadowLightness: 0.4
     - _TrampleFalloff: 0.75
     - _TrampleMaxDistance: 1
     - _TramplePushStrength: 0.5
     - _TrampleSquishStrength: 1
     - _WindFrequency: 0.025
-    - _WindStrength: 0.2
+    - _WindStrength: 0.1
     m_Colors:
-    - _BaseColor: {r: 0.33899966, g: 0.6037736, b: 0.10537558, a: 1}
+    - _BaseColor: {r: 0.42227805, g: 0.745283, b: 0.14413491, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _TipColor: {r: 0.5009655, g: 0.9622642, b: 0.11347453, a: 1}
+    - _TipColor: {r: 0.50569457, g: 0.9339623, b: 0.15419187, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &3491717857063969027
 MonoBehaviour:

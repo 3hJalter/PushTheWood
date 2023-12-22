@@ -108,6 +108,8 @@ namespace VinhLB
         public void ToggleBuildMode()
         {
             _isOnBuildingMode = !_isOnBuildingMode;
+            
+            FxManager.Ins.SwitchGridActive(true, _isOnBuildingMode);
 
             if (_isOnBuildingMode)
             {

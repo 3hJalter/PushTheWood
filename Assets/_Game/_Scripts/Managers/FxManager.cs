@@ -8,28 +8,41 @@ namespace _Game.Managers
     public class FxManager : Singleton<FxManager>
     {
         // [Header("Fog")] [SerializeField] private D2FogsSprite fogControl;
-        [Header("Water")] [SerializeField] private GameObject water;
-        [Header("Grid")] [SerializeField] private GameObject grid;
-        [Header("Grass")] [SerializeField] private UniversalRendererData rendererData;
+        [SerializeField]
+        private GameObject _groundGO;
+        [SerializeField]
+        private GameObject _waterGO;
+        [SerializeField]
+        private GameObject _gridGO;
+        [SerializeField]
+        private UniversalRendererData _rendererData;
 
-        private GrassTrampleFeature feature;
+        private GrassTrampleFeature _feature;
 
         private void Awake()
         {
-            water.SetActive(true);
-            grid.SetActive(false);
+            _groundGO.SetActive(true);
+            _waterGO.SetActive(true);
+            _gridGO.SetActive(false);
 
-            VinhLB.Utilities.TryGetRendererFeature(rendererData, out feature);
+            VinhLB.Utilities.TryGetRendererFeature(_rendererData, out _feature);
         }
 
         public void ResetTrackedTrampleObjectList()
         {
-            feature.ResetTrackedTrampleList();
+            _feature.ResetTrackedTrampleList();
         }
 
-        public void SwitchGridActive()
+        public void SwitchGridActive(bool manual = false, bool active = true)
         {
-            grid.SetActive(!grid.activeSelf);
+            if (!manual)
+            {
+                _gridGO.SetActive(!_gridGO.activeSelf);
+            }
+            else
+            {
+                _gridGO.SetActive(active);
+            }
         }
     }
 }

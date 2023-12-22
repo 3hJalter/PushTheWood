@@ -26,7 +26,6 @@ namespace _Game.UIs.Screen
             if (!_isFirstOpen)
             {
                 LevelManager.Ins.OnInit();
-                GridBuildingManager.Ins.OnInit();
                 _isFirstOpen = true;
             }
 

@@ -55,7 +55,7 @@ Material:
     - _Thickness: 0.075
     - _Transperent: 1
     m_Colors:
-    - _Color: {r: 0.7735849, g: 0.66365826, b: 0.6604664, a: 1}
+    - _Color: {r: 0.5283019, g: 0.20348386, b: 0.19188322, a: 1}
     - _DefaultScale: {r: 5, g: 5, b: 0, a: 0}
     - _Size: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
