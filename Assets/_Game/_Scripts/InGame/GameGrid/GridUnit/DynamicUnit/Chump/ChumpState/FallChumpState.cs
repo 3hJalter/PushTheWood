@@ -16,6 +16,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 t.ChangeState(StateEnum.Idle);
                 return;
             }
+            GameGridCell mainCell = t.MainCell;
+            List<GameGridCell> cellInUnits = new(t.cellInUnits); //DEV: Why new List here?
+            t.SetEnterCellData(Direction.None, t.MainCell, t.UnitTypeY, false, t.cellInUnits);
+            t.OnOutCells();
+            t.OnEnterCells(mainCell, cellInUnits);
 
             //NOTE: Fall into water that do not have anything
             if (t.TurnOverData.enterMainCell.SurfaceType is GridSurfaceType.Water
@@ -36,18 +41,17 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                         t.ChangeState(StateEnum.Idle);
                     });
             }
-
-            GameGridCell mainCell = t.MainCell;
-            List<GameGridCell> cellInUnits = new(t.cellInUnits); //DEV: Why new List here?
-            t.SetEnterCellData(Direction.None, t.MainCell, t.UnitTypeY, false, t.cellInUnits);
-            t.OnOutCells();
-            t.OnEnterCells(mainCell, cellInUnits);
-            t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME)
+            else
+            {
+                t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME)
                 .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                 {
                     t.OnEnterTrigger(t);
                     t.ChangeState(StateEnum.Idle);
                 });
+            }
+            
+            
         }
 
         public void OnExecute(Chump t)

@@ -60,6 +60,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                                 tree.OnInteract();
                             }
                             break;
+                        case Rock rock:
+                            if (t.InputDetection.InputAction != InputAction.ButtonHold)
+                                rock.OnBlock(t.MovingData.inputDirection);
+                            break;
                     }
                 }
                 return;

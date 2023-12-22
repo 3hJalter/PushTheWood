@@ -2,6 +2,7 @@
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Chump;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
+using DG.Tweening;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.StaticUnit
@@ -9,11 +10,19 @@ namespace _Game.GameGrid.Unit.StaticUnit
     public class Tree : GridUnitStatic
     {
         [SerializeField] public Chump chumpPrefab;
+        Player player;
+        private const int DEGREE = 6;
+        private const float DECAY_VALUE = 0.95f;
+        
+
+        private void Start()
+        {
+            // Get the Player from Level Manager
+            player = LevelManager.Ins.Player;
+        }
 
         public override void OnInteract()
         {
-            // Get the Player from Level Manager
-            Player player = LevelManager.Ins.Player;
             // Change it state to cut tree
             player.CutTreeData.SetData(GetDirectionFromPlayer(), this);
             player.ChangeState(StateEnum.CutTree);
@@ -27,6 +36,35 @@ namespace _Game.GameGrid.Unit.StaticUnit
                     return playerPos.z > treePos.z ? Direction.Back : Direction.Forward;
                 return playerPos.x > treePos.x ? Direction.Left : Direction.Right;
             }
+        }
+        public override void OnBlock(Direction direction)
+        {
+            //NOTE: Refactor
+            //NOTE: Play Shake Animation
+            Debug.Log("Blocking");
+            Vector3 axis = Vector3.Cross(Vector3.up, Constants.DirVector3[direction]);
+            float lastAngle = 0;
+            DOVirtual.Float(0, DEGREE * 4 * DECAY_VALUE * DECAY_VALUE, Constants.MOVING_TIME * 1f, i =>
+            {
+                float rotateAngle;
+                //NOTE: Calculate Angle
+                if (i <= DEGREE)
+                {
+                    rotateAngle = i;
+                }
+                else if (i <= 3 * DEGREE * DECAY_VALUE)
+                {
+                    rotateAngle = 2 * DEGREE - i;
+                }
+                else
+                {
+                    rotateAngle = i - 4 * DEGREE * DECAY_VALUE * DECAY_VALUE;
+                }
+                transform.RotateAround(anchor.Tf.position, axis, rotateAngle - lastAngle);
+                lastAngle = rotateAngle;
+            }).SetUpdate(UpdateType.Fixed)
+                    .SetEase(Ease.OutQuad);
+
         }
     }
 }
