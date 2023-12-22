@@ -8,7 +8,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         [SerializeField] private Animator chestAnimator;
         [SerializeField] private GameObject chestModel;
 
-        protected override void OnInteractBtnClick()
+        public override void OnInteract()
         {
             ShowAnim(true);
             DOVirtual.DelayedCall(1f, () => LevelManager.Ins.OnWin());

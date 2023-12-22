@@ -32,6 +32,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         private IVehicle _vehicle;
 
         public Direction Direction { get; private set; } = Direction.None;
+        public InputDetection InputDetection { get; private set; } = new InputDetection();
         public float AnimSpeed => animator.speed;
 
         private void FixedUpdate()
@@ -40,6 +41,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             {
                 _isWaitAFrame = false;
                 Direction = InputCache.Count > 0 ? InputCache.Dequeue() : HInputManager.GetDirectionInput();
+                InputDetection.GetInput(Direction);
                 _currentState?.OnExecute(this);
                 return;
             }

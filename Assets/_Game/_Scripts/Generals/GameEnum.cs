@@ -16,6 +16,14 @@ public enum Direction
     Forward = 2,
     Back = 3
 }
+public enum InputAction
+{
+    None = -1,
+    ButtonDown = 0,
+    ButtonUp = 1,
+    ButtonHold = 2,
+    ButtonSwitch = 3,
+}
 
 namespace TweenTypeEnum
 {
