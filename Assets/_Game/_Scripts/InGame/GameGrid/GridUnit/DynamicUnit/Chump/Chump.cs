@@ -132,11 +132,15 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
             TriggerChump.ChangeState(StateEnum.FormRaft);
         }
 
-        private bool IsOnWater()
+        public bool IsOnWater()
         {
             return startHeight == Constants.DirFirstHeightOfSurface[GridSurfaceType.Ground] &&
                    cellInUnits.All(t => t.SurfaceType is GridSurfaceType.Water);
-
+        }
+        public bool IsInWater()
+        {
+            return startHeight == Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] &&
+                   cellInUnits.All(t => t.SurfaceType is GridSurfaceType.Water);
         }
 
         public override bool IsCurrentStateIs(StateEnum stateEnum)

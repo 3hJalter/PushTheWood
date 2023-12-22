@@ -9,6 +9,8 @@ namespace _Game.GameGrid.Unit
     public abstract class GridUnitStatic : GridUnit
     {
         [SerializeField] protected GridUnitStaticType gridUnitStaticType;
+        [SerializeField] protected Anchor anchor;
+
 
         [SerializeField] private bool hasInteractBtn;
 
@@ -37,6 +39,8 @@ namespace _Game.GameGrid.Unit
         {
 
         }
+
+        public virtual void OnBlock(Direction direction = Direction.None) { }
 
         protected override void OnEnterTriggerNeighbor(GridUnit triggerUnit)
         {

@@ -46,7 +46,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 t.SetEnterCellData(t.TurnOverData.inputDirection, t.TurnOverData.enterMainCell, switchType, false,
                     t.TurnOverData.enterCells);
                 t.OnOutCells();
-                bool isFallToWater = false;
+
                 if (t.UnitTypeY is UnitTypeY.Up ||
                     (t.TurnOverData.enterMainCell.SurfaceType is not GridSurfaceType.Water &&
                      t.UnitTypeY is UnitTypeY.Down))
@@ -55,8 +55,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                          && t.TurnOverData.enterMainCell.GetGridUnitAtHeight(
                              Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]) is not null)
                     t.SwitchType(t.TurnOverData.inputDirection);
-                else
-                    isFallToWater = true;
+
                 t.OnEnterCells(t.TurnOverData.enterMainCell, t.TurnOverData.enterCells);
 
                 #endregion
@@ -85,39 +84,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     if (!t.EnterPosData.isFalling)
                     {
                         t.OnEnterTrigger(t);
-                        if (isFallToWater)
-                        {
-                            // Can be change to animation later
-                            t.skin.localRotation =
-                                Quaternion.Euler(t.UnitTypeXZ is UnitTypeXZ.Horizontal
-                                    ? Constants.HorizontalSkinRotation
-                                    : Constants.VerticalSkinRotation);
-                            // minus position offsetY
-                            t.Tf.position -= Vector3.up * t.yOffsetOnDown;
-                        }
-
                         t.ChangeState(StateEnum.Idle);
                     }
                     else
                     {
-                        // Tween to final position
-                        t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME).SetEase(Ease.Linear)
-                            .SetUpdate(UpdateType.Fixed).OnComplete(() =>
-                            {
-                                t.OnEnterTrigger(t);
-                                if (isFallToWater)
-                                {
-                                    // Can be change to animation later
-                                    t.skin.localRotation =
-                                        Quaternion.Euler(t.UnitTypeXZ is UnitTypeXZ.Horizontal
-                                            ? Constants.HorizontalSkinRotation
-                                            : Constants.VerticalSkinRotation);
-                                    // minus position offsetY
-                                    t.Tf.position -= Vector3.up * t.yOffsetOnDown;
-                                }
-
-                                t.ChangeState(StateEnum.Idle);
-                            });
+                        t.ChangeState(StateEnum.Fall);
                     }
                 });
 

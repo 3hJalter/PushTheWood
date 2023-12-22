@@ -37,13 +37,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     {
                         if (t.EnterPosData.isFalling)
                         {
-                            t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME).SetEase(Ease.Linear)
-                                .SetUpdate(UpdateType.Fixed).OnComplete(() =>
-                                {
-                                    // Handle Cell Data
-                                    t.OnEnterTrigger(t);
-                                    t.ChangeState(StateEnum.Idle);
-                                });
+                            //Falling to water
+                            t.ChangeState(StateEnum.Fall);
                         }
                         else
                         {
