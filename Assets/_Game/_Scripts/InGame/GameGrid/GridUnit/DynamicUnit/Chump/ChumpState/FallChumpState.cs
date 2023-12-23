@@ -11,11 +11,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         public void OnEnter(Chump t)
         {
             Debug.Log("Fall");
-            if (t.belowUnits.Count != 0)
-            {
-                t.ChangeState(StateEnum.Idle);
-                return;
-            }
+            // if (t.belowUnits.Count != 0)
+            // {
+            //     t.ChangeState(StateEnum.Idle);
+            //     return;
+            // }
             GameGridCell mainCell = t.MainCell;
             List<GameGridCell> cellInUnits = new(t.cellInUnits); //DEV: Why new List here?
             t.SetEnterCellData(Direction.None, t.MainCell, t.UnitTypeY, false, t.cellInUnits);
