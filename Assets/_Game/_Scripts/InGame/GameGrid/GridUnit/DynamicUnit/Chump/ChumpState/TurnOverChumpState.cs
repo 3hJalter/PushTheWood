@@ -73,6 +73,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                         .SetUpdate(UpdateType.Fixed);
                 }
 
+                // TEMPORARY FIX: anchor position is not correct when Player Turn Over Chump at Raft
                 DOVirtual.Float(0, 90, Constants.MOVING_TIME, i =>
                 {
                     t.skin.RotateAround(t.anchor.Tf.position, axis, i - lastAngle);
@@ -83,7 +84,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     t.Tf.position = t.EnterPosData.initialPos;
                     if (!t.EnterPosData.isFalling)
                     {
-                        t.OnEnterTrigger(t);
+                            t.OnEnterTrigger(t);
                         t.ChangeState(StateEnum.Idle);
                     }
                     else

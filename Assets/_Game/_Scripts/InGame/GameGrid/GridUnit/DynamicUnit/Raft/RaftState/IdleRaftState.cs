@@ -11,12 +11,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
         private float MOVE_Y_TIME = 2f;
 
         Vector3 originTransform;
+        
+        private Tween floatingTween;
         public void OnEnter(Raft t)
         {
             #region ANIM
             //DEV: Refactor
             originTransform = t.Tf.transform.position;
-            DOVirtual.Float(0, MOVE_Y_TIME, MOVE_Y_TIME, i =>
+            floatingTween = DOVirtual.Float(0, MOVE_Y_TIME, MOVE_Y_TIME, i =>
             {
                 SetSinWavePosition(i);
             }).SetLoops(-1).SetEase(Ease.Linear);
@@ -38,7 +40,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
 
         public void OnExit(Raft t)
         {
-
+            floatingTween.Kill();
         }
     }
 }

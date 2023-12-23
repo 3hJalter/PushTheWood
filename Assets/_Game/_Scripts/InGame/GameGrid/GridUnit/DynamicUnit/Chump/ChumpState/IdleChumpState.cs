@@ -9,6 +9,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         private float MOVE_Y_VALUE = 0.1f;
         private float MOVE_Y_TIME = 2f;
 
+        private Tween floatingTween;
+        
         Vector3 originTransform;
         public void OnEnter(Chump t)
         {
@@ -17,13 +19,19 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             if (t.IsInWater())
             {
                 originTransform = t.Tf.transform.position;
-                DOVirtual.Float(0 ,MOVE_Y_TIME, MOVE_Y_TIME, i =>
+                floatingTween = DOVirtual.Float(0 ,MOVE_Y_TIME, MOVE_Y_TIME, i =>
                 {
                     SetSinWavePosition(i);
-                }).SetLoops(-1).SetEase(Ease.Linear); 
+                }).SetLoops(-1).SetEase(Ease.Linear);
+            }
+            else
+            {
+                if (floatingTween is null) return;
+                floatingTween.Kill();
             }
 
-
+            return;
+            
             void SetSinWavePosition(float time)
             {
                 float value = Mathf.Sin(2 * time * Mathf.PI / MOVE_Y_TIME) * MOVE_Y_VALUE;

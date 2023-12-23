@@ -38,7 +38,7 @@ namespace _Game.Utilities.Timer
                 return;
             }
             inst = this;
-            DontDestroyOnLoad(gameObject);
+            // DontDestroyOnLoad(gameObject);
             AddSTimerToPool();
         }
         private void Update()
