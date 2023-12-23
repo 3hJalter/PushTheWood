@@ -178,7 +178,7 @@ namespace _Game.GameGrid
 
         private void SetCameraToPlayer()
         {
-            // CameraFollow.Ins.SetTarget(Player.Tf);
+            // CameraFollow.Ins.SetTarget(Player.Tf);`
             CameraManager.Ins.ChangeCameraTarget(ECameraType.InGameCamera, Player.Tf);
         }
 

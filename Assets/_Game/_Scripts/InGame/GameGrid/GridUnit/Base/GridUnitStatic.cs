@@ -40,8 +40,6 @@ namespace _Game.GameGrid.Unit
 
         }
 
-        public virtual void OnBlock(Direction direction = Direction.None) { }
-
         protected override void OnEnterTriggerNeighbor(GridUnit triggerUnit)
         {
             if (hasInteractBtn && triggerUnit is Player) btnCanvas.gameObject.SetActive(true);

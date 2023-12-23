@@ -150,6 +150,8 @@ namespace _Game.GameGrid.Unit
         {
 
         }
+        
+        public virtual void OnBlock(Direction direction = Direction.None) { }
 
         public virtual void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
         {

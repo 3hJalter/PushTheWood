@@ -4,6 +4,7 @@ using _Game.Utilities.Timer;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using _Game._Scripts.InGame.GameCondition.Data;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
@@ -13,21 +14,22 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         private int DEGREE = 60;
         Vector3 axis;
         float lastAngle = 0;
-        GridUnitStatic blockObject;
         Direction blockDirection;
 
+        List<GridUnit> blockObjects = new();
+        
         public void OnEnter(Chump t)
         {
-
+            blockObjects.Clear();
             switch (t.UnitTypeY)
             {
                 case UnitTypeY.Up:
+                    GetBlockObjects(t.TurnOverData);
                     //NOTE: Blocking when chump is up
-                    blockObject = t.TurnOverData.blockStaticUnits[0];
                     blockDirection = t.TurnOverData.inputDirection;
                     axis = Vector3.Cross(Vector3.up, Constants.DirVector3[blockDirection]);
                     lastAngle = 0;
-                    DEGREE = 90 - (blockObject.Size.y + 1) * 15;
+                    DEGREE = 90 - (blockObjects[0].Size.y + 1) * 15;
 
                     DOVirtual.Float(0, DEGREE * 2, Constants.MOVING_TIME * 1f, i =>
                     {
@@ -39,14 +41,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     .OnComplete(() => t.ChangeState(StateEnum.Idle));
 
                     
-                    if(blockObject != null)
+                    if(blockObjects.Count > 0)
                         TimerManager.Inst.WaitForTime(Constants.MOVING_TIME * 0.5f, ObjectBlocking);
                     break;
                 case UnitTypeY.Down:
                     //NOTE: Blocking when chump is down
                     if (!IsSamePushDirection())
                     {
-                        blockObject = t.MovingData.blockStaticUnits[0];
+                        GetBlockObjects(t.MovingData);
                         blockDirection = t.MovingData.inputDirection;
 
                         Vector3 originPos = t.Tf.position;
@@ -56,22 +58,33 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     }
                     else
                     {
-                        blockObject = t.TurnOverData.blockStaticUnits[0];
+                        GetBlockObjects(t.TurnOverData);
                         blockDirection = t.TurnOverData.inputDirection;
 
                         Vector3 originPos = t.Tf.position;
                         t.Tf.DOMove(originPos + Constants.DirVector3F[blockDirection] * Constants.CELL_SIZE / 4f, Constants.MOVING_TIME * 0.4f).SetEase(Ease.InQuad)
                             .OnComplete(() => t.Tf.DOMove(originPos, Constants.MOVING_TIME * 0.4f).SetEase(Ease.OutQuad).OnComplete(ChangeToIdle));
                     }
-                    if (blockObject != null)
+                    if (blockObjects.Count > 0)
                         TimerManager.Inst.WaitForTime(Constants.MOVING_TIME * 0.5f, ObjectBlocking);
 
                     break;
             }
 
+            return;
+
+            void GetBlockObjects(MovingData data)
+            {
+                blockObjects.AddRange(data.blockStaticUnits);
+                blockObjects.AddRange(data.blockDynamicUnits);
+            }
+            
             void ObjectBlocking()
             {
-                blockObject.OnBlock(blockDirection);
+                for (int i = 0; i < blockObjects.Count; i++)
+                {
+                    blockObjects[i].OnBlock(blockDirection);
+                }
             }
 
             bool IsSamePushDirection()
