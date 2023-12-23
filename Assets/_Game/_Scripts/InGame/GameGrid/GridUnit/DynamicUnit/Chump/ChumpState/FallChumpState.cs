@@ -11,13 +11,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         public void OnEnter(Chump t)
         {
             Debug.Log("Fall");
-            // if (t.belowUnits.Count != 0)
-            // {
-            //     t.ChangeState(StateEnum.Idle);
-            //     return;
-            // }
+            // We know that when OnOutCell, the mainCell and cellInUnits will be cleared
+            // That why we need to save it to use for OnEnterCell because all the mainCell and cellInUnits still the same as before
             GameGridCell mainCell = t.MainCell;
-            List<GameGridCell> cellInUnits = new(t.cellInUnits); //DEV: Why new List here?
+            List<GameGridCell> cellInUnits = new(t.cellInUnits);
             t.SetEnterCellData(Direction.None, t.MainCell, t.UnitTypeY, false, t.cellInUnits);
             t.OnOutCells();
             t.OnEnterCells(mainCell, cellInUnits);
