@@ -14,30 +14,22 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
     {
         private readonly List<GameGridCell> createRaftCells = new();
         private List<GameGridCell> createChumpCells = new();
-        private Chump chumpInWater; 
+        private Chump chumpInWater;
+        HashSet<GridUnit> spawnUnits = new();
 
         public void OnEnter(Chump t)
         {
             DevLog.Log(DevId.Hung, "STATE: Form Raft");
             t.OverrideState = StateEnum.FormRaft;
+
             InitData(t);
+            Sequence s = DOTween.Sequence();
             #region ANIM
-            float y = (float)Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] / 2 * Constants.CELL_SIZE;
-            t.Tf.DOMoveY(y, Constants.MOVING_TIME).SetEase(Ease.Linear)
-                    .SetUpdate(UpdateType.Fixed).OnComplete(() =>
-                    {
-                        // Can be change to animation later
-                        t.skin.localRotation =
-                            Quaternion.Euler(t.UnitTypeXZ is UnitTypeXZ.Horizontal
-                                ? Constants.HorizontalSkinRotation
-                                : Constants.VerticalSkinRotation);
-                        // minus position offsetY
-                        t.Tf.position -= Vector3.up * t.yOffsetOnDown;
-                        Spawn(t);
-                        t.OverrideState = StateEnum.None;
-                        t.ChangeState(StateEnum.Idle);
-                    });
+            s.Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 2).SetEase(Ease.Linear).OnComplete(() => Spawn(t)));
+            s.Join(chumpInWater.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 2).SetEase(Ease.Linear));
             #endregion
+
+
         }
 
         public void OnExecute(Chump t)
@@ -48,6 +40,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         public void OnExit(Chump t)
         {
             chumpInWater = null;
+            spawnUnits.Clear();
         }
 
         private void InitData(Chump t)
@@ -79,7 +72,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
         private void Spawn(Chump t)
         {
-            HashSet<GridUnit> spawnUnits = new();
+            
             // Chose what the UnitTypeXZ of RaftPrefab and ChumpPrefab
             UnitTypeXZ typeXZWhenSpawn = t.UnitTypeY is UnitTypeY.Up ? t.belowUnits.First().UnitTypeXZ : t.UnitTypeXZ;
             // Raft direction for rotate skin is right if UnitTypeXZ is Horizontal, Back if UnitTypeXZ is Vertical
@@ -88,7 +81,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             if (t.cellInUnits.Count == createRaftCells.Count)
             {
                 Raft.Raft raft = SimplePool.Spawn<Raft.Raft>(t.RaftPrefab);
-                raft.OnInit(t.MainCell, HeightLevel.ZeroPointFive, false, spawnRaftDirection);
+                raft.OnInit(t.MainCell, HeightLevel.ZeroPointFive, false, spawnRaftDirection);              
                 raft.islandID = t.islandID;
                 LevelManager.Ins.AddNewUnitToIsland(raft);
                 spawnUnits.Add(raft);
@@ -120,7 +113,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                         : Constants.VerticalSkinRotation);
                 spawnUnits.Add(chumpUnit);
             }
-
             foreach (GridUnit unit in t.belowUnits.ToList().Where(unit => !spawnUnits.Contains(unit))) unit.OnDespawn();
             t.OnDespawn();
         }

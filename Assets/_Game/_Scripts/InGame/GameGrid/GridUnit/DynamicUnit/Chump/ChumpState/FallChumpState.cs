@@ -41,6 +41,15 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                         t.ChangeState(StateEnum.Idle);
                     });
             }
+            else
+            {
+                t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME)
+                .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
+                {
+                    t.OnEnterTrigger(t);
+                    t.ChangeState(StateEnum.Idle);
+                });
+            }
         }
 
         public void OnExecute(Chump t)
