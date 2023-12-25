@@ -2,6 +2,7 @@
 {
     public enum StateEnum
     {
+        None = -1,
         Idle = 0, // Idle for all
         JumpDown = 1,
         JumpUp = 2,
