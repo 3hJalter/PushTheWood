@@ -20,15 +20,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         public readonly Queue<Direction> InputCache = new();
 
-        private readonly Dictionary<StateEnum, IState<Player>> states = new();
+        private StateMachine<Player> stateMachine;
+        public StateMachine<Player> StateMachine => stateMachine;
         private string _currentAnim = Constants.INIT_ANIM;
-        private IState<Player> _currentState;
-
         private bool _isAddState;
 
 
         private bool _isWaitAFrame;
-        private IState<Player> _lastState;
         private IVehicle _vehicle;
 
         public Direction Direction { get; private set; } = Direction.None;
@@ -42,12 +40,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 _isWaitAFrame = false;
                 Direction = InputCache.Count > 0 ? InputCache.Dequeue() : HInputManager.GetDirectionInput();
                 InputDetection.GetInput(Direction);
-                _currentState?.OnExecute(this);
+                stateMachine?.UpdateState();
                 return;
             }
 
             _isWaitAFrame = true;
-            _currentState?.OnExecute(this);
+            stateMachine?.UpdateState();
         }
 
         public bool CanJumpOnTreeRoot(Direction direction = Direction.None)
@@ -62,10 +60,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             if (!_isAddState)
             {
                 _isAddState = true;
+                stateMachine = new StateMachine<Player>(this);
                 AddState();
             }
 
-            ChangeState(StateEnum.Idle);
+            stateMachine.ChangeState(StateEnum.Idle);
         }
 
         public override void OnDespawn()
@@ -76,15 +75,15 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         private void AddState()
         {
-            states.Add(StateEnum.Idle, new IdlePlayerState());
-            states.Add(StateEnum.Move, new MovePlayerState());
-            states.Add(StateEnum.Interact, new InteractPlayerState());
-            states.Add(StateEnum.Push, new PushPlayerState());
-            states.Add(StateEnum.JumpUp, new JumpUpPlayerState());
-            states.Add(StateEnum.JumpDown, new JumpDownPlayerState());
-            states.Add(StateEnum.CutTree, new CutTreePlayerState());
-            states.Add(StateEnum.Die, new DiePlayerState());
-            states.Add(StateEnum.Happy, new HappyPlayerState());
+            stateMachine.AddState(StateEnum.Idle, new IdlePlayerState());
+            stateMachine.AddState(StateEnum.Move, new MovePlayerState());
+            stateMachine.AddState(StateEnum.Interact, new InteractPlayerState());
+            stateMachine.AddState(StateEnum.Push, new PushPlayerState());
+            stateMachine.AddState(StateEnum.JumpUp, new JumpUpPlayerState());
+            stateMachine.AddState(StateEnum.JumpDown, new JumpDownPlayerState());
+            stateMachine.AddState(StateEnum.CutTree, new CutTreePlayerState());
+            stateMachine.AddState(StateEnum.Die, new DiePlayerState());
+            stateMachine.AddState(StateEnum.Happy, new HappyPlayerState());
         }
 
         public override void OnPush(Direction direction, ConditionData conditionData = null)
@@ -95,15 +94,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         public override bool IsCurrentStateIs(StateEnum stateEnum)
         {
-            return _currentState == states[stateEnum];
-        }
-
-        public void ChangeState(StateEnum stateEnum)
-        {
-            _currentState?.OnExit(this);
-            _lastState = _currentState;
-            _currentState = states[stateEnum];
-            _currentState.OnEnter(this);
+            return stateMachine.CurrentState.Id == stateEnum;
         }
 
         public void ChangeAnim(string animName, float speed = 1, bool forceAnim = false)

@@ -15,17 +15,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
         [SerializeField] private StateEnum onBePushedPerpendicularState;
         [SerializeField] private Raft.Raft raftPrefab;
 
-        private readonly Dictionary<StateEnum, IState<Chump>> states = new();
-        private IState<Chump> _currentState;
-        [HideInInspector]
-        public StateEnum OverrideState;
+        private StateMachine<Chump> stateMachine;
+        public StateMachine<Chump> StateMachine => stateMachine;
 
         private bool _isAddState;
-        protected override void Awake()
-        {
-            base.Awake();
-            OverrideState = StateEnum.None;
-        }
         // Hand
         public Chump TriggerChump { get; private set; }
 
@@ -51,22 +44,23 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
             if (!_isAddState)
             {
                 _isAddState = true;
+                stateMachine = new StateMachine<Chump>(this);
+                //stateMachine.Debug = true;
                 AddState();
             }
-
-            ChangeState(StateEnum.Idle);
+            stateMachine.ChangeState(StateEnum.Idle);
         }
 
         private void AddState()
         {
-            states.Add(StateEnum.Idle, new IdleChumpState());
-            states.Add(StateEnum.FormRaft, new FormRaftChumpState());
-            states.Add(StateEnum.Move, new MoveChumpState());
-            states.Add(StateEnum.Roll, new RollChumpState());
-            states.Add(StateEnum.TurnOver, new TurnOverChumpState());
-            states.Add(StateEnum.Fall, new FallChumpState());
-            states.Add(StateEnum.RollBlock, new RollBlockChumpState());
-            states.Add(StateEnum.Emerge, new EmergeChumpState());
+            stateMachine.AddState(StateEnum.Idle, new IdleChumpState());
+            stateMachine.AddState(StateEnum.FormRaft, new FormRaftChumpState());
+            stateMachine.AddState(StateEnum.Move, new MoveChumpState());
+            stateMachine.AddState(StateEnum.Roll, new RollChumpState());
+            stateMachine.AddState(StateEnum.TurnOver, new TurnOverChumpState());
+            stateMachine.AddState(StateEnum.Fall, new FallChumpState());
+            stateMachine.AddState(StateEnum.RollBlock, new RollBlockChumpState());
+            stateMachine.AddState(StateEnum.Emerge, new EmergeChumpState());
         }
 
         public override void OnPush(Direction direction, ConditionData conditionData = null)
@@ -92,23 +86,23 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
             base.OnBePushed(direction, pushUnit);
             if (unitTypeY is UnitTypeY.Up)
             {
-                ChangeState(StateEnum.TurnOver);
+                stateMachine.ChangeState(StateEnum.TurnOver);
             }
             else
             {
                 if (unitTypeXZ is UnitTypeXZ.Horizontal)
                 {
                     if (direction is Direction.Left or Direction.Right)
-                        ChangeState(onBePushedStraightState);
+                        stateMachine.ChangeState(onBePushedStraightState);
                     else if (direction is Direction.Forward or Direction.Back)
-                        ChangeState(onBePushedPerpendicularState);
+                        stateMachine.ChangeState(onBePushedPerpendicularState);
                 }
                 else if (unitTypeXZ is UnitTypeXZ.Vertical)
                 {
                     if (direction is Direction.Left or Direction.Right)
-                        ChangeState(onBePushedPerpendicularState);
+                        stateMachine.ChangeState(onBePushedPerpendicularState);
                     else if (direction is Direction.Forward or Direction.Back)
-                        ChangeState(onBePushedStraightState);
+                        stateMachine.ChangeState(onBePushedStraightState);
                 }
             }
         }
@@ -116,7 +110,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
         protected override void OnOutTriggerBelow(GridUnit triggerUnit)
         {
             base.OnOutTriggerBelow(triggerUnit);
-            if (IsCurrentStateIs(StateEnum.Idle)) ChangeState(StateEnum.Fall);
+            if (IsCurrentStateIs(StateEnum.Idle)) stateMachine.ChangeState(StateEnum.Fall);
         }
 
         protected override void OnEnterTriggerUpper(GridUnit triggerUnit)
@@ -136,7 +130,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
             }
 
             TriggerChump = triggerChump;
-            TriggerChump.ChangeState(StateEnum.Fall);
+            TriggerChump.StateMachine.ChangeState(StateEnum.Fall);
         }
 
         public bool IsOnWater()
@@ -157,16 +151,16 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
 
         public override bool IsCurrentStateIs(StateEnum stateEnum)
         {
-            return _currentState == states[stateEnum];
+            return stateMachine.CurrentState.Id == stateEnum;
         }
 
-        public void ChangeState(StateEnum stateEnum)
-        {
-            if (OverrideState != StateEnum.None && OverrideState != stateEnum) return;
-            _currentState?.OnExit(this);
-            _currentState = states[stateEnum];
-            _currentState.OnEnter(this);
-        }
+        //public void ChangeState(StateEnum stateEnum)
+        //{
+        //    if (OverrideState != StateEnum.None && OverrideState != stateEnum) return;
+        //    _currentState?.OnExit(this);
+        //    _currentState = states[stateEnum];
+        //    _currentState.OnEnter(this);
+        //}
 
         public void SwitchType(Direction direction)
         {
