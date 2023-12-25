@@ -60,7 +60,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
                 AddState();
             }
 
-            ChangeState(StateEnum.Idle);
+            ChangeState(StateEnum.Emerge);
         }
 
         public void ChangeState(StateEnum stateEnum)
@@ -74,6 +74,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
         {
             states.Add(StateEnum.Idle, new IdleRaftState());
             states.Add(StateEnum.Move, new MoveRaftState());
+            states.Add(StateEnum.Emerge, new EmergeRaftState());
         }
 
         protected override void OnEnterTriggerUpper(GridUnit triggerUnit)

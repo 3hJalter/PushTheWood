@@ -25,11 +25,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             InitData(t);
             Sequence s = DOTween.Sequence();
             #region ANIM
-            s.Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 2).SetEase(Ease.Linear).OnComplete(() => Spawn(t)));
+            s.Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 2).SetEase(Ease.Linear).OnComplete(() =>
+            {
+                OnExit(t);
+                Spawn(t);
+            }));
             s.Join(chumpInWater.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 2).SetEase(Ease.Linear));
             #endregion
-
-
         }
 
         public void OnExecute(Chump t)
@@ -41,6 +43,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         {
             chumpInWater = null;
             spawnUnits.Clear();
+            t.OverrideState = StateEnum.None;
         }
 
         private void InitData(Chump t)
@@ -104,6 +107,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     SimplePool.Spawn<Chump>(DataManager.Ins.GetGridUnit(PoolType.ChumpShort));
                 chumpUnit.UnitTypeY = UnitTypeY.Down;
                 chumpUnit.OnInit(createChumpCells[i], Constants.DirFirstHeightOfSurface[GridSurfaceType.Water], false);
+                chumpUnit.ChangeState(StateEnum.Emerge);
                 chumpUnit.islandID = t.islandID;
                 LevelManager.Ins.AddNewUnitToIsland(chumpUnit);
                 chumpUnit.UnitTypeXZ = typeXZWhenSpawn;

@@ -49,7 +49,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
         public void OnExit(Chump t)
         {
-
+            floatingTween.Kill();
         }
     }
 }

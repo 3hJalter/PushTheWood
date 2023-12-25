@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using _Game.Utilities;
+using DG.Tweening;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.StaticUnit
@@ -13,7 +14,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             //NOTE: Refactor
             //NOTE: Play Shake Animation
-            Debug.Log("Blocking");
+            DevLog.Log(DevId.Hung, "Rock Block");
             Vector3 axis = Vector3.Cross(Vector3.up, Constants.DirVector3[direction]);
             float lastAngle = 0;
             DOVirtual.Float(0, DEGREE * 4 * DECAY_VALUE * DECAY_VALUE, Constants.MOVING_TIME * 1.2f, i =>

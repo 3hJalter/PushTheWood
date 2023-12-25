@@ -6,7 +6,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
     public class MovePlayerState : IState<Player>
     {
-        private bool _isExecuted;
         private Direction direction;
         private float initAnimSpeed;
         private Tween moveTween;
@@ -58,7 +57,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         }
         public void OnExit(Player t)
         {
-            _isExecuted = false;
             moveTween = null;
         }
     }
