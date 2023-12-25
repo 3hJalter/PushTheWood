@@ -136,7 +136,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
             }
 
             TriggerChump = triggerChump;
-            TriggerChump.ChangeState(StateEnum.FormRaft);
+            TriggerChump.ChangeState(StateEnum.Fall);
         }
 
         public bool IsOnWater()
