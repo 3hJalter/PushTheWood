@@ -66,6 +66,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
             states.Add(StateEnum.TurnOver, new TurnOverChumpState());
             states.Add(StateEnum.Fall, new FallChumpState());
             states.Add(StateEnum.RollBlock, new RollBlockChumpState());
+            states.Add(StateEnum.Emerge, new EmergeChumpState());
         }
 
         public override void OnPush(Direction direction, ConditionData conditionData = null)
