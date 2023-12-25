@@ -84,8 +84,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     t.Tf.position = t.EnterPosData.initialPos;
                     if (!t.EnterPosData.isFalling)
                     {
-                            t.OnEnterTrigger(t);
+                        t.OnEnterTrigger(t);
                         t.ChangeState(StateEnum.Idle);
+                        
                     }
                     else
                     {

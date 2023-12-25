@@ -17,9 +17,15 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
 
         private readonly Dictionary<StateEnum, IState<Chump>> states = new();
         private IState<Chump> _currentState;
+        [HideInInspector]
+        public StateEnum OverrideState;
 
         private bool _isAddState;
-
+        protected override void Awake()
+        {
+            base.Awake();
+            OverrideState = StateEnum.None;
+        }
         // Hand
         public Chump TriggerChump { get; private set; }
 
@@ -142,6 +148,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
             return startHeight == Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] &&
                    cellInUnits.All(t => t.SurfaceType is GridSurfaceType.Water);
         }
+        public bool IsNextCellSurfaceIs(GridSurfaceType surfaceType)
+        {
+            return TurnOverData.enterMainCell.SurfaceType == surfaceType || MovingData.enterMainCell.SurfaceType == surfaceType;
+        }
 
         public override bool IsCurrentStateIs(StateEnum stateEnum)
         {
@@ -150,6 +160,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
 
         public void ChangeState(StateEnum stateEnum)
         {
+            if (OverrideState != StateEnum.None && OverrideState != stateEnum) return;
             _currentState?.OnExit(this);
             _currentState = states[stateEnum];
             _currentState.OnEnter(this);

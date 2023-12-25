@@ -1,4 +1,5 @@
 ﻿using _Game.DesignPattern.StateMachine;
+using _Game.Utilities;
 using DG.Tweening;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
         public void OnEnter(Chump t)
         {
+            DevLog.Log(DevId.Hung, "STATE: Roll");
             t.MovingData.SetData(t.ChumpBeInteractedData.inputDirection);
             _isRoll = t.ConditionMergeOnBePushed.IsApplicable(t.MovingData);
             OnExecute(t);

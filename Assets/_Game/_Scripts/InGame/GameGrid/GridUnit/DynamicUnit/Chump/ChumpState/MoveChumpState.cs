@@ -1,4 +1,5 @@
 ﻿using _Game.DesignPattern.StateMachine;
+using _Game.Utilities;
 using DG.Tweening;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
@@ -9,6 +10,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
         public void OnEnter(Chump t)
         {
+            DevLog.Log(DevId.Hung, "STATE: Move");
             t.MovingData.SetData(t.ChumpBeInteractedData.inputDirection);
             _isMove = t.ConditionMergeOnBePushed.IsApplicable(t.MovingData);
             OnExecute(t);
@@ -34,13 +36,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     {
                         if (t.EnterPosData.isFalling)
                         {
-                            t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME).SetEase(Ease.Linear)
-                                .SetUpdate(UpdateType.Fixed).OnComplete(() =>
-                                {
-                                    // Handle Cell Data
-                                    t.OnEnterTrigger(t);
-                                    t.ChangeState(StateEnum.Idle);
-                                });
+                            t.ChangeState(StateEnum.Fall);
                         }
                         else
                         {
