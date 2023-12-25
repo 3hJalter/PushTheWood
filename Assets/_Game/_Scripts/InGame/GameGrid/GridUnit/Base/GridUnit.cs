@@ -383,7 +383,7 @@ namespace _Game.GameGrid.Unit
         }
 
 
-        private void RemoveUnitFromCell()
+        public void RemoveUnitFromCell()
         {
             for (int i = cellInUnits.Count - 1; i >= 0; i--)
                 cellInUnits[i].RemoveGridUnit(this);

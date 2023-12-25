@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using _Game._Scripts.InGame.GameCondition.Data;
 using _Game.DesignPattern.StateMachine;
 using _Game.Utilities;
 using DG.Tweening;
@@ -21,25 +22,41 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             t.OnOutCells();
             t.OnEnterCells(mainCell, cellInUnits);
 
-            //NOTE: Fall into water that do not have anything
+            //NOTE: Fall into water and checking if it is have object in water
+            MovingData moveData = t.TurnOverData;
             GridUnit unitInCells = t.TurnOverData.enterMainCell.GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]);
-            if (t.IsNextCellSurfaceIs(GridSurfaceType.Water) && (unitInCells == t || unitInCells == null))
+            if(unitInCells == null && t.MovingData.enterMainCell != null)
             {
-                // Tween to final position
-                DevLog.Log(DevId.Hung, "Fall into water not have anything");
-                t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME).SetEase(Ease.Linear)
-                    .SetUpdate(UpdateType.Fixed).OnComplete(() =>
-                    {
-                        t.OnEnterTrigger(t);
-                        // Can be change to animation later
-                        t.skin.localRotation =
-                            Quaternion.Euler(t.UnitTypeXZ is UnitTypeXZ.Horizontal
-                                ? Constants.HorizontalSkinRotation
-                                : Constants.VerticalSkinRotation);
-                        // minus position offsetY
-                        t.Tf.position -= Vector3.up * t.yOffsetOnDown;
-                        t.ChangeState(StateEnum.Idle);
-                    });
+                unitInCells = t.MovingData.enterMainCell.GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]);
+                moveData = t.MovingData;
+            }
+
+            if (t.IsNextCellSurfaceIs(GridSurfaceType.Water))
+            {
+                //NOTE: Water do not have anything
+                if(unitInCells == t || unitInCells == null)
+                {
+                    // Tween to final position
+                    DevLog.Log(DevId.Hung, "Fall into water not have anything");
+                    Sequence s = DOTween.Sequence();
+                    s.Append(t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME * 0.75f).SetEase(Ease.Linear))
+                        .Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 0.75f).SetEase(Ease.Linear))
+                        .OnComplete(() =>
+                        {
+                            t.OnEnterTrigger(t);
+                            // Can be change to animation later
+                            t.skin.localRotation =
+                                Quaternion.Euler(t.UnitTypeXZ is UnitTypeXZ.Horizontal
+                                    ? Constants.HorizontalSkinRotation
+                                    : Constants.VerticalSkinRotation);
+                            t.ChangeState(StateEnum.Emerge);
+                        });
+                }
+                else //NOTE: Water have something
+                {
+                 
+                }
+                
             }
             else
             {
