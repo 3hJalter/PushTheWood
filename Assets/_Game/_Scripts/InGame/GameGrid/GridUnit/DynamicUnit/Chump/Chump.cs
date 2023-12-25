@@ -150,7 +150,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
         }
         public bool IsNextCellSurfaceIs(GridSurfaceType surfaceType)
         {
-            return TurnOverData.enterMainCell.SurfaceType == surfaceType || MovingData.enterMainCell.SurfaceType == surfaceType;
+            return (TurnOverData.enterMainCell != null && TurnOverData.enterMainCell.SurfaceType == surfaceType) 
+                || (MovingData.enterMainCell != null && MovingData.enterMainCell.SurfaceType == surfaceType);
         }
 
         public override bool IsCurrentStateIs(StateEnum stateEnum)

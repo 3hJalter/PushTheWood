@@ -64,6 +64,8 @@ public static class Constants
     public const float MOVING_TIME = 0.25f;
     public const float MOVING_TIME_FAST_RATE = 1f;
     public const float FALLING_TIME = 0.2f;
+    public const float POS_Y_BOTTOM = 0.5f * CELL_SIZE - 2f;
+
     public const HeightLevel MIN_HEIGHT = HeightLevel.Zero;
     public const HeightLevel MAX_HEIGHT = HeightLevel.FourPointFive;
 
@@ -77,7 +79,6 @@ public static class Constants
 
     public static readonly Vector3 VerticalSkinRotation = new(0, -90, 90);
     //
-
 
     // Dictionary constants
 

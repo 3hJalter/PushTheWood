@@ -19,5 +19,6 @@
         TurnOver = 11,
         FormRaft = 12,
         RollBlock = 13, 
+        Emerge = 14,
     }
 }
