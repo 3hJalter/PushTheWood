@@ -23,12 +23,26 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             t.OnEnterCells(mainCell, cellInUnits);
 
             //NOTE: Fall into water and checking if it is have object in water
-            MovingData moveData = t.TurnOverData;
-            GridUnit unitInCells = t.TurnOverData.enterMainCell.GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]);
-            if(unitInCells == null && t.MovingData.enterMainCell != null)
+            MovingData moveData;
+            GridUnit unitInCells = null;
+            if(unitInCells == null && t.TurnOverData.enterMainCell != null)
             {
-                unitInCells = t.MovingData.enterMainCell.GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]);
+                moveData = t.TurnOverData;
+                for (int i = 0; i < cellInUnits.Count; i++)
+                {
+                    unitInCells = moveData.enterCells[i].GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]);
+                    if (unitInCells != null) break;
+                }
+            }   
+            if (unitInCells == null && t.MovingData.enterMainCell != null)
+            {
                 moveData = t.MovingData;
+
+                for (int i = 0; i < cellInUnits.Count; i++)
+                {
+                    unitInCells = moveData.enterCells[i].GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]);
+                    if (unitInCells != null) break;
+                }
             }
 
             if (t.IsNextCellSurfaceIs(GridSurfaceType.Water))
@@ -37,7 +51,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 if(unitInCells == t || unitInCells == null)
                 {
                     // Tween to final position
-                    DevLog.Log(DevId.Hung, "Fall into water not have anything");
+                    DevLog.Log(DevId.Hung, "Fall into water cell that do not have anything");
                     Sequence s = DOTween.Sequence();
                     s.Append(t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME * 0.75f).SetEase(Ease.Linear))
                         .Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 0.75f).SetEase(Ease.Linear))
@@ -54,7 +68,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 }
                 else //NOTE: Water have something
                 {
-                 
+                    DevLog.Log(DevId.Hung, "Fall into water cell that has object");
+                    t.ChangeState(StateEnum.FormRaft);
                 }
                 
             }
