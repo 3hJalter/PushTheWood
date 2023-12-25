@@ -25,7 +25,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             // Change it state to cut tree
             player.CutTreeData.SetData(GetDirectionFromPlayer(), this);
-            player.ChangeState(StateEnum.CutTree);
+            player.StateMachine.ChangeState(StateEnum.CutTree);
             return;
 
             Direction GetDirectionFromPlayer()

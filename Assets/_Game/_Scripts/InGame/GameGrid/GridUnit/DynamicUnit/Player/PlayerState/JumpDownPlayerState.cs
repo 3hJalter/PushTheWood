@@ -7,6 +7,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
     {
         private bool _isExecuted;
 
+        public StateEnum Id => StateEnum.JumpDown;
+
         public void OnEnter(Player t)
         {
             t.ChangeAnim(Constants.MOVE_ANIM);
@@ -23,7 +25,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                         .SetUpdate(UpdateType.Fixed).OnComplete(() =>
                         {
                             t.OnEnterTrigger(t);
-                            t.ChangeState(StateEnum.Idle);
+                            t.StateMachine.ChangeState(StateEnum.Idle);
                         });
                 });
         }

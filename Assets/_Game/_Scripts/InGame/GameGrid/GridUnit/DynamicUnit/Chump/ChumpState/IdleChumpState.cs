@@ -13,10 +13,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         private Tween floatingTween;
         
         Vector3 originTransform;
+
+        public StateEnum Id => StateEnum.Idle;
+
         public void OnEnter(Chump t)
         {
             #region ANIM
-            DevLog.Log(DevId.Hung, "STATE: Idle");
             //DEV: Refactor anim system
             if (t.IsInWater())
             {

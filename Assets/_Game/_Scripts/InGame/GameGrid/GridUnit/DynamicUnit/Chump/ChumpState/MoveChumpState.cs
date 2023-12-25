@@ -8,9 +8,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
     {
         private bool _isMove;
 
+        public StateEnum Id => StateEnum.Move;
+
         public void OnEnter(Chump t)
         {
-            DevLog.Log(DevId.Hung, "STATE: Move");
             t.MovingData.SetData(t.ChumpBeInteractedData.inputDirection);
             _isMove = t.ConditionMergeOnBePushed.IsApplicable(t.MovingData);
             OnExecute(t);
@@ -21,7 +22,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             if (!_isMove)
             {
                 if (t.MovingData.blockDynamicUnits.Count > 0) t.OnPush(t.MovingData.inputDirection, t.MovingData);
-                t.ChangeState(StateEnum.Idle);
+                t.StateMachine.ChangeState(StateEnum.Idle);
             }
             else
             {
@@ -36,12 +37,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     {
                         if (t.EnterPosData.isFalling)
                         {
-                            t.ChangeState(StateEnum.Fall);
+                            t.StateMachine.ChangeState(StateEnum.Fall);
                         }
                         else
                         {
                             t.OnEnterTrigger(t);
-                            t.ChangeState(StateEnum.Idle);
+                            t.StateMachine.ChangeState(StateEnum.Idle);
                         }
                     });
             }

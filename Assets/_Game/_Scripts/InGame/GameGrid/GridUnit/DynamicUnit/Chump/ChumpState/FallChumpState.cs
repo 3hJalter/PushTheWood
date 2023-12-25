@@ -10,9 +10,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 {
     public class FallChumpState : IState<Chump>
     {
+        public StateEnum Id => StateEnum.Fall;
+
         public void OnEnter(Chump t)
         {
-            DevLog.Log(DevId.Hung, "STATE: Fall");
             // We know that when OnOutCell, the mainCell and cellInUnits will be cleared
             // That why we need to save it to use for OnEnterCell because all the mainCell and cellInUnits still the same as before
             GameGridCell mainCell = t.MainCell;
@@ -63,13 +64,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                                 Quaternion.Euler(t.UnitTypeXZ is UnitTypeXZ.Horizontal
                                     ? Constants.HorizontalSkinRotation
                                     : Constants.VerticalSkinRotation);
-                            t.ChangeState(StateEnum.Emerge);
+                            t.StateMachine.ChangeState(StateEnum.Emerge);
                         });
                 }
                 else //NOTE: Water have something
                 {
                     DevLog.Log(DevId.Hung, "Fall into water cell that has object");
-                    t.ChangeState(StateEnum.FormRaft);
+                    t.StateMachine.ChangeState(StateEnum.FormRaft);
                 }
                 
             }
@@ -79,7 +80,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                 {
                     t.OnEnterTrigger(t);
-                    t.ChangeState(StateEnum.Idle);
+                    t.StateMachine.ChangeState(StateEnum.Idle);
                 });
             }
         }

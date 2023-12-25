@@ -14,9 +14,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
         Vector3 originTransform;
         
         private Tween floatingTween;
+
+        public StateEnum Id => StateEnum.Idle;
+
         public void OnEnter(Raft t)
         {
-            DevLog.Log(DevId.Hung, "STATE: RaftIdle");
             #region ANIM
             //DEV: Refactor
             originTransform = t.Tf.transform.position;

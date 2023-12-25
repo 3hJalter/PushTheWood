@@ -17,10 +17,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         private Chump chumpInWater;
         HashSet<GridUnit> spawnUnits = new();
 
+        public StateEnum Id => StateEnum.FormRaft;
+
         public void OnEnter(Chump t)
         {
-            DevLog.Log(DevId.Hung, "STATE: Form Raft");
-            t.OverrideState = StateEnum.FormRaft;
+            t.StateMachine.OverrideState = StateEnum.FormRaft;
 
             InitData(t);
             Sequence s = DOTween.Sequence();
@@ -44,7 +45,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         {
             chumpInWater = null;
             spawnUnits.Clear();
-            t.OverrideState = StateEnum.None;
+            t.StateMachine.OverrideState = StateEnum.None;
         }
 
         private void InitData(Chump t)
@@ -108,7 +109,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     SimplePool.Spawn<Chump>(DataManager.Ins.GetGridUnit(PoolType.ChumpShort));
                 chumpUnit.UnitTypeY = UnitTypeY.Down;
                 chumpUnit.OnInit(createChumpCells[i], Constants.DirFirstHeightOfSurface[GridSurfaceType.Water], false);
-                chumpUnit.ChangeState(StateEnum.Emerge);
+                chumpUnit.StateMachine.ChangeState(StateEnum.Emerge);
                 chumpUnit.islandID = t.islandID;
                 LevelManager.Ins.AddNewUnitToIsland(chumpUnit);
                 chumpUnit.UnitTypeXZ = typeXZWhenSpawn;

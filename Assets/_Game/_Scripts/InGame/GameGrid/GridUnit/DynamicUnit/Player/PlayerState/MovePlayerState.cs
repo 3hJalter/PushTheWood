@@ -11,6 +11,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         private Tween moveTween;
         private float OriginMovingDistance;
 
+        public StateEnum Id => StateEnum.Move;
+
         public void OnEnter(Player t)
         {
             t.ChangeAnim(Constants.MOVE_ANIM);
@@ -34,7 +36,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                         t.SetAnimSpeed(initAnimSpeed);
 
                         t.OnEnterTrigger(t);
-                        t.ChangeState(StateEnum.Idle);
+                        t.StateMachine.ChangeState(StateEnum.Idle);
                     });
             }
 
@@ -44,7 +46,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                 {
                     t.OnEnterTrigger(t);
-                    t.ChangeState(StateEnum.Idle);
+                    t.StateMachine.ChangeState(StateEnum.Idle);
                 });
 
 
