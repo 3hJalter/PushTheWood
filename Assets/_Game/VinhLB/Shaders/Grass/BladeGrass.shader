@@ -2,22 +2,29 @@ Shader "Custom/BladeGrass"
 {
     Properties
     {
+        [Header(Curved World Bend Settings)]
+		[Space]
+        [CurvedWorldBendSettings] _CurvedWorldBendSettings("0,2,5|1,2,3|1", Vector) = (0, 0, 0, 0)
+        
         [Header(Base)]
         [Space]
         _BaseColor("Base Color", Color) = (0, 0.5, 0, 1) // Color of the lowest layer
         _TipColor("Tip Color", Color) = (0, 1, 0, 1) // Color of the highest layer
         _RandomJitterRadius("Random Jitter Radius", Float) = 0.1
+        
         [Header(Wind)]
         [Space]
         _WindTexture("Wind Texture", 2D) = "white" {}
         _WindFrequency("Wind Frequency", Float) = 1
         _WindStrength("Wind Strength", Float) = 1
+        
         [Header(Trample)]
         [Space]
         _TrampleMaxDistance("Trample Max Distance", Float) = 1
         _TrampleFalloff("Trample Falloff", Float) = 1
         _TramplePushStrength("Trample Push Strength", Float) = 1
         _TrampleSquishStrength("Trample Squish Strength", Float) = 1
+        
         [Header(Shadow)]
         [Space]
         _ShadowLightness("Shadow Lightness", Range(0, 1)) = 0

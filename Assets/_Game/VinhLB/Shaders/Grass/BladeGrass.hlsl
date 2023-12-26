@@ -7,17 +7,25 @@
 #include "NMGBladeGrassGraphicsHelpers.hlsl"
 #include "GrassTrample.hlsl"
 
+// Curved world definitions
+#pragma shader_feature_local CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE CURVEDWORLD_BEND_TYPE_LITTLEPLANET_Y
+#pragma shader_feature_local CURVEDWORLD_BEND_ID_1 CURVEDWORLD_BEND_ID_2 CURVEDWORLD_BEND_ID_3
+#pragma shader_feature_local CURVEDWORLD_DISABLED_ON
+#pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
+#include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
+
 struct Attributes
 {
     float3 positionOS : POSITION;
     float3 normalOS : NORMAL;
+    float4 tangentOS : TANGENT;
     float2 uv : TEXCOORD0;
     float3 bladeAnchorOS : TEXCOORD1;
     float3 shadowCastNormalOS : TEXCOORD2;
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
-struct VertexOutput
+struct Varyings
 {
     float2 uv : TEXCOORD0; // The height of this vertex on the grass blade
     float3 positionWS : TEXCOORD1; // Position in world space
@@ -49,13 +57,22 @@ CBUFFER_END
 
 // Vertex functions
 
-VertexOutput Vertex(Attributes input)
+Varyings Vertex(Attributes input)
 {
     // Initialize the output struct
-    VertexOutput output = (VertexOutput)0;
+    Varyings output = (Varyings)0;
 
     UNITY_SETUP_INSTANCE_ID(input);
     UNITY_TRANSFER_INSTANCE_ID(input, output);
+
+    // Curved world vertex transformations
+    #if defined(CURVEDWORLD_IS_INSTALLED) && !defined(CURVEDWORLD_DISABLED_ON)
+    #ifdef CURVEDWORLD_NORMAL_TRANSFORMATION_ON
+    CURVEDWORLD_TRANSFORM_VERTEX_AND_NORMAL(input.positionOS, input.normalOS.xyz, input.tangentOS)
+    #else
+    CURVEDWORLD_TRANSFORM_VERTEX(input.positionOS)
+    #endif
+    #endif
 
     float3 bladeAnchorWS = GetVertexPositionInputs(input.bladeAnchorOS).positionWS;
     // Get a plane perpendicular to the normal
@@ -106,7 +123,7 @@ VertexOutput Vertex(Attributes input)
 
 // Fragment functions
 
-half4 Fragment(VertexOutput input) : SV_Target
+half4 Fragment(Varyings input) : SV_Target
 {
     UNITY_SETUP_INSTANCE_ID(input);
 

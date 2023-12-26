@@ -7,9 +7,12 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: StylizedWater2_Mobile
-  m_Shader: {fileID: 4800000, guid: f04c9486b297dd848909db26983c9ddb, type: 3}
+  m_Name: StylizedWater2_Mobile_Custom
+  m_Shader: {fileID: 4800000, guid: 8e5d51ace523cb3458269c3411e35483, type: 3}
   m_ValidKeywords:
+  - CURVEDWORLD_BEND_ID_1
+  - CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE
+  - CURVEDWORLD_NORMAL_TRANSFORMATION_ON
   - _CAUSTICS
   - _ENVIRONMENTREFLECTIONS_OFF
   - _REFRACTION
@@ -18,9 +21,6 @@ Material:
   - _WAVES
   m_InvalidKeywords:
   - ADVANCED_LIGHTING
-  - CURVEDWORLD_BEND_ID_1
-  - CURVEDWORLD_BEND_TYPE_LITTLEPLANET_Y
-  - CURVEDWORLD_NORMAL_TRANSFORMATION_ON
   - _CROSSPAN_INTERSECTION
   - _DEPTH_TEX
   - _SIMPLE_LIGHTING
@@ -183,7 +183,7 @@ Material:
     - _RimTiling: 0.025
     - _SHARP_INERSECTIONOn: 1
     - _ShadingMode: 0
-    - _ShadowStrength: 1
+    - _ShadowStrength: 0.5
     - _ShoreLineLength: 0
     - _ShoreLineWaveDistance: 23
     - _ShoreLineWaveStr: 1
@@ -222,12 +222,12 @@ Material:
     - _AnimationParams: {r: 1, g: 1, b: 1, a: 0}
     - _BaseColor: {r: 0, g: 0.16451614, b: 0.34, a: 0.9647059}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _CurvedWorldBendSettings: {r: 5, g: 1, b: 1, a: 0}
+    - _CurvedWorldBendSettings: {r: 2, g: 1, b: 1, a: 0}
     - _DepthMapBounds: {r: -402.3, g: -459.43, b: 0.0012693577, a: 0}
     - _DistanceNormalParams: {r: 100, g: 300, b: 0.25, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FoamColor: {r: 1, g: 1, b: 1, a: 0.09803922}
-    - _HorizonColor: {r: 0.2352941, g: 0.9051294, b: 1, a: 1}
+    - _HorizonColor: {r: 0.11764706, g: 0.45294118, b: 0.5, a: 1}
     - _IntersectionColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShallowColor: {r: 0, g: 0.8446603, b: 1, a: 0.39607844}

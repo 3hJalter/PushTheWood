@@ -52,7 +52,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 3734507766325910741, guid: 5e4e01014c3c130408c0f08b94d37a3c, type: 3}
+  - {fileID: 2100000, guid: b558f0e1c612b62418a8707d7d57850c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -174,9 +174,22 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: belowUnits
+      Entry: 7
+      Data: 0|System.Collections.Generic.HashSet`1[[_Game.GameGrid.Unit.GridUnit,
+        Assembly-CSharp]], System.Core
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: cellInUnits
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[_Game.GameGrid.GameGridCell, Assembly-CSharp]],
+      Data: 1|System.Collections.Generic.List`1[[_Game.GameGrid.GameGridCell, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
@@ -189,10 +202,7 @@ MonoBehaviour:
       Data: 
     - Name: EnterPosData
       Entry: 7
-      Data: 1|_Game.GameGrid.Unit.EnterCellPosData, Assembly-CSharp
-    - Name: startHeight
-      Entry: 3
-      Data: 0
+      Data: 2|_Game.GameGrid.Unit.EnterCellPosData, Assembly-CSharp
     - Name: finalPos
       Entry: 7
       Data: UnityEngine.Vector3, UnityEngine.CoreModule
@@ -226,23 +236,13 @@ MonoBehaviour:
     - Name: isFalling
       Entry: 5
       Data: false
+    - Name: startHeight
+      Entry: 3
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
     - Name: neighborUnits
-      Entry: 7
-      Data: 2|System.Collections.Generic.HashSet`1[[_Game.GameGrid.Unit.GridUnit,
-        Assembly-CSharp]], System.Core
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: upperUnits
       Entry: 7
       Data: 3|System.Collections.Generic.HashSet`1[[_Game.GameGrid.Unit.GridUnit,
         Assembly-CSharp]], System.Core
@@ -255,7 +255,7 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: belowUnits
+    - Name: upperUnits
       Entry: 7
       Data: 4|System.Collections.Generic.HashSet`1[[_Game.GameGrid.Unit.GridUnit,
         Assembly-CSharp]], System.Core
@@ -280,6 +280,7 @@ MonoBehaviour:
   unitTypeXZ: 2
   skinRotationDirection: -1
   gridUnitStaticType: 5
+  anchor: {fileID: 0}
   hasInteractBtn: 1
   btnCanvas: {fileID: 2279663392723906054}
   interactBtn: {fileID: 4199147777223764135}
@@ -655,7 +656,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 3734507766325910741, guid: 5e4e01014c3c130408c0f08b94d37a3c, type: 3}
+  - {fileID: 2100000, guid: b558f0e1c612b62418a8707d7d57850c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -741,7 +742,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 3734507766325910741, guid: 5e4e01014c3c130408c0f08b94d37a3c, type: 3}
+  - {fileID: 2100000, guid: b558f0e1c612b62418a8707d7d57850c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -827,7 +828,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 3734507766325910741, guid: 5e4e01014c3c130408c0f08b94d37a3c, type: 3}
+  - {fileID: 2100000, guid: b558f0e1c612b62418a8707d7d57850c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
@@ -26,6 +25,12 @@ namespace VinhLB
             if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
                 EditorSceneManager.OpenScene("Assets/_Game/VinhLB/Scenes/BuildingTest.unity", OpenSceneMode.Single);
         }
+        
+        [MenuItem("Tools/VinhLB/Scenes/BendingTest")]
+        private static void OpenBendingTestScene()
+        {
+            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+                EditorSceneManager.OpenScene("Assets/_Game/VinhLB/Scenes/BendingTest.unity", OpenSceneMode.Single);
+        }
     }
 }
-#endif

@@ -65,7 +65,7 @@
 
             #pragma shader_feature_local _ALPHA_CUTOUT
 
-            #if UNITY_VERSION > 202120
+            #if UNITY_VERSION >= 202120
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
             #else
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
@@ -93,22 +93,25 @@
                 float2 uv : TEXCOORD0;
                 float3 normalOS : NORMAL;
                 float4 lightMapUV : TEXCOORD1;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
-            struct Interpolators
+            struct Varyings
             {
                 float4 positionCS : SV_POSITION;
                 float2 uv : TEXCOORD0;
                 float3 positionWS : TEXCOORD1;
                 float3 normalWS : TEXCOORD2;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+                UNITY_VERTEX_OUTPUT_STEREO
             };
 
-            Interpolators Vertex(Attributes input)
+            Varyings Vertex(Attributes input)
             {
                 VertexPositionInputs posInputs = GetVertexPositionInputs(input.positionOS.xyz);
                 VertexNormalInputs normInputs = GetVertexNormalInputs(input.normalOS);
 
-                Interpolators output = (Interpolators)0;
+                Varyings output = (Varyings)0;
                 output.positionCS = posInputs.positionCS;
                 output.uv = TRANSFORM_TEX(input.uv, _MainTex);
                 output.positionWS = posInputs.positionWS;
@@ -120,7 +123,7 @@
                 return output;
             }
 
-            float4 Fragment(Interpolators input) : SV_Target
+            float4 Fragment(Varyings input) : SV_Target
             {
                 float4 baseTex = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv);
 
@@ -142,12 +145,12 @@
                 surfaceData.smoothness = _Smoothness;
                 surfaceData.metallic = _Metallic;
 
-                #if UNITY_VERSION > 202120
+                #if UNITY_VERSION >= 202120
                 return UniversalFragmentBlinnPhong(inputData, surfaceData);
                 #else
                 return UniversalFragmentBlinnPhong(inputData, surfaceData.albedo, float4(surfaceData.specular, 1),
-                                                   surfaceData.smoothness, surfaceData.emission, surfaceData.alpha,
-                                                   surfaceData.normalTS);
+                                                       surfaceData.smoothness, surfaceData.emission, surfaceData.alpha,
+                                                       surfaceData.normalTS);
                 #endif
             }
             ENDHLSL

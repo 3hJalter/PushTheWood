@@ -1,10 +1,14 @@
-// Toony Colors Pro+Mobile 2
+// Modified from Toony Colors Pro+Mobile 2
 // (c) 2014-2020 Jean Moreno
 
-Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Decal"
+Shader "Toony Colors Pro 2/Examples URP/Cat Demo/CustomDecal"
 {
     Properties
     {
+        [TCP2HeaderHelp(Curved World Bend Settings)]
+        [CurvedWorldBendSettings] _CurvedWorldBendSettings("0,2,5|1,2,3|1", Vector) = (0, 0, 0, 0)
+        [TCP2Separator]
+
         [TCP2HeaderHelp(Base)]
         _BaseColor ("Color", Color) = (1,1,1,1)
         [TCP2ColorNoAlpha] _HColor ("Highlight Color", Color) = (0.75,0.75,0.75,1)
@@ -101,6 +105,13 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Decal"
             #pragma vertex Vertex
             #pragma fragment Fragment
 
+            // Curved world definitions
+#pragma shader_feature_local CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE CURVEDWORLD_BEND_TYPE_LITTLEPLANET_Y
+#pragma shader_feature_local CURVEDWORLD_BEND_ID_1 CURVEDWORLD_BEND_ID_2 CURVEDWORLD_BEND_ID_3
+            #pragma shader_feature_local CURVEDWORLD_DISABLED_ON
+            #pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
+            #include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
+
             // vertex input
             struct Attributes
             {
@@ -135,6 +146,15 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Decal"
                 UNITY_SETUP_INSTANCE_ID(input);
                 UNITY_TRANSFER_INSTANCE_ID(input, output);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+
+                // Curved world vertex transformations
+                #if defined(CURVEDWORLD_IS_INSTALLED) && !defined(CURVEDWORLD_DISABLED_ON)
+                #ifdef CURVEDWORLD_NORMAL_TRANSFORMATION_ON
+                CURVEDWORLD_TRANSFORM_VERTEX_AND_NORMAL(input.vertex, input.normal, input.tangent)
+                #else
+                CURVEDWORLD_TRANSFORM_VERTEX(input.vertex)
+                #endif
+                #endif
 
                 // Texture Coordinates
                 output.pack0.xy.xy = input.texcoord0.xy * _BaseMap_ST.xy + _BaseMap_ST.zw;
@@ -296,10 +316,10 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Decal"
         {
             float4 positionCS : SV_POSITION;
             float2 pack0 : TEXCOORD0; /* pack0.xy = texcoord0 */
-        #if defined(DEPTH_ONLY_PASS)
+            #if defined(DEPTH_ONLY_PASS)
             UNITY_VERTEX_INPUT_INSTANCE_ID
             UNITY_VERTEX_OUTPUT_STEREO
-        #endif
+            #endif
         };
 
         float4 GetShadowPositionHClip(Attributes input)
@@ -309,11 +329,11 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Decal"
 
             float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, _LightDirection));
 
-        #if UNITY_REVERSED_Z
+            #if UNITY_REVERSED_Z
             positionCS.z = min(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
-        #else
+            #else
 				positionCS.z = max(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
-        #endif
+            #endif
 
             return positionCS;
         }
@@ -322,29 +342,38 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Decal"
         {
             Varyings output;
             UNITY_SETUP_INSTANCE_ID(input);
-        #if defined(DEPTH_ONLY_PASS)
+            #if defined(DEPTH_ONLY_PASS)
             UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
-        #endif
-            
+            #endif
+
+            // Curved world vertex transformations
+            #if defined(CURVEDWORLD_IS_INSTALLED) && !defined(CURVEDWORLD_DISABLED_ON)
+            #ifdef CURVEDWORLD_NORMAL_TRANSFORMATION_ON
+            CURVEDWORLD_TRANSFORM_VERTEX_AND_NORMAL(input.vertex, input.normal, input.tangent)
+            #else
+            CURVEDWORLD_TRANSFORM_VERTEX(input.vertex)
+            #endif
+            #endif
+
             // Texture Coordinates
             output.pack0.xy.xy = input.texcoord0.xy * _BaseMap_ST.xy + _BaseMap_ST.zw;
 
-        #if defined(DEPTH_ONLY_PASS)
+            #if defined(DEPTH_ONLY_PASS)
             output.positionCS = TransformObjectToHClip(input.vertex.xyz);
-        #elif defined(SHADOW_CASTER_PASS)
+            #elif defined(SHADOW_CASTER_PASS)
 					output.positionCS = GetShadowPositionHClip(input);
-        #else
+            #else
 					output.positionCS = float4(0,0,0,0);
-        #endif
+            #endif
 
             return output;
         }
 
         half4 ShadowDepthPassFragment(Varyings input) : SV_TARGET
         {
-        #if defined(DEPTH_ONLY_PASS)
+            #if defined(DEPTH_ONLY_PASS)
             UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
-        #endif
+            #endif
 
             // Shader Properties Sampling
             float4 __albedo = (tex2D(_BaseMap, input.pack0.xy.xy).rgba);
@@ -396,6 +425,13 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Decal"
             #pragma vertex ShadowDepthPassVertex
             #pragma fragment ShadowDepthPassFragment
 
+            // Curved world definitions
+#pragma shader_feature_local CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE CURVEDWORLD_BEND_TYPE_LITTLEPLANET_Y
+#pragma shader_feature_local CURVEDWORLD_BEND_ID_1 CURVEDWORLD_BEND_ID_2 CURVEDWORLD_BEND_ID_3
+            #pragma shader_feature_local CURVEDWORLD_DISABLED_ON
+            #pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
+            #include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
+
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl"
             ENDHLSL
@@ -432,6 +468,13 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Decal"
 
             #pragma vertex ShadowDepthPassVertex
             #pragma fragment ShadowDepthPassFragment
+
+            // Curved world definitions
+#pragma shader_feature_local CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE CURVEDWORLD_BEND_TYPE_LITTLEPLANET_Y
+#pragma shader_feature_local CURVEDWORLD_BEND_ID_1 CURVEDWORLD_BEND_ID_2 CURVEDWORLD_BEND_ID_3
+            #pragma shader_feature_local CURVEDWORLD_DISABLED_ON
+            #pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
+            #include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
             ENDHLSL
         }
 
