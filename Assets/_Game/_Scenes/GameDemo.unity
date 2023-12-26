@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1775786, g: 0.22232212, b: 0.3045177, a: 1}
+  m_IndirectSpecularColor: {r: 0.17757887, g: 0.2223226, b: 0.30451846, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2199,6 +2199,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   highlightButton: 1
+  testing: 0
   dpadButtons:
   - {fileID: 2049581924}
   - {fileID: 1448246167}
@@ -4361,6 +4362,7 @@ MonoBehaviour:
     SerializationNodes: []
   audioData: {fileID: 11400000, guid: f774e44247074ad4ea7897795f3fb8af, type: 2}
   gridData: {fileID: 11400000, guid: b3fb808f99240ed49ae49c173d49f0b2, type: 2}
+  materialData: {fileID: 11400000, guid: de7b0bd30bebbfd419110e79bf11edd3, type: 2}
   tutorialData: {fileID: 11400000, guid: d71c3b503cd99174a930047762eb276d, type: 2}
 --- !u!1 &2133081728
 GameObject:

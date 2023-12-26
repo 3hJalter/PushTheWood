@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Game._Scripts.UIs.Tutorial;
 using _Game.Camera;
+using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
@@ -203,10 +204,16 @@ namespace _Game.GameGrid
         private void SpawnGridSurfaceToGrid()
         {
             string[] surfaceData = _textGridData.SurfaceData.Split('\n');
+            string[] surfaceRotationDirectionData = _textGridData.SurfaceRotationDirectionData.Split('\n');
+            surfaceRotationDirectionData = surfaceRotationDirectionData.Skip(1).ToArray();
+            string[] surfaceMaterialData = _textGridData.SurfaceMaterialData.Split('\n');
+            surfaceMaterialData = surfaceMaterialData.Skip(1).ToArray();
             _gridSurfaceMap = new GridSurface.GridSurface[surfaceData.Length, surfaceData[0].Split(' ').Length];
             for (int x = 0; x < gridSizeX; x++)
             {
                 string[] surfaceDataSplit = surfaceData[x].Split(' ');
+                string[] surfaceRotationDirectionDataSplit = surfaceRotationDirectionData[x].Split(' ');
+                string[] surfaceMaterialDataSplit = surfaceMaterialData[x].Split(' ');
                 if (surfaceDataSplit.Length != gridSizeY) continue;
                 for (int y = 0; y < gridSizeY; y++)
                 {
@@ -215,10 +222,17 @@ namespace _Game.GameGrid
                     GridSurface.GridSurface gridSurface = DataManager.Ins.GetGridSurface((PoolType)cell);
                     if (gridSurface is null) return;
                     GameGridCell gridCell = GridMap.GetGridCell(x, y);
-                    gridCell.SetSurface(
-                        SimplePool.Spawn<GridSurface.GridSurface>(gridSurface,
-                            new Vector3(gridCell.WorldX, 0, gridCell.WorldY), Quaternion.identity));
+                    GridSurface.GridSurface surfaceClone = SimplePool.Spawn<GridSurface.GridSurface>(gridSurface,
+                        new Vector3(gridCell.WorldX, 0, gridCell.WorldY), Quaternion.identity);
+                    gridCell.SetSurface(surfaceClone);
                     _gridSurfaceMap[x, y] = gridCell.Data.gridSurface;
+                    
+                    if (!int.TryParse(surfaceRotationDirectionDataSplit[y], out int directionSurface)) continue;
+                    if (!Enum.IsDefined(typeof(Direction), directionSurface)) continue;
+                    if (!int.TryParse(surfaceMaterialDataSplit[y], out int materialSurface)) continue;
+                    if (!Enum.IsDefined(typeof(MaterialEnum), materialSurface)) continue;
+                    surfaceClone.OnInit((Direction) directionSurface,
+                        (MaterialEnum) materialSurface);
                 }
             }
         }

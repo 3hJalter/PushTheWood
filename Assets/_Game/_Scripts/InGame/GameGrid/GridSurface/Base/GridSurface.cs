@@ -1,4 +1,5 @@
-﻿using _Game.DesignPattern;
+﻿using _Game.Data;
+using _Game.DesignPattern;
 using GameGridEnum;
 using UnityEngine;
 
@@ -8,7 +9,8 @@ namespace _Game.GameGrid.GridSurface
     {
         [SerializeField] protected GridSurfaceType surfaceType;
         [SerializeField] private int islandID = -1;
-
+       
+        
         public int IslandID
         {
             get => islandID;
@@ -21,6 +23,10 @@ namespace _Game.GameGrid.GridSurface
 
         public GridSurfaceType SurfaceType => surfaceType;
 
+        public virtual void OnInit(Direction rotateDirection = Direction.Forward, MaterialEnum materialEnum = MaterialEnum.None)
+        {
+        }
+        
         public virtual void OnDespawn()
         {
             islandID = -1;

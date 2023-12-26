@@ -1,15 +1,18 @@
 using System;
 using System.IO;
+using _Game.Data;
 using _Game.GameGrid;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
+using _Game.Managers;
 using _Game.Utilities.Grid;
 using UnityEngine;
+using VinhLB;
 
 public class GridMapDataGenerator : MonoBehaviour
 {
     [SerializeField] private string mapLevelName = "level0";
-
+    [SerializeField] private int offsetSurfaceWithFirstCell = 5;
     [SerializeField] private Transform surfaceContainer;
     [SerializeField] private Transform unitContainer;
     private Grid<GameGridCell, GameGridCellData>.DebugGrid _debugGrid;
@@ -41,6 +44,9 @@ public class GridMapDataGenerator : MonoBehaviour
     [ContextMenu("Save Data as txt file")]
     private void Setup()
     {
+
+        #region verify
+
         switch (mapLevelName)
         {
             case null:
@@ -56,6 +62,10 @@ public class GridMapDataGenerator : MonoBehaviour
             return;
         }
 
+        #endregion
+
+        #region Set up GridMap
+
         GridUnit[] gridUnits = FindObjectsOfType<GridUnit>();
         int minX = int.MaxValue;
         int minZ = int.MaxValue;
@@ -70,10 +80,11 @@ public class GridMapDataGenerator : MonoBehaviour
             if (position.z > maxZ) maxZ = (int)Math.Round(position.z);
         }
 
-        // if minX or minY < 11, get the offset and make all position added with this offset so the minX and minY can be 11 (index 1,1)
-        if (minX < 11)
+        int offsetS = offsetSurfaceWithFirstCell * 2 + 1;
+        // if minX or minZ < offsetS, get the offset and make all position added with this offset so the minX and minY can be offsetS (index 5,5)`
+        if (minX < offsetS)
         {
-            int offsetX = 11 - minX;
+            int offsetX = offsetS - minX;
             foreach (GridSurface gridSurface in gridSurfaces)
             {
                 Vector3 position = gridSurface.Tf.position;
@@ -91,11 +102,31 @@ public class GridMapDataGenerator : MonoBehaviour
             minX += offsetX;
             maxX += offsetX;
         }
-
-        maxX += 10; // add one more cell to maxX and maxY
-        if (minZ < 11)
+        else if (minX > offsetS)
         {
-            int offsetZ = 11 - minZ;
+            int offsetX = minX - offsetS;
+            foreach (GridSurface gridSurface in gridSurfaces)
+            {
+                Vector3 position = gridSurface.Tf.position;
+                position.x -= offsetX;
+                gridSurface.Tf.position = position;
+            }
+
+            foreach (GridUnit gridUnit in gridUnits)
+            {
+                Vector3 position = gridUnit.Tf.position;
+                position.x -= offsetX;
+                gridUnit.Tf.position = position;
+            }
+
+            minX -= offsetX;
+            maxX -= offsetX;
+        }
+
+        maxX += offsetS - 1; // add five more cell to maxX and maxY
+        if (minZ < offsetS)
+        {
+            int offsetZ = offsetS - minZ;
             foreach (GridSurface gridSurface in gridSurfaces)
             {
                 Vector3 position = gridSurface.Tf.position;
@@ -113,11 +144,37 @@ public class GridMapDataGenerator : MonoBehaviour
             minZ += offsetZ;
             maxZ += offsetZ;
         }
+        else if (minZ > offsetS)
+        {
+            int offsetZ = minZ - offsetS;
+            foreach (GridSurface gridSurface in gridSurfaces)
+            {
+                Vector3 position = gridSurface.Tf.position;
+                position.z -= offsetZ;
+                gridSurface.Tf.position = position;
+            }
 
-        maxZ += 10;
+            foreach (GridUnit gridUnit in gridUnits)
+            {
+                Vector3 position = gridUnit.Tf.position;
+                position.z -= offsetZ;
+                gridUnit.Tf.position = position;
+            }
+
+            minZ -= offsetZ;
+            maxZ -= offsetZ;
+        }
+
+        maxZ += offsetS - 1;
         const int cellOffset = 1;
         maxX = (maxX + cellOffset) / 2;
         maxZ = (maxZ + cellOffset) / 2;
+
+        #endregion
+
+
+        #region Init Grid Surface
+
         // create 2 dimension int array with default value is 0
         int[,] gridData = new int[maxX, maxZ];
         // fill the array with 0
@@ -146,6 +203,77 @@ public class GridMapDataGenerator : MonoBehaviour
         }
 
         Debug.Log("Save surface: Complete");
+
+        #endregion
+
+        #region Rotate Grid Surface
+
+        // Reset the array to all -1
+        for (int i = 0; i < maxX; i++)
+        for (int j = 0; j < maxZ; j++)
+            gridData[i, j] = -1;
+        // Handle gridSurfaceRotationDirection
+        foreach (GridSurface gridSurface in gridSurfaces)
+        {
+            Vector3 position = gridSurface.Tf.position;
+            int x = (int)(position.x + 1) / 2;
+            int z = (int)(position.z + 1) / 2;
+            gridData[x - 1, z - 1] = (int)BuildingUnitData.GetDirection(gridSurface.Tf.eulerAngles.y);
+        }
+
+        // Save the array as txt file in Resources folder
+        // Write a @ to separate
+        file.WriteLine("@");
+        for (int i = 0; i < maxX; i++)
+        {
+            string line = "";
+            for (int j = 0; j < maxZ; j++) line += gridData[i, j] + " ";
+            line = line.Remove(line.Length - 1);
+            file.WriteLine(line);
+        }
+
+        #endregion
+
+        #region Set Ground Surface Color
+
+        // Save Surface GroundMaterial 
+        // Reset the array to all -1
+        for (int i = 0; i < maxX; i++)
+        for (int j = 0; j < maxZ; j++)
+            gridData[i, j] = -1;
+        // Handle GridSurface GroundMaterial
+        foreach (GridSurface gridSurface in gridSurfaces)
+        {
+            if (gridSurface is not GroundSurface groundSurface) continue;
+            Vector3 position = groundSurface.Tf.position;
+            int x = (int)(position.x + 1) / 2;
+            int z = (int)(position.z + 1) / 2;
+            int colorIndex = (int) groundSurface.groundMaterialEnum;
+            // if color index is -1, set it to random color
+            if (colorIndex == -1)
+            {
+                colorIndex = UnityEngine.Random.Range(0, DataManager.Ins.CountSurfaceMaterial - 1);
+                groundSurface.groundMaterialEnum = (MaterialEnum) colorIndex;
+                groundSurface.SetMaterialToGround();
+            }
+            gridData[x - 1, z - 1] = (int)groundSurface.groundMaterialEnum;
+        }
+
+        // Save the array as txt file in Resources folder
+        // Write a @ to separate
+        file.WriteLine("@");
+        for (int i = 0; i < maxX; i++)
+        {
+            string line = "";
+            for (int j = 0; j < maxZ; j++) line += gridData[i, j] + " ";
+            line = line.Remove(line.Length - 1);
+            file.WriteLine(line);
+        }
+
+        #endregion
+
+        #region Init Grid Unit
+
         // Reset the array to all 0
         for (int i = 0; i < maxX; i++)
         for (int j = 0; j < maxZ; j++)
@@ -184,6 +312,10 @@ public class GridMapDataGenerator : MonoBehaviour
 
         Debug.Log("Save unit: Complete");
 
+        #endregion
+
+        #region Set Grid Unit Rotation
+
         // Reset the array to all -1
         for (int i = 0; i < maxX; i++)
         for (int j = 0; j < maxZ; j++)
@@ -219,7 +351,11 @@ public class GridMapDataGenerator : MonoBehaviour
             file.WriteLine(line);
         }
 
-        file.Close();
         Debug.Log("Save unit rotation: Complete");
+
+        #endregion
+
+        file.Close();
+
     }
 }

@@ -47,6 +47,18 @@ namespace VinhLB
             }
         }
 
+        public static Direction GetDirection(float rotationAngle)
+        {
+            rotationAngle = Mathf.Clamp(rotationAngle, 0, 360);
+            return rotationAngle switch
+            {
+                >= 315 or < 45 => Direction.Forward,
+                >= 45 and < 135 => Direction.Right,
+                >= 135 and < 225 => Direction.Back,
+                _ => Direction.Left
+            };
+        }
+        
         public static float GetRotationAngle(Direction direction)
         {
             switch (direction)
@@ -56,6 +68,7 @@ namespace VinhLB
                 case Direction.Right:
                     return 90f;
                 case Direction.Forward:
+                case Direction.None:
                     return 0;
                 case Direction.Back:
                 default:
