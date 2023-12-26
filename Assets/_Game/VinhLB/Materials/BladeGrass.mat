@@ -11,7 +11,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: fa43413e85bfdfb4996ed719395b1308, type: 3}
   m_ValidKeywords:
   - CURVEDWORLD_BEND_ID_1
-  - CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE
+  - CURVEDWORLD_BEND_TYPE_LITTLEPLANET_Y
   - CURVEDWORLD_NORMAL_TRANSFORMATION_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -122,7 +122,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 0.33027777, g: 0.6132076, b: 0.072312206, a: 1}
     - _Color: {r: 0.33027774, g: 0.6132076, b: 0.07231218, a: 1}
-    - _CurvedWorldBendSettings: {r: 2, g: 1, b: 1, a: 0}
+    - _CurvedWorldBendSettings: {r: 5, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _TipColor: {r: 0.4304979, g: 0.8490566, b: 0.084104665, a: 1}

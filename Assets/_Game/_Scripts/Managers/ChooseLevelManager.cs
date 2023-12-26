@@ -53,10 +53,12 @@ namespace _Game._Scripts.Managers
             // Current level become next level
             _currentLevel = _nextLevel;
             // Spawn next level
-            Vector3 nextLevelPos = new(0, 0, _currentLevel.GetMaxZPos() + 50f);
+            Vector3 nextLevelPos = new(0, 0, _currentLevel.GetMaxZPos() + 15f);
             _nextLevel = nextLevelIndex + 1 < DataManager.Ins.CountLevel
                 ? new Level(nextLevelIndex + 1, nextLevelPos)
                 : null;
+            // Change camera target position to center of first island of current level
+            CameraManager.Ins.ChangeCameraTargetPosition(_currentLevel.GetIsland(0).GetCenterIslandPos() + Vector3.up * 5f);
             DebugLevel();
         }
 
@@ -78,10 +80,11 @@ namespace _Game._Scripts.Managers
             // Current level become previous level
             _currentLevel = _previousLevel;
             // Spawn previous level
-            Vector3 previousLevelPos = new(0, 0, _currentLevel.GetMinZPos() - 50f);
+            Vector3 previousLevelPos = new(0, 0, _currentLevel.GetMinZPos() - 15f);
             _previousLevel = previousLevelIndex - 1 >= 0
                 ? new Level(previousLevelIndex - 1, previousLevelPos, true)
                 : null;
+            CameraManager.Ins.ChangeCameraTargetPosition(_currentLevel.GetIsland(0).GetCenterIslandPos() + Vector3.up * 5f, 1.5f);
             DebugLevel();
         }
 
@@ -98,12 +101,13 @@ namespace _Game._Scripts.Managers
             if (index - 1 >= 0)
             {
                 _previousLevel = new Level(index - 1);
-                initLevelPos = new Vector3(0, 0, _previousLevel.GetMaxZPos() + 50f);
+                initLevelPos = new Vector3(0, 0, _previousLevel.GetMaxZPos() + 15f);
             }
 
             _currentLevel = new Level(index, initLevelPos);
-            initLevelPos = new Vector3(0, 0, _currentLevel.GetMaxZPos() + 50f);
+            initLevelPos = new Vector3(0, 0, _currentLevel.GetMaxZPos() + 15f);
             if (index + 1 < DataManager.Ins.CountLevel) _nextLevel = new Level(index + 1, initLevelPos);
+            CameraManager.Ins.ChangeCameraTargetPosition(_currentLevel.GetIsland(0).GetCenterIslandPos() + Vector3.up * 5f, 1.5f);
         }
     }
 
@@ -120,6 +124,11 @@ namespace _Game._Scripts.Managers
         private GridSurface[,] _gridSurfaceMap;
         // private Player player;
 
+        public Island GetIsland(int islandID)
+        {
+            return _islandDic[islandID];
+        }
+        
         public Level(int index, Vector3 originPosition = default, bool reduceZPosOffset = false)
         {
             Index = index;
@@ -169,6 +178,13 @@ namespace _Game._Scripts.Managers
             _gridSurfaceMap = null;
             // Clear all _gridMap data
             _gridMap = null;
+        }
+        
+        public Vector3 GetCenterPos(float offsetY = 5f)
+        {
+            float centerX = (_gridMap.GetGridCell(0, 0).WorldX + _gridMap.GetGridCell(gridSizeX - 1, 0).WorldX) / 2;
+            float centerZ = (_gridMap.GetGridCell(0, 0).WorldY + _gridMap.GetGridCell(0, gridSizeY - 1).WorldY) / 2;
+            return new Vector3(centerX, offsetY, centerZ);
         }
 
         public float GetMaxZPos()

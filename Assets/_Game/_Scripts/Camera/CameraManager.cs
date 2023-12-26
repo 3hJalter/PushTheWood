@@ -39,10 +39,11 @@ namespace _Game.Managers
             currentVirtualCamera.Priority = CAMERA_PRIORITY_ACTIVE;
         }
 
-        public void ChangeCameraTargetPosition(Vector3 position)
+        public void ChangeCameraTargetPosition(Vector3 position, float moveTime = -1f)
         {
+            if (moveTime < 0f) moveTime = cameraMoveTime;
             cameraTarget.DOKill();
-            cameraTarget.DOMove(position, cameraMoveTime).SetEase(Ease.OutCubic);
+            cameraTarget.DOMove(position, moveTime).SetEase(Ease.OutCubic);
 
             // cameraTarget.position = position;
         }
