@@ -3,6 +3,8 @@ using System.Linq;
 using _Game.DesignPattern;
 using _Game.DesignPattern.StateMachine;
 using _Game.Managers;
+using _Game.Utilities;
+using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
 
@@ -12,22 +14,38 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
     {
         private readonly List<GameGridCell> createRaftCells = new();
         private List<GameGridCell> createChumpCells = new();
+        private Chump chumpInWater;
+        HashSet<GridUnit> spawnUnits = new();
+
+        public StateEnum Id => StateEnum.FormRaft;
 
         public void OnEnter(Chump t)
         {
+            t.StateMachine.OverrideState = StateEnum.FormRaft;
+
             InitData(t);
-            OnExecute(t);
+            Sequence s = DOTween.Sequence();
+            #region ANIM
+            s.Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 1.5f).SetEase(Ease.Linear).OnComplete(() =>
+            {
+                OnExit(t);
+                Spawn(t);
+            }));
+            s.Join(chumpInWater.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 1.5f).SetEase(Ease.Linear));
+            t.RemoveUnitFromCell();
+            #endregion
         }
 
         public void OnExecute(Chump t)
         {
-            // TODO: Animation this
-            Spawn(t);
-            t.ChangeState(StateEnum.Idle);
+            
         }
 
         public void OnExit(Chump t)
         {
+            chumpInWater = null;
+            spawnUnits.Clear();
+            t.StateMachine.OverrideState = StateEnum.None;
         }
 
         private void InitData(Chump t)
@@ -36,6 +54,15 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             createChumpCells.Clear();
             // Add all cell in t.belowUnits[i].cellInUnits to cells
             HashSet<GameGridCell> cells = new(t.belowUnits.SelectMany(unit => unit.cellInUnits));
+            foreach (GameGridCell cell in cells)
+            {
+                GameUnit unit = cell.GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]);
+                if(unit != null)
+                {
+                    chumpInWater = (Chump)unit;
+                    break;
+                }
+            }
             // createRaftCells is all cell that both t.cellInUnits and cells have
             for (int i = 0; i < t.cellInUnits.Count; i++)
             {
@@ -50,7 +77,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
         private void Spawn(Chump t)
         {
-            HashSet<GridUnit> spawnUnits = new();
+            
             // Chose what the UnitTypeXZ of RaftPrefab and ChumpPrefab
             UnitTypeXZ typeXZWhenSpawn = t.UnitTypeY is UnitTypeY.Up ? t.belowUnits.First().UnitTypeXZ : t.UnitTypeXZ;
             // Raft direction for rotate skin is right if UnitTypeXZ is Horizontal, Back if UnitTypeXZ is Vertical
@@ -59,7 +86,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             if (t.cellInUnits.Count == createRaftCells.Count)
             {
                 Raft.Raft raft = SimplePool.Spawn<Raft.Raft>(t.RaftPrefab);
-                raft.OnInit(t.MainCell, HeightLevel.ZeroPointFive, false, spawnRaftDirection);
+                raft.OnInit(t.MainCell, HeightLevel.ZeroPointFive, false, spawnRaftDirection);              
                 raft.islandID = t.islandID;
                 LevelManager.Ins.AddNewUnitToIsland(raft);
                 spawnUnits.Add(raft);
@@ -82,6 +109,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     SimplePool.Spawn<Chump>(DataManager.Ins.GetGridUnit(PoolType.ChumpShort));
                 chumpUnit.UnitTypeY = UnitTypeY.Down;
                 chumpUnit.OnInit(createChumpCells[i], Constants.DirFirstHeightOfSurface[GridSurfaceType.Water], false);
+                chumpUnit.StateMachine.ChangeState(StateEnum.Emerge);
                 chumpUnit.islandID = t.islandID;
                 LevelManager.Ins.AddNewUnitToIsland(chumpUnit);
                 chumpUnit.UnitTypeXZ = typeXZWhenSpawn;
@@ -91,7 +119,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                         : Constants.VerticalSkinRotation);
                 spawnUnits.Add(chumpUnit);
             }
-
             foreach (GridUnit unit in t.belowUnits.ToList().Where(unit => !spawnUnits.Contains(unit))) unit.OnDespawn();
             t.OnDespawn();
         }

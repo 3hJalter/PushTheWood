@@ -1,4 +1,5 @@
 ﻿using _Game.DesignPattern.StateMachine;
+using _Game.Utilities;
 using DG.Tweening;
 using Unity.Mathematics;
 using UnityEngine;
@@ -7,12 +8,15 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
 {
     public class IdleRaftState : IState<Raft>
     {
-        private float MOVE_Y_VALUE = 0.1f;
+        private float MOVE_Y_VALUE = 0.06f;
         private float MOVE_Y_TIME = 2f;
 
         Vector3 originTransform;
         
         private Tween floatingTween;
+
+        public StateEnum Id => StateEnum.Idle;
+
         public void OnEnter(Raft t)
         {
             #region ANIM

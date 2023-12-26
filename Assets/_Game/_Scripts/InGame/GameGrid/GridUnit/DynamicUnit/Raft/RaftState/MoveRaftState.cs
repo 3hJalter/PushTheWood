@@ -11,6 +11,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
         private Direction _inverseDirection;
         private bool _isMove;
 
+        public StateEnum Id => StateEnum.Move;
+
         public void OnEnter(Raft t)
         {
             if (t.blockDirectionUnits.Count > 0)
@@ -43,7 +45,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
             {
                 if (t.MovingData.blockDynamicUnits.Count > 0) t.OnPush(t.MovingData.inputDirection, t.MovingData);
                 t.player.isRideVehicle = false;
-                t.ChangeState(StateEnum.Idle);
+                t.StateMachine.ChangeState(StateEnum.Idle);
             }
             else
             {
@@ -68,7 +70,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
                         }
 
                         t.OnEnterTrigger(t);
-                        t.ChangeState(StateEnum.Idle);
+                        t.StateMachine.ChangeState(StateEnum.Idle);
                         t.Ride(t.rideRaftDirection, t);
                     });
             }

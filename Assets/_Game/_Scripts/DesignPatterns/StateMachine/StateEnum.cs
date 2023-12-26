@@ -2,6 +2,7 @@
 {
     public enum StateEnum
     {
+        None = -1,
         Idle = 0, // Idle for all
         JumpDown = 1,
         JumpUp = 2,
@@ -18,5 +19,6 @@
         TurnOver = 11,
         FormRaft = 12,
         RollBlock = 13, 
+        Emerge = 14,
     }
 }

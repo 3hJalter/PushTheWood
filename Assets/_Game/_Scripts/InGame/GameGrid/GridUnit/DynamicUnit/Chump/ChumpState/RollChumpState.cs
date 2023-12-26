@@ -1,4 +1,5 @@
 ﻿using _Game.DesignPattern.StateMachine;
+using _Game.Utilities;
 using DG.Tweening;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
     public class RollChumpState : IState<Chump>
     {
         private bool _isRoll;
+
+        public StateEnum Id => StateEnum.Roll;
 
         public void OnEnter(Chump t)
         {
@@ -20,7 +23,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             if (!_isRoll)
             {
                 if (t.MovingData.blockDynamicUnits.Count > 0) t.OnPush(t.MovingData.inputDirection, t.MovingData);
-                t.ChangeState(StateEnum.RollBlock);
+                t.StateMachine.ChangeState(StateEnum.RollBlock);
             }
             else
             {
@@ -38,12 +41,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                         if (t.EnterPosData.isFalling)
                         {
                             //Falling to water
-                            t.ChangeState(StateEnum.Fall);
+                            t.StateMachine.ChangeState(StateEnum.Fall);
                         }
                         else
                         {
                             t.OnEnterTrigger(t);
-                            t.ChangeState(StateEnum.Idle);
+                            t.StateMachine.ChangeState(StateEnum.Idle);
                             if (t.gameObject.activeSelf)
                                 t.OnBePushed(t.ChumpBeInteractedData.inputDirection, t.ChumpBeInteractedData.pushUnit);
                         }

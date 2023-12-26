@@ -103,7 +103,7 @@ namespace _Game.GameGrid.Unit
         public HeightLevel BelowStartHeight => startHeight - Constants.BELOW_HEIGHT;
         public HeightLevel UpperEndHeight => endHeight + Constants.UPPER_HEIGHT;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             SaveInitData(size, unitTypeY, skin);
         }
@@ -383,7 +383,7 @@ namespace _Game.GameGrid.Unit
         }
 
 
-        private void RemoveUnitFromCell()
+        public void RemoveUnitFromCell()
         {
             for (int i = cellInUnits.Count - 1; i >= 0; i--)
                 cellInUnits[i].RemoveGridUnit(this);

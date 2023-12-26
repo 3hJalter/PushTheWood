@@ -11,6 +11,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         private bool _isExecuted;
         private float _timeCounter;
 
+        public StateEnum Id => StateEnum.CutTree;
+
         public void OnEnter(Player t)
         {
             _timeCounter = 0.5f;
@@ -44,7 +46,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 t.CutTreeData.tree.OnDespawn();
             }
 
-            if (t.IsCurrentAnimDone()) t.ChangeState(StateEnum.Idle);
+            if (t.IsCurrentAnimDone()) t.StateMachine.ChangeState(StateEnum.Idle);
         }
 
         public void OnExit(Player t)

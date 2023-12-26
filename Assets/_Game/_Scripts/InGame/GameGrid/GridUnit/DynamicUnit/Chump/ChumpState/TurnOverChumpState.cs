@@ -11,6 +11,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
     {
         private bool _isTurnOver;
 
+        public StateEnum Id => StateEnum.TurnOver;
+
         public void OnEnter(Chump t)
         {
             t.TurnOverData.SetData(t.ChumpBeInteractedData.inputDirection);
@@ -23,7 +25,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             if (!_isTurnOver)
             {
                 if (t.TurnOverData.blockDynamicUnits.Count > 0) t.OnPush(t.TurnOverData.inputDirection, t.TurnOverData);
-                t.ChangeState(StateEnum.RollBlock);
+                t.StateMachine.ChangeState(StateEnum.RollBlock);
                 //Play Anim Block
             }
             else
@@ -84,12 +86,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     t.Tf.position = t.EnterPosData.initialPos;
                     if (!t.EnterPosData.isFalling)
                     {
-                            t.OnEnterTrigger(t);
-                        t.ChangeState(StateEnum.Idle);
+                        t.OnEnterTrigger(t);
+                        t.StateMachine.ChangeState(StateEnum.Idle);
+                        
                     }
                     else
                     {
-                        t.ChangeState(StateEnum.Fall);
+                        t.StateMachine.ChangeState(StateEnum.Fall);
                     }
                 });
 

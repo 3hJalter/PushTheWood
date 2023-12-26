@@ -9,6 +9,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         private float _counterTime;
         private bool _isExecuted;
 
+        public StateEnum Id => StateEnum.Push;
+
         public void OnEnter(Player t)
         {
             _counterTime = 0.25f;
@@ -22,7 +24,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             {
                 _counterTime -= Time.fixedDeltaTime;
                 if (_isExecuted || t.Direction == t.MovingData.inputDirection || t.Direction == Direction.None) return;
-                t.ChangeState(StateEnum.Idle);
+                t.StateMachine.ChangeState(StateEnum.Idle);
                 return;
             }
 
@@ -31,7 +33,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 _isExecuted = true;
                 // Push the block Unit
                 t.OnPush(t.MovingData.inputDirection);
-                DOVirtual.DelayedCall(0.25f, () => t.ChangeState(StateEnum.Idle));
+                DOVirtual.DelayedCall(0.25f, () => t.StateMachine.ChangeState(StateEnum.Idle));
             }
         }
 

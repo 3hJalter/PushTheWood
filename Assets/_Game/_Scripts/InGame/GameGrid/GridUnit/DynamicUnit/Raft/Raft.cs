@@ -19,9 +19,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
 
         [SerializeField] private ConditionMerge conditionMergeOnBePushed;
 
-        private readonly Dictionary<StateEnum, IState<Raft>> states = new();
+        StateMachine<Raft> stateMachine;
+        public StateMachine<Raft> StateMachine => stateMachine;
         public HashSet<GridUnit> _carryUnits = new();
-        private IState<Raft> _currentState;
         private bool _isAddState;
         private bool _isFirstSpawnDone;
         private Direction _lastDirectionSpawn = Direction.None;
@@ -34,7 +34,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
             if (!IsCurrentStateIs(StateEnum.Idle) && rideUnit is Player.Player) return;
             // Check if there is a unit in the direction of the raft
             rideRaftDirection = direction;
-            ChangeState(StateEnum.Move);
+            stateMachine.ChangeState(StateEnum.Move);
         }
 
         public override void OnPush(Direction direction, ConditionData conditionData = null)
@@ -46,7 +46,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
 
         public override bool IsCurrentStateIs(StateEnum stateEnum)
         {
-            return _currentState == states[stateEnum];
+            return stateMachine.CurrentState.Id == stateEnum;
         }
 
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
@@ -57,23 +57,18 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
             if (!_isAddState)
             {
                 _isAddState = true;
+                stateMachine = new StateMachine<Raft>(this);
                 AddState();
+
             }
-
-            ChangeState(StateEnum.Idle);
-        }
-
-        public void ChangeState(StateEnum stateEnum)
-        {
-            _currentState?.OnExit(this);
-            _currentState = states[stateEnum];
-            _currentState.OnEnter(this);
+            stateMachine.ChangeState(StateEnum.Emerge);
         }
 
         private void AddState()
         {
-            states.Add(StateEnum.Idle, new IdleRaftState());
-            states.Add(StateEnum.Move, new MoveRaftState());
+            stateMachine.AddState(StateEnum.Idle, new IdleRaftState());
+            stateMachine.AddState(StateEnum.Move, new MoveRaftState());
+            stateMachine.AddState(StateEnum.Emerge, new EmergeRaftState());
         }
 
         protected override void OnEnterTriggerUpper(GridUnit triggerUnit)

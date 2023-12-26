@@ -10,6 +10,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         private bool isFirstStop;
         bool hasTreeRoot = false;
 
+        public StateEnum Id => StateEnum.Idle;
+
         public void OnEnter(Player t)
         {
             isFirstStop = true;
@@ -40,7 +42,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             {
                 //NOTE: Checking to push an dynamic object
                 if (t.MovingData.blockDynamicUnits.Count > 0)
-                    t.ChangeState(StateEnum.Push);               
+                    t.StateMachine.ChangeState(StateEnum.Push);               
                 else if (!_isChangeAnim) t.ChangeAnim(Constants.IDLE_ANIM);
 
                 //NOTE: Checking to push an static object
@@ -86,9 +88,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             t.OnOutCells();
             t.OnEnterCells(t.MovingData.enterMainCell, t.MovingData.enterCells);
             if (hasTreeRoot) 
-                t.ChangeState(StateEnum.JumpUp);
+                t.StateMachine.ChangeState(StateEnum.JumpUp);
             else
-                t.ChangeState(t.EnterPosData.isFalling ? StateEnum.JumpDown : StateEnum.Move);
+                t.StateMachine.ChangeState(t.EnterPosData.isFalling ? StateEnum.JumpDown : StateEnum.Move);
         }
 
         public void OnExit(Player t)
