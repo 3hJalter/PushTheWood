@@ -17,7 +17,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         Direction blockDirection;
 
         List<GridUnit> blockObjects = new();
-        
+
+        public StateEnum Id => StateEnum.RollBlock;
+
         public void OnEnter(Chump t)
         {
             blockObjects.Clear();
@@ -38,7 +40,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                         lastAngle = i;
                     }).SetUpdate(UpdateType.Fixed)
                     .SetEase(Ease.OutQuad)
-                    .OnComplete(() => t.ChangeState(StateEnum.Idle));
+                    .OnComplete(() => t.StateMachine.ChangeState(StateEnum.Idle));
 
                     
                     if(blockObjects.Count > 0)
@@ -99,7 +101,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
             void ChangeToIdle()
             {
-                t.ChangeState(StateEnum.Idle);
+                t.StateMachine.ChangeState(StateEnum.Idle);
             }
         }
 

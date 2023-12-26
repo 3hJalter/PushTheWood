@@ -17,19 +17,23 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         private Chump chumpInWater;
         HashSet<GridUnit> spawnUnits = new();
 
+        public StateEnum Id => StateEnum.FormRaft;
+
         public void OnEnter(Chump t)
         {
-            DevLog.Log(DevId.Hung, "STATE: Form Raft");
-            t.OverrideState = StateEnum.FormRaft;
+            t.StateMachine.OverrideState = StateEnum.FormRaft;
 
             InitData(t);
             Sequence s = DOTween.Sequence();
             #region ANIM
-            s.Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 2).SetEase(Ease.Linear).OnComplete(() => Spawn(t)));
-            s.Join(chumpInWater.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 2).SetEase(Ease.Linear));
+            s.Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 1.5f).SetEase(Ease.Linear).OnComplete(() =>
+            {
+                OnExit(t);
+                Spawn(t);
+            }));
+            s.Join(chumpInWater.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 1.5f).SetEase(Ease.Linear));
+            t.RemoveUnitFromCell();
             #endregion
-
-
         }
 
         public void OnExecute(Chump t)
@@ -41,6 +45,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         {
             chumpInWater = null;
             spawnUnits.Clear();
+            t.StateMachine.OverrideState = StateEnum.None;
         }
 
         private void InitData(Chump t)
@@ -104,6 +109,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     SimplePool.Spawn<Chump>(DataManager.Ins.GetGridUnit(PoolType.ChumpShort));
                 chumpUnit.UnitTypeY = UnitTypeY.Down;
                 chumpUnit.OnInit(createChumpCells[i], Constants.DirFirstHeightOfSurface[GridSurfaceType.Water], false);
+                chumpUnit.StateMachine.ChangeState(StateEnum.Emerge);
                 chumpUnit.islandID = t.islandID;
                 LevelManager.Ins.AddNewUnitToIsland(chumpUnit);
                 chumpUnit.UnitTypeXZ = typeXZWhenSpawn;
