@@ -24,7 +24,7 @@ namespace _Game.Managers
         {
             return tutorialData.GetTutorial(index);
         }
-
+        
         public TextAsset GetGridTextData(int index)
         {
             return gridData.GetGridTextData(index);

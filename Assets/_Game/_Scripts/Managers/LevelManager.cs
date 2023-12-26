@@ -206,7 +206,7 @@ namespace _Game.GameGrid
             Vector2Int size = _textGridData.GetSize();
             gridSizeX = size.x;
             gridSizeY = size.y;
-            GridMap = new Grid<GameGridCell, GameGridCellData>(gridSizeX, gridSizeY, Constants.CELL_SIZE, Tf.position,
+            GridMap = new Grid<GameGridCell, GameGridCellData>(gridSizeX, gridSizeY, Constants.CELL_SIZE, default,
                 () => new GameGridCell(), GridPlane.XZ);
         }
 
