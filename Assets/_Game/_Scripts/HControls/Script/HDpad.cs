@@ -4,8 +4,11 @@ namespace HControls
 {
     public class HDpad : HMonoBehaviour
     {
-        [Tooltip("0 is Left, 1 is Right, 2 is Up, 3 is Down")] [SerializeField]
+        [Tooltip("0 is Left, 1 is Right, 2 is Up, 3 is Down")] 
+        [SerializeField]
         private bool highlightButton = true;
+        [SerializeField]
+        private bool testing;
 
         [SerializeField] private HDpadButton[] dpadButtons;
 
@@ -29,25 +32,28 @@ namespace HControls
 
         private void Update()
         {
-            if (Input.GetKey(KeyCode.A))
+            if (testing)
             {
-                HInputManager.SetDirectionInput(Direction.Left);
-            }
-            else if (Input.GetKey(KeyCode.W))
-            {
-                HInputManager.SetDirectionInput(Direction.Forward);
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                HInputManager.SetDirectionInput(Direction.Right);
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                HInputManager.SetDirectionInput(Direction.Back);
-            }
-            else
-            {
-                HInputManager.SetDirectionInput(Direction.None);
+                if (Input.GetKey(KeyCode.A))
+                {
+                    HInputManager.SetDirectionInput(Direction.Left);
+                }
+                else if (Input.GetKey(KeyCode.W))
+                {
+                    HInputManager.SetDirectionInput(Direction.Forward);
+                }
+                else if (Input.GetKey(KeyCode.D))
+                {
+                    HInputManager.SetDirectionInput(Direction.Right);
+                }
+                else if (Input.GetKey(KeyCode.S))
+                {
+                    HInputManager.SetDirectionInput(Direction.Back);
+                }
+                else
+                {
+                    HInputManager.SetDirectionInput(Direction.None);
+                }
             }
         }
     }

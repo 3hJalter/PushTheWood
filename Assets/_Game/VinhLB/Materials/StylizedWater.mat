@@ -22,12 +22,12 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: StylizedWater
   m_Shader: {fileID: -6465566751694194690, guid: 8a28c6c8bd86eda44b4e49775cc7b088, type: 3}
-  m_ValidKeywords:
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _SRP
   - _USENORMALSREFRACTEDUV
   - _USESRP
   - _USEWORLDSPACEUV
-  m_InvalidKeywords:
-  - _SRP
   - _WORLDSPACEUV
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -173,6 +173,9 @@ Material:
     - _USESRP: 1
     - _USEWORLDSPACEUV: 1
     - _UVSec: 0
+    - _UseNormalsRefractedUV: 1
+    - _UseSRP: 1
+    - _UseWorldSpaceUV: 1
     - _WORLDSPACEUV: 1
     - _WaveAmplitude: 0.2
     - _WaveSpeed: 0.1
