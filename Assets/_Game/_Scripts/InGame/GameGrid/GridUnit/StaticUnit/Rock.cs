@@ -10,7 +10,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         private int DEGREE = 6;
         [SerializeField]
         private float DECAY_VALUE = 0.9f;
-        public override void OnBlock(Direction direction = Direction.None)
+        public override void OnBePushed(Direction direction = Direction.None, GridUnit unit = null)
         {
             //NOTE: Refactor
             //NOTE: Play Shake Animation

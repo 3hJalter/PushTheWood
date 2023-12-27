@@ -24,32 +24,18 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             t.OnEnterCells(mainCell, cellInUnits);
 
             //NOTE: Fall into water and checking if it is have object in water
-            MovingData moveData;
             GridUnit unitInCells = null;
-            if(unitInCells == null && t.TurnOverData.enterMainCell != null)
-            {
-                moveData = t.TurnOverData;
-                for (int i = 0; i < cellInUnits.Count; i++)
-                {
-                    unitInCells = moveData.enterCells[i].GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]);
-                    if (unitInCells != null) break;
-                }
-            }   
-            if (unitInCells == null && t.MovingData.enterMainCell != null)
-            {
-                moveData = t.MovingData;
 
-                for (int i = 0; i < cellInUnits.Count; i++)
-                {
-                    unitInCells = moveData.enterCells[i].GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]);
-                    if (unitInCells != null) break;
-                }
+            for (int i = 0; i < cellInUnits.Count; i++)
+            {
+                unitInCells = cellInUnits[i].GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]);
+                if (unitInCells != null) break;
             }
 
-            if (t.IsNextCellSurfaceIs(GridSurfaceType.Water))
+            if (t.MainMovingData.enterMainCell.SurfaceType == GridSurfaceType.Water)
             {
                 //NOTE: Water do not have anything
-                if(unitInCells == t || unitInCells == null)
+                if (unitInCells == t || unitInCells == null)
                 {
                     // Tween to final position
                     DevLog.Log(DevId.Hung, "Fall into water cell that do not have anything");
@@ -72,7 +58,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     DevLog.Log(DevId.Hung, "Fall into water cell that has object");
                     t.StateMachine.ChangeState(StateEnum.FormRaft);
                 }
-                
+
             }
             else
             {
@@ -87,7 +73,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
         public void OnExecute(Chump t)
         {
-            
+
         }
 
         public void OnExit(Chump t)

@@ -6,15 +6,18 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
     public class PushPlayerState : IState<Player>
     {
-        private float _counterTime;
+        float originAnimSpeed;
+        float _counterTime;
         private bool _isExecuted;
 
         public StateEnum Id => StateEnum.Push;
 
         public void OnEnter(Player t)
         {
-            _counterTime = 0.25f;
+            originAnimSpeed = t.AnimSpeed;
             t.ChangeAnim(Constants.PUSH_ANIM);
+            t.SetAnimSpeed(originAnimSpeed * Constants.PUSH_ANIM_TIME / Constants.PUSH_TIME);
+            _counterTime = Constants.PUSH_TIME;
         }
 
         public void OnExecute(Player t)
@@ -33,13 +36,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 _isExecuted = true;
                 // Push the block Unit
                 t.OnPush(t.MovingData.inputDirection);
-                DOVirtual.DelayedCall(0.25f, () => t.StateMachine.ChangeState(StateEnum.Idle));
+                DOVirtual.DelayedCall(Constants.PUSH_TIME, () => t.StateMachine.ChangeState(StateEnum.Idle));
             }
         }
 
         public void OnExit(Player t)
         {
             _isExecuted = false;
+            t.SetAnimSpeed(originAnimSpeed);
         }
     }
 }

@@ -22,7 +22,6 @@ public enum InputAction
     ButtonDown = 0,
     ButtonUp = 1,
     ButtonHold = 2,
-    ButtonSwitch = 3,
 }
 
 namespace TweenTypeEnum

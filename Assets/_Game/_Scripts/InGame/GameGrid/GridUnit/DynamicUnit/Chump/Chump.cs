@@ -143,24 +143,15 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
             return startHeight == Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] &&
                    cellInUnits.All(t => t.SurfaceType is GridSurfaceType.Water);
         }
-        public bool IsNextCellSurfaceIs(GridSurfaceType surfaceType)
+        public MovingData MainMovingData
         {
-            return (TurnOverData.enterMainCell != null && TurnOverData.enterMainCell.SurfaceType == surfaceType) 
-                || (MovingData.enterMainCell != null && MovingData.enterMainCell.SurfaceType == surfaceType);
+            get => TurnOverData.UsingTurnId > MovingData.UsingTurnId ? TurnOverData : MovingData;
         }
 
         public override bool IsCurrentStateIs(StateEnum stateEnum)
         {
             return stateMachine.CurrentState.Id == stateEnum;
         }
-
-        //public void ChangeState(StateEnum stateEnum)
-        //{
-        //    if (OverrideState != StateEnum.None && OverrideState != stateEnum) return;
-        //    _currentState?.OnExit(this);
-        //    _currentState = states[stateEnum];
-        //    _currentState.OnEnter(this);
-        //}
 
         public void SwitchType(Direction direction)
         {

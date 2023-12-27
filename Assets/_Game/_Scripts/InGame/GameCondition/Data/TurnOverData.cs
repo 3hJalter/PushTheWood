@@ -19,6 +19,9 @@ namespace _Game._Scripts.InGame.GameCondition.Data
         // Set Data Method
         public override void SetData(Direction direction)
         {
+            //DEV: Refactor
+            UpdateUsingId();
+            //NOTE: Set Data
             inputDirection = direction;
             enterCells.Clear();
             blockDynamicUnits.Clear();
