@@ -59,8 +59,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     else
                     {
                         Vector3 originPos = t.Tf.position;
-                        t.Tf.DOMove(originPos + Constants.DirVector3F[blockDirection] * Constants.CELL_SIZE / 4f, Constants.MOVING_TIME * 0.4f).SetEase(Ease.InQuad)
-                            .OnComplete(() => t.Tf.DOMove(originPos, Constants.MOVING_TIME * 0.4f).SetEase(Ease.OutQuad).OnComplete(ChangeToIdle));
+                        t.Tf.DOShakePosition(Constants.MOVING_TIME * 0.8f, 0.1f, 60, 0, false, true, ShakeRandomnessMode.Harmonic).SetEase(Ease.InQuad)
+                            .OnComplete(ChangeToIdle);
                     }
                     if (blockObjects.Count > 0)
                         TimerManager.Inst.WaitForTime(Constants.MOVING_TIME * 0.5f, ObjectBlocking);
