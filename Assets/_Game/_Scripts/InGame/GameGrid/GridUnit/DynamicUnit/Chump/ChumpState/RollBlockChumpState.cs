@@ -26,9 +26,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             switch (t.UnitTypeY)
             {
                 case UnitTypeY.Up:
-                    GetBlockObjects(t.TurnOverData);
+                    GetBlockObjects(t.MainMovingData);
                     //NOTE: Blocking when chump is up
-                    blockDirection = t.TurnOverData.inputDirection;
+                    blockDirection = t.MainMovingData.inputDirection;
                     axis = Vector3.Cross(Vector3.up, Constants.DirVector3[blockDirection]);
                     lastAngle = 0;
                     DEGREE = 90 - (blockObjects[0].Size.y + 1) * 15;
@@ -48,11 +48,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     break;
                 case UnitTypeY.Down:
                     //NOTE: Blocking when chump is down
+                    GetBlockObjects(t.MainMovingData);
+                    blockDirection = t.MainMovingData.inputDirection;
                     if (!IsSamePushDirection())
-                    {
-                        GetBlockObjects(t.MovingData);
-                        blockDirection = t.MovingData.inputDirection;
-
+                    {                       
                         Vector3 originPos = t.Tf.position;
 
                         t.Tf.DOMove(originPos + Constants.DirVector3F[blockDirection] * Constants.CELL_SIZE / 2f, Constants.MOVING_TIME * 0.5f).SetEase(Ease.InQuad)
@@ -60,9 +59,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     }
                     else
                     {
-                        GetBlockObjects(t.TurnOverData);
-                        blockDirection = t.TurnOverData.inputDirection;
-
                         Vector3 originPos = t.Tf.position;
                         t.Tf.DOMove(originPos + Constants.DirVector3F[blockDirection] * Constants.CELL_SIZE / 4f, Constants.MOVING_TIME * 0.4f).SetEase(Ease.InQuad)
                             .OnComplete(() => t.Tf.DOMove(originPos, Constants.MOVING_TIME * 0.4f).SetEase(Ease.OutQuad).OnComplete(ChangeToIdle));
@@ -91,8 +87,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
             bool IsSamePushDirection()
             {
-                if((t.UnitTypeXZ == UnitTypeXZ.Horizontal && (t.MovingData.inputDirection == Direction.Left || t.MovingData.inputDirection == Direction.Right)) 
-                    || (t.UnitTypeXZ == UnitTypeXZ.Vertical && (t.MovingData.inputDirection == Direction.Forward || t.MovingData.inputDirection == Direction.Back)))
+                if((t.UnitTypeXZ == UnitTypeXZ.Horizontal && (t.MainMovingData.inputDirection == Direction.Left || t.MainMovingData.inputDirection == Direction.Right)) 
+                    || (t.UnitTypeXZ == UnitTypeXZ.Vertical && (t.MainMovingData.inputDirection == Direction.Forward || t.MainMovingData.inputDirection == Direction.Back)))
                 {
                     return true;
                 }

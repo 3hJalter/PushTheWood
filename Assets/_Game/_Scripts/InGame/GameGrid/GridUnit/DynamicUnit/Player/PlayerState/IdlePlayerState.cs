@@ -54,7 +54,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                             if (isFirstStop)
                             {
                                 //NOTE: Checking button down of player input
-                                if (t.InputDetection.InputAction != InputAction.ButtonHold) isFirstStop = false;
+                                if (t.InputDetection.InputAction == InputAction.ButtonDown) isFirstStop = false;
                                 if (!_isChangeAnim) t.ChangeAnim(Constants.IDLE_ANIM);
                             }
                             else
@@ -63,7 +63,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                             }
                             break;
                         case Rock rock:
-                            if (t.InputDetection.InputAction != InputAction.ButtonHold)
+                            if (t.InputDetection.InputAction == InputAction.ButtonDown)
                                 rock.OnBlock(t.MovingData.inputDirection);
                             break;
                     }
