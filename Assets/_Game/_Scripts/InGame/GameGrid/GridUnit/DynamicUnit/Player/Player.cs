@@ -17,7 +17,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         [SerializeField] private Animator animator;
 
         public bool isRideVehicle;
-
         public readonly Queue<Direction> InputCache = new();
 
         private StateMachine<Player> stateMachine;

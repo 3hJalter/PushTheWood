@@ -47,7 +47,7 @@ namespace _Game.DesignPattern
         public static void Preload(GameUnit prefab, int qty = 1, Transform parent = null, bool collect = false,
             bool clamp = false)
         {
-            PoolTypes.TryAdd(prefab.poolType, prefab);
+            PoolTypes.TryAdd(prefab.PoolType, prefab);
 
             if (prefab == null)
             {
@@ -169,7 +169,7 @@ namespace _Game.DesignPattern
                 GameUnit unit = null;
 
                 for (int i = 0; i < _gameUnitResources.Length; i++)
-                    if (_gameUnitResources[i].poolType == poolType)
+                    if (_gameUnitResources[i].PoolType == poolType)
                     {
                         unit = _gameUnitResources[i];
                         break;
@@ -380,5 +380,8 @@ namespace _Game.DesignPattern
         SurfaceGround4Side = 144,
         SurfaceGround3Side = 145,
         SurfaceGround2Side = 146,
+
+        //VFX
+        VFX_Dust = 1000,
     }
 }

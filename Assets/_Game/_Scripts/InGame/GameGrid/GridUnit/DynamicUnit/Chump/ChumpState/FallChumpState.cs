@@ -40,8 +40,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     // Tween to final position
                     DevLog.Log(DevId.Hung, "Fall into water cell that do not have anything");
                     Sequence s = DOTween.Sequence();
-                    s.Append(t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME * 0.75f).SetEase(Ease.Linear))
-                        .Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 0.75f).SetEase(Ease.Linear))
+                    s.Append(t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME * 0.6f).SetEase(Ease.Linear))
+                        .Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 0.6f).SetEase(Ease.Linear))
                         .OnComplete(() =>
                         {
                             t.OnEnterTrigger(t);
@@ -62,7 +62,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             }
             else
             {
-                t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME)
+                t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME * 0.6f)
                 .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                 {
                     t.OnEnterTrigger(t);

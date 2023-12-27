@@ -187,7 +187,7 @@ public class GridMapDataGenerator : MonoBehaviour
             Vector3 position = gridSurface.Tf.position;
             int x = (int)(position.x + 1) / 2;
             int z = (int)(position.z + 1) / 2;
-            gridData[x - 1, z - 1] = (int)gridSurface.poolType;
+            gridData[x - 1, z - 1] = (int)gridSurface.PoolType;
         }
 
         // Save the array as txt file in Resources folder
@@ -296,7 +296,7 @@ public class GridMapDataGenerator : MonoBehaviour
                 return;
             }
 
-            gridData[x - 1, z - 1] = (int)gridUnit.poolType;
+            gridData[x - 1, z - 1] = (int)gridUnit.PoolType;
         }
 
         // Write a @ to separate

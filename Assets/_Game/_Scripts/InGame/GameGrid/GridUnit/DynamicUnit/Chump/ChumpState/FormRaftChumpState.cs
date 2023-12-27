@@ -26,12 +26,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             InitData(t);
             Sequence s = DOTween.Sequence();
             #region ANIM
-            s.Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 1.5f).SetEase(Ease.Linear).OnComplete(() =>
+            s.Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 1.2f).SetEase(Ease.Linear).OnComplete(() =>
             {
                 OnExit(t);
                 Spawn(t);
             }));
-            s.Join(chumpInWater.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 1.5f).SetEase(Ease.Linear));
+            s.Join(chumpInWater.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 1.2f).SetEase(Ease.Linear));
             t.RemoveUnitFromCell();
             #endregion
         }

@@ -1,5 +1,7 @@
-﻿using _Game.DesignPattern.StateMachine;
+﻿using _Game.DesignPattern;
+using _Game.DesignPattern.StateMachine;
 using DG.Tweening;
+using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
@@ -16,6 +18,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             t.ChangeAnim(Constants.JUMP_UP_ANIM);
             direction = Direction.None;
             _firstTime = true;
+            ParticlePool.Play(PoolController.Ins.Particles[VFX.DUST], t.transform.position - Vector3.up * 0.5f);
         }
 
         public void OnExecute(Player t)

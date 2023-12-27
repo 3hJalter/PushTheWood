@@ -3,6 +3,8 @@ using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
 using _Game.Utilities.Timer;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
@@ -11,6 +13,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
     {
         private bool _isExecuted;
         float originAnimSpeed;
+        List<Action> actions = new List<Action>();
+        List<float> times = new List<float>() { Constants.CUT_TREE_TIME, 0.5f};
 
         public StateEnum Id => StateEnum.CutTree;
 
@@ -19,8 +23,27 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             originAnimSpeed = t.AnimSpeed;
             t.SetAnimSpeed(originAnimSpeed * Constants.CUT_TREE_ANIM_TIME / Constants.CUT_TREE_TIME);
             t.ChangeAnim(Constants.CUT_TREE_ANIM);
-            t.LookDirection(t.CutTreeData.inputDirection);
-            TimerManager.Inst.WaitForTime(Constants.CUT_TREE_TIME, () => CutTreeAction(t));
+            t.LookDirection(t.CutTreeData.inputDirection);          
+            CalculateActionAndTime();
+            TimerManager.Inst.WaitForTime(times, actions);
+
+
+            void CalculateActionAndTime()
+            {
+                actions.Clear();
+                actions.Add(CutTreeAction);
+                actions.Add(ChangeState);
+            }
+
+            void CutTreeAction()
+            {
+                CutTree(t);
+            }
+
+            void ChangeState()
+            {
+                t.StateMachine.ChangeState(StateEnum.Idle);
+            }
         }
 
         public void OnExecute(Player t)
@@ -34,7 +57,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             t.SetAnimSpeed(originAnimSpeed);
         }
 
-        private void CutTreeAction(Player t)
+        private void CutTree(Player t)
         {
             if (!_isExecuted)
             {
@@ -52,7 +75,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 chump.OnBePushed(t.CutTreeData.inputDirection, t);
                 // Despawn the Tree
                 t.CutTreeData.tree.OnDespawn();
-                t.StateMachine.ChangeState(StateEnum.Idle);
             }
         }
     }
