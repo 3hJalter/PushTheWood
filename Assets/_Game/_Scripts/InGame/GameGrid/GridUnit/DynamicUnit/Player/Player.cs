@@ -63,7 +63,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 stateMachine = new StateMachine<Player>(this);
                 AddState();
             }
-
+            //stateMachine.Debug = true;
             stateMachine.ChangeState(StateEnum.Idle);
         }
 
