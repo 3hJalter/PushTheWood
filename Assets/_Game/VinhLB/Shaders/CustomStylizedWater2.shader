@@ -6,10 +6,6 @@ Shader "Universal Render Pipeline/FX/Custom Stylized Water 2"
 {
 	Properties
 	{
-		[Header(Curved World Bend Settings)]
-		[Space]
-        [CurvedWorldBendSettings] _CurvedWorldBendSettings("0,2,5|1,2,3|1", Vector) = (0, 0, 0, 0)
-		
 		//[Header(Rendering)]
 		[MaterialEnum(Off,0,On,1)]_ZWrite("Depth writing", Float) = 0
 		[Enum(UnityEngine.Rendering.CullMode)] _Cull("Render faces", Float) = 2
@@ -133,7 +129,7 @@ Shader "Universal Render Pipeline/FX/Custom Stylized Water 2"
 		//_TessMax("End Distance", Float) = 15
  		/* end Tessellation */
 		
-		//[CurvedWorldBendSettings] _CurvedWorldBendSettings("0|1|1", Vector) = (0, 0, 0, 0)
+		[CurvedWorldBendSettings] _CurvedWorldBendSettings("0,2,5|1|1", Vector) = (0, 0, 0, 0)
 	}
 
 	SubShader
@@ -254,11 +250,11 @@ Shader "Universal Render Pipeline/FX/Custom Stylized Water 2"
 			#include "Assets/StylizedWater2/Shaders/Libraries/Input.hlsl"
 
 			//Uncommenting and rewriting is handled by the Curved World 2020 asset
-			//#define CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE
-			//#define CURVEDWORLD_BEND_ID_1
-			//#pragma shader_feature_local CURVEDWORLD_DISABLED_ON
-			//#pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
-			//#include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
+			#pragma multi_compile_local CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE CURVEDWORLD_BEND_TYPE_LITTLEPLANET_Y
+			#define multi_compile_local CURVEDWORLD_BEND_ID_1
+			#pragma shader_feature_local CURVEDWORLD_DISABLED_ON
+			#pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
+			#include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
 			
 			#include "Assets/StylizedWater2/Shaders/Libraries/Common.hlsl"
 			#include "Assets/StylizedWater2/Shaders/Libraries/Fog.hlsl"
@@ -266,19 +262,19 @@ Shader "Universal Render Pipeline/FX/Custom Stylized Water 2"
 			#include "Assets/StylizedWater2/Shaders/Libraries/Lighting.hlsl"
 
 			#ifdef UNDERWATER_ENABLED
-			#include "Underwater/UnderwaterFog.hlsl"
-			#include "Underwater/UnderwaterShading.hlsl"
+			#include "Assets/StylizedWater2/Shaders/Underwater/UnderwaterFog.hlsl"
+			#include "Assets/StylizedWater2/Shaders/Underwater/UnderwaterShading.hlsl"
 			#endif
 
 			#ifdef WAVE_SIMULATION
-			#include "Libraries/Simulation/Simulation.hlsl"
+			#include "Assets/StylizedWater2/Shaders/Libraries/Simulation/Simulation.hlsl"
 			#endif
 
 			#include "Assets/StylizedWater2/Shaders/Libraries/Features.hlsl"
 			#include "Assets/StylizedWater2/Shaders/Libraries/Caustics.hlsl"
 
 			#if MODIFIERS_ENABLED
-			#include "SurfaceModifiers/SurfaceModifiers.hlsl"
+			#include "Assets/StylizedWater2/Shaders/SurfaceModifiers/SurfaceModifiers.hlsl"
 			#endif
 			
 			#include "Assets/StylizedWater2/Shaders/Libraries/Vertex.hlsl"
@@ -286,25 +282,9 @@ Shader "Universal Render Pipeline/FX/Custom Stylized Water 2"
 			/* start Tessellation */
 //			#include "Libraries/Tesselation.hlsl"
 			/* end Tessellation */
-
-			// Curved world definitions
-#pragma shader_feature_local CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE CURVEDWORLD_BEND_TYPE_LITTLEPLANET_Y
-#pragma shader_feature_local CURVEDWORLD_BEND_ID_1 CURVEDWORLD_BEND_ID_2 CURVEDWORLD_BEND_ID_3
-            #pragma shader_feature_local CURVEDWORLD_DISABLED_ON
-            #pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
-            #include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
-
+			
 			Varyings Vertex(Attributes v)
 			{
-				// Curved world vertex transformations
-                #if defined(CURVEDWORLD_IS_INSTALLED) && !defined(CURVEDWORLD_DISABLED_ON)
-                #ifdef CURVEDWORLD_NORMAL_TRANSFORMATION_ON
-                CURVEDWORLD_TRANSFORM_VERTEX_AND_NORMAL(v.positionOS, v.normalOS.xyz, v.tangentOS)
-                #else
-                CURVEDWORLD_TRANSFORM_VERTEX(v.positionOS)
-                #endif
-                #endif
-				
 				return LitPassVertex(v);
 			}
 
@@ -344,12 +324,13 @@ Shader "Universal Render Pipeline/FX/Custom Stylized Water 2"
             #include "Assets/StylizedWater2/Shaders/Libraries/URP.hlsl"
             #include "Assets/StylizedWater2/Shaders/Libraries/Input.hlsl"
 
-			//#define CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE
-			//#define CURVEDWORLD_BEND_ID_1
-			//#pragma shader_feature_local CURVEDWORLD_DISABLED_ON
-			//#pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
-			//#include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
-
+            //Uncommenting and rewriting is handled by the Curved World 2020 asset
+			#pragma multi_compile_local CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE CURVEDWORLD_BEND_TYPE_LITTLEPLANET_Y
+			#define multi_compile_local CURVEDWORLD_BEND_ID_1
+			#pragma shader_feature_local CURVEDWORLD_DISABLED_ON
+			#pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
+			#include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
+            
             #include "Assets/StylizedWater2/Shaders/Libraries/Common.hlsl"
             #include "Assets/StylizedWater2/Shaders/Libraries/Fog.hlsl"
             #include "Assets/StylizedWater2/Shaders/Libraries/Waves.hlsl"
@@ -360,24 +341,8 @@ Shader "Universal Render Pipeline/FX/Custom Stylized Water 2"
 //          #include "Libraries/Tesselation.hlsl"
             /* end Tessellation */
 
-            // Curved world definitions
-#pragma shader_feature_local CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE CURVEDWORLD_BEND_TYPE_LITTLEPLANET_Y
-#pragma shader_feature_local CURVEDWORLD_BEND_ID_1 CURVEDWORLD_BEND_ID_2 CURVEDWORLD_BEND_ID_3
-            #pragma shader_feature_local CURVEDWORLD_DISABLED_ON
-            #pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
-            #include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
-
             Varyings Vertex(Attributes v)
             {
-            	// Curved world vertex transformations
-                #if defined(CURVEDWORLD_IS_INSTALLED) && !defined(CURVEDWORLD_DISABLED_ON)
-                #ifdef CURVEDWORLD_NORMAL_TRANSFORMATION_ON
-                CURVEDWORLD_TRANSFORM_VERTEX_AND_NORMAL(v.positionOS, v.normalOS.xyz, v.tangentOS)
-                #else
-                CURVEDWORLD_TRANSFORM_VERTEX(v.positionOS)
-                #endif
-                #endif
-            	
                 return LitPassVertex(v);
             }
 

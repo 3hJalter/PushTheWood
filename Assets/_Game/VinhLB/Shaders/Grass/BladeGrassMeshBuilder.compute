@@ -61,7 +61,7 @@ RWStructuredBuffer<int> _GeneratedIndices;
 
 int _NumSourceTriangles;
 float4x4 _Transform;
-float _RandomSeed; // An offset to add to random functions
+float3 _RandomSeed; // An offset to add to random functions
 float _MaxBendAngle; // Maximum bend angle as a multiplier to PI / 2
 float _BladeWidth; // Maximum blade width
 float _BladeWidthVariance; // Variance of blade width

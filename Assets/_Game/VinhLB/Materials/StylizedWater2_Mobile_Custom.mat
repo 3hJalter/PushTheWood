@@ -10,7 +10,6 @@ Material:
   m_Name: StylizedWater2_Mobile_Custom
   m_Shader: {fileID: 4800000, guid: 8e5d51ace523cb3458269c3411e35483, type: 3}
   m_ValidKeywords:
-  - CURVEDWORLD_BEND_ID_1
   - CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE
   - CURVEDWORLD_NORMAL_TRANSFORMATION_ON
   - _CAUSTICS
@@ -21,6 +20,7 @@ Material:
   - _WAVES
   m_InvalidKeywords:
   - ADVANCED_LIGHTING
+  - CURVEDWORLD_BEND_ID_1
   - _CROSSPAN_INTERSECTION
   - _DEPTH_TEX
   - _SIMPLE_LIGHTING

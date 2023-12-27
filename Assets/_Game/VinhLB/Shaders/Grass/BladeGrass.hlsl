@@ -4,15 +4,10 @@
 
 // Include some helper functions
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+
+#include "Assets/Amazing Assets/Curved World/Shaders/CGINC/Classic Runner/CurvedWorld_ClassicRunner_Z_Positive_ID1.cginc"
 #include "NMGBladeGrassGraphicsHelpers.hlsl"
 #include "GrassTrample.hlsl"
-
-// Curved world definitions
-#pragma shader_feature_local CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE CURVEDWORLD_BEND_TYPE_LITTLEPLANET_Y
-#pragma shader_feature_local CURVEDWORLD_BEND_ID_1 CURVEDWORLD_BEND_ID_2 CURVEDWORLD_BEND_ID_3
-#pragma shader_feature_local CURVEDWORLD_DISABLED_ON
-#pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
-#include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
 
 struct Attributes
 {
@@ -66,13 +61,15 @@ Varyings Vertex(Attributes input)
     UNITY_TRANSFER_INSTANCE_ID(input, output);
 
     // Curved world vertex transformations
-    #if defined(CURVEDWORLD_IS_INSTALLED) && !defined(CURVEDWORLD_DISABLED_ON)
-    #ifdef CURVEDWORLD_NORMAL_TRANSFORMATION_ON
-    CURVEDWORLD_TRANSFORM_VERTEX_AND_NORMAL(input.positionOS, input.normalOS.xyz, input.tangentOS)
-    #else
-    CURVEDWORLD_TRANSFORM_VERTEX(input.positionOS)
-    #endif
-    #endif
+    // #if defined(CURVEDWORLD_IS_INSTALLED) && !defined(CURVEDWORLD_DISABLED_ON)
+    // #ifdef CURVEDWORLD_NORMAL_TRANSFORMATION_ON
+    // CURVEDWORLD_TRANSFORM_VERTEX_AND_NORMAL(input.positionOS, input.normalOS.xyz, input.tangentOS)
+    // #else
+    // CURVEDWORLD_TRANSFORM_VERTEX(input.positionOS)
+    // #endif
+    // #endif
+
+    CurvedWorld_ClassicRunner_Z_Positive_ID1(input.positionOS, input.normalOS, input.tangentOS);
 
     float3 bladeAnchorWS = GetVertexPositionInputs(input.bladeAnchorOS).positionWS;
     // Get a plane perpendicular to the normal

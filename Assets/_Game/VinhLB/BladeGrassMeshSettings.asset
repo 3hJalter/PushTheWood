@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94020c582e9442e40a1c309e7f9bf0be, type: 3}
   m_Name: BladeGrassMeshSettings
   m_EditorClassIdentifier: 
-  sourceMesh: {fileID: -462981019419857548, guid: 3fbe56119a35c05449d26fa1c880019d, type: 3}
+  sourceMesh: {fileID: -2597582329907136719, guid: fc57aa122321b3449b1af28557e3c86d, type: 3}
   sourceSubMeshIndex: 0
   scale: {x: 1, y: 1, z: 1}
   rotation: {x: 0, y: 0, z: 0}
-  randomOffset: {x: 0, y: 0, z: 0}
-  numBladeSegments: 5
-  curvature: 3
-  maxBendAngle: 30
-  width: 0.2
-  widthVariance: 0.02
-  height: 0.375
-  heightVariance: 0.075
+  randomOffset: {x: 1, y: -0.7, z: 0.46}
+  numBladeSegments: 3
+  curvature: 2
+  maxBendAngle: 45
+  width: 0.3
+  widthVariance: 0.1
+  height: 0.4
+  heightVariance: 0.2

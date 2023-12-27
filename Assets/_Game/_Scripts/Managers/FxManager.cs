@@ -7,11 +7,12 @@ namespace _Game.Managers
 {
     public class FxManager : Singleton<FxManager>
     {
-        // [Header("Fog")] [SerializeField] private D2FogsSprite fogControl;
         [SerializeField]
         private GameObject _groundGO;
         [SerializeField]
         private GameObject _waterGO;
+        [SerializeField]
+        private GameObject _cloudGO;
         [SerializeField]
         private GameObject _gridGO;
         [SerializeField]
@@ -23,6 +24,7 @@ namespace _Game.Managers
         {
             _groundGO.SetActive(true);
             _waterGO.SetActive(true);
+            // _cloudGO.SetActive(true);
             _gridGO.SetActive(false);
 
             VinhLB.Utilities.TryGetRendererFeature(_rendererData, out _feature);
