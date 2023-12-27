@@ -53,7 +53,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     if (!IsSamePushDirection())
                     {                       
                         Vector3 originPos = t.Tf.position;
-
                         t.Tf.DOMove(originPos + Constants.DirVector3F[blockDirection] * Constants.CELL_SIZE / 2f, Constants.MOVING_TIME * 0.5f).SetEase(Ease.InQuad)
                             .OnComplete(() => t.Tf.DOMove(originPos, Constants.MOVING_TIME * 0.5f).SetEase(Ease.OutQuad).OnComplete(ChangeToIdle));
                     }
@@ -81,7 +80,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             {
                 for (int i = 0; i < blockObjects.Count; i++)
                 {
-                    blockObjects[i].OnBlock(blockDirection);
+                    blockObjects[i].OnBePushed(blockDirection);
                 }
             }
 

@@ -64,7 +64,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                             break;
                         case Rock rock:
                             if (t.InputDetection.InputAction == InputAction.ButtonDown)
-                                rock.OnBlock(t.MovingData.inputDirection);
+                                t.StateMachine.ChangeState(StateEnum.Push);
                             break;
                     }
                 }

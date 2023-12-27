@@ -90,6 +90,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         {
             for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
                 MovingData.blockDynamicUnits[i].OnBePushed(direction, this);
+            for(int i = 0; i < MovingData.blockStaticUnits.Count; i++)
+                MovingData.blockStaticUnits[i].OnBePushed(direction, this);
         }
 
         public override bool IsCurrentStateIs(StateEnum stateEnum)
@@ -97,14 +99,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             return stateMachine.CurrentState.Id == stateEnum;
         }
 
-        public void ChangeAnim(string animName, float speed = 1, bool forceAnim = false)
+        public void ChangeAnim(string animName, bool forceAnim = false)
         {
             if (!forceAnim)
                 if (_currentAnim.Equals(animName))
                     return;
             animator.ResetTrigger(_currentAnim);
             _currentAnim = animName;
-            animator.speed = speed;
             animator.SetTrigger(_currentAnim);
         }
 
