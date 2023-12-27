@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
 using _Game.Managers;
 using _Game.UIs.Screen;
+using _Game.Utilities;
 using _Game.Utilities.Grid;
 using GameGridEnum;
+using HControls;
 using MapEnum;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -21,11 +24,36 @@ namespace _Game._Scripts.Managers
         private Level _currentLevel;
         private Level _nextLevel;
         private Level _previousLevel;
+        
 
+        [SerializeField] private int initializeX = 0;
+        [SerializeField] private float moveSpeed = 20f;
+        
+        private Direction _previousDirection = Direction.None;
         private void Update()
         {
-            // Reload scene
-            if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            Direction direction = HInputManager.GetDirectionInput();
+            switch (direction)
+            {
+                case Direction.None:
+                    _previousDirection = Direction.None;
+                    return;
+                case Direction.Left or Direction.Right:
+                    return;
+            }
+            // else move the CameraTargetPosZ
+            if (_previousDirection is Direction.None)
+            {
+                if (direction is Direction.Forward)
+                {
+                    SeePreviousLevel();
+                }
+                else if (direction is Direction.Back)
+                {
+                    SeeNextLevel();
+                }
+            }
+            _previousDirection = direction;
         }
 
         private void OnEnable()
@@ -55,11 +83,10 @@ namespace _Game._Scripts.Managers
             // Spawn next level
             Vector3 nextLevelPos = new(0, 0, _currentLevel.GetMaxZPos() + 15f);
             _nextLevel = nextLevelIndex + 1 < DataManager.Ins.CountLevel
-                ? new Level(nextLevelIndex + 1, nextLevelPos)
+                ? new Level(nextLevelIndex + 1, nextLevelPos, false, initializeX)
                 : null;
             // Change camera target position to center of first island of current level
             CameraManager.Ins.ChangeCameraTargetPosition(_currentLevel.GetIsland(0).GetCenterIslandPos() + Vector3.up * 5f);
-            DebugLevel();
         }
 
         [ContextMenu("See Previous Level")]
@@ -82,32 +109,31 @@ namespace _Game._Scripts.Managers
             // Spawn previous level
             Vector3 previousLevelPos = new(0, 0, _currentLevel.GetMinZPos() - 15f);
             _previousLevel = previousLevelIndex - 1 >= 0
-                ? new Level(previousLevelIndex - 1, previousLevelPos, true)
+                ? new Level(previousLevelIndex - 1, previousLevelPos, true, initializeX)
                 : null;
             CameraManager.Ins.ChangeCameraTargetPosition(_currentLevel.GetIsland(0).GetCenterIslandPos() + Vector3.up * 5f, 1.5f);
-            DebugLevel();
-        }
-
-        private void DebugLevel()
-        {
-            Debug.Log($"Previous Level {_previousLevel?.Index}");
-            Debug.Log($"Current Level {_currentLevel?.Index}");
-            Debug.Log($"Next Level {_nextLevel?.Index}");
         }
 
         private void OnFirstSpawnLevel(int index)
         {
-            Vector3 initLevelPos = Vector3.zero;
+            _currentLevel = new Level(index);
+            CameraManager.Ins.ChangeCameraTargetPosition(_currentLevel.GetIsland(0).GetCenterIslandPos() + Vector3.up * 5f, 1.5f);
+            initializeX = _currentLevel.GridSizeX;
+            
             if (index - 1 >= 0)
             {
-                _previousLevel = new Level(index - 1);
-                initLevelPos = new Vector3(0, 0, _previousLevel.GetMaxZPos() + 15f);
+                
+                Vector3 previousLevelPos = new(0, 0, _currentLevel.GetMinZPos() - 15f);
+                _previousLevel = new Level(index - 1, previousLevelPos, true, initializeX);
             }
 
-            _currentLevel = new Level(index, initLevelPos);
-            initLevelPos = new Vector3(0, 0, _currentLevel.GetMaxZPos() + 15f);
-            if (index + 1 < DataManager.Ins.CountLevel) _nextLevel = new Level(index + 1, initLevelPos);
-            CameraManager.Ins.ChangeCameraTargetPosition(_currentLevel.GetIsland(0).GetCenterIslandPos() + Vector3.up * 5f, 1.5f);
+            if (index + 1 < DataManager.Ins.CountLevel)
+            {
+                Vector3 nextLevelPos = new(0, 0, _currentLevel.GetMaxZPos() + 15f);
+                _nextLevel = new Level(index + 1, nextLevelPos, false, initializeX);
+            }
+            
+           
         }
     }
 
@@ -116,6 +142,9 @@ namespace _Game._Scripts.Managers
         private readonly Dictionary<int, Island> _islandDic = new();
         private readonly TextGridData _textGridData;
         private readonly int gridSizeX;
+
+        public int GridSizeX => gridSizeX;
+
         private readonly int gridSizeY;
 
         private Grid<GameGridCell, GameGridCellData> _gridMap;
@@ -129,12 +158,15 @@ namespace _Game._Scripts.Managers
             return _islandDic[islandID];
         }
         
-        public Level(int index, Vector3 originPosition = default, bool reduceZPosOffset = false)
+        public Level(int index, Vector3 originPosition = default, bool reduceZPosOffset = false, int fistXSizeInit = 0)
         {
             Index = index;
             _textGridData = GameGridDataHandler.CreateGridData(index);
             gridSizeX = _textGridData.GetSize().x;
             gridSizeY = _textGridData.GetSize().y;
+            DevLog.Log(DevId.Hoang, $"Island Id: {index}, SizeX: {gridSizeX}, SizeY: {gridSizeY}, Origin Position: {originPosition}");
+            if (fistXSizeInit != 0) originPosition += Vector3.right * (fistXSizeInit - gridSizeX) * Constants.CELL_SIZE / 2;
+            DevLog.Log(DevId.Hoang, $"Island Id: {index}, New Origin Position: {originPosition}");
             if (reduceZPosOffset) originPosition -= Vector3.forward * (gridSizeY * Constants.CELL_SIZE);
             _gridMap = new Grid<GameGridCell, GameGridCellData>(gridSizeX, gridSizeY, Constants.CELL_SIZE,
                 originPosition,
@@ -200,10 +232,16 @@ namespace _Game._Scripts.Managers
         private void SpawnGridSurfaceToGrid()
         {
             string[] surfaceData = _textGridData.SurfaceData.Split('\n');
+            string[] surfaceRotationDirectionData = _textGridData.SurfaceRotationDirectionData.Split('\n');
+            surfaceRotationDirectionData = surfaceRotationDirectionData.Skip(1).ToArray();
+            string[] surfaceMaterialData = _textGridData.SurfaceMaterialData.Split('\n');
+            surfaceMaterialData = surfaceMaterialData.Skip(1).ToArray();
             _gridSurfaceMap = new GridSurface[surfaceData.Length, surfaceData[0].Split(' ').Length];
             for (int x = 0; x < gridSizeX; x++)
             {
                 string[] surfaceDataSplit = surfaceData[x].Split(' ');
+                string[] surfaceRotationDirectionDataSplit = surfaceRotationDirectionData[x].Split(' ');
+                string[] surfaceMaterialDataSplit = surfaceMaterialData[x].Split(' ');
                 if (surfaceDataSplit.Length != gridSizeY) continue;
                 for (int y = 0; y < gridSizeY; y++)
                 {
@@ -212,10 +250,17 @@ namespace _Game._Scripts.Managers
                     GridSurface gridSurface = DataManager.Ins.GetGridSurface((PoolType)cell);
                     if (gridSurface is null) return;
                     GameGridCell gridCell = _gridMap.GetGridCell(x, y);
-                    gridCell.SetSurface(
-                        SimplePool.Spawn<GridSurface>(gridSurface,
-                            new Vector3(gridCell.WorldX, 0, gridCell.WorldY), Quaternion.identity));
+                    GridSurface surfaceClone = SimplePool.Spawn<GridSurface>(gridSurface,
+                        new Vector3(gridCell.WorldX, 0, gridCell.WorldY), Quaternion.identity);
+                    gridCell.SetSurface(surfaceClone);
                     _gridSurfaceMap[x, y] = gridCell.Data.gridSurface;
+                    
+                    if (!int.TryParse(surfaceRotationDirectionDataSplit[y], out int directionSurface)) continue;
+                    if (!Enum.IsDefined(typeof(Direction), directionSurface)) continue;
+                    if (!int.TryParse(surfaceMaterialDataSplit[y], out int materialSurface)) continue;
+                    if (!Enum.IsDefined(typeof(MaterialEnum), materialSurface)) continue;
+                    surfaceClone.OnInit((Direction) directionSurface,
+                        (MaterialEnum) materialSurface);
                 }
             }
         }
