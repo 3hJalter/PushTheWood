@@ -103,6 +103,7 @@ public class GridMapDataGenerator : MonoBehaviour
     [ContextMenu("Save Data as txt file")]
     private void Setup()
     {
+        SetSurfaceAndUnitToParent();
 
         #region verify
 
