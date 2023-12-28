@@ -41,7 +41,7 @@ namespace _Game._Scripts.InGame
 
         // Some other data
         public GameGridCell firstPlayerInitCell;
-        private Direction firstPlayerDirection;
+        public Direction firstPlayerDirection;
         
         // Get Data
         public int GridSizeX { get; }

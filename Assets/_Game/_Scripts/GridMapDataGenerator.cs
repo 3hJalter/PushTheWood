@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using _Game._Scripts.InGame;
 using _Game.Data;
+using _Game.DesignPattern;
+using _Game.GameGrid;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
+using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Managers;
 using _Game.Utilities;
+using GameGridEnum;
 using UnityEngine;
 using VinhLB;
 using Random = UnityEngine.Random;
@@ -15,8 +19,7 @@ public class GridMapDataGenerator : MonoBehaviour
 {
     [Header("Map Data")]
     [SerializeField] private string mapLevelName = "Lvl_0";
-    [SerializeField] private int offsetSurfaceWithFirstCell = 3;
-    [SerializeField] private Vector2 gridMapPosition = Vector2.zero;
+    [SerializeField] private int offsetSurfaceWithFirstCell = 3; // Should be 3
 
     [Header("Map Container")]
     [SerializeField] private Transform surfaceContainer;
@@ -58,6 +61,13 @@ public class GridMapDataGenerator : MonoBehaviour
         _loadedLevel = null;
     }
 
+    private Vector3 PredictUnitPos(GridUnit unit, GameGridCell cell)
+    {
+        float offsetY = (float)HeightLevel.One / 2 * Constants.CELL_SIZE;
+        if (unit.UnitTypeY == UnitTypeY.Down) offsetY -= unit.yOffsetOnDown;
+        return cell.WorldPos + Vector3.up * offsetY;
+    }
+    
     [ContextMenu("Load Level")]
     private void LoadLevels()
     {
@@ -66,8 +76,11 @@ public class GridMapDataGenerator : MonoBehaviour
         for (int i = loadLevelIndexStart; i < loadLevelIndexEnd; i++)
         {
             // Create a new empty object
-            GameObject levelObject = new("Level " + i);
+            GameObject levelObject = new("Level " + (i+1));
             Level level = new(i, levelObject.transform);
+            // Spawn the Player to the level
+            Player player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
+            player.OnSetPositionAndRotation(PredictUnitPos(player, level.firstPlayerInitCell), level.firstPlayerDirection);
             _loadedLevel.Add(level);
         }
     }
@@ -75,19 +88,8 @@ public class GridMapDataGenerator : MonoBehaviour
     [ContextMenu("Unload Level")]
     private void UnLoadLevels()
     {
-        try
-        {
-            for (int i = _loadedLevel.Count - 1; i >= 0; i--)
-            {
-                _loadedLevel[i].OnDeSpawnLevel(false);
-                _loadedLevel.RemoveAt(i);
-            }
-        }
-        catch (Exception e)
-        {
-            DevLog.Log(DevId.Hoang, "Error when unload level, please remove unit by hand." +
-                                    "\nThen clear _loadedLevel list. \nMessage: " + e.Message);
-        }
+        SetSurfaceAndUnitToParent();
+        DestroyAll();
         _loadedLevel = null;
     }
 
@@ -121,9 +123,62 @@ public class GridMapDataGenerator : MonoBehaviour
             Debug.LogError("Grid must have at least 1 surface, and all unit must have on a surface");
             return;
         }
-
+        
+        // check name convention
+        if (!mapLevelName.Contains("Lvl_"))
+        {
+            Debug.LogError("Map name must be Lvl_0, Lvl_1, Lvl_2, ...");
+            return;
+        }
+        // Get the number of map
+        string[] split = mapLevelName.Split('_');
+        if (split.Length != 2)
+        {
+            Debug.LogError("Map name must be Lvl_0, Lvl_1, Lvl_2, ...");
+            return;
+        }
+        if (!int.TryParse(split[1], out int mapNumber))
+        {
+            Debug.LogError("Map name must be Lvl_0, Lvl_1, Lvl_2, ...");
+            return;
+        }
+        // Check if the map number is < 0 or > DataManager.Ins.CountLevel
+        if (mapNumber <= 0 || mapNumber > DataManager.Ins.CountLevel + 1)
+        {
+            Debug.LogError("Map number must be > 0 and <= " + (DataManager.Ins.CountLevel + 1));
+            return;
+        }
         #endregion
 
+        #region Get Previous Level Data
+        
+        int previousLevelXSpawnPos = 0;
+        int previousLevelYSpawnPos = 0;
+        Vector2Int previousLevelSize = Vector2Int.zero;
+        // Get previous level data
+        if (mapNumber > 1)
+        {
+            TextGridData previousLevelData = GameGridDataHandler.CreateGridData(mapNumber - 2);
+            // Get GridPositionData
+            string[] splitGridPositionData = previousLevelData.GridPositionData.Split(' ');
+            // Get the X (the first value)
+            if (!int.TryParse(splitGridPositionData[0], out previousLevelXSpawnPos))
+            {
+                Debug.LogError("Error when get previous level data");
+                return;
+            }
+            // Get the Y (the second value)
+            if (!int.TryParse(splitGridPositionData[1], out previousLevelYSpawnPos))
+            {
+                Debug.LogError("Error when get previous level data");
+                return;
+            }
+            // Get the size of previous level
+            previousLevelSize = previousLevelData.GetSize();
+        }
+
+        #endregion
+        
         #region Set up GridMap
 
         GridUnit[] gridUnits = FindObjectsOfType<GridUnit>();
@@ -242,6 +297,17 @@ public class GridMapDataGenerator : MonoBehaviour
 
         #region Save map position
 
+        float xSpawnPos = 0f;
+        float ySpawnPos = 0f;
+        if (mapNumber > 1)
+        {
+            ySpawnPos = previousLevelYSpawnPos + previousLevelSize.y * Constants.CELL_SIZE - offsetS;
+            if (mapNumber % 2 == 0)
+                xSpawnPos = previousLevelXSpawnPos + previousLevelSize.x * Constants.CELL_SIZE - offsetS;
+            else
+                xSpawnPos = previousLevelXSpawnPos - maxX * Constants.CELL_SIZE + offsetS;
+        }
+        Vector2 gridMapPosition = new(xSpawnPos, ySpawnPos);
         file.WriteLine(gridMapPosition.x + " " + gridMapPosition.y);
 
         #endregion

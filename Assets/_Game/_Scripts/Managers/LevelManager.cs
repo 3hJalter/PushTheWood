@@ -50,7 +50,7 @@ namespace _Game.GameGrid
             SetCameraToPlayer();
             savingState = new CareTaker(this);
             savingState.SavingState();
-            // SetCameraToPlayerIsland();
+            SetCameraToPlayerIsland();
             // CameraManager.Ins.ChangeCameraTargetPosition(GetCenterPos());
         }
 
