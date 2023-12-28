@@ -41,6 +41,7 @@ namespace _Game.GameGrid
             // PlayerPrefs.SetInt(Constants.LEVEL_INDEX, 0);
             levelIndex = PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0);
             _tutorialIndex = PlayerPrefs.GetInt(Constants.TUTORIAL_INDEX, 0);
+            OnInit();
         }
 
         public void OnShowTutorial()
@@ -58,7 +59,13 @@ namespace _Game.GameGrid
             SpawnGridSurfaceToGrid();
             AddIslandIdToSurface();
             SpawnGridUnitToGrid();
-            SetCameraToPlayer();
+            // SetCameraToPlayer();
+            SetCameraToPlayerIsland();
+            // CameraManager.Ins.ChangeCameraTargetPosition(GetCenterPos());
+        }
+
+        public void SetCameraToPlayerIsland()
+        {
             CameraManager.Ins.ChangeCameraTargetPosition(_islandDic[Player.islandID].GetCenterIslandPos());
         }
     
@@ -102,6 +109,13 @@ namespace _Game.GameGrid
             // FxManager.Ins.ResetTrackedTrampleObjectList();
         }
 
+        public Vector3 GetCenterPos(float offsetY = 5f)
+        {
+            float centerX = (GridMap.GetGridCell(0, 0).WorldX + GridMap.GetGridCell(gridSizeX - 1, 0).WorldX) / 2;
+            float centerZ = (GridMap.GetGridCell(0, 0).WorldY + GridMap.GetGridCell(0, gridSizeY - 1).WorldY) / 2;
+            return new Vector3(centerX, offsetY, centerZ);
+        }
+        
         public GameGridCell GetCell(Vector2Int position)
         {
             return GridMap.GetGridCell(position.x, position.y);

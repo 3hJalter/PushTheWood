@@ -1112,7 +1112,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1267216522180438114}
         m_TargetAssemblyTypeName: _Game.UIs.Popup.SettingPopup, Assembly-CSharp
-        m_MethodName: OnClickChangeSfxStatusButton
+        m_MethodName: OnClickSelectLevelButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
