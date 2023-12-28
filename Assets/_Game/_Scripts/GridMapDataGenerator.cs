@@ -7,12 +7,15 @@ using _Game.GameGrid.Unit;
 using _Game.Managers;
 using _Game.Utilities.Grid;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VinhLB;
 
 public class GridMapDataGenerator : MonoBehaviour
 {
     [SerializeField] private string mapLevelName = "level0";
     [SerializeField] private int offsetSurfaceWithFirstCell = 5;
+    [SerializeField] private Vector2 gridMapPosition = Vector2.zero;
+    
     [SerializeField] private Transform surfaceContainer;
     [SerializeField] private Transform unitContainer;
     private Grid<GameGridCell, GameGridCellData>.DebugGrid _debugGrid;
@@ -27,8 +30,8 @@ public class GridMapDataGenerator : MonoBehaviour
 
     private void Start()
     {
-        TextAsset gridData = Resources.Load<TextAsset>(mapLevelName);
-        TextGridData textGridData = GameGridDataHandler.CreateGridData2(gridData);
+        // TextAsset gridData = Resources.Load<TextAsset>(mapLevelName);
+        // TextGridData textGridData = GameGridDataHandler.CreateGridData2(gridData);
         // GenerateMap();
     }
 
@@ -172,7 +175,20 @@ public class GridMapDataGenerator : MonoBehaviour
 
         #endregion
 
+        #region Create Txt File
 
+        string path = "Assets/_Game/Resources/" + mapLevelName + ".txt";
+        File.WriteAllText(path, string.Empty);
+        using StreamWriter file = new(path, true);
+
+        #endregion
+
+        #region Save map position
+        
+        file.WriteLine(gridMapPosition.x + " " + gridMapPosition.y);
+
+        #endregion
+        
         #region Init Grid Surface
 
         // create 2 dimension int array with default value is 0
@@ -187,13 +203,12 @@ public class GridMapDataGenerator : MonoBehaviour
             Vector3 position = gridSurface.Tf.position;
             int x = (int)(position.x + 1) / 2;
             int z = (int)(position.z + 1) / 2;
-            gridData[x - 1, z - 1] = (int)gridSurface.poolType;
+            gridData[x - 1, z - 1] = (int)gridSurface.PoolType;
         }
 
         // Save the array as txt file in Resources folder
-        string path = "Assets/_Game/Resources/" + mapLevelName + ".txt";
-        File.WriteAllText(path, string.Empty);
-        using StreamWriter file = new(path, true);
+        // Write a @ to separate
+        file.WriteLine("@");
         for (int i = 0; i < maxX; i++)
         {
             string line = "";
@@ -296,7 +311,7 @@ public class GridMapDataGenerator : MonoBehaviour
                 return;
             }
 
-            gridData[x - 1, z - 1] = (int)gridUnit.poolType;
+            gridData[x - 1, z - 1] = (int)gridUnit.PoolType;
         }
 
         // Write a @ to separate

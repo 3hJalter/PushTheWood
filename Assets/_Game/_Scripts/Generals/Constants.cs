@@ -66,7 +66,7 @@ public static class Constants
     public const float MOVING_TIME = 0.25f;
     public const float MOVING_TIME_FAST_RATE = 1f;
     public const float FALLING_TIME = 0.2f;
-    public const float POS_Y_BOTTOM = 1f * CELL_SIZE - 2f;
+    public const float POS_Y_BOTTOM = -1f;
     public const float CUT_TREE_TIME = 0.3f;
     public const float PUSH_TIME = 0.2f;
 

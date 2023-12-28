@@ -4,6 +4,7 @@ using _Game.GameGrid;
 using _Game.Managers;
 using _Game.Utilities;
 using HControls;
+using UnityEngine;
 
 namespace _Game.UIs.Screen
 {
@@ -44,6 +45,11 @@ namespace _Game.UIs.Screen
             // CurveWorld
             FxManager.Ins.ChangePlanetCurvatureSize();
             CameraManager.Ins.ChangeCamera(ECameraType.WorldMapCamera);
+            Vector3 worldPos = new Vector3(
+                CameraManager.Ins.WorldCameraXYPos.x,
+                CameraManager.Ins.WorldCameraXYPos.y,
+                LevelManager.Ins.CurrentLevel.GetCenterPos().z);
+            CameraManager.Ins.ChangeCameraTargetPosition(worldPos);
         }
 
         public override void Close()

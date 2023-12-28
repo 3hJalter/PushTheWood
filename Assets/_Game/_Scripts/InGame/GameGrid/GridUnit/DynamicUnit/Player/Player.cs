@@ -17,7 +17,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         [SerializeField] private Animator animator;
 
         public bool isRideVehicle;
-
         public readonly Queue<Direction> InputCache = new();
 
         private StateMachine<Player> stateMachine;
@@ -134,7 +133,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         {
             if (islandID == nextMainCell.IslandID || nextMainCell.IslandID == -1) return;
             islandID = nextMainCell.IslandID;
-            LevelManager.Ins.SetFirstPlayerStepOnIsland(nextMainCell);
+            LevelManager.Ins.CurrentLevel.SetFirstPlayerStepOnIsland(nextMainCell);
         }
 
         public void SetVehicle(IVehicle vehicle)

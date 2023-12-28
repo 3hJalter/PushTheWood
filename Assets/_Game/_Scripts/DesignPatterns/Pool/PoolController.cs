@@ -1,13 +1,18 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace _Game.DesignPattern
 {
-    public class PoolController : MonoBehaviour
+    public enum VFX
+    {
+        DUST = 0,
+    }
+    public class PoolController : Singleton<PoolController>
     {
         [Header("Pool")] public PoolAmount[] pool;
 
         [Header("Particle")] public ParticleAmount[] particle;
-
+        public Dictionary<VFX, ParticleSystem> Particles;
 
         public void Awake()
         {

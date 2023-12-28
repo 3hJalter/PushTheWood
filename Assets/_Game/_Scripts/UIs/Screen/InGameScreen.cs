@@ -53,7 +53,7 @@ namespace _Game.UIs.Screen
 
         public void OnClickResetIslandButton()
         {
-            LevelManager.Ins.ResetIslandPlayerOn();
+            LevelManager.Ins.CurrentLevel.ResetIslandPlayerOn();
         }
 
         public void OnClickToggleBuildingMode()
