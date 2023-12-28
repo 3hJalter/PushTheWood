@@ -66,11 +66,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 // Spawn a TreeRoot
                 TreeRoot treeRoot = SimplePool.Spawn<TreeRoot>(DataManager.Ins.GetGridUnit(PoolType.TreeRoot));
                 treeRoot.OnInit(t.CutTreeData.tree.MainCell, t.CutTreeData.tree.StartHeight);
-                LevelManager.Ins.AddNewUnitToIsland(treeRoot);
+                LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(treeRoot);
                 // Spawn a Chump
                 Chump.Chump chump = SimplePool.Spawn<Chump.Chump>(t.CutTreeData.tree.chumpPrefab);
                 chump.OnInit(t.CutTreeData.tree.MainCell, t.CutTreeData.tree.StartHeight + 1);
-                LevelManager.Ins.AddNewUnitToIsland(chump);
+                LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(chump);
                 // Push the Chump with the direction
                 chump.OnBePushed(t.CutTreeData.inputDirection, t);
                 // Despawn the Tree

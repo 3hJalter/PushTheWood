@@ -1,4 +1,5 @@
-﻿using _Game.Managers;
+﻿using System.Linq;
+using _Game.Managers;
 using UnityEngine;
 
 namespace _Game.GameGrid
@@ -10,6 +11,7 @@ namespace _Game.GameGrid
             TextAsset textAsset = DataManager.Ins.GetGridTextData(mapIndex);
             string[] splitData = textAsset.text.Split('@');
             return new TextGridData(
+                splitData[(int)GridDataType.GridPositionData],
                 splitData[(int)GridDataType.SurfaceData],
                 splitData[(int)GridDataType.SurfaceRotationDirectionData],
                 splitData[(int)GridDataType.SurfaceMaterialData],
@@ -21,6 +23,7 @@ namespace _Game.GameGrid
         {
             string[] splitData = textAsset.text.Split('@');
             return new TextGridData(
+                splitData[(int)GridDataType.GridPositionData],
                 splitData[(int)GridDataType.SurfaceData],
                 splitData[(int)GridDataType.SurfaceRotationDirectionData],
                 splitData[(int)GridDataType.SurfaceMaterialData],
@@ -30,18 +33,21 @@ namespace _Game.GameGrid
 
         private enum GridDataType
         {
-            SurfaceData = 0,
-            SurfaceRotationDirectionData = 1,
-            SurfaceMaterialData = 2,
-            UnitData = 3,
-            RotationDirectionUnitData = 4,
+            GridPositionData = 0,
+            SurfaceData = 1,
+            SurfaceRotationDirectionData = 2,
+            SurfaceMaterialData = 3,
+            UnitData = 4,
+            RotationDirectionUnitData = 5
         }
     }
 
     public class TextGridData
     {
-        public TextGridData(string surfaceData, string surfaceRotationDirectionData, string surfaceMaterialData, string unitData, string unitRotationDirectionData)
+        public TextGridData(string gridPositionData, string surfaceData, string surfaceRotationDirectionData,
+            string surfaceMaterialData, string unitData, string unitRotationDirectionData)
         {
+            GridPositionData = gridPositionData;
             SurfaceData = surfaceData;
             SurfaceRotationDirectionData = surfaceRotationDirectionData;
             SurfaceMaterialData = surfaceMaterialData;
@@ -49,15 +55,17 @@ namespace _Game.GameGrid
             UnitRotationDirectionData = unitRotationDirectionData;
         }
 
+        public string GridPositionData { get; }
         public string SurfaceData { get; }
         public string SurfaceRotationDirectionData { get; }
         public string SurfaceMaterialData { get; }
         public string UnitData { get; }
         public string UnitRotationDirectionData { get; }
 
-        public Vector2Int GetSize()
+        public Vector2Int GetSize(bool skipFirstLine = true)
         {
             string[] surfaceData = SurfaceData.Split('\n');
+            if (skipFirstLine) surfaceData = surfaceData.Skip(1).ToArray();
             int x = surfaceData.Length;
             int y = surfaceData[0].Split(' ').Length;
             return new Vector2Int(x, y);
