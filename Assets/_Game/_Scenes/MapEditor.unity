@@ -7616,7 +7616,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapLevelName: Lvl_3
-  offsetSurfaceWithFirstCell: 5
+  offsetSurfaceWithFirstCell: 0
+  gridMapPosition: {x: 0, y: 0}
   surfaceContainer: {fileID: 1661734939}
   unitContainer: {fileID: 1552975947}
 --- !u!1 &833756848
