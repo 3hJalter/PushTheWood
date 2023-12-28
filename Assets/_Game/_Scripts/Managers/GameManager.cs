@@ -9,6 +9,7 @@ namespace _Game.Managers
     {
         MainMenu,
         InGame,
+        WorldMap,
         Pause,
         Transition
     }

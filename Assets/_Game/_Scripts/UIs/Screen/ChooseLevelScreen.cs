@@ -41,15 +41,12 @@ namespace _Game.UIs.Screen
         public override void Setup()
         {
             base.Setup();
+            GameManager.Ins.ChangeState(GameState.WorldMap);
             _previousDirection = Direction.None;
             // CurveWorld
             FxManager.Ins.ChangePlanetCurvatureSize();
+            CameraManager.Ins.ChangeWorldTargetPosition();
             CameraManager.Ins.ChangeCamera(ECameraType.WorldMapCamera);
-            Vector3 worldPos = new Vector3(
-                CameraManager.Ins.WorldCameraXYPos.x,
-                CameraManager.Ins.WorldCameraXYPos.y,
-                LevelManager.Ins.CurrentLevel.GetCenterPos().z);
-            CameraManager.Ins.ChangeCameraTargetPosition(worldPos);
         }
 
         public override void Close()
@@ -57,6 +54,7 @@ namespace _Game.UIs.Screen
             FxManager.Ins.ChangePlanetCurvatureSize(0f);
             CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
             LevelManager.Ins.SetCameraToPlayerIsland();
+            UIManager.Ins.OpenUI<InGameScreen>();
             base.Close();
         }
 
