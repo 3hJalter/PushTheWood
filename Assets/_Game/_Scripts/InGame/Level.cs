@@ -20,6 +20,8 @@ namespace _Game._Scripts.InGame
     {
         #region data
 
+        private bool _isInit; // Check if all unit is init in this Level
+        
         // Init Data
         private readonly TextGridData _textGridData;
 
@@ -35,6 +37,7 @@ namespace _Game._Scripts.InGame
 
         // Island (Each island has some surfaces and units)
         private readonly Dictionary<int, Island> _islandDic = new();
+        public Dictionary<int, Island> Islands => _islandDic;
 
         // Some other data
         public GameGridCell firstPlayerInitCell;
@@ -44,6 +47,8 @@ namespace _Game._Scripts.InGame
         public int GridSizeX { get; }
 
         public int Index { get; }
+        
+        public bool IsInit => _isInit;
         
         public Grid<GameGridCell, GameGridCellData> GridMap => _gridMap;
 

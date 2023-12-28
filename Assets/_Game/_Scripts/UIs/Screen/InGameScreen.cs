@@ -64,5 +64,10 @@ namespace _Game.UIs.Screen
 
             GridBuildingManager.Ins.ToggleBuildMode();
         }
+
+        public void OnClickUndo()
+        {
+            LevelManager.Ins.OnUndo();
+        }
     }
 }

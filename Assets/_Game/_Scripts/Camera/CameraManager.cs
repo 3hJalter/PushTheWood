@@ -73,6 +73,11 @@ namespace _Game.Managers
                 LevelManager.Ins.CurrentLevel.GetCenterPos().z);
         }
         
+        public void EnableWorldCamera(bool enable)
+        {
+            worldMapCameraTarget.gameObject.SetActive(enable);
+        }
+        
         public void ChangeCameraTarget(ECameraType eCameraType, Transform target)
         {
             virtualCameraDic[eCameraType].Follow = target;

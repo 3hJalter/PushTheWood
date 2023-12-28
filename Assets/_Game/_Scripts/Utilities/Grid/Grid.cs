@@ -5,11 +5,12 @@ using UnityEngine;
 
 namespace _Game.Utilities.Grid
 {
-    public class Grid<T, TD> where T : GridCell<TD>
+    public class Grid<T, TD> : IOriginator where T : GridCell<TD>
     {
         private readonly TextMesh[,] debugTextArray;
         private readonly T[,] gridArray;
         private readonly Vector3 originPosition;
+        protected readonly List<IMemento> cellMementos = new List<IMemento>();
 
         public Grid(int width, int height, float cellSize, Vector3 originPosition = default,
             Func<GridCell<TD>> constructorCell = null, GridPlane gridPlaneType = GridPlane.XY)
@@ -117,9 +118,10 @@ namespace _Game.Utilities.Grid
             return default;
         }
 
-        private void OnGridCellValueChange(int x, int y)
+        protected virtual void OnGridCellValueChange(int x, int y)
         {
-            debugTextArray[x, y].text = gridArray[x, y].ToString();
+            //debugTextArray[x, y].text = gridArray[x, y].ToString();
+            cellMementos.Add(gridArray[x, y].Save());
         }
 
         private Vector3 GetUnitVector3(float val1, float val2)
@@ -136,6 +138,8 @@ namespace _Game.Utilities.Grid
 
             return default;
         }
+
+        
 
 
         #region VISIT CLASS
@@ -200,7 +204,33 @@ namespace _Game.Utilities.Grid
                             new Vector3(path[i + 1].WorldX, path[i + 1].WorldY), Color.cyan, 5f);
             }
         }
+        #region SAVING DATA
+        public IMemento Save()
+        {
+            GridMemento save = new GridMemento(this, cellMementos.Count > 0 ? cellMementos : null);
+            cellMementos.Clear();
+            return save;
+        }
+        public struct GridMemento : IMemento
+        {
+            Grid<T, TD> main;
+            IMemento[] cellMememtos;
+            public GridMemento(Grid<T, TD> main, params object[] data)
+            {
+                this.main = main;
+                if (data[0] != null) cellMememtos = ((List<IMemento>)data[0]).ToArray();
+                else cellMememtos = null;
 
+            }
+            public void Restore()
+            {
+                foreach(IMemento memento in cellMememtos)
+                {
+                    memento.Restore();
+                }
+            }
+        }
+        #endregion
         #endregion
     }
 }
