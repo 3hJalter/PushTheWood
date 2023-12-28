@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using _Game._Scripts.InGame;
 using _Game.Camera;
 using _Game.DesignPattern;
+using _Game.GameGrid;
 using Cinemachine;
 using DG.Tweening;
 using MEC;
@@ -17,10 +20,13 @@ namespace _Game.Managers
 
         [SerializeField] private UnityEngine.Camera brainCamera;
         [SerializeField] private Transform cameraTarget;
-
-        public Transform CameraTarget => cameraTarget;
-
+        [SerializeField] private WorldMapTarget worldMapCameraTarget; // may be redundant later
+        
         [SerializeField] private float cameraMoveTime = 1f;
+        [SerializeField] private Vector2 worldCameraXYPos;
+
+        public Vector2 WorldCameraXYPos => worldCameraXYPos;
+
 
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         // ReSharper disable once CollectionNeverUpdated.Local
@@ -38,9 +44,14 @@ namespace _Game.Managers
 
         public void ChangeCamera(ECameraType eCameraType)
         {
-            if (currentVirtualCamera != null) currentVirtualCamera.Priority = CAMERA_PRIORITY_INACTIVE;
+            if (currentVirtualCamera != null)
+            {
+                currentVirtualCamera.Priority = CAMERA_PRIORITY_INACTIVE;
+                currentVirtualCamera.enabled = false;
+            }
             currentVirtualCamera = virtualCameraDic[eCameraType];
             currentVirtualCamera.Priority = CAMERA_PRIORITY_ACTIVE;
+            currentVirtualCamera.enabled = true;
         }
 
         public void ChangeCameraTargetPosition(Vector3 position, float moveTime = -1f)
@@ -54,17 +65,17 @@ namespace _Game.Managers
             // cameraTarget.position = position;
         }
 
-        private IEnumerator<float> MoveCameraTargetPosition(Vector3 position, float moveTime)
+        public void ChangeWorldTargetPosition()
         {
-            // Move camera target to position with move time
-            float time = 0f;
-            Vector3 startPosition = cameraTarget.position;
-            while (time < moveTime)
-            {
-                time += Time.deltaTime;
-                cameraTarget.position = Vector3.Lerp(startPosition, position, time / moveTime);
-                yield return Timing.WaitForOneFrame;
-            }
+            worldMapCameraTarget.Tf.position = new Vector3(
+                worldCameraXYPos.x,
+                worldCameraXYPos.y,
+                LevelManager.Ins.CurrentLevel.GetCenterPos().z);
+        }
+        
+        public void EnableWorldCamera(bool enable)
+        {
+            worldMapCameraTarget.gameObject.SetActive(enable);
         }
         
         public void ChangeCameraTarget(ECameraType eCameraType, Transform target)

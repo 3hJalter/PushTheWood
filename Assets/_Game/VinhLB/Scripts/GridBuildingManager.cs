@@ -69,7 +69,7 @@ namespace VinhLB
             if (_testing)
             {
                 LevelManager.Ins.OnInit();
-                _homeGrid = LevelManager.Ins.GridMap;
+                _homeGrid = LevelManager.Ins.CurrentLevel.GridMap;
 
                 var debugGrid = new Grid<GameGridCell, GameGridCellData>.DebugGrid();
                 debugGrid.DrawGrid(_homeGrid, true);
@@ -78,7 +78,7 @@ namespace VinhLB
             }
             else
             {
-                _homeGrid = LevelManager.Ins.GridMap;
+                _homeGrid = LevelManager.Ins.CurrentLevel.GridMap;
             }
         }
 
@@ -113,9 +113,9 @@ namespace VinhLB
 
             if (_isOnBuildingMode)
             {
-                if (_homeGrid != LevelManager.Ins.GridMap)
+                if (LevelManager.Ins.CurrentLevel != null && _homeGrid != LevelManager.Ins.CurrentLevel.GridMap)
                 {
-                    _homeGrid = LevelManager.Ins.GridMap;
+                    _homeGrid = LevelManager.Ins.CurrentLevel.GridMap;
                 }
                 _isAnyChanged = false;
                 Utilities.TryGetCenterScreenPosition(out _lastMousePosition, _placeableLayerMask);

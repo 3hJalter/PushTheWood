@@ -6,6 +6,7 @@ using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState;
 using _Game.GameGrid.Unit.StaticUnit;
+using _Game.Managers;
 using DG.Tweening;
 using GameGridEnum;
 using HControls;
@@ -36,6 +37,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         private void FixedUpdate()
         {
+            if (!GameManager.Ins.IsState(GameState.InGame)) return;
             if (_isWaitAFrame)
             {
                 _isWaitAFrame = false;
@@ -135,7 +137,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         {
             if (islandID == nextMainCell.IslandID || nextMainCell.IslandID == -1) return;
             islandID = nextMainCell.IslandID;
-            LevelManager.Ins.SetFirstPlayerStepOnIsland(nextMainCell);
+            LevelManager.Ins.CurrentLevel.SetFirstPlayerStepOnIsland(nextMainCell);
         }
 
         public void SetVehicle(IVehicle vehicle)

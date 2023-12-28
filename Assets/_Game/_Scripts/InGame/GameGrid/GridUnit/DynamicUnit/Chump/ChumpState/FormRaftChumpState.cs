@@ -88,7 +88,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 Raft.Raft raft = SimplePool.Spawn<Raft.Raft>(t.RaftPrefab);
                 raft.OnInit(t.MainCell, HeightLevel.ZeroPointFive, false, spawnRaftDirection);              
                 raft.islandID = t.islandID;
-                LevelManager.Ins.AddNewUnitToIsland(raft);
+                LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(raft);
                 spawnUnits.Add(raft);
             }
             else
@@ -98,7 +98,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     Raft.Raft raft = SimplePool.Spawn<Raft.Raft>(DataManager.Ins.GetGridUnit(PoolType.Raft));
                     raft.OnInit(createRaftCells[i], HeightLevel.ZeroPointFive, false, spawnRaftDirection);
                     raft.islandID = t.islandID;
-                    LevelManager.Ins.AddNewUnitToIsland(raft);
+                    LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(raft);
                     spawnUnits.Add(raft);
                 }
             }
@@ -111,7 +111,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 chumpUnit.OnInit(createChumpCells[i], Constants.DirFirstHeightOfSurface[GridSurfaceType.Water], false);
                 chumpUnit.StateMachine.ChangeState(StateEnum.Emerge);
                 chumpUnit.islandID = t.islandID;
-                LevelManager.Ins.AddNewUnitToIsland(chumpUnit);
+                LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(chumpUnit);
                 chumpUnit.UnitTypeXZ = typeXZWhenSpawn;
                 chumpUnit.skin.localRotation =
                     Quaternion.Euler(chumpUnit.UnitTypeXZ is UnitTypeXZ.Horizontal
