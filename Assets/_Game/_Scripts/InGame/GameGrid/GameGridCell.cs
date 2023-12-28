@@ -10,7 +10,7 @@ using Object = UnityEngine.Object;
 
 namespace _Game.GameGrid
 {
-    public class GameGridCell : GridCell<GameGridCellData>
+    public class GameGridCell : GridCell<GameGridCellData> 
     {
         public GameGridCell()
         {
@@ -47,12 +47,14 @@ namespace _Game.GameGrid
 
         public void ClearGridUnit()
         {
+            ValueChange();
             for (int i = (int)Constants.DirFirstHeightOfSurface[data.gridSurfaceType]; i < data.gridUnits.Length; i++)
                 data.gridUnits[i] = null;
         }
 
         public void RemoveGridUnit(GridUnit removeUnit)
         {
+            ValueChange();
             for (int i = 0; i < data.gridUnits.Length; i++)
                 if (data.gridUnits[i] == removeUnit)
                     data.gridUnits[i] = null;
@@ -60,25 +62,28 @@ namespace _Game.GameGrid
 
         public void AddGridUnit(GridUnit addUnit)
         {
+            ValueChange();
             for (int i = (int)addUnit.StartHeight; i <= (int)addUnit.EndHeight; i++) data.gridUnits[i] = addUnit;
         }
 
         public void RemoveGridUnitAtHeight(HeightLevel heightLevel)
         {
+            ValueChange();
             if (data.gridUnits[(int)heightLevel] is null) return;
             data.gridUnits[(int)heightLevel] = null;
         }
 
         public void AddGridUnit(HeightLevel heightLevel, GridUnit unit)
         {
+            ValueChange();
             data.gridUnits[(int)heightLevel] = unit;
         }
 
         public void AddGridUnit(HeightLevel startHeight, HeightLevel endHeight, GridUnit unit)
         {
+            ValueChange();
             for (int i = (int)startHeight; i <= (int)endHeight; i++) data.gridUnits[i] = unit;
         }
-
         public HeightLevel GetMaxHeight()
         {
             HeightLevel maxHeight = HeightLevel.One;
@@ -201,6 +206,38 @@ namespace _Game.GameGrid
 
             return gameGridCellList;
         }
+
+        #region SAVING DATA
+        public override IMemento Save()
+        {
+            return new CellMemento(this, data.gridUnits);
+        }
+
+        public struct CellMemento : IMemento
+        {
+            GameGridCell main;
+            GridUnit[] gridUnits;
+            public CellMemento(GameGridCell main, params object[] data)
+            {
+                this.main = main;
+                if (data[0] != null)
+                {
+                    GridUnit[] data0 = (GridUnit[])data[0];
+                    gridUnits = new GridUnit[data0.Length];
+                    data0.CopyTo(gridUnits, 0);
+                }
+                else gridUnits = null;
+            }
+
+            public void Restore()
+            {
+                for(int i = 0; i < main.data.gridUnits.Length; i++)
+                {
+                    main.data.gridUnits[i] = gridUnits[i];
+                }
+            }
+        }
+        #endregion
     }
 
     public class GameGridCellData

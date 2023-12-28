@@ -44,5 +44,10 @@ namespace _Game.UIs.Popup
         {
             Debug.Log("Click how to play button");
         }
+
+        public void OnClickUndo()
+        {
+
+        }
     }
 }

@@ -9,11 +9,13 @@ using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Managers;
 using _Game.UIs.Screen;
+using _Game.Utilities;
 using _Game.Utilities.Grid;
 using DG.Tweening;
 using GameGridEnum;
 using MapEnum;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace _Game.GameGrid
 {
@@ -29,7 +31,7 @@ namespace _Game.GameGrid
         private int _tutorialIndex;
         private int gridSizeX;
         private int gridSizeY;
-
+        private CareTaker savingState;
         public Grid<GameGridCell, GameGridCellData> GridMap { get; private set; }
 
         public Player Player { get; private set; }
@@ -59,8 +61,10 @@ namespace _Game.GameGrid
             SpawnGridSurfaceToGrid();
             AddIslandIdToSurface();
             SpawnGridUnitToGrid();
-            // SetCameraToPlayer();
-            SetCameraToPlayerIsland();
+            SetCameraToPlayer();
+            savingState = new CareTaker(this);
+            savingState.SavingState();
+            // SetCameraToPlayerIsland();
             // CameraManager.Ins.ChangeCameraTargetPosition(GetCenterPos());
         }
 
@@ -105,8 +109,12 @@ namespace _Game.GameGrid
             Player.OnDespawn();
             Player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
             Player.OnInit(_firstPlayerInitCell);
-
+            savingState = new CareTaker(this);
             // FxManager.Ins.ResetTrackedTrampleObjectList();
+        }
+        public void OnUndo()
+        {
+            savingState.Undo();
         }
 
         public Vector3 GetCenterPos(float offsetY = 5f)
@@ -319,6 +327,45 @@ namespace _Game.GameGrid
                 return gridSurface.IslandID < 0;
             }
         }
+
+        public class CareTaker
+        {
+            LevelManager main;
+            Stack<IMemento[]> historys = new Stack<IMemento[]>();
+            public CareTaker(LevelManager main)
+            {
+                this.main = main;
+                main.Player.OnSavingState += SavingState;
+            }
+            public void Undo()
+            {
+                if(historys.Count > 0)
+                {
+                    IMemento[] states = historys.Pop();
+                    foreach(IMemento state in states)
+                    {
+                        state.Restore();
+                    }
+                    DevLog.Log(DevId.Hung, "UNDO_STATE - SUCCESS!!");
+                }
+                else
+                {
+                    DevLog.Log(DevId.Hung, "UNDO_STATE - FAILURE!!");
+                }
+            }
+            public void SavingState()
+            {
+                HashSet<GridUnit> gridUnits = main._islandDic[main.Player.islandID].GridUnits;
+                IMemento[] states = new IMemento[gridUnits.Count + 1];
+                int index = 1;
+                states[0] = main.GridMap.Save();
+                foreach(GridUnit gridUnit in gridUnits)
+                {
+                    states[index] = gridUnit.Save();
+                }
+            }
+        }
+
     }
 
     public class Island
@@ -327,7 +374,7 @@ namespace _Game.GameGrid
 
         private readonly Dictionary<GameGridCell, PoolType> _initGridUnitDic = new();
         private readonly int _islandID;
-
+        public HashSet<GridUnit> GridUnits => _gridUnits;
         public Island(int islandID)
         {
             _islandID = islandID;
@@ -396,4 +443,6 @@ namespace _Game.GameGrid
             }
         }
     }
+
+    
 }
