@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using _Game._Scripts.InGame;
 using _Game.Camera;
 using _Game.DesignPattern;
+using _Game.GameGrid;
 using Cinemachine;
 using DG.Tweening;
 using MEC;
@@ -17,7 +20,8 @@ namespace _Game.Managers
 
         [SerializeField] private UnityEngine.Camera brainCamera;
         [SerializeField] private Transform cameraTarget;
-
+        [SerializeField] private WorldMapTarget worldMapCameraTarget; // may be redundant later
+        
         [SerializeField] private float cameraMoveTime = 1f;
         [SerializeField] private Vector2 worldCameraXYPos;
 
@@ -59,6 +63,14 @@ namespace _Game.Managers
             cameraTarget.DOMove(position, moveTime).SetEase(Ease.Linear);
 
             // cameraTarget.position = position;
+        }
+
+        public void ChangeWorldTargetPosition()
+        {
+            worldMapCameraTarget.Tf.position = new Vector3(
+                worldCameraXYPos.x,
+                worldCameraXYPos.y,
+                LevelManager.Ins.CurrentLevel.GetCenterPos().z);
         }
         
         public void ChangeCameraTarget(ECameraType eCameraType, Transform target)

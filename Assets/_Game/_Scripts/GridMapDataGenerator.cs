@@ -6,6 +6,7 @@ using _Game.Data;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
 using _Game.Managers;
+using _Game.Utilities;
 using UnityEngine;
 using VinhLB;
 using Random = UnityEngine.Random;
@@ -28,6 +29,28 @@ public class GridMapDataGenerator : MonoBehaviour
     
     private List<Level> _loadedLevel;
 
+    [ContextMenu("Destroy All")]
+    private void DestroyAll()
+    {
+        DestroyAllUnit();
+        DestroyAllSurface();
+        _loadedLevel = null;
+    }
+    
+    [ContextMenu("Destroy All Unit In Container")]
+    private void DestroyAllUnit()
+    {
+        GridUnit[] gridUnits = unitContainer.GetComponentsInChildren<GridUnit>();
+        foreach (GridUnit gridUnit in gridUnits) DestroyImmediate(gridUnit.gameObject);
+    }
+    
+    [ContextMenu("Destroy All Surface In Container")]
+    private void DestroyAllSurface()
+    {
+        GridSurface[] gridSurfaces = surfaceContainer.GetComponentsInChildren<GridSurface>();
+        foreach (GridSurface gridSurface in gridSurfaces) DestroyImmediate(gridSurface.gameObject);
+    }
+    
     // Use this when some unit or surface Unloaded is null, then remove all other by hand
     [ContextMenu("Clear Loaded Level list to null")] 
     private void ClearLoadedLevel()
@@ -42,7 +65,9 @@ public class GridMapDataGenerator : MonoBehaviour
         _loadedLevel = new List<Level>();
         for (int i = loadLevelIndexStart; i < loadLevelIndexEnd; i++)
         {
-            Level level = new(i);
+            // Create a new empty object
+            GameObject levelObject = new("Level " + i);
+            Level level = new(i, levelObject.transform);
             _loadedLevel.Add(level);
         }
     }
@@ -50,12 +75,19 @@ public class GridMapDataGenerator : MonoBehaviour
     [ContextMenu("Unload Level")]
     private void UnLoadLevels()
     {
-        for (int i = _loadedLevel.Count - 1; i >= 0; i--)
+        try
         {
-            _loadedLevel[i].OnDeSpawnLevel(false);
-            _loadedLevel.RemoveAt(i);
+            for (int i = _loadedLevel.Count - 1; i >= 0; i--)
+            {
+                _loadedLevel[i].OnDeSpawnLevel(false);
+                _loadedLevel.RemoveAt(i);
+            }
         }
-
+        catch (Exception e)
+        {
+            DevLog.Log(DevId.Hoang, "Error when unload level, please remove unit by hand." +
+                                    "\nThen clear _loadedLevel list. \nMessage: " + e.Message);
+        }
         _loadedLevel = null;
     }
 

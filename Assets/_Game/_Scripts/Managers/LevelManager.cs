@@ -13,7 +13,7 @@ namespace _Game.GameGrid
     public class LevelManager : Singleton<LevelManager>
     {
         [SerializeField] private int levelIndex;
-        private List<Level> _activeLevels; // All the level that currently show in world map 
+        private List<Level> _activeLevels = new (); // All the level that currently show in world map 
         private Level _currentLevel;
         public Level CurrentLevel => _currentLevel;
         
@@ -29,6 +29,12 @@ namespace _Game.GameGrid
             levelIndex = PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0);
             _tutorialIndex = PlayerPrefs.GetInt(Constants.TUTORIAL_INDEX, 0);
             OnInit();
+            // Test -> Load 3 next level
+            for (int i = levelIndex + 1; i < levelIndex + 4; i++)
+            {
+                Level level = new(i);
+                _activeLevels.Add(level);
+            }
         }
 
         public void OnShowTutorial()
@@ -43,7 +49,7 @@ namespace _Game.GameGrid
         {
             _currentLevel = new Level(levelIndex);
             _currentLevel.OnInitLevel();
-            SetCameraToPlayer();
+            // SetCameraToPlayer();
             SetCameraToPlayerIsland();
             // CameraManager.Ins.ChangeCameraTargetPosition(GetCenterPos());
         }

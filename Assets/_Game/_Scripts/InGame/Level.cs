@@ -51,7 +51,7 @@ namespace _Game._Scripts.InGame
         
         #region constructor
 
-        public Level(int index)
+        public Level(int index, Transform parent = null)
         {
             // Set GridMap
             Index = index;
@@ -66,11 +66,9 @@ namespace _Game._Scripts.InGame
             // Spawn Units (Not Init)
             OnSpawnUnits();
             // if isInit -> AddIsland & InitUnit
-            // DEBUG: Spawn an cube at cell (0,0)
-            GameObject.CreatePrimitive(PrimitiveType.Cube).transform.position = _gridMap.GetGridCell(0, 0).WorldPos;
-            // DEBUG: Spawn an cube at cell (0, last Z pos)
-            GameObject.CreatePrimitive(PrimitiveType.Sphere).transform.position =
-                _gridMap.GetGridCell(0, gridSizeY - 1).WorldPos;
+            if (parent is null) return;
+            // Set parent
+            SetParent(parent);
         }
 
         #endregion
@@ -188,6 +186,26 @@ namespace _Game._Scripts.InGame
 
         #region private function
 
+        private void SetParent(Transform parent)
+        {
+            // set all gridSurface tp parent
+            for (int index0 = 0; index0 < _gridSurfaceMap.GetLength(0); index0++)
+            {
+                for (int index1 = 0; index1 < _gridSurfaceMap.GetLength(1); index1++)
+                {
+                    GridSurface gridSurface = _gridSurfaceMap[index0, index1];
+                    if (gridSurface is null) continue;
+                    gridSurface.Tf.SetParent(parent);
+                }
+            }
+            // set all gridUnit to parent
+            for (int i = 0; i < _unitDataList.Count; i++)
+            {
+                LevelUnitData data = _unitDataList[i];
+                data.unit.Tf.SetParent(parent);
+            }
+        }
+        
         private void CreateGridMap()
         {
             string gridPositionData = _textGridData.GridPositionData;

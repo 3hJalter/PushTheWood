@@ -17,6 +17,7 @@ namespace _Game.UIs.Screen
             base.Open();
             // CameraFollow.Ins.ChangeCamera(ECameraType.MainMenuCamera);
             // FxManager.Ins.PlayTweenFog();
+            GameManager.Ins.ChangeState(GameState.MainMenu);
             CameraManager.Ins.ChangeCamera(ECameraType.MainMenuCamera);
             DOVirtual.Float(0, 1, 1f, value => canvasGroup.alpha = value);
         }
