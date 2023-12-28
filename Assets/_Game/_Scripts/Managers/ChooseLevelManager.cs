@@ -81,7 +81,7 @@ namespace _Game._Scripts.Managers
             // Current level become next level
             _currentLevel = _nextLevel;
             // Spawn next level
-            Vector3 nextLevelPos = new(0, 0, _currentLevel.GetMaxZPos() + 15f);
+            Vector3 nextLevelPos = new(0, 0, _currentLevel.GetMaxZPos() + 5f);
             _nextLevel = nextLevelIndex + 1 < DataManager.Ins.CountLevel
                 ? new Level(nextLevelIndex + 1, nextLevelPos, false, initializeX)
                 : null;
@@ -107,7 +107,7 @@ namespace _Game._Scripts.Managers
             // Current level become previous level
             _currentLevel = _previousLevel;
             // Spawn previous level
-            Vector3 previousLevelPos = new(0, 0, _currentLevel.GetMinZPos() - 15f);
+            Vector3 previousLevelPos = new(0, 0, _currentLevel.GetMinZPos() - 5f);
             _previousLevel = previousLevelIndex - 1 >= 0
                 ? new Level(previousLevelIndex - 1, previousLevelPos, true, initializeX)
                 : null;
@@ -123,13 +123,13 @@ namespace _Game._Scripts.Managers
             if (index - 1 >= 0)
             {
                 
-                Vector3 previousLevelPos = new(0, 0, _currentLevel.GetMinZPos() - 15f);
+                Vector3 previousLevelPos = new(0, 0, _currentLevel.GetMinZPos() - 5f);
                 _previousLevel = new Level(index - 1, previousLevelPos, true, initializeX);
             }
 
             if (index + 1 < DataManager.Ins.CountLevel)
             {
-                Vector3 nextLevelPos = new(0, 0, _currentLevel.GetMaxZPos() + 15f);
+                Vector3 nextLevelPos = new(0, 0, _currentLevel.GetMaxZPos() + 5f);
                 _nextLevel = new Level(index + 1, nextLevelPos, false, initializeX);
             }
             

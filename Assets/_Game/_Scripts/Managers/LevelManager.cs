@@ -59,9 +59,14 @@ namespace _Game.GameGrid
             SpawnGridSurfaceToGrid();
             AddIslandIdToSurface();
             SpawnGridUnitToGrid();
-            SetCameraToPlayer();
-            CameraManager.Ins.ChangeCameraTargetPosition(_islandDic[Player.islandID].GetCenterIslandPos());
+            // SetCameraToPlayer();
+            SetCameraToPlayerIsland();
             // CameraManager.Ins.ChangeCameraTargetPosition(GetCenterPos());
+        }
+
+        public void SetCameraToPlayerIsland()
+        {
+            CameraManager.Ins.ChangeCameraTargetPosition(_islandDic[Player.islandID].GetCenterIslandPos());
         }
     
         public void OnWin()

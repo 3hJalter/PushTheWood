@@ -1416,7 +1416,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 9044334586941278858}
         m_TargetAssemblyTypeName: UICanvas, Assembly-CSharp
         m_MethodName: Close
         m_Mode: 1
