@@ -44,7 +44,7 @@ namespace _Game._Scripts.InGame.GameCondition.Data
             for (int j = 0; j < zAxisLoop; j++)
             {
                 Vector2Int cellPos = nexMainCellPos + new Vector2Int(i, j);
-                GameGridCell cell = LevelManager.Ins.GetCell(cellPos);
+                GameGridCell cell = LevelManager.Ins.CurrentLevel.GetCell(cellPos);
                 if (cell is null) continue;
                 for (HeightLevel k = owner.StartHeight; k <= endHeightForChecking; k++)
                 {
@@ -69,7 +69,7 @@ namespace _Game._Scripts.InGame.GameCondition.Data
             void SetNextMainCell()
             {
                 Vector2Int nextMainCellPos = owner.MainCell.GetCellPosition() + GetOffset();
-                enterMainCell = LevelManager.Ins.GetCell(nextMainCellPos);
+                enterMainCell = LevelManager.Ins.CurrentLevel.GetCell(nextMainCellPos);
                 return;
 
                 Vector2Int GetOffset()

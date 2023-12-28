@@ -75,7 +75,7 @@ namespace _Game.GameGrid.Unit
         public static GameGridCell GetNeighborCell(this GameGridCell cell, Direction direction, int distance = 1,
             Grid<GameGridCell, GameGridCellData> map = null)
         {
-            map ??= LevelManager.Ins.GridMap;
+            map ??= LevelManager.Ins.CurrentLevel.GridMap;
             Vector2Int cellPos = cell.GetCellPosition();
             Vector2Int dir = Constants.DirVector[direction];
             Vector2Int neighbourPos = cellPos + dir * distance;
@@ -86,7 +86,7 @@ namespace _Game.GameGrid.Unit
         public static List<GameGridCell> GetUnitNeighborCells(this GridUnit unit, Direction direction,
             Grid<GameGridCell, GameGridCellData> map = null)
         {
-            map ??= LevelManager.Ins.GridMap;
+            map ??= LevelManager.Ins.CurrentLevel.GridMap;
             List<GameGridCell> nextCells = new();
             for (int i = 0; i < unit.cellInUnits.Count; i++)
             {
@@ -102,7 +102,7 @@ namespace _Game.GameGrid.Unit
         public static List<GridUnit> GetAllNeighborUnits(this GridUnit unit, Direction direction,
             Grid<GameGridCell, GameGridCellData> map = null)
         {
-            map ??= LevelManager.Ins.GridMap;
+            map ??= LevelManager.Ins.CurrentLevel.GridMap;
             List<GridUnit> nextUnits = new();
             List<GameGridCell> nextCells = GetUnitNeighborCells(unit, direction, map);
             for (int i = 0; i < nextCells.Count; i++)

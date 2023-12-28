@@ -1,35 +1,94 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using _Game._Scripts.InGame;
 using _Game.Data;
-using _Game.GameGrid;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
 using _Game.Managers;
-using _Game.Utilities.Grid;
+using _Game.Utilities;
 using UnityEngine;
 using VinhLB;
+using Random = UnityEngine.Random;
 
 public class GridMapDataGenerator : MonoBehaviour
 {
-    [SerializeField] private string mapLevelName = "level0";
-    [SerializeField] private int offsetSurfaceWithFirstCell = 5;
+    [Header("Map Data")]
+    [SerializeField] private string mapLevelName = "Lvl_0";
+    [SerializeField] private int offsetSurfaceWithFirstCell = 3;
+    [SerializeField] private Vector2 gridMapPosition = Vector2.zero;
+
+    [Header("Map Container")]
     [SerializeField] private Transform surfaceContainer;
     [SerializeField] private Transform unitContainer;
-    private Grid<GameGridCell, GameGridCellData>.DebugGrid _debugGrid;
-    private Grid<GameGridCell, GameGridCellData> _gridMap;
-    private int _gridSizeX;
-    private int _gridSizeY;
 
-    private GridSurface[,] _gridSurfaceMap;
+    
+    [Header("Load Level")]
+    [SerializeField] private int loadLevelIndexStart;
+    [SerializeField] private int loadLevelIndexEnd = 1;
+    
+    private List<Level> _loadedLevel;
 
-    // Test Init GridUnit
-    private TextGridData _textGridData;
-
-    private void Start()
+    [ContextMenu("Destroy All")]
+    private void DestroyAll()
     {
-        TextAsset gridData = Resources.Load<TextAsset>(mapLevelName);
-        TextGridData textGridData = GameGridDataHandler.CreateGridData2(gridData);
-        // GenerateMap();
+        DestroyAllUnit();
+        DestroyAllSurface();
+        _loadedLevel = null;
+    }
+    
+    [ContextMenu("Destroy All Unit In Container")]
+    private void DestroyAllUnit()
+    {
+        GridUnit[] gridUnits = unitContainer.GetComponentsInChildren<GridUnit>();
+        foreach (GridUnit gridUnit in gridUnits) DestroyImmediate(gridUnit.gameObject);
+    }
+    
+    [ContextMenu("Destroy All Surface In Container")]
+    private void DestroyAllSurface()
+    {
+        GridSurface[] gridSurfaces = surfaceContainer.GetComponentsInChildren<GridSurface>();
+        foreach (GridSurface gridSurface in gridSurfaces) DestroyImmediate(gridSurface.gameObject);
+    }
+    
+    // Use this when some unit or surface Unloaded is null, then remove all other by hand
+    [ContextMenu("Clear Loaded Level list to null")] 
+    private void ClearLoadedLevel()
+    {
+        _loadedLevel = null;
+    }
+
+    [ContextMenu("Load Level")]
+    private void LoadLevels()
+    {
+        if (_loadedLevel != null) UnLoadLevels();
+        _loadedLevel = new List<Level>();
+        for (int i = loadLevelIndexStart; i < loadLevelIndexEnd; i++)
+        {
+            // Create a new empty object
+            GameObject levelObject = new("Level " + i);
+            Level level = new(i, levelObject.transform);
+            _loadedLevel.Add(level);
+        }
+    }
+
+    [ContextMenu("Unload Level")]
+    private void UnLoadLevels()
+    {
+        try
+        {
+            for (int i = _loadedLevel.Count - 1; i >= 0; i--)
+            {
+                _loadedLevel[i].OnDeSpawnLevel(false);
+                _loadedLevel.RemoveAt(i);
+            }
+        }
+        catch (Exception e)
+        {
+            DevLog.Log(DevId.Hoang, "Error when unload level, please remove unit by hand." +
+                                    "\nThen clear _loadedLevel list. \nMessage: " + e.Message);
+        }
+        _loadedLevel = null;
     }
 
     [ContextMenu("Set All GroundSurface to Ground Parent and GroundUnit to Unit Parent")]
@@ -172,6 +231,19 @@ public class GridMapDataGenerator : MonoBehaviour
 
         #endregion
 
+        #region Create Txt File
+
+        string path = "Assets/_Game/Resources/" + mapLevelName + ".txt";
+        File.WriteAllText(path, string.Empty);
+        using StreamWriter file = new(path, true);
+
+        #endregion
+
+        #region Save map position
+
+        file.WriteLine(gridMapPosition.x + " " + gridMapPosition.y);
+
+        #endregion
 
         #region Init Grid Surface
 
@@ -191,9 +263,8 @@ public class GridMapDataGenerator : MonoBehaviour
         }
 
         // Save the array as txt file in Resources folder
-        string path = "Assets/_Game/Resources/" + mapLevelName + ".txt";
-        File.WriteAllText(path, string.Empty);
-        using StreamWriter file = new(path, true);
+        // Write a @ to separate
+        file.WriteLine("@");
         for (int i = 0; i < maxX; i++)
         {
             string line = "";
@@ -248,14 +319,15 @@ public class GridMapDataGenerator : MonoBehaviour
             Vector3 position = groundSurface.Tf.position;
             int x = (int)(position.x + 1) / 2;
             int z = (int)(position.z + 1) / 2;
-            int colorIndex = (int) groundSurface.groundMaterialEnum;
+            int colorIndex = (int)groundSurface.groundMaterialEnum;
             // if color index is -1, set it to random color
             if (colorIndex == -1)
             {
-                colorIndex = UnityEngine.Random.Range(0, DataManager.Ins.CountSurfaceMaterial - 1);
-                groundSurface.groundMaterialEnum = (MaterialEnum) colorIndex;
+                colorIndex = Random.Range(0, DataManager.Ins.CountSurfaceMaterial - 1);
+                groundSurface.groundMaterialEnum = (MaterialEnum)colorIndex;
                 groundSurface.SetMaterialToGround();
             }
+
             gridData[x - 1, z - 1] = (int)groundSurface.groundMaterialEnum;
         }
 

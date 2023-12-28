@@ -202,7 +202,7 @@ namespace _Game.GameGrid.Unit
         {
             SetHeight(EnterPosData.startHeight);
             InitCellsToUnit(enterMainCell, enterNextCells);
-            SetNeighbor(LevelManager.Ins.GridMap);
+            SetNeighbor(LevelManager.Ins.CurrentLevel.GridMap);
             return;
 
             void InitCellsToUnit(GameGridCell enterMainCellIn, List<GameGridCell> enterCells = null)

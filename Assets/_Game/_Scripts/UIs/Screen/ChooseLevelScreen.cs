@@ -4,6 +4,7 @@ using _Game.GameGrid;
 using _Game.Managers;
 using _Game.Utilities;
 using HControls;
+using UnityEngine;
 
 namespace _Game.UIs.Screen
 {
@@ -40,9 +41,11 @@ namespace _Game.UIs.Screen
         public override void Setup()
         {
             base.Setup();
+            GameManager.Ins.ChangeState(GameState.WorldMap);
             _previousDirection = Direction.None;
             // CurveWorld
             FxManager.Ins.ChangePlanetCurvatureSize();
+            CameraManager.Ins.ChangeWorldTargetPosition();
             CameraManager.Ins.ChangeCamera(ECameraType.WorldMapCamera);
         }
 
@@ -51,6 +54,7 @@ namespace _Game.UIs.Screen
             FxManager.Ins.ChangePlanetCurvatureSize(0f);
             CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
             LevelManager.Ins.SetCameraToPlayerIsland();
+            UIManager.Ins.OpenUI<InGameScreen>();
             base.Close();
         }
 
