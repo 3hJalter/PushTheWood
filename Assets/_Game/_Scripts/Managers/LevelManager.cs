@@ -138,13 +138,16 @@ namespace _Game.GameGrid
             public void SavingState()
             {
                 HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
-                IMemento[] states = new IMemento[gridUnits.Count + 1];
-                int index = 1;
+                IMemento[] states = new IMemento[gridUnits.Count + 2];
+                int index = 2;
                 states[0] = main._currentLevel.GridMap.Save();
+                states[1] = main.player.Save();
                 foreach(GridUnit gridUnit in gridUnits)
                 {
                     states[index] = gridUnit.Save();
+                    index++;
                 }
+                historys.Push(states);
             }
         }
 
