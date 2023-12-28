@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using _Game._Scripts.InGame;
 using _Game.Data;
 using _Game.GameGrid;
 using _Game.GameGrid.GridSurface;
@@ -23,18 +25,45 @@ public class GridMapDataGenerator : MonoBehaviour
     private int _gridSizeX;
     private int _gridSizeY;
 
+    [SerializeField]
+    private int loadLevelIndexStart = 0;
+    [SerializeField] 
+    private int loadLevelIndexEnd = 1;
     private GridSurface[,] _gridSurfaceMap;
 
+
+    private List<Level> _loadedLevel;
     // Test Init GridUnit
     private TextGridData _textGridData;
 
     private void Start()
     {
-        // TextAsset gridData = Resources.Load<TextAsset>(mapLevelName);
-        // TextGridData textGridData = GameGridDataHandler.CreateGridData2(gridData);
-        // GenerateMap();
+        LoadLevels();
     }
 
+    [ContextMenu("Load Level")]
+    private void LoadLevels()
+    {
+        if (_loadedLevel != null) UnLoadLevels();
+        _loadedLevel = new List<Level>();
+        for (int i = loadLevelIndexStart; i < loadLevelIndexEnd; i++)
+        {
+            Level level = new (i);
+            _loadedLevel.Add(level);
+        }
+    }
+    
+    [ContextMenu("Unload Level")]
+    private void UnLoadLevels()
+    {
+        for (int i = _loadedLevel.Count - 1; i >= 0; i--)
+        {
+            _loadedLevel[i].OnDeSpawnLevel(false);
+            _loadedLevel.RemoveAt(i);
+        }
+        _loadedLevel = null;
+    }
+    
     [ContextMenu("Set All GroundSurface to Ground Parent and GroundUnit to Unit Parent")]
     private void SetSurfaceAndUnitToParent()
     {
