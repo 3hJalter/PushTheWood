@@ -401,7 +401,7 @@ namespace _Game.GameGrid.Unit
         #region SAVING DATA
         public virtual IMemento Save()
         {
-            return new UnitMemento(this, Tf.position, Tf.rotation, startHeight, endHeight
+            return new UnitMemento(this, Tf.position, skin.rotation, startHeight, endHeight
                 , unitTypeY, unitTypeXZ,
                 belowUnits.Count > 0 ? belowUnits : null,
                 neighborUnits.Count > 0 ? neighborUnits : null,
@@ -452,7 +452,7 @@ namespace _Game.GameGrid.Unit
             public void Restore()
             {
                 main.Tf.position = position;
-                main.Tf.rotation = rotation;
+                main.skin.rotation = rotation;
                 main.startHeight = startHeight;
                 main.endHeight = endHeight;
                 main.unitTypeY = unitTypeY;

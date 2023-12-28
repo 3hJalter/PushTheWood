@@ -231,6 +231,7 @@ namespace _Game.GameGrid
 
             public void Restore()
             {
+                if (gridUnits == null) return;
                 for(int i = 0; i < main.data.gridUnits.Length; i++)
                 {
                     main.data.gridUnits[i] = gridUnits[i];

@@ -120,7 +120,7 @@ namespace _Game.Utilities.Grid
 
         protected virtual void OnGridCellValueChange(int x, int y)
         {
-            debugTextArray[x, y].text = gridArray[x, y].ToString();
+            //debugTextArray[x, y].text = gridArray[x, y].ToString();
             cellMementos.Add(gridArray[x, y].Save());
         }
 
