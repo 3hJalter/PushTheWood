@@ -24,10 +24,9 @@ namespace _Game.GameGrid.Unit
         public GridUnitStaticType GridUnitStaticType => gridUnitStaticType;
 
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
-            bool isUseInitData = true,
-            Direction skinDirection = Direction.None)
+            bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
-            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection);
+            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
             if (!hasInteractBtn || _isFirstInitDone || btnCanvas is null) return;
             _isFirstInitDone = true;
             // btnCanvas.worldCamera = CameraFollow.Ins.MainCamera;

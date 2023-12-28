@@ -164,7 +164,7 @@ MonoBehaviour:
   skinRotationDirection: -1
   gridUnitStaticType: 3
   anchor: {fileID: 8340450682244529126}
-  hasInteractBtn: 1
+  hasInteractBtn: 0
   btnCanvas: {fileID: 2657434271138430724}
   interactBtn: {fileID: 4234872148887743206}
   chumpPrefab: {fileID: 8852207134085153055, guid: 7d2d8c26c208e6748835843aee7b2ae7, type: 3}

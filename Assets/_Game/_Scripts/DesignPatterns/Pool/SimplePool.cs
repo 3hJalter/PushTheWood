@@ -370,6 +370,15 @@ namespace _Game.DesignPattern
         SurfaceGroundDarkCornerTopLeft = 136,
         SurfaceGroundDarkCornerTopRight = 137,
         SurfaceGroundDarkCornerBottomLeft = 138,
-        SurfaceGroundDarkCornerBottomRight = 139
+        SurfaceGroundDarkCornerBottomRight = 139,
+        
+        // Customize Ground Surface
+        SurfaceGroundC = 140,
+        SurfaceGroundConnect = 141,
+        SurfaceGroundCorner = 142,
+        SurfaceGroundEdge = 143,
+        SurfaceGround4Side = 144,
+        SurfaceGround3Side = 145,
+        SurfaceGround2Side = 146,
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Game._Scripts.UIs.Tutorial;
 using _Game.Camera;
+using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
@@ -40,6 +41,7 @@ namespace _Game.GameGrid
             // PlayerPrefs.SetInt(Constants.LEVEL_INDEX, 0);
             levelIndex = PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0);
             _tutorialIndex = PlayerPrefs.GetInt(Constants.TUTORIAL_INDEX, 0);
+            OnInit();
         }
 
         public void OnShowTutorial()
@@ -57,8 +59,14 @@ namespace _Game.GameGrid
             SpawnGridSurfaceToGrid();
             AddIslandIdToSurface();
             SpawnGridUnitToGrid();
-            SetCameraToPlayer();
-            CameraManager.Ins.ChangeCameraTargetPosition(GetCenterIslandPos(Player.islandID));
+            // SetCameraToPlayer();
+            SetCameraToPlayerIsland();
+            // CameraManager.Ins.ChangeCameraTargetPosition(GetCenterPos());
+        }
+
+        public void SetCameraToPlayerIsland()
+        {
+            CameraManager.Ins.ChangeCameraTargetPosition(_islandDic[Player.islandID].GetCenterIslandPos());
         }
     
         public void OnWin()
@@ -101,6 +109,13 @@ namespace _Game.GameGrid
             // FxManager.Ins.ResetTrackedTrampleObjectList();
         }
 
+        public Vector3 GetCenterPos(float offsetY = 5f)
+        {
+            float centerX = (GridMap.GetGridCell(0, 0).WorldX + GridMap.GetGridCell(gridSizeX - 1, 0).WorldX) / 2;
+            float centerZ = (GridMap.GetGridCell(0, 0).WorldY + GridMap.GetGridCell(0, gridSizeY - 1).WorldY) / 2;
+            return new Vector3(centerX, offsetY, centerZ);
+        }
+        
         public GameGridCell GetCell(Vector2Int position)
         {
             return GridMap.GetGridCell(position.x, position.y);
@@ -111,20 +126,10 @@ namespace _Game.GameGrid
             return GridMap.GetGridCell(position);
         }
 
-        private Vector3 GetCenterIslandPos(int islandId)
-        {
-            // Get the center position from all cell in island
-            List<GameGridCell> cells = _islandDic[islandId].GridCells;
-            Vector3 centerPos = Vector3.zero;
-            for (int i = 0; i < cells.Count; i++) centerPos += cells[i].WorldPos;
-            centerPos /= cells.Count;
-            return centerPos;
-        }
-
         public void SetFirstPlayerStepOnIsland(GameGridCell cell)
         {
             _islandDic[Player.islandID].SetFirstPlayerStepCell(cell);
-            CameraManager.Ins.ChangeCameraTargetPosition(GetCenterIslandPos(Player.islandID));
+            CameraManager.Ins.ChangeCameraTargetPosition(_islandDic[Player.islandID].GetCenterIslandPos());
         }
 
         public void AddNewUnitToIsland(GridUnit unit)
@@ -206,17 +211,23 @@ namespace _Game.GameGrid
             Vector2Int size = _textGridData.GetSize();
             gridSizeX = size.x;
             gridSizeY = size.y;
-            GridMap = new Grid<GameGridCell, GameGridCellData>(gridSizeX, gridSizeY, Constants.CELL_SIZE, Tf.position,
+            GridMap = new Grid<GameGridCell, GameGridCellData>(gridSizeX, gridSizeY, Constants.CELL_SIZE, default,
                 () => new GameGridCell(), GridPlane.XZ);
         }
 
         private void SpawnGridSurfaceToGrid()
         {
             string[] surfaceData = _textGridData.SurfaceData.Split('\n');
+            string[] surfaceRotationDirectionData = _textGridData.SurfaceRotationDirectionData.Split('\n');
+            surfaceRotationDirectionData = surfaceRotationDirectionData.Skip(1).ToArray();
+            string[] surfaceMaterialData = _textGridData.SurfaceMaterialData.Split('\n');
+            surfaceMaterialData = surfaceMaterialData.Skip(1).ToArray();
             _gridSurfaceMap = new GridSurface.GridSurface[surfaceData.Length, surfaceData[0].Split(' ').Length];
             for (int x = 0; x < gridSizeX; x++)
             {
                 string[] surfaceDataSplit = surfaceData[x].Split(' ');
+                string[] surfaceRotationDirectionDataSplit = surfaceRotationDirectionData[x].Split(' ');
+                string[] surfaceMaterialDataSplit = surfaceMaterialData[x].Split(' ');
                 if (surfaceDataSplit.Length != gridSizeY) continue;
                 for (int y = 0; y < gridSizeY; y++)
                 {
@@ -225,10 +236,17 @@ namespace _Game.GameGrid
                     GridSurface.GridSurface gridSurface = DataManager.Ins.GetGridSurface((PoolType)cell);
                     if (gridSurface is null) return;
                     GameGridCell gridCell = GridMap.GetGridCell(x, y);
-                    gridCell.SetSurface(
-                        SimplePool.Spawn<GridSurface.GridSurface>(gridSurface,
-                            new Vector3(gridCell.WorldX, 0, gridCell.WorldY), Quaternion.identity));
+                    GridSurface.GridSurface surfaceClone = SimplePool.Spawn<GridSurface.GridSurface>(gridSurface,
+                        new Vector3(gridCell.WorldX, 0, gridCell.WorldY), Quaternion.identity);
+                    gridCell.SetSurface(surfaceClone);
                     _gridSurfaceMap[x, y] = gridCell.Data.gridSurface;
+                    
+                    if (!int.TryParse(surfaceRotationDirectionDataSplit[y], out int directionSurface)) continue;
+                    if (!Enum.IsDefined(typeof(Direction), directionSurface)) continue;
+                    if (!int.TryParse(surfaceMaterialDataSplit[y], out int materialSurface)) continue;
+                    if (!Enum.IsDefined(typeof(MaterialEnum), materialSurface)) continue;
+                    surfaceClone.OnInit((Direction) directionSurface,
+                        (MaterialEnum) materialSurface);
                 }
             }
         }
@@ -318,7 +336,15 @@ namespace _Game.GameGrid
         public List<GameGridCell> GridCells { get; } = new();
 
         public GameGridCell FirstPlayerStepCell { get; private set; }
-
+        
+        public Vector3 GetCenterIslandPos()
+        {
+            Vector3 centerPos = Vector3.zero;
+            for (int i = 0; i < GridCells.Count; i++) centerPos += GridCells[i].WorldPos;
+            centerPos /= GridCells.Count;
+            return centerPos;
+        }
+            
         public void SetFirstPlayerStepCell(GameGridCell cell)
         {
             FirstPlayerStepCell ??= cell;

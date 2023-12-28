@@ -8,6 +8,10 @@ namespace _Game._Scripts.InGame.GameCondition.Data
 {
     public class MovingData : ConditionData
     {
+        protected static int USING_TURN_COUNT = 0;
+        protected int usingTurnId = 0;
+        public int UsingTurnId => usingTurnId;
+
         public readonly List<GridUnitDynamic> blockDynamicUnits;
         public readonly List<GridUnitStatic> blockStaticUnits;
 
@@ -31,6 +35,9 @@ namespace _Game._Scripts.InGame.GameCondition.Data
         // Set Data Method
         public virtual void SetData(Direction direction)
         {
+            //DEV: Refactor
+            UpdateUsingId();
+            //NOTE: Set Data
             inputDirection = direction;
             enterCells.Clear();
             blockDynamicUnits.Clear();
@@ -57,6 +64,12 @@ namespace _Game._Scripts.InGame.GameCondition.Data
 
                 if (!enterCells.Contains(neighbour)) enterCells.Add(neighbour);
             }
+        }
+
+        protected void UpdateUsingId()
+        {
+            USING_TURN_COUNT++;
+            usingTurnId = USING_TURN_COUNT;
         }
     }
 }

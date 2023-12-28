@@ -28,6 +28,7 @@ namespace _Game.Managers
                 Screen.SetResolution(Mathf.RoundToInt(ratio * maxScreenHeight), maxScreenHeight, true);
             // TEST
             UIManager.Ins.OpenUI<MainMenuScreen>();
+            // DontDestroyOnLoad(Tf.root.gameObject);
         }
 
         public void ChangeState(GameState gameStateI)

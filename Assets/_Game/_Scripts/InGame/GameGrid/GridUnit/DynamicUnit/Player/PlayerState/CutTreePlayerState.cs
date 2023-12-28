@@ -2,6 +2,7 @@
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
+using _Game.Utilities.Timer;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
@@ -9,25 +10,32 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
     public class CutTreePlayerState : IState<Player>
     {
         private bool _isExecuted;
-        private float _timeCounter;
+        float originAnimSpeed;
 
         public StateEnum Id => StateEnum.CutTree;
 
         public void OnEnter(Player t)
         {
-            _timeCounter = 0.5f;
+            originAnimSpeed = t.AnimSpeed;
+            t.SetAnimSpeed(originAnimSpeed * Constants.CUT_TREE_ANIM_TIME / Constants.CUT_TREE_TIME);
             t.ChangeAnim(Constants.CUT_TREE_ANIM);
             t.LookDirection(t.CutTreeData.inputDirection);
+            TimerManager.Inst.WaitForTime(Constants.CUT_TREE_TIME, () => CutTreeAction(t));
         }
 
         public void OnExecute(Player t)
         {
-            if (_timeCounter > 0)
-            {
-                _timeCounter -= Time.fixedDeltaTime;
-                return;
-            }
+           
+        }
 
+        public void OnExit(Player t)
+        {
+            _isExecuted = false;
+            t.SetAnimSpeed(originAnimSpeed);
+        }
+
+        private void CutTreeAction(Player t)
+        {
             if (!_isExecuted)
             {
                 _isExecuted = true;
@@ -44,14 +52,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 chump.OnBePushed(t.CutTreeData.inputDirection, t);
                 // Despawn the Tree
                 t.CutTreeData.tree.OnDespawn();
+                t.StateMachine.ChangeState(StateEnum.Idle);
             }
-
-            if (t.IsCurrentAnimDone()) t.StateMachine.ChangeState(StateEnum.Idle);
-        }
-
-        public void OnExit(Player t)
-        {
-            _isExecuted = false;
         }
     }
 }

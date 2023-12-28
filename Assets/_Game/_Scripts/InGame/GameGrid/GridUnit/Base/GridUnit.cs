@@ -109,7 +109,7 @@ namespace _Game.GameGrid.Unit
         }
 
         public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
-            bool isUseInitData = true, Direction skinDirection = Direction.None)
+            bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRos = false)
         {
             if (isUseInitData) GetInitData();
             islandID = mainCellIn.IslandID;
@@ -117,7 +117,12 @@ namespace _Game.GameGrid.Unit
             SetEnterCellData(Direction.None, mainCellIn, unitTypeY);
             OnEnterCells(mainCellIn, InitCell(mainCellIn, skinDirection));
             // Set position
-            Tf.position = EnterPosData.finalPos;
+            if (!hasSetPosAndRos) OnSetPositionAndRotation(EnterPosData.finalPos, skinDirection);
+        }
+
+        public void OnSetPositionAndRotation(Vector3 position, Direction skinDirection)
+        {
+            Tf.position = position;
 
             skinRotationDirection = skinDirection;
             skin.rotation = Quaternion.Euler(0f, BuildingUnitData.GetRotationAngle(skinRotationDirection), 0f);
@@ -126,7 +131,7 @@ namespace _Game.GameGrid.Unit
             Vector3 posOffset = new Vector3(rotationOffset.x, 0, rotationOffset.y) * Constants.CELL_SIZE;
             skin.position += posOffset;
         }
-
+        
         public virtual bool IsCurrentStateIs(StateEnum stateEnum)
         {
             return false;
@@ -151,8 +156,6 @@ namespace _Game.GameGrid.Unit
 
         }
         
-        public virtual void OnBlock(Direction direction = Direction.None) { }
-
         public virtual void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
         {
             lastPushedDirection = direction;

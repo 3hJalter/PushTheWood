@@ -12,6 +12,13 @@ namespace VinhLB
                 EditorSceneManager.OpenScene("Assets/_Game/_Scenes/GameDemo.unity", OpenSceneMode.Single);
         }
 
+        [MenuItem("Tools/VinhLB/Scenes/ChooseLevel")]
+        private static void OpenChooseLevelScene()
+        {
+            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+                EditorSceneManager.OpenScene("Assets/_Game/_Scenes/ChooseLevel.unity", OpenSceneMode.Single);
+        }
+        
         [MenuItem("Tools/VinhLB/Scenes/MapEditor")]
         private static void OpenMapEditorScene()
         {

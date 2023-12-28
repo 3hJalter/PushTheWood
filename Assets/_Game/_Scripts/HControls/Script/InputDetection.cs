@@ -24,17 +24,13 @@ namespace HControls
                     }
                     break;
                 default:
-                    if(oldDirection == Direction.None)
-                    {
-                        InputAction = InputAction.ButtonDown;
-                    }
-                    else if(direction == oldDirection)
+                    if(direction == oldDirection)
                     {
                         InputAction = InputAction.ButtonHold;
                     }
                     else
                     {
-                        InputAction = InputAction.ButtonSwitch;
+                        InputAction = InputAction.ButtonDown;
                     }
                     break;
             }

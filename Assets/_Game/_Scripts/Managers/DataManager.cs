@@ -12,6 +12,8 @@ namespace _Game.Managers
 
         [SerializeField] private GridData gridData;
 
+        [SerializeField] private MaterialData materialData;
+
         [SerializeField] private TutorialData tutorialData;
 
         public int CountTutorial => tutorialData.CountTutorial;
@@ -20,11 +22,23 @@ namespace _Game.Managers
 
         public int CountLevel => gridData.CountLevel;
 
+        public int CountSurfaceMaterial => materialData.CountSurfaceMaterial;
+        
+        public Material GetSurfaceMaterial(MaterialEnum materialEnum)
+        {
+            return materialData.GetSurfaceMaterial(materialEnum);
+        }
+        
+        public Material GetGrassMaterial(MaterialEnum materialEnum)
+        {
+            return materialData.GetGrassMaterial(materialEnum);
+        }
+        
         public TutorialContext GetTutorial(int index)
         {
             return tutorialData.GetTutorial(index);
         }
-
+        
         public TextAsset GetGridTextData(int index)
         {
             return gridData.GetGridTextData(index);
