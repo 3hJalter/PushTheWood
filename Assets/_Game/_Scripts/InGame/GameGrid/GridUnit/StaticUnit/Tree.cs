@@ -19,7 +19,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         private void Start()
         {
             // Get the Player from Level Manager
-            player = LevelManager.Ins.Player;
+            player = LevelManager.Ins.player;
         }
 
         public override void OnInteract()
