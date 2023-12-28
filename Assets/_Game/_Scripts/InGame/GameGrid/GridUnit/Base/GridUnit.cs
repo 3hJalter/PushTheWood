@@ -36,11 +36,13 @@ namespace _Game.GameGrid.Unit
         public int islandID = -1;
 
         // The current state of this unit (Up or Down)
-        [FormerlySerializedAs("unitState")] [SerializeField]
+        [FormerlySerializedAs("unitState")]
+        [SerializeField]
         protected UnitTypeY unitTypeY = UnitTypeY.Up; // Serialize for test
 
         // The type of this unit (Horizontal, Vertical, Both or None)
-        [FormerlySerializedAs("unitType")] [SerializeField]
+        [FormerlySerializedAs("unitType")]
+        [SerializeField]
         protected UnitTypeXZ unitTypeXZ = UnitTypeXZ.Both; // Serialize for test
 
         [SerializeField] protected Direction skinRotationDirection = Direction.None;
@@ -131,7 +133,7 @@ namespace _Game.GameGrid.Unit
             Vector3 posOffset = new Vector3(rotationOffset.x, 0, rotationOffset.y) * Constants.CELL_SIZE;
             skin.position += posOffset;
         }
-        
+
         public virtual bool IsCurrentStateIs(StateEnum stateEnum)
         {
             return false;
@@ -155,7 +157,7 @@ namespace _Game.GameGrid.Unit
         {
 
         }
-        
+
         public virtual void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
         {
             lastPushedDirection = direction;
@@ -402,11 +404,7 @@ namespace _Game.GameGrid.Unit
         public virtual IMemento Save()
         {
             return new UnitMemento(this, Tf.position, skin.rotation, startHeight, endHeight
-                , unitTypeY, unitTypeXZ,
-                belowUnits.Count > 0 ? belowUnits : null,
-                neighborUnits.Count > 0 ? neighborUnits : null,
-                upperUnits.Count > 0 ? upperUnits : null,
-                mainCell, cellInUnits, islandID);
+                , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID);
         }
         public struct UnitMemento : IMemento
         {
@@ -458,42 +456,38 @@ namespace _Game.GameGrid.Unit
                 main.unitTypeY = unitTypeY;
                 main.unitTypeXZ = unitTypeXZ;
 
-                if (belowsUnits != null)
+
+                main.belowUnits.Clear();
+                foreach (GridUnit unit in belowsUnits)
                 {
-                    main.belowUnits.Clear();
-                    foreach (GridUnit unit in belowsUnits)
-                    {
-                        main.belowUnits.Add(unit);
-                    }
+                    main.belowUnits.Add(unit);
                 }
 
-                if (neighborUnits != null)
+
+
+                main.neighborUnits.Clear();
+                foreach (GridUnit unit in neighborUnits)
                 {
-                    main.neighborUnits.Clear();
-                    foreach (GridUnit unit in neighborUnits)
-                    {
-                        main.neighborUnits.Add(unit);
-                    }
+                    main.neighborUnits.Add(unit);
                 }
 
-                if (upperUnits != null)
+
+
+                main.upperUnits.Clear();
+                foreach (GridUnit unit in upperUnits)
                 {
-                    main.upperUnits.Clear();
-                    foreach (GridUnit unit in upperUnits)
-                    {
-                        main.upperUnits.Add(unit);
-                    }
+                    main.upperUnits.Add(unit);
                 }
+
 
                 main.mainCell = mainCell;
-                if (cellInUnits != null)
+
+                main.cellInUnits.Clear();
+                foreach (GameGridCell cell in cellInUnits)
                 {
-                    main.cellInUnits.Clear();
-                    foreach (GameGridCell cell in cellInUnits)
-                    {
-                        main.cellInUnits.Add(cell);
-                    }
+                    main.cellInUnits.Add(cell);
                 }
+
             }
         }
         #endregion

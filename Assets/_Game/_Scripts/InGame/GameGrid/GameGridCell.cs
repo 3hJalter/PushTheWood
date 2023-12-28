@@ -15,7 +15,7 @@ namespace _Game.GameGrid
         public GameGridCell()
         {
             data = new GameGridCellData();
-            data.OnInit();
+            data.OnInit();            
         }
 
         public GridSurfaceType SurfaceType => data.gridSurfaceType;
@@ -217,21 +217,15 @@ namespace _Game.GameGrid
         {
             GameGridCell main;
             GridUnit[] gridUnits;
-            public CellMemento(GameGridCell main, params object[] data)
+            public CellMemento(GameGridCell main, GridUnit[] unitData)
             {
                 this.main = main;
-                if (data[0] != null)
-                {
-                    GridUnit[] data0 = (GridUnit[])data[0];
-                    gridUnits = new GridUnit[data0.Length];
-                    data0.CopyTo(gridUnits, 0);
-                }
-                else gridUnits = null;
+                gridUnits = new GridUnit[unitData.Length];
+                unitData.CopyTo(gridUnits, 0);              
             }
 
             public void Restore()
             {
-                if (gridUnits == null) return;
                 for(int i = 0; i < main.data.gridUnits.Length; i++)
                 {
                     main.data.gridUnits[i] = gridUnits[i];

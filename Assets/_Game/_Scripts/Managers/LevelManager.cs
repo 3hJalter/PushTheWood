@@ -113,7 +113,7 @@ namespace _Game.GameGrid
         public class CareTaker
         {
             LevelManager main;
-            Stack<IMemento[]> historys = new Stack<IMemento[]>();
+            Stack<List<IMemento>> historys = new Stack<List<IMemento>>();
             public CareTaker(LevelManager main)
             {
                 this.main = main;
@@ -123,7 +123,7 @@ namespace _Game.GameGrid
             {
                 if(historys.Count > 0)
                 {
-                    IMemento[] states = historys.Pop();
+                    List<IMemento> states = historys.Pop();
                     foreach(IMemento state in states)
                     {
                         state.Restore();
@@ -138,14 +138,11 @@ namespace _Game.GameGrid
             public void SavingState()
             {
                 HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
-                IMemento[] states = new IMemento[gridUnits.Count + 2];
-                int index = 2;
-                states[0] = main._currentLevel.GridMap.Save();
-                states[1] = main.player.Save();
+                List<IMemento> states = new List<IMemento>() { main._currentLevel.GridMap.Save(), main.player.Save() };
                 foreach(GridUnit gridUnit in gridUnits)
                 {
-                    states[index] = gridUnit.Save();
-                    index++;
+                    if(gridUnit is GridUnitDynamic)
+                        states.Add(gridUnit.Save());
                 }
                 historys.Push(states);
             }
