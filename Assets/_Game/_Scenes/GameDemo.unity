@@ -4540,7 +4540,7 @@ MonoBehaviour:
   brainCamera: {fileID: 1929008254}
   cameraTarget: {fileID: 735013716}
   cameraMoveTime: 0.5
-  worldCameraXYPos: {x: 17, y: 0}
+  worldCameraXYPos: {x: 16, y: 0}
 --- !u!1 &2037854127
 GameObject:
   m_ObjectHideFlags: 0

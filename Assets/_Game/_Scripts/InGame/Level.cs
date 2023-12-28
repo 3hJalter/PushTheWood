@@ -142,7 +142,7 @@ namespace _Game._Scripts.InGame
             for (int i = 0; i < _islandDic.Count; i++) _islandDic[i].ResetIsland();
         }
         
-        public void OnDeSpawnLevel()
+        public void OnDeSpawnLevel(bool isLevelInit = true)
         {
             // Despawn all groundUnit
             for (int index0 = 0; index0 < _gridSurfaceMap.GetLength(0); index0++)
@@ -151,17 +151,28 @@ namespace _Game._Scripts.InGame
                 GridSurface gridSurface = _gridSurfaceMap[index0, index1];
                 if (gridSurface is not null) gridSurface.OnDespawn();
             }
-
-            // Despawn all unit in each island
-            for (int i = 0; i < _islandDic.Count; i++)
+            
+            if (isLevelInit)
             {
-                Island island = _islandDic[i];
-                island.ClearIsland();
+                // Despawn all unit in each island
+                for (int i = 0; i < _islandDic.Count; i++)
+                {
+                    Island island = _islandDic[i];
+                    island.ClearIsland();
+                }
+                // Set player to null
+                LevelManager.Ins.player.OnDespawn();
+                LevelManager.Ins.player = null;
             }
-
-            // Set player to null
-            LevelManager.Ins.player.OnDespawn();
-            LevelManager.Ins.player = null;
+            else
+            {
+                for (int i = 0; i < _unitDataList.Count; i++)
+                {
+                    LevelUnitData data = _unitDataList[i];
+                    data.unit.OnDespawn();
+                }
+            }
+            
             firstPlayerInitCell = null;
             // Clear all _islandDic data
             _islandDic.Clear();
