@@ -49,7 +49,7 @@ namespace _Game.DesignPattern
             Init(prefab, qty, parent);
         }
 
-        public static void Play(ParticleSystem prefab, Vector3 pos, Quaternion rot)
+        public static void Play(ParticleSystem prefab, Vector3 pos, Quaternion rot = default)
         {
             if (prefab == null)
             {

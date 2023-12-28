@@ -1,7 +1,11 @@
+using UnityEngine;
+
 namespace _Game.DesignPattern
 {
     public abstract class GameUnit : HMonoBehaviour
     {
-        public PoolType poolType;
+        [SerializeField]
+        private PoolType poolType;
+        public PoolType PoolType => poolType;
     }
 }

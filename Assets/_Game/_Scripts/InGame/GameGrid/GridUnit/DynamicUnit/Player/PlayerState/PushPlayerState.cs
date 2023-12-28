@@ -1,4 +1,5 @@
-﻿using _Game.DesignPattern.StateMachine;
+﻿using _Game.DesignPattern;
+using _Game.DesignPattern.StateMachine;
 using DG.Tweening;
 using UnityEngine;
 
@@ -36,6 +37,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 _isExecuted = true;
                 // Push the block Unit
                 t.OnPush(t.MovingData.inputDirection);
+                ParticlePool.Play(PoolController.Ins.Particles[VFX.DUST], t.transform.position + t.skin.transform.forward * Constants.CELL_SIZE * 0.5f);
                 DOVirtual.DelayedCall(Constants.PUSH_TIME, () => t.StateMachine.ChangeState(StateEnum.Idle));
             }
         }
