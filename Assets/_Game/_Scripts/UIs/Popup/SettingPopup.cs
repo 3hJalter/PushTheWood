@@ -27,6 +27,12 @@ namespace _Game.UIs.Popup
             UIManager.Ins.OpenUI<MoveOptionPopup>();
         }
 
+        public void OnClickSelectLevelButton()
+        {
+            Close();
+            UIManager.Ins.OpenUI<ChooseLevelScreen>();
+        }
+        
         public void OnClickGoMenuButton()
         {
             LevelManager.Ins.OnRestart();
