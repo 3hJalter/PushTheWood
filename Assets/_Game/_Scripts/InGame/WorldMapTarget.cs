@@ -15,32 +15,55 @@ namespace _Game._Scripts.InGame
         [SerializeField] private int nearestLevelIndex;
         [SerializeField] private int furthestLevelIndex;
 
-        private Level _middleLevel;
-        private Level _headerLevel;
-        private Level _footerLevel;
-
         [SerializeField] private float offset = 8f;
-        
+        private Level _footerLevel;
+        private Level _headerLevel;
+
+        private bool _isInit;
+
+        private Level _middleLevel;
+
+        private void Start()
+        {
+            OnActive();
+            _isInit = true;
+        }
+
         private void Update()
         {
             // Only Debug
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                Tf.position += Vector3.forward * 10f;
-            }
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                Tf.position += Vector3.back * 10f;
-            }
-
+            if (Input.GetKeyDown(KeyCode.UpArrow)) Tf.position += Vector3.forward * 10f;
+            if (Input.GetKeyDown(KeyCode.DownArrow)) Tf.position += Vector3.back * 10f;
+            //
+            
+            
             if (Tf.position.z > _middleLevel.GetMaxZPos() - offset) // offset
-            {
                 PreloadNextLevel();
-            }
-            else if (Tf.position.z < _footerLevel.GetMaxZPos() - offset)
-            {
-                PreLoadPreviousLevel();
-            }
+            else if (Tf.position.z < _footerLevel.GetMaxZPos() - offset) PreLoadPreviousLevel();
+        }
+
+        private void OnEnable()
+        {
+            if (!_isInit) return;
+            OnActive();
+        }
+
+        private void OnDisable()
+        {
+            if (CanDespawn(_headerLevel)) _headerLevel.OnDeSpawnLevel();
+            if (CanDespawn(_footerLevel)) _footerLevel.OnDeSpawnLevel();
+            if (CanDespawn(_middleLevel)) _middleLevel.OnDeSpawnLevel();
+            ResetData();
+        }
+
+        private bool CanDespawn(Level level)
+        {
+            if (level is null) return false;
+            int currentLevelIndex = LevelManager.Ins.CurrentLevel.Index;
+            if (level.Index == currentLevelIndex) return false;
+            if (level.Index == currentLevelIndex + 1) return false;
+            if (level.Index == currentLevelIndex - 1) return false;
+            return true;
         }
         
         private void PreloadNextLevel()
@@ -48,82 +71,70 @@ namespace _Game._Scripts.InGame
             int currentLevelIndex = LevelManager.Ins.CurrentLevel.Index;
             int nextPreloadIndex = _headerLevel.Index + 1;
             if (nextPreloadIndex >= DataManager.Ins.CountLevel) return;
-            if (_footerLevel is not null && _footerLevel.Index != currentLevelIndex)
+            if (CanDespawn(_footerLevel))
             {
-                // Despawn Level
                 _footerLevel.OnDeSpawnLevel();
             }
             _footerLevel = _middleLevel;
             _middleLevel = _headerLevel;
-            _headerLevel = nextPreloadIndex == currentLevelIndex ? LevelManager.Ins.CurrentLevel : new Level(nextPreloadIndex);
+            
+            if (LevelManager.Ins.PreLoadLevels.ContainsKey(nextPreloadIndex))
+                _headerLevel = LevelManager.Ins.PreLoadLevels[nextPreloadIndex];
+            else if (nextPreloadIndex == currentLevelIndex)
+                _headerLevel = LevelManager.Ins.CurrentLevel;
+            else
+                _headerLevel = new Level(nextPreloadIndex);
             nearestLevelIndex = _footerLevel.Index;
             furthestLevelIndex = _headerLevel.Index;
         }
-        
+
         private void PreLoadPreviousLevel()
         {
             int currentLevelIndex = LevelManager.Ins.CurrentLevel.Index;
             int previousPreloadIndex = _footerLevel.Index - 1;
             if (previousPreloadIndex < 0) return;
-            if (_headerLevel is not null && _headerLevel.Index != currentLevelIndex)
+            if (CanDespawn(_headerLevel))
             {
-                // Despawn Level
                 _headerLevel.OnDeSpawnLevel();
             }
             _headerLevel = _middleLevel;
             _middleLevel = _footerLevel;
-            _footerLevel = previousPreloadIndex == currentLevelIndex ? LevelManager.Ins.CurrentLevel : new Level(previousPreloadIndex);
+            if (LevelManager.Ins.PreLoadLevels.ContainsKey(previousPreloadIndex))
+                _footerLevel = LevelManager.Ins.PreLoadLevels[previousPreloadIndex];
+            else if (previousPreloadIndex == currentLevelIndex)
+                _footerLevel = LevelManager.Ins.CurrentLevel;
+            else
+                _footerLevel = new Level(previousPreloadIndex);
             nearestLevelIndex = _footerLevel.Index;
             furthestLevelIndex = _headerLevel.Index;
         }
 
         public float GetHeaderZPos()
         {
-            return header.position.z;  
+            return header.position.z;
         }
-        
+
         public float GetFooterZPos()
         {
             return footer.position.z;
         }
-
-        private void OnDisable()
+        
+        private void ResetData()
         {
-            _middleLevel = LevelManager.Ins.CurrentLevel;
+            _middleLevel = null;
+            _headerLevel = null;
+            _footerLevel = null;
         }
-
-        bool _isInit = false;
-
+        
         private void OnActive()
         {
             _middleLevel = LevelManager.Ins.CurrentLevel;
-            if (_middleLevel.Index > 0)
-            {
-                _footerLevel = new Level(_middleLevel.Index - 1);
-            }
-            if (_middleLevel.Index < DataManager.Ins.CountLevel - 2)
-            {
-                _headerLevel = new Level(_middleLevel.Index + 1);
-            }
-        }
-        
-        private void Start()
-        {
-            OnActive();
-            _isInit = true;
-        }
-
-        IEnumerator<float> WaitToActive()
-        {
-            yield return Timing.WaitForOneFrame;
-            OnActive();
-            _isInit = true;
-        }
-
-        private void OnEnable()
-        {
-            if (!_isInit) return;
-            OnActive();
+            // if Preload contains current level + 1, _headerLevel = Preload[current level + 1]
+            if (LevelManager.Ins.PreLoadLevels.ContainsKey(_middleLevel.Index + 1))
+                _headerLevel = LevelManager.Ins.PreLoadLevels[_middleLevel.Index + 1];
+            // if Preload contains current level - 1, _footerLevel = Preload[current level - 1]
+            if (LevelManager.Ins.PreLoadLevels.ContainsKey(_middleLevel.Index - 1))
+                _footerLevel = LevelManager.Ins.PreLoadLevels[_middleLevel.Index - 1];
         }
     }
 }
