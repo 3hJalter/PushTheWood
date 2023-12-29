@@ -4425,7 +4425,7 @@ MonoBehaviour:
   cameraTarget: {fileID: 735013716}
   worldMapCameraTarget: {fileID: 104111101}
   cameraMoveTime: 0.5
-  worldCameraXYPos: {x: 16, y: 0}
+  worldCameraXYPos: {x: 15, y: 0}
 --- !u!114 &1929008258
 MonoBehaviour:
   m_ObjectHideFlags: 0
