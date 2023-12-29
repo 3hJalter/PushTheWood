@@ -58,6 +58,7 @@ namespace _Game._Scripts.InGame
 
         public Level(int index, Transform parent = null)
         {
+            _isInit = false;
             // Set GridMap
             Index = index;
             // Get data
@@ -84,7 +85,7 @@ namespace _Game._Scripts.InGame
         {
             AddIslandIdToSurface();
             for (int i = 0; i < _unitDataList.Count; i++) OnInitUnit(_unitDataList[i]);
-            OnInitPlayer();
+            _isInit = true;
         }
         
         public Island GetIsland(int islandID)
@@ -185,6 +186,7 @@ namespace _Game._Scripts.InGame
             _gridMap = null;
             // Clear all _unitDataList data
             _unitDataList.Clear();
+            _isInit = false;
         }
 
         #endregion
@@ -355,8 +357,9 @@ namespace _Game._Scripts.InGame
             }
         }
 
-        private void OnInitPlayer()
+        public void OnInitPlayerToLevel()
         {
+            if (LevelManager.Ins.player is not null) LevelManager.Ins.player.OnDespawn();
             LevelManager.Ins.player = SimplePool.Spawn<Player>(
                 DataManager.Ins.GetGridUnit(PoolType.Player));
             LevelManager.Ins.player.OnInit(firstPlayerInitCell, HeightLevel.One, true, firstPlayerDirection);

@@ -17,6 +17,10 @@ namespace _Game.GameGrid
 {
     public class LevelManager : Singleton<LevelManager>
     {
+        private readonly Dictionary<int, Level> _preLoadLevels = new();
+
+        public Dictionary<int, Level> PreLoadLevels => _preLoadLevels;
+
         [SerializeField] private int levelIndex;
         private Level _currentLevel;
         public Level CurrentLevel => _currentLevel;
@@ -43,10 +47,42 @@ namespace _Game.GameGrid
             if (_tutorialIndex >= DataManager.Ins.CountTutorial) _tutorialIndex = 0;
         }
 
+        private void CheckPreload()
+        {
+            if (!_preLoadLevels.ContainsKey(levelIndex))
+            {
+                _currentLevel = new Level(levelIndex);
+            }
+            else
+            {
+                _currentLevel = _preLoadLevels[levelIndex];
+                _preLoadLevels.Remove(levelIndex);
+            }
+            // Preload previous level
+            if (levelIndex > 0 && !_preLoadLevels.ContainsKey(levelIndex - 1))
+            {
+                _preLoadLevels.Add(levelIndex - 1, new Level(levelIndex - 1));
+            }
+            // Preload next level
+            if (levelIndex < DataManager.Ins.CountLevel - 1 && !_preLoadLevels.ContainsKey(levelIndex + 1))
+            {
+                _preLoadLevels.Add(levelIndex + 1, new Level(levelIndex + 1));
+            }
+            // Clear all other levels
+            foreach (KeyValuePair<int, Level> level in _preLoadLevels
+                         .Where(level 
+                             => level.Key != levelIndex - 1 
+                                && level.Key != levelIndex + 1))
+            {
+                level.Value.OnDeSpawnLevel();
+            }
+        }
+        
         public void OnInit()
         {
-            _currentLevel = new Level(levelIndex);
+            CheckPreload();
             _currentLevel.OnInitLevel();
+            _currentLevel.OnInitPlayerToLevel();
             SetCameraToPlayer();
             savingState = new CareTaker(this);
             savingState.SavingState();

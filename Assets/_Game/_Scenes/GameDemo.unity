@@ -603,6 +603,9 @@ MonoBehaviour:
     SerializationNodes: []
   header: {fileID: 2110900450}
   footer: {fileID: 556719905}
+  nearestLevelIndex: 0
+  furthestLevelIndex: 0
+  offset: 8
 --- !u!1001 &189724890
 PrefabInstance:
   m_ObjectHideFlags: 0

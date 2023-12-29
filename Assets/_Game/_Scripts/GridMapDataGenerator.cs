@@ -301,7 +301,7 @@ public class GridMapDataGenerator : MonoBehaviour
         float ySpawnPos = 0f;
         if (mapNumber > 1)
         {
-            ySpawnPos = previousLevelYSpawnPos + previousLevelSize.y * Constants.CELL_SIZE;
+            ySpawnPos = previousLevelYSpawnPos + previousLevelSize.y * Constants.CELL_SIZE + offsetS * Constants.CELL_SIZE;
             if (mapNumber % 2 == 0)
                 // xSpawnPos = previousLevelXSpawnPos + previousLevelSize.x * Constants.CELL_SIZE - offsetS;
                 xSpawnPos = 10;
