@@ -55,13 +55,12 @@ namespace _Game.Managers
 
         public void ChangeCameraTargetPosition(Vector3 position, float moveTime = -1f)
         {
+            // if the same position, do nothing
+            if ((cameraTarget.position - position).sqrMagnitude < 0.01f) return;
+            
             if (moveTime < 0f) moveTime = cameraMoveTime;
-            // Timing.KillCoroutines("MoveCameraTargetPosition");
-            // Timing.RunCoroutine(MoveCameraTargetPosition(position, moveTime));
             cameraTarget.DOKill();
             cameraTarget.DOMove(position, moveTime).SetEase(Ease.Linear);
-
-            // cameraTarget.position = position;
         }
 
         // public void ChangeWorldTargetPosition()

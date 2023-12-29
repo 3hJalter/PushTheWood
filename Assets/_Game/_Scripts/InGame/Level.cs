@@ -129,7 +129,7 @@ namespace _Game._Scripts.InGame
         public void SetFirstPlayerStepOnIsland(GameGridCell cell)
         {
             _islandDic[LevelManager.Ins.player.islandID].SetFirstPlayerStepCell(cell);
-            CameraManager.Ins.ChangeCameraTargetPosition(_islandDic[LevelManager.Ins.player.islandID].GetCenterIslandPos());
+            CameraManager.Ins.ChangeCameraTargetPosition(_islandDic[LevelManager.Ins.player.islandID].centerIslandPos);
         }
         
         public void ResetIslandPlayerOn()
@@ -215,19 +215,13 @@ namespace _Game._Scripts.InGame
         
         private void CreateGridMap()
         {
-            string gridPositionData = _textGridData.GridPositionData;
-            string[] vector2Data = gridPositionData.Split(' ');
-            float xData = float.Parse(vector2Data[0]);
-            float zData = float.Parse(vector2Data[1]);
-            Vector3 originPos = new Vector3(xData, 0, zData);
             _gridMap = new Grid<GameGridCell, GameGridCellData>(GridSizeX, gridSizeY, Constants.CELL_SIZE,
-                originPos, () => new GameGridCell(), GridPlane.XZ);
+                default, () => new GameGridCell(), GridPlane.XZ);
         }
         
         private void SpawnGridSurfaceToGrid()
         {
             string[] surfaceData = _textGridData.SurfaceData.Split('\n');
-            surfaceData = surfaceData.Skip(1).ToArray();
             string[] surfaceRotationDirectionData = _textGridData.SurfaceRotationDirectionData.Split('\n');
             surfaceRotationDirectionData = surfaceRotationDirectionData.Skip(1).ToArray();
             string[] surfaceMaterialData = _textGridData.SurfaceMaterialData.Split('\n');
@@ -268,7 +262,8 @@ namespace _Game._Scripts.InGame
             for (int x = 0; x < _gridSurfaceMap.GetLength(0); x++)
                 if (IsGridSurfaceHadIsland(x, y, out GridSurface gridSurface))
                 {
-                    FloodFillIslandID(gridSurface, x, y, currentIslandID);
+                    FloodFillIslandID(gridSurface, x, y, currentIslandID);  
+                    _islandDic[currentIslandID].SetIslandPos();
                     currentIslandID++;
                 }
 
