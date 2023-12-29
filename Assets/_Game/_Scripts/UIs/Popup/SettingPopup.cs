@@ -30,7 +30,7 @@ namespace _Game.UIs.Popup
         public void OnClickSelectLevelButton()
         {
             UIManager.Ins.CloseAll();
-            UIManager.Ins.OpenUI<ChooseLevelScreen>();
+            UIManager.Ins.OpenUI<WorldLevelScreen>();
         }
         
         public void OnClickGoMenuButton()

@@ -15,9 +15,9 @@ namespace _Game.GameGrid
 {
     public class LevelManager : Singleton<LevelManager>
     {
-        private readonly Dictionary<int, Level> _preLoadLevels = new();
+        // private readonly Dictionary<int, Level> _preLoadLevels = new();
 
-        public Dictionary<int, Level> PreLoadLevels => _preLoadLevels;
+        // public Dictionary<int, Level> PreLoadLevels => _preLoadLevels;
 
         [SerializeField] private int levelIndex;
         private Level _currentLevel;
@@ -45,52 +45,53 @@ namespace _Game.GameGrid
             if (_tutorialIndex >= DataManager.Ins.CountTutorial) _tutorialIndex = 0;
         }
 
-        private void CheckPreload()
-        {
-            if (!_preLoadLevels.ContainsKey(levelIndex))
-            {
-                _currentLevel = new Level(levelIndex);
-            }
-            else
-            {
-                _currentLevel = _preLoadLevels[levelIndex];
-                _preLoadLevels.Remove(levelIndex);
-            }
-            // Preload previous level
-            if (levelIndex > 0 && !_preLoadLevels.ContainsKey(levelIndex - 1))
-            {
-                _preLoadLevels.Add(levelIndex - 1, new Level(levelIndex - 1));
-            }
-            // Preload next level
-            if (levelIndex < DataManager.Ins.CountLevel - 1 && !_preLoadLevels.ContainsKey(levelIndex + 1))
-            {
-                _preLoadLevels.Add(levelIndex + 1, new Level(levelIndex + 1));
-            }
-            // Clear all other levels and remove it from preload list
-            RemoveFarLevelFromPreLoad();
-        }
+        // private void CheckPreload()
+        // {
+        //     if (!_preLoadLevels.ContainsKey(levelIndex))
+        //     {
+        //         _currentLevel = new Level(levelIndex);
+        //     }
+        //     else
+        //     {
+        //         _currentLevel = _preLoadLevels[levelIndex];
+        //         _preLoadLevels.Remove(levelIndex);
+        //     }
+        //     // Preload previous level
+        //     if (levelIndex > 0 && !_preLoadLevels.ContainsKey(levelIndex - 1))
+        //     {
+        //         _preLoadLevels.Add(levelIndex - 1, new Level(levelIndex - 1));
+        //     }
+        //     // Preload next level
+        //     if (levelIndex < DataManager.Ins.CountLevel - 1 && !_preLoadLevels.ContainsKey(levelIndex + 1))
+        //     {
+        //         _preLoadLevels.Add(levelIndex + 1, new Level(levelIndex + 1));
+        //     }
+        //     // Clear all other levels and remove it from preload list
+        //     RemoveFarLevelFromPreLoad();
+        // }
         
         // We only store the previous level and the next level, other levels will be removed from preload list
-        public void RemoveFarLevelFromPreLoad()
-        {
-            List<int> keys = _preLoadLevels.Keys.ToList();
-            foreach (int key in keys.Where(key => key != levelIndex - 1 && key != levelIndex && key != levelIndex + 1))
-            {
-                _preLoadLevels[key].OnDeSpawnLevel();
-                _preLoadLevels.Remove(key);
-            }
-        }
+        // public void RemoveFarLevelFromPreLoad()
+        // {
+        //     List<int> keys = _preLoadLevels.Keys.ToList();
+        //     foreach (int key in keys.Where(key => key != levelIndex - 1 && key != levelIndex && key != levelIndex + 1))
+        //     {
+        //         _preLoadLevels[key].OnDeSpawnLevel();
+        //         _preLoadLevels.Remove(key);
+        //     }
+        // }
         
         public void OnInit()
         {
-            CheckPreload();
-            _currentLevel.OnInitLevel();
+            // CheckPreload();
+            _currentLevel = new Level(levelIndex);
+            _currentLevel.OnInitLevelSurfaceAndUnit();
             _currentLevel.OnInitPlayerToLevel();
-            SetCameraToPlayer();
+            // SetCameraToPlayer();
             savingState = new CareTaker(this);
             savingState.SavingState();
             SetCameraToPlayerIsland();
-            // CameraManager.Ins.ChangeCameraTargetPosition(GetCenterPos());
+            // CameraManager.Ins.ChangeCameraTargetPosition(_currentLevel.GetCenterPos());
         }
 
         public void SetCameraToPlayerIsland()
@@ -110,13 +111,21 @@ namespace _Game.GameGrid
             // Future: Add reward collected in-game
         }
 
+        public void OnGoLevel(int index)
+        {
+            if (levelIndex == index) return;
+            levelIndex = index;
+            _currentLevel.OnDeSpawnLevel();
+            OnInit();
+        }
+        
         public void OnNextLevel()
         {
             // Load next level
             _currentLevel.OnDeSpawnLevel();
             OnInit();      
                 
-            OnChangeTutorialIndex();
+            // OnChangeTutorialIndex();
         }
 
         private void OnChangeTutorialIndex()
@@ -136,6 +145,7 @@ namespace _Game.GameGrid
             player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
             player.OnInit(CurrentLevel.firstPlayerInitCell);
             savingState = new CareTaker(this);
+            SetCameraToPlayerIsland();
             // FxManager.Ins.ResetTrackedTrampleObjectList();
         }
         public void OnUndo()

@@ -20,14 +20,13 @@ namespace _Game.Managers
 
         [SerializeField] private UnityEngine.Camera brainCamera;
         [SerializeField] private Transform cameraTarget;
-        [SerializeField] private WorldMapTarget worldMapCameraTarget; // may be redundant later
-        
+        // [SerializeField] private WorldMapTarget worldMapCameraTarget; // may be redundant later
+
+        // public WorldMapTarget WorldMapCameraTarget => worldMapCameraTarget;
+
         [SerializeField] private float cameraMoveTime = 1f;
         [SerializeField] private Vector2 worldCameraXYPos;
-
-        public Vector2 WorldCameraXYPos => worldCameraXYPos;
-
-
+        
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         // ReSharper disable once CollectionNeverUpdated.Local
         [SerializeField]
@@ -65,18 +64,18 @@ namespace _Game.Managers
             // cameraTarget.position = position;
         }
 
-        public void ChangeWorldTargetPosition()
-        {
-            worldMapCameraTarget.Tf.position = new Vector3(
-                worldCameraXYPos.x,
-                worldCameraXYPos.y,
-                LevelManager.Ins.CurrentLevel.GetCenterPos().z);
-        }
+        // public void ChangeWorldTargetPosition()
+        // {
+        //     worldMapCameraTarget.Tf.position = new Vector3(
+        //         worldCameraXYPos.x,
+        //         worldCameraXYPos.y,
+        //         LevelManager.Ins.CurrentLevel.GetCenterPos().z);
+        // }
         
-        public void EnableWorldCamera(bool enable)
-        {
-            worldMapCameraTarget.gameObject.SetActive(enable);
-        }
+        // public void EnableWorldCamera(bool enable)
+        // {
+        //     worldMapCameraTarget.gameObject.SetActive(enable);
+        // }
         
         public void ChangeCameraTarget(ECameraType eCameraType, Transform target)
         {
