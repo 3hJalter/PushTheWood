@@ -81,7 +81,7 @@ namespace _Game._Scripts.InGame
         
         #region public function
 
-        public void OnInitLevel()
+        public void OnInitLevelSurfaceAndUnit()
         {
             AddIslandIdToSurface();
             for (int i = 0; i < _unitDataList.Count; i++) OnInitUnit(_unitDataList[i]);
