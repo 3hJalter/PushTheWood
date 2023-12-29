@@ -13,7 +13,7 @@ using VinhLB;
 
 namespace _Game.GameGrid.Unit
 {
-    public abstract class GridUnit : GameUnit
+    public abstract class GridUnit : GameUnit, IOriginator
     {
         // Model of Unit
         [SerializeField] public Transform skin; // Model location
@@ -36,11 +36,13 @@ namespace _Game.GameGrid.Unit
         public int islandID = -1;
 
         // The current state of this unit (Up or Down)
-        [FormerlySerializedAs("unitState")] [SerializeField]
+        [FormerlySerializedAs("unitState")]
+        [SerializeField]
         protected UnitTypeY unitTypeY = UnitTypeY.Up; // Serialize for test
 
         // The type of this unit (Horizontal, Vertical, Both or None)
-        [FormerlySerializedAs("unitType")] [SerializeField]
+        [FormerlySerializedAs("unitType")]
+        [SerializeField]
         protected UnitTypeXZ unitTypeXZ = UnitTypeXZ.Both; // Serialize for test
 
         [SerializeField] protected Direction skinRotationDirection = Direction.None;
@@ -53,8 +55,8 @@ namespace _Game.GameGrid.Unit
         public readonly EnterCellPosData EnterPosData = new();
 
         // All neighbor units of this unit
-        [SerializeField] private readonly HashSet<GridUnit> neighborUnits = new();
-        [SerializeField] private readonly HashSet<GridUnit> upperUnits = new();
+        [SerializeField] protected readonly HashSet<GridUnit> neighborUnits = new();
+        [SerializeField] protected readonly HashSet<GridUnit> upperUnits = new();
 
         // Save init data on first Initialize
         private UnitInitData _unitInitData;
@@ -131,7 +133,7 @@ namespace _Game.GameGrid.Unit
             Vector3 posOffset = new Vector3(rotationOffset.x, 0, rotationOffset.y) * Constants.CELL_SIZE;
             skin.position += posOffset;
         }
-        
+
         public virtual bool IsCurrentStateIs(StateEnum stateEnum)
         {
             return false;
@@ -155,7 +157,7 @@ namespace _Game.GameGrid.Unit
         {
 
         }
-        
+
         public virtual void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
         {
             lastPushedDirection = direction;
@@ -397,6 +399,98 @@ namespace _Game.GameGrid.Unit
             cellInUnits.Add(cell);
             cell.AddGridUnit(this);
         }
+
+        #region SAVING DATA
+        public virtual IMemento Save()
+        {
+            return new UnitMemento(this, Tf.position, skin.rotation, startHeight, endHeight
+                , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID);
+        }
+        public struct UnitMemento : IMemento
+        {
+            GridUnit main;
+            #region DATA
+            Vector3 position;
+            Quaternion rotation;
+            HeightLevel startHeight;
+            HeightLevel endHeight;
+            UnitTypeY unitTypeY;
+            UnitTypeXZ unitTypeXZ;
+            GridUnit[] belowsUnits;
+            GridUnit[] neighborUnits;
+            GridUnit[] upperUnits;
+            GameGridCell mainCell;
+            GameGridCell[] cellInUnits;
+            int islandID;
+
+            #endregion
+            public UnitMemento(GridUnit main, params object[] data)
+            {
+                this.main = main;
+                position = (Vector3)data[0];
+                rotation = (Quaternion)data[1];
+                startHeight = (HeightLevel)data[2];
+                endHeight = (HeightLevel)data[3];
+                unitTypeY = (UnitTypeY)data[4];
+                unitTypeXZ = (UnitTypeXZ)data[5];
+                if (data[6] != null) belowsUnits = ((HashSet<GridUnit>)data[6]).ToArray();
+                else belowsUnits = null;
+
+                if (data[7] != null) neighborUnits = ((HashSet<GridUnit>)data[7]).ToArray();
+                else neighborUnits = null;
+
+                if (data[8] != null) upperUnits = ((HashSet<GridUnit>)data[8]).ToArray();
+                else upperUnits = null;
+
+                mainCell = (GameGridCell)data[9];
+                if (data[10] != null) cellInUnits = ((List<GameGridCell>)data[10]).ToArray();
+                else cellInUnits = null;
+                islandID = (int)data[11];
+            }
+            public void Restore()
+            {
+                main.Tf.position = position;
+                main.skin.rotation = rotation;
+                main.startHeight = startHeight;
+                main.endHeight = endHeight;
+                main.unitTypeY = unitTypeY;
+                main.unitTypeXZ = unitTypeXZ;
+
+
+                main.belowUnits.Clear();
+                foreach (GridUnit unit in belowsUnits)
+                {
+                    main.belowUnits.Add(unit);
+                }
+
+
+
+                main.neighborUnits.Clear();
+                foreach (GridUnit unit in neighborUnits)
+                {
+                    main.neighborUnits.Add(unit);
+                }
+
+
+
+                main.upperUnits.Clear();
+                foreach (GridUnit unit in upperUnits)
+                {
+                    main.upperUnits.Add(unit);
+                }
+
+
+                main.mainCell = mainCell;
+
+                main.cellInUnits.Clear();
+                foreach (GameGridCell cell in cellInUnits)
+                {
+                    main.cellInUnits.Add(cell);
+                }
+
+            }
+        }
+        #endregion
     }
 
     public enum UnitTypeY

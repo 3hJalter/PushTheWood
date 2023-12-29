@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace _Game.Utilities.Grid
 {
-    public class GridCell<T>
+    public class GridCell<T> : IOriginator
     {
         protected const int MIN = 0;
         protected const int MAX = 100;
         protected T data;
         public GridPlane GridPlaneType;
-        public Action<int, int> OnValueChange;
+        public event Action<int, int> OnValueChange;
         private Vector3 worldPos;
         [SerializeField] private float worldX;
         [SerializeField] private float worldY;
@@ -51,7 +51,6 @@ namespace _Game.Utilities.Grid
         public void SetCellValue(T valueIn)
         {
             data = valueIn;
-            OnValueChange?.Invoke(x, y);
         }
 
 
@@ -88,6 +87,16 @@ namespace _Game.Utilities.Grid
         public override string ToString()
         {
             return data.ToString();
+        }
+
+        protected virtual void ValueChange()
+        {
+            OnValueChange?.Invoke(x, y);
+        }
+
+        public virtual IMemento Save() 
+        { 
+            return null; 
         }
     }
 }

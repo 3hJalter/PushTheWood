@@ -1,24 +1,28 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using _Game._Scripts.InGame;
 using _Game._Scripts.UIs.Tutorial;
 using _Game.Camera;
 using _Game.DesignPattern;
+using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Managers;
 using _Game.UIs.Screen;
+using _Game.Utilities;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace _Game.GameGrid
 {
     public class LevelManager : Singleton<LevelManager>
     {
         [SerializeField] private int levelIndex;
-        private List<Level> _activeLevels; // All the level that currently show in world map 
         private Level _currentLevel;
         public Level CurrentLevel => _currentLevel;
         
         private int _tutorialIndex;
-
+        private CareTaker savingState;
         public Player player;
 
         private void Start()
@@ -44,6 +48,8 @@ namespace _Game.GameGrid
             _currentLevel = new Level(levelIndex);
             _currentLevel.OnInitLevel();
             SetCameraToPlayer();
+            savingState = new CareTaker(this);
+            savingState.SavingState();
             SetCameraToPlayerIsland();
             // CameraManager.Ins.ChangeCameraTargetPosition(GetCenterPos());
         }
@@ -90,8 +96,12 @@ namespace _Game.GameGrid
             player.OnDespawn();
             player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
             player.OnInit(CurrentLevel.firstPlayerInitCell);
-
+            savingState = new CareTaker(this);
             // FxManager.Ins.ResetTrackedTrampleObjectList();
+        }
+        public void OnUndo()
+        {
+            savingState.Undo();
         }
         
         private void SetCameraToPlayer()
@@ -99,7 +109,45 @@ namespace _Game.GameGrid
             // CameraFollow.Ins.SetTarget(Player.Tf);`
             CameraManager.Ins.ChangeCameraTarget(ECameraType.InGameCamera, player.Tf);
         }
+
+        public class CareTaker
+        {
+            LevelManager main;
+            Stack<List<IMemento>> historys = new Stack<List<IMemento>>();
+            public CareTaker(LevelManager main)
+            {
+                this.main = main;
+                main.player.OnSavingState += SavingState;
+            }
+            public void Undo()
+            {
+                if(historys.Count > 0)
+                {
+                    List<IMemento> states = historys.Pop();
+                    foreach(IMemento state in states)
+                    {
+                        state.Restore();
+                    }
+                    DevLog.Log(DevId.Hung, "UNDO_STATE - SUCCESS!!");
+                }
+                else
+                {
+                    DevLog.Log(DevId.Hung, "UNDO_STATE - FAILURE!!");
+                }
+            }
+            public void SavingState()
+            {
+                HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
+                List<IMemento> states = new List<IMemento>() { main._currentLevel.GridMap.Save(), main.player.Save() };
+                foreach(GridUnit gridUnit in gridUnits)
+                {
+                    if(gridUnit is GridUnitDynamic)
+                        states.Add(gridUnit.Save());
+                }
+                historys.Push(states);
+            }
+        }
+
     }
 
-    
 }

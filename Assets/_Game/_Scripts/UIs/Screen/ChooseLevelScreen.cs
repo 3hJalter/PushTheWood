@@ -12,51 +12,51 @@ namespace _Game.UIs.Screen
     {
         private Direction _previousDirection;
         
-        private void Update()
-        {
-            Direction direction = HInputManager.GetDirectionInput();
-            switch (direction)
-            {
-                case Direction.None:
-                    _previousDirection = Direction.None;
-                    return;
-                case Direction.Left or Direction.Right:
-                    return;
-            }
-            // else move the CameraTargetPosZ
-            if (_previousDirection is Direction.None)
-            {
-                if (direction is Direction.Forward)
-                {
-                    SeePreviousLevel();
-                }
-                else if (direction is Direction.Back)
-                {
-                    SeeNextLevel();
-                }
-            }
-            _previousDirection = direction;
-        }
+        // private void Update()
+        // {
+        //     Direction direction = HInputManager.GetDirectionInput();
+        //     switch (direction)
+        //     {
+        //         case Direction.None:
+        //             _previousDirection = Direction.None;
+        //             return;
+        //         case Direction.Left or Direction.Right:
+        //             return;
+        //     }
+        //     // else move the CameraTargetPosZ
+        //     if (_previousDirection is Direction.None)
+        //     {
+        //         if (direction is Direction.Forward)
+        //         {
+        //             SeePreviousLevel();
+        //         }
+        //         else if (direction is Direction.Back)
+        //         {
+        //             SeeNextLevel();
+        //         }
+        //     }
+        //     _previousDirection = direction;
+        // }
         
         public override void Setup()
         {
             base.Setup();
+            GameManager.Ins.ChangeState(GameState.WorldMap);
             _previousDirection = Direction.None;
             // CurveWorld
             FxManager.Ins.ChangePlanetCurvatureSize();
+            CameraManager.Ins.ChangeWorldTargetPosition();
+            CameraManager.Ins.EnableWorldCamera(true);
             CameraManager.Ins.ChangeCamera(ECameraType.WorldMapCamera);
-            Vector3 worldPos = new Vector3(
-                CameraManager.Ins.WorldCameraXYPos.x,
-                CameraManager.Ins.WorldCameraXYPos.y,
-                LevelManager.Ins.CurrentLevel.GetCenterPos().z);
-            CameraManager.Ins.ChangeCameraTargetPosition(worldPos);
         }
 
         public override void Close()
         {
             FxManager.Ins.ChangePlanetCurvatureSize(0f);
+            CameraManager.Ins.EnableWorldCamera(false);
             CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
             LevelManager.Ins.SetCameraToPlayerIsland();
+            UIManager.Ins.OpenUI<InGameScreen>();
             base.Close();
         }
 

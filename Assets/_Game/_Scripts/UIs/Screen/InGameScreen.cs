@@ -18,6 +18,7 @@ namespace _Game.UIs.Screen
         public override void Setup()
         {
             base.Setup();
+            GameManager.Ins.ChangeState(GameState.InGame);
             MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.Ins
                 .CurrentChoice); // TODO: Change to use PlayerRef 
             // if (CameraFollow.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
@@ -62,6 +63,11 @@ namespace _Game.UIs.Screen
             UIManager.Ins.OpenUI<BuildingScreen>();
 
             GridBuildingManager.Ins.ToggleBuildMode();
+        }
+
+        public void OnClickUndo()
+        {
+            LevelManager.Ins.OnUndo();
         }
     }
 }

@@ -15,6 +15,7 @@ namespace _Game._Scripts.InGame
 
         private readonly Dictionary<GameGridCell, PoolType> _initGridUnitDic = new();
         private readonly int _islandID;
+        public HashSet<GridUnit> GridUnits => _gridUnits;
 
         public Island(int islandID)
         {

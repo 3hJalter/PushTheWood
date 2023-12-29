@@ -20,6 +20,8 @@ namespace _Game._Scripts.InGame
     {
         #region data
 
+        private bool _isInit; // Check if all unit is init in this Level
+        
         // Init Data
         private readonly TextGridData _textGridData;
 
@@ -35,15 +37,18 @@ namespace _Game._Scripts.InGame
 
         // Island (Each island has some surfaces and units)
         private readonly Dictionary<int, Island> _islandDic = new();
+        public Dictionary<int, Island> Islands => _islandDic;
 
         // Some other data
         public GameGridCell firstPlayerInitCell;
-        private Direction firstPlayerDirection;
+        public Direction firstPlayerDirection;
         
         // Get Data
         public int GridSizeX { get; }
 
         public int Index { get; }
+        
+        public bool IsInit => _isInit;
         
         public Grid<GameGridCell, GameGridCellData> GridMap => _gridMap;
 
@@ -51,7 +56,7 @@ namespace _Game._Scripts.InGame
         
         #region constructor
 
-        public Level(int index)
+        public Level(int index, Transform parent = null)
         {
             // Set GridMap
             Index = index;
@@ -66,11 +71,9 @@ namespace _Game._Scripts.InGame
             // Spawn Units (Not Init)
             OnSpawnUnits();
             // if isInit -> AddIsland & InitUnit
-            // DEBUG: Spawn an cube at cell (0,0)
-            GameObject.CreatePrimitive(PrimitiveType.Cube).transform.position = _gridMap.GetGridCell(0, 0).WorldPos;
-            // DEBUG: Spawn an cube at cell (0, last Z pos)
-            GameObject.CreatePrimitive(PrimitiveType.Sphere).transform.position =
-                _gridMap.GetGridCell(0, gridSizeY - 1).WorldPos;
+            if (parent is null) return;
+            // Set parent
+            SetParent(parent);
         }
 
         #endregion
@@ -142,7 +145,7 @@ namespace _Game._Scripts.InGame
             for (int i = 0; i < _islandDic.Count; i++) _islandDic[i].ResetIsland();
         }
         
-        public void OnDeSpawnLevel()
+        public void OnDeSpawnLevel(bool isLevelInit = true)
         {
             // Despawn all groundUnit
             for (int index0 = 0; index0 < _gridSurfaceMap.GetLength(0); index0++)
@@ -151,17 +154,28 @@ namespace _Game._Scripts.InGame
                 GridSurface gridSurface = _gridSurfaceMap[index0, index1];
                 if (gridSurface is not null) gridSurface.OnDespawn();
             }
-
-            // Despawn all unit in each island
-            for (int i = 0; i < _islandDic.Count; i++)
+            
+            if (isLevelInit)
             {
-                Island island = _islandDic[i];
-                island.ClearIsland();
+                // Despawn all unit in each island
+                for (int i = 0; i < _islandDic.Count; i++)
+                {
+                    Island island = _islandDic[i];
+                    island.ClearIsland();
+                }
+                // Set player to null
+                LevelManager.Ins.player.OnDespawn();
+                LevelManager.Ins.player = null;
             }
-
-            // Set player to null
-            LevelManager.Ins.player.OnDespawn();
-            LevelManager.Ins.player = null;
+            else
+            {
+                for (int i = 0; i < _unitDataList.Count; i++)
+                {
+                    LevelUnitData data = _unitDataList[i];
+                    data.unit.OnDespawn();
+                }
+            }
+            
             firstPlayerInitCell = null;
             // Clear all _islandDic data
             _islandDic.Clear();
@@ -177,6 +191,26 @@ namespace _Game._Scripts.InGame
 
         #region private function
 
+        private void SetParent(Transform parent)
+        {
+            // set all gridSurface tp parent
+            for (int index0 = 0; index0 < _gridSurfaceMap.GetLength(0); index0++)
+            {
+                for (int index1 = 0; index1 < _gridSurfaceMap.GetLength(1); index1++)
+                {
+                    GridSurface gridSurface = _gridSurfaceMap[index0, index1];
+                    if (gridSurface is null) continue;
+                    gridSurface.Tf.SetParent(parent);
+                }
+            }
+            // set all gridUnit to parent
+            for (int i = 0; i < _unitDataList.Count; i++)
+            {
+                LevelUnitData data = _unitDataList[i];
+                data.unit.Tf.SetParent(parent);
+            }
+        }
+        
         private void CreateGridMap()
         {
             string gridPositionData = _textGridData.GridPositionData;
