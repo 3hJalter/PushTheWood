@@ -61,7 +61,7 @@ RWStructuredBuffer<int> _GeneratedIndices;
 
 int _NumSourceTriangles;
 float4x4 _Transform;
-float _RandomSeed; // An offset to add to random functions
+float3 _RandomSeed; // An offset to add to random functions
 float _MaxBendAngle; // Maximum bend angle as a multiplier to PI / 2
 float _BladeWidth; // Maximum blade width
 float _BladeWidthVariance; // Variance of blade width
@@ -188,7 +188,8 @@ void Main(uint3 id : SV_DispatchThreadID)
     // with the point with the minimum u-coordinate in a pair appearing first
 
     // Construct the square segments of the grass blade
-    for (int i = 0; i < numBladeSegments; i++)
+    int i;
+    for (i = 0; i < numBladeSegments; i++)
     {
         // The v rises as the segments increase
         float v = i / (float)numBladeSegments;
@@ -215,7 +216,7 @@ void Main(uint3 id : SV_DispatchThreadID)
     int genIndexStart = id.x * numSideIndices * 2;
     int genVertexStart = id.x * numSideVertices * 2;
 
-    for (int i = 0; i < numSideVertices; i++)
+    for (i = 0; i < numSideVertices; i++)
     {
         // The reverse side of the blade is stored directly after the front side
         _GeneratedVertices[genVertexStart + i] = vertices[i];
@@ -226,12 +227,12 @@ void Main(uint3 id : SV_DispatchThreadID)
     // For instance, triangle #0, #1, #2; triangle #1 contains vertices #1, #2, #3; etc.
     // Even and odd triangles have slightly different index orders so both are wound clockwise
     // Note that the triangle on the back side should be treated as having the other winding type
-    for (int i = 0; i < numSideTriangles; i += 2)
+    for (i = 0; i < numSideTriangles; i += 2)
     {
         AddTriangleClockwise(i, genIndexStart, genVertexStart);
         AddTriangleCounterClockwise(i, genIndexStart + numSideIndices, genVertexStart + numSideVertices);
     }
-    for (int i = 1; i < numSideTriangles; i += 2)
+    for (i = 1; i < numSideTriangles; i += 2)
     {
         AddTriangleCounterClockwise(i, genIndexStart, genVertexStart);
         AddTriangleClockwise(i, genIndexStart + numSideIndices, genVertexStart + numSideVertices);

@@ -322,8 +322,8 @@ namespace _Game.GameGrid.Unit
                     break;
                 case Direction.Left:
                 case Direction.Right:
-                    InitZCell(mainCell, size.z);
-                    for (int i = initCells.Count - 1; i >= 0; i--) InitXCell(initCells[i], size.x);
+                    InitZCell(mainCell, size.x);
+                    for (int i = initCells.Count - 1; i >= 0; i--) InitXCell(initCells[i], size.z);
                     break;
             }
 

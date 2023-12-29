@@ -9,13 +9,12 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: BladeGrassDark
   m_Shader: {fileID: 4800000, guid: fa43413e85bfdfb4996ed719395b1308, type: 3}
-  m_ValidKeywords:
+  m_ValidKeywords: []
+  m_InvalidKeywords:
   - CURVEDWORLD_BEND_ID_1
-  - CURVEDWORLD_BEND_TYPE_LITTLEPLANET_Y
-  - CURVEDWORLD_NORMAL_TRANSFORMATION_ON
-  m_InvalidKeywords: []
+  - CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -33,7 +32,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _RandomJitterRadius: 0.1
+    - _RandomJitterRadius: 0
     - _ShadowLightness: 0.4
     - _TrampleFalloff: 0.75
     - _TrampleMaxDistance: 1
@@ -42,10 +41,10 @@ Material:
     - _WindFrequency: 0.025
     - _WindStrength: 0.1
     m_Colors:
-    - _BaseColor: {r: 0.26126134, g: 0.5294118, b: 0.08627452, a: 1}
+    - _BaseColor: {r: 0.22541326, g: 0.5660378, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _CurvedWorldBendSettings: {r: 5, g: 1, b: 1, a: 0}
-    - _TipColor: {r: 0.3194682, g: 0.78431374, b: 0.08627452, a: 1}
+    - _CurvedWorldBendSettings: {r: 2, g: 1, b: 0, a: 0}
+    - _TipColor: {r: 0.2313971, g: 0.6981132, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &3491717857063969027
 MonoBehaviour:

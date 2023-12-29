@@ -12,6 +12,7 @@ Material:
   m_ValidKeywords:
   - CURVEDWORLD_BEND_ID_1
   - CURVEDWORLD_BEND_TYPE_LITTLEPLANET_Y
+  - CURVEDWORLD_NORMAL_TRANSFORMATION_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
@@ -113,7 +114,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 0.23137257, g: 0.5372549, b: 0.10588236, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _CurvedWorldBendSettings: {r: 5, g: 1, b: 0, a: 0}
+    - _CurvedWorldBendSettings: {r: 5, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _HColor: {r: 1, g: 1, b: 1, a: 1}
     - _SColor: {r: 0.4, g: 0.4, b: 0.4, a: 1}

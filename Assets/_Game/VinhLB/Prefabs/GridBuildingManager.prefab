@@ -140,7 +140,6 @@ MonoBehaviour:
   _buildingUnitDatabaseSo: {fileID: 11400000, guid: ca69cfadfaa87b346956ff819ad016f0, type: 2}
   _testing: 0
   _useKeyboard: 0
-  _snapping: 1
   _placeableLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -205,6 +204,8 @@ MonoBehaviour:
   _visualHolderTransform: {fileID: 2091726954763441251}
   _cursorIndicatorTransform: {fileID: 2091726955147828836}
   _cursorIndicatorVisualTransform: {fileID: 5377978249844803358}
+  _isSnapping: 1
+  _isCursorIndicatorVisualExpandable: 1
   _heightOffset: 2.5
   _animationSpeed: 15
 --- !u!1 &2091726954763441250
