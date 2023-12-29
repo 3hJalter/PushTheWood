@@ -2418,7 +2418,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   highlightButton: 1
-  testing: 0
+  testing: 1
   dpadButtons:
   - {fileID: 2049581924}
   - {fileID: 1448246167}
@@ -4172,7 +4172,6 @@ MonoBehaviour:
   currentVirtualCamera: {fileID: 35614194}
   brainCamera: {fileID: 1929008254}
   cameraTarget: {fileID: 735013716}
-  worldMapCameraTarget: {fileID: 104111101}
   cameraMoveTime: 0.5
   worldCameraXYPos: {x: 15, y: 0}
 --- !u!114 &1929008258
