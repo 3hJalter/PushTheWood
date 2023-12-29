@@ -20,7 +20,7 @@ namespace _Game.GameGrid
         [SerializeField] private int levelIndex;
         private Level _currentLevel;
         public Level CurrentLevel => _currentLevel;
-        
+
         private int _tutorialIndex;
         private CareTaker savingState;
         public Player player;
@@ -58,7 +58,7 @@ namespace _Game.GameGrid
         {
             CameraManager.Ins.ChangeCameraTargetPosition(CurrentLevel.GetIsland(player.islandID).GetCenterIslandPos());
         }
-    
+
         public void OnWin()
         {
             // Show win screen
@@ -75,8 +75,8 @@ namespace _Game.GameGrid
         {
             // Load next level
             _currentLevel.OnDeSpawnLevel();
-            OnInit();      
-                
+            OnInit();
+
             OnChangeTutorialIndex();
         }
 
@@ -103,7 +103,7 @@ namespace _Game.GameGrid
         {
             savingState.Undo();
         }
-        
+
         private void SetCameraToPlayer()
         {
             // CameraFollow.Ins.SetTarget(Player.Tf);`
@@ -121,10 +121,10 @@ namespace _Game.GameGrid
             }
             public void Undo()
             {
-                if(historys.Count > 0)
+                if (historys.Count > 0)
                 {
                     List<IMemento> states = historys.Pop();
-                    foreach(IMemento state in states)
+                    foreach (IMemento state in states)
                     {
                         state.Restore();
                     }
@@ -139,10 +139,9 @@ namespace _Game.GameGrid
             {
                 HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
                 List<IMemento> states = new List<IMemento>() { main._currentLevel.GridMap.Save(), main.player.Save() };
-                foreach(GridUnit gridUnit in gridUnits)
+                foreach (GridUnit gridUnit in gridUnits)
                 {
-                    if(gridUnit is GridUnitDynamic)
-                        states.Add(gridUnit.Save());
+                    states.Add(gridUnit.Save());
                 }
                 historys.Push(states);
             }

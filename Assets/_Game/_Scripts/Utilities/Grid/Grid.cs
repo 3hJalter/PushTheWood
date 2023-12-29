@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _Game.Utilities.Timer;
 using MapEnum;
 using UnityEngine;
 
@@ -10,7 +11,14 @@ namespace _Game.Utilities.Grid
         private readonly TextMesh[,] debugTextArray;
         private readonly T[,] gridArray;
         private readonly Vector3 originPosition;
+
         protected readonly List<IMemento> cellMementos = new List<IMemento>();
+        protected readonly List<Vector2Int> initCellUnitPos = new List<Vector2Int>();
+        public static bool IsInit
+        {
+            get;
+            protected set;
+        }
 
         public Grid(int width, int height, float cellSize, Vector3 originPosition = default,
             Func<GridCell<TD>> constructorCell = null, GridPlane gridPlaneType = GridPlane.XY)
@@ -20,32 +28,33 @@ namespace _Game.Utilities.Grid
             CellSize = cellSize;
             this.originPosition = originPosition;
             GridPlaneType = gridPlaneType;
+            IsInit = true;
 
             gridArray = new T[width, height];
             debugTextArray = new TextMesh[width, height];
 
             for (int x = 0; x < gridArray.GetLength(0); x++)
-            for (int y = 0; y < gridArray.GetLength(1); y++)
-            {
-                if (constructorCell != null) gridArray[x, y] = (T)constructorCell();
-                gridArray[x, y].SetCellPosition(x, y);
-                gridArray[x, y].Size = cellSize;
-                gridArray[x, y].GridPlaneType = gridPlaneType;
-                switch (gridPlaneType)
+                for (int y = 0; y < gridArray.GetLength(1); y++)
                 {
-                    case GridPlane.XY:
-                        gridArray[x, y].UpdateWorldPosition(originPosition.x, originPosition.y);
-                        break;
-                    case GridPlane.XZ:
-                        gridArray[x, y].UpdateWorldPosition(originPosition.x, originPosition.z);
-                        break;
-                    case GridPlane.YZ:
-                        gridArray[x, y].UpdateWorldPosition(originPosition.y, originPosition.z);
-                        break;
-                }
+                    if (constructorCell != null) gridArray[x, y] = (T)constructorCell();
+                    gridArray[x, y].SetCellPosition(x, y);
+                    gridArray[x, y].Size = cellSize;
+                    gridArray[x, y].GridPlaneType = gridPlaneType;
+                    switch (gridPlaneType)
+                    {
+                        case GridPlane.XY:
+                            gridArray[x, y].UpdateWorldPosition(originPosition.x, originPosition.y);
+                            break;
+                        case GridPlane.XZ:
+                            gridArray[x, y].UpdateWorldPosition(originPosition.x, originPosition.z);
+                            break;
+                        case GridPlane.YZ:
+                            gridArray[x, y].UpdateWorldPosition(originPosition.y, originPosition.z);
+                            break;
+                    }
 
-                gridArray[x, y].OnValueChange += OnGridCellValueChange;
-            }
+                    gridArray[x, y].OnValueChange += OnGridCellValueChange;
+                }
 
 
         }
@@ -121,7 +130,14 @@ namespace _Game.Utilities.Grid
         protected virtual void OnGridCellValueChange(int x, int y)
         {
             //debugTextArray[x, y].text = gridArray[x, y].ToString();
-            cellMementos.Add(gridArray[x, y].Save());
+            if (IsInit)
+            {
+                initCellUnitPos.Add(new Vector2Int(x, y));
+            }
+            else
+            {
+                cellMementos.Add(gridArray[x, y].Save());
+            }
         }
 
         private Vector3 GetUnitVector3(float val1, float val2)
@@ -139,7 +155,7 @@ namespace _Game.Utilities.Grid
             return default;
         }
 
-        
+
 
 
         #region VISIT CLASS
@@ -158,30 +174,30 @@ namespace _Game.Utilities.Grid
             public void DrawGrid(Grid<T, TD> grid, bool isPositionShow = false)
             {
                 for (int x = 0; x < grid.gridArray.GetLength(0); x++)
-                for (int y = 0; y < grid.gridArray.GetLength(1); y++)
-                {
-                    if (isPositionShow)
+                    for (int y = 0; y < grid.gridArray.GetLength(1); y++)
                     {
-                        grid.debugTextArray[x, y] = GridUtilities.CreateWorldText(
-                            grid.gridArray[x, y].GetCellPosition().ToString(), null
-                            , grid.GetWorldPosition(x, y) + new Vector3(grid.CellSize / 2, grid.CellSize / 2), 5,
-                            Color.white, TextAnchor.MiddleCenter);
-                        // Rotate text base on the gridPlane
-                        grid.debugTextArray[x, y].transform.rotation = grid.GridPlaneType switch
+                        if (isPositionShow)
                         {
-                            GridPlane.XY => Quaternion.Euler(0, 90, 0),
-                            GridPlane.XZ => Quaternion.Euler(90, 0, 0),
-                            GridPlane.YZ => Quaternion.Euler(0, 0, 90),
-                            _ => grid.debugTextArray[x, y].transform.rotation
-                        };
+                            grid.debugTextArray[x, y] = GridUtilities.CreateWorldText(
+                                grid.gridArray[x, y].GetCellPosition().ToString(), null
+                                , grid.GetWorldPosition(x, y) + new Vector3(grid.CellSize / 2, grid.CellSize / 2), 5,
+                                Color.white, TextAnchor.MiddleCenter);
+                            // Rotate text base on the gridPlane
+                            grid.debugTextArray[x, y].transform.rotation = grid.GridPlaneType switch
+                            {
+                                GridPlane.XY => Quaternion.Euler(0, 90, 0),
+                                GridPlane.XZ => Quaternion.Euler(90, 0, 0),
+                                GridPlane.YZ => Quaternion.Euler(0, 0, 90),
+                                _ => grid.debugTextArray[x, y].transform.rotation
+                            };
 
+                        }
+
+                        Debug.DrawLine(grid.GetWorldPosition(x, y), grid.GetWorldPosition(x, y + 1), Color.white, 100f,
+                            true);
+                        Debug.DrawLine(grid.GetWorldPosition(x, y), grid.GetWorldPosition(x + 1, y), Color.white, 100f,
+                            true);
                     }
-
-                    Debug.DrawLine(grid.GetWorldPosition(x, y), grid.GetWorldPosition(x, y + 1), Color.white, 100f,
-                        true);
-                    Debug.DrawLine(grid.GetWorldPosition(x, y), grid.GetWorldPosition(x + 1, y), Color.white, 100f,
-                        true);
-                }
 
                 Debug.DrawLine(grid.GetWorldPosition(0, grid.Height), grid.GetWorldPosition(grid.Width, grid.Height),
                     Color.white, 100f);
@@ -207,7 +223,18 @@ namespace _Game.Utilities.Grid
         #region SAVING DATA
         public IMemento Save()
         {
-            GridMemento save = new GridMemento(this, cellMementos.Count > 0 ? cellMementos : null);
+            GridMemento save;
+            if (IsInit)
+            {
+                for (int i = 0; i < initCellUnitPos.Count; i++)
+                {
+                    cellMementos.Add(gridArray[initCellUnitPos[i].x, initCellUnitPos[i].y].Save());
+                }
+                initCellUnitPos.Clear();
+                IsInit = false;
+            }
+
+            save = new GridMemento(this, cellMementos.Count > 0 ? cellMementos : null);
             cellMementos.Clear();
             return save;
         }
@@ -224,7 +251,7 @@ namespace _Game.Utilities.Grid
             }
             public void Restore()
             {
-                foreach(IMemento memento in cellMememtos)
+                foreach (IMemento memento in cellMememtos)
                 {
                     memento.Restore();
                 }
