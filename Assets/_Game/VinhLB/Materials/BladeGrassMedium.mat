@@ -110,12 +110,12 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _TrampleFalloff: 0.75
+    - _TrampleFalloff: 1
     - _TrampleMaxDistance: 1
     - _TramplePushStrength: 0.5
-    - _TrampleSquishStrength: 1
-    - _WindFrequency: 0.025
-    - _WindStrength: 0.05
+    - _TrampleSquishStrength: 2
+    - _WindFrequency: 0.01
+    - _WindStrength: 0.1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:

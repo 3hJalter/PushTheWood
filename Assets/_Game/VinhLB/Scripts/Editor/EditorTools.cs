@@ -5,39 +5,40 @@ namespace VinhLB
 {
     public static class EditorTools
     {
-        [MenuItem("Tools/VinhLB/Scenes/GameDemo")]
+        [MenuItem("Tools/Scenes/GameDemo")]
         private static void OpenGameDemoScene()
         {
-            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-                EditorSceneManager.OpenScene("Assets/_Game/_Scenes/GameDemo.unity", OpenSceneMode.Single);
+            OpenScene("GameDemo");
         }
 
-        [MenuItem("Tools/VinhLB/Scenes/ChooseLevel")]
+        [MenuItem("Tools/Scenes/ChooseLevel")]
         private static void OpenChooseLevelScene()
         {
-            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-                EditorSceneManager.OpenScene("Assets/_Game/_Scenes/ChooseLevel.unity", OpenSceneMode.Single);
-        }
-        
-        [MenuItem("Tools/VinhLB/Scenes/MapEditor")]
-        private static void OpenMapEditorScene()
-        {
-            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-                EditorSceneManager.OpenScene("Assets/_Game/_Scenes/MapEditor.unity", OpenSceneMode.Single);
+            OpenScene("ChooseLevel");
         }
 
-        [MenuItem("Tools/VinhLB/Scenes/BuildingTest")]
+        [MenuItem("Tools/Scenes/MapEditor")]
+        private static void OpenMapEditorScene()
+        {
+            OpenScene("MapEditor");
+        }
+
+        [MenuItem("Tools/Scenes/BuildingTest")]
         private static void OpenBuildingTestScene()
         {
-            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-                EditorSceneManager.OpenScene("Assets/_Game/VinhLB/Scenes/BuildingTest.unity", OpenSceneMode.Single);
+            OpenScene("BuildingTest");
         }
-        
-        [MenuItem("Tools/VinhLB/Scenes/BendingTest")]
+
+        [MenuItem("Tools/Scenes/BendingTest")]
         private static void OpenBendingTestScene()
         {
+            OpenScene("BendingTest");
+        }
+
+        private static void OpenScene(string sceneName)
+        {
             if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-                EditorSceneManager.OpenScene("Assets/_Game/VinhLB/Scenes/BendingTest.unity", OpenSceneMode.Single);
+                EditorSceneManager.OpenScene($"Assets/_Game/_Scenes/{sceneName}.unity", OpenSceneMode.Single);
         }
     }
 }
