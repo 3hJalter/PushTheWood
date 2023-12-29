@@ -207,7 +207,16 @@ namespace _Game.GameGrid
 
             return gameGridCellList;
         }
-
+        public override string ToString()
+        {
+            string content = "  --- \n";
+            for(int i = 0; i < data.gridUnits.Length; i++)
+            {
+                if (data.gridUnits[i] == null) continue;
+                content += data.gridUnits[i].gameObject.name + "\n";
+            }
+            return content;
+        }
         #region SAVING DATA
         public override IMemento Save()
         {
@@ -235,6 +244,7 @@ namespace _Game.GameGrid
                 {
                     main.data.gridUnits[i] = gridUnits[i];
                 }
+                main.ValueChange();
             }
         }
         #endregion

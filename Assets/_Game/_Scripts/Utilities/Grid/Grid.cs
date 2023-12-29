@@ -10,8 +10,8 @@ namespace _Game.Utilities.Grid
 {
     public class Grid<T, TD> : IOriginator where T : GridCell<TD>
     {
-        private readonly TextMeshPro[,] debugTextArray;
-        private readonly T[,] gridArray;
+        protected readonly TextMeshPro[,] debugTextArray;
+        protected readonly T[,] gridArray;
         private readonly Vector3 originPosition;
         private DebugGrid debug;
 
@@ -133,7 +133,6 @@ namespace _Game.Utilities.Grid
 
         protected virtual void OnGridCellValueChange(int x, int y)
         {
-            //debugTextArray[x, y].text = gridArray[x, y].ToString();
             if (IsInit)
             {
                 initCellUnitPos.Add(new Vector2Int(x, y));
@@ -141,6 +140,13 @@ namespace _Game.Utilities.Grid
             else
             {
                 cellMementos.Add(gridArray[x, y].Save());
+            }
+
+            //NOTE: TEST
+            TimerManager.Inst.WaitForFrame(2, () => DebugData(x, y));
+            void DebugData(int x, int y)
+            {
+                debugTextArray[x, y].text = gridArray[x, y].ToString();
             }
         }
 
@@ -183,8 +189,8 @@ namespace _Game.Utilities.Grid
                         if (isPositionShow)
                         {
                             string content = grid.gridArray[x, y].GetCellPosition().ToString();
-                            Vector3 localPosition = grid.GetWorldPosition(x, y) + new Vector3(grid.CellSize / 4, grid.CellSize / 2 + 0.1f, grid.CellSize / 4) ;
-                            grid.debugTextArray[x, y] = GridUtilities.CreateWorldText(content, null, localPosition, 5, Color.white, TextAnchor.MiddleCenter);
+                            Vector3 localPosition = grid.GetWorldPosition(x, y) + new Vector3(grid.CellSize / 5, grid.CellSize / 2 + 0.1f, grid.CellSize * 0.75f);
+                            grid.debugTextArray[x, y] = GridUtilities.CreateWorldText(content, null, localPosition, 2, Color.white, TextAnchor.MiddleCenter);
                             // Rotate text base on the gridPlane
                             grid.debugTextArray[x, y].transform.rotation = grid.GridPlaneType switch
                             {

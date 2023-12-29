@@ -5,10 +5,11 @@ namespace _Game.Utilities.Grid
 {
     public static class GridUtilities
     {
+        public static Material OverlayMaterial;
         public static TextMeshPro CreateWorldText(string text, Transform parent = null, Vector3 localPosition = default,
             int fontSize = 40,
             Color color = default, TextAnchor textAnchor = TextAnchor.UpperLeft,
-            TextAlignment textAlignment = TextAlignment.Left, int sortingOrder = 5000)
+            TextAlignment textAlignment = TextAlignment.Center, int sortingOrder = 5000)
         {
             return CreateWorldText(parent, text, localPosition, fontSize, color, textAnchor, textAlignment,
                 sortingOrder);
@@ -28,6 +29,7 @@ namespace _Game.Utilities.Grid
             textMesh.fontSize = fontSize;
             textMesh.color = color;
             textMesh.GetComponent<MeshRenderer>().sortingOrder = sortingOrder;
+            textMesh.fontSharedMaterial = OverlayMaterial;
             return textMesh;
         }
 

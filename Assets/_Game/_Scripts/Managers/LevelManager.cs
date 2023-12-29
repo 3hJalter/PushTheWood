@@ -9,6 +9,7 @@ using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Managers;
 using _Game.UIs.Screen;
 using _Game.Utilities;
+using _Game.Utilities.Grid;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -19,10 +20,13 @@ namespace _Game.GameGrid
     {
         [SerializeField] private int levelIndex;
         private Level _currentLevel;
+        [SerializeField]
+        private Material OverlayMaterial;
         public Level CurrentLevel => _currentLevel;
 
         private int _tutorialIndex;
         private CareTaker savingState;
+        [HideInInspector]
         public Player player;
 
         private void Start()
@@ -32,6 +36,7 @@ namespace _Game.GameGrid
             // PlayerPrefs.SetInt(Constants.LEVEL_INDEX, 0);
             levelIndex = PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0);
             _tutorialIndex = PlayerPrefs.GetInt(Constants.TUTORIAL_INDEX, 0);
+            GridUtilities.OverlayMaterial = OverlayMaterial;
             OnInit();
         }
 
