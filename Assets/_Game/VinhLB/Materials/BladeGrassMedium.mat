@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BladeGrass
+  m_Name: BladeGrassMedium
   m_Shader: {fileID: 4800000, guid: fa43413e85bfdfb4996ed719395b1308, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:

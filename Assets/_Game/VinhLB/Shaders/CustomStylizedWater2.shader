@@ -251,7 +251,7 @@ Shader "Universal Render Pipeline/FX/Custom Stylized Water 2"
 
 			//Uncommenting and rewriting is handled by the Curved World 2020 asset
 			#pragma multi_compile_local CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE CURVEDWORLD_BEND_TYPE_LITTLEPLANET_Y
-			#define multi_compile_local CURVEDWORLD_BEND_ID_1
+			#pragma multi_compile_local CURVEDWORLD_BEND_ID_1
 			#pragma shader_feature_local CURVEDWORLD_DISABLED_ON
 			#pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
 			#include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"
@@ -326,7 +326,7 @@ Shader "Universal Render Pipeline/FX/Custom Stylized Water 2"
 
             //Uncommenting and rewriting is handled by the Curved World 2020 asset
 			#pragma multi_compile_local CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_Z_POSITIVE CURVEDWORLD_BEND_TYPE_LITTLEPLANET_Y
-			#define multi_compile_local CURVEDWORLD_BEND_ID_1
+			#pragma multi_compile_local CURVEDWORLD_BEND_ID_1
 			#pragma shader_feature_local CURVEDWORLD_DISABLED_ON
 			#pragma shader_feature_local CURVEDWORLD_NORMAL_TRANSFORMATION_ON
 			#include "Assets/Amazing Assets/Curved World/Shaders/Core/CurvedWorldTransform.cginc"

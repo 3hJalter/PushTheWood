@@ -5,7 +5,7 @@
 // Include some helper functions
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
-#include "Assets/Amazing Assets/Curved World/Shaders/CGINC/Classic Runner/CurvedWorld_ClassicRunner_Z_Positive_ID1.cginc"
+#include "Assets/Amazing Assets/Curved World/Shaders/CGINC/Little Planet/CurvedWorld_LittlePlanet_Y_ID1.cginc"
 #include "NMGBladeGrassGraphicsHelpers.hlsl"
 #include "GrassTrample.hlsl"
 
@@ -69,7 +69,7 @@ Varyings Vertex(Attributes input)
     // #endif
     // #endif
 
-    CurvedWorld_ClassicRunner_Z_Positive_ID1(input.positionOS, input.normalOS, input.tangentOS);
+    CurvedWorld_LittlePlanet_Y_ID1(input.positionOS, input.normalOS, input.tangentOS);
 
     float3 bladeAnchorWS = GetVertexPositionInputs(input.bladeAnchorOS).positionWS;
     // Get a plane perpendicular to the normal

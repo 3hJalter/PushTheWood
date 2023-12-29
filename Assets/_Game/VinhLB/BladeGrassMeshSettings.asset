@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94020c582e9442e40a1c309e7f9bf0be, type: 3}
   m_Name: BladeGrassMeshSettings
   m_EditorClassIdentifier: 
-  sourceMesh: {fileID: -2597582329907136719, guid: fc57aa122321b3449b1af28557e3c86d, type: 3}
+  sourceMesh: {fileID: -2230676655619434816, guid: 519798e4c4373744da96027632d603c9, type: 3}
   sourceSubMeshIndex: 0
   scale: {x: 1, y: 1, z: 1}
   rotation: {x: 0, y: 0, z: 0}

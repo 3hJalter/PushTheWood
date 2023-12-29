@@ -16,7 +16,7 @@ namespace _Game.Managers
         [SerializeField]
         private GameObject _waterGO;
         [SerializeField]
-        private GameObject _cloudGO;
+        private GameObject _cloudsGO;
         [SerializeField]
         private GameObject _gridGO;
         [SerializeField]
@@ -30,7 +30,7 @@ namespace _Game.Managers
         {
             _groundGO.SetActive(true);
             _waterGO.SetActive(true);
-            // _cloudGO.SetActive(true);
+            // _cloudsGO.SetActive(true);
             _gridGO.SetActive(false);
 
             VinhLB.Utilities.TryGetRendererFeature(_rendererData, out _feature);

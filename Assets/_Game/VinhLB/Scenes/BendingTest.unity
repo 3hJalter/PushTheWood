@@ -551,11 +551,13 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  curvedWorldController: {fileID: 1686007225}
   _groundGO: {fileID: 1882871523}
   _waterGO: {fileID: 343984982}
   _cloudGO: {fileID: 297935072}
   _gridGO: {fileID: 517049268}
   _rendererData: {fileID: 11400000, guid: 82b4ed0936573764e945e1fb602913e0, type: 2}
+  renderPipelineAsset: {fileID: 0}
 --- !u!1 &262646537 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6050257722697935622, guid: 643723ad3d6660042bd843a9d6a3fdae, type: 3}
@@ -1809,6 +1811,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   levelIndex: 0
+  player: {fileID: 0}
 --- !u!1 &1063118874
 GameObject:
   m_ObjectHideFlags: 0
@@ -3007,7 +3010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2651a4c7e50c3274bb02a1b6c03b054b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bendType: 2
+  bendType: 5
   bendID: 1
   bendPivotPoint: {fileID: 0}
   bendPivotPointPosition: {x: 0, y: 0, z: 0}
@@ -3223,6 +3226,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e15cc54a36e25b41a5c36acf077ad0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: Particles
+      Entry: 6
+      Data: 
   pool: []
   particle: []
 --- !u!1 &1799324504
@@ -4330,6 +4345,7 @@ MonoBehaviour:
   brainCamera: {fileID: 1929008254}
   cameraTarget: {fileID: 735013716}
   cameraMoveTime: 1
+  worldCameraXYPos: {x: 0, y: 0}
 --- !u!114 &1929008258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4550,6 +4566,7 @@ MonoBehaviour:
     SerializationNodes: []
   audioData: {fileID: 11400000, guid: f774e44247074ad4ea7897795f3fb8af, type: 2}
   gridData: {fileID: 11400000, guid: b3fb808f99240ed49ae49c173d49f0b2, type: 2}
+  materialData: {fileID: 11400000, guid: de7b0bd30bebbfd419110e79bf11edd3, type: 2}
   tutorialData: {fileID: 11400000, guid: d71c3b503cd99174a930047762eb276d, type: 2}
 --- !u!1 &2133081728
 GameObject:

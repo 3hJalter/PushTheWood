@@ -24,12 +24,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3456031983593040676}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1.175, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6170218096161495069}
   - {fileID: 1376635506403733744}
+  - {fileID: 5389514519498152349}
   m_Father: {fileID: 5943012525026567016}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -90,7 +91,7 @@ MonoBehaviour:
   poolType: 146
   surfaceType: 1
   islandID: -1
-  grassRenderer: {fileID: 0}
+  grassRenderer: {fileID: 1465778981463877543}
   groundMeshRenderer: {fileID: 8360711682533394458}
   groundMaterialEnum: -1
 --- !u!1 &6735616771992349825
@@ -259,3 +260,70 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1001 &5254820919267832119
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7907550681104559613}
+    m_Modifications:
+    - target: {fileID: 155296321085860010, guid: a7d013704d2a4da459d422d75c23b28d, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 155296321085860010, guid: a7d013704d2a4da459d422d75c23b28d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 155296321085860010, guid: a7d013704d2a4da459d422d75c23b28d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 155296321085860010, guid: a7d013704d2a4da459d422d75c23b28d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 155296321085860010, guid: a7d013704d2a4da459d422d75c23b28d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155296321085860010, guid: a7d013704d2a4da459d422d75c23b28d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 155296321085860010, guid: a7d013704d2a4da459d422d75c23b28d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 155296321085860010, guid: a7d013704d2a4da459d422d75c23b28d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 155296321085860010, guid: a7d013704d2a4da459d422d75c23b28d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 155296321085860010, guid: a7d013704d2a4da459d422d75c23b28d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 155296321085860010, guid: a7d013704d2a4da459d422d75c23b28d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5922836006275919048, guid: a7d013704d2a4da459d422d75c23b28d, type: 3}
+      propertyPath: m_Name
+      value: BladeGrassMesh_8x4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a7d013704d2a4da459d422d75c23b28d, type: 3}
+--- !u!23 &1465778981463877543 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6682112590302369424, guid: a7d013704d2a4da459d422d75c23b28d, type: 3}
+  m_PrefabInstance: {fileID: 5254820919267832119}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5389514519498152349 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 155296321085860010, guid: a7d013704d2a4da459d422d75c23b28d, type: 3}
+  m_PrefabInstance: {fileID: 5254820919267832119}
+  m_PrefabAsset: {fileID: 0}
