@@ -51,7 +51,7 @@ namespace _Game._Scripts.InGame
             if (_footerLevel is not null && _footerLevel.Index != currentLevelIndex)
             {
                 // Despawn Level
-                _footerLevel.OnDeSpawnLevel(false);
+                _footerLevel.OnDeSpawnLevel();
             }
             _footerLevel = _middleLevel;
             _middleLevel = _headerLevel;
@@ -68,7 +68,7 @@ namespace _Game._Scripts.InGame
             if (_headerLevel is not null && _headerLevel.Index != currentLevelIndex)
             {
                 // Despawn Level
-                _headerLevel.OnDeSpawnLevel(false);
+                _headerLevel.OnDeSpawnLevel();
             }
             _headerLevel = _middleLevel;
             _middleLevel = _footerLevel;

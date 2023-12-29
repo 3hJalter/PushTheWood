@@ -9,9 +9,7 @@ using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Managers;
 using _Game.UIs.Screen;
 using _Game.Utilities;
-using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace _Game.GameGrid
 {
@@ -68,13 +66,18 @@ namespace _Game.GameGrid
             {
                 _preLoadLevels.Add(levelIndex + 1, new Level(levelIndex + 1));
             }
-            // Clear all other levels
-            foreach (KeyValuePair<int, Level> level in _preLoadLevels
-                         .Where(level 
-                             => level.Key != levelIndex - 1 
-                                && level.Key != levelIndex + 1))
+            // Clear all other levels and remove it from preload list
+            RemoveFarLevelFromPreLoad();
+        }
+        
+        // We only store the previous level and the next level, other levels will be removed from preload list
+        public void RemoveFarLevelFromPreLoad()
+        {
+            List<int> keys = _preLoadLevels.Keys.ToList();
+            foreach (int key in keys.Where(key => key != levelIndex - 1 && key != levelIndex && key != levelIndex + 1))
             {
-                level.Value.OnDeSpawnLevel();
+                _preLoadLevels[key].OnDeSpawnLevel();
+                _preLoadLevels.Remove(key);
             }
         }
         
