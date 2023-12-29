@@ -146,7 +146,7 @@ namespace _Game._Scripts.InGame
             for (int i = 0; i < _islandDic.Count; i++) _islandDic[i].ResetIsland();
         }
         
-        public void OnDeSpawnLevel(bool isLevelInit = true)
+        public void OnDeSpawnLevel()
         {
             // Despawn all groundUnit
             for (int index0 = 0; index0 < _gridSurfaceMap.GetLength(0); index0++)
@@ -156,7 +156,7 @@ namespace _Game._Scripts.InGame
                 if (gridSurface is not null) gridSurface.OnDespawn();
             }
             
-            if (isLevelInit)
+            if (_isInit)
             {
                 // Despawn all unit in each island
                 for (int i = 0; i < _islandDic.Count; i++)
