@@ -11,12 +11,16 @@ namespace _Game._Scripts.InGame
     {
         [SerializeField] private Transform header;
         [SerializeField] private Transform footer;
-        
+
+        [SerializeField] private int nearestLevelIndex;
+        [SerializeField] private int furthestLevelIndex;
 
         private Level _middleLevel;
         private Level _headerLevel;
         private Level _footerLevel;
 
+        [SerializeField] private float offset = 8f;
+        
         private void Update()
         {
             // Only Debug
@@ -28,15 +32,13 @@ namespace _Game._Scripts.InGame
             {
                 Tf.position += Vector3.back * 10f;
             }
-            
-            if (header.position.z > _middleLevel.GetMaxZPos())
+
+            if (Tf.position.z > _middleLevel.GetMaxZPos() - offset) // offset
             {
-                if (_headerLevel.Index == DataManager.Ins.CountLevel - 1) return;
                 PreloadNextLevel();
             }
-            else if (footer.position.z < _middleLevel.GetMinZPos())
+            else if (Tf.position.z < _footerLevel.GetMaxZPos() - offset)
             {
-                if (_footerLevel.Index == 0) return;
                 PreLoadPreviousLevel();
             }
         }
@@ -45,6 +47,7 @@ namespace _Game._Scripts.InGame
         {
             int currentLevelIndex = LevelManager.Ins.CurrentLevel.Index;
             int nextPreloadIndex = _headerLevel.Index + 1;
+            if (nextPreloadIndex >= DataManager.Ins.CountLevel) return;
             if (_footerLevel is not null && _footerLevel.Index != currentLevelIndex)
             {
                 // Despawn Level
@@ -53,12 +56,15 @@ namespace _Game._Scripts.InGame
             _footerLevel = _middleLevel;
             _middleLevel = _headerLevel;
             _headerLevel = nextPreloadIndex == currentLevelIndex ? LevelManager.Ins.CurrentLevel : new Level(nextPreloadIndex);
+            nearestLevelIndex = _footerLevel.Index;
+            furthestLevelIndex = _headerLevel.Index;
         }
         
         private void PreLoadPreviousLevel()
         {
             int currentLevelIndex = LevelManager.Ins.CurrentLevel.Index;
             int previousPreloadIndex = _footerLevel.Index - 1;
+            if (previousPreloadIndex < 0) return;
             if (_headerLevel is not null && _headerLevel.Index != currentLevelIndex)
             {
                 // Despawn Level
@@ -67,6 +73,8 @@ namespace _Game._Scripts.InGame
             _headerLevel = _middleLevel;
             _middleLevel = _footerLevel;
             _footerLevel = previousPreloadIndex == currentLevelIndex ? LevelManager.Ins.CurrentLevel : new Level(previousPreloadIndex);
+            nearestLevelIndex = _footerLevel.Index;
+            furthestLevelIndex = _headerLevel.Index;
         }
 
         public float GetHeaderZPos()
