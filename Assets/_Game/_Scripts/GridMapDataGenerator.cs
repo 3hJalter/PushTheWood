@@ -301,11 +301,13 @@ public class GridMapDataGenerator : MonoBehaviour
         float ySpawnPos = 0f;
         if (mapNumber > 1)
         {
-            ySpawnPos = previousLevelYSpawnPos + previousLevelSize.y * Constants.CELL_SIZE - offsetS;
+            ySpawnPos = previousLevelYSpawnPos + previousLevelSize.y * Constants.CELL_SIZE + offsetS * Constants.CELL_SIZE;
             if (mapNumber % 2 == 0)
-                xSpawnPos = previousLevelXSpawnPos + previousLevelSize.x * Constants.CELL_SIZE - offsetS;
+                // xSpawnPos = previousLevelXSpawnPos + previousLevelSize.x * Constants.CELL_SIZE - offsetS;
+                xSpawnPos = 10;
             else
-                xSpawnPos = previousLevelXSpawnPos - maxX * Constants.CELL_SIZE + offsetS;
+                // xSpawnPos = previousLevelXSpawnPos - maxX * Constants.CELL_SIZE + offsetS;
+                xSpawnPos = 0;
         }
         Vector2 gridMapPosition = new(xSpawnPos, ySpawnPos);
         file.WriteLine(gridMapPosition.x + " " + gridMapPosition.y);
