@@ -2,15 +2,18 @@ using System;
 using System.Collections.Generic;
 using _Game.Utilities.Timer;
 using MapEnum;
+using TMPro;
 using UnityEngine;
+using VinhLB;
 
 namespace _Game.Utilities.Grid
 {
     public class Grid<T, TD> : IOriginator where T : GridCell<TD>
     {
-        private readonly TextMesh[,] debugTextArray;
+        private readonly TextMeshPro[,] debugTextArray;
         private readonly T[,] gridArray;
         private readonly Vector3 originPosition;
+        private DebugGrid debug;
 
         protected readonly List<IMemento> cellMementos = new List<IMemento>();
         protected readonly List<Vector2Int> initCellUnitPos = new List<Vector2Int>();
@@ -31,8 +34,8 @@ namespace _Game.Utilities.Grid
             IsInit = true;
 
             gridArray = new T[width, height];
-            debugTextArray = new TextMesh[width, height];
-
+            debugTextArray = new TextMeshPro[width, height];
+            
             for (int x = 0; x < gridArray.GetLength(0); x++)
                 for (int y = 0; y < gridArray.GetLength(1); y++)
                 {
@@ -56,7 +59,8 @@ namespace _Game.Utilities.Grid
                     gridArray[x, y].OnValueChange += OnGridCellValueChange;
                 }
 
-
+            debug = new DebugGrid();
+            debug.DrawGrid(this, true);
         }
 
         public float CellSize { get; }
@@ -178,10 +182,9 @@ namespace _Game.Utilities.Grid
                     {
                         if (isPositionShow)
                         {
-                            grid.debugTextArray[x, y] = GridUtilities.CreateWorldText(
-                                grid.gridArray[x, y].GetCellPosition().ToString(), null
-                                , grid.GetWorldPosition(x, y) + new Vector3(grid.CellSize / 2, grid.CellSize / 2), 5,
-                                Color.white, TextAnchor.MiddleCenter);
+                            string content = grid.gridArray[x, y].GetCellPosition().ToString();
+                            Vector3 localPosition = grid.GetWorldPosition(x, y) + new Vector3(grid.CellSize / 4, grid.CellSize / 2 + 0.1f, grid.CellSize / 4) ;
+                            grid.debugTextArray[x, y] = GridUtilities.CreateWorldText(content, null, localPosition, 5, Color.white, TextAnchor.MiddleCenter);
                             // Rotate text base on the gridPlane
                             grid.debugTextArray[x, y].transform.rotation = grid.GridPlaneType switch
                             {
@@ -203,21 +206,6 @@ namespace _Game.Utilities.Grid
                     Color.white, 100f);
                 Debug.DrawLine(grid.GetWorldPosition(grid.Width, 0), grid.GetWorldPosition(grid.Width, grid.Height),
                     Color.white, 100f);
-            }
-
-            private string GetGridCellDataString(Grid<T, TD> grid, int x, int y)
-            {
-                if (grid.gridArray[x, y].Data != null)
-                    return grid.gridArray[x, y].Data.ToString();
-                return "";
-            }
-
-            public void DrawPath(List<T> path)
-            {
-                if (path != null)
-                    for (int i = 0; i < path.Count - 1; i++)
-                        Debug.DrawLine(new Vector3(path[i].WorldX, path[i].WorldY),
-                            new Vector3(path[i + 1].WorldX, path[i + 1].WorldY), Color.cyan, 5f);
             }
         }
         #region SAVING DATA

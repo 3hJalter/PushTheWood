@@ -226,7 +226,7 @@ namespace _Game.GameGrid
                 {
                     gridUnits[i] = unitData[i];
                 }
-                DevLog.Log(DevId.Hung, $"Save Cell: ( {main.X}, {main.Y})");
+                DevLog.Log(DevId.Hung, $"Save: ( {main.X}, {main.Y})");
             }
 
             public void Restore()
