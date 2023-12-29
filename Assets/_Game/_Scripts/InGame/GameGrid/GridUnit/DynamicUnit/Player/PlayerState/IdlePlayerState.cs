@@ -1,5 +1,6 @@
 ﻿using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.StaticUnit;
+using _Game.Utilities;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
@@ -25,10 +26,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 if (!_isChangeAnim && !t.isRideVehicle)
                 {
                     _isChangeAnim = true;
-                    t.ChangeAnim(Constants.IDLE_ANIM);
+                    t.ChangeAnim(Constants.IDLE_ANIM);                    
                 }
                 return;
             }
+            //t.OnSavingState?.Invoke();
             t.LookDirection(t.Direction);
             //NOTE: Checking for riding raft or something like that
             if (t.HasVehicle() && !t.isRideVehicle)
@@ -82,7 +84,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                         break;
                 }               
             }
-
+            DevLog.Log(DevId.Hung, $"CURRENT MAIN CELL:({t.MainCell.X} ,{t.MainCell.Y})");
             t.SetEnterCellData(t.MovingData.inputDirection, t.MovingData.enterMainCell, t.UnitTypeY);
             t.SetIslandId(t.MovingData.enterMainCell);
             t.OnOutCells();

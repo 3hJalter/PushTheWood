@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using _Game.GameGrid.Unit;
+using _Game.Utilities;
 using _Game.Utilities.Grid;
 using GameGridEnum;
 using UnityEngine;
@@ -221,7 +222,11 @@ namespace _Game.GameGrid
             {
                 this.main = main;
                 gridUnits = new GridUnit[unitData.Length];
-                unitData.CopyTo(gridUnits, 0);              
+                for(int i = 0; i < gridUnits.Length; i++)
+                {
+                    gridUnits[i] = unitData[i];
+                }
+                DevLog.Log(DevId.Hung, $"Save Cell: ( {main.X}, {main.Y})");
             }
 
             public void Restore()

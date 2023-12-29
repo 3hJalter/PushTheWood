@@ -234,7 +234,7 @@ namespace _Game.Utilities.Grid
                 IsInit = false;
             }
 
-            save = new GridMemento(this, cellMementos.Count > 0 ? cellMementos : null);
+            save = new GridMemento(this, cellMementos);
             cellMementos.Clear();
             return save;
         }
@@ -245,8 +245,7 @@ namespace _Game.Utilities.Grid
             public GridMemento(Grid<T, TD> main, params object[] data)
             {
                 this.main = main;
-                if (data[0] != null) cellMememtos = ((List<IMemento>)data[0]).ToArray();
-                else cellMememtos = null;
+                cellMememtos = ((List<IMemento>)data[0]).ToArray();
 
             }
             public void Restore()

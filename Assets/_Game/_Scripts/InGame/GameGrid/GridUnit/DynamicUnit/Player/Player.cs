@@ -7,6 +7,7 @@ using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState;
 using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
+using _Game.Utilities;
 using DG.Tweening;
 using GameGridEnum;
 using HControls;
@@ -178,6 +179,41 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public MovingData MovingData => _movingData ??= new MovingData(this);
         public CutTreeData CutTreeData => _cutTreeData ??= new CutTreeData(this);
 
+        #endregion
+
+        #region SAVING DATA
+        public override IMemento Save()
+        {
+            IMemento save;
+            if (overrideState != null)
+            {
+                save = overrideState;
+                overrideState = null;
+            }
+            else
+            {
+                save = new PlayerMemento(this, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
+                , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID, lastPushedDirection);
+            }
+            return save;
+        }
+
+        public class PlayerMemento : UnitMemento
+        {
+            protected Direction direction;
+
+            public PlayerMemento(Player main, params object[] data) : base(main, data)
+            {
+                DevLog.Log(DevId.Hung, $"SAVE MAIN CELL:({mainCell.X} ,{mainCell.Y})");
+            }
+
+            public override void Restore()
+            {
+                base.Restore();
+                Player mainPlayer = (Player)main;
+                mainPlayer.Direction = Direction.None;
+            }
+        }
         #endregion
     }
 }
