@@ -9,13 +9,14 @@ namespace _Game.Managers
 {
     public class FxManager : Singleton<FxManager>
     {
-        // [Header("Fog")] [SerializeField] private D2FogsSprite fogControl;
-        [SerializeField]
-        private CurvedWorldController curvedWorldController;
+        // [SerializeField]
+        // private CurvedWorldController curvedWorldController;
         [SerializeField]
         private GameObject _groundGO;
         [SerializeField]
         private GameObject _waterGO;
+        [SerializeField]
+        private GameObject _cloudsGO;
         [SerializeField]
         private GameObject _gridGO;
         [SerializeField]
@@ -29,6 +30,7 @@ namespace _Game.Managers
         {
             _groundGO.SetActive(true);
             _waterGO.SetActive(true);
+            // _cloudsGO.SetActive(true);
             _gridGO.SetActive(false);
 
             VinhLB.Utilities.TryGetRendererFeature(_rendererData, out _feature);
@@ -45,12 +47,12 @@ namespace _Game.Managers
 
         private Tween _changePlantCurveTween;
         
-        public void ChangePlanetCurvatureSize(float curve = 7f, float time = 1f)
-        {
-            _changePlantCurveTween?.Kill();
-            float currentCurve = curvedWorldController.bendCurvatureSize;
-            _changePlantCurveTween = DOVirtual.Float(currentCurve, curve, time, value => curvedWorldController.bendCurvatureSize = value);
-        }
+        // public void ChangePlanetCurvatureSize(float curve = 7f, float time = 1f)
+        // {
+        //     _changePlantCurveTween?.Kill();
+        //     float currentCurve = curvedWorldController.bendCurvatureSize;
+        //     _changePlantCurveTween = DOVirtual.Float(currentCurve, curve, time, value => curvedWorldController.bendCurvatureSize = value);
+        // }
         
         public void ResetTrackedTrampleObjectList()
         {

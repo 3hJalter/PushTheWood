@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using _Game.Utilities.Timer;
 using MapEnum;
 using TMPro;
 using UnityEngine;
-using VinhLB;
 
 namespace _Game.Utilities.Grid
 {
@@ -16,7 +16,7 @@ namespace _Game.Utilities.Grid
         private DebugGrid debug;
 
         protected readonly List<IMemento> cellMementos = new List<IMemento>();
-        protected readonly List<Vector2Int> initCellUnitPos = new List<Vector2Int>();
+        protected readonly List<Vector2Int> unitPos = new List<Vector2Int>();
         public static bool IsInit
         {
             get;
@@ -35,7 +35,7 @@ namespace _Game.Utilities.Grid
 
             gridArray = new T[width, height];
             debugTextArray = new TextMeshPro[width, height];
-            
+
             for (int x = 0; x < gridArray.GetLength(0); x++)
                 for (int y = 0; y < gridArray.GetLength(1); y++)
                 {
@@ -131,23 +131,22 @@ namespace _Game.Utilities.Grid
             return default;
         }
 
-        protected virtual void OnGridCellValueChange(int x, int y)
+        protected virtual void OnGridCellValueChange(int x, int y, bool isRevert)
         {
-            if (IsInit)
-            {
-                initCellUnitPos.Add(new Vector2Int(x, y));
-            }
-            else
-            {
-                cellMementos.Add(gridArray[x, y].Save());
-            }
-
-            //NOTE: TEST
             TimerManager.Inst.WaitForFrame(2, () => DebugData(x, y));
             void DebugData(int x, int y)
             {
                 debugTextArray[x, y].text = gridArray[x, y].ToString();
             }
+            if (isRevert) return;
+
+            if(!IsInit && !unitPos.Any(pos => pos.x == x && pos.y == y))
+            {
+                cellMementos.Add(gridArray[x, y].Save());
+                unitPos.Add(new Vector2Int(x, y));
+            }
+            //NOTE: TEST
+
         }
 
         private Vector3 GetUnitVector3(float val1, float val2)
@@ -220,16 +219,16 @@ namespace _Game.Utilities.Grid
             GridMemento save;
             if (IsInit)
             {
-                for (int i = 0; i < initCellUnitPos.Count; i++)
+                for (int i = 0; i < unitPos.Count; i++)
                 {
-                    cellMementos.Add(gridArray[initCellUnitPos[i].x, initCellUnitPos[i].y].Save());
-                }
-                initCellUnitPos.Clear();
+                    cellMementos.Add(gridArray[unitPos[i].x, unitPos[i].y].Save());
+                }              
                 IsInit = false;
             }
 
             save = new GridMemento(this, cellMementos);
             cellMementos.Clear();
+            unitPos.Clear();
             return save;
         }
         public struct GridMemento : IMemento

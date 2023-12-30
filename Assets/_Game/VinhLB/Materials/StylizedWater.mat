@@ -137,7 +137,7 @@ Material:
     - _IntersectionFoamCutoff: 1
     - _IntersectionFoamDepth: 1
     - _IntersectionFoamDirection: 0.375
-    - _IntersectionFoamFade: 1.5
+    - _IntersectionFoamFade: 2
     - _IntersectionFoamSpeed: 0.1
     - _IntersectionFoamTiling: 5
     - _IsSRP: 0

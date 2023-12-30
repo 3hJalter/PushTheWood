@@ -114,10 +114,10 @@ Material:
     - _BumpScale: 1
     - _CROSSPAN_INTERSECTIONOn: 1
     - _CausticsBrightness: 1
-    - _CausticsDistortion: 0.1
+    - _CausticsDistortion: 0
     - _CausticsOn: 1
     - _CausticsSpeed: 0.1
-    - _CausticsTiling: 0.5
+    - _CausticsTiling: 0.3
     - _CrossPan_IntersectionOn: 0
     - _Cull: 2
     - _Cutoff: 0.5

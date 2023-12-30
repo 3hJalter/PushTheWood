@@ -20,14 +20,13 @@ namespace _Game.Managers
 
         [SerializeField] private UnityEngine.Camera brainCamera;
         [SerializeField] private Transform cameraTarget;
-        [SerializeField] private WorldMapTarget worldMapCameraTarget; // may be redundant later
-        
+        // [SerializeField] private WorldMapTarget worldMapCameraTarget; // may be redundant later
+
+        // public WorldMapTarget WorldMapCameraTarget => worldMapCameraTarget;
+
         [SerializeField] private float cameraMoveTime = 1f;
         [SerializeField] private Vector2 worldCameraXYPos;
-
-        public Vector2 WorldCameraXYPos => worldCameraXYPos;
-
-
+        
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         // ReSharper disable once CollectionNeverUpdated.Local
         [SerializeField]
@@ -56,27 +55,26 @@ namespace _Game.Managers
 
         public void ChangeCameraTargetPosition(Vector3 position, float moveTime = -1f)
         {
+            // if the same position, do nothing
+            if ((cameraTarget.position - position).sqrMagnitude < 0.01f) return;
+            
             if (moveTime < 0f) moveTime = cameraMoveTime;
-            // Timing.KillCoroutines("MoveCameraTargetPosition");
-            // Timing.RunCoroutine(MoveCameraTargetPosition(position, moveTime));
             cameraTarget.DOKill();
             cameraTarget.DOMove(position, moveTime).SetEase(Ease.Linear);
-
-            // cameraTarget.position = position;
         }
 
-        public void ChangeWorldTargetPosition()
-        {
-            worldMapCameraTarget.Tf.position = new Vector3(
-                worldCameraXYPos.x,
-                worldCameraXYPos.y,
-                LevelManager.Ins.CurrentLevel.GetCenterPos().z);
-        }
+        // public void ChangeWorldTargetPosition()
+        // {
+        //     worldMapCameraTarget.Tf.position = new Vector3(
+        //         worldCameraXYPos.x,
+        //         worldCameraXYPos.y,
+        //         LevelManager.Ins.CurrentLevel.GetCenterPos().z);
+        // }
         
-        public void EnableWorldCamera(bool enable)
-        {
-            worldMapCameraTarget.gameObject.SetActive(enable);
-        }
+        // public void EnableWorldCamera(bool enable)
+        // {
+        //     worldMapCameraTarget.gameObject.SetActive(enable);
+        // }
         
         public void ChangeCameraTarget(ECameraType eCameraType, Transform target)
         {

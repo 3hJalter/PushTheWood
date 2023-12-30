@@ -244,7 +244,7 @@ namespace _Game.GameGrid
                 {
                     main.data.gridUnits[i] = gridUnits[i];
                 }
-                main.ValueChange();
+                main.ValueChange(true);
             }
         }
         #endregion

@@ -1,6 +1,7 @@
-﻿using _Game.DesignPattern.StateMachine;
+﻿using _Game._Scripts.InGame;
+using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.StaticUnit;
-using _Game.Utilities;
+using _Game.Managers;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
@@ -26,11 +27,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 if (!_isChangeAnim && !t.isRideVehicle)
                 {
                     _isChangeAnim = true;
-                    t.ChangeAnim(Constants.IDLE_ANIM);                    
+                    t.ChangeAnim(Constants.IDLE_ANIM);
                 }
                 return;
             }
-            //t.OnSavingState?.Invoke();
             t.LookDirection(t.Direction);
             //NOTE: Checking for riding raft or something like that
             if (t.HasVehicle() && !t.isRideVehicle)
@@ -84,9 +84,22 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                         break;
                 }               
             }
-            DevLog.Log(DevId.Hung, $"CURRENT MAIN CELL:({t.MainCell.X} ,{t.MainCell.Y})");
+            
             t.SetEnterCellData(t.MovingData.inputDirection, t.MovingData.enterMainCell, t.UnitTypeY);
-            t.SetIslandId(t.MovingData.enterMainCell);
+            t.SetIslandId(t.MovingData.enterMainCell, out bool isChangeIsland);
+            
+            // NOTE: Checking if player reach to the bank of the island (MinX or MaxX)
+            // If reach, Change Camera target pos to the Pos (MinX or MaxX, 0, CenterPos.z) of the island
+            // If not, Change Camera target pos to the center of the island
+            if (!isChangeIsland)
+            {
+                if (t.MovingData.enterMainCell.IslandID != -1)
+                {
+                    Island island = LevelManager.Ins.CurrentLevel.Islands[t.MovingData.enterMainCell.IslandID];
+                    SetUpCamera(island, t);
+                }
+            }
+            
             t.OnOutCells();
             t.OnEnterCells(t.MovingData.enterMainCell, t.MovingData.enterCells);
             if (hasTreeRoot) 
@@ -98,6 +111,32 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         public void OnExit(Player t)
         {
             _isChangeAnim = false;
+        }
+
+        private static void SetUpCamera(Island island, Player t)
+        {
+            // TRICK: Take offset = 3 to make camera not really see the edge of the island
+            const float offset = 3f;
+            const float moveTime = 0.25f;
+            // NOTE: If the island is small (Size.x < 7), the camera will not change target pos
+            if (island.isSmallIsland) return;
+            float x = t.MovingData.enterMainCell.WorldPos.x;
+            if (Mathf.Abs(x - island.minXIslandPos.x) < 0.1f) // if minX
+            {
+                CameraManager.Ins.ChangeCameraTargetPosition(new Vector3(island.minXIslandPos.x + offset, 0, island.centerIslandPos.z), moveTime);
+            }
+            else if (Mathf.Abs(x - island.maxXIslandPos.x) < 0.1f) // if maxX
+            {
+                CameraManager.Ins.ChangeCameraTargetPosition(new Vector3(island.maxXIslandPos.x - offset, 0, island.centerIslandPos.z), moveTime);
+            }
+            else 
+            {
+                // Change the Camera to center if the player is come from bank and the distance is 1 Cell
+                if (Mathf.Abs(x - island.centerIslandPos.x) < Constants.CELL_SIZE)
+                {
+                    CameraManager.Ins.ChangeCameraTargetPosition(island.centerIslandPos, moveTime);  
+                }
+            }
         }
     }
 }

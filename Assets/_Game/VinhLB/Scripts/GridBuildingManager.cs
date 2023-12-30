@@ -28,8 +28,6 @@ namespace VinhLB
         [SerializeField]
         private bool _useKeyboard;
         [SerializeField]
-        private bool _snapping;
-        [SerializeField]
         private LayerMask _placeableLayerMask;
 
         private Grid<GameGridCell, GameGridCellData> _homeGrid;
@@ -40,8 +38,7 @@ namespace VinhLB
         private Vector3 _lastMousePosition;
         private BuildingUnitData _currentBuildingUnitData;
         private bool _isAnyChanged;
-
-        public bool Snapping => _snapping;
+        
         public bool IsOnBuildingMode => _isOnBuildingMode;
         public BuildingUnitData CurrentBuildingUnitData => _currentBuildingUnitData;
 
@@ -108,7 +105,7 @@ namespace VinhLB
         public void ToggleBuildMode()
         {
             _isOnBuildingMode = !_isOnBuildingMode;
-            
+
             FxManager.Ins.SwitchGridActive(true, _isOnBuildingMode);
 
             if (_isOnBuildingMode)
@@ -117,6 +114,7 @@ namespace VinhLB
                 {
                     _homeGrid = LevelManager.Ins.CurrentLevel.GridMap;
                 }
+
                 _isAnyChanged = false;
                 Utilities.TryGetCenterScreenPosition(out _lastMousePosition, _placeableLayerMask);
             }
@@ -124,7 +122,7 @@ namespace VinhLB
             {
                 if (_isAnyChanged)
                 {
-                    GridMapFileUtilities.Save(HOME_LEVEL_NAME);
+                    // GridMapFileUtilities.Save(HOME_LEVEL_NAME);
                 }
             }
 
@@ -151,9 +149,8 @@ namespace VinhLB
 
         public void PlaceBuilding()
         {
-            if (CanBuild())
+            if (CanBuild(out GameGridCell gameGridCell))
             {
-                GameGridCell gameGridCell = _homeGrid.GetGridCell(_lastMousePosition);
                 BuildingUnit unit = SimplePool.Spawn<BuildingUnit>(
                     DataManager.Ins.GetGridUnit(_currentBuildingUnitData.PoolType));
                 unit.OnInit(gameGridCell, GameGridEnum.HeightLevel.One, true, _currentDirection);
@@ -180,38 +177,45 @@ namespace VinhLB
             }
         }
 
-        public bool CanBuild()
+        public bool CanBuild(out GameGridCell gameGridCell)
         {
+            gameGridCell = _homeGrid.GetGridCell(_lastMousePosition);
+            if (gameGridCell == null)
+            {
+                return false;
+            }
+            
             if (_currentBuildingUnitData == null)
             {
                 return false;
             }
-
-            bool canBuild = true;
-            GameGridCell gameGridCell = _homeGrid.GetGridCell(_lastMousePosition);
+                
             List<GameGridCell> neighborCellList = gameGridCell.GetCellsInsideUnit(_homeGrid,
                 _currentBuildingUnitData.Width, _currentBuildingUnitData.Height, _currentDirection);
             for (int i = 0; i < neighborCellList.Count; i++)
             {
-                if (neighborCellList[i] == null || !neighborCellList[i].CanBuild(_currentBuildingUnitData.BelowSurfaceType))
+                if (neighborCellList[i] == null ||
+                    !neighborCellList[i].CanBuild(_currentBuildingUnitData.BelowSurfaceType))
                 {
-                    canBuild = false;
-
-                    break;
+                    return false;
                 }
             }
 
-            if (canBuild && _currentBuildingUnitData.CheckAdjacentCells)
+            if (_currentBuildingUnitData.CheckAdjacentCells)
             {
                 List<GameGridCell> adjacentCellList = gameGridCell.GetAdjacentCells(_homeGrid,
                     _currentBuildingUnitData.Width, _currentBuildingUnitData.Height, _currentDirection);
-                canBuild = adjacentCellList.Count(cell =>
-                    cell.Data.gridSurface is not null &&
-                    cell.Data.gridSurface.SurfaceType == _currentBuildingUnitData.AdjacentSurfaceType) >=
-                        _currentBuildingUnitData.MinAdjacentCells;
+                if (adjacentCellList.Count(cell =>
+                        cell != null &&
+                        cell.Data.gridSurface is not null &&
+                        cell.Data.gridSurface.SurfaceType == _currentBuildingUnitData.AdjacentSurfaceType) <
+                    _currentBuildingUnitData.MinAdjacentCells)
+                {
+                    return false;
+                }
             }
 
-            return canBuild;
+            return true;
         }
 
         private void HandleControls()

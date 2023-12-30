@@ -72,7 +72,9 @@ public static class Constants
 
     public const HeightLevel MIN_HEIGHT = HeightLevel.Zero;
     public const HeightLevel MAX_HEIGHT = HeightLevel.FourPointFive;
-
+    
+    public const int MAX_SMALL_ISLAND_SIZE = 5;
+    
     // OLD 
     public const float TREE_HEIGHT = 1f;
     public const float MOVING_TIME2 = 0.25f;

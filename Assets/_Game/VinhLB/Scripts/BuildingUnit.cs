@@ -1,14 +1,13 @@
 using _Game.GameGrid.Unit;
+using _Game.Utilities;
 
 namespace VinhLB
 {
     public class BuildingUnit : GridUnitStatic
     {
-        // public override void OnInteract(Direction direction, GridUnit interactUnit = null)
-        // {
-        //     base.OnInteract(direction, interactUnit);
-        //     
-        //     Debug.Log($"Interact with {gameObject.name}");
-        // }
+        public override void OnInteract()
+        {
+            DevLog.Log(DevId.Vinh, $"Interact with {gameObject.name}");
+        }
     }
 }

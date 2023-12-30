@@ -160,6 +160,7 @@ MonoBehaviour:
   unitTypeXZ: 2
   skinRotationDirection: -1
   gridUnitStaticType: -1
+  anchor: {fileID: 0}
   hasInteractBtn: 0
   btnCanvas: {fileID: 0}
   interactBtn: {fileID: 0}

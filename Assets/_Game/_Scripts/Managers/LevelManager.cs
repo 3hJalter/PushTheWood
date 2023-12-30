@@ -10,23 +10,23 @@ using _Game.Managers;
 using _Game.UIs.Screen;
 using _Game.Utilities;
 using _Game.Utilities.Grid;
-using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace _Game.GameGrid
 {
     public class LevelManager : Singleton<LevelManager>
     {
+        // private readonly Dictionary<int, Level> _preLoadLevels = new();
+
+        // public Dictionary<int, Level> PreLoadLevels => _preLoadLevels;
+
         [SerializeField] private int levelIndex;
         private Level _currentLevel;
-        [SerializeField]
-        private Material OverlayMaterial;
+        [SerializeField] Material FontMaterial;
         public Level CurrentLevel => _currentLevel;
-
+        
         private int _tutorialIndex;
         private CareTaker savingState;
-        [HideInInspector]
         public Player player;
 
         private void Start()
@@ -36,7 +36,7 @@ namespace _Game.GameGrid
             // PlayerPrefs.SetInt(Constants.LEVEL_INDEX, 0);
             levelIndex = PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0);
             _tutorialIndex = PlayerPrefs.GetInt(Constants.TUTORIAL_INDEX, 0);
-            GridUtilities.OverlayMaterial = OverlayMaterial;
+            GridUtilities.OverlayMaterial = FontMaterial;
             OnInit();
         }
 
@@ -48,22 +48,60 @@ namespace _Game.GameGrid
             if (_tutorialIndex >= DataManager.Ins.CountTutorial) _tutorialIndex = 0;
         }
 
+        // private void CheckPreload()
+        // {
+        //     if (!_preLoadLevels.ContainsKey(levelIndex))
+        //     {
+        //         _currentLevel = new Level(levelIndex);
+        //     }
+        //     else
+        //     {
+        //         _currentLevel = _preLoadLevels[levelIndex];
+        //         _preLoadLevels.Remove(levelIndex);
+        //     }
+        //     // Preload previous level
+        //     if (levelIndex > 0 && !_preLoadLevels.ContainsKey(levelIndex - 1))
+        //     {
+        //         _preLoadLevels.Add(levelIndex - 1, new Level(levelIndex - 1));
+        //     }
+        //     // Preload next level
+        //     if (levelIndex < DataManager.Ins.CountLevel - 1 && !_preLoadLevels.ContainsKey(levelIndex + 1))
+        //     {
+        //         _preLoadLevels.Add(levelIndex + 1, new Level(levelIndex + 1));
+        //     }
+        //     // Clear all other levels and remove it from preload list
+        //     RemoveFarLevelFromPreLoad();
+        // }
+        
+        // We only store the previous level and the next level, other levels will be removed from preload list
+        // public void RemoveFarLevelFromPreLoad()
+        // {
+        //     List<int> keys = _preLoadLevels.Keys.ToList();
+        //     foreach (int key in keys.Where(key => key != levelIndex - 1 && key != levelIndex && key != levelIndex + 1))
+        //     {
+        //         _preLoadLevels[key].OnDeSpawnLevel();
+        //         _preLoadLevels.Remove(key);
+        //     }
+        // }
+        
         public void OnInit()
         {
+            // CheckPreload();
             _currentLevel = new Level(levelIndex);
-            _currentLevel.OnInitLevel();
-            SetCameraToPlayer();
+            _currentLevel.OnInitLevelSurfaceAndUnit();
+            _currentLevel.OnInitPlayerToLevel();
+            // SetCameraToPlayer();
             savingState = new CareTaker(this);
             savingState.SavingState();
-            // SetCameraToPlayerIsland();
-            // CameraManager.Ins.ChangeCameraTargetPosition(GetCenterPos());
+            SetCameraToPlayerIsland();
+            // CameraManager.Ins.ChangeCameraTargetPosition(_currentLevel.GetCenterPos());
         }
 
         public void SetCameraToPlayerIsland()
         {
-            CameraManager.Ins.ChangeCameraTargetPosition(CurrentLevel.GetIsland(player.islandID).GetCenterIslandPos());
+            CameraManager.Ins.ChangeCameraTargetPosition(CurrentLevel.GetIsland(player.islandID).centerIslandPos);
         }
-
+    
         public void OnWin()
         {
             // Show win screen
@@ -76,13 +114,21 @@ namespace _Game.GameGrid
             // Future: Add reward collected in-game
         }
 
+        public void OnGoLevel(int index)
+        {
+            if (levelIndex == index) return;
+            levelIndex = index;
+            _currentLevel.OnDeSpawnLevel();
+            OnInit();
+        }
+        
         public void OnNextLevel()
         {
             // Load next level
             _currentLevel.OnDeSpawnLevel();
-            OnInit();
-
-            OnChangeTutorialIndex();
+            OnInit();      
+                
+            // OnChangeTutorialIndex();
         }
 
         private void OnChangeTutorialIndex()
@@ -102,13 +148,14 @@ namespace _Game.GameGrid
             player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
             player.OnInit(CurrentLevel.firstPlayerInitCell);
             savingState = new CareTaker(this);
+            SetCameraToPlayerIsland();
             // FxManager.Ins.ResetTrackedTrampleObjectList();
         }
         public void OnUndo()
         {
             savingState.Undo();
         }
-
+        
         private void SetCameraToPlayer()
         {
             // CameraFollow.Ins.SetTarget(Player.Tf);`
@@ -126,10 +173,10 @@ namespace _Game.GameGrid
             }
             public void Undo()
             {
-                if (historys.Count > 0)
+                if(historys.Count > 0)
                 {
                     List<IMemento> states = historys.Pop();
-                    foreach (IMemento state in states)
+                    foreach(IMemento state in states)
                     {
                         state.Restore();
                     }
@@ -144,9 +191,10 @@ namespace _Game.GameGrid
             {
                 HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
                 List<IMemento> states = new List<IMemento>() { main._currentLevel.GridMap.Save(), main.player.Save() };
-                foreach (GridUnit gridUnit in gridUnits)
+                foreach(GridUnit gridUnit in gridUnits)
                 {
-                    states.Add(gridUnit.Save());
+                    if(gridUnit is GridUnitDynamic)
+                        states.Add(gridUnit.Save());
                 }
                 historys.Push(states);
             }

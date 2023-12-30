@@ -10,7 +10,7 @@ namespace _Game.Utilities.Grid
         protected const int MAX = 100;
         protected T data;
         public GridPlane GridPlaneType;
-        public event Action<int, int> OnValueChange;
+        public event Action<int, int, bool> OnValueChange;
         private Vector3 worldPos;
         [SerializeField] private float worldX;
         [SerializeField] private float worldY;
@@ -89,9 +89,9 @@ namespace _Game.Utilities.Grid
             return data.ToString();
         }
 
-        protected virtual void ValueChange()
+        protected virtual void ValueChange(bool isRevert = false)
         {
-            OnValueChange?.Invoke(x, y);
+            OnValueChange?.Invoke(x, y, isRevert);
         }
 
         public virtual IMemento Save() 

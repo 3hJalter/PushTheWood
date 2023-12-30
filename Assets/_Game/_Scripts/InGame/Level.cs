@@ -41,7 +41,7 @@ namespace _Game._Scripts.InGame
 
         // Some other data
         public GameGridCell firstPlayerInitCell;
-        private Direction firstPlayerDirection;
+        public Direction firstPlayerDirection;
         
         // Get Data
         public int GridSizeX { get; }
@@ -58,6 +58,7 @@ namespace _Game._Scripts.InGame
 
         public Level(int index, Transform parent = null)
         {
+            _isInit = false;
             // Set GridMap
             Index = index;
             // Get data
@@ -80,11 +81,11 @@ namespace _Game._Scripts.InGame
         
         #region public function
 
-        public void OnInitLevel()
+        public void OnInitLevelSurfaceAndUnit()
         {
             AddIslandIdToSurface();
             for (int i = 0; i < _unitDataList.Count; i++) OnInitUnit(_unitDataList[i]);
-            OnInitPlayer();
+            _isInit = true;
         }
         
         public Island GetIsland(int islandID)
@@ -128,7 +129,7 @@ namespace _Game._Scripts.InGame
         public void SetFirstPlayerStepOnIsland(GameGridCell cell)
         {
             _islandDic[LevelManager.Ins.player.islandID].SetFirstPlayerStepCell(cell);
-            CameraManager.Ins.ChangeCameraTargetPosition(_islandDic[LevelManager.Ins.player.islandID].GetCenterIslandPos());
+            CameraManager.Ins.ChangeCameraTargetPosition(_islandDic[LevelManager.Ins.player.islandID].centerIslandPos);
         }
         
         public void ResetIslandPlayerOn()
@@ -145,7 +146,7 @@ namespace _Game._Scripts.InGame
             for (int i = 0; i < _islandDic.Count; i++) _islandDic[i].ResetIsland();
         }
         
-        public void OnDeSpawnLevel(bool isLevelInit = true)
+        public void OnDeSpawnLevel()
         {
             // Despawn all groundUnit
             for (int index0 = 0; index0 < _gridSurfaceMap.GetLength(0); index0++)
@@ -155,7 +156,7 @@ namespace _Game._Scripts.InGame
                 if (gridSurface is not null) gridSurface.OnDespawn();
             }
             
-            if (isLevelInit)
+            if (_isInit)
             {
                 // Despawn all unit in each island
                 for (int i = 0; i < _islandDic.Count; i++)
@@ -185,6 +186,7 @@ namespace _Game._Scripts.InGame
             _gridMap = null;
             // Clear all _unitDataList data
             _unitDataList.Clear();
+            _isInit = false;
         }
 
         #endregion
@@ -213,19 +215,13 @@ namespace _Game._Scripts.InGame
         
         private void CreateGridMap()
         {
-            string gridPositionData = _textGridData.GridPositionData;
-            string[] vector2Data = gridPositionData.Split(' ');
-            float xData = float.Parse(vector2Data[0]);
-            float zData = float.Parse(vector2Data[1]);
-            Vector3 originPos = new Vector3(xData, 0, zData);
             _gridMap = new Grid<GameGridCell, GameGridCellData>(GridSizeX, gridSizeY, Constants.CELL_SIZE,
-                originPos, () => new GameGridCell(), GridPlane.XZ);
+                default, () => new GameGridCell(), GridPlane.XZ);
         }
         
         private void SpawnGridSurfaceToGrid()
         {
             string[] surfaceData = _textGridData.SurfaceData.Split('\n');
-            surfaceData = surfaceData.Skip(1).ToArray();
             string[] surfaceRotationDirectionData = _textGridData.SurfaceRotationDirectionData.Split('\n');
             surfaceRotationDirectionData = surfaceRotationDirectionData.Skip(1).ToArray();
             string[] surfaceMaterialData = _textGridData.SurfaceMaterialData.Split('\n');
@@ -266,7 +262,8 @@ namespace _Game._Scripts.InGame
             for (int x = 0; x < _gridSurfaceMap.GetLength(0); x++)
                 if (IsGridSurfaceHadIsland(x, y, out GridSurface gridSurface))
                 {
-                    FloodFillIslandID(gridSurface, x, y, currentIslandID);
+                    FloodFillIslandID(gridSurface, x, y, currentIslandID);  
+                    _islandDic[currentIslandID].SetIslandPos();
                     currentIslandID++;
                 }
 
@@ -355,8 +352,9 @@ namespace _Game._Scripts.InGame
             }
         }
 
-        private void OnInitPlayer()
+        public void OnInitPlayerToLevel()
         {
+            if (LevelManager.Ins.player is not null) LevelManager.Ins.player.OnDespawn();
             LevelManager.Ins.player = SimplePool.Spawn<Player>(
                 DataManager.Ins.GetGridUnit(PoolType.Player));
             LevelManager.Ins.player.OnInit(firstPlayerInitCell, HeightLevel.One, true, firstPlayerDirection);

@@ -134,10 +134,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             return _vehicle is not null;
         }
 
-        public void SetIslandId(GameGridCell nextMainCell)
+        public void SetIslandId(GameGridCell nextMainCell, out bool isChangeIsland)
         {
+            isChangeIsland = false;
             if (islandID == nextMainCell.IslandID || nextMainCell.IslandID == -1) return;
             islandID = nextMainCell.IslandID;
+            isChangeIsland = true;
             LevelManager.Ins.CurrentLevel.SetFirstPlayerStepOnIsland(nextMainCell);
         }
 
