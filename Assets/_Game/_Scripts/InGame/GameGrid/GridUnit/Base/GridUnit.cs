@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using _Game.DesignPattern;
+﻿using _Game.DesignPattern;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
-using _Game.Utilities;
 using _Game.Utilities.Grid;
 using DG.Tweening;
 using GameGridEnum;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using VinhLB;
@@ -70,7 +69,7 @@ namespace _Game.GameGrid.Unit
         #region Saving Spawn State
         // Is GridUnit is spawn or not - save state of unit.
         protected bool isSpawn = false;
-        protected IMemento overrideState = null;
+        protected IMemento overrideSave = null;
         #endregion
 
         public Vector3Int Size
@@ -119,8 +118,8 @@ namespace _Game.GameGrid.Unit
             bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRos = false)
         {
             //Saving state before spawn, when map has already init
-            if (!Grid<GameGridCell, GameGridCellData>.IsInit)
-                overrideState = Save();
+            if (!LevelManager.Ins.CurrentLevel.GridMap.IsInit)
+                overrideSave = Save();
             if (isUseInitData) GetInitData();
             islandID = mainCellIn.IslandID;
             SetHeight(startHeightIn);
@@ -160,7 +159,7 @@ namespace _Game.GameGrid.Unit
         {
             Tf.DOKill(true);
             //Saving state before despawn
-            overrideState = Save();
+            overrideSave = Save();
             OnOutCells();
             this.Despawn();
             isSpawn = false;
@@ -417,10 +416,10 @@ namespace _Game.GameGrid.Unit
         public virtual IMemento Save()
         {
             IMemento save;
-            if(overrideState != null)
+            if(overrideSave != null)
             {
-                save = overrideState;
-                overrideState = null;
+                save = overrideSave;
+                overrideSave = null;
             }
             else
             {

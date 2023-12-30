@@ -4,7 +4,9 @@ using System.Linq;
 using _Game.Utilities.Timer;
 using MapEnum;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace _Game.Utilities.Grid
 {
@@ -16,12 +18,15 @@ namespace _Game.Utilities.Grid
         private DebugGrid debug;
 
         protected readonly List<IMemento> cellMementos = new List<IMemento>();
-        protected readonly List<Vector2Int> unitPos = new List<Vector2Int>();
-        public static bool IsInit
+        protected readonly List<Vector2Int> cellPos = new List<Vector2Int>();
+        //Grid is change or not when compare to last save state
+        private bool isChange = false;
+        public bool IsInit
         {
             get;
             protected set;
         }
+        public bool IsChange => isChange;
 
         public Grid(int width, int height, float cellSize, Vector3 originPosition = default,
             Func<GridCell<TD>> constructorCell = null, GridPlane gridPlaneType = GridPlane.XY)
@@ -139,14 +144,13 @@ namespace _Game.Utilities.Grid
                 debugTextArray[x, y].text = gridArray[x, y].ToString();
             }
             if (isRevert) return;
-
-            if(!IsInit && !unitPos.Any(pos => pos.x == x && pos.y == y))
+            isChange = true;
+            if(!IsInit && !cellPos.Any(pos => pos.x == x && pos.y == y))
             {
                 cellMementos.Add(gridArray[x, y].Save());
-                unitPos.Add(new Vector2Int(x, y));
             }
             //NOTE: TEST
-
+            cellPos.Add(new Vector2Int(x, y));
         }
 
         private Vector3 GetUnitVector3(float val1, float val2)
@@ -214,21 +218,24 @@ namespace _Game.Utilities.Grid
             }
         }
         #region SAVING DATA
-        public IMemento Save()
+        public void SaveInitData()
         {
-            GridMemento save;
             if (IsInit)
             {
-                for (int i = 0; i < unitPos.Count; i++)
+                for (int i = 0; i < cellPos.Count; i++)
                 {
-                    cellMementos.Add(gridArray[unitPos[i].x, unitPos[i].y].Save());
-                }              
+                    cellMementos.Add(gridArray[cellPos[i].x, cellPos[i].y].Save());
+                }
                 IsInit = false;
             }
-
+        }
+        public IMemento Save()
+        {
+            GridMemento save;          
             save = new GridMemento(this, cellMementos);
             cellMementos.Clear();
-            unitPos.Clear();
+            cellPos.Clear();
+            isChange = false;
             return save;
         }
         public struct GridMemento : IMemento

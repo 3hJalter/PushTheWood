@@ -187,10 +187,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public override IMemento Save()
         {
             IMemento save;
-            if (overrideState != null)
+            if (overrideSave != null)
             {
-                save = overrideState;
-                overrideState = null;
+                save = overrideSave;
+                overrideSave = null;
             }
             else
             {
