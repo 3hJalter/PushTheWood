@@ -213,7 +213,7 @@ namespace _Game.GameGrid
             for(int i = 0; i < data.gridUnits.Length; i++)
             {
                 if (data.gridUnits[i] == null) continue;
-                content += data.gridUnits[i].gameObject.name + "\n";
+                content += $"{i}-{data.gridUnits[i].gameObject.name}\n";
             }
             return content;
         }

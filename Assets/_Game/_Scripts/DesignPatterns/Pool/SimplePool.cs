@@ -228,7 +228,6 @@ namespace _Game.DesignPattern
                 if (_inactive.Count == 0)
                 {
                     obj = Object.Instantiate(_prefab, _mSRoot);
-
                     if (!Pools.ContainsKey(obj.GetInstanceID()))
                         Pools.Add(obj.GetInstanceID(), this);
                 }

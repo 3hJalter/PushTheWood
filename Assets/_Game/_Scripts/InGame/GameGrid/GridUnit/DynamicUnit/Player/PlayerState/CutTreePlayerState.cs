@@ -62,8 +62,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             if (!_isExecuted)
             {
                 _isExecuted = true;
+                t.OnSavingState?.Invoke();
                 // Make the tree OnBePushed with direction calculated by position of the Player and the Tree
-                // Spawn a TreeRoot
+                // Spawn a TreeRoot          
                 TreeRoot treeRoot = SimplePool.Spawn<TreeRoot>(DataManager.Ins.GetGridUnit(PoolType.TreeRoot));
                 treeRoot.OnInit(t.CutTreeData.tree.MainCell, t.CutTreeData.tree.StartHeight);
                 LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(treeRoot);
@@ -71,7 +72,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 Chump.Chump chump = SimplePool.Spawn<Chump.Chump>(t.CutTreeData.tree.chumpPrefab);
                 chump.OnInit(t.CutTreeData.tree.MainCell, t.CutTreeData.tree.StartHeight + 1);
                 LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(chump);
-                //Saving
                 t.OnSavingState?.Invoke();
                 // Push the Chump with the direction
                 chump.OnBePushed(t.CutTreeData.inputDirection, t);
