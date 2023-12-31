@@ -483,7 +483,7 @@ namespace _Game.GameGrid.Unit
                 
                 if(main.isSpawn == false)
                 {
-                    SimplePool.Spawn<GridUnit>(main, position, Quaternion.identity);
+                    SimplePool.SpawnDirectFromPool(main, position, Quaternion.identity);
                 }
                 #endregion
                 #region MAIN DATA

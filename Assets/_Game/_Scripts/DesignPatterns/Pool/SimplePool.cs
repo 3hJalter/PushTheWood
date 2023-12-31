@@ -283,6 +283,8 @@ namespace _Game.DesignPattern
                 if (IsCollect) _active.Add(gameUnit);
                 if (_mClamp && _active.Count >= _mAmount) DeSpawn(_active[0]);
                 
+                gameUnit.gameObject.SetActive(true);
+                
                 return gameUnit;
             }
 
