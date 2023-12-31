@@ -89,7 +89,7 @@ namespace _Game.Utilities.Grid
             return data.ToString();
         }
 
-        protected virtual void ValueChange(bool isRevert = false)
+        public virtual void ValueChange(bool isRevert = false)
         {
             OnValueChange?.Invoke(x, y, isRevert);
         }

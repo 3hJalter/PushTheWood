@@ -146,7 +146,7 @@ namespace _Game.Utilities.Grid
             }
             if (isRevert) return;
             isChange = true;
-            if(!IsInit && !cellPos.Any(pos => pos.x == x && pos.y == y))
+            if(!cellPos.Any(pos => pos.x == x && pos.y == y))
             {
                 cellMementos.Add(gridArray[x, y].Save());
             }
@@ -219,14 +219,11 @@ namespace _Game.Utilities.Grid
             }
         }
         #region SAVING DATA
-        public void SaveInitData()
+        public void CompleteInit()
         {
             if (IsInit)
             {
-                for (int i = 0; i < cellPos.Count; i++)
-                {
-                    cellMementos.Add(gridArray[cellPos[i].x, cellPos[i].y].Save());
-                }
+                cellMementos.Clear();
                 IsInit = false;
             }
         }

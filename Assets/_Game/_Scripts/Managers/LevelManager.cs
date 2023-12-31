@@ -12,6 +12,7 @@ using _Game.Utilities;
 using _Game.Utilities.Grid;
 using UnityEngine;
 using static _Game.Utilities.Grid.Grid<_Game.GameGrid.GameGridCell, _Game.GameGrid.GameGridCellData>;
+using static UnityEditor.VersionControl.Asset;
 
 namespace _Game.GameGrid
 {
@@ -92,7 +93,7 @@ namespace _Game.GameGrid
             _currentLevel.OnInitLevelSurfaceAndUnit();
             _currentLevel.OnInitPlayerToLevel();
             // SetCameraToPlayer();
-            _currentLevel.GridMap.SaveInitData();
+            _currentLevel.GridMap.CompleteInit();
             savingState = new CareTaker(this);
             SetCameraToPlayerIsland();
             // CameraManager.Ins.ChangeCameraTargetPosition(_currentLevel.GetCenterPos());
@@ -173,12 +174,21 @@ namespace _Game.GameGrid
                 this.main = main;
                 main.player.OnSavingState += SavingData;
                 SavingObjects();
+
+                HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
+                foreach (GridUnit gridUnit in gridUnits)
+                {
+                    gridUnit.MainCell.ValueChange();
+                }
+                SavingState();
             }
             public void Undo()
             {
                 if (main.CurrentLevel.GridMap.IsChange)
                 {
                     SavingState(true);
+                    if(objectHistorys.Count < dataHistorys.Count)
+                        objectHistorys.Push(objectHistorys.Peek());
                 }
                 if (dataHistorys.Count > 0)
                 {
