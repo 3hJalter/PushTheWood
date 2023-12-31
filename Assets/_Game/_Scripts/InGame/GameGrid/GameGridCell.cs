@@ -227,14 +227,11 @@ namespace _Game.GameGrid
         {
             GameGridCell main;
             GridUnit[] gridUnits;
+            public int Id => main.GetHashCode();
             public CellMemento(GameGridCell main, GridUnit[] unitData)
             {
                 this.main = main;
-                gridUnits = new GridUnit[unitData.Length];
-                for(int i = 0; i < gridUnits.Length; i++)
-                {
-                    gridUnits[i] = unitData[i];
-                }
+                gridUnits = unitData.ToArray();
                 DevLog.Log(DevId.Hung, $"Save: ( {main.X}, {main.Y})");
             }
 

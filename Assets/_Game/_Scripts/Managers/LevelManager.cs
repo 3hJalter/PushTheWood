@@ -11,6 +11,7 @@ using _Game.UIs.Screen;
 using _Game.Utilities;
 using _Game.Utilities.Grid;
 using UnityEngine;
+using static _Game.Utilities.Grid.Grid<_Game.GameGrid.GameGridCell, _Game.GameGrid.GameGridCellData>;
 
 namespace _Game.GameGrid
 {
@@ -167,7 +168,6 @@ namespace _Game.GameGrid
             LevelManager main;
             Stack<IMemento> dataHistorys = new Stack<IMemento>();
             Stack<List<IMemento>> objectHistorys = new Stack<List<IMemento>>();
-            List<IMemento> states;
             public CareTaker(LevelManager main)
             {
                 this.main = main;
@@ -178,15 +178,12 @@ namespace _Game.GameGrid
             {
                 if (main.CurrentLevel.GridMap.IsChange)
                 {
-                    dataHistorys.Push(main._currentLevel.GridMap.Save());
-                    if(objectHistorys.Count < dataHistorys.Count)
-                        objectHistorys.Push(objectHistorys.Peek());
+                    SavingState(true);
                 }
                 if (dataHistorys.Count > 0)
                 {
-                    IMemento revertState = dataHistorys.Pop();
-                    revertState.Restore();
-                    foreach(IMemento objectRevert in objectHistorys.Pop())
+                    dataHistorys.Pop().Restore();
+                    foreach (IMemento objectRevert in objectHistorys.Pop())
                     {
                         objectRevert.Restore();
                     }
@@ -194,39 +191,62 @@ namespace _Game.GameGrid
                     {
                         SavingObjects();
                     }
-                    DevLog.Log(DevId.Hung, "UNDO_STATE - SUCCESS!!");                   
+                    DevLog.Log(DevId.Hung, "UNDO_STATE - SUCCESS!!");
                 }
                 else
                 {
-                    
+
                     DevLog.Log(DevId.Hung, "UNDO_STATE - FAILURE!!");
                 }
             }
-            
-            private void SavingData()
-            {
-                SavingState();
-                SavingObjects();
-            }
-            private void SavingState()
-            {
-                if (main.CurrentLevel.GridMap.IsChange)
-                {
-                    dataHistorys.Push(main._currentLevel.GridMap.Save());
-                }
-            }
-            private void SavingObjects()
-            {
-                states = new List<IMemento>() { main.player.Save() };
-                HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
-                foreach (GridUnit gridUnit in gridUnits)
-                {
-                    states.Add(gridUnit.Save());
-                }
-                objectHistorys.Push(states);
-            }
-        }
 
+            private void SavingData(bool isMerge = false)
+            {
+                SavingState(isMerge);
+                SavingObjects(isMerge);
+            }
+            private void SavingState(bool isMerge = false)
+            {
+                if (!isMerge || dataHistorys.Count == 0)
+                {
+                    if (main.CurrentLevel.GridMap.IsChange)
+                    {
+                        IMemento states = main._currentLevel.GridMap.Save();
+                        dataHistorys.Push(states);
+                    }
+                }
+                else
+                {
+                    GridMemento stateData = (GridMemento)dataHistorys.Peek();
+                    stateData.Merge((GridMemento)main._currentLevel.GridMap.Save());
+                }
+            }
+            private void SavingObjects(bool isMerge = false)
+            {
+                List<IMemento> states;
+                if (!isMerge || objectHistorys.Count == 0)
+                {
+                    states = new List<IMemento>() { main.player.Save() };
+                    HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
+                    foreach (GridUnit gridUnit in gridUnits)
+                    {
+                        states.Add(gridUnit.Save());
+                    }
+                    objectHistorys.Push(states);
+                }
+                else
+                {
+                    states = objectHistorys.Peek();
+                    HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
+                    foreach (GridUnit gridUnit in gridUnits)
+                    {
+                        if(!states.Any(x => x.Id == gridUnit.GetHashCode()))
+                            states.Add(gridUnit.Save());
+                    }
+                }
+            }
+
+        }
     }
 
 }

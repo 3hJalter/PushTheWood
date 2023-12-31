@@ -446,6 +446,8 @@ namespace _Game.GameGrid.Unit
             protected GameGridCell[] cellInUnits;
             int islandID;
             protected Direction lastPushDirection;
+
+            public int Id => main.GetHashCode();
             #endregion
             public UnitMemento(GridUnit main, params object[] data)
             {
@@ -475,15 +477,17 @@ namespace _Game.GameGrid.Unit
             public virtual void Restore()
             {
                 #region SPAWN
-                if (isSpawn == false)
+                if (!isSpawn && main.isSpawn)
                 {
                     main.Despawn();
+                    main.isSpawn = false;
                     return;
                 }
                 
-                if(main.isSpawn == false)
+                if(isSpawn && !main.isSpawn)
                 {
-                    SimplePool.Spawn<GridUnit>(main, position, Quaternion.identity);
+                    SimplePool.SpawnDirectFromPool(main, position, Quaternion.identity);
+                    main.isSpawn = true;
                 }
                 #endregion
                 #region MAIN DATA

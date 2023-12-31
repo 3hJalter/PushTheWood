@@ -19,7 +19,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
     {
         [SerializeField] private Animator animator;
 
-        public Action OnSavingState;
+        public Action<bool> OnSavingState;
         public bool isRideVehicle;
         public readonly Queue<Direction> InputCache = new();
 

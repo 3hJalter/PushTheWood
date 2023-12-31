@@ -6,6 +6,7 @@ using MapEnum;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using static _Game.GameGrid.GameGridCell;
 using static UnityEngine.Rendering.DebugUI;
 
 namespace _Game.Utilities.Grid
@@ -241,11 +242,17 @@ namespace _Game.Utilities.Grid
         public struct GridMemento : IMemento
         {
             Grid<T, TD> main;
-            IMemento[] cellMememtos;
+            List<CellMemento> cellMememtos;
+            public int Id => 0;
             public GridMemento(Grid<T, TD> main, params object[] data)
             {
                 this.main = main;
-                cellMememtos = ((List<IMemento>)data[0]).ToArray();
+                cellMememtos = new List<CellMemento>();
+
+                foreach (IMemento memento in (List<IMemento>)data[0])
+                {
+                    cellMememtos.Add((CellMemento)memento);
+                }
 
             }
             public void Restore()
@@ -253,6 +260,17 @@ namespace _Game.Utilities.Grid
                 foreach (IMemento memento in cellMememtos)
                 {
                     memento.Restore();
+                }
+            }
+
+            public void Merge(GridMemento memento)
+            {
+                foreach(CellMemento cellMemento in memento.cellMememtos)
+                {
+                    if(!cellMememtos.Any(x => x.Id == cellMemento.Id))
+                    {
+                        cellMememtos.Add(cellMemento);
+                    }
                 }
             }
         }
