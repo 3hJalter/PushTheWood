@@ -43,7 +43,7 @@ namespace _Game.DesignPattern
         {
             return PoolInstanceID.ContainsKey(instanceID);
         }
-
+        
         public static void Preload(GameUnit prefab, int qty = 1, Transform parent = null, bool collect = false,
             bool clamp = false)
         {
@@ -85,6 +85,17 @@ namespace _Game.DesignPattern
             return Spawn(obj) as T;
         }
 
+        public static GameUnit SpawnDirectFromPool(GameUnit obj, Vector3 pos, Quaternion rot)
+        {
+            if (!Pools.ContainsKey(obj.GetInstanceID()))
+            {
+                Transform newRoot = new GameObject(obj.name).transform;
+                newRoot.SetParent(Root);
+                Preload(obj, 1, newRoot, true);
+            }
+            return Pools[obj.GetInstanceID()].SpawnDirectly(obj, pos, rot);
+        }
+        
         private static GameUnit Spawn(GameUnit obj, Vector3 pos, Quaternion rot)
         {
             if (!PoolInstanceID.ContainsKey(obj.GetInstanceID()))
@@ -186,7 +197,7 @@ namespace _Game.DesignPattern
             //collect obj active inGame
             private readonly List<GameUnit> _active;
 
-            private readonly Queue<GameUnit> _inactive;
+            private readonly LinkedList<GameUnit> _inactive;
             private readonly int _mAmount;
 
             private readonly bool _mClamp;
@@ -199,7 +210,7 @@ namespace _Game.DesignPattern
             // Constructor
             public Pool(GameUnit prefab, int initialQty, Transform parent, bool collect, bool clamp)
             {
-                _inactive = new Queue<GameUnit>(initialQty);
+                _inactive = new LinkedList<GameUnit>();
                 _mSRoot = parent;
                 _prefab = prefab;
                 IsCollect = collect;
@@ -233,8 +244,9 @@ namespace _Game.DesignPattern
                 }
                 else
                 {
-                    // Grab the last object in the inactive array
-                    obj = _inactive.Dequeue();
+                    // Grab the first object in the inactive array
+                    obj = _inactive.First.Value;
+                    _inactive.RemoveFirst();
 
                     if (obj == null) return Spawn();
                 }
@@ -246,6 +258,33 @@ namespace _Game.DesignPattern
 
                 return obj;
             }
+            
+            public GameUnit SpawnDirectly(GameUnit obj, Vector3 pos, Quaternion rot)
+            {
+                SpawnDirectly(obj).Tf.SetPositionAndRotation(pos, rot);
+                return obj;
+            }
+
+            private GameUnit SpawnDirectly(GameUnit gameUnit)
+            {
+                // check if unit contain in queue
+                if (_inactive.Contains(gameUnit))
+                {
+                    gameUnit = Object.Instantiate(gameUnit, _mSRoot);
+
+                    if (!Pools.ContainsKey(gameUnit.GetInstanceID()))
+                        Pools.Add(gameUnit.GetInstanceID(), this);
+                }
+                else
+                {
+                    // remove this unit from queue
+                    _inactive.Remove(gameUnit);
+                }
+                if (IsCollect) _active.Add(gameUnit);
+                if (_mClamp && _active.Count >= _mAmount) DeSpawn(_active[0]);
+                
+                return gameUnit;
+            }
 
             // Return an object to the inactive pool.
             public void DeSpawn(GameUnit obj)
@@ -253,7 +292,8 @@ namespace _Game.DesignPattern
                 if (obj != null /*&& !inactive.Contains(obj)*/)
                 {
                     obj.gameObject.SetActive(false);
-                    _inactive.Enqueue(obj);
+                    // _inactive.Enqueue(obj);
+                    _inactive.AddLast(obj);
                 }
 
                 if (IsCollect) _active.Remove(obj);
@@ -263,7 +303,9 @@ namespace _Game.DesignPattern
             {
                 while (_inactive.Count > amount)
                 {
-                    GameUnit go = _inactive.Dequeue();
+                    // GameUnit go = _inactive.Dequeue();
+                    GameUnit go = _inactive.First.Value;
+                    _inactive.RemoveFirst();
                     Object.DestroyImmediate(go);
                 }
             }
@@ -272,7 +314,9 @@ namespace _Game.DesignPattern
             {
                 while (_inactive.Count > 0)
                 {
-                    GameUnit go = _inactive.Dequeue();
+                    // GameUnit go = _inactive.Dequeue();
+                    GameUnit go = _inactive.First.Value;
+                    _inactive.RemoveFirst();
                     Object.DestroyImmediate(go);
                 }
 
