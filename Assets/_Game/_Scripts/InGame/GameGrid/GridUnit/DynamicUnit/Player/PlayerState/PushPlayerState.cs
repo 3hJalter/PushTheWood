@@ -35,7 +35,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             if (!_isExecuted)
             {
                 _isExecuted = true;
-                t.OnSavingState(true);
                 // Push the block Unit
                 t.OnPush(t.MovingData.inputDirection);
                 ParticlePool.Play(PoolController.Ins.Particles[VFX.DUST], t.transform.position + t.skin.transform.forward * Constants.CELL_SIZE * 0.5f);
