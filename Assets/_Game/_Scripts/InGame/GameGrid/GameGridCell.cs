@@ -210,7 +210,7 @@ namespace _Game.GameGrid
         public override string ToString()
         {
             string content = "  --- \n";
-            for(int i = 0; i < data.gridUnits.Length; i++)
+            for(int i = data.gridUnits.Length - 1; i >= 0 ; i--)
             {
                 if (data.gridUnits[i] == null) continue;
                 content += $"{i}-{data.gridUnits[i].gameObject.name}\n";

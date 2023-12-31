@@ -72,12 +72,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 Chump.Chump chump = SimplePool.Spawn<Chump.Chump>(t.CutTreeData.tree.chumpPrefab);
                 chump.OnInit(t.CutTreeData.tree.MainCell, t.CutTreeData.tree.StartHeight + 1);
                 LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(chump);
-                t.OnSavingState?.Invoke();
                 // Push the Chump with the direction
                 chump.OnBePushed(t.CutTreeData.inputDirection, t);
                 // Despawn the Tree
                 t.CutTreeData.tree.OnDespawn();
-
             }
         }
     }
