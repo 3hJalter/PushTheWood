@@ -268,7 +268,7 @@ namespace _Game.DesignPattern
             private GameUnit SpawnDirectly(GameUnit gameUnit)
             {
                 // check if unit contain in queue
-                if (_inactive.Contains(gameUnit))
+                if (!_inactive.Contains(gameUnit))
                 {
                     gameUnit = Object.Instantiate(gameUnit, _mSRoot);
 
