@@ -85,13 +85,16 @@ namespace _Game.DesignPattern
             return Spawn(obj) as T;
         }
 
+        // Note: Only use this function when you are sure that this unit is already in pool
         public static GameUnit SpawnDirectFromPool(GameUnit obj, Vector3 pos, Quaternion rot)
         {
             if (!Pools.ContainsKey(obj.GetInstanceID()))
             {
-                Transform newRoot = new GameObject(obj.name).transform;
-                newRoot.SetParent(Root);
-                Preload(obj, 1, newRoot, true);
+                // NOTE: Comment it because we know that this unit is already in pool
+                // Transform newRoot = new GameObject(obj.name).transform;
+                // newRoot.SetParent(Root);
+                // Preload(obj, 1, newRoot, true); 
+                return null;
             }
             return Pools[obj.GetInstanceID()].SpawnDirectly(obj, pos, rot);
         }
@@ -270,10 +273,11 @@ namespace _Game.DesignPattern
                 // check if unit contain in queue
                 if (!_inactive.Contains(gameUnit))
                 {
-                    gameUnit = Object.Instantiate(gameUnit, _mSRoot);
-
-                    if (!Pools.ContainsKey(gameUnit.GetInstanceID()))
-                        Pools.Add(gameUnit.GetInstanceID(), this);
+                    // NOTE: Comment it because we know that this unit is already in queue
+                    // gameUnit = Object.Instantiate(gameUnit, _mSRoot);
+                    //
+                    // if (!Pools.ContainsKey(gameUnit.GetInstanceID()))
+                    //     Pools.Add(gameUnit.GetInstanceID(), this);
                 }
                 else
                 {
