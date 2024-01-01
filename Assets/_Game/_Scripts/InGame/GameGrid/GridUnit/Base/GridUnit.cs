@@ -119,8 +119,10 @@ namespace _Game.GameGrid.Unit
             bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRos = false)
         {
             //Saving state before spawn, when map has already init
-            if (!LevelManager.Ins.CurrentLevel.GridMap.IsInit)
+            if (!LevelManager.Ins.CurrentLevel.GridMap.IsObjectInit)
                 overrideSave = Save();
+            else
+                overrideSave = null;
             if (isUseInitData) GetInitData();
             islandID = mainCellIn.IslandID;
             SetHeight(startHeightIn);
@@ -160,7 +162,9 @@ namespace _Game.GameGrid.Unit
         {
             Tf.DOKill(true);
             //Saving state before despawn
-            overrideSave = Save();
+            //DEV:Can making IsObjectInit to global variable in LevelManager
+            if (!LevelManager.Ins.CurrentLevel.GridMap.IsObjectInit)
+                overrideSave = Save();
             OnOutCells();
             this.Despawn();
             isSpawn = false;

@@ -93,7 +93,7 @@ namespace _Game.GameGrid
             _currentLevel.OnInitLevelSurfaceAndUnit();
             _currentLevel.OnInitPlayerToLevel();
             // SetCameraToPlayer();
-            _currentLevel.GridMap.CompleteInit();
+            _currentLevel.GridMap.CompleteObjectInit();
             savingState = new CareTaker(this);
             SetCameraToPlayerIsland();
             // CameraManager.Ins.ChangeCameraTargetPosition(_currentLevel.GetCenterPos());
@@ -129,7 +129,6 @@ namespace _Game.GameGrid
         {
             // Load next level
             _currentLevel.OnDeSpawnLevel();
-            savingState.Reset();
             OnInit();
             
             // OnChangeTutorialIndex();
@@ -153,8 +152,12 @@ namespace _Game.GameGrid
             player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
             player.OnInit(CurrentLevel.firstPlayerInitCell);
             SetCameraToPlayerIsland();
-            savingState.Reset();
             // FxManager.Ins.ResetTrackedTrampleObjectList();
+        }
+
+        public void ResetSaving()
+        {
+            savingState.Reset();
         }
         public void OnUndo()
         {

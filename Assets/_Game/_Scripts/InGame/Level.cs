@@ -135,12 +135,15 @@ namespace _Game._Scripts.InGame
         public void ResetIslandPlayerOn()
         {
             if (!_islandDic.ContainsKey(LevelManager.Ins.player.islandID)) return;
+            GridMap.Reset();
             _islandDic[LevelManager.Ins.player.islandID].ResetIsland();
             LevelManager.Ins.player.OnDespawn();
             LevelManager.Ins.player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
             LevelManager.Ins.player.OnInit(_islandDic[LevelManager.Ins.player.islandID].FirstPlayerStepCell);
+            GridMap.CompleteObjectInit();
+            LevelManager.Ins.ResetSaving();
         }
-        
+
         public void ResetAllIsland()
         {
             for (int i = 0; i < _islandDic.Count; i++) _islandDic[i].ResetIsland();

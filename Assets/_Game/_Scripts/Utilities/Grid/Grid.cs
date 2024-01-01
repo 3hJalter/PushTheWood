@@ -22,7 +22,7 @@ namespace _Game.Utilities.Grid
         protected readonly List<Vector2Int> cellPos = new List<Vector2Int>();
         //Grid is change or not when compare to last save state
         private bool isChange = false;
-        public bool IsInit
+        public bool IsObjectInit
         {
             get;
             protected set;
@@ -37,7 +37,7 @@ namespace _Game.Utilities.Grid
             CellSize = cellSize;
             this.originPosition = originPosition;
             GridPlaneType = gridPlaneType;
-            IsInit = true;
+            IsObjectInit = true;
 
             gridArray = new T[width, height];
             debugTextArray = new TextMeshPro[width, height];
@@ -170,6 +170,7 @@ namespace _Game.Utilities.Grid
         }
         public void Reset()
         {
+            IsObjectInit = true;
             isChange = false;
             cellMementos.Clear();
             cellPos.Clear();
@@ -224,12 +225,12 @@ namespace _Game.Utilities.Grid
             }
         }
         #region SAVING DATA
-        public void CompleteInit()
+        public void CompleteObjectInit()
         {
-            if (IsInit)
+            if (IsObjectInit)
             {
                 cellMementos.Clear();
-                IsInit = false;
+                IsObjectInit = false;
             }
         }
         public IMemento Save()
