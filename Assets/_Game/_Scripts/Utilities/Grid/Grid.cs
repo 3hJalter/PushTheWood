@@ -168,7 +168,12 @@ namespace _Game.Utilities.Grid
 
             return default;
         }
-
+        public void Reset()
+        {
+            isChange = false;
+            cellMementos.Clear();
+            cellPos.Clear();
+        }
 
 
 

@@ -121,6 +121,7 @@ namespace _Game.GameGrid
             if (levelIndex == index) return;
             levelIndex = index;
             _currentLevel.OnDeSpawnLevel();
+            savingState.Reset();
             OnInit();
         }
 
@@ -128,8 +129,9 @@ namespace _Game.GameGrid
         {
             // Load next level
             _currentLevel.OnDeSpawnLevel();
+            savingState.Reset();
             OnInit();
-
+            
             // OnChangeTutorialIndex();
         }
 
@@ -146,11 +148,12 @@ namespace _Game.GameGrid
         public void OnRestart()
         {
             CurrentLevel.ResetAllIsland();
+            CurrentLevel.GridMap.Reset();
             player.OnDespawn();
             player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
             player.OnInit(CurrentLevel.firstPlayerInitCell);
-            savingState = new CareTaker(this);
             SetCameraToPlayerIsland();
+            savingState.Reset();
             // FxManager.Ins.ResetTrackedTrampleObjectList();
         }
         public void OnUndo()
@@ -173,14 +176,15 @@ namespace _Game.GameGrid
             {
                 this.main = main;
                 main.player.OnSavingState += SavingData;
+                #region Init Spawn State
                 SavingObjects();
-
                 HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
                 foreach (GridUnit gridUnit in gridUnits)
                 {
                     gridUnit.MainCell.ValueChange();
                 }
                 SavingState();
+                #endregion
             }
             public void Undo()
             {
@@ -240,7 +244,8 @@ namespace _Game.GameGrid
                     HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
                     foreach (GridUnit gridUnit in gridUnits)
                     {
-                        states.Add(gridUnit.Save());
+                        if(gridUnit.IsSpawn)
+                            states.Add(gridUnit.Save());
                     }
                     objectHistorys.Push(states);
                 }
@@ -250,12 +255,25 @@ namespace _Game.GameGrid
                     HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
                     foreach (GridUnit gridUnit in gridUnits)
                     {
-                        if(!states.Any(x => x.Id == gridUnit.GetHashCode()))
+                        if(gridUnit.IsSpawn && !states.Any(x => x.Id == gridUnit.GetHashCode()))
                             states.Add(gridUnit.Save());
                     }
                 }
             }
-
+            public void Reset()
+            {
+                dataHistorys.Clear();
+                objectHistorys.Clear();
+                #region Init Spawn State
+                SavingObjects();
+                HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
+                foreach (GridUnit gridUnit in gridUnits)
+                {
+                    gridUnit.MainCell.ValueChange();
+                }
+                SavingState();
+                #endregion
+            }
         }
     }
 

@@ -70,6 +70,7 @@ namespace _Game.GameGrid.Unit
         // Is GridUnit is spawn or not - save state of unit.
         protected bool isSpawn = false;
         protected IMemento overrideSave = null;
+        public bool IsSpawn => isSpawn;
         #endregion
 
         public Vector3Int Size
@@ -423,14 +424,14 @@ namespace _Game.GameGrid.Unit
             }
             else
             {
-                save = new UnitMemento(this, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
+                save = new UnitMemento<GridUnit>(this, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
                 , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID, lastPushedDirection);
             }
             return save;
         }
-        public class UnitMemento : IMemento
+        public class UnitMemento<T> : IMemento where T : GridUnit
         {
-            protected GridUnit main;
+            protected T main;
             #region MAIN DATA
             bool isSpawn;
             protected Vector3 position;
@@ -449,7 +450,7 @@ namespace _Game.GameGrid.Unit
 
             public int Id => main.GetHashCode();
             #endregion
-            public UnitMemento(GridUnit main, params object[] data)
+            public UnitMemento(T main, params object[] data)
             {
                 this.main = main;
                 isSpawn = (bool)data[0];
