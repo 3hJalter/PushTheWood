@@ -1,35 +1,36 @@
+using TMPro;
 using UnityEngine;
 
 namespace _Game.Utilities.Grid
 {
     public static class GridUtilities
     {
-        public static TextMesh CreateWorldText(string text, Transform parent = null, Vector3 localPosition = default,
+        public static Material OverlayMaterial;
+        public static TextMeshPro CreateWorldText(string text, Transform parent = null, Vector3 localPosition = default,
             int fontSize = 40,
             Color color = default, TextAnchor textAnchor = TextAnchor.UpperLeft,
-            TextAlignment textAlignment = TextAlignment.Left, int sortingOrder = 5000)
+            TextAlignment textAlignment = TextAlignment.Center, int sortingOrder = 5000)
         {
             return CreateWorldText(parent, text, localPosition, fontSize, color, textAnchor, textAlignment,
                 sortingOrder);
         }
 
-        public static TextMesh CreateWorldText(Transform parent, string text, Vector3 localPosition,
+        public static TextMeshPro CreateWorldText(Transform parent, string text, Vector3 localPosition,
             int fontSize, Color color, TextAnchor textAnchor, TextAlignment textAlignment = default,
             int sortingOrder = default)
         {
-            GameObject gameObject = new("World_Text", typeof(TextMesh));
+            GameObject gameObject = new("World_Text", typeof(TextMeshPro));
             Transform transform = gameObject.transform;
             transform.SetParent(parent, false);
             transform.localPosition = localPosition;
-            TextMesh textMesh = gameObject.GetComponent<TextMesh>();
-            textMesh.anchor = textAnchor;
-            textMesh.alignment = textAlignment;
+            TextMeshPro textMesh = gameObject.GetComponent<TextMeshPro>();
+            textMesh.alignment = (TextAlignmentOptions)textAlignment;
             textMesh.text = text;
             textMesh.fontSize = fontSize;
             textMesh.color = color;
             textMesh.GetComponent<MeshRenderer>().sortingOrder = sortingOrder;
+            textMesh.fontSharedMaterial = OverlayMaterial;
             return textMesh;
-
         }
 
         public static Vector3 GetMouseWorldPosition()

@@ -7,7 +7,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
     public class MoveChumpState : IState<Chump>
     {
         private bool _isMove;
-
+        Tween moveTween;
         public StateEnum Id => StateEnum.Move;
 
         public void OnEnter(Chump t)
@@ -31,7 +31,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 t.OnOutCells();
                 t.OnEnterCells(t.MovingData.enterMainCell, t.MovingData.enterCells);
                 // Animation and complete
-                t.Tf.DOMove(t.EnterPosData.initialPos,
+                moveTween = t.Tf.DOMove(t.EnterPosData.initialPos,
                         t.EnterPosData.isFalling ? Constants.MOVING_TIME / 2 : Constants.MOVING_TIME)
                     .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                     {
@@ -50,6 +50,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
         public void OnExit(Chump t)
         {
+            moveTween.Kill();
         }
     }
 }

@@ -124,60 +124,60 @@ public class GridMapDataGenerator : MonoBehaviour
             return;
         }
         
-        // check name convention
-        if (!mapLevelName.Contains("Lvl_"))
-        {
-            Debug.LogError("Map name must be Lvl_0, Lvl_1, Lvl_2, ...");
-            return;
-        }
-        // Get the number of map
-        string[] split = mapLevelName.Split('_');
-        if (split.Length != 2)
-        {
-            Debug.LogError("Map name must be Lvl_0, Lvl_1, Lvl_2, ...");
-            return;
-        }
-        if (!int.TryParse(split[1], out int mapNumber))
-        {
-            Debug.LogError("Map name must be Lvl_0, Lvl_1, Lvl_2, ...");
-            return;
-        }
-        // Check if the map number is < 0 or > DataManager.Ins.CountLevel
-        if (mapNumber <= 0 || mapNumber > DataManager.Ins.CountLevel + 1)
-        {
-            Debug.LogError("Map number must be > 0 and <= " + (DataManager.Ins.CountLevel + 1));
-            return;
-        }
+        // // check name convention
+        // if (!mapLevelName.Contains("Lvl_"))
+        // {
+        //     Debug.LogError("Map name must be Lvl_0, Lvl_1, Lvl_2, ...");
+        //     return;
+        // }
+        // // Get the number of map
+        // string[] split = mapLevelName.Split('_');
+        // if (split.Length != 2)
+        // {
+        //     Debug.LogError("Map name must be Lvl_0, Lvl_1, Lvl_2, ...");
+        //     return;
+        // }
+        // if (!int.TryParse(split[1], out int mapNumber))
+        // {
+        //     Debug.LogError("Map name must be Lvl_0, Lvl_1, Lvl_2, ...");
+        //     return;
+        // }
+        // // Check if the map number is < 0 or > DataManager.Ins.CountLevel
+        // if (mapNumber <= 0 || mapNumber > DataManager.Ins.CountLevel + 1)
+        // {
+        //     Debug.LogError("Map number must be > 0 and <= " + (DataManager.Ins.CountLevel + 1));
+        //     return;
+        // }
         #endregion
 
-        #region Get Previous Level Data
-        
-        int previousLevelXSpawnPos = 0;
-        int previousLevelYSpawnPos = 0;
-        Vector2Int previousLevelSize = Vector2Int.zero;
-        // Get previous level data
-        if (mapNumber > 1)
-        {
-            TextGridData previousLevelData = GameGridDataHandler.CreateGridData(mapNumber - 2);
-            // Get GridPositionData
-            string[] splitGridPositionData = previousLevelData.GridPositionData.Split(' ');
-            // Get the X (the first value)
-            if (!int.TryParse(splitGridPositionData[0], out previousLevelXSpawnPos))
-            {
-                Debug.LogError("Error when get previous level data");
-                return;
-            }
-            // Get the Y (the second value)
-            if (!int.TryParse(splitGridPositionData[1], out previousLevelYSpawnPos))
-            {
-                Debug.LogError("Error when get previous level data");
-                return;
-            }
-            // Get the size of previous level
-            previousLevelSize = previousLevelData.GetSize();
-        }
-
-        #endregion
+        // #region Get Previous Level Data
+        //
+        // int previousLevelXSpawnPos = 0;
+        // int previousLevelYSpawnPos = 0;
+        // Vector2Int previousLevelSize = Vector2Int.zero;
+        // // Get previous level data
+        // if (mapNumber > 1)
+        // {
+        //     TextGridData previousLevelData = GameGridDataHandler.CreateGridData(mapNumber - 2);
+        //     // Get GridPositionData
+        //     string[] splitGridPositionData = previousLevelData.GridPositionData.Split(' ');
+        //     // Get the X (the first value)
+        //     if (!int.TryParse(splitGridPositionData[0], out previousLevelXSpawnPos))
+        //     {
+        //         Debug.LogError("Error when get previous level data");
+        //         return;
+        //     }
+        //     // Get the Y (the second value)
+        //     if (!int.TryParse(splitGridPositionData[1], out previousLevelYSpawnPos))
+        //     {
+        //         Debug.LogError("Error when get previous level data");
+        //         return;
+        //     }
+        //     // Get the size of previous level
+        //     previousLevelSize = previousLevelData.GetSize();
+        // }
+        //
+        // #endregion
         
         #region Set up GridMap
 
@@ -297,21 +297,22 @@ public class GridMapDataGenerator : MonoBehaviour
 
         #region Save map position
 
-        float xSpawnPos = 0f;
-        float ySpawnPos = 0f;
-        if (mapNumber > 1)
-        {
-            ySpawnPos = previousLevelYSpawnPos + previousLevelSize.y * Constants.CELL_SIZE + offsetS * Constants.CELL_SIZE;
-            if (mapNumber % 2 == 0)
-                // xSpawnPos = previousLevelXSpawnPos + previousLevelSize.x * Constants.CELL_SIZE - offsetS;
-                xSpawnPos = 10;
-            else
-                // xSpawnPos = previousLevelXSpawnPos - maxX * Constants.CELL_SIZE + offsetS;
-                xSpawnPos = 0;
-        }
-        Vector2 gridMapPosition = new(xSpawnPos, ySpawnPos);
-        file.WriteLine(gridMapPosition.x + " " + gridMapPosition.y);
-
+        // float xSpawnPos = 0f;
+        // float ySpawnPos = 0f;
+        // // if (mapNumber > 1)
+        // // {
+        // //     ySpawnPos = previousLevelYSpawnPos + previousLevelSize.y * Constants.CELL_SIZE + offsetS * Constants.CELL_SIZE;
+        // //     if (mapNumber % 2 == 0)
+        // //         // xSpawnPos = previousLevelXSpawnPos + previousLevelSize.x * Constants.CELL_SIZE - offsetS;
+        // //         xSpawnPos = 10;
+        // //     else
+        // //         // xSpawnPos = previousLevelXSpawnPos - maxX * Constants.CELL_SIZE + offsetS;
+        // //         xSpawnPos = 0;
+        // // }
+        // Vector2 gridMapPosition = new(xSpawnPos, ySpawnPos);
+        // file.WriteLine(gridMapPosition.x + " " + gridMapPosition.y);
+        // // Write a @ to separate
+        // file.WriteLine("@");
         #endregion
 
         #region Init Grid Surface
@@ -332,8 +333,6 @@ public class GridMapDataGenerator : MonoBehaviour
         }
 
         // Save the array as txt file in Resources folder
-        // Write a @ to separate
-        file.WriteLine("@");
         for (int i = 0; i < maxX; i++)
         {
             string line = "";

@@ -11,7 +11,6 @@ namespace _Game.GameGrid
             TextAsset textAsset = DataManager.Ins.GetGridTextData(mapIndex);
             string[] splitData = textAsset.text.Split('@');
             return new TextGridData(
-                splitData[(int)GridDataType.GridPositionData],
                 splitData[(int)GridDataType.SurfaceData],
                 splitData[(int)GridDataType.SurfaceRotationDirectionData],
                 splitData[(int)GridDataType.SurfaceMaterialData],
@@ -23,7 +22,6 @@ namespace _Game.GameGrid
         {
             string[] splitData = textAsset.text.Split('@');
             return new TextGridData(
-                splitData[(int)GridDataType.GridPositionData],
                 splitData[(int)GridDataType.SurfaceData],
                 splitData[(int)GridDataType.SurfaceRotationDirectionData],
                 splitData[(int)GridDataType.SurfaceMaterialData],
@@ -33,29 +31,26 @@ namespace _Game.GameGrid
 
         private enum GridDataType
         {
-            GridPositionData = 0,
-            SurfaceData = 1,
-            SurfaceRotationDirectionData = 2,
-            SurfaceMaterialData = 3,
-            UnitData = 4,
-            RotationDirectionUnitData = 5
+            SurfaceData = 0,
+            SurfaceRotationDirectionData = 1,
+            SurfaceMaterialData = 2,
+            UnitData = 3,
+            RotationDirectionUnitData = 4
         }
     }
 
     public class TextGridData
     {
-        public TextGridData(string gridPositionData, string surfaceData, string surfaceRotationDirectionData,
+        public TextGridData(string surfaceData, string surfaceRotationDirectionData,
             string surfaceMaterialData, string unitData, string unitRotationDirectionData)
         {
-            GridPositionData = gridPositionData;
             SurfaceData = surfaceData;
             SurfaceRotationDirectionData = surfaceRotationDirectionData;
             SurfaceMaterialData = surfaceMaterialData;
             UnitData = unitData;
             UnitRotationDirectionData = unitRotationDirectionData;
         }
-
-        public string GridPositionData { get; }
+        
         public string SurfaceData { get; }
         public string SurfaceRotationDirectionData { get; }
         public string SurfaceMaterialData { get; }

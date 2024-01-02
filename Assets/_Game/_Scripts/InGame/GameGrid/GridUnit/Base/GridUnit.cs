@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using _Game.DesignPattern;
+﻿using _Game.DesignPattern;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
 using _Game.Utilities.Grid;
 using DG.Tweening;
 using GameGridEnum;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using VinhLB;
@@ -43,7 +43,7 @@ namespace _Game.GameGrid.Unit
         // The type of this unit (Horizontal, Vertical, Both or None)
         [FormerlySerializedAs("unitType")]
         [SerializeField]
-        protected UnitTypeXZ unitTypeXZ = UnitTypeXZ.Both; // Serialize for test
+        protected UnitTypeXZ unitTypeXZ = UnitTypeXZ.Both; // Serialize for test       
 
         [SerializeField] protected Direction skinRotationDirection = Direction.None;
 
@@ -65,8 +65,13 @@ namespace _Game.GameGrid.Unit
         protected Direction lastPushedDirection = Direction.None;
 
         // The main cell that this unit is on
-
         protected GameGridCell mainCell;
+        #region Saving Spawn State
+        // Is GridUnit is spawn or not - save state of unit.
+        protected bool isSpawn = false;
+        protected IMemento overrideSave = null;
+        public bool IsSpawn => isSpawn;
+        #endregion
 
         public Vector3Int Size
         {
@@ -113,6 +118,11 @@ namespace _Game.GameGrid.Unit
         public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
             bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRos = false)
         {
+            //Saving state before spawn, when map has already init
+            if (!LevelManager.Ins.IsConstructingLevel)
+                overrideSave = Save();
+            else
+                overrideSave = null;
             if (isUseInitData) GetInitData();
             islandID = mainCellIn.IslandID;
             SetHeight(startHeightIn);
@@ -120,6 +130,8 @@ namespace _Game.GameGrid.Unit
             OnEnterCells(mainCellIn, InitCell(mainCellIn, skinDirection));
             // Set position
             if (!hasSetPosAndRos) OnSetPositionAndRotation(EnterPosData.finalPos, skinDirection);
+            
+            isSpawn = true;
         }
 
         public void OnSetPositionAndRotation(Vector3 position, Direction skinDirection)
@@ -149,8 +161,14 @@ namespace _Game.GameGrid.Unit
         public virtual void OnDespawn()
         {
             Tf.DOKill(true);
+            //Saving state before despawn
+            if (!LevelManager.Ins.IsConstructingLevel)
+                overrideSave = Save();
+            else
+                overrideSave = null;
             OnOutCells();
             this.Despawn();
+            isSpawn = false;
         }
 
         public virtual void OnPush(Direction direction, ConditionData conditionData = null)
@@ -403,52 +421,82 @@ namespace _Game.GameGrid.Unit
         #region SAVING DATA
         public virtual IMemento Save()
         {
-            return new UnitMemento(this, Tf.position, skin.rotation, startHeight, endHeight
-                , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID);
+            IMemento save;
+            if(overrideSave != null)
+            {
+                save = overrideSave;
+                overrideSave = null;
+            }
+            else
+            {
+                save = new UnitMemento<GridUnit>(this, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
+                , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID, lastPushedDirection);
+            }
+            return save;
         }
-        public struct UnitMemento : IMemento
+        public class UnitMemento<T> : IMemento where T : GridUnit
         {
-            GridUnit main;
-            #region DATA
-            Vector3 position;
-            Quaternion rotation;
-            HeightLevel startHeight;
-            HeightLevel endHeight;
-            UnitTypeY unitTypeY;
-            UnitTypeXZ unitTypeXZ;
-            GridUnit[] belowsUnits;
-            GridUnit[] neighborUnits;
-            GridUnit[] upperUnits;
-            GameGridCell mainCell;
-            GameGridCell[] cellInUnits;
+            protected T main;
+            #region MAIN DATA
+            bool isSpawn;
+            protected Vector3 position;
+            protected Quaternion rotation;
+            protected HeightLevel startHeight;
+            protected HeightLevel endHeight;
+            protected UnitTypeY unitTypeY;
+            protected UnitTypeXZ unitTypeXZ;
+            protected GridUnit[] belowsUnits;
+            protected GridUnit[] neighborUnits;
+            protected GridUnit[] upperUnits;
+            protected GameGridCell mainCell;
+            protected GameGridCell[] cellInUnits;
             int islandID;
+            protected Direction lastPushDirection;
 
+            public int Id => main.GetHashCode();
             #endregion
-            public UnitMemento(GridUnit main, params object[] data)
+            public UnitMemento(T main, params object[] data)
             {
                 this.main = main;
-                position = (Vector3)data[0];
-                rotation = (Quaternion)data[1];
-                startHeight = (HeightLevel)data[2];
-                endHeight = (HeightLevel)data[3];
-                unitTypeY = (UnitTypeY)data[4];
-                unitTypeXZ = (UnitTypeXZ)data[5];
-                if (data[6] != null) belowsUnits = ((HashSet<GridUnit>)data[6]).ToArray();
+                isSpawn = (bool)data[0];
+                position = (Vector3)data[1];
+                rotation = (Quaternion)data[2];
+                startHeight = (HeightLevel)data[3];
+                endHeight = (HeightLevel)data[4];
+                unitTypeY = (UnitTypeY)data[5];
+                unitTypeXZ = (UnitTypeXZ)data[6];
+                if (data[7] != null) belowsUnits = ((HashSet<GridUnit>)data[7]).ToArray();
                 else belowsUnits = null;
 
-                if (data[7] != null) neighborUnits = ((HashSet<GridUnit>)data[7]).ToArray();
+                if (data[8] != null) neighborUnits = ((HashSet<GridUnit>)data[8]).ToArray();
                 else neighborUnits = null;
 
-                if (data[8] != null) upperUnits = ((HashSet<GridUnit>)data[8]).ToArray();
+                if (data[9] != null) upperUnits = ((HashSet<GridUnit>)data[9]).ToArray();
                 else upperUnits = null;
 
-                mainCell = (GameGridCell)data[9];
-                if (data[10] != null) cellInUnits = ((List<GameGridCell>)data[10]).ToArray();
+                mainCell = (GameGridCell)data[10];
+                if (data[11] != null) cellInUnits = ((List<GameGridCell>)data[11]).ToArray();
                 else cellInUnits = null;
-                islandID = (int)data[11];
+                islandID = (int)data[12];
+                lastPushDirection = (Direction)data[13];
             }
-            public void Restore()
+            public virtual void Restore()
             {
+                #region SPAWN
+                if (!isSpawn && main.isSpawn)
+                {
+                    main.Despawn();
+                    main.isSpawn = false;
+                    return;
+                }
+                
+                if(isSpawn && !main.isSpawn)
+                {
+                    SimplePool.SpawnDirectFromPool(main, position, Quaternion.identity);
+                    main.isSpawn = true;
+                }
+                #endregion
+                #region MAIN DATA
                 main.Tf.position = position;
                 main.skin.rotation = rotation;
                 main.startHeight = startHeight;
@@ -487,7 +535,8 @@ namespace _Game.GameGrid.Unit
                 {
                     main.cellInUnits.Add(cell);
                 }
-
+                main.lastPushedDirection = lastPushDirection;
+                #endregion
             }
         }
         #endregion

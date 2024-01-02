@@ -8,7 +8,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
     public class RollChumpState : IState<Chump>
     {
         private bool _isRoll;
-
+        Tween moveTween;
         public StateEnum Id => StateEnum.Roll;
 
         public void OnEnter(Chump t)
@@ -34,7 +34,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 t.OnEnterCells(t.MovingData.enterMainCell, t.MovingData.enterCells);
                 // Animation and complete
                 // TODO: rotate in place animation for skin
-                t.Tf.DOMove(t.EnterPosData.initialPos,
+                moveTween = t.Tf.DOMove(t.EnterPosData.initialPos,
                         t.EnterPosData.isFalling ? Constants.MOVING_TIME / 2 : Constants.MOVING_TIME)
                     .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                     {
@@ -56,7 +56,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
         public void OnExit(Chump t)
         {
-
+            moveTween.Kill();
         }
 
         private Vector3 GetRotateAxis(GridUnit t, Direction direction)

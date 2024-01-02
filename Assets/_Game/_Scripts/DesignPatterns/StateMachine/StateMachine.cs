@@ -12,6 +12,7 @@ namespace _Game.DesignPattern.StateMachine
         Dictionary<StateEnum, IState<T>> states;
         IState<T> currentState;
         public IState<T> CurrentState => currentState;
+        public StateEnum CurrentStateId => currentState != null ? currentState.Id : StateEnum.None;
         T main;
         public StateEnum OverrideState;
         public bool Debug = false;
@@ -41,6 +42,12 @@ namespace _Game.DesignPattern.StateMachine
         }
         public void ChangeState(StateEnum id)
         {
+            if(id == StateEnum.None)
+            {
+                currentState = null;
+                return;
+            }
+
             if (OverrideState != StateEnum.None && OverrideState != id) return;
             if (Debug)
             {

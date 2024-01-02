@@ -59,7 +59,7 @@ namespace _Game.UIs.Screen
             base.Setup();
             GameManager.Ins.ChangeState(GameState.WorldMap);
             // CurveWorld
-            FxManager.Ins.ChangePlanetCurvatureSize();
+            // FxManager.Ins.ChangePlanetCurvatureSize();
             // CameraManager.Ins.WorldMapCameraTarget.WorldLevelScreen = this;
             // CameraManager.Ins.ChangeWorldTargetPosition();
             // CameraManager.Ins.EnableWorldCamera(true);
@@ -68,7 +68,7 @@ namespace _Game.UIs.Screen
 
         public override void Close()
         {
-            FxManager.Ins.ChangePlanetCurvatureSize(0f);
+            // FxManager.Ins.ChangePlanetCurvatureSize(0f);
             // CameraManager.Ins.EnableWorldCamera(false);
             CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
             LevelManager.Ins.SetCameraToPlayerIsland();

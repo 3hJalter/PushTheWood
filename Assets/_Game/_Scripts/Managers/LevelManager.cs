@@ -9,7 +9,9 @@ using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Managers;
 using _Game.UIs.Screen;
 using _Game.Utilities;
+using _Game.Utilities.Grid;
 using UnityEngine;
+using static _Game.Utilities.Grid.Grid<_Game.GameGrid.GameGridCell, _Game.GameGrid.GameGridCellData>;
 
 namespace _Game.GameGrid
 {
@@ -21,8 +23,10 @@ namespace _Game.GameGrid
 
         [SerializeField] private int levelIndex;
         private Level _currentLevel;
+        [SerializeField] Material FontMaterial;
         public Level CurrentLevel => _currentLevel;
-        
+        public bool IsConstructingLevel;
+
         private int _tutorialIndex;
         private CareTaker savingState;
         public Player player;
@@ -34,6 +38,7 @@ namespace _Game.GameGrid
             // PlayerPrefs.SetInt(Constants.LEVEL_INDEX, 0);
             levelIndex = PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0);
             _tutorialIndex = PlayerPrefs.GetInt(Constants.TUTORIAL_INDEX, 0);
+            GridUtilities.OverlayMaterial = FontMaterial;
             OnInit();
         }
 
@@ -69,7 +74,7 @@ namespace _Game.GameGrid
         //     // Clear all other levels and remove it from preload list
         //     RemoveFarLevelFromPreLoad();
         // }
-        
+
         // We only store the previous level and the next level, other levels will be removed from preload list
         // public void RemoveFarLevelFromPreLoad()
         // {
@@ -80,25 +85,27 @@ namespace _Game.GameGrid
         //         _preLoadLevels.Remove(key);
         //     }
         // }
-        
+
         public void OnInit()
         {
             // CheckPreload();
+            IsConstructingLevel = true;
             _currentLevel = new Level(levelIndex);
             _currentLevel.OnInitLevelSurfaceAndUnit();
             _currentLevel.OnInitPlayerToLevel();
             // SetCameraToPlayer();
+            _currentLevel.GridMap.CompleteObjectInit();
+            IsConstructingLevel = false;
             savingState = new CareTaker(this);
-            savingState.SavingState();
             SetCameraToPlayerIsland();
             // CameraManager.Ins.ChangeCameraTargetPosition(_currentLevel.GetCenterPos());
         }
 
         public void SetCameraToPlayerIsland()
         {
-            CameraManager.Ins.ChangeCameraTargetPosition(CurrentLevel.GetIsland(player.islandID).GetCenterIslandPos());
+            CameraManager.Ins.ChangeCameraTargetPosition(CurrentLevel.GetIsland(player.islandID).centerIslandPos);
         }
-    
+
         public void OnWin()
         {
             // Show win screen
@@ -115,16 +122,18 @@ namespace _Game.GameGrid
         {
             if (levelIndex == index) return;
             levelIndex = index;
+            IsConstructingLevel = true;
             _currentLevel.OnDeSpawnLevel();
             OnInit();
         }
-        
+
         public void OnNextLevel()
         {
             // Load next level
+            IsConstructingLevel = true;
             _currentLevel.OnDeSpawnLevel();
-            OnInit();      
-                
+            OnInit();
+            
             // OnChangeTutorialIndex();
         }
 
@@ -141,18 +150,26 @@ namespace _Game.GameGrid
         public void OnRestart()
         {
             CurrentLevel.ResetAllIsland();
+            CurrentLevel.GridMap.Reset();
             player.OnDespawn();
             player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
             player.OnInit(CurrentLevel.firstPlayerInitCell);
-            savingState = new CareTaker(this);
             SetCameraToPlayerIsland();
             // FxManager.Ins.ResetTrackedTrampleObjectList();
+        }
+
+        public void ResetSavingState()
+        {
+            savingState.Reset();
         }
         public void OnUndo()
         {
             savingState.Undo();
         }
-        
+        public void OnSavingState(bool isMerge)
+        {
+            savingState.Save(isMerge);
+        }
         private void SetCameraToPlayer()
         {
             // CameraFollow.Ins.SetTarget(Player.Tf);`
@@ -162,41 +179,110 @@ namespace _Game.GameGrid
         public class CareTaker
         {
             LevelManager main;
-            Stack<List<IMemento>> historys = new Stack<List<IMemento>>();
+            Stack<IMemento> dataHistorys = new Stack<IMemento>();
+            Stack<List<IMemento>> objectHistorys = new Stack<List<IMemento>>();
             public CareTaker(LevelManager main)
             {
                 this.main = main;
-                main.player.OnSavingState += SavingState;
+                #region Init Spawn State
+                SavingObjects();
+                HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
+                foreach (GridUnit gridUnit in gridUnits)
+                {
+                    gridUnit.MainCell.ValueChange();
+                }
+                SavingState();
+                #endregion
             }
             public void Undo()
             {
-                if(historys.Count > 0)
+                if (main.CurrentLevel.GridMap.IsChange)
                 {
-                    List<IMemento> states = historys.Pop();
-                    foreach(IMemento state in states)
+                    SavingState(true);
+                    if(objectHistorys.Count < dataHistorys.Count)
+                        objectHistorys.Push(objectHistorys.Peek());
+                }
+                if (dataHistorys.Count > 0)
+                {
+                    dataHistorys.Pop().Restore();
+                    foreach (IMemento objectRevert in objectHistorys.Pop())
                     {
-                        state.Restore();
+                        objectRevert.Restore();
+                    }
+                    if (objectHistorys.Count == 0)
+                    {
+                        SavingObjects();
                     }
                     DevLog.Log(DevId.Hung, "UNDO_STATE - SUCCESS!!");
                 }
                 else
                 {
+
                     DevLog.Log(DevId.Hung, "UNDO_STATE - FAILURE!!");
                 }
             }
-            public void SavingState()
+
+            public void Save(bool isMerge = false)
             {
-                HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
-                List<IMemento> states = new List<IMemento>() { main._currentLevel.GridMap.Save(), main.player.Save() };
-                foreach(GridUnit gridUnit in gridUnits)
+                SavingState(isMerge);
+                SavingObjects(isMerge);
+            }
+            private void SavingState(bool isMerge = false)
+            {
+                if (!isMerge || dataHistorys.Count == 0)
                 {
-                    if(gridUnit is GridUnitDynamic)
-                        states.Add(gridUnit.Save());
+                    if (main.CurrentLevel.GridMap.IsChange)
+                    {
+                        IMemento states = main._currentLevel.GridMap.Save();
+                        dataHistorys.Push(states);
+                    }
                 }
-                historys.Push(states);
+                else
+                {
+                    GridMemento stateData = (GridMemento)dataHistorys.Peek();
+                    stateData.Merge((GridMemento)main._currentLevel.GridMap.Save());
+                }
+            }
+            private void SavingObjects(bool isMerge = false)
+            {
+                List<IMemento> states;
+                if (!isMerge || objectHistorys.Count == 0)
+                {
+                    states = new List<IMemento>() { main.player.Save() };
+                    HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
+                    foreach (GridUnit gridUnit in gridUnits)
+                    {
+                        if(gridUnit.IsSpawn)
+                            states.Add(gridUnit.Save());
+                    }
+                    objectHistorys.Push(states);
+                }
+                else
+                {
+                    states = objectHistorys.Peek();
+                    HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
+                    foreach (GridUnit gridUnit in gridUnits)
+                    {
+                        if(gridUnit.IsSpawn && !states.Any(x => x.Id == gridUnit.GetHashCode()))
+                            states.Add(gridUnit.Save());
+                    }
+                }
+            }
+            public void Reset()
+            {
+                dataHistorys.Clear();
+                objectHistorys.Clear();
+                #region Init Spawn State
+                SavingObjects();
+                HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
+                foreach (GridUnit gridUnit in gridUnits)
+                {
+                    gridUnit.MainCell.ValueChange();
+                }
+                SavingState();
+                #endregion
             }
         }
-
     }
 
 }

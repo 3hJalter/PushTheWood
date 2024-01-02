@@ -4,5 +4,9 @@ using UnityEngine;
 
 public interface IMemento
 {
+    public int Id
+    {
+        get;
+    }
     public void Restore();
 }

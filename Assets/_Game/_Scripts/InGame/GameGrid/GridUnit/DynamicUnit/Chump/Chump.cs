@@ -17,6 +17,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
 
         private StateMachine<Chump> stateMachine;
         public StateMachine<Chump> StateMachine => stateMachine;
+        public override StateEnum CurrentStateId
+        {
+            get => stateMachine != null ? stateMachine.CurrentStateId : StateEnum.Idle;
+            set
+            {
+                stateMachine.ChangeState(value);
+            }
+        }
 
         private bool _isAddState;
         // Hand
@@ -189,7 +197,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
 
         public TurnOverData TurnOverData => turnOverData ??= new TurnOverData(this);
         public MovingData MovingData => _movingData ??= new MovingData(this);
+        #endregion
 
+        #region SAVING DATA
         #endregion
     }
 }

@@ -15,6 +15,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         Vector3 axis;
         float lastAngle = 0;
         Direction blockDirection;
+        Tween moveTween;
 
         List<GridUnit> blockObjects = new();
 
@@ -33,7 +34,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     lastAngle = 0;
                     DEGREE = 90 - (blockObjects[0].Size.y + 1) * 15;
 
-                    DOVirtual.Float(0, DEGREE * 2, Constants.MOVING_TIME * 1f, i =>
+                    moveTween = DOVirtual.Float(0, DEGREE * 2, Constants.MOVING_TIME * 1f, i =>
                     {
                         i = i <= DEGREE ? i : 2 * DEGREE - i;
                         t.skin.RotateAround(t.anchor.Tf.position, axis, i - lastAngle);
@@ -53,13 +54,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     if (!IsSamePushDirection())
                     {                       
                         Vector3 originPos = t.Tf.position;
-                        t.Tf.DOMove(originPos + Constants.DirVector3F[blockDirection] * Constants.CELL_SIZE / 2f, Constants.MOVING_TIME * 0.5f).SetEase(Ease.InQuad)
+                        moveTween = t.Tf.DOMove(originPos + Constants.DirVector3F[blockDirection] * Constants.CELL_SIZE / 2f, Constants.MOVING_TIME * 0.5f).SetEase(Ease.InQuad)
                             .OnComplete(() => t.Tf.DOMove(originPos, Constants.MOVING_TIME * 0.5f).SetEase(Ease.OutQuad).OnComplete(ChangeToIdle));
                     }
                     else
                     {
                         Vector3 originPos = t.Tf.position;
-                        t.Tf.DOShakePosition(Constants.MOVING_TIME * 0.8f, 0.1f, 60, 0, false, true, ShakeRandomnessMode.Harmonic).SetEase(Ease.InQuad)
+                        moveTween = t.Tf.DOShakePosition(Constants.MOVING_TIME * 0.8f, 0.1f, 60, 0, false, true, ShakeRandomnessMode.Harmonic).SetEase(Ease.InQuad)
                             .OnComplete(ChangeToIdle);
                     }
                     if (blockObjects.Count > 0)
@@ -107,7 +108,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
         public void OnExit(Chump t)
         {
-            
+            moveTween.Kill();
         }
 
     }
