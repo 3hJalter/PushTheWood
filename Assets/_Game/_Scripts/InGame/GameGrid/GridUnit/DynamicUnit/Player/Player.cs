@@ -101,18 +101,21 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         public override void OnPush(Direction direction, ConditionData conditionData = null)
         {
-            OnSavingState?.Invoke(true);
-            mainCell.ValueChange();
-            for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
+            //NOTE: Saving when push dynamic object
+            if (MovingData.blockDynamicUnits.Count > 0)
             {
-                MovingData.blockDynamicUnits[i].MainCell.ValueChange();
+                OnSavingState?.Invoke(true);
+                mainCell.ValueChange();
+                for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
+                {
+                    MovingData.blockDynamicUnits[i].MainCell.ValueChange();
+                }
+                OnSavingState?.Invoke(false);
             }
-            OnSavingState?.Invoke(false);
 
             for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
             {
                 MovingData.blockDynamicUnits[i].OnBePushed(direction, this);
-                MovingData.blockDynamicUnits[i].MainCell.ValueChange();
             }
             for (int i = 0; i < MovingData.blockStaticUnits.Count; i++)
                 MovingData.blockStaticUnits[i].OnBePushed(direction, this);
