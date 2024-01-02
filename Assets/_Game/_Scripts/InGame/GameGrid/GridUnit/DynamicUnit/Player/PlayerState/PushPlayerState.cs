@@ -10,7 +10,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         float originAnimSpeed;
         float _counterTime;
         private bool _isExecuted;
-
         public StateEnum Id => StateEnum.Push;
 
         public void OnEnter(Player t)
@@ -39,7 +38,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 // Push the block Unit
                 t.OnPush(t.MovingData.inputDirection);
                 ParticlePool.Play(PoolController.Ins.Particles[VFX.DUST], t.transform.position + t.skin.transform.forward * Constants.CELL_SIZE * 0.5f);
-                DOVirtual.DelayedCall(Constants.PUSH_TIME, () => t.StateMachine.ChangeState(StateEnum.Idle));
+                DOVirtual.DelayedCall(Constants.PUSH_TIME, OnCompletePush);
+                void OnCompletePush()
+                {
+                    t.StateMachine.ChangeState(StateEnum.Idle);
+                }
             }
         }
 
