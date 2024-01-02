@@ -122,17 +122,6 @@ namespace _Game.DesignPattern
 
             return PoolInstanceID[obj.GetInstanceID()].Spawn();
         }
-        public static GameUnit SpawnDirectFromPool(GameUnit obj, Vector3 pos, Quaternion rot)
-        {
-            if (!Pools.ContainsKey(obj.GetInstanceID()))
-            {
-                Transform newRoot = new GameObject(obj.name).transform;
-                newRoot.SetParent(Root);
-                Preload(obj, 1, newRoot, true);
-            }
-            return Pools[obj.GetInstanceID()].Spawn(pos, rot);
-        }
-
         public static void Despawn(this GameUnit obj)
         {
             if (obj.gameObject.activeSelf)
