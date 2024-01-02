@@ -69,7 +69,8 @@ namespace _Game.GameGrid.Unit
         #region Saving Spawn State
         // Is GridUnit is spawn or not - save state of unit.
         protected bool isSpawn = false;
-        protected IMemento overrideSave = null;
+        protected IMemento overrideSpawnSave = null;
+        protected IMemento overrideDespawnSave = null;
         public bool IsSpawn => isSpawn;
         #endregion
 
@@ -120,9 +121,9 @@ namespace _Game.GameGrid.Unit
         {
             //Saving state before spawn, when map has already init
             if (!LevelManager.Ins.IsConstructingLevel)
-                overrideSave = Save();
+                overrideSpawnSave = Save();
             else
-                overrideSave = null;
+                overrideSpawnSave = null;
             if (isUseInitData) GetInitData();
             islandID = mainCellIn.IslandID;
             SetHeight(startHeightIn);
@@ -163,9 +164,9 @@ namespace _Game.GameGrid.Unit
             Tf.DOKill(true);
             //Saving state before despawn
             if (!LevelManager.Ins.IsConstructingLevel)
-                overrideSave = Save();
+                overrideDespawnSave = Save();
             else
-                overrideSave = null;
+                overrideDespawnSave = null;
             OnOutCells();
             this.Despawn();
             isSpawn = false;
@@ -422,10 +423,15 @@ namespace _Game.GameGrid.Unit
         public virtual IMemento Save()
         {
             IMemento save;
-            if(overrideSave != null)
+            if(!isSpawn && overrideSpawnSave != null)
             {
-                save = overrideSave;
-                overrideSave = null;
+                save = overrideSpawnSave;
+                overrideSpawnSave = null;
+            }
+            else if(isSpawn && overrideDespawnSave != null)
+            {
+                save= overrideDespawnSave;
+                overrideDespawnSave = null;
             }
             else
             {

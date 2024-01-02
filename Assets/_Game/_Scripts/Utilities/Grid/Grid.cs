@@ -59,8 +59,8 @@ namespace _Game.Utilities.Grid
                     gridArray[x, y].OnValueChange += OnGridCellValueChange;
                 }
             //NOTE: Debug Here
-            //debug = new DebugGrid();
-            //debug.DrawGrid(this, true);
+            debug = new DebugGrid();
+            debug.DrawGrid(this, true);
         }
 
         public float CellSize { get; }
@@ -134,11 +134,11 @@ namespace _Game.Utilities.Grid
         protected virtual void OnGridCellValueChange(int x, int y, bool isRevert)
         {
             //NOTE: Debug
-            //TimerManager.Inst.WaitForFrame(2, () => DebugData(x, y));
-            //void DebugData(int x, int y)
-            //{
-            //    debugTextArray[x, y].text = gridArray[x, y].ToString();
-            //}
+            TimerManager.Inst.WaitForFrame(2, () => DebugData(x, y));
+            void DebugData(int x, int y)
+            {
+                debugTextArray[x, y].text = gridArray[x, y].ToString();
+            }
             if (isRevert) return;
             isChange = true;
             if (!cellPos.Any(pos => pos.x == x && pos.y == y))

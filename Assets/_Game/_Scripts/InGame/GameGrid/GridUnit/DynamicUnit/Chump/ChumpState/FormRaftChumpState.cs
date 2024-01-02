@@ -123,7 +123,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 spawnUnits.Add(chumpUnit);
             }
             foreach (GridUnit unit in t.belowUnits.ToList().Where(unit => !spawnUnits.Contains(unit))) unit.OnDespawn();
-            t.StateMachine.ChangeState(StateEnum.Idle);
             t.OnDespawn();
             LevelManager.Ins.SaveGameState(true);
         }

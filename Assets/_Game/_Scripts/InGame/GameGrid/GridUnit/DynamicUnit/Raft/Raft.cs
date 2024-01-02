@@ -23,7 +23,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
         public StateMachine<Raft> StateMachine => stateMachine;
         public override StateEnum CurrentStateId
         {
-            get => stateMachine != null ? stateMachine.CurrentStateId : StateEnum.None;
+            get => StateEnum.Emerge;
             set
             {
                 stateMachine.ChangeState(value);
