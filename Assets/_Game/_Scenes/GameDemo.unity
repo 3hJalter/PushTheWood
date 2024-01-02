@@ -2422,7 +2422,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   highlightButton: 1
-  testing: 0
+  testing: 1
   dpadButtons:
   - {fileID: 2049581924}
   - {fileID: 1448246167}

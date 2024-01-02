@@ -98,7 +98,6 @@ namespace _Game.GameGrid
             IsConstructingLevel = false;
             savingState = new CareTaker(this);
             SetCameraToPlayerIsland();
-            player.OnSavingState = OnSavingState;
             // CameraManager.Ins.ChangeCameraTargetPosition(_currentLevel.GetCenterPos());
         }
 

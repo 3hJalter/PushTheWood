@@ -18,8 +18,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
     public class Player : GridUnitDynamic, IJumpTreeRootUnit
     {
         [SerializeField] private Animator animator;
-
-        public Action<bool> OnSavingState;
         public bool isRideVehicle;
         public readonly Queue<Direction> InputCache = new();
 
@@ -104,13 +102,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             //NOTE: Saving when push dynamic object
             if (MovingData.blockDynamicUnits.Count > 0)
             {
-                OnSavingState?.Invoke(true);
+                LevelManager.Ins.OnSavingState(true);
                 mainCell.ValueChange();
                 for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
                 {
                     MovingData.blockDynamicUnits[i].MainCell.ValueChange();
                 }
-                OnSavingState?.Invoke(false);
+                LevelManager.Ins.OnSavingState(false);
             }
 
             for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
