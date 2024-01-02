@@ -56,7 +56,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             }
 
             _isWaitAFrame = true;
-            stateMachine.Debug = true;
+            //stateMachine.Debug = true;
             stateMachine?.UpdateState();
         }
 
@@ -101,7 +101,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public override void OnPush(Direction direction, ConditionData conditionData = null)
         {
             //NOTE: Saving when push dynamic object
-            if (MovingData.blockDynamicUnits.Count > 0)
+            if (MovingData.blockDynamicUnits.Count > 0 && LevelManager.Ins.CurrentLevel.GridMap.IsChange)
             {
                 LevelManager.Ins.SaveGameState(true);
                 mainCell.ValueChange();

@@ -80,8 +80,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                             }
                             break;
                         case Rock rock:
-                            if (t.InputDetection.InputAction == InputAction.ButtonDown)
-                                t.StateMachine.ChangeState(StateEnum.Push);
+                            switch (t.InputDetection.InputAction)
+                            {
+                                case InputAction.ButtonDown:
+                                    t.StateMachine.ChangeState(StateEnum.Push);
+                                    break;
+                            }
                             break;
                     }
                 }

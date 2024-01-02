@@ -16,7 +16,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         public void OnEnter(Player t)
         {
             originAnimSpeed = t.AnimSpeed;
-            t.ChangeAnim(Constants.PUSH_ANIM);
+            t.ChangeAnim(Constants.PUSH_ANIM, true);
             t.SetAnimSpeed(originAnimSpeed * Constants.PUSH_ANIM_TIME / Constants.PUSH_TIME);
             _counterTime = Constants.PUSH_TIME;
             _isExecuted = false;
