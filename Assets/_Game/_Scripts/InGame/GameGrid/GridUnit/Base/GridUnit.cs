@@ -536,6 +536,7 @@ namespace _Game.GameGrid.Unit
                     main.cellInUnits.Add(cell);
                 }
                 main.lastPushedDirection = lastPushDirection;
+                main.islandID = islandID;
                 #endregion
             }
         }

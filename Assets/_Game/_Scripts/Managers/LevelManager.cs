@@ -6,6 +6,7 @@ using _Game.Camera;
 using _Game.DesignPattern;
 using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
+using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
 using _Game.UIs.Screen;
 using _Game.Utilities;
@@ -158,15 +159,16 @@ namespace _Game.GameGrid
             // FxManager.Ins.ResetTrackedTrampleObjectList();
         }
 
-        public void ResetSavingState()
+        public void ResetGameState()
         {
             savingState.Reset();
         }
         public void OnUndo()
         {
             savingState.Undo();
+            SetCameraToPlayerIsland();
         }
-        public void OnSavingState(bool isMerge)
+        public void SaveGameState(bool isMerge)
         {
             savingState.Save(isMerge);
         }

@@ -102,13 +102,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             //NOTE: Saving when push dynamic object
             if (MovingData.blockDynamicUnits.Count > 0)
             {
-                LevelManager.Ins.OnSavingState(true);
+                LevelManager.Ins.SaveGameState(true);
                 mainCell.ValueChange();
                 for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
                 {
                     MovingData.blockDynamicUnits[i].MainCell.ValueChange();
                 }
-                LevelManager.Ins.OnSavingState(false);
+                LevelManager.Ins.SaveGameState(false);
             }
 
             for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)

@@ -143,7 +143,7 @@ namespace _Game._Scripts.InGame
             LevelManager.Ins.player.OnInit(_islandDic[LevelManager.Ins.player.islandID].FirstPlayerStepCell);
             GridMap.CompleteObjectInit();
             LevelManager.Ins.IsConstructingLevel = false;
-            LevelManager.Ins.ResetSavingState();
+            LevelManager.Ins.ResetGameState();
         }
 
         public void ResetAllIsland()
