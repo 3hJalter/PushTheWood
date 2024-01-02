@@ -22,11 +22,6 @@ namespace _Game.Utilities.Grid
         protected readonly List<Vector2Int> cellPos = new List<Vector2Int>();
         //Grid is change or not when compare to last save state
         private bool isChange = false;
-        public bool IsObjectInit
-        {
-            get;
-            protected set;
-        }
         public bool IsChange => isChange;
 
         public Grid(int width, int height, float cellSize, Vector3 originPosition = default,
@@ -37,7 +32,6 @@ namespace _Game.Utilities.Grid
             CellSize = cellSize;
             this.originPosition = originPosition;
             GridPlaneType = gridPlaneType;
-            IsObjectInit = true;
 
             gridArray = new T[width, height];
             debugTextArray = new TextMeshPro[width, height];
@@ -146,7 +140,7 @@ namespace _Game.Utilities.Grid
             }
             if (isRevert) return;
             isChange = true;
-            if(!cellPos.Any(pos => pos.x == x && pos.y == y))
+            if (!cellPos.Any(pos => pos.x == x && pos.y == y))
             {
                 cellMementos.Add(gridArray[x, y].Save());
             }
@@ -170,7 +164,6 @@ namespace _Game.Utilities.Grid
         }
         public void Reset()
         {
-            IsObjectInit = true;
             isChange = false;
             cellMementos.Clear();
             cellPos.Clear();
@@ -227,15 +220,12 @@ namespace _Game.Utilities.Grid
         #region SAVING DATA
         public void CompleteObjectInit()
         {
-            if (IsObjectInit)
-            {
-                cellMementos.Clear();
-                IsObjectInit = false;
-            }
+            cellMementos.Clear();
+            isChange = false;
         }
         public IMemento Save()
         {
-            GridMemento save;          
+            GridMemento save;
             save = new GridMemento(this, cellMementos);
             cellMementos.Clear();
             cellPos.Clear();
@@ -268,9 +258,9 @@ namespace _Game.Utilities.Grid
 
             public void Merge(GridMemento memento)
             {
-                foreach(CellMemento cellMemento in memento.cellMememtos)
+                foreach (CellMemento cellMemento in memento.cellMememtos)
                 {
-                    if(!cellMememtos.Any(x => x.Id == cellMemento.Id))
+                    if (!cellMememtos.Any(x => x.Id == cellMemento.Id))
                     {
                         cellMememtos.Add(cellMemento);
                     }

@@ -119,7 +119,7 @@ namespace _Game.GameGrid.Unit
             bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRos = false)
         {
             //Saving state before spawn, when map has already init
-            if (!LevelManager.Ins.CurrentLevel.GridMap.IsObjectInit)
+            if (!LevelManager.Ins.IsConstructingLevel)
                 overrideSave = Save();
             else
                 overrideSave = null;
@@ -162,9 +162,10 @@ namespace _Game.GameGrid.Unit
         {
             Tf.DOKill(true);
             //Saving state before despawn
-            //DEV:Can making IsObjectInit to global variable in LevelManager
-            if (!LevelManager.Ins.CurrentLevel.GridMap.IsObjectInit)
+            if (!LevelManager.Ins.IsConstructingLevel)
                 overrideSave = Save();
+            else
+                overrideSave = null;
             OnOutCells();
             this.Despawn();
             isSpawn = false;

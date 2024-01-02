@@ -26,6 +26,7 @@ namespace _Game.GameGrid
         private Level _currentLevel;
         [SerializeField] Material FontMaterial;
         public Level CurrentLevel => _currentLevel;
+        public bool IsConstructingLevel;
 
         private int _tutorialIndex;
         private CareTaker savingState;
@@ -89,13 +90,16 @@ namespace _Game.GameGrid
         public void OnInit()
         {
             // CheckPreload();
+            IsConstructingLevel = true;
             _currentLevel = new Level(levelIndex);
             _currentLevel.OnInitLevelSurfaceAndUnit();
             _currentLevel.OnInitPlayerToLevel();
             // SetCameraToPlayer();
             _currentLevel.GridMap.CompleteObjectInit();
+            IsConstructingLevel = false;
             savingState = new CareTaker(this);
             SetCameraToPlayerIsland();
+            player.OnSavingState = OnSavingState;
             // CameraManager.Ins.ChangeCameraTargetPosition(_currentLevel.GetCenterPos());
         }
 
@@ -120,14 +124,15 @@ namespace _Game.GameGrid
         {
             if (levelIndex == index) return;
             levelIndex = index;
+            IsConstructingLevel = true;
             _currentLevel.OnDeSpawnLevel();
-            savingState.Reset();
             OnInit();
         }
 
         public void OnNextLevel()
         {
             // Load next level
+            IsConstructingLevel = true;
             _currentLevel.OnDeSpawnLevel();
             OnInit();
             
@@ -155,7 +160,7 @@ namespace _Game.GameGrid
             // FxManager.Ins.ResetTrackedTrampleObjectList();
         }
 
-        public void ResetSaving()
+        public void ResetSavingState()
         {
             savingState.Reset();
         }
@@ -163,7 +168,10 @@ namespace _Game.GameGrid
         {
             savingState.Undo();
         }
-
+        public void OnSavingState(bool isMerge)
+        {
+            savingState.Save(isMerge);
+        }
         private void SetCameraToPlayer()
         {
             // CameraFollow.Ins.SetTarget(Player.Tf);`
@@ -178,7 +186,6 @@ namespace _Game.GameGrid
             public CareTaker(LevelManager main)
             {
                 this.main = main;
-                main.player.OnSavingState += SavingData;
                 #region Init Spawn State
                 SavingObjects();
                 HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
@@ -217,7 +224,7 @@ namespace _Game.GameGrid
                 }
             }
 
-            private void SavingData(bool isMerge = false)
+            public void Save(bool isMerge = false)
             {
                 SavingState(isMerge);
                 SavingObjects(isMerge);

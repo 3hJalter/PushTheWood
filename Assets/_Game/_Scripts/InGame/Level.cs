@@ -136,12 +136,14 @@ namespace _Game._Scripts.InGame
         {
             if (!_islandDic.ContainsKey(LevelManager.Ins.player.islandID)) return;
             GridMap.Reset();
+            LevelManager.Ins.IsConstructingLevel = true;
             _islandDic[LevelManager.Ins.player.islandID].ResetIsland();
             LevelManager.Ins.player.OnDespawn();
             LevelManager.Ins.player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
             LevelManager.Ins.player.OnInit(_islandDic[LevelManager.Ins.player.islandID].FirstPlayerStepCell);
             GridMap.CompleteObjectInit();
-            LevelManager.Ins.ResetSaving();
+            LevelManager.Ins.IsConstructingLevel = false;
+            LevelManager.Ins.ResetSavingState();
         }
 
         public void ResetAllIsland()
