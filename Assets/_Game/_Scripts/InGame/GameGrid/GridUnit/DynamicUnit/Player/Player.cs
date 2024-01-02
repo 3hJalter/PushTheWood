@@ -56,6 +56,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             }
 
             _isWaitAFrame = true;
+            stateMachine.Debug = true;
             stateMachine?.UpdateState();
         }
 

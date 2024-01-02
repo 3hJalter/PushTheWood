@@ -48,7 +48,7 @@ public static class Constants
     public const string HAPPY_ANIM = "happy";
     public const string OPEN_ANIM = "open";
     public const float CUT_TREE_ANIM_TIME = 0.5f;
-    public const float PUSH_ANIM_TIME = 0.3f;
+    public const float PUSH_ANIM_TIME = 0.4f;
     public const int WAIT_CUT_TREE_FRAMES = 15;
 
     /// <summary>
@@ -69,7 +69,7 @@ public static class Constants
     public const float FALLING_TIME = 0.2f;
     public const float POS_Y_BOTTOM = -1f;
     public const float CUT_TREE_TIME = 0.3f;
-    public const float PUSH_TIME = 0.2f;
+    public const float PUSH_TIME = 0.3f;
 
     public const HeightLevel MIN_HEIGHT = HeightLevel.Zero;
     public const HeightLevel MAX_HEIGHT = HeightLevel.FourPointFive;

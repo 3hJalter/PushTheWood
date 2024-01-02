@@ -412,7 +412,12 @@ namespace _Game.GameGrid.Unit
             for (int i = cellInUnits.Count - 1; i >= 0; i--)
                 cellInUnits[i].RemoveGridUnit(this);
         }
-
+        public void ResetData()
+        {
+            overrideSpawnSave = null;
+            overrideDespawnSave = null;
+            lastPushedDirection = Direction.None;
+        }
         private void AddCell(GameGridCell cell)
         {
             cellInUnits.Add(cell);

@@ -19,6 +19,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             t.ChangeAnim(Constants.PUSH_ANIM);
             t.SetAnimSpeed(originAnimSpeed * Constants.PUSH_ANIM_TIME / Constants.PUSH_TIME);
             _counterTime = Constants.PUSH_TIME;
+            _isExecuted = false;
         }
 
         public void OnExecute(Player t)
@@ -44,7 +45,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 
         public void OnExit(Player t)
         {
-            _isExecuted = false;
             t.SetAnimSpeed(originAnimSpeed);
         }
     }
