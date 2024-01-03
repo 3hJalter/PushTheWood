@@ -7,6 +7,7 @@ using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState;
 using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
+using _Game.Utilities;
 using DG.Tweening;
 using GameGridEnum;
 using HControls;
@@ -17,13 +18,20 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
     public class Player : GridUnitDynamic, IJumpTreeRootUnit
     {
         [SerializeField] private Animator animator;
-
-        public Action OnSavingState;
         public bool isRideVehicle;
         public readonly Queue<Direction> InputCache = new();
 
         private StateMachine<Player> stateMachine;
         public StateMachine<Player> StateMachine => stateMachine;
+        public override StateEnum CurrentStateId
+        {
+            get => StateEnum.Idle;
+            set
+            {
+                stateMachine.ChangeState(value);
+            }
+        }
+
         private string _currentAnim = Constants.INIT_ANIM;
         private bool _isAddState;
 
@@ -48,6 +56,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             }
 
             _isWaitAFrame = true;
+            //stateMachine.Debug = true;
             stateMachine?.UpdateState();
         }
 
@@ -91,9 +100,23 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         public override void OnPush(Direction direction, ConditionData conditionData = null)
         {
+            //NOTE: Saving when push dynamic object that make grid change
+            if (MovingData.blockDynamicUnits.Count > 0 && LevelManager.Ins.CurrentLevel.GridMap.IsChange)
+            {
+                LevelManager.Ins.SaveGameState(true);
+                mainCell.ValueChange();
+                for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
+                {
+                    MovingData.blockDynamicUnits[i].MainCell.ValueChange();
+                }
+                LevelManager.Ins.SaveGameState(false);
+            }
+
             for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
+            {
                 MovingData.blockDynamicUnits[i].OnBePushed(direction, this);
-            for(int i = 0; i < MovingData.blockStaticUnits.Count; i++)
+            }
+            for (int i = 0; i < MovingData.blockStaticUnits.Count; i++)
                 MovingData.blockStaticUnits[i].OnBePushed(direction, this);
         }
 
@@ -133,10 +156,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             return _vehicle is not null;
         }
 
-        public void SetIslandId(GameGridCell nextMainCell)
+        public void SetIslandId(GameGridCell nextMainCell, out bool isChangeIsland)
         {
+            isChangeIsland = false;
             if (islandID == nextMainCell.IslandID || nextMainCell.IslandID == -1) return;
             islandID = nextMainCell.IslandID;
+            isChangeIsland = true;
             LevelManager.Ins.CurrentLevel.SetFirstPlayerStepOnIsland(nextMainCell);
         }
 
@@ -178,6 +203,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public MovingData MovingData => _movingData ??= new MovingData(this);
         public CutTreeData CutTreeData => _cutTreeData ??= new CutTreeData(this);
 
-        #endregion
+        #endregion     
     }
 }

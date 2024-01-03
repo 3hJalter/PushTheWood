@@ -48,7 +48,8 @@ public static class Constants
     public const string HAPPY_ANIM = "happy";
     public const string OPEN_ANIM = "open";
     public const float CUT_TREE_ANIM_TIME = 0.5f;
-    public const float PUSH_ANIM_TIME = 0.3f;
+    public const float PUSH_ANIM_TIME = 0.4f;
+    public const int WAIT_CUT_TREE_FRAMES = 15;
 
     /// <summary>
     ///     UI Animation Trigger
@@ -72,7 +73,9 @@ public static class Constants
 
     public const HeightLevel MIN_HEIGHT = HeightLevel.Zero;
     public const HeightLevel MAX_HEIGHT = HeightLevel.FourPointFive;
-
+    
+    public const int MAX_SMALL_ISLAND_SIZE = 5;
+    
     // OLD 
     public const float TREE_HEIGHT = 1f;
     public const float MOVING_TIME2 = 0.25f;

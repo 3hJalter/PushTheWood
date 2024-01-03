@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using _Game.GameGrid.Unit;
+using _Game.Utilities;
 using _Game.Utilities.Grid;
 using GameGridEnum;
 using UnityEngine;
@@ -206,7 +207,16 @@ namespace _Game.GameGrid
 
             return gameGridCellList;
         }
-
+        public override string ToString()
+        {
+            string content = "  --- \n";
+            for(int i = data.gridUnits.Length - 1; i >= 0 ; i--)
+            {
+                if (data.gridUnits[i] == null) continue;
+                content += $"{i}-{data.gridUnits[i].gameObject.name}\n";
+            }
+            return content;
+        }
         #region SAVING DATA
         public override IMemento Save()
         {
@@ -217,11 +227,11 @@ namespace _Game.GameGrid
         {
             GameGridCell main;
             GridUnit[] gridUnits;
+            public int Id => main.GetHashCode();
             public CellMemento(GameGridCell main, GridUnit[] unitData)
             {
                 this.main = main;
-                gridUnits = new GridUnit[unitData.Length];
-                unitData.CopyTo(gridUnits, 0);              
+                gridUnits = unitData.ToArray();
             }
 
             public void Restore()
@@ -230,6 +240,7 @@ namespace _Game.GameGrid
                 {
                     main.data.gridUnits[i] = gridUnits[i];
                 }
+                main.ValueChange(true);
             }
         }
         #endregion

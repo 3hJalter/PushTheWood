@@ -1,16 +1,28 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using _Game.Utilities.Timer;
 using MapEnum;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using static _Game.GameGrid.GameGridCell;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace _Game.Utilities.Grid
 {
     public class Grid<T, TD> : IOriginator where T : GridCell<TD>
     {
-        private readonly TextMesh[,] debugTextArray;
-        private readonly T[,] gridArray;
+        protected readonly TextMeshPro[,] debugTextArray;
+        protected readonly T[,] gridArray;
         private readonly Vector3 originPosition;
+        private DebugGrid debug;
+
         protected readonly List<IMemento> cellMementos = new List<IMemento>();
+        protected readonly List<Vector2Int> cellPos = new List<Vector2Int>();
+        //Grid is change or not when compare to last save state
+        private bool isChange = false;
+        public bool IsChange => isChange;
 
         public Grid(int width, int height, float cellSize, Vector3 originPosition = default,
             Func<GridCell<TD>> constructorCell = null, GridPlane gridPlaneType = GridPlane.XY)
@@ -22,32 +34,33 @@ namespace _Game.Utilities.Grid
             GridPlaneType = gridPlaneType;
 
             gridArray = new T[width, height];
-            debugTextArray = new TextMesh[width, height];
+            debugTextArray = new TextMeshPro[width, height];
 
             for (int x = 0; x < gridArray.GetLength(0); x++)
-            for (int y = 0; y < gridArray.GetLength(1); y++)
-            {
-                if (constructorCell != null) gridArray[x, y] = (T)constructorCell();
-                gridArray[x, y].SetCellPosition(x, y);
-                gridArray[x, y].Size = cellSize;
-                gridArray[x, y].GridPlaneType = gridPlaneType;
-                switch (gridPlaneType)
+                for (int y = 0; y < gridArray.GetLength(1); y++)
                 {
-                    case GridPlane.XY:
-                        gridArray[x, y].UpdateWorldPosition(originPosition.x, originPosition.y);
-                        break;
-                    case GridPlane.XZ:
-                        gridArray[x, y].UpdateWorldPosition(originPosition.x, originPosition.z);
-                        break;
-                    case GridPlane.YZ:
-                        gridArray[x, y].UpdateWorldPosition(originPosition.y, originPosition.z);
-                        break;
+                    if (constructorCell != null) gridArray[x, y] = (T)constructorCell();
+                    gridArray[x, y].SetCellPosition(x, y);
+                    gridArray[x, y].Size = cellSize;
+                    gridArray[x, y].GridPlaneType = gridPlaneType;
+                    switch (gridPlaneType)
+                    {
+                        case GridPlane.XY:
+                            gridArray[x, y].UpdateWorldPosition(originPosition.x, originPosition.y);
+                            break;
+                        case GridPlane.XZ:
+                            gridArray[x, y].UpdateWorldPosition(originPosition.x, originPosition.z);
+                            break;
+                        case GridPlane.YZ:
+                            gridArray[x, y].UpdateWorldPosition(originPosition.y, originPosition.z);
+                            break;
+                    }
+
+                    gridArray[x, y].OnValueChange += OnGridCellValueChange;
                 }
-
-                gridArray[x, y].OnValueChange += OnGridCellValueChange;
-            }
-
-
+            //NOTE: Debug Here
+            //debug = new DebugGrid();
+            //debug.DrawGrid(this, true);
         }
 
         public float CellSize { get; }
@@ -118,10 +131,22 @@ namespace _Game.Utilities.Grid
             return default;
         }
 
-        protected virtual void OnGridCellValueChange(int x, int y)
+        protected virtual void OnGridCellValueChange(int x, int y, bool isRevert)
         {
-            //debugTextArray[x, y].text = gridArray[x, y].ToString();
-            cellMementos.Add(gridArray[x, y].Save());
+            //NOTE: Debug
+            //TimerManager.Inst.WaitForFrame(2, () => DebugData(x, y));
+            //void DebugData(int x, int y)
+            //{
+            //    debugTextArray[x, y].text = gridArray[x, y].ToString();
+            //}
+            if (isRevert) return;
+            isChange = true;
+            if (!cellPos.Any(pos => pos.x == x && pos.y == y))
+            {
+                cellMementos.Add(gridArray[x, y].Save());
+            }
+            //NOTE: TEST
+            cellPos.Add(new Vector2Int(x, y));
         }
 
         private Vector3 GetUnitVector3(float val1, float val2)
@@ -138,8 +163,13 @@ namespace _Game.Utilities.Grid
 
             return default;
         }
+        public void Reset()
+        {
+            isChange = false;
+            cellMementos.Clear();
+            cellPos.Clear();
+        }
 
-        
 
 
         #region VISIT CLASS
@@ -158,75 +188,83 @@ namespace _Game.Utilities.Grid
             public void DrawGrid(Grid<T, TD> grid, bool isPositionShow = false)
             {
                 for (int x = 0; x < grid.gridArray.GetLength(0); x++)
-                for (int y = 0; y < grid.gridArray.GetLength(1); y++)
-                {
-                    if (isPositionShow)
+                    for (int y = 0; y < grid.gridArray.GetLength(1); y++)
                     {
-                        grid.debugTextArray[x, y] = GridUtilities.CreateWorldText(
-                            grid.gridArray[x, y].GetCellPosition().ToString(), null
-                            , grid.GetWorldPosition(x, y) + new Vector3(grid.CellSize / 2, grid.CellSize / 2), 5,
-                            Color.white, TextAnchor.MiddleCenter);
-                        // Rotate text base on the gridPlane
-                        grid.debugTextArray[x, y].transform.rotation = grid.GridPlaneType switch
+                        if (isPositionShow)
                         {
-                            GridPlane.XY => Quaternion.Euler(0, 90, 0),
-                            GridPlane.XZ => Quaternion.Euler(90, 0, 0),
-                            GridPlane.YZ => Quaternion.Euler(0, 0, 90),
-                            _ => grid.debugTextArray[x, y].transform.rotation
-                        };
+                            string content = grid.gridArray[x, y].GetCellPosition().ToString();
+                            Vector3 localPosition = grid.GetWorldPosition(x, y) + new Vector3(grid.CellSize / 5, grid.CellSize / 2 + 0.1f, grid.CellSize * 0.75f);
+                            grid.debugTextArray[x, y] = GridUtilities.CreateWorldText(content, null, localPosition, 2, Color.white, TextAnchor.MiddleCenter);
+                            // Rotate text base on the gridPlane
+                            grid.debugTextArray[x, y].transform.rotation = grid.GridPlaneType switch
+                            {
+                                GridPlane.XY => Quaternion.Euler(0, 90, 0),
+                                GridPlane.XZ => Quaternion.Euler(90, 0, 0),
+                                GridPlane.YZ => Quaternion.Euler(0, 0, 90),
+                                _ => grid.debugTextArray[x, y].transform.rotation
+                            };
 
+                        }
+
+                        Debug.DrawLine(grid.GetWorldPosition(x, y), grid.GetWorldPosition(x, y + 1), Color.white, 100f,
+                            true);
+                        Debug.DrawLine(grid.GetWorldPosition(x, y), grid.GetWorldPosition(x + 1, y), Color.white, 100f,
+                            true);
                     }
-
-                    Debug.DrawLine(grid.GetWorldPosition(x, y), grid.GetWorldPosition(x, y + 1), Color.white, 100f,
-                        true);
-                    Debug.DrawLine(grid.GetWorldPosition(x, y), grid.GetWorldPosition(x + 1, y), Color.white, 100f,
-                        true);
-                }
 
                 Debug.DrawLine(grid.GetWorldPosition(0, grid.Height), grid.GetWorldPosition(grid.Width, grid.Height),
                     Color.white, 100f);
                 Debug.DrawLine(grid.GetWorldPosition(grid.Width, 0), grid.GetWorldPosition(grid.Width, grid.Height),
                     Color.white, 100f);
             }
-
-            private string GetGridCellDataString(Grid<T, TD> grid, int x, int y)
-            {
-                if (grid.gridArray[x, y].Data != null)
-                    return grid.gridArray[x, y].Data.ToString();
-                return "";
-            }
-
-            public void DrawPath(List<T> path)
-            {
-                if (path != null)
-                    for (int i = 0; i < path.Count - 1; i++)
-                        Debug.DrawLine(new Vector3(path[i].WorldX, path[i].WorldY),
-                            new Vector3(path[i + 1].WorldX, path[i + 1].WorldY), Color.cyan, 5f);
-            }
         }
         #region SAVING DATA
+        public void CompleteObjectInit()
+        {
+            cellMementos.Clear();
+            isChange = false;
+        }
         public IMemento Save()
         {
-            GridMemento save = new GridMemento(this, cellMementos.Count > 0 ? cellMementos : null);
+            GridMemento save;
+            save = new GridMemento(this, cellMementos);
             cellMementos.Clear();
+            cellPos.Clear();
+            isChange = false;
             return save;
         }
         public struct GridMemento : IMemento
         {
             Grid<T, TD> main;
-            IMemento[] cellMememtos;
+            List<CellMemento> cellMememtos;
+            public int Id => 0;
             public GridMemento(Grid<T, TD> main, params object[] data)
             {
                 this.main = main;
-                if (data[0] != null) cellMememtos = ((List<IMemento>)data[0]).ToArray();
-                else cellMememtos = null;
+                cellMememtos = new List<CellMemento>();
+
+                foreach (IMemento memento in (List<IMemento>)data[0])
+                {
+                    cellMememtos.Add((CellMemento)memento);
+                }
 
             }
             public void Restore()
             {
-                foreach(IMemento memento in cellMememtos)
+                foreach (IMemento memento in cellMememtos)
                 {
                     memento.Restore();
+                }
+            }
+
+            public void Merge(GridMemento memento)
+            {
+                foreach (CellMemento cellMemento in memento.cellMememtos)
+                {
+                    if (!cellMememtos.Any(x => x.Id == cellMemento.Id))
+                    {
+                        cellMememtos.Add(cellMemento);
+                    }
                 }
             }
         }

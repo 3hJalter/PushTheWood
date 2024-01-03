@@ -15,6 +15,7 @@ Material:
   - CURVEDWORLD_NORMAL_TRANSFORMATION_ON
   - _CAUSTICS
   - _ENVIRONMENTREFLECTIONS_OFF
+  - _FLAT_SHADING
   - _REFRACTION
   - _SMOOTH_INTERSECTION
   - _SPECULARHIGHLIGHTS_OFF
@@ -209,7 +210,7 @@ Material:
     - _UnderwaterSurfaceSmoothness: 0.8
     - _WaveCount: 3
     - _WaveDistance: 0.763
-    - _WaveHeight: 0.25
+    - _WaveHeight: 0.5
     - _WaveNormalStr: 0.291
     - _WaveSpeed: 1
     - _WaveSteepness: 0
@@ -237,7 +238,7 @@ Material:
     - _VertexColorMask: {r: 0, g: 0, b: 0, a: 0}
     - _WaterColor: {r: 0.21176466, g: 0.6745098, b: 1, a: 1}
     - _WaterShallowColor: {r: 0, g: 0.9394503, b: 1, a: 1}
-    - _WaveDirection: {r: 0.4, g: 0.8, b: 0.3, a: 0.6}
+    - _WaveDirection: {r: 0.8, g: 0.4, b: 0.5, a: 1}
     - _WaveFadeDistance: {r: 150, g: 300, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &6498140463000427223

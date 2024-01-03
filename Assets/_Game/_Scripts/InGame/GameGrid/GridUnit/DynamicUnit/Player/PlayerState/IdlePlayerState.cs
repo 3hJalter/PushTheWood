@@ -1,5 +1,7 @@
-﻿using _Game.DesignPattern.StateMachine;
+﻿using _Game._Scripts.InGame;
+using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.StaticUnit;
+using _Game.Managers;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
@@ -8,6 +10,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
     {
         private bool _isChangeAnim;
         private bool isFirstStop;
+        private int cutTreeFrameCount;
         bool hasTreeRoot = false;
 
         public StateEnum Id => StateEnum.Idle;
@@ -15,6 +18,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         public void OnEnter(Player t)
         {
             isFirstStop = true;
+            cutTreeFrameCount = Constants.WAIT_CUT_TREE_FRAMES;
         }
 
         public void OnExecute(Player t)
@@ -54,7 +58,20 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                             if (isFirstStop)
                             {
                                 //NOTE: Checking button down of player input
-                                if (t.InputDetection.InputAction == InputAction.ButtonDown) isFirstStop = false;
+                                switch (t.InputDetection.InputAction)
+                                {
+                                    case InputAction.ButtonDown:
+                                        isFirstStop = false;
+                                        break;
+                                    case InputAction.ButtonHold:
+                                        if(cutTreeFrameCount <= 0)
+                                        {
+                                            isFirstStop = false;
+                                        }
+                                        else
+                                            cutTreeFrameCount--;
+                                        break;
+                                }
                                 if (!_isChangeAnim) t.ChangeAnim(Constants.IDLE_ANIM);
                             }
                             else
@@ -63,8 +80,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                             }
                             break;
                         case Rock rock:
-                            if (t.InputDetection.InputAction == InputAction.ButtonDown)
-                                t.StateMachine.ChangeState(StateEnum.Push);
+                            switch (t.InputDetection.InputAction)
+                            {
+                                case InputAction.ButtonDown:
+                                    t.StateMachine.ChangeState(StateEnum.Push);
+                                    break;
+                            }
                             break;
                     }
                 }
@@ -82,9 +103,22 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                         break;
                 }               
             }
-
+            
             t.SetEnterCellData(t.MovingData.inputDirection, t.MovingData.enterMainCell, t.UnitTypeY);
-            t.SetIslandId(t.MovingData.enterMainCell);
+            t.SetIslandId(t.MovingData.enterMainCell, out bool isChangeIsland);
+            
+            // NOTE: Checking if player reach to the bank of the island (MinX or MaxX)
+            // If reach, Change Camera target pos to the Pos (MinX or MaxX, 0, CenterPos.z) of the island
+            // If not, Change Camera target pos to the center of the island
+            if (!isChangeIsland)
+            {
+                if (t.MovingData.enterMainCell.IslandID != -1)
+                {
+                    Island island = LevelManager.Ins.CurrentLevel.Islands[t.MovingData.enterMainCell.IslandID];
+                    SetUpCamera(island, t);
+                }
+            }
+            
             t.OnOutCells();
             t.OnEnterCells(t.MovingData.enterMainCell, t.MovingData.enterCells);
             if (hasTreeRoot) 
@@ -96,6 +130,32 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         public void OnExit(Player t)
         {
             _isChangeAnim = false;
+        }
+
+        private static void SetUpCamera(Island island, Player t)
+        {
+            // TRICK: Take offset = 3 to make camera not really see the edge of the island
+            const float offset = 3f;
+            const float moveTime = 0.25f;
+            // NOTE: If the island is small (Size.x < 7), the camera will not change target pos
+            if (island.isSmallIsland) return;
+            float x = t.MovingData.enterMainCell.WorldPos.x;
+            if (Mathf.Abs(x - island.minXIslandPos.x) < 0.1f) // if minX
+            {
+                CameraManager.Ins.ChangeCameraTargetPosition(new Vector3(island.minXIslandPos.x + offset, 0, island.centerIslandPos.z), moveTime);
+            }
+            else if (Mathf.Abs(x - island.maxXIslandPos.x) < 0.1f) // if maxX
+            {
+                CameraManager.Ins.ChangeCameraTargetPosition(new Vector3(island.maxXIslandPos.x - offset, 0, island.centerIslandPos.z), moveTime);
+            }
+            else 
+            {
+                // Change the Camera to center if the player is come from bank and the distance is 1 Cell
+                if (Mathf.Abs(x - island.centerIslandPos.x) < Constants.CELL_SIZE)
+                {
+                    CameraManager.Ins.ChangeCameraTargetPosition(island.centerIslandPos, moveTime);  
+                }
+            }
         }
     }
 }

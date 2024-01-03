@@ -21,6 +21,15 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
 
         StateMachine<Raft> stateMachine;
         public StateMachine<Raft> StateMachine => stateMachine;
+        public override StateEnum CurrentStateId
+        {
+            get => StateEnum.Emerge;
+            set
+            {
+                stateMachine.ChangeState(value);
+            }
+        }
+
         public HashSet<GridUnit> _carryUnits = new();
         private bool _isAddState;
         private bool _isFirstSpawnDone;

@@ -9,8 +9,8 @@ namespace _Game.Managers
 {
     public class FxManager : Singleton<FxManager>
     {
-        [SerializeField]
-        private CurvedWorldController curvedWorldController;
+        // [SerializeField]
+        // private CurvedWorldController curvedWorldController;
         [SerializeField]
         private GameObject _groundGO;
         [SerializeField]
@@ -47,12 +47,12 @@ namespace _Game.Managers
 
         private Tween _changePlantCurveTween;
         
-        public void ChangePlanetCurvatureSize(float curve = 7f, float time = 1f)
-        {
-            _changePlantCurveTween?.Kill();
-            float currentCurve = curvedWorldController.bendCurvatureSize;
-            _changePlantCurveTween = DOVirtual.Float(currentCurve, curve, time, value => curvedWorldController.bendCurvatureSize = value);
-        }
+        // public void ChangePlanetCurvatureSize(float curve = 7f, float time = 1f)
+        // {
+        //     _changePlantCurveTween?.Kill();
+        //     float currentCurve = curvedWorldController.bendCurvatureSize;
+        //     _changePlantCurveTween = DOVirtual.Float(currentCurve, curve, time, value => curvedWorldController.bendCurvatureSize = value);
+        // }
         
         public void ResetTrackedTrampleObjectList()
         {
