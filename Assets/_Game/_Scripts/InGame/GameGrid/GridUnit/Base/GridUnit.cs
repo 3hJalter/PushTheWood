@@ -7,6 +7,7 @@ using GameGridEnum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Game._Scripts.Managers;
 using UnityEngine;
 using UnityEngine.Serialization;
 using VinhLB;
@@ -119,10 +120,7 @@ namespace _Game.GameGrid.Unit
             bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRos = false)
         {
             //Saving state before spawn, when map has already init
-            if (!LevelManager.Ins.IsConstructingLevel)
-                overrideSave = Save();
-            else
-                overrideSave = null;
+            overrideSave = !LevelManager.Ins.IsConstructingLevel ? Save() : null;
             if (isUseInitData) GetInitData();
             islandID = mainCellIn.IslandID;
             SetHeight(startHeightIn);
@@ -223,6 +221,10 @@ namespace _Game.GameGrid.Unit
             SetHeight(EnterPosData.startHeight);
             InitCellsToUnit(enterMainCell, enterNextCells);
             SetNeighbor(LevelManager.Ins.CurrentLevel.GridMap);
+            
+            // TEST
+            TutorialManager.Ins.OnUnitGoToCell(enterMainCell, this);
+            
             return;
 
             void InitCellsToUnit(GameGridCell enterMainCellIn, List<GameGridCell> enterCells = null)

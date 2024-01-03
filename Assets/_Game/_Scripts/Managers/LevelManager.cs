@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using _Game._Scripts.InGame;
-using _Game._Scripts.UIs.Tutorial;
 using _Game.Camera;
 using _Game.DesignPattern;
 using _Game.GameGrid.Unit;
@@ -12,7 +11,10 @@ using _Game.Utilities;
 using _Game.Utilities.Grid;
 using UnityEngine;
 using static _Game.Utilities.Grid.Grid<_Game.GameGrid.GameGridCell, _Game.GameGrid.GameGridCellData>;
+
+#if UNITY_EDITOR
 using static UnityEditor.VersionControl.Asset;
+#endif
 
 namespace _Game.GameGrid
 {
@@ -43,13 +45,13 @@ namespace _Game.GameGrid
             OnInit();
         }
 
-        public void OnShowTutorial()
-        {
-            UIManager.Ins.OpenUI<TutorialScreen>()
-                .LoadContext(Instantiate(DataManager.Ins.GetTutorial(_tutorialIndex)));
-            _tutorialIndex++;
-            if (_tutorialIndex >= DataManager.Ins.CountTutorial) _tutorialIndex = 0;
-        }
+        // public void OnShowTutorial()
+        // {
+        //     UIManager.Ins.OpenUI<TutorialScreen>()
+        //         .LoadContext(Instantiate(DataManager.Ins.GetTutorial(_tutorialIndex)));
+        //     _tutorialIndex++;
+        //     if (_tutorialIndex >= DataManager.Ins.CountTutorial) _tutorialIndex = 0;
+        // }
 
         // private void CheckPreload()
         // {

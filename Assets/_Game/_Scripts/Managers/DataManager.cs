@@ -14,10 +14,6 @@ namespace _Game.Managers
 
         [SerializeField] private MaterialData materialData;
 
-        [SerializeField] private TutorialData tutorialData;
-
-        public int CountTutorial => tutorialData.CountTutorial;
-
         public AudioData AudioData => audioData;
 
         public int CountLevel => gridData.CountLevel;
@@ -34,10 +30,10 @@ namespace _Game.Managers
             return materialData.GetGrassMaterial(materialEnum);
         }
         
-        public TutorialContext GetTutorial(int index)
-        {
-            return tutorialData.GetTutorial(index);
-        }
+        // public TutorialContext GetTutorial(int index)
+        // {
+        //     return tutorialData.GetTutorial(index);
+        // }
         
         public TextAsset GetGridTextData(int index)
         {

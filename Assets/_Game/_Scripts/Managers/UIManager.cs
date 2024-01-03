@@ -30,15 +30,34 @@ namespace _Game.Managers
 
             return (T)canvas;
         }
+        
+        public UICanvas OpenUIDirectly(UICanvas ui)
+        {
+            UICanvas canvas = Instantiate(ui, canvasParentTf);
+            canvas.Setup();
+            canvas.Open();
+            return canvas;
+        }
 
         public void CloseUI<T>() where T : UICanvas
         {
             if (IsOpened<T>()) GetUI<T>().Close();
         }
+        
+        public void CloseUIDirectly(UICanvas ui)
+        {
+            if (!ui.gameObject.activeInHierarchy) return;
+            ui.CloseAndDestroy();
+        }
 
         public bool IsOpened<T>() where T : UICanvas
         {
             return IsLoaded<T>() && uiCanvas[typeof(T)].gameObject.activeInHierarchy;
+        }
+        
+        public bool IsContain(UICanvas ui)
+        {
+            return uiCanvas.ContainsValue(ui);
         }
 
 

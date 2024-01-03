@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: edd24335c5734783bcc12ddb6871cae8, type: 3}
-  m_Name: TutorialData
+  m_Name: TutorialLevel1
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -22,5 +22,5 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   tutorialScreens:
-  - {fileID: 6630061401179279426, guid: a7bc9e7b5e26eff40b2dccddae165859, type: 3}
-  - {fileID: 6630061401179279426, guid: cc302e564b178f046b2cee31ade91eed, type: 3}
+  - {fileID: 3676042361160451760, guid: a7bc9e7b5e26eff40b2dccddae165859, type: 3}
+  - {fileID: 2981332621491735037, guid: cc302e564b178f046b2cee31ade91eed, type: 3}
