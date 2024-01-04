@@ -12,7 +12,7 @@ namespace _Game.Utilities {
     }
     public static class DevLog
     {
-        private static List<string> DevColors = new List<string>() { "#6fff59", "#fa4b4b", "000000", "000000"};
+        private static List<string> DevColors = new List<string>() { "#6fff59", "#fa4b4b", "#fffd74", "#000000"};
         public static void Log(DevId devId, string log)
         {
             Debug.Log($"<color={DevColors[(int)devId]}>[{devId}] {log}</color>");
