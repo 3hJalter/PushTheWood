@@ -925,8 +925,6 @@ MonoBehaviour:
       Entry: 8
       Data: 
   gridTextDataList:
-  - {fileID: 4900000, guid: d161e12f55b9c694cbab70ea464f41c1, type: 3}
-  - {fileID: 4900000, guid: 48b3cc12bdb11a0428a151c3efdd0d20, type: 3}
   - {fileID: 4900000, guid: 53b600eed20f9c14381b8a375fc78482, type: 3}
   - {fileID: 4900000, guid: 4b4eea0df3da88e40888aa960c2aadd4, type: 3}
   - {fileID: 4900000, guid: c746a6c021f88414e8fc47c84256630f, type: 3}
@@ -936,3 +934,5 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 421a6519910725144adc91eb331396e7, type: 3}
   - {fileID: 4900000, guid: 6f3d620e12100794a80253dd3b1fec1f, type: 3}
   - {fileID: 4900000, guid: 507c021cbd25f3141aa35ec33a1c15c8, type: 3}
+  - {fileID: 4900000, guid: 48b3cc12bdb11a0428a151c3efdd0d20, type: 3}
+  - {fileID: 4900000, guid: d161e12f55b9c694cbab70ea464f41c1, type: 3}
