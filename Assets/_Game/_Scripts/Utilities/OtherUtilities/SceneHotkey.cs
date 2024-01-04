@@ -26,6 +26,16 @@ public class SceneHotkey : MonoBehaviour
     {
         OpenScene("MapEditor");
     }
+    [MenuItem("Open Scene/CryptoLoader")]
+    public static void OpenSceneCryptoLoader()
+    {
+        OpenScene("CryptoLoader");
+    }
+    [MenuItem("Open Scene/LoadStart")]
+    public static void OpenSceneLoadStart()
+    {
+        OpenScene("LoadStart");
+    }
 }
 
 #endif

@@ -23,7 +23,9 @@ namespace _Game.GameGrid
 
         [SerializeField] private int levelIndex;
         private Level _currentLevel;
+        //Test
         [SerializeField] Material FontMaterial;
+
         public Level CurrentLevel => _currentLevel;
         public bool IsConstructingLevel;
 
@@ -90,6 +92,8 @@ namespace _Game.GameGrid
             IsConstructingLevel = false;
             savingState = new CareTaker(this);
             SetCameraToPlayerIsland();
+            //NOTE: Test
+            DebugManager.Ins?.DebugGridData(_currentLevel.GridMap);
             // CameraManager.Ins.ChangeCameraTargetPosition(_currentLevel.GetCenterPos());
         }
 
