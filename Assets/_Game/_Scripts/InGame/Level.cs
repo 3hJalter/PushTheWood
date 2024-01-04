@@ -143,7 +143,7 @@ namespace _Game._Scripts.InGame
             LevelManager.Ins.player.OnInit(_islandDic[LevelManager.Ins.player.islandID].FirstPlayerStepCell);
             GridMap.CompleteObjectInit();
             LevelManager.Ins.IsConstructingLevel = false;
-            LevelManager.Ins.ResetSavingState();
+            LevelManager.Ins.ResetGameState();
         }
 
         public void ResetAllIsland()
@@ -359,7 +359,10 @@ namespace _Game._Scripts.InGame
 
         public void OnInitPlayerToLevel()
         {
-            if (LevelManager.Ins.player is not null) LevelManager.Ins.player.OnDespawn();
+            if (LevelManager.Ins.player is not null)
+            {
+                LevelManager.Ins.player.OnDespawn();
+            }
             LevelManager.Ins.player = SimplePool.Spawn<Player>(
                 DataManager.Ins.GetGridUnit(PoolType.Player));
             LevelManager.Ins.player.OnInit(firstPlayerInitCell, HeightLevel.One, true, firstPlayerDirection);
@@ -368,6 +371,7 @@ namespace _Game._Scripts.InGame
         
         private void OnInitUnit(LevelUnitData data)
         {
+            data.unit.ResetData();
             data.unit.OnInit(data.mainCellIn, data.startHeightIn, true, data.directionIn, true);
             if (data.mainCellIn.Data.gridSurface == null) return;
             _islandDic[data.mainCellIn.Data.gridSurface.IslandID].AddInitUnitToIsland(data.unit, data.unitType, data.mainCellIn);

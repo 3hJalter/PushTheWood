@@ -23,10 +23,10 @@ namespace _Game.GameGrid.Unit
         public override IMemento Save()
         {
             IMemento save;
-            if (overrideSave != null)
+            if (overrideSpawnSave != null)
             {
-                save = overrideSave;
-                overrideSave = null;
+                save = overrideSpawnSave;
+                overrideSpawnSave = null;
             }
             else
             {

@@ -18,8 +18,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
     public class Player : GridUnitDynamic, IJumpTreeRootUnit
     {
         [SerializeField] private Animator animator;
-
-        public Action<bool> OnSavingState;
         public bool isRideVehicle;
         public readonly Queue<Direction> InputCache = new();
 
@@ -58,6 +56,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             }
             
             _isWaitAFrame = true;
+            //stateMachine.Debug = true;
             stateMachine?.UpdateState();
         }
 
@@ -101,18 +100,21 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         public override void OnPush(Direction direction, ConditionData conditionData = null)
         {
-            OnSavingState?.Invoke(true);
-            mainCell.ValueChange();
-            for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
+            //NOTE: Saving when push dynamic object that make grid change
+            if (MovingData.blockDynamicUnits.Count > 0 && LevelManager.Ins.CurrentLevel.GridMap.IsChange)
             {
-                MovingData.blockDynamicUnits[i].MainCell.ValueChange();
+                LevelManager.Ins.SaveGameState(true);
+                mainCell.ValueChange();
+                for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
+                {
+                    MovingData.blockDynamicUnits[i].MainCell.ValueChange();
+                }
+                LevelManager.Ins.SaveGameState(false);
             }
-            OnSavingState?.Invoke(false);
 
             for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
             {
                 MovingData.blockDynamicUnits[i].OnBePushed(direction, this);
-                MovingData.blockDynamicUnits[i].MainCell.ValueChange();
             }
             for (int i = 0; i < MovingData.blockStaticUnits.Count; i++)
                 MovingData.blockStaticUnits[i].OnBePushed(direction, this);

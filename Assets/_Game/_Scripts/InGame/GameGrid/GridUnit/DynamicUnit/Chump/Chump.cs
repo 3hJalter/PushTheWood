@@ -19,7 +19,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
         public StateMachine<Chump> StateMachine => stateMachine;
         public override StateEnum CurrentStateId
         {
-            get => stateMachine != null ? stateMachine.CurrentStateId : StateEnum.Idle;
+            get 
+            {
+                if (stateMachine == null) return StateEnum.Idle;
+                return stateMachine.CurrentStateId;
+            } 
             set
             {
                 stateMachine.ChangeState(value);

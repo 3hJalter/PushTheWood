@@ -117,6 +117,7 @@ namespace _Game._Scripts.InGame
             {
                 GridUnit unit =
                     SimplePool.Spawn<GridUnit>(DataManager.Ins.GetGridUnit(pair.Value));
+                unit.ResetData();
                 unit.OnInit(pair.Key);
                 AddNewUnitToIsland(unit);
             }

@@ -48,7 +48,8 @@ public static class Constants
     public const string HAPPY_ANIM = "happy";
     public const string OPEN_ANIM = "open";
     public const float CUT_TREE_ANIM_TIME = 0.5f;
-    public const float PUSH_ANIM_TIME = 0.3f;
+    public const float PUSH_ANIM_TIME = 0.4f;
+    public const int WAIT_CUT_TREE_FRAMES = 15;
 
     /// <summary>
     ///     UI Animation Trigger

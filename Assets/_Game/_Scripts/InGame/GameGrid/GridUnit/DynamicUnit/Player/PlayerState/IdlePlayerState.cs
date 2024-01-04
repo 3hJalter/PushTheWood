@@ -10,6 +10,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
     {
         private bool _isChangeAnim;
         private bool isFirstStop;
+        private int cutTreeFrameCount;
         bool hasTreeRoot = false;
 
         public StateEnum Id => StateEnum.Idle;
@@ -17,6 +18,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         public void OnEnter(Player t)
         {
             isFirstStop = true;
+            cutTreeFrameCount = Constants.WAIT_CUT_TREE_FRAMES;
         }
 
         public void OnExecute(Player t)
@@ -56,7 +58,20 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                             if (isFirstStop)
                             {
                                 //NOTE: Checking button down of player input
-                                if (t.InputDetection.InputAction == InputAction.ButtonDown) isFirstStop = false;
+                                switch (t.InputDetection.InputAction)
+                                {
+                                    case InputAction.ButtonDown:
+                                        isFirstStop = false;
+                                        break;
+                                    case InputAction.ButtonHold:
+                                        if(cutTreeFrameCount <= 0)
+                                        {
+                                            isFirstStop = false;
+                                        }
+                                        else
+                                            cutTreeFrameCount--;
+                                        break;
+                                }
                                 if (!_isChangeAnim) t.ChangeAnim(Constants.IDLE_ANIM);
                             }
                             else
@@ -65,8 +80,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                             }
                             break;
                         case Rock rock:
-                            if (t.InputDetection.InputAction == InputAction.ButtonDown)
-                                t.StateMachine.ChangeState(StateEnum.Push);
+                            switch (t.InputDetection.InputAction)
+                            {
+                                case InputAction.ButtonDown:
+                                    t.StateMachine.ChangeState(StateEnum.Push);
+                                    break;
+                            }
                             break;
                     }
                 }

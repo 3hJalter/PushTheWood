@@ -16,6 +16,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         private List<GameGridCell> createChumpCells = new();
         private Chump chumpInWater;
         HashSet<GridUnit> spawnUnits = new();
+        Tween moveTween;
 
         public StateEnum Id => StateEnum.FormRaft;
 
@@ -24,12 +25,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             t.StateMachine.OverrideState = StateEnum.FormRaft;
 
             InitData(t);
-            Sequence s = DOTween.Sequence();
             #region ANIM
+            Sequence s = DOTween.Sequence();
+            moveTween = s;
             s.Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 1.2f).SetEase(Ease.Linear).OnComplete(() =>
             {
                 OnExit(t);
-                Spawn(t);
+                Spawn(t);              
             }));
             s.Join(chumpInWater.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 1.2f).SetEase(Ease.Linear));
             t.RemoveUnitFromCell();
@@ -46,6 +48,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             chumpInWater = null;
             spawnUnits.Clear();
             t.StateMachine.OverrideState = StateEnum.None;
+            moveTween.Kill();
         }
 
         private void InitData(Chump t)
@@ -121,6 +124,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             }
             foreach (GridUnit unit in t.belowUnits.ToList().Where(unit => !spawnUnits.Contains(unit))) unit.OnDespawn();
             t.OnDespawn();
+            LevelManager.Ins.SaveGameState(true);
         }
     }
 }

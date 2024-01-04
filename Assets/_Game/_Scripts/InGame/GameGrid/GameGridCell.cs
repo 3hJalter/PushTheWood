@@ -232,7 +232,6 @@ namespace _Game.GameGrid
             {
                 this.main = main;
                 gridUnits = unitData.ToArray();
-                DevLog.Log(DevId.Hung, $"Save: ( {main.X}, {main.Y})");
             }
 
             public void Restore()
