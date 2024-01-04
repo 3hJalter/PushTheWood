@@ -13,8 +13,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
     {
         private bool _isExecuted;
         float originAnimSpeed;
+        const float STATE_TIME = 0.4f;
         List<Action> actions = new List<Action>();
-        List<float> times = new List<float>() { Constants.CUT_TREE_TIME, 0.5f};
+        List<float> times = new List<float>() { Constants.CUT_TREE_TIME, STATE_TIME};
 
         public StateEnum Id => StateEnum.CutTree;
 
