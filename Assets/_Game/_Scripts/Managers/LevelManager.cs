@@ -1,20 +1,17 @@
-﻿using System.Collections.Generic;
+﻿﻿using System.Collections.Generic;
 using System.Linq;
 using _Game._Scripts.InGame;
 using _Game.Camera;
 using _Game.DesignPattern;
 using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
+using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
 using _Game.UIs.Screen;
 using _Game.Utilities;
 using _Game.Utilities.Grid;
 using UnityEngine;
 using static _Game.Utilities.Grid.Grid<_Game.GameGrid.GameGridCell, _Game.GameGrid.GameGridCellData>;
-
-#if UNITY_EDITOR
-using static UnityEditor.VersionControl.Asset;
-#endif
 
 namespace _Game.GameGrid
 {
@@ -44,14 +41,6 @@ namespace _Game.GameGrid
             GridUtilities.OverlayMaterial = FontMaterial;
             OnInit();
         }
-
-        // public void OnShowTutorial()
-        // {
-        //     UIManager.Ins.OpenUI<TutorialScreen>()
-        //         .LoadContext(Instantiate(DataManager.Ins.GetTutorial(_tutorialIndex)));
-        //     _tutorialIndex++;
-        //     if (_tutorialIndex >= DataManager.Ins.CountTutorial) _tutorialIndex = 0;
-        // }
 
         // private void CheckPreload()
         // {
@@ -101,7 +90,6 @@ namespace _Game.GameGrid
             IsConstructingLevel = false;
             savingState = new CareTaker(this);
             SetCameraToPlayerIsland();
-            player.OnSavingState = OnSavingState;
             // CameraManager.Ins.ChangeCameraTargetPosition(_currentLevel.GetCenterPos());
         }
 
@@ -162,15 +150,16 @@ namespace _Game.GameGrid
             // FxManager.Ins.ResetTrackedTrampleObjectList();
         }
 
-        public void ResetSavingState()
+        public void ResetGameState()
         {
             savingState.Reset();
         }
         public void OnUndo()
         {
             savingState.Undo();
+            SetCameraToPlayerIsland();
         }
-        public void OnSavingState(bool isMerge)
+        public void SaveGameState(bool isMerge)
         {
             savingState.Save(isMerge);
         }
