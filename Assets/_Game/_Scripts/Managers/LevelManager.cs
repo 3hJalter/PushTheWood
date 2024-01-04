@@ -1,11 +1,10 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using _Game._Scripts.InGame;
 using _Game.Camera;
 using _Game.DesignPattern;
 using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
-using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
 using _Game.UIs.Screen;
 using _Game.Utilities;
@@ -26,57 +25,18 @@ namespace _Game.GameGrid
         [SerializeField] Material FontMaterial;
         public Level CurrentLevel => _currentLevel;
         public bool IsConstructingLevel;
-
-        private int _tutorialIndex;
+        
         private CareTaker savingState;
         public Player player;
 
         private void Start()
         {
             // TEST
-            PlayerPrefs.SetInt(Constants.TUTORIAL_INDEX, 0);
             // PlayerPrefs.SetInt(Constants.LEVEL_INDEX, 0);
             levelIndex = PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0);
-            _tutorialIndex = PlayerPrefs.GetInt(Constants.TUTORIAL_INDEX, 0);
             GridUtilities.OverlayMaterial = FontMaterial;
             OnInit();
         }
-
-        // private void CheckPreload()
-        // {
-        //     if (!_preLoadLevels.ContainsKey(levelIndex))
-        //     {
-        //         _currentLevel = new Level(levelIndex);
-        //     }
-        //     else
-        //     {
-        //         _currentLevel = _preLoadLevels[levelIndex];
-        //         _preLoadLevels.Remove(levelIndex);
-        //     }
-        //     // Preload previous level
-        //     if (levelIndex > 0 && !_preLoadLevels.ContainsKey(levelIndex - 1))
-        //     {
-        //         _preLoadLevels.Add(levelIndex - 1, new Level(levelIndex - 1));
-        //     }
-        //     // Preload next level
-        //     if (levelIndex < DataManager.Ins.CountLevel - 1 && !_preLoadLevels.ContainsKey(levelIndex + 1))
-        //     {
-        //         _preLoadLevels.Add(levelIndex + 1, new Level(levelIndex + 1));
-        //     }
-        //     // Clear all other levels and remove it from preload list
-        //     RemoveFarLevelFromPreLoad();
-        // }
-
-        // We only store the previous level and the next level, other levels will be removed from preload list
-        // public void RemoveFarLevelFromPreLoad()
-        // {
-        //     List<int> keys = _preLoadLevels.Keys.ToList();
-        //     foreach (int key in keys.Where(key => key != levelIndex - 1 && key != levelIndex && key != levelIndex + 1))
-        //     {
-        //         _preLoadLevels[key].OnDeSpawnLevel();
-        //         _preLoadLevels.Remove(key);
-        //     }
-        // }
 
         public void OnInit()
         {
@@ -127,11 +87,6 @@ namespace _Game.GameGrid
             OnInit();
             
             // OnChangeTutorialIndex();
-        }
-
-        private void OnChangeTutorialIndex()
-        {
-            PlayerPrefs.SetInt(Constants.TUTORIAL_INDEX, _tutorialIndex);
         }
 
         public void OnLose()

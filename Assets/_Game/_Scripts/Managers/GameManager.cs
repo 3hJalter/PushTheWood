@@ -28,8 +28,7 @@ namespace _Game.Managers
             if (Screen.currentResolution.height > maxScreenHeight)
                 Screen.SetResolution(Mathf.RoundToInt(ratio * maxScreenHeight), maxScreenHeight, true);
             // TEST
-            if (PlayerPrefs.GetInt(Constants.LEVEL_INDEX) != 0) UIManager.Ins.OpenUI<MainMenuScreen>();
-            else UIManager.Ins.OpenUI<InGameScreen>();
+            if (PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0) != 0) UIManager.Ins.OpenUI<MainMenuScreen>();
             // DontDestroyOnLoad(Tf.root.gameObject);
         }
 
