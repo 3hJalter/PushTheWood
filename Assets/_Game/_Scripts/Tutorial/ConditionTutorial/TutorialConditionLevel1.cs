@@ -35,13 +35,13 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
                 case 1:
                 {
                     // if player at cell 7, 11
-                    // if (Math.Abs(cell.WorldX - 7) < TOLERANCE && Math.Abs(cell.WorldY - 11) < TOLERANCE) 
-                    // {
-                    //     MoveInputManager.Ins.OnForceResetMove();
-                    //     UICanvas ui = tutorialScreens[currentScreenIndex];
-                    //     UIManager.Ins.OpenUIDirectly(ui);
-                    //     currentScreenIndex++;
-                    // }
+                    if (Math.Abs(cell.WorldX - 7) < TOLERANCE && Math.Abs(cell.WorldY - 11) < TOLERANCE) 
+                    {
+                        MoveInputManager.Ins.OnForceResetMove();
+                        UICanvas ui = tutorialScreens[currentScreenIndex];
+                        UIManager.Ins.OpenUIDirectly(ui);
+                        currentScreenIndex++;
+                    }
 
                     break;
                 }
