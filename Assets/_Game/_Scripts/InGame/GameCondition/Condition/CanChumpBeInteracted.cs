@@ -21,9 +21,9 @@ namespace _Game._Scripts.InGame.GameCondition.Condition
                     return direction is Direction.Back or Direction.Forward;
                 case UnitTypeXZ.Vertical:
                     return direction is Direction.Left or Direction.Right;
-                case UnitTypeXZ.Both:
-                    return true;
+                case UnitTypeXZ.Both:                  
                 case UnitTypeXZ.None:
+                    return true;
                 default:
                     return false;
             }
