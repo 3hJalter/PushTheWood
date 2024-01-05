@@ -8,7 +8,8 @@ namespace _Game.Camera
         MainMenuCamera = 0,
         InGameCamera = 1,
         WorldMapCamera = 2,
-        ShopCamera = 3
+        ShopCamera = 3,
+        CutsceneCamera = 4,
     }
 
     public static class CUtilities

@@ -5,31 +5,31 @@ namespace VinhLB
 {
     public static class EditorTools
     {
-        [MenuItem("Tools/Scenes/GameDemo")]
+        [MenuItem("Tools/VinhLB/Scenes/GameDemo")]
         private static void OpenGameDemoScene()
         {
             OpenScene("GameDemo");
         }
 
-        [MenuItem("Tools/Scenes/ChooseLevel")]
+        [MenuItem("Tools/VinhLB/Scenes/ChooseLevel")]
         private static void OpenChooseLevelScene()
         {
             OpenScene("ChooseLevel");
         }
 
-        [MenuItem("Tools/Scenes/MapEditor")]
+        [MenuItem("Tools/VinhLB/Scenes/MapEditor")]
         private static void OpenMapEditorScene()
         {
             OpenScene("MapEditor");
         }
 
-        [MenuItem("Tools/Scenes/BuildingTest")]
+        [MenuItem("Tools/VinhLB/Scenes/BuildingTest")]
         private static void OpenBuildingTestScene()
         {
             OpenScene("BuildingTest");
         }
 
-        [MenuItem("Tools/Scenes/BendingTest")]
+        [MenuItem("Tools/VinhLB/Scenes/BendingTest")]
         private static void OpenBendingTestScene()
         {
             OpenScene("BendingTest");
