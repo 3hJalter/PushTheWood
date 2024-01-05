@@ -123,13 +123,13 @@ Material:
     - _Cutoff: 0.5
     - _Depth: 5.01
     - _DepthExp: 1
-    - _DepthHorizontal: 3
+    - _DepthHorizontal: 3.5
     - _DepthMode: 0
     - _DepthTexture: 1
     - _DepthVertical: 4
     - _DisableDepthTexture: 0
     - _DstBlend: 0
-    - _EdgeFade: 7.37
+    - _EdgeFade: 14.47
     - _EnvironmentReflections: 1
     - _FlowSpeed: 1
     - _FoamOn: 0
@@ -209,7 +209,7 @@ Material:
     - _UnderwaterSurfaceSmoothness: 0.8
     - _WaveCount: 3
     - _WaveDistance: 0.75
-    - _WaveHeight: 0.5
+    - _WaveHeight: 0.25
     - _WaveNormalStr: 0.3
     - _WaveSpeed: 1
     - _WaveSteepness: 0
@@ -230,7 +230,7 @@ Material:
     - _HorizonColor: {r: 0.11764706, g: 0.45294118, b: 0.5, a: 1}
     - _IntersectionColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ShallowColor: {r: 0, g: 0.8446603, b: 1, a: 0.39607844}
+    - _ShallowColor: {r: 0, g: 0.84313726, b: 1, a: 0.39607844}
     - _SlopeParams: {r: 0.5, g: 4, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _TranslucencyParams: {r: 1, g: 4, b: 0, a: 0}

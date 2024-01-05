@@ -36,7 +36,7 @@ Material:
     - _ShadowLightness: 0.2
     - _TrampleFalloff: 1
     - _TrampleMaxDistance: 1
-    - _TramplePushStrength: 0.5
+    - _TramplePushStrength: 0.75
     - _TrampleSquishStrength: 2
     - _WindFrequency: 0.01
     - _WindStrength: 0.1

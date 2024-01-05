@@ -22,7 +22,7 @@ namespace _Game.UIs.Popup
 
         public void OnSwitchGridActive()
         {
-            FxManager.Ins.SwitchGridActive();
+            FXManager.Ins.SwitchGridActive();
         }
     }
 }
