@@ -29,12 +29,12 @@ public class SceneHotkey : MonoBehaviour
     [MenuItem("Open Scene/CryptoLoader")]
     public static void OpenSceneCryptoLoader()
     {
-        OpenScene("CryptoLoader");
+        OpenScene("Game/CryptoLoader");
     }
     [MenuItem("Open Scene/LoadStart")]
     public static void OpenSceneLoadStart()
     {
-        OpenScene("LoadStart");
+        OpenScene("Game/LoadStart");
     }
 }
 

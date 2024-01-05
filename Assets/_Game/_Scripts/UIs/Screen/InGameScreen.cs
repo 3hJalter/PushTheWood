@@ -43,7 +43,7 @@ namespace _Game.UIs.Screen
 
         public void OnClickSettingButton()
         {
-            UIManager.Ins.OpenUI<SettingPopup>();
+            UIManager.Ins.OpenUI<SettingsPopup>();
         }
 
         public void OnClickOpenMapButton()
