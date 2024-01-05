@@ -3,6 +3,7 @@ using _Game.Managers;
 using _Game.UIs.Popup;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 using VinhLB;
 
 namespace _Game.UIs.Screen
@@ -12,9 +13,18 @@ namespace _Game.UIs.Screen
         [SerializeField]
         private CanvasGroup _canvasGroup;
         [SerializeField]
+        private Image _blockPanel;
+        [SerializeField]
         private TabGroup _bottomNavigationTabGroup;
         
         private bool _isFirstOpen;
+
+        public override void Setup()
+        {
+            base.Setup();
+            
+            _blockPanel.gameObject.SetActive(true);
+        }
 
         public override void Open()
         {
@@ -24,7 +34,8 @@ namespace _Game.UIs.Screen
             GameManager.Ins.ChangeState(GameState.MainMenu);
             CameraManager.Ins.ChangeCamera(ECameraType.MainMenuCamera);
             _bottomNavigationTabGroup.ResetSelectedTab();
-            DOVirtual.Float(0, 1, 1f, value => _canvasGroup.alpha = value);
+            DOVirtual.Float(0, 1, 1f, value => _canvasGroup.alpha = value)
+                .OnComplete(() => _blockPanel.gameObject.SetActive(false));
         }
 
         public void OnClickStart()

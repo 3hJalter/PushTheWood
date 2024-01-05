@@ -13,6 +13,8 @@ namespace VinhLB
         [SerializeField]
         private CanvasGroup _canvasGroup;
         [SerializeField]
+        private Image _blockPanel;
+        [SerializeField]
         private Button _rotateButton;
         [SerializeField]
         private Button _clearButton;
@@ -66,7 +68,8 @@ namespace VinhLB
         {
             base.Open();
 
-            _canvasGroup.DOFade(1f, 1f).From(0f);
+            DOVirtual.Float(0, 1, 1f, value => _canvasGroup.alpha = value)
+                .OnComplete(() => _blockPanel.gameObject.SetActive(false));
         }
     }
 }
