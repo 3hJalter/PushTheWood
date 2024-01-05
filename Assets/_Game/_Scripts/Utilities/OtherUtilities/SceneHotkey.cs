@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
+#endif
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -26,11 +28,13 @@ public class SceneHotkey : MonoBehaviour
     {
         OpenScene("MapEditor");
     }
+
     [MenuItem("Open Scene/CryptoLoader")]
     public static void OpenSceneCryptoLoader()
     {
         OpenScene("Game/CryptoLoader");
     }
+
     [MenuItem("Open Scene/LoadStart")]
     public static void OpenSceneLoadStart()
     {
@@ -39,4 +43,3 @@ public class SceneHotkey : MonoBehaviour
 }
 
 #endif
-
