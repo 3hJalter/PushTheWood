@@ -1,6 +1,6 @@
 ﻿using _Game.Camera;
-using _Game.GameGrid;
 using _Game.Managers;
+using _Game.UIs.Popup;
 using DG.Tweening;
 using UnityEngine;
 using VinhLB;
@@ -9,7 +9,11 @@ namespace _Game.UIs.Screen
 {
     public class MainMenuScreen : UICanvas
     {
-        [SerializeField] private CanvasGroup canvasGroup;
+        [SerializeField]
+        private CanvasGroup _canvasGroup;
+        [SerializeField]
+        private TabGroup _bottomNavigationTabGroup;
+        
         private bool _isFirstOpen;
 
         public override void Open()
@@ -19,7 +23,8 @@ namespace _Game.UIs.Screen
             // FxManager.Ins.PlayTweenFog();
             GameManager.Ins.ChangeState(GameState.MainMenu);
             CameraManager.Ins.ChangeCamera(ECameraType.MainMenuCamera);
-            DOVirtual.Float(0, 1, 1f, value => canvasGroup.alpha = value);
+            _bottomNavigationTabGroup.ResetSelectedTab();
+            DOVirtual.Float(0, 1, 1f, value => _canvasGroup.alpha = value);
         }
 
         public void OnClickStart()
@@ -33,6 +38,11 @@ namespace _Game.UIs.Screen
             UIManager.Ins.OpenUI<InGameScreen>();
             // FxManager.Ins.StopTweenFog();
             Close();
+        }
+        
+        public void OnClickSettingButton()
+        {
+            UIManager.Ins.OpenUI<SettingsPopup>();
         }
     }
 }

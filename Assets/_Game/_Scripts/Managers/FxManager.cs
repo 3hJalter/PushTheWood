@@ -3,6 +3,7 @@ using AmazingAssets.CurvedWorld;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 using VinhLB;
 
 namespace _Game.Managers
@@ -22,7 +23,9 @@ namespace _Game.Managers
         [SerializeField]
         private UniversalRendererData _rendererData;
         [SerializeField]
-        private UniversalRenderPipelineAsset renderPipelineAsset;
+        private UniversalRenderPipelineAsset _renderPipelineAsset;
+        [SerializeField]
+        private UniversalAdditionalCameraData _cameraData;
         
         private GrassTrampleFeature _feature;
 
@@ -38,11 +41,11 @@ namespace _Game.Managers
 
         public void ChangeShadowDistance(float distance)
         {
-            renderPipelineAsset.shadowDistance = distance;
+            _renderPipelineAsset.shadowDistance = distance;
             // if distance >= 150, normal bias is 0 
             // else increase it until normal = 1 when distance <= 50
             float normalBias = distance >= 150 ? 0f : 1f - (distance - 50f) / 100f;
-            renderPipelineAsset.shadowNormalBias = normalBias;
+            _renderPipelineAsset.shadowNormalBias = normalBias;
         }
 
         private Tween _changePlantCurveTween;
@@ -57,6 +60,11 @@ namespace _Game.Managers
         public void ResetTrackedTrampleObjectList()
         {
             _feature.ResetTrackedTrampleList();
+        }
+
+        public void TogglePostProcessing()
+        {
+            _cameraData.renderPostProcessing = !_cameraData.renderPostProcessing;
         }
 
         public void SwitchGridActive(bool manual = false, bool active = true)

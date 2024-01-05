@@ -15,7 +15,6 @@ Material:
   - CURVEDWORLD_NORMAL_TRANSFORMATION_ON
   - _CAUSTICS
   - _ENVIRONMENTREFLECTIONS_OFF
-  - _FLAT_SHADING
   - _REFRACTION
   - _SMOOTH_INTERSECTION
   - _SPECULARHIGHLIGHTS_OFF
@@ -209,9 +208,9 @@ Material:
     - _UnderwaterRefractionOffset: 0.2
     - _UnderwaterSurfaceSmoothness: 0.8
     - _WaveCount: 3
-    - _WaveDistance: 0.763
+    - _WaveDistance: 0.75
     - _WaveHeight: 0.5
-    - _WaveNormalStr: 0.291
+    - _WaveNormalStr: 0.3
     - _WaveSpeed: 1
     - _WaveSteepness: 0
     - _WaveTint: 0.029
