@@ -11,27 +11,21 @@ namespace _Game.GameGrid.Unit.StaticUnit
     public class Tree : GridUnitStatic
     {
         [SerializeField] public Chump chumpPrefab;
-        Player player;
         private const int DEGREE = 6;
         private const float DECAY_VALUE = 0.95f;
+
+        private static Player Player => LevelManager.Ins.player;
         
-
-        private void Start()
-        {
-            // Get the Player from Level Manager
-            player = LevelManager.Ins.player;
-        }
-
         public override void OnInteract()
         {
             // Change it state to cut tree
-            player.CutTreeData.SetData(GetDirectionFromPlayer(), this);
-            player.StateMachine.ChangeState(StateEnum.CutTree);
+            Player.CutTreeData.SetData(GetDirectionFromPlayer(), this);
+            Player.StateMachine.ChangeState(StateEnum.CutTree);
             return;
 
             Direction GetDirectionFromPlayer()
             {
-                Vector3 playerPos = player.MainCell.WorldPos;
+                Vector3 playerPos = Player.MainCell.WorldPos;
                 Vector3 treePos = mainCell.WorldPos;
                 if (Math.Abs(playerPos.x - treePos.x) < 0.01f)
                     return playerPos.z > treePos.z ? Direction.Back : Direction.Forward;

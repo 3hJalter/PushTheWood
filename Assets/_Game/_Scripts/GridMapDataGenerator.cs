@@ -20,7 +20,7 @@ public class GridMapDataGenerator : MonoBehaviour
     [Header("Map Data")]
     [SerializeField] private string mapLevelName = "Lvl_0";
     [SerializeField] private int offsetSurfaceWithFirstCell = 3; // Should be 3
-
+    
     [Header("Map Container")]
     [SerializeField] private Transform surfaceContainer;
     [SerializeField] private Transform unitContainer;

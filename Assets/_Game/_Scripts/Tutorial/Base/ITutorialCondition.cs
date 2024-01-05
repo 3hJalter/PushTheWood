@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _Game.GameGrid;
 using _Game.GameGrid.Unit;
 using Sirenix.OdinInspector;
@@ -8,6 +9,8 @@ namespace _Game._Scripts.Tutorial
 {
     public interface ITutorialCondition
     {
+        public void OnForceShowTutorial(int index, bool isIncrement = true);
+        
         void HandleShowTutorial(GameGridCell cell, GridUnit triggerUnit);
         
         void HandleShowTutorial(GridUnit triggerUnit, GridUnit targetUnit);

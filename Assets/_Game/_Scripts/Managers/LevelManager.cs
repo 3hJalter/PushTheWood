@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using _Game._Scripts.InGame;
+using _Game._Scripts.Managers;
+using _Game._Scripts.Tutorial;
 using _Game.Camera;
 using _Game.DesignPattern;
 using _Game.GameGrid.Unit;
@@ -22,6 +24,7 @@ namespace _Game.GameGrid
 
         [SerializeField] private int levelIndex;
         private Level _currentLevel;
+
         [SerializeField] Material FontMaterial;
         public Level CurrentLevel => _currentLevel;
         public bool IsConstructingLevel;
@@ -41,21 +44,48 @@ namespace _Game.GameGrid
         public void OnInit()
         {
             // CheckPreload();
+            OnCheckTutorial();
             IsConstructingLevel = true;
             _currentLevel = new Level(levelIndex);
             _currentLevel.OnInitLevelSurfaceAndUnit();
             _currentLevel.OnInitPlayerToLevel();
-            // SetCameraToPlayer();
+            savingState = new CareTaker(this);
             _currentLevel.GridMap.CompleteObjectInit();
             IsConstructingLevel = false;
             savingState = new CareTaker(this);
             SetCameraToPlayerIsland();
+            // TEMPORARY: CUTSCENE, player will be setup when cutscene end
+            if (levelIndex == 0) HidePlayer(true);
+            // SetCameraToPlayer();
+            
+            // if (UIManager.Ins.IsOpened<TransitionScreen>())
+            // {
+            //     UIManager.Ins.GetUI<TransitionScreen>().Open();
+            // } else UIManager.Ins.OpenUI<TransitionScreen>();
             // CameraManager.Ins.ChangeCameraTargetPosition(_currentLevel.GetCenterPos());
         }
 
+        private void OnCheckTutorial()
+        {
+            if (TutorialManager.Ins.TutorialList.TryGetValue(levelIndex, out ITutorialCondition tutorialData))
+            {
+                tutorialData.ResetTutorial();
+            }
+        }
+        
+        public void HidePlayer(bool isHide)
+        {
+            player.gameObject.SetActive(!isHide);
+        }
+        
         public void SetCameraToPlayerIsland()
         {
-            CameraManager.Ins.ChangeCameraTargetPosition(CurrentLevel.GetIsland(player.islandID).centerIslandPos);
+            SetCameraToIsland(player.islandID);
+        }
+
+        private void SetCameraToIsland(int index)
+        {
+            CameraManager.Ins.ChangeCameraTargetPosition(CurrentLevel.GetIsland(index).centerIslandPos);
         }
 
         public void OnWin()
@@ -84,6 +114,11 @@ namespace _Game.GameGrid
             // Load next level
             IsConstructingLevel = true;
             _currentLevel.OnDeSpawnLevel();
+            // TEMPORARY: Destroy object on cutscene at level 1, need other way to handle this
+            if (levelIndex - 1 == 0)
+            {
+                TutorialManager.Ins.OnDestroyCutsceneObject();
+            }
             OnInit();
             
             // OnChangeTutorialIndex();

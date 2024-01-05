@@ -20,6 +20,8 @@ namespace _Game.Managers
 
         [SerializeField] private UnityEngine.Camera brainCamera;
         [SerializeField] private Transform cameraTarget;
+
+        public Transform CameraTarget => cameraTarget;
         // [SerializeField] private WorldMapTarget worldMapCameraTarget; // may be redundant later
 
         // public WorldMapTarget WorldMapCameraTarget => worldMapCameraTarget;
