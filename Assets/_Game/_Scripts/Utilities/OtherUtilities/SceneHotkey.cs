@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEditor;
 
 #if UNITY_EDITOR
+using UnityEditor.SceneManagement;
+
 public class SceneHotkey : MonoBehaviour
 {
     public static void OpenScene(string sceneName)

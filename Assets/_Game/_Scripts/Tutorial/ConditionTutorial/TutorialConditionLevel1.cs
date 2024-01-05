@@ -12,12 +12,14 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
     [CreateAssetMenu(fileName = "TutorialLevel1", menuName = "ScriptableObjects/TutorialData/Lvl1", order = 1)]
     public class TutorialConditionLevel1 : BaseTutorialData, ITutorialCondition
     {
+        private Transform glowSpot;
+        private Transform arrowDirection;
+        
         public void OnForceShowTutorial(int index, bool isIncrement = true)
         {
             if (index < 0 || index >= tutorialScreens.Count) return;
             currentScreenIndex = index;
-            UICanvas ui = tutorialScreens[currentScreenIndex];
-            UIManager.Ins.OpenUIDirectly(ui);
+            currentScreen = UIManager.Ins.OpenUIDirectly(tutorialScreens[currentScreenIndex]);
             if (isIncrement) currentScreenIndex++;
         }
         
@@ -26,32 +28,29 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
             if (triggerUnit is not Player) return;
             switch (currentScreenIndex)
             {
-                // If first screen is not showing
-                // case 0:
-                // {
-                //     // Player at cell 7,5
-                //     if (Math.Abs(cell.WorldX - 7) < TOLERANCE && Math.Abs(cell.WorldY - 5) < TOLERANCE) 
-                //     {
-                //         MoveInputManager.Ins.OnForceResetMove();
-                //         UICanvas ui = tutorialScreens[currentScreenIndex];
-                //         UIManager.Ins.OpenUIDirectly(ui);
-                //         currentScreenIndex++;
-                //     }
-                //
-                //     break;
-                // }
-                // // if currentScreenIndex == 1
+                // Case 0 already handle when the cutscene is playing
                 case 1:
                 {
                     // if player at cell 7, 11
                     if (Math.Abs(cell.WorldX - 7) < TOLERANCE && Math.Abs(cell.WorldY - 11) < TOLERANCE) 
                     {
                         MoveInputManager.Ins.OnForceResetMove();
-                        UICanvas ui = tutorialScreens[currentScreenIndex];
-                        UIManager.Ins.OpenUIDirectly(ui);
+                        currentScreen = UIManager.Ins.OpenUIDirectly(tutorialScreens[currentScreenIndex]);
                         currentScreenIndex++;
+                        Destroy(glowSpot.gameObject);
+                        arrowDirection.gameObject.SetActive(false);
                     }
-
+                    else
+                    {
+                        if (currentScreen.gameObject.activeInHierarchy)
+                        {
+                            currentScreen.CloseDirectly();
+                            glowSpot = Instantiate(TutorialManager.Ins.TutorialObjList[TutorialObj.LightSpot],
+                                new Vector3(7,0,11), Quaternion.identity);
+                            arrowDirection = Instantiate(TutorialManager.Ins.TutorialObjList[TutorialObj.Arrow],
+                                new Vector3(9,0,7), Quaternion.identity);
+                        }
+                    }
                     break;
                 }
             }

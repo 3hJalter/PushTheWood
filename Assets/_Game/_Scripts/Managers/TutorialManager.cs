@@ -11,14 +11,26 @@ using UnityEngine;
 
 namespace _Game._Scripts.Managers
 {
+    public enum TutorialObj
+    {
+        LightSpot,
+        Arrow,
+    }
+    
     public class TutorialManager : Singleton<TutorialManager>
     {
         // ReSharper disable once CollectionNeverUpdated.Local
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
+        [SerializeField] private readonly Dictionary<TutorialObj, Transform> tutorialObjList = new();
+        
+        // ReSharper disable once CollectionNeverUpdated.Local
+        // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         [SerializeField] private readonly Dictionary<int, ITutorialCondition> tutorialList = new();
-
+        
+        public Dictionary<TutorialObj, Transform> TutorialObjList => tutorialObjList;
         public Dictionary<int, ITutorialCondition> TutorialList => tutorialList;
 
+        // TEMPORARY: cutscene
         [SerializeField] private FirstCutsceneHandler firstCutscenePf;
         private readonly List<Transform> _objectOnCutscene = new();
         

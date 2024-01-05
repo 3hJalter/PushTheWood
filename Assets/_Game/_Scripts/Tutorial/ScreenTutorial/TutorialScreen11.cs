@@ -12,7 +12,7 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
     {
         public void OnClickMoveForward()
         {
-            CloseAndDestroy();
+            CloseDirectly();
             DevLog.Log(DevId.Hoang, "Set direction input: " + HInputManager.GetDirectionInput());
             // HInputManager.SetDirectionInput(Direction.Forward);
             MoveInputManager.Ins.Dpad.OnButtonPointerDown((int) Direction.Forward);
@@ -23,7 +23,7 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
         private static IEnumerator<float> WaitAFixedUpdate(Action callback)
         {
             // wait for one fixed update 
-            yield return Timing.DeltaTime;
+            yield return Time.fixedDeltaTime;
             DevLog.Log(DevId.Hoang, "Reset direction input");
             callback?.Invoke();
         }

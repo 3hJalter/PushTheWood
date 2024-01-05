@@ -655,7 +655,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2981332621491735037}
         m_TargetAssemblyTypeName: _Game._Scripts.Tutorial.TutorialScreen, Assembly-CSharp
-        m_MethodName: CloseAndDestroy
+        m_MethodName: CloseDirectly
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
