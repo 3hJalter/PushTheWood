@@ -156,6 +156,10 @@ namespace _Game.GameGrid
         {
             savingState.Save(isMerge);
         }
+        public void DiscardSaveState()
+        {
+            savingState.PopSave();
+        }
         private void SetCameraToPlayer()
         {
             // CameraFollow.Ins.SetTarget(Player.Tf);`
@@ -213,6 +217,11 @@ namespace _Game.GameGrid
                 SavingState(isMerge);
                 SavingObjects(isMerge);
             }
+            public void PopSave()
+            {
+                dataHistorys.Pop();
+                objectHistorys.Pop();
+            }
             private void SavingState(bool isMerge = false)
             {
                 if (!isMerge || dataHistorys.Count == 0)
@@ -254,6 +263,7 @@ namespace _Game.GameGrid
                     }
                 }
             }
+            
             public void Reset()
             {
                 dataHistorys.Clear();

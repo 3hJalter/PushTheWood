@@ -101,7 +101,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public override void OnPush(Direction direction, ConditionData conditionData = null)
         {
             //NOTE: Saving when push dynamic object that make grid change
-            if (MovingData.blockDynamicUnits.Count > 0 && LevelManager.Ins.CurrentLevel.GridMap.IsChange)
+            if (MovingData.blockDynamicUnits.Count > 0)
             {
                 LevelManager.Ins.SaveGameState(true);
                 mainCell.ValueChange();
@@ -110,12 +110,17 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                     MovingData.blockDynamicUnits[i].MainCell.ValueChange();
                 }
                 LevelManager.Ins.SaveGameState(false);
+                for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
+                {
+                    MovingData.blockDynamicUnits[i].OnBePushed(direction, this);
+                }
+
+                //NOTE: Checking if push dynamic object does not create any change in grid -> discard the newest save.
+                if(!LevelManager.Ins.CurrentLevel.GridMap.IsChange)
+                    LevelManager.Ins.DiscardSaveState();
             }
 
-            for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
-            {
-                MovingData.blockDynamicUnits[i].OnBePushed(direction, this);
-            }
+            
             for (int i = 0; i < MovingData.blockStaticUnits.Count; i++)
                 MovingData.blockStaticUnits[i].OnBePushed(direction, this);
         }
