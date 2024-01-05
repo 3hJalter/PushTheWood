@@ -16,8 +16,6 @@ namespace _Game.Utilities.Grid
         protected readonly TextMeshPro[,] debugTextArray;
         protected readonly T[,] gridArray;
         private readonly Vector3 originPosition;
-        private DebugGrid debug;
-
         protected readonly List<IMemento> cellMementos = new List<IMemento>();
         protected readonly List<Vector2Int> cellPos = new List<Vector2Int>();
         //Grid is change or not when compare to last save state
@@ -133,12 +131,16 @@ namespace _Game.Utilities.Grid
 
         protected virtual void OnGridCellValueChange(int x, int y, bool isRevert)
         {
-            //NOTE: Debug
-            //TimerManager.Inst.WaitForFrame(2, () => DebugData(x, y));
-            //void DebugData(int x, int y)
-            //{
-            //    debugTextArray[x, y].text = gridArray[x, y].ToString();
-            //}
+            #region DEBUG
+            if (DebugManager.Ins)
+            {
+                TimerManager.Inst.WaitForFrame(2, () => DebugData(x, y));
+                void DebugData(int x, int y)
+                {
+                    debugTextArray[x, y].text = gridArray[x, y].ToString();
+                }
+            }           
+            #endregion
             if (isRevert) return;
             isChange = true;
             if (!cellPos.Any(pos => pos.x == x && pos.y == y))
@@ -185,12 +187,12 @@ namespace _Game.Utilities.Grid
             private readonly Vector2 unwalkableUV = Vector2.zero;
             private readonly Vector2 walkableUV = new(9f / 334, 0);
 
-            public void DrawGrid(Grid<T, TD> grid, bool isPositionShow = false)
+            public void DrawGrid(Grid<T, TD> grid, bool detail = false)
             {
                 for (int x = 0; x < grid.gridArray.GetLength(0); x++)
                     for (int y = 0; y < grid.gridArray.GetLength(1); y++)
                     {
-                        if (isPositionShow)
+                        if (detail)
                         {
                             string content = grid.gridArray[x, y].GetCellPosition().ToString();
                             Vector3 localPosition = grid.GetWorldPosition(x, y) + new Vector3(grid.CellSize / 5, grid.CellSize / 2 + 0.1f, grid.CellSize * 0.75f);
