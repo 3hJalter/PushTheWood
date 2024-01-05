@@ -8,7 +8,7 @@ using VinhLB;
 
 namespace _Game.Managers
 {
-    public class FxManager : Singleton<FxManager>
+    public class FXManager : Singleton<FXManager>
     {
         // [SerializeField]
         // private CurvedWorldController curvedWorldController;

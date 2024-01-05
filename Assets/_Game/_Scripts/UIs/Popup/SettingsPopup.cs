@@ -49,7 +49,7 @@ namespace _Game.UIs.Popup
         public void OnClickTogglePostProcessing()
         {
             Debug.Log("Click toggle post-processing button");
-            FxManager.Ins.TogglePostProcessing();
+            FXManager.Ins.TogglePostProcessing();
         }
     }
 }
