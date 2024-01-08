@@ -1,5 +1,7 @@
-﻿using _Game.DesignPattern;
+﻿using System.Collections.Generic;
+using _Game.DesignPattern;
 using HControls;
+using MEC;
 using UnityEngine;
 
 namespace _Game._Scripts.Managers
@@ -22,8 +24,6 @@ namespace _Game._Scripts.Managers
         private GameObject DpadObj => dpad.gameObject;
 
         public MoveChoice CurrentChoice { get; private set; }
-
-        public Direction currentDirection; // TEST: Only for debug
         
         public void OnForceResetMove()
         {
@@ -31,14 +31,18 @@ namespace _Game._Scripts.Managers
             {
                 int index = (int) HInputManager.GetDirectionInput();
                 if (index != -1) dpad.OnButtonPointerUp(index);
-            } else if (CurrentChoice == MoveChoice.Switch)
-            {
-                // HSwitch.OnForceResetMove();
-            }
-            else
-            {
-                // HSwipe.OnForceResetMove();
-            }
+            } else HInputManager.SetDirectionInput(Direction.None);
+        }
+        
+        public void WaitToForceResetMove(float time)
+        {
+            Timing.RunCoroutine(WaitToResetMove(time));
+        }
+        
+        private IEnumerator<float> WaitToResetMove(float time)
+        {
+            yield return time;
+            OnForceResetMove();
         }
         
         public void HideButton()

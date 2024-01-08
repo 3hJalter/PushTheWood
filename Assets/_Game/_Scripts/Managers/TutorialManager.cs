@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using _Game._Scripts.Tutorial;
+using _Game._Scripts.Tutorial.ObjectTutorial;
 using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.GameGrid.Unit;
@@ -21,13 +22,13 @@ namespace _Game._Scripts.Managers
     {
         // ReSharper disable once CollectionNeverUpdated.Local
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
-        [SerializeField] private readonly Dictionary<TutorialObj, Transform> tutorialObjList = new();
+        [SerializeField] private readonly Dictionary<TutorialObj, BaseObjectTutorial> tutorialObjList = new();
         
         // ReSharper disable once CollectionNeverUpdated.Local
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         [SerializeField] private readonly Dictionary<int, ITutorialCondition> tutorialList = new();
         
-        public Dictionary<TutorialObj, Transform> TutorialObjList => tutorialObjList;
+        public Dictionary<TutorialObj, BaseObjectTutorial> TutorialObjList => tutorialObjList;
         public Dictionary<int, ITutorialCondition> TutorialList => tutorialList;
 
         // TEMPORARY: cutscene

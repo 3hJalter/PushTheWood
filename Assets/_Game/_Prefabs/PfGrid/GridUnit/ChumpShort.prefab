@@ -205,6 +205,7 @@ MonoBehaviour:
       Data: 
   poolType: 4
   skin: {fileID: 3746253626358163692}
+  meshRenderer: {fileID: 9113291626318848717}
   size: {x: 1, y: 1, z: 1}
   isMinusHalfSizeY: 0
   startHeight: 2

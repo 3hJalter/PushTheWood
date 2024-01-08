@@ -1,40 +1,29 @@
 ﻿// Toony Colors Pro+Mobile 2
 // (c) 2014-2023 Jean Moreno
 
-Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Ground"
+Shader "Toony Colors Pro 2/Examples URP/Cat Demo/DecalTransparent"
 {
 	Properties
 	{
+		[Enum(Front, 2, Back, 1, Both, 0)] _Cull ("Render Face", Float) = 2.0
+		[TCP2ToggleNoKeyword] _ZWrite ("Depth Write", Float) = 1.0
+		[HideInInspector] _RenderingMode ("rendering mode", Float) = 0.0
+		[HideInInspector] _SrcBlend ("blending source", Float) = 1.0
+		[HideInInspector] _DstBlend ("blending destination", Float) = 0.0
+		[TCP2Separator]
+
 		[TCP2HeaderHelp(Base)]
 		_BaseColor ("Color", Color) = (1,1,1,1)
 		[TCP2ColorNoAlpha] _HColor ("Highlight Color", Color) = (0.75,0.75,0.75,1)
 		[TCP2ColorNoAlpha] _SColor ("Shadow Color", Color) = (0.2,0.2,0.2,1)
-		[HideInInspector] __BeginGroup_ShadowHSV ("Shadow HSV", Float) = 0
-		_Shadow_HSV_H ("Hue", Range(-180,180)) = 0
-		_Shadow_HSV_S ("Saturation", Range(-1,1)) = 0
-		_Shadow_HSV_V ("Value", Range(-1,1)) = 0
-		[HideInInspector] __EndGroup ("Shadow HSV", Float) = 0
 		[MainTexture] _BaseMap ("Albedo", 2D) = "white" {}
+		_Cutoff ("Alpha Cutoff", Range(0,1)) = 0.5
 		[TCP2Separator]
 
 		[TCP2Header(Ramp Shading)]
 		
-		[TCP2HeaderHelp(Main Directional Light)]
 		_RampThreshold ("Threshold", Range(0.01,1)) = 0.5
 		_RampSmoothing ("Smoothing", Range(0.001,1)) = 0.5
-		[TCP2HeaderHelp(Other Lights)]
-		_RampThresholdOtherLights ("Threshold", Range(0.01,1)) = 0.5
-		_RampSmoothingOtherLights ("Smoothing", Range(0.001,1)) = 0.5
-		[Space]
-		[TCP2Separator]
-		
-		[TCP2HeaderHelp(Texture Blending)]
-		_BlendTex1 ("Texture 1", 2D) = "white" {}
-		_BlendTex2 ("Texture 2", 2D) = "white" {}
-		[TCP2HeaderHelp(Height Blending Parameters)]
-		[TCP2Vector4Floats(R,G,B,A,0.001,2,0.001,2,0.001,2,0.001,2)] _VColorBlendSmooth ("Height Smoothing", Vector) = (0.25,0.25,0.25,0.25)
-		[TCP2Vector4Floats(R,G,B,A)] _VColorBlendOffset ("Height Offset", Vector) = (0,0,0,0)
-		[TCP2HelpBox(Info,Height will be taken from each texture alpha channel.  No alpha in the texture will result in linear blending.)]
 		[TCP2Separator]
 		
 		[ToggleOff(_RECEIVE_SHADOWS_OFF)] _ReceiveShadowsOff ("Receive Shadows", Float) = 1
@@ -48,7 +37,8 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Ground"
 		Tags
 		{
 			"RenderPipeline" = "UniversalPipeline"
-			"RenderType"="Opaque"
+			"RenderType"="TransparentCutout"
+			"Queue"="AlphaTest"
 		}
 
 		HLSLINCLUDE
@@ -79,80 +69,20 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Ground"
 		// Uniforms
 
 		// Shader Properties
-		TCP2_TEX2D_WITH_SAMPLER(_BlendTex1);
-		TCP2_TEX2D_WITH_SAMPLER(_BlendTex2);
 		TCP2_TEX2D_WITH_SAMPLER(_BaseMap);
 
 		CBUFFER_START(UnityPerMaterial)
 			
 			// Shader Properties
-			float4 _BlendTex1_ST;
-			float4 _BlendTex2_ST;
 			float4 _BaseMap_ST;
+			float _Cutoff;
 			fixed4 _BaseColor;
 			float _RampThreshold;
 			float _RampSmoothing;
-			float _Shadow_HSV_H;
-			float _Shadow_HSV_S;
-			float _Shadow_HSV_V;
 			fixed4 _SColor;
 			fixed4 _HColor;
-			float _RampThresholdOtherLights;
-			float _RampSmoothingOtherLights;
-			
-			//Texture Blending Params
-			float4 _VColorBlendSmooth;
-			float4 _VColorBlendOffset;
 		CBUFFER_END
 
-		//--------------------------------
-		// HSV HELPERS
-		// source: http://lolengine.net/blog/2013/07/27/rgb-to-hsv-in-glsl
-		
-		float3 rgb2hsv(float3 c)
-		{
-			float4 K = float4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
-			float4 p = lerp(float4(c.bg, K.wz), float4(c.gb, K.xy), step(c.b, c.g));
-			float4 q = lerp(float4(p.xyw, c.r), float4(c.r, p.yzx), step(p.x, c.r));
-		
-			float d = q.x - min(q.w, q.y);
-			float e = 1.0e-10;
-			return float3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
-		}
-		
-		float3 hsv2rgb(float3 c)
-		{
-			c.g = max(c.g, 0.0); //make sure that saturation value is positive
-			float4 K = float4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-			float3 p = abs(frac(c.xxx + K.xyz) * 6.0 - K.www);
-			return c.z * lerp(K.xxx, saturate(p - K.xxx), c.y);
-		}
-		
-		float3 ApplyHSV_3(float3 color, float h, float s, float v)
-		{
-			float3 hsv = rgb2hsv(color.rgb);
-			hsv += float3(h/360,s,v);
-			return hsv2rgb(hsv);
-		}
-		float3 ApplyHSV_3(float color, float h, float s, float v) { return ApplyHSV_3(color.xxx, h, s ,v); }
-		
-		float4 ApplyHSV_4(float4 color, float h, float s, float v)
-		{
-			float3 hsv = rgb2hsv(color.rgb);
-			hsv += float3(h/360,s,v);
-			return float4(hsv2rgb(hsv), color.a);
-		}
-		float4 ApplyHSV_4(float color, float h, float s, float v) { return ApplyHSV_4(color.xxxx, h, s, v); }
-		
-		// Height-based texture blending
-		float4 blend_height_smooth(float4 texture1, float height1, float4 texture2, float height2, float smoothing)
-		{
-			float ma = max(texture1.a + height1, texture2.a + height2) - smoothing;
-			float b1 = max(texture1.a + height1 - ma, 0);
-			float b2 = max(texture2.a + height2 - ma, 0);
-			return (texture1 * b1 + texture2 * b2) / (b1 + b2);
-		}
-		
 		// Built-in renderer (CG) to SRP (HLSL) bindings
 		#define UnityObjectToClipPos TransformObjectToHClip
 		#define _WorldSpaceLightPos0 _MainLightPosition
@@ -166,6 +96,9 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Ground"
 			{
 				"LightMode"="UniversalForward"
 			}
+		Blend [_SrcBlend] [_DstBlend]
+		Cull [_Cull]
+		ZWrite [_ZWrite]
 
 			HLSLPROGRAM
 			// Required to compile gles 2.0 with standard SRP library
@@ -196,12 +129,15 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Ground"
 			#pragma vertex Vertex
 			#pragma fragment Fragment
 
+			//--------------------------------------
+			// Toony Colors Pro 2 keywords
+		#pragma shader_feature_local _ _ALPHAPREMULTIPLY_ON
+
 			// vertex input
 			struct Attributes
 			{
 				float4 vertex       : POSITION;
 				float3 normal       : NORMAL;
-				half4 vertexColor   : COLOR;
 				float4 texcoord0 : TEXCOORD0;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -218,8 +154,7 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Ground"
 			#ifdef _ADDITIONAL_LIGHTS_VERTEX
 				half3 vertexLights : TEXCOORD2;
 			#endif
-				float4 vertexColor : TEXCOORD3;
-				float2 pack1 : TEXCOORD4; /* pack1.xy = texcoord0 */
+				float2 pack0 : TEXCOORD3; /* pack0.xy = texcoord0 */
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
 			};
@@ -233,7 +168,7 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Ground"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
 				// Texture Coordinates
-				output.pack1.xy.xy = input.texcoord0.xy * _BaseMap_ST.xy + _BaseMap_ST.zw;
+				output.pack0.xy.xy = input.texcoord0.xy * _BaseMap_ST.xy + _BaseMap_ST.zw;
 
 				VertexPositionInputs vertexInput = GetVertexPositionInputs(input.vertex.xyz);
 			#if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
@@ -255,36 +190,7 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Ground"
 				// clip position
 				output.positionCS = vertexInput.positionCS;
 
-				output.vertexColor = input.vertexColor;
-
 				return output;
-			}
-
-			// Copy of LWRP's GetAdditionalLight() with different falloff calculation
-			Light GetAdditionalLight_BypassFalloff(int i, float3 positionWS)
-			{
-				int perObjectLightIndex = GetPerObjectLightIndex(i);
-
-				float3 lightPositionWS = _AdditionalLightsPosition[perObjectLightIndex].xyz;
-				half4 distanceAndSpotAttenuation = _AdditionalLightsAttenuation[perObjectLightIndex];
-				half4 spotDirection = _AdditionalLightsSpotDir[perObjectLightIndex];
-
-				float3 lightVector = lightPositionWS - positionWS;
-				float distanceSqr = max(dot(lightVector, lightVector), HALF_MIN);
-
-				half3 lightDirection = half3(lightVector * rsqrt(distanceSqr));
-				// original line:
-				//half attenuation = DistanceAttenuation(distanceSqr, distanceAndSpotAttenuation.xy);
-				half attenuation = saturate(1 - distanceSqr * distanceAndSpotAttenuation.x);
-				attenuation *= AngleAttenuation(spotDirection.xyz, lightDirection, distanceAndSpotAttenuation.zw);
-
-				Light light;
-				light.direction = lightDirection;
-				light.distanceAttenuation = attenuation;
-				light.shadowAttenuation = AdditionalLightRealtimeShadow(perObjectLightIndex, positionWS);
-				light.color = _AdditionalLightsColor[perObjectLightIndex].rgb;
-
-				return light;
 			}
 
 			half4 Fragment(Varyings input
@@ -297,43 +203,24 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Ground"
 				float3 normalWS = normalize(input.normal);
 
 				// Shader Properties Sampling
-				float4 __blendingSource = ( input.vertexColor.rgba );
-				float __blendingHeightContrast = ( 5.0 );
-				float4 __blendTexture1 = ( TCP2_TEX2D_SAMPLE(_BlendTex1, _BlendTex1, input.pack1.xy * _BlendTex1_ST.xy + _BlendTex1_ST.zw).rgba );
-				float4 __blendTexture2 = ( TCP2_TEX2D_SAMPLE(_BlendTex2, _BlendTex2, input.pack1.xy * _BlendTex2_ST.xy + _BlendTex2_ST.zw).rgba );
-				float4 __albedo = ( TCP2_TEX2D_SAMPLE(_BaseMap, _BaseMap, input.pack1.xy).rgba );
+				float4 __albedo = ( TCP2_TEX2D_SAMPLE(_BaseMap, _BaseMap, input.pack0.xy).rgba );
 				float4 __mainColor = ( _BaseColor.rgba );
 				float __alpha = ( __albedo.a * __mainColor.a );
+				float __cutoff = ( _Cutoff );
 				float __ambientIntensity = ( 1.0 );
 				float __rampThreshold = ( _RampThreshold );
 				float __rampSmoothing = ( _RampSmoothing );
-				float __shadowHue = ( _Shadow_HSV_H );
-				float __shadowSaturation = ( _Shadow_HSV_S );
-				float __shadowValue = ( _Shadow_HSV_V );
 				float3 __shadowColor = ( _SColor.rgb );
 				float3 __highlightColor = ( _HColor.rgb );
-				float __rampThresholdOtherLights = ( _RampThresholdOtherLights );
-				float __rampSmoothingOtherLights = ( _RampSmoothingOtherLights );
-
-				// Texture Blending: initialize
-				fixed4 blendingSource = __blendingSource;
-				float contrast = __blendingHeightContrast;
-				float contrast_half = contrast/2;
-				fixed4 tex1 = __blendTexture1;
-				fixed4 tex2 = __blendTexture2;
 
 				// main texture
 				half3 albedo = __albedo.rgb;
 				half alpha = __alpha;
 
 				half3 emission = half3(0,0,0);
-				half4 albedoAlpha = half4(albedo, alpha);
-				
-				// Texture Blending: sample
-				albedoAlpha = lerp(albedoAlpha, blend_height_smooth(albedoAlpha, albedoAlpha.a, tex1, blendingSource.r * contrast - contrast_half + tex1.a + _VColorBlendOffset.x, _VColorBlendSmooth.x), saturate(blendingSource.r * contrast_half));
-				albedoAlpha = lerp(albedoAlpha, blend_height_smooth(albedoAlpha, albedoAlpha.a, tex2, blendingSource.g * contrast - contrast_half + tex2.a + _VColorBlendOffset.y, _VColorBlendSmooth.y), saturate(blendingSource.g * contrast_half));
-				albedo = albedoAlpha.rgb;
-				alpha = albedoAlpha.a;
+				// Alpha Testing
+				half cutoffValue = __cutoff;
+				clip(alpha - cutoffValue);
 				
 				albedo *= __mainColor.rgb;
 
@@ -385,10 +272,6 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Ground"
 				// apply attenuation
 				ramp *= atten;
 
-				//Shadow HSV
-				float3 albedoShadowHSV = ApplyHSV_3(albedo, __shadowHue, __shadowSaturation, __shadowValue);
-				albedo = lerp(albedoShadowHSV, albedo, ramp);
-
 				// highlight/shadow colors
 				ramp = lerp(__shadowColor, __highlightColor, ramp);
 				
@@ -402,8 +285,12 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Ground"
 
 				LIGHT_LOOP_BEGIN(pixelLightCount)
 				{
-					Light light = GetAdditionalLight_BypassFalloff(lightIndex, positionWS);
-					half atten = light.shadowAttenuation;
+					#if defined(URP_10_OR_NEWER)
+						Light light = GetAdditionalLight(lightIndex, positionWS, shadowMask);
+					#else
+						Light light = GetAdditionalLight(lightIndex, positionWS);
+					#endif
+					half atten = light.shadowAttenuation * light.distanceAttenuation;
 
 					#if defined(_LIGHT_LAYERS)
 						half3 lightDir = half3(0, 1, 0);
@@ -419,13 +306,10 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Ground"
 					#endif
 
 					half ndl = dot(normalWS, lightDir);
-					ndl *= light.distanceAttenuation;
 					half3 ramp;
 					
-					half rampThreshold = __rampThresholdOtherLights;
-					half rampSmooth = __rampSmoothingOtherLights * 0.5;
 					ndl = saturate(ndl);
-					ramp = smoothstep(rampThreshold, rampThreshold + rampSmooth*2, ndl);
+					ramp = smoothstep(rampThreshold - rampSmooth, rampThreshold + rampSmooth, ndl);
 
 					// apply attenuation (shadowmaps & point/spot lights attenuation)
 					ramp *= atten;
@@ -445,6 +329,11 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Ground"
 
 				// apply ambient
 				color += indirectDiffuse;
+
+				// Premultiply blending
+				#if defined(_ALPHAPREMULTIPLY_ON)
+					color.rgb *= alpha;
+				#endif
 
 				color += emission;
 
@@ -539,10 +428,14 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Ground"
 				float4 __albedo = ( TCP2_TEX2D_SAMPLE(_BaseMap, _BaseMap, input.pack0.xy).rgba );
 				float4 __mainColor = ( _BaseColor.rgba );
 				float __alpha = ( __albedo.a * __mainColor.a );
+				float __cutoff = ( _Cutoff );
 
 				half3 albedo = half3(1,1,1);
 				half alpha = __alpha;
 				half3 emission = half3(0,0,0);
+				// Alpha Testing
+				half cutoffValue = __cutoff;
+				clip(alpha - cutoffValue);
 
 				return 0;
 			}
@@ -594,6 +487,7 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Ground"
 
 			ZWrite On
 			ColorMask 0
+			Cull [_Cull]
 
 			HLSLPROGRAM
 
@@ -621,5 +515,5 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Ground"
 	CustomEditor "ToonyColorsPro.ShaderGenerator.MaterialInspector_SG2"
 }
 
-/* TCP_DATA u config(ver:"2.9.6";unity:"2021.3.16f1";shaderProperties:list[,,,,,,,,,,,,,sp(clones:dict[];imps:list[imp_vcolors(chan:"RGBA";cc:4;impl_index:-1;guid:"3a3b700c-b063-4b08-b4ec-b72e57f660c9";gpu_inst:False;locked:False;lbl:"Blending Source";op:Multiply)];isClone:False;layers:list[];unlocked:list[];name:"Blending Source"),,,sp(clones:dict[];imps:list[imp_constant(cv:RGBA(1, 1, 1, 1);f2v:(1, 1);f3v:(1, 1, 1);f4v:(1, 1, 1, 1);fprc:float;fv:5;type:float;impl_index:-1;guid:"5069cec7-c4a0-4159-b805-259057f29165";gpu_inst:False;locked:False;lbl:"Blending Height Contrast";op:Multiply)];isClone:False;layers:list[];unlocked:list[];name:"Blending Height Contrast")];codeInjection:codeInjection(injectedFiles:list[];mark:False);customTextures:list[];features:list["UNITY_5_4","UNITY_5_5","UNITY_5_6","UNITY_2017_1","UNITY_2018_1","UNITY_2018_2","UNITY_2018_3","UNITY_2019_1","RAMP_MAIN_OTHER","RAMP_SEPARATED","TEXTURE_BLENDING","BLEND_TEX2","BLEND_TEX1","TEXBLEND_HEIGHT","SHADOW_HSV","SHADOW_COLOR_MAIN_DIR","BYPASS_LIGHT_FALLOFF","UNITY_2019_2","UNITY_2019_3","UNITY_2019_4","UNITY_2020_1","UNITY_2021_1","UNITY_2021_2","TEMPLATE_LWRP"];flags:list[];flags_extra:dict[];keywords:dict[RampTextureDrawer="[TCP2Gradient]",RampTextureLabel="Ramp Texture",SHADER_TARGET="3.0",BLEND_TEX2_CHNL="g",BLEND_TEX1_CHNL="r",RENDER_TYPE="Opaque"];matLayers:list[];tmplt:"SG2_Template_URP") */
-/* TCP_HASH 36829f101b661dba68034f013799b1c6 */
+/* TCP_DATA u config(ver:"2.9.6";unity:"2021.3.16f1";shaderProperties:list[];codeInjection:codeInjection(injectedFiles:list[];mark:False);customTextures:list[];features:list["UNITY_5_4","UNITY_5_5","UNITY_5_6","UNITY_2017_1","UNITY_2018_1","UNITY_2018_2","UNITY_2018_3","UNITY_2019_1","ALPHA_TESTING","SHADOW_COLOR_MAIN_DIR","UNITY_2019_2","UNITY_2019_3","UNITY_2019_4","UNITY_2020_1","UNITY_2021_1","UNITY_2021_2","TEMPLATE_LWRP","AUTO_TRANSPARENT_BLENDING"];flags:list[];flags_extra:dict[];keywords:dict[RampTextureDrawer="[TCP2Gradient]",RampTextureLabel="Ramp Texture",SHADER_TARGET="3.0",RENDER_TYPE="TransparentCutout"];matLayers:list[];tmplt:"SG2_Template_URP") */
+/* TCP_HASH 910d8c933cb27f474df076056980f45f */

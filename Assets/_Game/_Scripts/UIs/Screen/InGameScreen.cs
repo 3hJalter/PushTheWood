@@ -69,5 +69,15 @@ namespace _Game.UIs.Screen
         {
             LevelManager.Ins.OnUndo();
         }
+
+        public void OnShowShadowObj()
+        {
+            LevelManager.Ins.CurrentLevel.ChangeShadowUnitAlpha(false);
+        }
+
+        public void OnHideShadowObj()
+        {
+            LevelManager.Ins.CurrentLevel.ChangeShadowUnitAlpha(true);
+        }
     }
 }

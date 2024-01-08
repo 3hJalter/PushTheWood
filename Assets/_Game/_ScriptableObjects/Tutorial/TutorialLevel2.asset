@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df3780b4c61f7a745a5cb5e2d9e5e446, type: 3}
-  m_Name: TutorialLevel1
+  m_Script: {fileID: 11500000, guid: 5c022cfb4754428f898570746273cc67, type: 3}
+  m_Name: TutorialLevel2
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,6 +21,4 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  tutorialScreens:
-  - {fileID: 1900909728041113095, guid: a7bc9e7b5e26eff40b2dccddae165859, type: 3}
-  - {fileID: 337122715070888230, guid: cc302e564b178f046b2cee31ade91eed, type: 3}
+  tutorialScreens: []

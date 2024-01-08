@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using _Game._Scripts.Managers;
+using _Game.Managers;
 using UnityEngine;
 using UnityEngine.Serialization;
 using VinhLB;
@@ -18,7 +19,9 @@ namespace _Game.GameGrid.Unit
     {
         // Model of Unit
         [SerializeField] public Transform skin; // Model location
-
+        // MeshRenderer of Unit
+        [SerializeField] private MeshRenderer meshRenderer;
+        
         // Size of this unit, the X and Z equal to the size of the main cell, the Y equal to height level
         [SerializeField] protected Vector3Int size;
 
@@ -72,6 +75,7 @@ namespace _Game.GameGrid.Unit
         protected bool isSpawn = false;
         protected IMemento overrideSpawnSave = null;
         protected IMemento overrideDespawnSave = null;
+        
         public bool IsSpawn => isSpawn;
         #endregion
 
@@ -239,6 +243,24 @@ namespace _Game.GameGrid.Unit
             }
         }
 
+        public void ChangeMaterial(Material material)
+        {
+            meshRenderer.material = material;
+        }
+        
+        public float GetAlphaTransparency()
+        {
+           return meshRenderer.sharedMaterial.GetColor(Constants.BASE_COLOR).a;
+        }
+        
+        public void SetAlphaTransparency(float alpha)
+        {
+            Color color = meshRenderer.sharedMaterial.GetColor(Constants.BASE_COLOR);
+            Debug.Log("Color: " + color);
+            Debug.Log("ALPHA:" + alpha);
+            meshRenderer.sharedMaterial.SetColor(Constants.BASE_COLOR, new Color(color.r, color.g, color.b, alpha));
+        }
+        
         private void ClearNeighbor()
         {
             foreach (GridUnit unit in neighborUnits) unit.neighborUnits.Remove(this);

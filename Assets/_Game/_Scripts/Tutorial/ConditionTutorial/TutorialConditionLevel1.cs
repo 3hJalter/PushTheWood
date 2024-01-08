@@ -1,6 +1,7 @@
 ﻿using System;
 using _Game._Scripts.Managers;
 using _Game._Scripts.Tutorial;
+using _Game._Scripts.Tutorial.ObjectTutorial;
 using _Game.GameGrid;
 using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
@@ -12,8 +13,8 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
     [CreateAssetMenu(fileName = "TutorialLevel1", menuName = "ScriptableObjects/TutorialData/Lvl1", order = 1)]
     public class TutorialConditionLevel1 : BaseTutorialData, ITutorialCondition
     {
-        private Transform glowSpot;
-        private Transform arrowDirection;
+        private BaseObjectTutorial glowSpot;
+        private ArrowDirection arrowDirection;
         
         public void OnForceShowTutorial(int index, bool isIncrement = true)
         {
@@ -38,17 +39,19 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
                         currentScreen = UIManager.Ins.OpenUIDirectly(tutorialScreens[currentScreenIndex]);
                         currentScreenIndex++;
                         Destroy(glowSpot.gameObject);
-                        arrowDirection.gameObject.SetActive(false);
+                        Destroy(arrowDirection.gameObject);
                     }
                     else
                     {
-                        if (currentScreen.gameObject.activeInHierarchy)
+                        if (currentScreen is not null)
                         {
                             currentScreen.CloseDirectly();
+                            currentScreen = null;
                             glowSpot = Instantiate(TutorialManager.Ins.TutorialObjList[TutorialObj.LightSpot],
                                 new Vector3(7,0,11), Quaternion.identity);
-                            arrowDirection = Instantiate(TutorialManager.Ins.TutorialObjList[TutorialObj.Arrow],
+                            arrowDirection = (ArrowDirection) Instantiate(TutorialManager.Ins.TutorialObjList[TutorialObj.Arrow],
                                 new Vector3(9,0,7), Quaternion.identity);
+                            arrowDirection.PointerToHeight(2, true);
                         }
                     }
                     break;

@@ -7,9 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MatTexModel
-  m_Shader: {fileID: 4800000, guid: 839716effe114e347b3165c640be5d08, type: 3}
-  m_ValidKeywords: []
+  m_Name: MatTexModelTrans
+  m_Shader: {fileID: 4800000, guid: 5b3cb4fdc6531054fb6e7c7e752700ca, type: 3}
+  m_ValidKeywords:
+  - _RECEIVE_SHADOWS_OFF
   m_InvalidKeywords:
   - CURVEDWORLD_BEND_ID_1
   - CURVEDWORLD_BEND_TYPE_LITTLEPLANET_Y
@@ -18,10 +19,11 @@ Material:
   - TCP2_RIM_LIGHTING_LIGHTMASK
   - TCP2_SHADOW_LIGHT_COLOR
   - TCP2_UV_NORMALS_FULL
+  - _ALPHABLEND_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -116,7 +118,7 @@ Material:
     - _DirectIntensityOutline: 1
     - _DissolveGradientWidth: 0.2
     - _DissolveValue: 0.5
-    - _DstBlend: 0
+    - _DstBlend: 10
     - _DstBlendOutline: 0
     - _EmissionChannel: 4
     - _EnableConstSizeOutline: 0
@@ -160,10 +162,10 @@ Material:
     - _RampThreshold: 0.5
     - _RampThresholdOtherLights: 0.5
     - _RampType: 0
-    - _ReceiveShadowsOff: 1
+    - _ReceiveShadowsOff: 0
     - _ReflectionMapType: 0
     - _ReflectionSmoothness: 0.5
-    - _RenderingMode: 0
+    - _RenderingMode: 1
     - _RimAmount: 0.716
     - _RimMax: 1
     - _RimMin: 0.5
@@ -183,7 +185,7 @@ Material:
     - _SpecularToonSize: 0.25
     - _SpecularToonSmoothness: 0.05
     - _SpecularType: 0
-    - _SrcBlend: 1
+    - _SrcBlend: 5
     - _SrcBlendOutline: 0
     - _TexLod: 5
     - _UVSec: 0
@@ -206,17 +208,17 @@ Material:
     - __dummy__: 0
     - __outline_gui_dummy__: 0
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _CurvedWorldBendSettings: {r: 5, g: 1, b: 1, a: 0}
     - _Emission: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _HColor: {r: 0.7, g: 0.65, b: 0.65, a: 1}
+    - _HColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
     - _MatCapColor: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _ReflectionColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.6}
-    - _SColor: {r: 0.4, g: 0.4, b: 0.4, a: 1}
+    - _SColor: {r: 0, g: 0, b: 0, a: 1}
     - _SketchColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _SpecularColor: {r: 0.75, g: 0.75, b: 0.75, a: 1}

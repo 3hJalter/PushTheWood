@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 839716effe114e347b3165c640be5d08
+guid: 5b3cb4fdc6531054fb6e7c7e752700ca
 ShaderImporter:
   externalObjects: {}
   defaultTextures:
@@ -8,7 +8,6 @@ ShaderImporter:
   - _DitherTex: {fileID: 2800000, guid: f059f76a52d0b374c85c681ed571185e, type: 3}
   nonModifiableTextures: []
   preprocessorOverride: 0
-  userData: USER,FUNITY_5_4,FUNITY_5_5,FUNITY_5_6,FUNITY_2017_1,FUNITY_2018_1,FUNITY_2018_2,FUNITY_2018_3,FUNITY_2019_1,FALPHA_TESTING,FTEMPLATE_LWRP,FSHADOW_COLOR_MAIN_DIR,KRampTextureDrawer:[TCP2Gradient],KRampTextureLabel:Ramp
-    Texture,KSHADER_TARGET:3.0,chCF25038E,cCF:SG2_Template_LWRP
+  userData: 
   assetBundleName: 
   assetBundleVariant: 
