@@ -39,7 +39,7 @@ namespace _Game.GameGrid
             // PlayerPrefs.SetInt(Constants.LEVEL_INDEX, 0);
             levelIndex = PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0);
             GridUtilities.OverlayMaterial = FontMaterial;
-            OnGenerateLevel(false);
+            OnGenerateLevel(levelIndex == 0);
             SetCameraToPosition(CurrentLevel.GetCenterPos());
         }
 
