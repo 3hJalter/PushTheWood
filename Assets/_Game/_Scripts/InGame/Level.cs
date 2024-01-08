@@ -362,7 +362,7 @@ namespace _Game._Scripts.InGame
                     }
                     else
                     {
-                        if (LevelManager.Ins.player is not null) LevelManager.Ins.player.OnDespawn();
+                        if (LevelManager.Ins.player != null) LevelManager.Ins.player.OnDespawn();
                         firstPlayerInitCell = GridMap.GetGridCell(x, y);
                         firstPlayerDirection = (Direction)directionCell;
                         LevelManager.Ins.player = (Player) SpawnUnit(x, y, (PoolType)unitCell, (Direction)directionCell);
