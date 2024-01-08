@@ -1,6 +1,5 @@
 ﻿using System;
 using _Game._Scripts.Managers;
-using _Game._Scripts.Tutorial;
 using _Game._Scripts.Tutorial.ObjectTutorial;
 using _Game.GameGrid;
 using _Game.GameGrid.Unit;
@@ -19,15 +18,15 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
         public void OnForceShowTutorial(int index, bool isIncrement = true)
         {
             if (index < 0 || index >= tutorialScreens.Count) return;
-            currentScreenIndex = index;
-            currentScreen = UIManager.Ins.OpenUIDirectly(tutorialScreens[currentScreenIndex]);
-            if (isIncrement) currentScreenIndex++;
+            currentTutIndex = index;
+            currentScreen = UIManager.Ins.OpenUIDirectly(tutorialScreens[currentTutIndex]);
+            if (isIncrement) currentTutIndex++;
         }
         
         public void HandleShowTutorial(GameGridCell cell, GridUnit triggerUnit)
         {
             if (triggerUnit is not Player) return;
-            switch (currentScreenIndex)
+            switch (currentTutIndex)
             {
                 // Case 0 already handle when the cutscene is playing
                 case 1:
@@ -36,8 +35,8 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
                     if (Math.Abs(cell.WorldX - 7) < TOLERANCE && Math.Abs(cell.WorldY - 11) < TOLERANCE) 
                     {
                         MoveInputManager.Ins.OnForceResetMove();
-                        currentScreen = UIManager.Ins.OpenUIDirectly(tutorialScreens[currentScreenIndex]);
-                        currentScreenIndex++;
+                        currentScreen = UIManager.Ins.OpenUIDirectly(tutorialScreens[currentTutIndex]);
+                        currentTutIndex++;
                         Destroy(glowSpot.gameObject);
                         Destroy(arrowDirection.gameObject);
                     }

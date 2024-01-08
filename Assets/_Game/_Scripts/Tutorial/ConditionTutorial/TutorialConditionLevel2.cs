@@ -12,7 +12,7 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
         {
             if (triggerUnit is Player)
             {
-                if (currentScreenIndex == 0)
+                if (currentTutIndex == 0)
                 {
                     
                 }

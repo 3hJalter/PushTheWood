@@ -65,7 +65,7 @@ namespace VinhLB
 
             if (_testing)
             {
-                LevelManager.Ins.OnInit();
+                LevelManager.Ins.OnGenerateLevel(true);
                 _homeGrid = LevelManager.Ins.CurrentLevel.GridMap;
 
                 var debugGrid = new Grid<GameGridCell, GameGridCellData>.DebugGrid();

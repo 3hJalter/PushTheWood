@@ -362,8 +362,10 @@ namespace _Game._Scripts.InGame
                     }
                     else
                     {
+                        if (LevelManager.Ins.player is not null) LevelManager.Ins.player.OnDespawn();
                         firstPlayerInitCell = GridMap.GetGridCell(x, y);
                         firstPlayerDirection = (Direction)directionCell;
+                        LevelManager.Ins.player = (Player) SpawnUnit(x, y, (PoolType)unitCell, (Direction)directionCell);
                     }
 
                 }
@@ -371,7 +373,7 @@ namespace _Game._Scripts.InGame
 
             return;
 
-            void SpawnUnit(int x, int y, PoolType type, Direction direction)
+            GridUnit SpawnUnit(int x, int y, PoolType type, Direction direction)
             {
                 GameGridCell cell = GridMap.GetGridCell(x, y);
                 GridUnit unit = SimplePool.Spawn<GridUnit>(DataManager.Ins.GetGridUnit(type));
@@ -384,7 +386,7 @@ namespace _Game._Scripts.InGame
                     unit = unit
                 });
                 unit.OnSetPositionAndRotation(PredictUnitPos(), direction);
-                return;
+                return unit;
 
                 Vector3 PredictUnitPos()
                 {
@@ -423,9 +425,6 @@ namespace _Game._Scripts.InGame
 
         public void OnInitPlayerToLevel()
         {
-            if (LevelManager.Ins.player is not null) LevelManager.Ins.player.OnDespawn();
-            LevelManager.Ins.player = SimplePool.Spawn<Player>(
-                DataManager.Ins.GetGridUnit(PoolType.Player));
             LevelManager.Ins.player.OnInit(firstPlayerInitCell, HeightLevel.One, true, firstPlayerDirection);
             Islands[firstPlayerInitCell.Data.gridSurface.IslandID].SetFirstPlayerStepCell(firstPlayerInitCell);
         }
