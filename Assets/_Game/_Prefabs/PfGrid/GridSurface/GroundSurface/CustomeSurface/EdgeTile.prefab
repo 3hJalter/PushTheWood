@@ -272,6 +272,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 155296321085860010, guid: f2bb3b8f255d57745a483379214c8c3d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 155296321085860010, guid: f2bb3b8f255d57745a483379214c8c3d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -281,7 +285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 155296321085860010, guid: f2bb3b8f255d57745a483379214c8c3d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.25
+      value: -0.125
       objectReference: {fileID: 0}
     - target: {fileID: 155296321085860010, guid: f2bb3b8f255d57745a483379214c8c3d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -314,6 +318,10 @@ PrefabInstance:
     - target: {fileID: 5922836006275919048, guid: f2bb3b8f255d57745a483379214c8c3d, type: 3}
       propertyPath: m_Name
       value: BladeGrassMesh_8x6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5922836006275919048, guid: f2bb3b8f255d57745a483379214c8c3d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2bb3b8f255d57745a483379214c8c3d, type: 3}

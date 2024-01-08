@@ -238,6 +238,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -89
       objectReference: {fileID: 0}
+    - target: {fileID: 2015096886818057085, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 2015096886818057085, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
     - target: {fileID: 2061765652788169156, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -274,6 +278,14 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 2915115477121344800, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
+    - target: {fileID: 3535132187703176273, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 3535132187703176273, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
+    - target: {fileID: 4564946537755877106, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 4564946537755877106, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
     - target: {fileID: 5220664545909413484, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -306,6 +318,10 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 6443702629738973578, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
+    - target: {fileID: 7160465786875836800, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 7160465786875836800, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
     - target: {fileID: 7573738836167675790, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -322,6 +338,14 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8111232607692597831, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
+    - target: {fileID: 8240175277172153983, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8240175277172153983, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
+    - target: {fileID: 8254761066890694906, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8254761066890694906, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
     - target: {fileID: 8290049040921224314, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -330,6 +354,10 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8485924001955639221, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
+    - target: {fileID: 8625398322823802409, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 8625398322823802409, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
     - target: {fileID: 8897314877290242473, guid: c1582767ed3dcb940861b5777b455ddc, type: 3}
       propertyPath: m_Name
       value: Canvas_ScreenMainMenu
@@ -561,7 +589,7 @@ MonoBehaviour:
   _cloudsGO: {fileID: 0}
   _gridGO: {fileID: 517049268}
   _rendererData: {fileID: 11400000, guid: 82b4ed0936573764e945e1fb602913e0, type: 2}
-  _renderPipelineAsset: {fileID: 0}
+  _renderPipelineAsset: {fileID: 11400000, guid: 27753c6e9514d924dab306f724c17974, type: 2}
   _cameraData: {fileID: 1929008257}
 --- !u!1001 &290731783
 PrefabInstance:
@@ -1014,7 +1042,8 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  gameState: 0
+  _gameState: 0
+  _reduceScreenResolution: 0
 --- !u!1001 &317977267
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2653,7 +2682,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a3577d799040991478f3c045c0ac12bf, type: 2}
+  - {fileID: 2100000, guid: e261aed58af25f341b456b6f211c894d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

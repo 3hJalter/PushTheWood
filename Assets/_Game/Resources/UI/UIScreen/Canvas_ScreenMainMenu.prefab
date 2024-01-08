@@ -7720,6 +7720,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _dailyRewardButton: {fileID: 7639367267966561030}
+  _dailyChallengeButton: {fileID: 6503827693038586958}
 --- !u!1 &3331196502419573272
 GameObject:
   m_ObjectHideFlags: 0

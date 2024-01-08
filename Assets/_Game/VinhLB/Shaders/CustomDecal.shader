@@ -1,7 +1,7 @@
 // Modified from Toony Colors Pro+Mobile 2
 // (c) 2014-2020 Jean Moreno
 
-Shader "Toony Colors Pro 2/Examples URP/Cat Demo/CustomDecal"
+Shader "Toony Colors Pro 2/Examples URP/Cat Demo/Custom Decal"
 {
     Properties
     {

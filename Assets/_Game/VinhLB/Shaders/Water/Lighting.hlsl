@@ -1,3 +1,6 @@
+#ifndef CUSTOM_LIGHTING_INCLUDED
+#define CUSTOM_LIGHTING_INCLUDED
+
 float LightingSpecular(float3 L, float3 N, float3 V, float Smoothness)
 {
     float3 H = SafeNormalize(float3(L) + float3(V));
@@ -47,3 +50,5 @@ void AdditionalLighting_float(float3 Normal, float3 Position, float3 View, float
     }
     #endif
 }
+
+#endif

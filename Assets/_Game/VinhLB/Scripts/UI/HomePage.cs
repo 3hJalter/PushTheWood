@@ -9,12 +9,18 @@ namespace VinhLB
     {
         [SerializeField]
         private Button _dailyRewardButton;
+        [SerializeField]
+        private Button _dailyChallengeButton;
 
         private void Awake()
         {
             _dailyRewardButton.onClick.AddListener(() =>
             {
                 UIManager.Ins.OpenUI<DailyRewardPopup>();
+            });
+            _dailyChallengeButton.onClick.AddListener(() =>
+            {
+                UIManager.Ins.OpenUI<DailyChallengePopup>();
             });
         }
 

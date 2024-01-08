@@ -114,4 +114,10 @@ namespace GameGridEnum
         Box = 5,
         Bomb = 6
     }
+    
+    public enum VFXType
+    {
+        Dust = 0,
+        WaterSplash = 1
+    }
 }
