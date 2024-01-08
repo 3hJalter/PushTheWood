@@ -32,9 +32,8 @@ namespace HControls
 
         public static void SetDirectionInput(Direction direction)
         {
-            //DevLog.Log(DevId.Hoang, "Set direction input: " + direction);
+            DevLog.Log(DevId.Hoang, "SetDirectionInput: " + direction);
             Instance._direction = direction;
-            MoveInputManager.Ins.currentDirection = direction; // TEST: Only for debug
         }
 
         public static void SetDirectionInput(float thresholdP2)

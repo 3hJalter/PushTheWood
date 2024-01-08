@@ -20,6 +20,11 @@ namespace _Game.Managers
 
         public int CountSurfaceMaterial => materialData.CountSurfaceMaterial;
         
+        public Material GetTransparentMaterial()
+        {
+            return materialData.GetTransparentMaterial();
+        }
+        
         public Material GetSurfaceMaterial(MaterialEnum materialEnum)
         {
             return materialData.GetSurfaceMaterial(materialEnum);

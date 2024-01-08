@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/_Game/Resources/UI/UIPopup/Canvas_PopupDailyReward.prefab.meta
-guid: 6821ae84a48294242be98750cf43f624
-========
 guid: 655f60e4d5ffb844f8d7510eda3fd643
->>>>>>>> Hung:Assets/_Game/VinhLB/Prefabs/UI/DailyRewardItem.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

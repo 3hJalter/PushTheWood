@@ -7,6 +7,13 @@ namespace _Game.Data
     [CreateAssetMenu(fileName = "MaterialData", menuName = "ScriptableObjects/MaterialData", order = 1)]
     public class MaterialData : SerializedScriptableObject
     {
+        [SerializeField] private Material transparentMaterial;
+        
+        public Material GetTransparentMaterial()
+        {
+            return transparentMaterial;
+        }
+
         [Title("Surface Material")]
         [SerializeField] private readonly Dictionary<MaterialEnum, Material> _surfaceMaterialDic = new();
         

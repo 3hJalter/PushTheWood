@@ -56,9 +56,22 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: belowUnits
+      Entry: 7
+      Data: 0|System.Collections.Generic.HashSet`1[[_Game.GameGrid.Unit.GridUnit,
+        Assembly-CSharp]], System.Core
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: cellInUnits
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[_Game.GameGrid.GameGridCell, Assembly-CSharp]],
+      Data: 1|System.Collections.Generic.List`1[[_Game.GameGrid.GameGridCell, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
@@ -71,10 +84,7 @@ MonoBehaviour:
       Data: 
     - Name: EnterPosData
       Entry: 7
-      Data: 1|_Game.GameGrid.Unit.EnterCellPosData, Assembly-CSharp
-    - Name: startHeight
-      Entry: 3
-      Data: 0
+      Data: 2|_Game.GameGrid.Unit.EnterCellPosData, Assembly-CSharp
     - Name: finalPos
       Entry: 7
       Data: UnityEngine.Vector3, UnityEngine.CoreModule
@@ -108,23 +118,13 @@ MonoBehaviour:
     - Name: isFalling
       Entry: 5
       Data: false
+    - Name: startHeight
+      Entry: 3
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
     - Name: neighborUnits
-      Entry: 7
-      Data: 2|System.Collections.Generic.HashSet`1[[_Game.GameGrid.Unit.GridUnit,
-        Assembly-CSharp]], System.Core
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: upperUnits
       Entry: 7
       Data: 3|System.Collections.Generic.HashSet`1[[_Game.GameGrid.Unit.GridUnit,
         Assembly-CSharp]], System.Core
@@ -137,7 +137,7 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: belowUnits
+    - Name: upperUnits
       Entry: 7
       Data: 4|System.Collections.Generic.HashSet`1[[_Game.GameGrid.Unit.GridUnit,
         Assembly-CSharp]], System.Core
@@ -165,6 +165,7 @@ MonoBehaviour:
       Data: 
   poolType: 6
   skin: {fileID: 6370191254414802909}
+  meshRenderer: {fileID: 8791217663884550529}
   size: {x: 1, y: 1, z: 1}
   isMinusHalfSizeY: 0
   startHeight: 2

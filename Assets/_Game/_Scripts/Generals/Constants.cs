@@ -75,7 +75,8 @@ public static class Constants
     public const HeightLevel MAX_HEIGHT = HeightLevel.FourPointFive;
     
     public const int MAX_SMALL_ISLAND_SIZE = 5;
-    
+
+    public const string BASE_COLOR = "_BaseColor";
     // OLD 
     public const float TREE_HEIGHT = 1f;
     public const float MOVING_TIME2 = 0.25f;

@@ -24,12 +24,14 @@ namespace _Game._Scripts.Tutorial
     {
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         [SerializeField] protected List<TutorialScreen> tutorialScreens = new();
-        protected int currentScreenIndex;
+        protected int currentTutIndex;
+
+        protected UICanvas currentScreen;
         
         [ContextMenu("Reset Tutorial")]
         public void ResetTutorial()
         {
-            currentScreenIndex = 0;
+            currentTutIndex = 0;
         }
     }
 }

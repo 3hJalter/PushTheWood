@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using _Game._Scripts.InGame;
 using _Game.Data;
 using _Game.DesignPattern;
@@ -9,7 +9,6 @@ using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Managers;
-using _Game.Utilities;
 using GameGridEnum;
 using UnityEngine;
 using VinhLB;
@@ -24,20 +23,28 @@ public class GridMapDataGenerator : MonoBehaviour
     [Header("Map Container")]
     [SerializeField] private Transform surfaceContainer;
     [SerializeField] private Transform unitContainer;
+    [SerializeField] private Transform shadowContainer;
 
     
     [Header("Load Level")]
-    [SerializeField] private int loadLevelIndexStart;
-    [SerializeField] private int loadLevelIndexEnd = 1;
+    [SerializeField] private int loadLevelIndex;
     
-    private List<Level> _loadedLevel;
+    private Level _loadedLevel;
 
     [ContextMenu("Destroy All")]
     private void DestroyAll()
     {
         DestroyAllUnit();
         DestroyAllSurface();
+        DestroyAllShadow();
         _loadedLevel = null;
+    }
+    
+    [ContextMenu("Destroy All Shadow In Container")]
+    private void DestroyAllShadow()
+    {
+        GridUnit[] gridUnits = shadowContainer.GetComponentsInChildren<GridUnit>();
+        foreach (GridUnit gridUnit in gridUnits) DestroyImmediate(gridUnit.gameObject);
     }
     
     [ContextMenu("Destroy All Unit In Container")]
@@ -72,17 +79,38 @@ public class GridMapDataGenerator : MonoBehaviour
     private void LoadLevels()
     {
         if (_loadedLevel != null) UnLoadLevels();
-        _loadedLevel = new List<Level>();
-        for (int i = loadLevelIndexStart; i < loadLevelIndexEnd; i++)
+        // Create a new empty object
+        GameObject levelObject = new("Level " + (loadLevelIndex));
+        _loadedLevel = new Level(loadLevelIndex, levelObject.transform);
+        // Spawn the Player to the level
+        Player player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
+        player.OnSetPositionAndRotation(PredictUnitPos(player, _loadedLevel.firstPlayerInitCell), _loadedLevel.firstPlayerDirection);
+        // Set all GridSurface to surfaceContainer
+        GridSurface[] gridSurfaces = FindObjectsOfType<GridSurface>();
+        foreach (GridSurface gridSurface in gridSurfaces)
         {
-            // Create a new empty object
-            GameObject levelObject = new("Level " + (i+1));
-            Level level = new(i, levelObject.transform);
-            // Spawn the Player to the level
-            Player player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
-            player.OnSetPositionAndRotation(PredictUnitPos(player, level.firstPlayerInitCell), level.firstPlayerDirection);
-            _loadedLevel.Add(level);
+            if (gridSurface.Tf.parent != surfaceContainer) gridSurface.Tf.parent = surfaceContainer;
         }
+        // Set all GridUnit from _loadedLevel.LevelUnitData.unit to unitContainer
+        foreach (GridUnit unit in _loadedLevel.UnitDataList.Select(levelUnitData => levelUnitData.unit).Where(unit => unit.Tf.parent != unitContainer))
+        {
+            unit.Tf.parent = unitContainer;
+        }
+        // Set all GridUnit from _loadedLevel.ShadowUnitList to shadowContainer
+        if (_loadedLevel.ShadowUnitList.Count <= 0)
+        {
+            // Destroy the empty object
+            DestroyImmediate(levelObject);
+            return;
+        }
+        _loadedLevel.ShadowUnitList[0].SetAlphaTransparency(0.5f);
+        foreach (GridUnit shadowUnit in _loadedLevel.ShadowUnitList.Where(shadowUnit => shadowUnit.Tf.parent != shadowContainer))
+        {
+            shadowUnit.Tf.parent = shadowContainer;
+            shadowUnit.gameObject.SetActive(true);
+        }
+        // Destroy the empty object
+        DestroyImmediate(levelObject);
     }
 
     [ContextMenu("Unload Level")]
@@ -96,10 +124,18 @@ public class GridMapDataGenerator : MonoBehaviour
     [ContextMenu("Set All GroundSurface to Ground Parent and GroundUnit to Unit Parent")]
     private void SetSurfaceAndUnitToParent()
     {
+        // Find object with GridSurface and not in surfaceContainer, then set parent to surfaceContainer
         GridSurface[] gridSurfaces = FindObjectsOfType<GridSurface>();
-        foreach (GridSurface gridSurface in gridSurfaces) gridSurface.Tf.parent = surfaceContainer;
+        foreach (GridSurface gridSurface in gridSurfaces)
+        {
+            if (gridSurface.Tf.parent != surfaceContainer) gridSurface.Tf.parent = surfaceContainer;
+        }
+        // Find object with GridUnit and not in unitContainer or shadowContainer, then set parent to unitContainer
         GridUnit[] gridUnits = FindObjectsOfType<GridUnit>();
-        foreach (GridUnit gridUnit in gridUnits) gridUnit.Tf.parent = unitContainer;
+        foreach (GridUnit gridUnit in gridUnits)
+        {
+            if (gridUnit.Tf.parent != unitContainer && gridUnit.Tf.parent != shadowContainer) gridUnit.Tf.parent = unitContainer;
+        }
     }
 
     [ContextMenu("Save Data as txt file")]
@@ -117,12 +153,13 @@ public class GridMapDataGenerator : MonoBehaviour
                 return;
         }
 
-        GridSurface[] gridSurfaces = FindObjectsOfType<GridSurface>();
+        GridSurface[] gridSurfaces = surfaceContainer.GetComponentsInChildren<GridSurface>();
         if (gridSurfaces.Length == 0)
         {
             Debug.LogError("Grid must have at least 1 surface, and all unit must have on a surface");
             return;
         }
+        GridUnit[] gridUnits = unitContainer.GetComponentsInChildren<GridUnit>();
         
         // // check name convention
         // if (!mapLevelName.Contains("Lvl_"))
@@ -180,8 +217,7 @@ public class GridMapDataGenerator : MonoBehaviour
         // #endregion
         
         #region Set up GridMap
-
-        GridUnit[] gridUnits = FindObjectsOfType<GridUnit>();
+        
         int minX = int.MaxValue;
         int minZ = int.MaxValue;
         int maxX = int.MinValue;
@@ -495,7 +531,51 @@ public class GridMapDataGenerator : MonoBehaviour
 
         #endregion
 
+        #region Set shadow Unit (for hint or smt)
+        
+        // Reset the array to all -1
+        // Get all units in shadowContainer
+        GridUnit[] shadowUnits = shadowContainer.GetComponentsInChildren<GridUnit>();
+        // Take data to shadowUnitData
+        ShadowUnitData[] shadowUnitDataList = new ShadowUnitData[shadowUnits.Length];
+        // Write a @ to separate
+        file.WriteLine("@");
+        for (int i = 0; i < shadowUnits.Length; i++)
+        {
+           // Check if unit is down
+            shadowUnitDataList[i].rotationAngle = shadowUnits[i].Tf.eulerAngles;
+            // if rotation round int of x and z divided by 180, then it is up
+            bool isUp = Mathf.RoundToInt(shadowUnitDataList[i].rotationAngle.x) % 180 == 0 
+                        && Mathf.RoundToInt(shadowUnitDataList[i].rotationAngle.z) % 180 == 0;
+            
+            shadowUnitDataList[i].position = shadowUnits[i].Tf.position;
+            if (!isUp) 
+            {
+                // down y position by yOffsetDown of grid unit
+                shadowUnitDataList[i].position = shadowUnits[i].Tf.position;
+                shadowUnitDataList[i].position.y -= shadowUnits[i].yOffsetOnDown;
+            }
+            
+            shadowUnitDataList[i].type = (int)shadowUnits[i].PoolType;
+            // Save as format x, y, z, rotationAngleX, rotationAngleY, rotationAngleZ, type
+            // \nx, y, z, rotationAngleX, rotationAngleY, rotationAngleZ, type, ...
+            string saveLine = shadowUnitDataList[i].position.x + " " + shadowUnitDataList[i].position.y + " " +
+                        shadowUnitDataList[i].position.z + " "
+                        + shadowUnitDataList[i].rotationAngle.x + " " + shadowUnitDataList[i].rotationAngle.y + " " +
+                        shadowUnitDataList[i].rotationAngle.z + " "
+                        + shadowUnitDataList[i].type;
+            file.WriteLine(saveLine);     
+        }
+        #endregion
+        
         file.Close();
+        
+    }
 
+    private struct ShadowUnitData
+    {
+        public Vector3 position;
+        public Vector3 rotationAngle;
+        public int type;
     }
 }
