@@ -32,7 +32,6 @@ namespace HControls
 
         public static void SetDirectionInput(Direction direction)
         {
-            DevLog.Log(DevId.Hoang, "SetDirectionInput: " + direction);
             Instance._direction = direction;
         }
 

@@ -3362,7 +3362,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 6.17e-43, y: -2.6955303e+12, z: 6.17e-43, w: 6e-44}
+  m_BoundingSphereOverride: {x: 0, y: 3.4e-44, z: 0, w: 0.0000000019605866}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -3771,13 +3771,15 @@ PrefabInstance:
       objectReference: {fileID: 4287837532690632099, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
     - target: {fileID: 4287837532690632099, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
       propertyPath: serializationData.PrefabModifications.Array.size
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4287837532690632099, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
       propertyPath: serializationData.PrefabModifications.Array.data[0]
       value: '"path":"tutorialList","add_keys":{"$id":0,"$type":"System.Object[],
-        mscorlib","$rlength":2,"$rcontent":[{"$id":1,"$type":"System.Int32, mscorlib",1},{"$id":2,"$type":"System.Int32,
-        mscorlib",1}]},"remove_keys":null'
+        mscorlib","$rlength":6,"$rcontent":[{"$id":1,"$type":"System.Int32, mscorlib",1},{"$id":2,"$type":"System.Int32,
+        mscorlib",3},{"$id":3,"$type":"System.Int32, mscorlib",8},{"$id":4,"$type":"System.Int32,
+        mscorlib",1},{"$id":5,"$type":"System.Int32, mscorlib",3},{"$id":6,"$type":"System.Int32,
+        mscorlib",8}]},"remove_keys":null'
       objectReference: {fileID: 0}
     - target: {fileID: 4287837532690632099, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
       propertyPath: serializationData.PrefabModifications.Array.data[1]
@@ -3785,22 +3787,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4287837532690632099, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
       propertyPath: serializationData.PrefabModifications.Array.data[2]
-      value: '"path":"tutorialObjList","value":{"$id":0,"$type":"System.Collections.Generic.Dictionary`2[[_Game._Scripts.Managers.TutorialObj,
-        Assembly-CSharp],[_Game._Scripts.Tutorial.ObjectTutorial.BaseObjectTutorial,
-        Assembly-CSharp]], mscorlib","comparer":{"$id":1,"$type":"System.Collections.Generic.EnumEqualityComparer`1[[_Game._Scripts.Managers.TutorialObj,
-        Assembly-CSharp]], mscorlib","$rlength":0,"$rcontent":[]},"$rlength":2,"$rcontent":[{"$k":0,"$v":$eref:1},{"$k":1,"$v":$eref:2}]}'
+      value: '"path":"tutorialList.{3si}","value":$eref:1'
       objectReference: {fileID: 0}
     - target: {fileID: 4287837532690632099, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
       propertyPath: serializationData.PrefabModifications.Array.data[3]
-      value: '"path":"tutorialObjList.{0es}","value":$eref:1'
+      value: '"path":"tutorialList.{8si}","value":$eref:2'
       objectReference: {fileID: 0}
     - target: {fileID: 4287837532690632099, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
       propertyPath: serializationData.PrefabModifications.Array.data[4]
-      value: '"path":"tutorialObjList.{1es}","value":$eref:2'
+      value: '"path":"tutorialObjList","add_keys":{"$id":0,"$type":"System.Object[],
+        mscorlib","$rlength":2,"$rcontent":[{"$id":1,"$type":"_Game._Scripts.Managers.TutorialObj,
+        Assembly-CSharp",0},{"$id":2,"$type":"_Game._Scripts.Managers.TutorialObj,
+        Assembly-CSharp",1}]},"remove_keys":null'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4287837532690632099, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
+      propertyPath: serializationData.PrefabModifications.Array.data[5]
+      value: '"path":"tutorialObjList.{0es}","value":$eref:3'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4287837532690632099, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
+      propertyPath: serializationData.PrefabModifications.Array.data[6]
+      value: '"path":"tutorialObjList.{1es}","value":$eref:4'
       objectReference: {fileID: 0}
     - target: {fileID: 4287837532690632099, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
       propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.size
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4287837532690632099, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
       propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.data[0]
@@ -3809,9 +3819,17 @@ PrefabInstance:
     - target: {fileID: 4287837532690632099, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
       propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.data[1]
       value: 
-      objectReference: {fileID: 5887992959553493391, guid: 372508cc7ae03424f97886e72c051425, type: 3}
+      objectReference: {fileID: 11400000, guid: 1c56817b1440126488887871b311e4db, type: 2}
     - target: {fileID: 4287837532690632099, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
       propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4a3219fe34d6b73499ee0ce3f544df25, type: 2}
+    - target: {fileID: 4287837532690632099, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
+      propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.data[3]
+      value: 
+      objectReference: {fileID: 5887992959553493391, guid: 372508cc7ae03424f97886e72c051425, type: 3}
+    - target: {fileID: 4287837532690632099, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
+      propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.data[4]
       value: 
       objectReference: {fileID: 7475971549517363791, guid: 8405c3d9c1a453c4b9a54ff1fd9e59b0, type: 3}
     - target: {fileID: 4287837532690632157, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}

@@ -256,8 +256,6 @@ namespace _Game.GameGrid.Unit
         public void SetAlphaTransparency(float alpha)
         {
             Color color = meshRenderer.sharedMaterial.GetColor(Constants.BASE_COLOR);
-            Debug.Log("Color: " + color);
-            Debug.Log("ALPHA:" + alpha);
             meshRenderer.sharedMaterial.SetColor(Constants.BASE_COLOR, new Color(color.r, color.g, color.b, alpha));
         }
         

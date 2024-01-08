@@ -32,7 +32,7 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
                 case 1:
                 {
                     // if player at cell 7, 11
-                    if (Math.Abs(cell.WorldX - 7) < TOLERANCE && Math.Abs(cell.WorldY - 11) < TOLERANCE) 
+                    if (Math.Abs(cell.WorldX - 7) < Constants.TOLERANCE && Math.Abs(cell.WorldY - 11) < Constants.TOLERANCE) 
                     {
                         MoveInputManager.Ins.OnForceResetMove();
                         currentScreen = UIManager.Ins.OpenUIDirectly(tutorialScreens[currentTutIndex]);
@@ -50,15 +50,13 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
                                 new Vector3(7,0,11), Quaternion.identity);
                             arrowDirection = (ArrowDirection) Instantiate(TutorialManager.Ins.TutorialObjList[TutorialObj.Arrow],
                                 new Vector3(9,0,7), Quaternion.identity);
-                            arrowDirection.PointerToHeight(2, true);
+                            arrowDirection.PointerToHeight(2, Direction.Forward, true);
                         }
                     }
                     break;
                 }
             }
         }
-
-        private const double TOLERANCE = 0.01f;
 
         public void HandleShowTutorial(GridUnit triggerUnit, GridUnit targetUnit)
         {

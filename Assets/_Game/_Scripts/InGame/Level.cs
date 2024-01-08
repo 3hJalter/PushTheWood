@@ -207,7 +207,7 @@ namespace _Game._Scripts.InGame
             IsInit = false;
         }
 
-        private readonly Tween _tweenShadowUnitList;
+        private Tween _tweenShadowUnitList;
 
         public void ChangeShadowUnitAlpha(bool isHide)
         {
@@ -218,17 +218,48 @@ namespace _Game._Scripts.InGame
 
             if (isHide)
             {
-                Tween tween = DOVirtual.Float(currentAlphaTransparency, 0, currentAlphaTransparency,
+                _tweenShadowUnitList = DOVirtual.Float(currentAlphaTransparency, 0, currentAlphaTransparency,
                         value => ShadowUnitList[0].SetAlphaTransparency(value))
-                    .OnComplete(() => ShadowUnitList[0].gameObject.SetActive(false));
+                    .OnComplete(() =>
+                    {
+                        // Set active to false for all
+                        for (int i = 0; i < ShadowUnitList.Count; i++) ShadowUnitList[i].gameObject.SetActive(false);
+                    });
             }
             else
             {
-                ShadowUnitList[0].gameObject.SetActive(true);
-                Tween tween = DOVirtual.Float(currentAlphaTransparency, 0.5f, 0.5f - currentAlphaTransparency,
+                // Set active to true for all
+                for (int i = 0; i < ShadowUnitList.Count; i++) ShadowUnitList[i].gameObject.SetActive(true);
+                _tweenShadowUnitList = DOVirtual.Float(currentAlphaTransparency, 0.5f, 0.5f - currentAlphaTransparency,
                     value => ShadowUnitList[0].SetAlphaTransparency(value));
             }
+            
+        }
 
+        public void ChangeShadowUnitAlpha(bool isHide, int index)
+        {
+            if (ShadowUnitList.Count <= index) return;
+            // Kill the previous tween if they are running
+            _tweenShadowUnitList?.Kill();
+            float currentAlphaTransparency = ShadowUnitList[index].GetAlphaTransparency();
+            if (isHide)
+            {
+                Debug.Log("Hide");
+                _tweenShadowUnitList = DOVirtual.Float(currentAlphaTransparency, 0, currentAlphaTransparency,
+                        value => ShadowUnitList[index].SetAlphaTransparency(value))
+                    .OnComplete(() => ShadowUnitList[index].gameObject.SetActive(false));
+            }
+            else
+            {
+                ShadowUnitList[index].gameObject.SetActive(true);
+                Debug.Log("Show shadow unit is active: " + ShadowUnitList[index].gameObject.activeSelf);
+                _tweenShadowUnitList = DOVirtual.Float(currentAlphaTransparency, 0.5f, 0.5f - currentAlphaTransparency,
+                    value =>
+                    {
+                        ShadowUnitList[index].SetAlphaTransparency(value);
+                    }).OnComplete(() => Debug.Log("Show shadow unit is active 2: " + ShadowUnitList[index].gameObject.activeSelf));
+                Debug.Log("Show shadow unit is active 3: " + ShadowUnitList[index].gameObject.activeSelf);
+            }
         }
 
         #endregion

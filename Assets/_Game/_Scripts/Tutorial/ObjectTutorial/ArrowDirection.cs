@@ -10,9 +10,17 @@ namespace _Game._Scripts.Tutorial.ObjectTutorial
         private const float HEIGHT_PER_CELL = 400;
         private Tween tween;
         
-        public void PointerToHeight(int cellNums, bool isLoop, float timeTransitionPerCell = 1f)
+        public void PointerToHeight(int cellNums, Direction rotateDirection, bool isLoop, float timeTransitionPerCell = 1f)
         {
-            // rectImg.sizeDelta = new Vector2(rectImg.siz
+            Tf.eulerAngles = rotateDirection switch
+            {
+                Direction.Left => new Vector3(0, -90, 0),
+                Direction.Right => new Vector3(0, 90, 0),
+                Direction.Forward => new Vector3(0, 0, 0),
+                Direction.Back => new Vector3(0, 180, 0),
+                _ => new Vector3(0, 0, 0)
+            };
+
             tween = DOVirtual.Float(0, cellNums * HEIGHT_PER_CELL, cellNums * timeTransitionPerCell, value =>
             {
                 rectImg.sizeDelta = new Vector2(rectImg.sizeDelta.x, value);
