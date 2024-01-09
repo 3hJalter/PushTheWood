@@ -3,6 +3,7 @@ using _Game.Camera;
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Popup;
+using _Game.Utilities.Timer;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,8 +13,19 @@ namespace _Game.UIs.Screen
 {
     public class InGameScreen : UICanvas
     {
+        private float COOL_DOWN_TIME = 0.3f;
         [SerializeField] private Image blockPanel;
         [SerializeField] private CanvasGroup canvasGroup;
+        [SerializeField] private Button undoButton;
+        [SerializeField] private Button resetIslandButton;
+
+        STimer undoTimer;
+        STimer resetTimer;
+        private void Awake()
+        {
+            undoTimer = TimerManager.Inst.PopSTimer();
+            resetTimer = TimerManager.Inst.PopSTimer();
+        }
 
         public override void Setup()
         {
@@ -55,6 +67,8 @@ namespace _Game.UIs.Screen
         public void OnClickResetIslandButton()
         {
             LevelManager.Ins.CurrentLevel.ResetIslandPlayerOn();
+            resetIslandButton.interactable = false;
+            resetTimer.Start(COOL_DOWN_TIME, () => resetIslandButton.interactable = true);
         }
 
         public void OnClickToggleBuildingMode()
@@ -68,6 +82,14 @@ namespace _Game.UIs.Screen
         public void OnClickUndo()
         {
             LevelManager.Ins.OnUndo();
+            undoButton.interactable = false;
+            undoTimer.Start(COOL_DOWN_TIME, () => undoButton.interactable = true);
+        }
+
+        private void OnDestroy()
+        {
+            TimerManager.Inst.PushSTimer(undoTimer);
+            TimerManager.Inst.PushSTimer(resetTimer);
         }
 
         public void OnShowShadowObj()

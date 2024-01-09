@@ -713,6 +713,8 @@ MonoBehaviour:
   animator: {fileID: 0}
   blockPanel: {fileID: 2725511117278880449}
   canvasGroup: {fileID: 995249274732087731}
+  undoButton: {fileID: 596141825877913813}
+  resetIslandButton: {fileID: 4602439569922810314}
 --- !u!1 &995249275173999333
 GameObject:
   m_ObjectHideFlags: 0

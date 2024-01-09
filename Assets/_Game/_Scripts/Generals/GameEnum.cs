@@ -117,7 +117,8 @@ namespace GameGridEnum
     
     public enum VFXType
     {
-        Dust = 0,
-        WaterSplash = 1
+        DUST = 0,
+        WATER_SPLASH = 1,
+        LEAF_EXPLOSION = 2,
     }
 }
