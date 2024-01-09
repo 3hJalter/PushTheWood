@@ -59,14 +59,6 @@ namespace _Game._Scripts.InGame
                 (int) ((maxXIslandPos.x - minXIslandPos.x) / Constants.CELL_SIZE + 1),
                 (int) ((maxZIslandPos.z - minZIslandPos.z) / Constants.CELL_SIZE + 1));
             isSmallIsland = islandSize.x < Constants.MAX_SMALL_ISLAND_SIZE;
-            // Debug
-            DevLog.Log(DevId.Hoang, "Island " + _islandID + " center pos: " + centerIslandPos);
-            DevLog.Log(DevId.Hoang, "Island " + _islandID + " minX pos: " + minXIslandPos);
-            DevLog.Log(DevId.Hoang, "Island " + _islandID + " maxX pos: " + maxXIslandPos);
-            DevLog.Log(DevId.Hoang, "Island " + _islandID + " minZ pos: " + minZIslandPos);
-            DevLog.Log(DevId.Hoang, "Island " + _islandID + " maxZ pos: " + maxZIslandPos);
-            DevLog.Log(DevId.Hoang, "Island " + _islandID + " size: " + islandSize);
-            //
         }
         
         

@@ -91,5 +91,15 @@ namespace _Game.UIs.Screen
             TimerManager.Inst.PushSTimer(undoTimer);
             TimerManager.Inst.PushSTimer(resetTimer);
         }
+
+        public void OnShowShadowObj()
+        {
+            LevelManager.Ins.CurrentLevel.ChangeShadowUnitAlpha(false);
+        }
+
+        public void OnHideShadowObj()
+        {
+            LevelManager.Ins.CurrentLevel.ChangeShadowUnitAlpha(true);
+        }
     }
 }

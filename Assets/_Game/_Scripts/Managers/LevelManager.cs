@@ -39,15 +39,24 @@ namespace _Game.GameGrid
             // PlayerPrefs.SetInt(Constants.LEVEL_INDEX, 0);
             levelIndex = PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0);
             GridUtilities.OverlayMaterial = FontMaterial;
-            OnInit();
+            OnGenerateLevel(levelIndex == 0);
+            SetCameraToPosition(CurrentLevel.GetCenterPos());
         }
 
-        public void OnInit()
+        public void OnGenerateLevel(bool needInit)
         {
-            // CheckPreload();
             OnCheckTutorial();
             IsConstructingLevel = true;
             _currentLevel = new Level(levelIndex);
+            if (needInit && !CurrentLevel.IsInit)
+            {
+                InitLevel();
+            }
+        }
+
+        public void InitLevel()
+        {
+            if (CurrentLevel.IsInit) return;
             _currentLevel.OnInitLevelSurfaceAndUnit();
             _currentLevel.OnInitPlayerToLevel();
             savingState = new CareTaker(this);
@@ -57,15 +66,8 @@ namespace _Game.GameGrid
             SetCameraToPlayerIsland();
             //NOTE: Test
             DebugManager.Ins?.DebugGridData(_currentLevel.GridMap);
-            // TEMPORARY: CUTSCENE, player will be setup when cutscene end
+            // TEMPORARY: CUTSCENE, player will be show when cutscene end
             if (levelIndex == 0) HidePlayer(true);
-            // SetCameraToPlayer();
-            
-            // if (UIManager.Ins.IsOpened<TransitionScreen>())
-            // {
-            //     UIManager.Ins.GetUI<TransitionScreen>().Open();
-            // } else UIManager.Ins.OpenUI<TransitionScreen>();
-            // CameraManager.Ins.ChangeCameraTargetPosition(_currentLevel.GetCenterPos());
         }
 
         private void OnCheckTutorial()
@@ -90,6 +92,11 @@ namespace _Game.GameGrid
         {
             CameraManager.Ins.ChangeCameraTargetPosition(CurrentLevel.GetIsland(index).centerIslandPos);
         }
+        
+        private void SetCameraToPosition(Vector3 position)
+        {
+            CameraManager.Ins.ChangeCameraTargetPosition(position);
+        }
 
         public void OnWin()
         {
@@ -109,7 +116,7 @@ namespace _Game.GameGrid
             levelIndex = index;
             IsConstructingLevel = true;
             _currentLevel.OnDeSpawnLevel();
-            OnInit();
+            OnGenerateLevel(true);
         }
 
         public void OnNextLevel()
@@ -122,7 +129,7 @@ namespace _Game.GameGrid
             {
                 TutorialManager.Ins.OnDestroyCutsceneObject();
             }
-            OnInit();
+            OnGenerateLevel(true);
             
             // OnChangeTutorialIndex();
         }
@@ -134,11 +141,11 @@ namespace _Game.GameGrid
 
         public void OnRestart()
         {
+            player.OnDespawn();
             CurrentLevel.ResetAllIsland();
             CurrentLevel.GridMap.Reset();
-            player.OnDespawn();
-            player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
-            player.OnInit(CurrentLevel.firstPlayerInitCell);
+            // player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
+            // player.OnInit(CurrentLevel.firstPlayerInitCell);
             SetCameraToPlayerIsland();
             // FxManager.Ins.ResetTrackedTrampleObjectList();
         }

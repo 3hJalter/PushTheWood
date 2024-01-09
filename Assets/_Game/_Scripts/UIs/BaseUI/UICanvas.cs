@@ -66,9 +66,8 @@ public class UICanvas : MonoBehaviour
         else OnClose();
     }
 
-    public virtual void CloseAndDestroy()
+    public virtual void CloseDirectly()
     {
-        isDestroyOnClose = true;
         if (UIManager.Ins.IsContain(this))
         {
             UIManager.Ins.RemoveBackUI(this);

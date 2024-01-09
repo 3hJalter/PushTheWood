@@ -1,4 +1,5 @@
 ﻿using _Game.Camera;
+using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Popup;
 using DG.Tweening;
@@ -40,14 +41,8 @@ namespace _Game.UIs.Screen
 
         public void OnClickStart()
         {
-            // if (!_isFirstOpen)
-            // {
-            //     LevelManager.Ins.OnInit();
-            //     _isFirstOpen = true;
-            // }
-
             UIManager.Ins.OpenUI<InGameScreen>();
-            // FxManager.Ins.StopTweenFog();
+            LevelManager.Ins.InitLevel();
             Close();
         }
         

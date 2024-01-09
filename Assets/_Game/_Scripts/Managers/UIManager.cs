@@ -47,7 +47,7 @@ namespace _Game.Managers
         public void CloseUIDirectly(UICanvas ui)
         {
             if (!ui.gameObject.activeInHierarchy) return;
-            ui.CloseAndDestroy();
+            ui.CloseDirectly();
         }
 
         public bool IsOpened<T>() where T : UICanvas

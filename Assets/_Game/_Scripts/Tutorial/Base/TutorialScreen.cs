@@ -12,12 +12,12 @@ namespace _Game._Scripts.Tutorial
             if (UIManager.Ins.IsOpened<InGameScreen>()) UIManager.Ins.CloseUI<InGameScreen>();
         }
 
-        public override void CloseAndDestroy()
+        public override void CloseDirectly()
         {
             // Show InGameScreen
             if (!UIManager.Ins.IsOpened<InGameScreen>()) UIManager.Ins.OpenUI<InGameScreen>();
             // Close and destroy this screen
-            base.CloseAndDestroy();
+            base.CloseDirectly();
         }
     }
 }

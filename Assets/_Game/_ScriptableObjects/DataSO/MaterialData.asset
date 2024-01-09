@@ -164,3 +164,4 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+  transparentMaterial: {fileID: 2100000, guid: 050e81b8eb5499c4db08f8b394332a10, type: 2}
