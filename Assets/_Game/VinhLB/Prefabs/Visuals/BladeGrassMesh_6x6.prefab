@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5400152888285274927}
   - component: {fileID: 6231758455214944480}
   - component: {fileID: 4955539010319295801}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BladeGrassMesh_6x6
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,19 +1,15 @@
 ﻿using System.Collections.Generic;
+using GameGridEnum;
 using UnityEngine;
 
 namespace _Game.DesignPattern
 {
-    public enum VFX
-    {
-        DUST = 0,
-        LEAF_EXPLOSION = 1,
-    }
     public class PoolController : Singleton<PoolController>
     {
         [Header("Pool")] public PoolAmount[] pool;
 
         [Header("Particle")] public ParticleAmount[] particle;
-        public Dictionary<VFX, ParticleSystem> Particles;
+        public Dictionary<VFXType, ParticleSystem> Particles;
 
         public void Awake()
         {

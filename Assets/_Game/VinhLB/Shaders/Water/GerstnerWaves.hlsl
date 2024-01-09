@@ -1,3 +1,6 @@
+#ifndef GERSTNER_WAVES_INCLUDED
+#define GERSTNER_WAVES_INCLUDED
+
 float3 GerstnerWave(float3 position, float steepness, float wavelength, float speed, float direction,
                     inout float3 tangent, inout float3 binormal)
 {
@@ -41,3 +44,5 @@ void GerstnerWaves_float(float3 position, float steepness, float wavelength, flo
     normal = normalize(cross(binormal, tangent));
     //TBN = transpose(float3x3(tangent, binormal, normal));
 }
+
+#endif

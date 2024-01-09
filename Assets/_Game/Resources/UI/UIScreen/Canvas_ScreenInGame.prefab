@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4555820917285671909}
   - component: {fileID: 5598450421718246834}
   m_Layer: 5
-  m_Name: BtnResetIsland
+  m_Name: ResetIslandButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -784,7 +784,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 775fd62310a95f740aab0ea16d810b0d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bb686ea4c141046129a10074d93b72fd, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1496,7 +1496,7 @@ GameObject:
   - component: {fileID: 841786169458568121}
   - component: {fileID: 60349730668334357}
   m_Layer: 5
-  m_Name: BtnUndo
+  m_Name: UndoButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1879,7 +1879,7 @@ GameObject:
   - component: {fileID: 5836947646973568429}
   - component: {fileID: 8721548645329996748}
   m_Layer: 5
-  m_Name: BtnToggleBuildingMode
+  m_Name: ToggleBuildingModeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

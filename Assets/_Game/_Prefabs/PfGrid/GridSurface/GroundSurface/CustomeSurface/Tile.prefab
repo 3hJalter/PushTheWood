@@ -315,6 +315,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BladeGrassMesh_8x8
       objectReference: {fileID: 0}
+    - target: {fileID: 3355307547271375630, guid: 7dcd0b53a75639b4593654d60d874229, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dcd0b53a75639b4593654d60d874229, type: 3}
 --- !u!4 &1030909939880026484 stripped

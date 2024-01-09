@@ -16,17 +16,25 @@ namespace _Game.Managers
 
     public class GameManager : Dispatcher<GameManager>
     {
-        [SerializeField] private GameState gameState;
+        [SerializeField]
+        private GameState _gameState;
+        [SerializeField]
+        private bool _reduceScreenResolution;
 
         private void Awake()
         {
             Input.multiTouchEnabled = false;
             Application.targetFrameRate = 60;
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
-            const int maxScreenHeight = 1280;
-            float ratio = Screen.currentResolution.width / (float)Screen.currentResolution.height;
-            if (Screen.currentResolution.height > maxScreenHeight)
-                Screen.SetResolution(Mathf.RoundToInt(ratio * maxScreenHeight), maxScreenHeight, true);
+
+            if (_reduceScreenResolution)
+            {
+                const int maxScreenHeight = 1280;
+                float ratio = Screen.currentResolution.width / (float)Screen.currentResolution.height;
+                if (Screen.currentResolution.height > maxScreenHeight)
+                    Screen.SetResolution(Mathf.RoundToInt(ratio * maxScreenHeight), maxScreenHeight, true);
+            }
+
             // TEST
             if (PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0) != 0) UIManager.Ins.OpenUI<MainMenuScreen>();
             // DontDestroyOnLoad(Tf.root.gameObject);
@@ -40,19 +48,19 @@ namespace _Game.Managers
                 AudioManager.Ins.PauseSfx();
                 PostEvent(EventID.Pause);
             }
-            else if (gameState == GameState.Pause)
+            else if (_gameState == GameState.Pause)
             {
                 DOTween.PlayAll();
                 AudioManager.Ins.UnPauseSfx();
                 PostEvent(EventID.UnPause);
             }
 
-            gameState = gameStateI;
+            _gameState = gameStateI;
         }
 
         public bool IsState(GameState gameStateI)
         {
-            return gameState == gameStateI;
+            return _gameState == gameStateI;
         }
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94020c582e9442e40a1c309e7f9bf0be, type: 3}
   m_Name: BladeGrassMeshSettings
   m_EditorClassIdentifier: 
-  sourceMesh: {fileID: 8347635800071222138, guid: 519798e4c4373744da96027632d603c9, type: 3}
+  sourceMesh: {fileID: -6710775496439687807, guid: 519798e4c4373744da96027632d603c9, type: 3}
   sourceSubMeshIndex: 0
   scale: {x: 1, y: 1, z: 1}
   rotation: {x: 0, y: 0, z: 0}
@@ -20,7 +20,7 @@ MonoBehaviour:
   numBladeSegments: 3
   curvature: 2
   maxBendAngle: 45
-  width: 0.3
-  widthVariance: 0.2
-  height: 0.6
-  heightVariance: 0.3
+  width: 0.25
+  widthVariance: 0.15
+  height: 0.5
+  heightVariance: 0.25

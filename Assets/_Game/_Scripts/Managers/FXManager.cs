@@ -3,7 +3,6 @@ using AmazingAssets.CurvedWorld;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.Serialization;
 using VinhLB;
 
 namespace _Game.Managers
@@ -67,6 +66,20 @@ namespace _Game.Managers
             _cameraData.renderPostProcessing = !_cameraData.renderPostProcessing;
         }
 
+        public void ToggleWater()
+        {
+            _waterGO.SetActive(!_waterGO.activeInHierarchy);
+        }
+
+        public void ToggleGrasses()
+        {
+            GameObject[] grassGOs = VinhLB.Utilities.FindGameObjectsInLayer("Grass", true);
+            for (int i = 0; i < grassGOs.Length; i++)
+            {
+                grassGOs[i].SetActive(!grassGOs[i].activeInHierarchy);
+            }
+        }
+        
         public void SwitchGridActive(bool manual = false, bool active = true)
         {
             if (!manual)

@@ -110,5 +110,33 @@ namespace VinhLB
 
             return false;
         }
+
+        public static GameObject[] FindGameObjectsInLayer(string layerName, bool includeInactive)
+        {
+            return FindGameObjectsInLayer(LayerMask.NameToLayer(layerName), includeInactive);
+        }
+        
+        public static GameObject[] FindGameObjectsInLayer(int layer, bool includeInactive)
+        {
+            GameObject[] goArray = Object.FindObjectsOfType(typeof(GameObject), includeInactive) as GameObject[];
+            if (goArray == null)
+            {
+                return null;
+            }
+            List<GameObject> goList = new List<GameObject>();
+            for (int i = 0; i < goArray.Length; i++)
+            {
+                if (goArray[i].layer == layer)
+                {
+                    goList.Add(goArray[i]);
+                }
+            }
+            if (goList.Count == 0)
+            {
+                return null;
+            }
+            
+            return goList.ToArray();
+        }
     }
 }

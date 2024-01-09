@@ -8,37 +8,49 @@ namespace VinhLB
         [MenuItem("Tools/VinhLB/Scenes/GameDemo")]
         private static void OpenGameDemoScene()
         {
-            OpenScene("GameDemo");
+            OpenGlobalScene("GameDemo");
         }
 
         [MenuItem("Tools/VinhLB/Scenes/ChooseLevel")]
         private static void OpenChooseLevelScene()
         {
-            OpenScene("ChooseLevel");
+            OpenGlobalScene("ChooseLevel");
         }
 
         [MenuItem("Tools/VinhLB/Scenes/MapEditor")]
         private static void OpenMapEditorScene()
         {
-            OpenScene("MapEditor");
+            OpenGlobalScene("MapEditor");
         }
 
         [MenuItem("Tools/VinhLB/Scenes/BuildingTest")]
         private static void OpenBuildingTestScene()
         {
-            OpenScene("BuildingTest");
+            OpenVinhLBScene("BuildingTest");
         }
 
         [MenuItem("Tools/VinhLB/Scenes/BendingTest")]
         private static void OpenBendingTestScene()
         {
-            OpenScene("BendingTest");
+            OpenVinhLBScene("BendingTest");
         }
 
-        private static void OpenScene(string sceneName)
+        private static void OpenVinhLBScene(string sceneName)
+        {
+            OpenScene($"Assets/_Game/VinhLB/Scenes/{sceneName}.unity", OpenSceneMode.Single);
+        }
+
+        private static void OpenGlobalScene(string sceneName)
+        {
+            OpenScene($"Assets/_Game/_Scenes/{sceneName}.unity", OpenSceneMode.Single);
+        }
+
+        private static void OpenScene(string scenePath, OpenSceneMode openSceneMode)
         {
             if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-                EditorSceneManager.OpenScene($"Assets/_Game/_Scenes/{sceneName}.unity", OpenSceneMode.Single);
+            {
+                EditorSceneManager.OpenScene(scenePath, openSceneMode);
+            }
         }
     }
 }

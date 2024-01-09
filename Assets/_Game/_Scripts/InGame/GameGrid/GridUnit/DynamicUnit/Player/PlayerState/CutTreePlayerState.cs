@@ -3,6 +3,7 @@ using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
 using _Game.Utilities.Timer;
+using GameGridEnum;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -82,7 +83,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 // Despawn the Tree
                 t.CutTreeData.tree.OnDespawn();
                 LevelManager.Ins.SaveGameState(true);
-                ParticlePool.Play(PoolController.Ins.Particles[VFX.LEAF_EXPLOSION], t.CutTreeData.tree.Tf.position + Vector3.up * 2f);
+                ParticlePool.Play(PoolController.Ins.Particles[VFXType.LEAF_EXPLOSION], t.CutTreeData.tree.Tf.position + Vector3.up * 2f);
             }
         }
     }
