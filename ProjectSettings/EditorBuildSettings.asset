@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/_Game/_Scenes/Game/CryptoLoader.unity
+    guid: 3b7de3bf5214f9f4db0a5d48cb58162a
+  - enabled: 1
     path: Assets/_Game/_Scenes/GameDemo.unity
     guid: 68659dff99d74634ca1826433fdada6f
   m_configObjects: {}

@@ -41,12 +41,6 @@ namespace _Game.UIs.Screen
 
         public void OnClickStart()
         {
-            // if (!_isFirstOpen)
-            // {
-            //     LevelManager.Ins.OnInit();
-            //     _isFirstOpen = true;
-            // }
-
             UIManager.Ins.OpenUI<InGameScreen>();
             LevelManager.Ins.InitLevel();
             Close();
