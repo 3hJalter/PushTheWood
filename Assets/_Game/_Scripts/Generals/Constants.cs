@@ -77,6 +77,8 @@ public static class Constants
     public const int MAX_SMALL_ISLAND_SIZE = 5;
 
     public const string BASE_COLOR = "_BaseColor";
+
+    public const float TOLERANCE = 0.01f;
     // OLD 
     public const float TREE_HEIGHT = 1f;
     public const float MOVING_TIME2 = 0.25f;
