@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using _Game._Scripts.InGame.GameCondition.Data;
+using _Game._Scripts.Managers;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Interface;
@@ -51,6 +52,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 _isWaitAFrame = false;
                 Direction = InputCache.Count > 0 ? InputCache.Dequeue() : HInputManager.GetDirectionInput();
                 InputDetection.GetInput(Direction);
+                // TEST: Reset the Input if Direction is not none and Move is Swipe (Swipe only take one input per swipe)
+                if (Direction != Direction.None && MoveInputManager.Ins.CurrentChoice is MoveInputManager.MoveChoice.Swipe) HInputManager.SetDefault();
                 stateMachine?.UpdateState();
                 return;
             }

@@ -15,7 +15,24 @@ namespace HControls
 
         private void OnSwipe(string direction)
         {
-            Debug.Log(direction);
+            switch (direction)
+            {
+                case DirectionId.ID_LEFT:
+                    HInputManager.SetDirectionInput(Direction.Left);
+                    break;
+                case DirectionId.ID_RIGHT:
+                    HInputManager.SetDirectionInput(Direction.Right);
+                    break;
+                case DirectionId.ID_UP:
+                    HInputManager.SetDirectionInput(Direction.Forward);
+                    break;
+                case DirectionId.ID_DOWN:
+                    HInputManager.SetDirectionInput(Direction.Back);
+                    break;
+                default:
+                    HInputManager.SetDirectionInput(Direction.None);
+                    break;
+            }
         }
 
         private void OnDisable()

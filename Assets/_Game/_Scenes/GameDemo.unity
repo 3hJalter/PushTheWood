@@ -5754,6 +5754,7 @@ MonoBehaviour:
     SerializationNodes: []
   hSwitch: {fileID: 1799324507}
   dpad: {fileID: 1173657546}
+  hSwipe: {fileID: 1808547880}
 --- !u!1 &1612153788
 GameObject:
   m_ObjectHideFlags: 0
@@ -6065,7 +6066,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1808547879
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6128,7 +6129,7 @@ MonoBehaviour:
       m_Calls: []
   _sensetivity: 10
   _continuousDetection: 0
-  _swipeDetectionMode: 3
+  _swipeDetectionMode: 2
 --- !u!1 &1900047407
 GameObject:
   m_ObjectHideFlags: 0

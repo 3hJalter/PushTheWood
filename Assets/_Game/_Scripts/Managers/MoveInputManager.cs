@@ -17,7 +17,8 @@ namespace _Game._Scripts.Managers
 
         [SerializeField] private HSwitch hSwitch;
         [SerializeField] private HDpad dpad;
-
+        [SerializeField] private HSwipe hSwipe;
+        
         public HDpad Dpad => dpad;
 
         private HSwitch HSwitch => hSwitch;
@@ -50,6 +51,7 @@ namespace _Game._Scripts.Managers
             HInputManager.SetDefault();
             DpadObj.SetActive(false);
             HSwitch.gameObject.SetActive(false);
+            hSwipe.gameObject.SetActive(false);
         }
 
         public void OnChangeMoveChoice(MoveChoice moveChoice)
@@ -68,8 +70,9 @@ namespace _Game._Scripts.Managers
                 }
                 case MoveChoice.Swipe:
                 {
-                    HSwitch.gameObject.SetActive(true);
-                    HSwitch.HideAllTime(true);
+                    // HSwitch.gameObject.SetActive(true);
+                    // HSwitch.HideAllTime(true);
+                    hSwipe.gameObject.SetActive(true);
                     break;
                 }
             }

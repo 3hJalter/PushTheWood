@@ -24,13 +24,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
         public override StateEnum CurrentStateId
         {
             get => StateEnum.Emerge;
-            set
-            {
-                stateMachine.ChangeState(value);
-            }
+            set => stateMachine.ChangeState(value);
         }
 
-        public HashSet<GridUnit> _carryUnits = new();
+        public readonly HashSet<GridUnit> CarryUnits = new();
         private bool _isAddState;
         private bool _isFirstSpawnDone;
         private Direction _lastDirectionSpawn = Direction.None;
@@ -89,7 +86,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
                 player = playerIn;
             }
 
-            _carryUnits.Add(triggerUnit);
+            CarryUnits.Add(triggerUnit);
         }
 
         protected override void OnOutTriggerUpper(GridUnit triggerUnit)
@@ -101,7 +98,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
                 player = null;
             }
 
-            _carryUnits.Remove(triggerUnit);
+            CarryUnits.Remove(triggerUnit);
         }
 
         private void RotateSize(Direction direction)
