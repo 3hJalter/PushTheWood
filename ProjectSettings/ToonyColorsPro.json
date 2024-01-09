@@ -6,8 +6,8 @@
     "CustomOutputPath": "JMO Assets\\Toony Colors Pro\\Demo TCP2\\Cat Demo Assets\\Shaders URP\\Cat Demo",
     "LastImplementationExportImportPath": "D:/Code/Workspace/Unity/CatLumber2/Assets",
     "OpenedFoldouts": [
-        "LIGHTING",
-        "TRANSPARENCY/BLENDING"
+        "TRANSPARENCY/BLENDING",
+        "OPTIONS"
     ],
     "UseCustomFont": true,
     "CustomFont": {

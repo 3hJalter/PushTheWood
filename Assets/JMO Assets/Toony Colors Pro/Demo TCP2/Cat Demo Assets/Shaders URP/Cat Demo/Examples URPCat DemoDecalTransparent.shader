@@ -17,7 +17,6 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/DecalTransparent"
 		[TCP2ColorNoAlpha] _HColor ("Highlight Color", Color) = (0.75,0.75,0.75,1)
 		[TCP2ColorNoAlpha] _SColor ("Shadow Color", Color) = (0.2,0.2,0.2,1)
 		[MainTexture] _BaseMap ("Albedo", 2D) = "white" {}
-		_Cutoff ("Alpha Cutoff", Range(0,1)) = 0.5
 		[TCP2Separator]
 
 		[TCP2Header(Ramp Shading)]
@@ -37,8 +36,7 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/DecalTransparent"
 		Tags
 		{
 			"RenderPipeline" = "UniversalPipeline"
-			"RenderType"="TransparentCutout"
-			"Queue"="AlphaTest"
+			"RenderType"="Opaque"
 		}
 
 		HLSLINCLUDE
@@ -75,7 +73,6 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/DecalTransparent"
 			
 			// Shader Properties
 			float4 _BaseMap_ST;
-			float _Cutoff;
 			fixed4 _BaseColor;
 			float _RampThreshold;
 			float _RampSmoothing;
@@ -206,7 +203,6 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/DecalTransparent"
 				float4 __albedo = ( TCP2_TEX2D_SAMPLE(_BaseMap, _BaseMap, input.pack0.xy).rgba );
 				float4 __mainColor = ( _BaseColor.rgba );
 				float __alpha = ( __albedo.a * __mainColor.a );
-				float __cutoff = ( _Cutoff );
 				float __ambientIntensity = ( 1.0 );
 				float __rampThreshold = ( _RampThreshold );
 				float __rampSmoothing = ( _RampSmoothing );
@@ -218,9 +214,6 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/DecalTransparent"
 				half alpha = __alpha;
 
 				half3 emission = half3(0,0,0);
-				// Alpha Testing
-				half cutoffValue = __cutoff;
-				clip(alpha - cutoffValue);
 				
 				albedo *= __mainColor.rgb;
 
@@ -428,14 +421,10 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/DecalTransparent"
 				float4 __albedo = ( TCP2_TEX2D_SAMPLE(_BaseMap, _BaseMap, input.pack0.xy).rgba );
 				float4 __mainColor = ( _BaseColor.rgba );
 				float __alpha = ( __albedo.a * __mainColor.a );
-				float __cutoff = ( _Cutoff );
 
 				half3 albedo = half3(1,1,1);
 				half alpha = __alpha;
 				half3 emission = half3(0,0,0);
-				// Alpha Testing
-				half cutoffValue = __cutoff;
-				clip(alpha - cutoffValue);
 
 				return 0;
 			}
@@ -515,5 +504,5 @@ Shader "Toony Colors Pro 2/Examples URP/Cat Demo/DecalTransparent"
 	CustomEditor "ToonyColorsPro.ShaderGenerator.MaterialInspector_SG2"
 }
 
-/* TCP_DATA u config(ver:"2.9.6";unity:"2021.3.16f1";shaderProperties:list[];codeInjection:codeInjection(injectedFiles:list[];mark:False);customTextures:list[];features:list["UNITY_5_4","UNITY_5_5","UNITY_5_6","UNITY_2017_1","UNITY_2018_1","UNITY_2018_2","UNITY_2018_3","UNITY_2019_1","ALPHA_TESTING","SHADOW_COLOR_MAIN_DIR","UNITY_2019_2","UNITY_2019_3","UNITY_2019_4","UNITY_2020_1","UNITY_2021_1","UNITY_2021_2","TEMPLATE_LWRP","AUTO_TRANSPARENT_BLENDING"];flags:list[];flags_extra:dict[];keywords:dict[RampTextureDrawer="[TCP2Gradient]",RampTextureLabel="Ramp Texture",SHADER_TARGET="3.0",RENDER_TYPE="TransparentCutout"];matLayers:list[];tmplt:"SG2_Template_URP") */
-/* TCP_HASH 910d8c933cb27f474df076056980f45f */
+/* TCP_DATA u config(ver:"2.9.6";unity:"2021.3.16f1";shaderProperties:list[,,,,,,,,sp(clones:dict[];imps:list[imp_enum(enum_type:"ToonyColorsPro.ShaderGenerator.BlendOperation";value:0;value_type:1;impl_index:0;guid:"045739b2-22aa-471b-b4e5-38ab092ae1e0";gpu_inst:False;locked:False;lbl:"Blend Operation";op:Multiply)];isClone:False;layers:list[];unlocked:list[];name:"Blend Operation")];codeInjection:codeInjection(injectedFiles:list[];mark:False);customTextures:list[];features:list["UNITY_5_4","UNITY_5_5","UNITY_5_6","UNITY_2017_1","UNITY_2018_1","UNITY_2018_2","UNITY_2018_3","UNITY_2019_1","SHADOW_COLOR_MAIN_DIR","UNITY_2019_2","UNITY_2019_3","UNITY_2019_4","UNITY_2020_1","UNITY_2021_1","UNITY_2021_2","AUTO_TRANSPARENT_BLENDING","TEMPLATE_LWRP"];flags:list[];flags_extra:dict[];keywords:dict[RampTextureDrawer="[TCP2Gradient]",RampTextureLabel="Ramp Texture",SHADER_TARGET="3.0",RENDER_TYPE="Opaque"];matLayers:list[];tmplt:"SG2_Template_URP") */
+/* TCP_HASH 9f14931fe0298f27b1259f0c705ae583 */

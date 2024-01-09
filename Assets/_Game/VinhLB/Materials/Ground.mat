@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ground_Hybrid
+  m_Name: Ground
   m_Shader: {fileID: 4800000, guid: 9d1a2c60df6f9e247af940e1ac741be7, type: 3}
   m_ValidKeywords:
   - CURVEDWORLD_BEND_ID_1

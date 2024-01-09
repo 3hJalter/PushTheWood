@@ -13,9 +13,7 @@ Material:
   - CURVEDWORLD_BEND_ID_1
   - CURVEDWORLD_BEND_TYPE_LITTLEPLANET_Y
   - CURVEDWORLD_NORMAL_TRANSFORMATION_ON
-  - _CAUSTICS
   - _ENVIRONMENTREFLECTIONS_OFF
-  - _REFRACTION
   - _SMOOTH_INTERSECTION
   - _SPECULARHIGHLIGHTS_OFF
   - _WAVES
@@ -115,7 +113,7 @@ Material:
     - _CROSSPAN_INTERSECTIONOn: 1
     - _CausticsBrightness: 1
     - _CausticsDistortion: 0
-    - _CausticsOn: 1
+    - _CausticsOn: 0
     - _CausticsSpeed: 0.1
     - _CausticsTiling: 0.3
     - _CrossPan_IntersectionOn: 0
@@ -177,7 +175,7 @@ Material:
     - _ReflectionStrength: 0.248
     - _Reflectivity: 1
     - _RefractionAmount: 0.05
-    - _RefractionOn: 1
+    - _RefractionOn: 0
     - _RefractionStrength: 0.2
     - _RimRize: 1
     - _RimTiling: 0.025

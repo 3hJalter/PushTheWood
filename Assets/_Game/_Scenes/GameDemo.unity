@@ -694,6 +694,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1572984197413266985, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 1572984197413266985, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
     - target: {fileID: 1899756505832261118, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -714,6 +718,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -43.5
       objectReference: {fileID: 0}
+    - target: {fileID: 2420584718063177377, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 2420584718063177377, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
     - target: {fileID: 4892000996706762158, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -782,6 +790,10 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 9020171606912119368, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
+    - target: {fileID: 9100112172012310074, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 9100112172012310074, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
 --- !u!1001 &298297818
@@ -1043,7 +1055,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _gameState: 0
-  _reduceScreenResolution: 0
+  _reduceScreenResolution: 1
 --- !u!1001 &317977267
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2517,7 +2529,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6beee329e8f16f140be9901f597ae341, type: 2}
+  - {fileID: 2100000, guid: a3de368e295b4ea4e8a11399f6235730, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3316,7 +3328,6 @@ MonoBehaviour:
     SerializationNodes: []
   hSwitch: {fileID: 1799324507}
   dpad: {fileID: 1173657546}
-  currentDirection: 0
 --- !u!1 &1728155582
 GameObject:
   m_ObjectHideFlags: 0

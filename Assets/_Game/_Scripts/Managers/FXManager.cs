@@ -64,16 +64,22 @@ namespace _Game.Managers
         public void TogglePostProcessing()
         {
             _cameraData.renderPostProcessing = !_cameraData.renderPostProcessing;
+        }
 
-            bool active = _cameraData.renderPostProcessing;
-            _waterGO.SetActive(active);
+        public void ToggleWater()
+        {
+            _waterGO.SetActive(!_waterGO.activeInHierarchy);
+        }
+
+        public void ToggleGrasses()
+        {
             GameObject[] grassGOs = VinhLB.Utilities.FindGameObjectsInLayer("Grass", true);
             for (int i = 0; i < grassGOs.Length; i++)
             {
-                grassGOs[i].SetActive(active);
+                grassGOs[i].SetActive(!grassGOs[i].activeInHierarchy);
             }
         }
-
+        
         public void SwitchGridActive(bool manual = false, bool active = true)
         {
             if (!manual)

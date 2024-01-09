@@ -51,5 +51,17 @@ namespace _Game.UIs.Popup
             Debug.Log("Click toggle post-processing button");
             FXManager.Ins.TogglePostProcessing();
         }
+
+        public void OnClickToggleWater()
+        {
+            Debug.Log("Click toggle water button");
+            FXManager.Ins.ToggleWater();
+        }
+        
+        public void OnClickToggleGrasses()
+        {
+            Debug.Log("Click toggle grass button");
+            FXManager.Ins.ToggleGrasses();
+        }
     }
 }

@@ -113,7 +113,7 @@ Material:
     m_Floats:
     - _BumpScale: 1
     - _Cull: 2
-    - _Cutoff: 0
+    - _Cutoff: 0.35
     - _DetailNormalMapScale: 1
     - _DirectIntensityOutline: 1
     - _DissolveGradientWidth: 0.2
@@ -204,9 +204,10 @@ Material:
     - _UseShadowTexture: 0
     - _UseSpecular: 0
     - _ZSmooth: -0.5
-    - _ZWrite: 1
+    - _ZWrite: 0
     - __dummy__: 0
     - __outline_gui_dummy__: 0
+    - _blendOperation: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
