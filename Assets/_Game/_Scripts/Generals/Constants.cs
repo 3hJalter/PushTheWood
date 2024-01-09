@@ -79,10 +79,11 @@ public static class Constants
     public const string BASE_COLOR = "_BaseColor";
 
     public const float TOLERANCE = 0.01f;
+    
+    public const float HOLD_TOUCH_TIME = 0.5f;
+    
+    public const string NONE = "None";
     // OLD 
-    public const float TREE_HEIGHT = 1f;
-    public const float MOVING_TIME2 = 0.25f;
-    public const float MOVING_LOG_TIME = 0.01f;
 
     public static readonly HeightLevel MaxHeight = (HeightLevel)(Enum.GetValues(typeof(HeightLevel)).Length - 1);
     public static readonly Vector3 HorizontalSkinRotation = new(0, 0, 90);

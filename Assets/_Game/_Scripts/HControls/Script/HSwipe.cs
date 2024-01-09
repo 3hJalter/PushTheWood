@@ -1,4 +1,5 @@
 ﻿using System;
+using _Game.Utilities;
 using GG.Infrastructure.Utils.Swipe;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace HControls
 
         private void OnEnable()
         {
-            swipeListener.OnSwipe.AddListener(OnSwipe);
+            swipeListener.onSwipe.AddListener(OnSwipe);
         }
 
         private void OnSwipe(string direction)
@@ -29,15 +30,17 @@ namespace HControls
                 case DirectionId.ID_DOWN:
                     HInputManager.SetDirectionInput(Direction.Back);
                     break;
-                default:
+                case Constants.NONE:
                     HInputManager.SetDirectionInput(Direction.None);
+                    // TODO: Zoom Out function
+                    DevLog.Log(DevId.Hoang, "TODO: Zoom Out function when hold swipe");
                     break;
             }
         }
 
         private void OnDisable()
         {
-            swipeListener.OnSwipe.RemoveListener(OnSwipe);
+            swipeListener.onSwipe.RemoveListener(OnSwipe);
         }
     }
 }

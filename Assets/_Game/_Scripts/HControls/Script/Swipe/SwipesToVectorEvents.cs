@@ -43,11 +43,11 @@ namespace GG.Infrastructure.Utils.Swipe {
       }
 
       private void OnEnable () {
-         _swipeListener.OnSwipe.AddListener (OnSwipeHandler) ;
+         _swipeListener.onSwipe.AddListener (OnSwipeHandler) ;
       }
 
       private void OnDisable () {
-         _swipeListener.OnSwipe.RemoveListener (OnSwipeHandler) ;
+         _swipeListener.onSwipe.RemoveListener (OnSwipeHandler) ;
       }
 
       private void OnSwipeHandler (string id) {

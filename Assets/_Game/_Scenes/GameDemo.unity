@@ -6121,15 +6121,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c52040e0d356884a866f616474f7057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnSwipeCancelled:
+  onSwipeCancelled:
     m_PersistentCalls:
       m_Calls: []
-  OnSwipe:
+  onSwipe:
     m_PersistentCalls:
       m_Calls: []
-  _sensetivity: 10
-  _continuousDetection: 0
-  _swipeDetectionMode: 2
+  sensitivity: 10
+  continuousDetection: 0
+  swipeDetectionMode: 2
 --- !u!1 &1900047407
 GameObject:
   m_ObjectHideFlags: 0
@@ -8458,6 +8458,10 @@ PrefabInstance:
     - target: {fileID: 8643770746981963274, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Name
       value: DPad
+      objectReference: {fileID: 0}
+    - target: {fileID: 8643770746981963274, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8643770746981963275, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Pivot.x
