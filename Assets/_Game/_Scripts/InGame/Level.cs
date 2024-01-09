@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using _Game.Data;
 using _Game.DesignPattern;
@@ -8,6 +9,7 @@ using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Managers;
+using _Game.Utilities;
 using _Game.Utilities.Grid;
 using DG.Tweening;
 using GameGridEnum;
@@ -440,15 +442,19 @@ namespace _Game._Scripts.InGame
                 if (!int.TryParse(shadowUnitDataSplit[6], out int unitCell)) continue;
                 if (!Enum.IsDefined(typeof(PoolType), unitCell)) continue;
                 PoolType type = (PoolType)unitCell;
-                Vector3 position = new(float.Parse(shadowUnitDataSplit[0]), float.Parse(shadowUnitDataSplit[1]),
-                    float.Parse(shadowUnitDataSplit[2]));
-                Vector3 eulerAngle = new(float.Parse(shadowUnitDataSplit[3]), float.Parse(shadowUnitDataSplit[4]),
-                    float.Parse(shadowUnitDataSplit[5]));
+                Vector3 position = new(float.Parse(shadowUnitDataSplit[0], CultureInfo.InvariantCulture), 
+                    float.Parse(shadowUnitDataSplit[1], CultureInfo.InvariantCulture), 
+                    float.Parse(shadowUnitDataSplit[2], CultureInfo.InvariantCulture));
+                Vector3 eulerAngle = new(float.Parse(shadowUnitDataSplit[3], CultureInfo.InvariantCulture), 
+                    float.Parse(shadowUnitDataSplit[4], CultureInfo.InvariantCulture), 
+                    float.Parse(shadowUnitDataSplit[5], CultureInfo.InvariantCulture));
                 GridUnit unit = Object.Instantiate(DataManager.Ins.GetGridUnit(type));
                 unit.Tf.position = position;
+                DevLog.Log(DevId.Hoang, "Init shadow unit at: " + position);
                 unit.Tf.eulerAngles = eulerAngle;
                 unit.ChangeMaterial(DataManager.Ins.GetTransparentMaterial());
                 unit.SetAlphaTransparency(0);
+                unit.ChangeReceiveShadow(false);
                 ShadowUnitList.Add(unit);
                 unit.gameObject.SetActive(false);
             }

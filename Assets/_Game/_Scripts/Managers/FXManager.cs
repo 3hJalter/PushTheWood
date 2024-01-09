@@ -25,15 +25,19 @@ namespace _Game.Managers
         private UniversalRenderPipelineAsset _renderPipelineAsset;
         [SerializeField]
         private UniversalAdditionalCameraData _cameraData;
+
+        [SerializeField] private bool activeGround = true;
+        [SerializeField] private bool activeWater = true;
+        [SerializeField] private bool activeGrid;
         
         private GrassTrampleFeature _feature;
 
         private void Awake()
         {
-            _groundGO.SetActive(true);
-            _waterGO.SetActive(true);
+            _groundGO.SetActive(activeGround);
+            _waterGO.SetActive(activeWater);
             // _cloudsGO.SetActive(true);
-            _gridGO.SetActive(false);
+            _gridGO.SetActive(activeGrid);
 
             VinhLB.Utilities.TryGetRendererFeature(_rendererData, out _feature);
         }

@@ -10,6 +10,7 @@ using System.Linq;
 using _Game._Scripts.Managers;
 using _Game.Managers;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 using VinhLB;
 
@@ -243,6 +244,8 @@ namespace _Game.GameGrid.Unit
             }
         }
 
+        #region Hint, MeshRenderer and Shadow
+
         public void ChangeMaterial(Material material)
         {
             meshRenderer.material = material;
@@ -250,7 +253,7 @@ namespace _Game.GameGrid.Unit
         
         public float GetAlphaTransparency()
         {
-           return meshRenderer.sharedMaterial.GetColor(Constants.BASE_COLOR).a;
+            return meshRenderer.sharedMaterial.GetColor(Constants.BASE_COLOR).a;
         }
         
         public void SetAlphaTransparency(float alpha)
@@ -258,6 +261,13 @@ namespace _Game.GameGrid.Unit
             Color color = meshRenderer.sharedMaterial.GetColor(Constants.BASE_COLOR);
             meshRenderer.sharedMaterial.SetColor(Constants.BASE_COLOR, new Color(color.r, color.g, color.b, alpha));
         }
+        
+        public void ChangeReceiveShadow(bool isReceive)
+        {
+            meshRenderer.shadowCastingMode = isReceive ? ShadowCastingMode.On : ShadowCastingMode.Off;
+        }
+        
+        #endregion
         
         private void ClearNeighbor()
         {
