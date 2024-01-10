@@ -62,6 +62,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
             }
             stateMachine.ChangeState(StateEnum.Idle);
         }
+        public override void OnDespawn()
+        {
+            base.OnDespawn();
+            stateMachine.ChangeState(StateEnum.Idle);
+        }
 
         private void AddState()
         {
