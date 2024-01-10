@@ -83,6 +83,8 @@ public static class Constants
     public const float HOLD_TOUCH_TIME = 0.5f;
     
     public const string NONE = "None";
+
+    public const float DEFAULT_HINT_TRAIL_HEIGHT = 3f;
     // OLD 
 
     public static readonly HeightLevel MaxHeight = (HeightLevel)(Enum.GetValues(typeof(HeightLevel)).Length - 1);

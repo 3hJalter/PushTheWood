@@ -58,5 +58,15 @@ namespace _Game.Data
             // else return null
             return null;
         }
+
+        public void AddGridTextData(TextAsset textAsset)
+        {
+            gridTextDataList.Add(textAsset);
+        }
+
+        public bool HasGridTextData(TextAsset textAsset)
+        {
+            return gridTextDataList.Contains(textAsset);
+        }
     }
 }

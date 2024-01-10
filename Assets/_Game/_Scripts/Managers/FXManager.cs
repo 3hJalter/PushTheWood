@@ -1,3 +1,4 @@
+using _Game._Scripts.InGame;
 using _Game.DesignPattern;
 using AmazingAssets.CurvedWorld;
 using DG.Tweening;
@@ -11,6 +12,10 @@ namespace _Game.Managers
     {
         // [SerializeField]
         // private CurvedWorldController curvedWorldController;
+        [SerializeField] private HintLineTrail trailHint;
+
+        public HintLineTrail TrailHint => trailHint;
+
         [SerializeField]
         private GameObject _groundGO;
         [SerializeField]

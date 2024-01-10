@@ -17,7 +17,8 @@ namespace _Game.GameGrid
                 splitData[(int)GridDataType.SurfaceMaterialData],
                 splitData[(int)GridDataType.UnitData],
                 splitData[(int)GridDataType.RotationDirectionUnitData],
-                splitData[(int)GridDataType.ShadowUnitData]);
+                splitData[(int)GridDataType.ShadowUnitData],
+                splitData[(int)GridDataType.TrailHintData]);
         }
 
         private enum GridDataType
@@ -28,13 +29,15 @@ namespace _Game.GameGrid
             UnitData = 3,
             RotationDirectionUnitData = 4,
             ShadowUnitData = 5,
+            TrailHintData = 6,
         }
     }
 
     public class TextGridData
     {
         public TextGridData(string surfaceData, string surfaceRotationDirectionData,
-            string surfaceMaterialData, string unitData, string unitRotationDirectionData, string shadowUnitData = null)
+            string surfaceMaterialData, string unitData, string unitRotationDirectionData, string shadowUnitData = null,
+            string trailHintData = null)
         {
             SurfaceData = surfaceData;
             SurfaceRotationDirectionData = surfaceRotationDirectionData;
@@ -42,6 +45,7 @@ namespace _Game.GameGrid
             UnitData = unitData;
             UnitRotationDirectionData = unitRotationDirectionData;
             ShadowUnitData = shadowUnitData ?? string.Empty;
+            TrailHintData = trailHintData ?? string.Empty;
         }
         
         public string SurfaceData { get; }
@@ -50,6 +54,7 @@ namespace _Game.GameGrid
         public string UnitData { get; }
         public string UnitRotationDirectionData { get; }
         public string ShadowUnitData { get; }
+        public string TrailHintData { get; }
 
         public Vector2Int GetSize(bool skipFirstLine = true)
         {

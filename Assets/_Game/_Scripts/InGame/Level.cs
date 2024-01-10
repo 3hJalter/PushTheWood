@@ -39,6 +39,7 @@ namespace _Game._Scripts.InGame
             // Spawn Units (Not Init)
             OnSpawnUnits();
             OnSpawnShadowUnit();
+            OnSetHintLine();
             // if isInit -> AddIsland & InitUnit
             if (parent is null) return;
             // Set parent
@@ -460,6 +461,22 @@ namespace _Game._Scripts.InGame
             }
         }
 
+        private void OnSetHintLine()
+        {
+            string[] splitHintLineString = _textGridData.TrailHintData.Split(" ; ");
+            if (splitHintLineString.Length == 0) return;
+            List<Vector3> hintLinePosList = new();
+            foreach (string s in splitHintLineString)
+            {
+                string[] split = s.Split(' ');
+                if (split.Length != 2) continue;
+                if (!float.TryParse(split[0], out float x)) continue;
+                if (!float.TryParse(split[1], out float z)) continue;
+                hintLinePosList.Add(new Vector3(x, Constants.DEFAULT_HINT_TRAIL_HEIGHT, z));
+            }
+            FXManager.Ins.TrailHint.SetPath(hintLinePosList);
+        }
+        
         public void OnInitPlayerToLevel()
         {
             LevelManager.Ins.player.OnInit(firstPlayerInitCell, HeightLevel.One, true, firstPlayerDirection);

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using _Game._Scripts.InGame;
@@ -10,28 +11,55 @@ using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Managers;
 using GameGridEnum;
+using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VinhLB;
 using Random = UnityEngine.Random;
 
 public class GridMapDataGenerator : MonoBehaviour
 {
-    [Header("Map Data")]
-    [SerializeField] private string mapLevelName = "Lvl_0";
+    [Title("Level Data")]
+    [Tooltip("The distance between the corner cells and the surfaceUnit closest to it")] 
     [SerializeField] private int offsetSurfaceWithFirstCell = 3; // Should be 3
+    [InlineButton("Setup","Save Level")]
+    [SerializeField] private string mapLevelName = "Lvl_0";
     
-    [Header("Map Container")]
-    [SerializeField] private Transform surfaceContainer;
-    [SerializeField] private Transform unitContainer;
-    [SerializeField] private Transform shadowContainer;
-
-    
-    [Header("Load Level")]
-    [SerializeField] private int loadLevelIndex;
-    
+    [Title("Load Level")]
+    [InlineButton("LoadLevels", "Load")]
+    [InlineButton("UnLoadLevels", "UnLoad")]
+    [SerializeField] private int index;
     private Level _loadedLevel;
 
-    [ContextMenu("Destroy All")]
+    [Title("Level Map Container")] 
+    [InlineButton("TestHintTrail", "Run")]
+    [SerializeField]
+    private TestHintLineInEditMode hintLineTrail;
+    [SerializeField]
+    private string hintLineString = "";
+    [InlineButton("AddNewHintLineObjectList", "New"), PropertyTooltip("Use the position data from hintLineObjList to create hint lint string" +
+                                                                      "\nNew: Add a new hint line string" +
+                                                                      "\nAdd: Add a new string to the current hint line string" +
+                                                                      "\nClear: Destroy and Clear all hint Line Object")]
+    [InlineButton("AddHintLineObjectList", "Add")]
+    [InlineButton("DestroyAllHintLine", "Clear")]
+    [PropertySpace(SpaceBefore = 5, SpaceAfter = 10)]
+    [SerializeField] private List<Transform> hintLineObj;
+
+    [FoldoutGroup("Container")]
+    [InfoBox("Container store where units in map are drawn.")]
+    [SerializeField] private Transform surfaceContainer;
+    [FoldoutGroup("Container")]
+    [SerializeField] private Transform unitContainer;
+    [FoldoutGroup("Container")]
+    [SerializeField] private Transform shadowContainer;
+    [FoldoutGroup("Container")]
+    [SerializeField] private Transform hintLineContainer;
+   
+    [FoldoutGroup("Grid Utilities")]
+    [HorizontalGroup("Grid Utilities/Horizontal")]
+    [Button]
+    [BoxGroup("Grid Utilities/Horizontal/1")]
     private void DestroyAll()
     {
         DestroyAllUnit();
@@ -39,49 +67,96 @@ public class GridMapDataGenerator : MonoBehaviour
         DestroyAllShadow();
         _loadedLevel = null;
     }
+    [Button]
+    [BoxGroup("Grid Utilities/Horizontal/1")]
+    private void SetObjectToContainer()
+    {
+        // Find object with GridSurface and not in surfaceContainer, then set parent to surfaceContainer
+        GridSurface[] gridSurfaces = FindObjectsOfType<GridSurface>();
+        foreach (GridSurface gridSurface in gridSurfaces)
+        {
+            if (gridSurface.Tf.parent != surfaceContainer) gridSurface.Tf.parent = surfaceContainer;
+        }
+        // Find object with GridUnit and not in unitContainer or shadowContainer, then set parent to unitContainer
+        GridUnit[] gridUnits = FindObjectsOfType<GridUnit>();
+        foreach (GridUnit gridUnit in gridUnits)
+        {
+            if (gridUnit.Tf.parent != unitContainer && gridUnit.Tf.parent != shadowContainer) gridUnit.Tf.parent = unitContainer;
+        }
+    }
     
-    [ContextMenu("Destroy All Shadow In Container")]
+    [BoxGroup("Grid Utilities/Horizontal/1")]
+    [Button]
+    private void DestroyAllHintLine()
+    {
+        foreach (Transform child in hintLineContainer)
+        {
+            DestroyImmediate(child.gameObject);
+        }
+        hintLineObj.Clear();
+    }
+    
+    [BoxGroup("Grid Utilities/Horizontal/2")]
+    [Button]
     private void DestroyAllShadow()
     {
         GridUnit[] gridUnits = shadowContainer.GetComponentsInChildren<GridUnit>();
         foreach (GridUnit gridUnit in gridUnits) DestroyImmediate(gridUnit.gameObject);
     }
     
-    [ContextMenu("Destroy All Unit In Container")]
+    [BoxGroup("Grid Utilities/Horizontal/2")]
+    [Button]
     private void DestroyAllUnit()
     {
         GridUnit[] gridUnits = unitContainer.GetComponentsInChildren<GridUnit>();
         foreach (GridUnit gridUnit in gridUnits) DestroyImmediate(gridUnit.gameObject);
     }
     
-    [ContextMenu("Destroy All Surface In Container")]
+    [BoxGroup("Grid Utilities/Horizontal/2")]
+    [Button]
     private void DestroyAllSurface()
     {
         GridSurface[] gridSurfaces = surfaceContainer.GetComponentsInChildren<GridSurface>();
         foreach (GridSurface gridSurface in gridSurfaces) DestroyImmediate(gridSurface.gameObject);
     }
-    
-    // Use this when some unit or surface Unloaded is null, then remove all other by hand
-    [ContextMenu("Clear Loaded Level list to null")] 
-    private void ClearLoadedLevel()
-    {
-        _loadedLevel = null;
-    }
 
-    private Vector3 PredictUnitPos(GridUnit unit, GameGridCell cell)
+    private void AddHintLineObjectList()
     {
-        float offsetY = (float)HeightLevel.One / 2 * Constants.CELL_SIZE;
-        if (unit.UnitTypeY == UnitTypeY.Down) offsetY -= unit.yOffsetOnDown;
-        return cell.WorldPos + Vector3.up * offsetY;
+        // if hintLineString is not empty, add a ";"
+        if (hintLineString != "") hintLineString += " ; ";
+        int countChild = hintLineContainer.childCount;
+        for (int i = 0; i < countChild; i++)
+        {
+            hintLineObj.Add(hintLineContainer.GetChild(i));
+            // store the x and z pos of this obj
+            hintLineString += hintLineObj[i].position.x + " " + hintLineObj[i].position.z;
+            // if not last, add a ";"
+            if (i != countChild - 1) hintLineString += " ; ";
+        }
     }
     
-    [ContextMenu("Load Level")]
+    private void AddNewHintLineObjectList()
+    {
+        // add all object in hintLintContainer to hintLineObj
+        hintLineObj.Clear();
+        hintLineString = "";
+        int countChild = hintLineContainer.childCount;
+        for (int i = 0; i < countChild; i++)
+        {
+            hintLineObj.Add(hintLineContainer.GetChild(i));
+            // store the x and z pos of this obj
+            hintLineString += hintLineObj[i].position.x + " " + hintLineObj[i].position.z;
+            // if not last, add a ";"
+            if (i != countChild - 1) hintLineString += " ; ";
+        }
+    }
+    
     private void LoadLevels()
     {
         if (_loadedLevel != null) UnLoadLevels();
         // Create a new empty object
-        GameObject levelObject = new("Level " + (loadLevelIndex));
-        _loadedLevel = new Level(loadLevelIndex, levelObject.transform);
+        GameObject levelObject = new("Level " + (index));
+        _loadedLevel = new Level(index, levelObject.transform);
         // Spawn the Player to the level
         Player player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
         player.OnSetPositionAndRotation(PredictUnitPos(player, _loadedLevel.firstPlayerInitCell), _loadedLevel.firstPlayerDirection);
@@ -112,36 +187,17 @@ public class GridMapDataGenerator : MonoBehaviour
         // Destroy the empty object
         DestroyImmediate(levelObject);
     }
-
-    [ContextMenu("Unload Level")]
+    
     private void UnLoadLevels()
     {
-        SetSurfaceAndUnitToParent();
+        SetObjectToContainer();
         DestroyAll();
         _loadedLevel = null;
     }
-
-    [ContextMenu("Set All GroundSurface to Ground Parent and GroundUnit to Unit Parent")]
-    private void SetSurfaceAndUnitToParent()
+    
+     private void Setup()
     {
-        // Find object with GridSurface and not in surfaceContainer, then set parent to surfaceContainer
-        GridSurface[] gridSurfaces = FindObjectsOfType<GridSurface>();
-        foreach (GridSurface gridSurface in gridSurfaces)
-        {
-            if (gridSurface.Tf.parent != surfaceContainer) gridSurface.Tf.parent = surfaceContainer;
-        }
-        // Find object with GridUnit and not in unitContainer or shadowContainer, then set parent to unitContainer
-        GridUnit[] gridUnits = FindObjectsOfType<GridUnit>();
-        foreach (GridUnit gridUnit in gridUnits)
-        {
-            if (gridUnit.Tf.parent != unitContainer && gridUnit.Tf.parent != shadowContainer) gridUnit.Tf.parent = unitContainer;
-        }
-    }
-
-    [ContextMenu("Save Data as txt file")]
-    private void Setup()
-    {
-        SetSurfaceAndUnitToParent();
+        SetObjectToContainer();
 
         #region verify
 
@@ -551,9 +607,14 @@ public class GridMapDataGenerator : MonoBehaviour
             shadowUnitDataList[i].position = shadowUnits[i].Tf.position;
             if (!isUp) 
             {
-                // down y position by yOffsetDown of grid unit
                 shadowUnitDataList[i].position = shadowUnits[i].Tf.position;
-                shadowUnitDataList[i].position.y -= shadowUnits[i].yOffsetOnDown;
+                
+                // if y position is floating number (not near integer with 0.05f), then it is done already, and we dont do anything
+                // but if the y position is near integer with 0.05f, then we need to add the offset
+                if (Mathf.Abs(shadowUnitDataList[i].position.y - Mathf.RoundToInt(shadowUnitDataList[i].position.y)) < 0.05f)
+                {
+                    shadowUnitDataList[i].position.y -= shadowUnits[i].yOffsetOnDown;
+                }
             }
             
             shadowUnitDataList[i].type = (int)shadowUnits[i].PoolType;
@@ -568,10 +629,54 @@ public class GridMapDataGenerator : MonoBehaviour
         }
         #endregion
         
+        #region Set hint line
+       
+        // Write a @ to separate
+        file.WriteLine("@");
+        // Save hint line
+        // Check if hintLineString has other than number, space and ;
+        if (hintLineString.Any(c => !char.IsDigit(c) && c != ' ' && c != ';'))
+        {
+            Debug.LogError("Hint line string must be number, space and ;\nSave file still success but no hint line is generated");
+            file.WriteLine("");
+        }
+        else file.WriteLine(hintLineString);
+        
+        #endregion
         file.Close();
         
+        // check if gridData contain this textAsset with this name, if not, add it 
+        if (DataManager.Ins.HasGridTextData(Resources.Load<TextAsset>(mapLevelName))) return;
+        // Add new txt file to gridData from DataManager from path 
+        DataManager.Ins.AddGridTextData(Resources.Load<TextAsset>(mapLevelName));
     }
 
+    private void TestHintTrail()
+    {
+        // separate the hintLineString to each Vector3(x,3f,z)
+        string[] splitHintLineString = hintLineString.Split(" ; ");
+        // if hintLineString is empty, return
+        if (splitHintLineString.Length == 0 || hintLineTrail == null) return;
+        List<Vector3> hintLinePosList = new();
+        foreach (string s in splitHintLineString)
+        {
+            string[] split = s.Split(' ');
+            if (split.Length != 2) continue;
+            if (!float.TryParse(split[0], out float x)) continue;
+            if (!float.TryParse(split[1], out float z)) continue;
+            hintLinePosList.Add(new Vector3(x, 3f, z));
+        }
+        // Make the hintLineTrail follow the hintLinePosList
+        hintLineTrail.TestHintMoving(hintLinePosList);
+    }
+     
+    private Vector3 PredictUnitPos(GridUnit unit, GameGridCell cell)
+    {
+        float offsetY = (float)HeightLevel.One / 2 * Constants.CELL_SIZE;
+        if (unit.UnitTypeY == UnitTypeY.Down) offsetY -= unit.yOffsetOnDown;
+        return cell.WorldPos + Vector3.up * offsetY;
+    }
+     
     private struct ShadowUnitData
     {
         public Vector3 position;
