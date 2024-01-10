@@ -1,4 +1,6 @@
 ﻿using System;
+using _Game.Camera;
+using _Game.Managers;
 using _Game.Utilities;
 using GG.Infrastructure.Utils.Swipe;
 using UnityEngine;
@@ -32,8 +34,8 @@ namespace HControls
                     break;
                 case Constants.NONE:
                     HInputManager.SetDirectionInput(Direction.None);
-                    // TODO: Zoom Out function
-                    DevLog.Log(DevId.Hoang, "TODO: Zoom Out function when hold swipe");
+                    // TODO: Zoom In function when swipe out
+                    CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera);
                     break;
             }
         }
@@ -41,6 +43,8 @@ namespace HControls
         private void OnDisable()
         {
             swipeListener.onSwipe.RemoveListener(OnSwipe);
+            // if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.ZoomOutCamera))
+            //     CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
         }
     }
 }

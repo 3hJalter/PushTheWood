@@ -10,6 +10,7 @@ namespace _Game.Camera
         WorldMapCamera = 2,
         ShopCamera = 3,
         CutsceneCamera = 4,
+        ZoomOutCamera = 5,
     }
 
     public static class CUtilities

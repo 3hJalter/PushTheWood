@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using _Game.Utilities;
+using _Game.Camera;
+using _Game.Managers;
 using _Game.Utilities.Timer;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -69,8 +70,7 @@ namespace HControls
             {
                 if (_isHolding)
                 {
-                    // TODO: Zoom Out function
-                    DevLog.Log(DevId.Hoang, "TODO: Zoom Out function when Dpad hold");
+                    CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera);
                 }
             });
         }
@@ -165,6 +165,8 @@ namespace HControls
             if (hideOnRelease) HideOnRelease(true);
             _isHolding = false;
             timer.Stop();
+            if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.ZoomOutCamera))
+                CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
         }
 
         private void ResetSwitchPos()
