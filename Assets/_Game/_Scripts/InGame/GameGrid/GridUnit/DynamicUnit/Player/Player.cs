@@ -231,7 +231,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             }
             else
             {
-                save = new PlayerMemento(this, isRideVehicle, _vehicle, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
+                save = new PlayerMemento(this, Tf.parent, isRideVehicle, _vehicle, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
                 , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID, lastPushedDirection);
             }
             return save;
@@ -241,10 +241,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         {
             protected IVehicle vehicle = null;
             protected bool isRideVehicle;
-            public PlayerMemento(GridUnitDynamic main, bool isRideVehicle, IVehicle vehicle, StateEnum currentState, params object[] data) : base(main, currentState, data)
+            protected Transform parentTf;
+            public PlayerMemento(GridUnitDynamic main, Transform parentTf, bool isRideVehicle, IVehicle vehicle, StateEnum currentState, params object[] data) : base(main, currentState, data)
             {
                 this.vehicle = vehicle;
                 this.isRideVehicle = isRideVehicle;
+                this.parentTf = parentTf;
             }
 
             public override void Restore()
@@ -252,6 +254,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 base.Restore();
                 main._vehicle = vehicle;
                 main.isRideVehicle = isRideVehicle;
+                if(main.Tf.parent != parentTf)
+                    main.Tf.SetParent(parentTf);
             }
         }
         #endregion
