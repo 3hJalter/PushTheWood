@@ -270,6 +270,7 @@ MonoBehaviour:
       Data: 
   poolType: 13
   skin: {fileID: 503678893229210608}
+  meshRenderer: {fileID: 0}
   size: {x: 1, y: 1, z: 1}
   isMinusHalfSizeY: 0
   startHeight: 2
@@ -281,7 +282,7 @@ MonoBehaviour:
   skinRotationDirection: -1
   gridUnitStaticType: 5
   anchor: {fileID: 0}
-  hasInteractBtn: 1
+  hasInteractBtn: 0
   btnCanvas: {fileID: 2279663392723906054}
   interactBtn: {fileID: 4199147777223764135}
   chestAnimator: {fileID: 120127910985196966}

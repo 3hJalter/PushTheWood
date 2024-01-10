@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using _Game.GameGrid.Unit.DynamicUnit.Player;
+using DG.Tweening;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.StaticUnit
@@ -10,6 +11,14 @@ namespace _Game.GameGrid.Unit.StaticUnit
 
         public override void OnInteract()
         {
+            ShowAnim(true);
+            DOVirtual.DelayedCall(1f, () => LevelManager.Ins.OnWin());
+        }
+
+        public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
+        {
+            base.OnBePushed(direction, pushUnit);
+            if (pushUnit is not Player) return;
             ShowAnim(true);
             DOVirtual.DelayedCall(1f, () => LevelManager.Ins.OnWin());
         }
