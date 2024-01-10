@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using _Game._Scripts.Tutorial;
 using _Game._Scripts.Tutorial.ObjectTutorial;
 using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.GameGrid.Unit;
-using _Game.Managers;
-using _Game.UIs.Screen;
 using _Game.Utilities;
 using UnityEngine;
 
