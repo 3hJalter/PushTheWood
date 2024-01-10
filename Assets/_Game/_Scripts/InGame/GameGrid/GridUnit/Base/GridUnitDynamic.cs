@@ -30,17 +30,16 @@ namespace _Game.GameGrid.Unit
             }
             else
             {
-                save = new DynamicUnitMemento(this, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
+                save = new DynamicUnitMemento<GridUnitDynamic>(this, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
                 , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID, lastPushedDirection);
             }
             return save;
         }
 
-        public class DynamicUnitMemento : UnitMemento<GridUnitDynamic>
+        public class DynamicUnitMemento<T> : UnitMemento<T> where T : GridUnitDynamic
         {
             protected StateEnum currentState;
-
-            public DynamicUnitMemento(GridUnitDynamic main,StateEnum currentState, params object[] data) : base(main, data)
+            public DynamicUnitMemento(GridUnitDynamic main,StateEnum currentState, params object[] data) : base((T)main, data)
             {
                 this.currentState = currentState;
             }
