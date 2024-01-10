@@ -8,6 +8,10 @@ namespace _Game.Managers
 {
     public class DataManager : Singleton<DataManager>
     {
+        private GameData _gameData;
+        
+        public GameData GameData => _gameData ?? new GameData();
+        
         [SerializeField] private AudioData audioData;
 
         [SerializeField] private GridData gridData;
