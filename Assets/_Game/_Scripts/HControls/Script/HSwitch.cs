@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using _Game.Camera;
+using _Game.Managers;
+using _Game.Utilities.Timer;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -33,6 +37,12 @@ namespace HControls
         private float _oneOverMovementRange;
         private RectTransform _stickTransform;
         private float _verticalAxis;
+        
+        // TEST: ADD holding gesture
+        private bool _isHolding;
+        private readonly List<float> timerList = new();
+        private readonly List<Action> actions = new();
+        private STimer timer;
 
         /// <summary>
         ///     Current event camera reference. Needed for the sake of Unity Remote input
@@ -55,6 +65,14 @@ namespace HControls
 
             if (hideOnRelease) HideOnRelease(true);
             HInputManager.SetDefault();
+            timerList.Add(Constants.HOLD_TOUCH_TIME);
+            actions.Add(() =>
+            {
+                if (_isHolding)
+                {
+                    CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera);
+                }
+            });
         }
 
         private void OnEnable()
@@ -104,7 +122,9 @@ namespace HControls
             HInputManager.SetHorizontalInput(horizontalValue);
             HInputManager.SetVerticalInput(verticalValue);
             HInputManager.SetDirectionInput(Constants.INPUT_THRESHOLD_P2);
-            if (isHighlight) switchDirectionHandler.ShowObject(HInputManager.GetDirectionInput());
+            Direction direction = HInputManager.GetDirectionInput();
+            if (direction is not Direction.None) _isHolding = false;
+            if (isHighlight) switchDirectionHandler.ShowObject(direction);
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -112,6 +132,7 @@ namespace HControls
             // We also want to show it if we specified that behaviour
             if (hideOnRelease) HideOnRelease(false);
             if (isHighlight) switchDirectionHandler.Reset();
+            _isHolding = true;
             // When we press, we first want to snap the switch to the user's finger
             if (snapToFinger)
             {
@@ -125,6 +146,7 @@ namespace HControls
                 _baseTransform.position = localBasePosition;
                 _stickTransform.position = localStickPosition;
                 _intermediateStickPosition = _stickTransform.anchoredPosition;
+                timer = TimerManager.Inst.WaitForTime(timerList, actions);
             }
             else
             {
@@ -141,6 +163,10 @@ namespace HControls
             HInputManager.SetDefault();
             // We also hide it if we specified that behaviour
             if (hideOnRelease) HideOnRelease(true);
+            _isHolding = false;
+            timer.Stop();
+            if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.ZoomOutCamera))
+                CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
         }
 
         private void ResetSwitchPos()

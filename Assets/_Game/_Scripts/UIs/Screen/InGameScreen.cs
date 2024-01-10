@@ -31,6 +31,7 @@ namespace _Game.UIs.Screen
         {
             base.Setup();
             GameManager.Ins.ChangeState(GameState.InGame);
+            MoveInputManager.Ins.ShowContainer(true);
             MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.Ins
                 .CurrentChoice); // TODO: Change to use PlayerRef 
             // if (CameraFollow.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
@@ -50,6 +51,7 @@ namespace _Game.UIs.Screen
         public override void Close()
         {
             MoveInputManager.Ins.HideButton();
+            MoveInputManager.Ins.ShowContainer(false);
             base.Close();
         }
 
@@ -95,11 +97,13 @@ namespace _Game.UIs.Screen
         public void OnShowShadowObj()
         {
             LevelManager.Ins.CurrentLevel.ChangeShadowUnitAlpha(false);
+            FXManager.Ins.TrailHint.OnPlay();
         }
 
         public void OnHideShadowObj()
         {
             LevelManager.Ins.CurrentLevel.ChangeShadowUnitAlpha(true);
+            FXManager.Ins.TrailHint.OnCancel();
         }
     }
 }

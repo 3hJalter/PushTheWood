@@ -8,6 +8,10 @@ namespace _Game.Managers
 {
     public class DataManager : Singleton<DataManager>
     {
+        private GameData _gameData;
+        
+        public GameData GameData => _gameData ?? new GameData();
+        
         [SerializeField] private AudioData audioData;
 
         [SerializeField] private GridData gridData;
@@ -43,6 +47,16 @@ namespace _Game.Managers
         public TextAsset GetGridTextData(int index)
         {
             return gridData.GetGridTextData(index);
+        }
+        
+        public void AddGridTextData(TextAsset textAsset)
+        {
+            gridData.AddGridTextData(textAsset);
+        }
+        
+        public bool HasGridTextData(TextAsset textAsset)
+        {
+            return gridData.HasGridTextData(textAsset);
         }
 
         public GridSurface GetGridSurface(PoolType poolType)

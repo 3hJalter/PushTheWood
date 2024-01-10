@@ -79,6 +79,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                                 tree.OnInteract();
                             }
                             break;
+                        case ChestFinalPoint chestFinalPoint:
                         case Rock rock:
                             switch (t.InputDetection.InputAction)
                             {

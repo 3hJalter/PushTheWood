@@ -70,11 +70,11 @@ namespace _Game.Utilities.Timer
             {
                 STimer timer = PopSTimer();
                 timer.IsUnscaleTime = isUnscaleTime;
-                List<Action> actions = new List<Action>();
-                List<float> times = new List<float>();
+                List<Action> actions = new();
+                List<float> times = new();
                 stimerData.Sort(STimerData.Comparer);
 
-                float lastTime = stimerData[stimerData.Count - 1].Time;
+                float lastTime = stimerData[^1].Time;
                 for (int i = 0; i < stimerData.Count; i++)
                 {
                     actions.Add(stimerData[i].Action);
@@ -135,15 +135,16 @@ namespace _Game.Utilities.Timer
             };
             timer.Start(frame, timerAction);
         }
-        public void WaitForTime(float time, Action action, bool isUncaleTime = false) 
+        public void WaitForTime(float time, Action action, bool isUnscaleTime = false) 
         {
-            if (!isUncaleTime)
+            STimerData sTimerData = new(time, action);
+            if (!isUnscaleTime)
             {
-                scaleTimeSTimerDatas.Add(new STimerData(time, action));
+                scaleTimeSTimerDatas.Add(sTimerData);
             }
             else
             {
-                unScaleTimeSTimerDatas.Add(new STimerData(time, action));
+                unScaleTimeSTimerDatas.Add(sTimerData);
             }
         }
         public STimer WaitForTime(List<float> times, List<Action> events)

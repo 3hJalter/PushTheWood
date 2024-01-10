@@ -49,7 +49,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
             }
             else
             {
-                foreach (GridUnit unit in t._carryUnits) unit.Tf.SetParent(t.Tf);
+                foreach (GridUnit unit in t.CarryUnits) unit.Tf.SetParent(t.Tf);
                 t.SetEnterCellData(t.MovingData.inputDirection, t.MovingData.enterMainCell, t.UnitTypeY, false,
                     t.MovingData.enterCells);
                 t.OnOutCells();
@@ -57,7 +57,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
                 t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME)
                     .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                     {
-                        foreach (GridUnit unit in t._carryUnits)
+                        foreach (GridUnit unit in t.CarryUnits)
                         {
                             unit.Tf.SetParent(null);
                             GameGridCell nextMainCellIn = unit.MainCell.GetNeighborCell(t.MovingData.inputDirection);
