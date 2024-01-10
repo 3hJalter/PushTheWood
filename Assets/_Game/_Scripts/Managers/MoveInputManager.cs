@@ -12,7 +12,8 @@ namespace _Game._Scripts.Managers
         {
             DPad,
             Switch,
-            Swipe
+            Swipe,
+            SwipeContinuous,
         }
 
         [SerializeField] private GameObject container;
@@ -71,9 +72,13 @@ namespace _Game._Scripts.Managers
                 }
                 case MoveChoice.Swipe:
                 {
-                    // HSwitch.gameObject.SetActive(true);
-                    // HSwitch.HideAllTime(true);
                     hSwipe.gameObject.SetActive(true);
+                    break;
+                }
+                case MoveChoice.SwipeContinuous:
+                {
+                    HSwitch.gameObject.SetActive(true);
+                    HSwitch.HideAllTime(true);
                     break;
                 }
             }

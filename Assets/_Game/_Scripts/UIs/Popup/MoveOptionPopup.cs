@@ -20,6 +20,11 @@ namespace _Game.UIs.Popup
             MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.MoveChoice.Swipe);
         }
 
+        public void OnUseSwipeContinuous()
+        {
+            MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.MoveChoice.SwipeContinuous);
+        }
+
         public void OnSwitchGridActive()
         {
             FXManager.Ins.SwitchGridActive();
