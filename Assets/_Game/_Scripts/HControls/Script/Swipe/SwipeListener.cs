@@ -19,7 +19,7 @@ namespace GG.Infrastructure.Utils.Swipe
         public UnityEvent onUnHold;
         
 
-        [SerializeField] private float sensitivity = 10;
+        [SerializeField] private float sensitivity = 100;
 
         [SerializeField] private bool continuousDetection;
 

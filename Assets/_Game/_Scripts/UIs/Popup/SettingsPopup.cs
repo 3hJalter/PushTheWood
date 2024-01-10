@@ -2,7 +2,6 @@
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Screen;
-using DG.Tweening;
 using UnityEngine;
 
 namespace _Game.UIs.Popup
