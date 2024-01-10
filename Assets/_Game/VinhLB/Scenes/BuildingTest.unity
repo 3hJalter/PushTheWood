@@ -2306,8 +2306,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 846296282}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4, y: 0, z: 4}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -4, y: -0.5, z: 4}
+  m_LocalScale: {x: 1, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 50936777}
@@ -2645,7 +2645,6 @@ GameObject:
   - component: {fileID: 928036764}
   - component: {fileID: 928036763}
   - component: {fileID: 928036762}
-  - component: {fileID: 928036766}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -2752,263 +2751,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
---- !u!114 &928036766
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 928036761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94f786cfb47f46f3ba78f372d16050ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: _cameraDic
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[_Game.Camera.ECameraType,
-        Assembly-CSharp],[_Game.Camera.CameraFollower, Assembly-CSharp]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[_Game.Camera.ECameraType,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 3
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 7
-      Data: 2|_Game.Camera.CameraFollower, Assembly-CSharp
-    - Name: isFollowTarget
-      Entry: 5
-      Data: true
-    - Name: smooth
-      Entry: 4
-      Data: 0.05
-    - Name: offsetPosition
-      Entry: 7
-      Data: UnityEngine.Vector3, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 20
-    - Name: 
-      Entry: 4
-      Data: 10
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: offsetRotation
-      Entry: 7
-      Data: UnityEngine.Quaternion, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0.3007058
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0.953716934
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: velocity
-      Entry: 7
-      Data: UnityEngine.Vector3, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 1
-    - Name: $v
-      Entry: 7
-      Data: 3|_Game.Camera.CameraFollower, Assembly-CSharp
-    - Name: isFollowTarget
-      Entry: 5
-      Data: true
-    - Name: smooth
-      Entry: 4
-      Data: 1
-    - Name: offsetPosition
-      Entry: 7
-      Data: UnityEngine.Vector3, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 18
-    - Name: 
-      Entry: 4
-      Data: -13
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: offsetRotation
-      Entry: 7
-      Data: UnityEngine.Quaternion, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0.4617486
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0.8870108
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: velocity
-      Entry: 7
-      Data: UnityEngine.Vector3, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 2
-    - Name: $v
-      Entry: 7
-      Data: 4|_Game.Camera.CameraFollower, Assembly-CSharp
-    - Name: isFollowTarget
-      Entry: 5
-      Data: false
-    - Name: smooth
-      Entry: 4
-      Data: 0.05
-    - Name: offsetPosition
-      Entry: 7
-      Data: UnityEngine.Vector3, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 100
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: offsetRotation
-      Entry: 7
-      Data: UnityEngine.Quaternion, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0.707106769
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0.707106769
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: velocity
-      Entry: 7
-      Data: UnityEngine.Vector3, UnityEngine.CoreModule
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 4
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-  mainCamera: {fileID: 928036764}
-  currentECameraType: -1
-  targetTf: {fileID: 0}
 --- !u!1 &939602696
 GameObject:
   m_ObjectHideFlags: 0
@@ -3891,7 +3633,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1340492323
 Transform:
   m_ObjectHideFlags: 0
@@ -3900,7 +3642,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1340492322}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: -0}
+  m_LocalPosition: {x: 0, y: -1, z: -0}
   m_LocalScale: {x: 100, y: 1, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4607,7 +4349,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a3de368e295b4ea4e8a11399f6235730, type: 2}
+  - {fileID: 2100000, guid: e1f08066a02beb8488faacb57658932d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5346,7 +5088,7 @@ PrefabInstance:
     - target: {fileID: 2091726954258887764, guid: ba3a58d3eece9a9489eddd88358820e5, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2091726954258887764, guid: ba3a58d3eece9a9489eddd88358820e5, type: 3}
     - target: {fileID: 2091726954258887765, guid: ba3a58d3eece9a9489eddd88358820e5, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -5436,6 +5178,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2437162289053842531, guid: e68a94c7103e0dc4a89029850026f9d0, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 2437162289053842531, guid: e68a94c7103e0dc4a89029850026f9d0, type: 3}
     - target: {fileID: 2856592615633665912, guid: e68a94c7103e0dc4a89029850026f9d0, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -5524,6 +5270,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas_ScreenBuilding
       objectReference: {fileID: 0}
+    - target: {fileID: 2943806319115778827, guid: e68a94c7103e0dc4a89029850026f9d0, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 2943806319115778827, guid: e68a94c7103e0dc4a89029850026f9d0, type: 3}
+    - target: {fileID: 3087198831553478644, guid: e68a94c7103e0dc4a89029850026f9d0, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 3087198831553478644, guid: e68a94c7103e0dc4a89029850026f9d0, type: 3}
     - target: {fileID: 3385037524588798199, guid: e68a94c7103e0dc4a89029850026f9d0, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5624,6 +5378,14 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6131766210853712011, guid: e68a94c7103e0dc4a89029850026f9d0, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 6131766210853712011, guid: e68a94c7103e0dc4a89029850026f9d0, type: 3}
+    - target: {fileID: 6597949852652226489, guid: e68a94c7103e0dc4a89029850026f9d0, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 6597949852652226489, guid: e68a94c7103e0dc4a89029850026f9d0, type: 3}
     - target: {fileID: 7074300282160447502, guid: e68a94c7103e0dc4a89029850026f9d0, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

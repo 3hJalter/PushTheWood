@@ -35,7 +35,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                     t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME / 2).SetEase(Ease.Linear)
                         .SetUpdate(UpdateType.Fixed).OnComplete(() =>
                         {
-                            ParticlePool.Play(PoolController.Ins.Particles[VFXType.DUST], t.transform.position - Vector3.up * 0.5f);
+                            ParticlePool.Play(PoolController.Ins.Particles[VFXType.Dust], t.transform.position - Vector3.up * 0.5f);
                             t.InputCache.Enqueue(direction);
                             t.OnEnterTrigger(t);
                             t.StateMachine.ChangeState(StateEnum.Idle);

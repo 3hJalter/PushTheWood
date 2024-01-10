@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1775786, g: 0.22232212, b: 0.3045177, a: 1}
+  m_IndirectSpecularColor: {r: 0.17757887, g: 0.2223226, b: 0.30451846, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -666,6 +666,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1572984197413266985, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 1572984197413266985, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
     - target: {fileID: 1899756505832261118, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -686,6 +690,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -43.5
       objectReference: {fileID: 0}
+    - target: {fileID: 2420584718063177377, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 2420584718063177377, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
     - target: {fileID: 4892000996706762158, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -754,6 +762,10 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 9020171606912119368, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
+    - target: {fileID: 9100112172012310074, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 9100112172012310074, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
 --- !u!1001 &298297818
@@ -3384,9 +3396,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 267242998479506443, guid: 089fab948f367f14ab17f9071a19159f, type: 3}
+      propertyPath: _reduceScreenResolution
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 267242998479506443, guid: 089fab948f367f14ab17f9071a19159f, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 267242998479506443, guid: 089fab948f367f14ab17f9071a19159f, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 267242998479506445, guid: 089fab948f367f14ab17f9071a19159f, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -3455,10 +3471,8 @@ PrefabInstance:
     - target: {fileID: 4287837532690632099, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
       propertyPath: serializationData.PrefabModifications.Array.data[0]
       value: '"path":"tutorialList","add_keys":{"$id":0,"$type":"System.Object[],
-        mscorlib","$rlength":6,"$rcontent":[{"$id":1,"$type":"System.Int32, mscorlib",1},{"$id":2,"$type":"System.Int32,
-        mscorlib",3},{"$id":3,"$type":"System.Int32, mscorlib",8},{"$id":4,"$type":"System.Int32,
-        mscorlib",1},{"$id":5,"$type":"System.Int32, mscorlib",3},{"$id":6,"$type":"System.Int32,
-        mscorlib",8}]},"remove_keys":null'
+        mscorlib","$rlength":3,"$rcontent":[{"$id":1,"$type":"System.Int32, mscorlib",1},{"$id":2,"$type":"System.Int32,
+        mscorlib",3},{"$id":3,"$type":"System.Int32, mscorlib",8}]},"remove_keys":null'
       objectReference: {fileID: 0}
     - target: {fileID: 4287837532690632099, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
       propertyPath: serializationData.PrefabModifications.Array.data[1]
@@ -3654,6 +3668,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7030098245329535406, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 7030098245580201128, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
       propertyPath: m_RootOrder
       value: 3

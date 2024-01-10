@@ -42,7 +42,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             DevLog.Log(DevId.Hung,"Tree Blocking");
             Vector3 axis = Vector3.Cross(Vector3.up, Constants.DirVector3[direction]);
             float lastAngle = 0;
-            ParticlePool.Play(PoolController.Ins.Particles[VFXType.LEAF_EXPLOSION], gameObject.transform.position + Vector3.up * 0.5f);
+            ParticlePool.Play(PoolController.Ins.Particles[VFXType.LeafExplosion], gameObject.transform.position + Vector3.up * 0.5f);
             DOVirtual.Float(0, DEGREE * 4 * DECAY_VALUE * DECAY_VALUE, Constants.MOVING_TIME * 1f, i =>
             {
                 float rotateAngle;

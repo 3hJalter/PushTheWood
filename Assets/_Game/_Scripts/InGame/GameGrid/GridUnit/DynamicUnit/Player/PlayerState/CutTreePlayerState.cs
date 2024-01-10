@@ -83,7 +83,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 // Despawn the Tree
                 t.CutTreeData.tree.OnDespawn();
                 LevelManager.Ins.SaveGameState(true);
-                ParticlePool.Play(PoolController.Ins.Particles[VFXType.LEAF_EXPLOSION], t.CutTreeData.tree.Tf.position + Vector3.up * 2f);
+                ParticlePool.Play(PoolController.Ins.Particles[VFXType.LeafExplosion], t.CutTreeData.tree.Tf.position + Vector3.up * 2f);
             }
         }
     }

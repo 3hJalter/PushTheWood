@@ -19,7 +19,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             t.ChangeAnim(Constants.JUMP_UP_ANIM);
             direction = Direction.None;
             _firstTime = true;
-            ParticlePool.Play(PoolController.Ins.Particles[VFXType.DUST], t.transform.position - Vector3.up * 0.5f);
+            ParticlePool.Play(PoolController.Ins.Particles[VFXType.Dust], t.transform.position - Vector3.up * 0.5f);
         }
 
         public void OnExecute(Player t)

@@ -34,6 +34,12 @@ namespace VinhLB
             {
                 DailyRewardManager.ResetAll();
             }
+            
+            GUILayout.Label("Level", EditorStyles.boldLabel);
+            if (GUILayout.Button("Set Level To 3"))
+            {
+                PlayerPrefs.SetInt(Constants.LEVEL_INDEX, 3);
+            }
         }
     }
 }
