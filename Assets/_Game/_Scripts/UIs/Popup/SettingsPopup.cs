@@ -1,4 +1,5 @@
-﻿using _Game.GameGrid;
+﻿using _Game._Scripts.Managers;
+using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Screen;
 using DG.Tweening;
@@ -8,6 +9,18 @@ namespace _Game.UIs.Popup
 {
     public class SettingsPopup : UICanvas
     {
+        public override void Open()
+        {
+            base.Open();
+            MoveInputManager.Ins.ShowContainer(false);
+        }
+
+        public override void Close()
+        {
+            base.Close();
+            if (UIManager.Ins.IsOpened<InGameScreen>()) MoveInputManager.Ins.ShowContainer(true);
+        }
+
         public void OnClickChangeBgmStatusButton()
         {
             Debug.Log("Click change bgm button");

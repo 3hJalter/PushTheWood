@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using _Game.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,6 +16,8 @@ namespace GG.Infrastructure.Utils.Swipe
         public UnityEvent onSwipeCancelled;
 
         public SwipeListenerEvent onSwipe;
+        public UnityEvent onUnHold;
+        
 
         [SerializeField] private float sensitivity = 10;
 
@@ -33,6 +36,8 @@ namespace GG.Infrastructure.Utils.Swipe
         private bool _waitForSwipe = true;
         
         private float _timer = Constants.HOLD_TOUCH_TIME;
+
+        private bool _isHolding;
         
         public bool ContinuousDetection
         {
@@ -66,6 +71,12 @@ namespace GG.Infrastructure.Utils.Swipe
 
         private void Update()
         {
+            if (_isHolding && Input.GetMouseButtonUp(0))
+            {
+                onUnHold?.Invoke();
+                _isHolding = false;
+            }
+            
             if (Input.GetMouseButtonDown(0)) InitSwipe();
 
             if (_waitForSwipe && Input.GetMouseButton(0)) CheckSwipe();
@@ -106,6 +117,7 @@ namespace GG.Infrastructure.Utils.Swipe
                 onSwipe?.Invoke(_directions.GetSwipeId(_offset));
                 if (!continuousDetection) _waitForSwipe = false;
                 SampleSwipeStart();
+                _isHolding = false;
             }
             else if (_timer > 0) // Add Hold Gesture for this code
             {
@@ -115,6 +127,7 @@ namespace GG.Infrastructure.Utils.Swipe
                 onSwipe?.Invoke("None");
                 if (!continuousDetection) _waitForSwipe = false;
                 SampleSwipeStart();
+                _isHolding = true;
             }
         }
 

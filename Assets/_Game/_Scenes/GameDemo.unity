@@ -5752,6 +5752,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  container: {fileID: 956933210}
   hSwitch: {fileID: 1799324507}
   dpad: {fileID: 1173657546}
   hSwipe: {fileID: 1808547880}
@@ -6125,6 +6126,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onSwipe:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnHold:
     m_PersistentCalls:
       m_Calls: []
   sensitivity: 10

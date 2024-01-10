@@ -1,7 +1,5 @@
-﻿using System;
-using _Game.Camera;
+﻿using _Game.Camera;
 using _Game.Managers;
-using _Game.Utilities;
 using GG.Infrastructure.Utils.Swipe;
 using UnityEngine;
 
@@ -14,9 +12,16 @@ namespace HControls
         private void OnEnable()
         {
             swipeListener.onSwipe.AddListener(OnSwipe);
+            swipeListener.onUnHold.AddListener(OnUnHold);
         }
 
-        private void OnSwipe(string direction)
+        private static void OnUnHold()
+        {
+            if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.ZoomOutCamera))
+                CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
+        }
+        
+        private static void OnSwipe(string direction)
         {
             switch (direction)
             {
@@ -43,8 +48,7 @@ namespace HControls
         private void OnDisable()
         {
             swipeListener.onSwipe.RemoveListener(OnSwipe);
-            // if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.ZoomOutCamera))
-            //     CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
+            swipeListener.onUnHold.RemoveListener(OnUnHold);
         }
     }
 }

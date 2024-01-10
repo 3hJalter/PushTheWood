@@ -15,6 +15,7 @@ namespace _Game._Scripts.Managers
             Swipe
         }
 
+        [SerializeField] private GameObject container;
         [SerializeField] private HSwitch hSwitch;
         [SerializeField] private HDpad dpad;
         [SerializeField] private HSwipe hSwipe;
@@ -78,6 +79,11 @@ namespace _Game._Scripts.Managers
             }
 
             CurrentChoice = moveChoice;
+        }
+        
+        public void ShowContainer(bool isShow)
+        {
+            container.SetActive(isShow);
         }
     }
 }
