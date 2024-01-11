@@ -9,13 +9,13 @@ namespace VinhLB
     public class Water : HMonoBehaviour
     {
         [SerializeField]
-        private float _waterHeight = 0.6f;
+        private float _surfaceHeight = 0.6f;
         
         private void OnTriggerEnter(Collider collider)
         {
             DevLog.Log(DevId.Vinh, $"Something fall into water");
             Vector3 contactPoint = collider.transform.position;
-            contactPoint.y = 0.6f;
+            contactPoint.y = _surfaceHeight;
             ParticlePool.Play(PoolController.Ins.Particles[VFXType.WaterSplash], contactPoint);
         }
     }

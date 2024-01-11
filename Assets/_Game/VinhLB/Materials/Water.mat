@@ -218,7 +218,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DeepColor: {r: 0, g: 0.39201733, b: 1, a: 0.8352941}
+    - _DeepColor: {r: 0, g: 0.44939613, b: 1, a: 0.8352941}
     - _DepthGradientDeep: {r: 0.086, g: 0.407, b: 1, a: 0.749}
     - _DepthGradientShallow: {r: 0.325, g: 0.807, b: 0.971, a: 0.725}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
@@ -227,7 +227,7 @@ Material:
     - _IntersectionFoamColor: {r: 1, g: 1, b: 1, a: 1}
     - _MainColor: {r: 0, g: 0.34901953, b: 1, a: 1}
     - _MovementDirection: {r: 0, g: 0.025, b: 0, a: 0}
-    - _ShallowColor: {r: 0, g: 0.833482, b: 1, a: 0.6392157}
+    - _ShallowColor: {r: 0, g: 0.9335952, b: 1, a: 0.6392157}
     - _ShoreColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _SurfaceFoamColor: {r: 1, g: 1, b: 1, a: 0.0627451}
