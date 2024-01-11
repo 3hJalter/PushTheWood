@@ -184,10 +184,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         {
             #region Save
             LevelManager.Ins.SaveGameState(true);
-            mainCell.ValueChange();
+            MainCell.ValueChange();
             ((GridUnit)_vehicle).MainCell.ValueChange();
             LevelManager.Ins.SaveGameState(false);
             #endregion
+            isRideVehicle = true;
+            LevelManager.Ins.IsCanUndo = false;
             _vehicle.Ride(tDirection, this);
         }
 

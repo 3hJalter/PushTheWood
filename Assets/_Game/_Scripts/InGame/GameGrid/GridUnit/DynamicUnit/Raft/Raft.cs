@@ -38,9 +38,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
 
         public void Ride(Direction direction, GridUnit rideUnit)
         {
-            if (!IsCurrentStateIs(StateEnum.Idle) && rideUnit is Player.Player) return;
-            // Check if there is a unit in the direction of the raft
             rideRaftDirection = direction;
+            if (!IsCurrentStateIs(StateEnum.Idle) && rideUnit is Player.Player) return;
+            // Check if there is a unit in the direction of the raft           
             stateMachine.ChangeState(StateEnum.Move);
         }
 

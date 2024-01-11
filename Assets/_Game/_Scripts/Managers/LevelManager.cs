@@ -29,6 +29,16 @@ namespace _Game.GameGrid
 
         public Level CurrentLevel => _currentLevel;
         public bool IsConstructingLevel;
+        private bool isCanUndo = true;
+        public bool IsCanUndo
+        {
+            get => isCanUndo;
+            set
+            {
+                isCanUndo = value;
+                UIManager.Ins.GetUI<InGameScreen>().SetActiveUndo(value);
+            }
+        }
         
         private CareTaker savingState;
         public Player player;
@@ -156,6 +166,7 @@ namespace _Game.GameGrid
         }
         public void OnUndo()
         {
+            if (!isCanUndo) return;
             savingState.Undo();
             SetCameraToPlayerIsland();
         }

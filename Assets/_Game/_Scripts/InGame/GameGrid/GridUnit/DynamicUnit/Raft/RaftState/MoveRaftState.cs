@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using _Game.DesignPattern.StateMachine;
+using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using DG.Tweening;
 using UnityEngine;
 
@@ -38,8 +39,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
                 _isMove = t.ConditionMergeOnBePushed.IsApplicable(t.MovingData);
                 OnExecute(t);
             }
-            t.player.isRideVehicle = true;
-
         }
 
         public void OnExecute(Raft t)
@@ -48,6 +47,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
             {
                 if (t.MovingData.blockDynamicUnits.Count > 0) t.OnPush(t.MovingData.inputDirection, t.MovingData);
                 t.StateMachine.ChangeState(StateEnum.Idle);
+                t.player.isRideVehicle = false;
+                LevelManager.Ins.IsCanUndo = true;
+                //DEV: May be error here, old parent may not be null
+                foreach (GridUnit unit in t.CarryUnits) unit.Tf.SetParent(null);              
             }
             else
             {
@@ -80,8 +83,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
 
         public void OnExit(Raft t)
         {
-            t.player.isRideVehicle = false;
-            foreach (GridUnit unit in t.CarryUnits) unit.Tf.SetParent(null);
             moveTween?.Kill();
         }
     }
