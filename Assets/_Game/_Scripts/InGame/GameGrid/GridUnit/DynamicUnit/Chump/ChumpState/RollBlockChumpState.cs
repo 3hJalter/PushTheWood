@@ -83,6 +83,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 {
                     blockObjects[i].OnBePushed(blockDirection);
                 }
+                if (t.MainMovingData.blockDynamicUnits.Count > 0) t.OnPush(t.MainMovingData.inputDirection, t.MainMovingData);
             }
 
             bool IsSamePushDirection()
