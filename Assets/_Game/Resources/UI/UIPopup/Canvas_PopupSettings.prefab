@@ -1007,6 +1007,7 @@ MonoBehaviour:
   isDestroyOnClose: 0
   useAnimator: 0
   animator: {fileID: 0}
+  _mainMenuButton: {fileID: 1729779280652905544}
 --- !u!1 &1267216523609578711
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,6 +8,23 @@ namespace _Game.UIs.Popup
 {
     public class SettingsPopup : UICanvas
     {
+        [SerializeField]
+        private HButton _mainMenuButton;
+        
+        public override void Setup()
+        {
+            base.Setup();
+
+            if (GameManager.Ins.IsState(GameState.InGame))
+            {
+                _mainMenuButton.interactable = true;
+            }
+            else
+            {
+                _mainMenuButton.interactable = false;
+            }
+        }
+
         public override void Open()
         {
             base.Open();
