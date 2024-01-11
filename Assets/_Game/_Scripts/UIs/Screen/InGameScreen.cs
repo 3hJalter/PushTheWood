@@ -97,11 +97,13 @@ namespace _Game.UIs.Screen
         public void OnShowShadowObj()
         {
             LevelManager.Ins.CurrentLevel.ChangeShadowUnitAlpha(false);
+            FXManager.Ins.TrailHint.OnPlay();
         }
 
         public void OnHideShadowObj()
         {
             LevelManager.Ins.CurrentLevel.ChangeShadowUnitAlpha(true);
+            FXManager.Ins.TrailHint.OnCancel();
         }
     }
 }

@@ -48,6 +48,16 @@ namespace _Game.Managers
         {
             return gridData.GetGridTextData(index);
         }
+        
+        public void AddGridTextData(TextAsset textAsset)
+        {
+            gridData.AddGridTextData(textAsset);
+        }
+        
+        public bool HasGridTextData(TextAsset textAsset)
+        {
+            return gridData.HasGridTextData(textAsset);
+        }
 
         public GridSurface GetGridSurface(PoolType poolType)
         {
