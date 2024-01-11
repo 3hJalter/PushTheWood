@@ -20,8 +20,8 @@ namespace _Game.Managers
         private GameObject _groundGO;
         [SerializeField]
         private GameObject _waterGO;
-        [SerializeField]
-        private GameObject _cloudsGO;
+        // [SerializeField]
+        // private GameObject _cloudsGO;
         [SerializeField]
         private GameObject _gridGO;
         [SerializeField]
