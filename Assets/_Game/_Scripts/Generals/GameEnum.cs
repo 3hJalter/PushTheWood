@@ -24,6 +24,13 @@ public enum InputAction
     ButtonHold = 2,
 }
 
+public enum CONDITION
+{
+    NONE = -1,
+    BE_BLOCKED_BY_TREE_ROOT = 0,
+    ROLL_AROUND_BLOCK_CHUMP = 1,
+}
+
 namespace TweenTypeEnum
 {
     public enum EasingType

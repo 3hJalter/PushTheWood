@@ -14,12 +14,6 @@
         //
         // }
 
-        public void UpHeight(GridUnit pushUnit, Direction direction = Direction.None)
-        {
-            // if (pushUnit.MainCell.GetGridUnitAtHeight(endHeight + 1) is not null) return;
-            // Jump to treeRootUnit, Add one height 
-            pushUnit.StartHeight += 1;
-            pushUnit.EndHeight += 1;
-        }
+        
     }
 }

@@ -10,6 +10,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
     public class TurnOverChumpState : IState<Chump>
     {
         private bool _isTurnOver;
+        private bool isContinueTurnOver = false;
+        private Vector3 anchorAdd;
 
         public StateEnum Id => StateEnum.TurnOver;
 
@@ -17,6 +19,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         {
             t.TurnOverData.SetData(t.ChumpBeInteractedData.inputDirection);
             _isTurnOver = t.ConditionMergeOnBePushed.IsApplicable(t.TurnOverData);
+            anchorAdd.Set(0, 0, 0);
+            LevelManager.Ins.IsCanUndo = false;
             OnExecute(t);
         }
 
@@ -28,14 +32,18 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             }
             else
             {
-                bool hasTreeRoot = false;
-                if (t.TurnOverData.blockStaticUnits.Count == 1 &&
-                    t.TurnOverData.blockStaticUnits[0] is TreeRoot tr)
+                #region Specific Conditions
+                switch (t.TurnOverData.Condition)
                 {
-                    // Temporary for only tree root
-                    tr.UpHeight(t, t.TurnOverData.inputDirection);
-                    hasTreeRoot = true;
+                    case CONDITION.BE_BLOCKED_BY_TREE_ROOT:
+                        t.TurnOverData.blockStaticUnits[0].UpHeight(t, t.TurnOverData.inputDirection);
+                        break;
+                    case CONDITION.ROLL_AROUND_BLOCK_CHUMP:
+                        isContinueTurnOver = true;
+                        t.TurnOverData.blockDynamicUnits[0].UpHeight(t, t.TurnOverData.inputDirection);
+                        break;
                 }
+                #endregion
 
                 #region Handle Cell Data
 
@@ -65,29 +73,41 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 Vector3 axis = Vector3.Cross(Vector3.up, Constants.DirVector3[t.TurnOverData.inputDirection]);
                 // Roll 90 degree around anchor in 0.18 second using Tween
                 float lastAngle = 0;
-                if (hasTreeRoot)
+                switch(t.TurnOverData.Condition)
                 {
+                    case CONDITION.BE_BLOCKED_BY_TREE_ROOT:
                     Vector3 position = t.Tf.position;
                     t.Tf.DOMove(new Vector3(position.x, t.EnterPosData.finalPos.y, position.z), Constants.MOVING_TIME)
                         .SetEase(Ease.Linear)
                         .SetUpdate(UpdateType.Fixed);
+                        break;
+                    case CONDITION.ROLL_AROUND_BLOCK_CHUMP:
+                        anchorAdd = (Constants.DirVector3F[t.TurnOverData.inputDirection] + Vector3.up) * Constants.CELL_SIZE / 8f;
+                        skinOffset += Vector3.up * Constants.CELL_SIZE / 4f;
+                        break;
                 }
 
                 // TEMPORARY FIX: anchor position is not correct when Player Turn Over Chump at Raft
+                
                 DOVirtual.Float(0, 90, Constants.MOVING_TIME, i =>
                 {
-                    t.skin.RotateAround(t.anchor.Tf.position, axis, i - lastAngle);
+                    t.skin.RotateAround(t.anchor.Tf.position + anchorAdd, axis, i - lastAngle);
                     lastAngle = i;
                 }).SetUpdate(UpdateType.Fixed).SetEase(Ease.Linear).OnComplete(() =>
                 {
                     t.skin.localPosition -= skinOffset;
                     t.Tf.position = t.EnterPosData.initialPos;
-                    if (!t.EnterPosData.isFalling)
+                    if (isContinueTurnOver)
+                    {
+                        t.OnEnterTrigger(t);
+                        t.StateMachine.ChangeState(StateEnum.TurnOver);
+                    }
+                    else if (!t.EnterPosData.isFalling)
                     {
                         t.OnEnterTrigger(t);
                         t.StateMachine.ChangeState(StateEnum.Idle);
                         
-                    }
+                    }                    
                     else
                     {
                         t.StateMachine.ChangeState(StateEnum.Fall);
@@ -101,7 +121,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
         public void OnExit(Chump t)
         {
-
+            if (!isContinueTurnOver)
+            {
+                LevelManager.Ins.IsCanUndo = true;
+            }
+            isContinueTurnOver = false;
         }
     }
 }
