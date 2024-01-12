@@ -12,6 +12,7 @@ using _Game.UIs.Screen;
 using _Game.Utilities;
 using _Game.Utilities.Grid;
 using UnityEngine;
+using VinhLB;
 using static _Game.Utilities.Grid.Grid<_Game.GameGrid.GameGridCell, _Game.GameGrid.GameGridCellData>;
 
 namespace _Game.GameGrid
@@ -26,6 +27,8 @@ namespace _Game.GameGrid
         private Level _currentLevel;
         //Test
         [SerializeField] Material FontMaterial;
+        [SerializeField]
+        private FishSpawner _fishSpawner;
 
         public Level CurrentLevel => _currentLevel;
         public bool IsConstructingLevel;
@@ -62,6 +65,8 @@ namespace _Game.GameGrid
             {
                 InitLevel();
             }
+            
+            _fishSpawner.SpawnFish();
         }
 
         public void InitLevel()
@@ -78,6 +83,12 @@ namespace _Game.GameGrid
             DebugManager.Ins?.DebugGridData(_currentLevel.GridMap);
             // TEMPORARY: CUTSCENE, player will be show when cutscene end
             if (levelIndex == 0) HidePlayer(true);
+        }
+
+        public void ResetLevelIsland()
+        {
+            _currentLevel.ResetIslandPlayerOn();
+            _fishSpawner.SpawnFish(false);
         }
 
         private void OnCheckTutorial()

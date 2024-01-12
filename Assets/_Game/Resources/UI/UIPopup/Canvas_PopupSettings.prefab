@@ -832,7 +832,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: HDR
+  m_text: PP
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1007,6 +1007,7 @@ MonoBehaviour:
   isDestroyOnClose: 0
   useAnimator: 0
   animator: {fileID: 0}
+  _mainMenuButton: {fileID: 1729779280652905544}
 --- !u!1 &1267216523609578711
 GameObject:
   m_ObjectHideFlags: 0
@@ -1520,7 +1521,7 @@ GameObject:
   - component: {fileID: 5451901901822796920}
   - component: {fileID: 1572984197413266985}
   m_Layer: 5
-  m_Name: Btn-HDR
+  m_Name: Btn-PostProcessing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

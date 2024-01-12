@@ -115,7 +115,7 @@ Material:
     - _TramplePushStrength: 0.25
     - _TrampleSquishStrength: 2
     - _WindFrequency: 0.01
-    - _WindStrength: 0.2
+    - _WindStrength: 0.1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:

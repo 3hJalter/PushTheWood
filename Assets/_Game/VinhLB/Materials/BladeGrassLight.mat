@@ -39,12 +39,12 @@ Material:
     - _TramplePushStrength: 0.25
     - _TrampleSquishStrength: 2
     - _WindFrequency: 0.01
-    - _WindStrength: 0.2
+    - _WindStrength: 0.1
     m_Colors:
-    - _BaseColor: {r: 0.4097211, g: 0.7075472, b: 0.15018693, a: 1}
+    - _BaseColor: {r: 0.38555646, g: 0.7058824, b: 0.14901958, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _CurvedWorldBendSettings: {r: 2, g: 1, b: 0, a: 0}
-    - _TipColor: {r: 0.3498304, g: 0.8490566, b: 0, a: 1}
+    - _TipColor: {r: 0.4778999, g: 0.8117647, b: 0.07843137, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &3491717857063969027
 MonoBehaviour:

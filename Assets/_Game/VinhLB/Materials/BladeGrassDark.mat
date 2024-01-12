@@ -39,7 +39,7 @@ Material:
     - _TramplePushStrength: 0.25
     - _TrampleSquishStrength: 2
     - _WindFrequency: 0.01
-    - _WindStrength: 0.2
+    - _WindStrength: 0.1
     m_Colors:
     - _BaseColor: {r: 0.2407144, g: 0.6037736, b: 0.0028479954, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}

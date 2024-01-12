@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Game._Scripts.Managers;
 using _Game.Managers;
+using _Game.Utilities;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
@@ -22,6 +23,9 @@ namespace _Game.GameGrid.Unit
         [SerializeField] public Transform skin; // Model location
         // MeshRenderer of Unit
         [SerializeField] private MeshRenderer meshRenderer;
+        // Collider for water interaction
+        [SerializeField]
+        private Collider _collider;
         
         // Size of this unit, the X and Z equal to the size of the main cell, the Y equal to height level
         [SerializeField] protected Vector3Int size;
@@ -244,7 +248,7 @@ namespace _Game.GameGrid.Unit
             }
         }
 
-        #region Hint, MeshRenderer and Shadow
+        #region Hint, MeshRenderer, Shadow and Collider
 
         public void ChangeMaterial(Material material)
         {
@@ -265,6 +269,17 @@ namespace _Game.GameGrid.Unit
         public void ChangeReceiveShadow(bool isReceive)
         {
             meshRenderer.shadowCastingMode = isReceive ? ShadowCastingMode.On : ShadowCastingMode.Off;
+        }
+
+        public void SetColliderActive(bool active)
+        {
+            if (_collider == null)
+            {
+                DevLog.Log(DevId.Vinh, "Collider is not exist");
+                return;
+            }
+            
+            _collider.enabled = active;
         }
         
         #endregion

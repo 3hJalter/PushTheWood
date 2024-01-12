@@ -566,7 +566,6 @@ MonoBehaviour:
   trailHint: {fileID: 7030098244278345279}
   _groundGO: {fileID: 1266336787}
   _waterGO: {fileID: 1119362961}
-  _cloudsGO: {fileID: 0}
   _gridGO: {fileID: 517049268}
   _rendererData: {fileID: 11400000, guid: 82b4ed0936573764e945e1fb602913e0, type: 2}
   _renderPipelineAsset: {fileID: 11400000, guid: 27753c6e9514d924dab306f724c17974, type: 2}
@@ -2069,6 +2068,7 @@ MonoBehaviour:
     SerializationNodes: []
   levelIndex: 0
   FontMaterial: {fileID: 2100000, guid: 9ad269c99dcf42b7aedefd83dd5a7b9d, type: 2}
+  _fishSpawner: {fileID: 0}
   IsConstructingLevel: 0
   player: {fileID: 0}
 --- !u!1 &1072006142
@@ -3691,74 +3691,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1608769266, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-      propertyPath: m_Emitting
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1608769266, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 80811086e76b6d943a17f4fd3e0b3708, type: 2}
-    - target: {fileID: 1608769266, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-      propertyPath: m_Parameters.widthMultiplier
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1608769266, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1608769266, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.g
-      value: 0.91372555
-      objectReference: {fileID: 0}
-    - target: {fileID: 1608769267, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1608769267, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1608769267, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1766168402313511420, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1766168402313511420, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7030098244278345279, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-      propertyPath: trailMaterial
-      value: 
-      objectReference: {fileID: 2100000, guid: 80811086e76b6d943a17f4fd3e0b3708, type: 2}
     - target: {fileID: 7030098244278345279, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7030098244451390856, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7030098244451390857, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7030098244451390857, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 29.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7030098244451390858, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 84083cfb414060944bd2bdeb229bec90, type: 2}
-    - target: {fileID: 7030098245329535407, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 6beee329e8f16f140be9901f597ae341, type: 2}
+      objectReference: {fileID: 7030098244278345279, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
     - target: {fileID: 7030098245580201128, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
       propertyPath: m_RootOrder
       value: 3

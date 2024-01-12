@@ -41,25 +41,6 @@ MonoBehaviour:
   dirtIntensity:
     m_OverrideState: 0
     m_Value: 0
---- !u!114 &-5978615154830206139
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 221518ef91623a7438a71fef23660601, type: 3}
-  m_Name: WhiteBalance
-  m_EditorClassIdentifier: 
-  active: 0
-  temperature:
-    m_OverrideState: 1
-    m_Value: 0
-  tint:
-    m_OverrideState: 1
-    m_Value: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,7 +57,6 @@ MonoBehaviour:
   - {fileID: 4793999081247230040}
   - {fileID: 2137527814820983810}
   - {fileID: 6170848469097179160}
-  - {fileID: -5978615154830206139}
   - {fileID: -7224012991559347847}
 --- !u!114 &2137527814820983810
 MonoBehaviour:
@@ -93,7 +73,7 @@ MonoBehaviour:
   active: 1
   postExposure:
     m_OverrideState: 1
-    m_Value: 0.7
+    m_Value: 0.5
   contrast:
     m_OverrideState: 1
     m_Value: 5
@@ -143,7 +123,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.25
+    m_Value: 0.2
   smoothness:
     m_OverrideState: 1
     m_Value: 0.2

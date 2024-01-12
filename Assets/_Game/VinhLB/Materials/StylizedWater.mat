@@ -24,7 +24,6 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: 8a28c6c8bd86eda44b4e49775cc7b088, type: 3}
   m_ValidKeywords:
   - _INTERSECTIONFOAM
-  - _NORMALSREFRACTEDUV
   - _WAVES
   - _WORLDSPACEUV
   m_InvalidKeywords:
@@ -35,7 +34,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: 2999
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -124,10 +123,10 @@ Material:
     - _Boolean: 0
     - _BumpScale: 1
     - _CAUSTICS: 0
-    - _CausticsBrightness: 0.04
+    - _CausticsBrightness: 0.1
     - _CausticsDistortionFactor: 1
     - _CausticsDistortionScale: 10
-    - _CausticsDistortionSpeed: 0.1
+    - _CausticsDistortionSpeed: 0.05
     - _CausticsSpeed: 0.1
     - _CausticsTextureRotation: 45
     - _CausticsTile: 0.25
@@ -162,14 +161,14 @@ Material:
     - _LightingSmoothness: 1
     - _Metallic: 0
     - _Mode: 0
-    - _NORMALSREFRACTEDUV: 1
+    - _NORMALSREFRACTEDUV: 0
     - _NormalsScale: 0.025
     - _NormalsSpeed: 0.25
     - _NormalsStrength: 0.75
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _QueueControl: 0
-    - _QueueOffset: 0
+    - _QueueOffset: -1
     - _RefractionScale: 1
     - _RefractionSpeed: 0.1
     - _RefractionStrength: 0
