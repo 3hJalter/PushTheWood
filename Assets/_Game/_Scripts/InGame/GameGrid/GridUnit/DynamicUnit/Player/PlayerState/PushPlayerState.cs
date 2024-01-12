@@ -11,6 +11,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         float originAnimSpeed;
         float _counterTime;
         private bool _isExecuted;
+        private bool _firstTime;
+        private Direction direction;
         public StateEnum Id => StateEnum.Push;
 
         public void OnEnter(Player t)
@@ -18,13 +20,19 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             originAnimSpeed = t.AnimSpeed;
             t.ChangeAnim(Constants.PUSH_ANIM, true);
             t.SetAnimSpeed(originAnimSpeed * Constants.PUSH_ANIM_TIME / Constants.PUSH_TIME);
-            _counterTime = Constants.PUSH_TIME;
+            _counterTime = Constants.PUSH_TIME / 2;
             _isExecuted = false;
+            _firstTime = true;
+            direction = Direction.None;
         }
 
         public void OnExecute(Player t)
         {
             // BUG: The time checks Idle anim instead of Push anim
+            if (!_firstTime && t.InputDetection.InputAction == InputAction.ButtonDown)
+            {
+                direction = t.Direction;
+            }
             if (_counterTime > 0)
             {
                 _counterTime -= Time.fixedDeltaTime;
@@ -33,15 +41,17 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 return;
             }
 
+            _firstTime = false;
             if (!_isExecuted)
             {
                 _isExecuted = true;
                 // Push the block Unit
                 t.OnPush(t.MovingData.inputDirection);
                 ParticlePool.Play(PoolController.Ins.Particles[VFXType.DUST], t.transform.position + t.skin.transform.forward * (Constants.CELL_SIZE * 0.5f));
-                DOVirtual.DelayedCall(Constants.PUSH_TIME, OnCompletePush);
+                DOVirtual.DelayedCall(Constants.PUSH_TIME / 2, OnCompletePush);
                 void OnCompletePush()
                 {
+                    t.InputCache.Enqueue(direction);
                     t.StateMachine.ChangeState(StateEnum.Idle);
                 }
             }

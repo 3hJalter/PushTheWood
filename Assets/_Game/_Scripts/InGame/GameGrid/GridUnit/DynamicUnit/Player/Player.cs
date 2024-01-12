@@ -118,14 +118,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
                 {
                     MovingData.blockDynamicUnits[i].OnBePushed(direction, this);
-                }
-
-                //NOTE: Checking if push dynamic object does not create any change in grid -> discard the newest save.
-                if(!LevelManager.Ins.CurrentLevel.GridMap.IsChange)
-                    LevelManager.Ins.DiscardSaveState();
-            }
-
-            
+                }               
+            }          
             for (int i = 0; i < MovingData.blockStaticUnits.Count; i++)
                 MovingData.blockStaticUnits[i].OnBePushed(direction, this);
         }
