@@ -54,7 +54,8 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _heightOffset: -0.2
+  _heightOffset: 0.25
+  _pathMovementDuration: 30
   _moveSpeed: 4
   _rotateSpeed: 180
 --- !u!1 &8345941272920606925

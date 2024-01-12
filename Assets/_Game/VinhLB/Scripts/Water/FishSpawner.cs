@@ -41,7 +41,7 @@ namespace VinhLB
                 Vector3 middleRightPoint = middleLeftPoint;
                 middleRightPoint.x = bottomRightPoint.x;
             
-                List<Vector3> pointList = new List<Vector3>
+                List<Vector3> waypointList = new List<Vector3>
                 {
                     bottomLeftPoint,
                     middleLeftPoint,
@@ -55,15 +55,15 @@ namespace VinhLB
 
                 if (Random.Range(0, 4) > 1)
                 {
-                    pointList.Reverse();
+                    waypointList.Reverse();
                 }
-                pointList.Shift(Random.Range(0, pointList.Count - 1));
+                waypointList.Shift(Random.Range(0, waypointList.Count - 1));
 
                 if (_shark == null)
                 {
                     _shark = Instantiate(_sharkPrefab, Tf);
                 }
-                _shark.Initialize(pointList);   
+                _shark.Initialize(waypointList);   
             }
             else
             {
