@@ -47,7 +47,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 _isExecuted = true;
                 // Push the block Unit
                 t.OnPush(t.MovingData.inputDirection);
-                ParticlePool.Play(PoolController.Ins.Particles[VFXType.DUST], t.transform.position + t.skin.transform.forward * (Constants.CELL_SIZE * 0.5f));
+                ParticlePool.Play(PoolController.Ins.Particles[VFXType.Dust], t.transform.position + t.skin.transform.forward * (Constants.CELL_SIZE * 0.5f));
                 DOVirtual.DelayedCall(Constants.PUSH_TIME / 2, OnCompletePush);
                 void OnCompletePush()
                 {
