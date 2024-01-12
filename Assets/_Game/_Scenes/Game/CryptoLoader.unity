@@ -176,5 +176,5 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  isDebug: 0
+  isDebug: 1
   debugObject: {fileID: 4291094714596429661, guid: 50ce0b8b3b36f5d43a19f8f3498d378c, type: 3}

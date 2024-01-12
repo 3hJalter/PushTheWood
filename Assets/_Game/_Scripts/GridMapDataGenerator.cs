@@ -10,6 +10,7 @@ using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Managers;
+using _Game.Utilities;
 using GameGridEnum;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -22,7 +23,7 @@ public class GridMapDataGenerator : MonoBehaviour
     [Title("Level Data")]
     [Tooltip("The distance between the corner cells and the surfaceUnit closest to it")] 
     [SerializeField] private int offsetSurfaceWithFirstCell = 3; // Should be 3
-    [InlineButton("Setup","Save Level")]
+    [InlineButton("SaveLevelAsJson","Save Level")]
     [SerializeField] private string mapLevelName = "Lvl_0";
     
     [Title("Load Level")]
@@ -158,8 +159,8 @@ public class GridMapDataGenerator : MonoBehaviour
         GameObject levelObject = new("Level " + (index));
         _loadedLevel = new Level(index, levelObject.transform);
         // Spawn the Player to the level
-        Player player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
-        player.OnSetPositionAndRotation(PredictUnitPos(player, _loadedLevel.firstPlayerInitCell), _loadedLevel.firstPlayerDirection);
+        // Player player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
+        // player.OnSetPositionAndRotation(PredictUnitPos(player, _loadedLevel.firstPlayerInitCell), _loadedLevel.firstPlayerDirection);
         // Set all GridSurface to surfaceContainer
         GridSurface[] gridSurfaces = FindObjectsOfType<GridSurface>();
         foreach (GridSurface gridSurface in gridSurfaces)
@@ -593,38 +594,38 @@ public class GridMapDataGenerator : MonoBehaviour
         // Get all units in shadowContainer
         GridUnit[] shadowUnits = shadowContainer.GetComponentsInChildren<GridUnit>();
         // Take data to shadowUnitData
-        ShadowUnitData[] shadowUnitDataList = new ShadowUnitData[shadowUnits.Length];
+        RawLevelData.ShadowUnitData[] shadowUnitDataList = new RawLevelData.ShadowUnitData[shadowUnits.Length];
         // Write a @ to separate
         file.WriteLine("@");
         for (int i = 0; i < shadowUnits.Length; i++)
         {
            // Check if unit is down
-            shadowUnitDataList[i].rotationAngle = shadowUnits[i].Tf.eulerAngles;
+            shadowUnitDataList[i].rA = shadowUnits[i].Tf.eulerAngles;
             // if rotation round int of x and z divided by 180, then it is up
-            bool isUp = Mathf.RoundToInt(shadowUnitDataList[i].rotationAngle.x) % 180 == 0 
-                        && Mathf.RoundToInt(shadowUnitDataList[i].rotationAngle.z) % 180 == 0;
+            bool isUp = Mathf.RoundToInt(shadowUnitDataList[i].rA.x) % 180 == 0 
+                        && Mathf.RoundToInt(shadowUnitDataList[i].rA.z) % 180 == 0;
             
-            shadowUnitDataList[i].position = shadowUnits[i].Tf.position;
+            shadowUnitDataList[i].p = shadowUnits[i].Tf.position;
             if (!isUp) 
             {
-                shadowUnitDataList[i].position = shadowUnits[i].Tf.position;
+                shadowUnitDataList[i].p = shadowUnits[i].Tf.position;
                 
                 // if y position is floating number (not near integer with 0.05f), then it is done already, and we dont do anything
                 // but if the y position is near integer with 0.05f, then we need to add the offset
-                if (Mathf.Abs(shadowUnitDataList[i].position.y - Mathf.RoundToInt(shadowUnitDataList[i].position.y)) < 0.05f)
+                if (Mathf.Abs(shadowUnitDataList[i].p.y - Mathf.RoundToInt(shadowUnitDataList[i].p.y)) < 0.05f)
                 {
-                    shadowUnitDataList[i].position.y -= shadowUnits[i].yOffsetOnDown;
+                    shadowUnitDataList[i].p.y -= shadowUnits[i].yOffsetOnDown;
                 }
             }
             
-            shadowUnitDataList[i].type = (int)shadowUnits[i].PoolType;
+            shadowUnitDataList[i].t = (int)shadowUnits[i].PoolType;
             // Save as format x, y, z, rotationAngleX, rotationAngleY, rotationAngleZ, type
             // \nx, y, z, rotationAngleX, rotationAngleY, rotationAngleZ, type, ...
-            string saveLine = shadowUnitDataList[i].position.x + " " + shadowUnitDataList[i].position.y + " " +
-                        shadowUnitDataList[i].position.z + " "
-                        + shadowUnitDataList[i].rotationAngle.x + " " + shadowUnitDataList[i].rotationAngle.y + " " +
-                        shadowUnitDataList[i].rotationAngle.z + " "
-                        + shadowUnitDataList[i].type;
+            string saveLine = shadowUnitDataList[i].p.x + " " + shadowUnitDataList[i].p.y + " " +
+                        shadowUnitDataList[i].p.z + " "
+                        + shadowUnitDataList[i].rA.x + " " + shadowUnitDataList[i].rA.y + " " +
+                        shadowUnitDataList[i].rA.z + " "
+                        + shadowUnitDataList[i].t;
             file.WriteLine(saveLine);     
         }
         #endregion
@@ -651,6 +652,313 @@ public class GridMapDataGenerator : MonoBehaviour
         DataManager.Ins.AddGridTextData(Resources.Load<TextAsset>(mapLevelName));
     }
 
+     [ContextMenu("Save JSON")]
+    private void SaveLevelAsJson()
+    {
+        SetObjectToContainer();
+
+        #region Verify
+
+        // Verify name
+        switch (mapLevelName)
+        {
+            case null:
+            case " ":
+            case "":
+                Debug.LogError("Level name can not be empty");
+                return;
+        }
+        // Verify Grid Surface
+        GridSurface[] gridSurfaces = surfaceContainer.GetComponentsInChildren<GridSurface>();
+        if (gridSurfaces.Length == 0)
+        {
+            Debug.LogError("Grid must have at least 1 surface");
+            return;
+        }
+        // Verify Grid Unit (Player has in this level)
+        GridUnit[] gridUnits = unitContainer.GetComponentsInChildren<GridUnit>();
+        // Check if have Player
+        if (gridUnits.All(gridUnit => gridUnit.PoolType != PoolType.Player))
+        {
+            Debug.LogError("Grid must have at least 1 Player");
+            return;
+        }
+
+        GridUnit[] shadowUnits = shadowContainer.GetComponentsInChildren<GridUnit>();
+        
+        #endregion
+        
+        #region Setup GridMapSize
+        
+        int minX = int.MaxValue;
+        int minZ = int.MaxValue;
+        int maxX = int.MinValue;
+        int maxZ = int.MinValue;
+        foreach (GridSurface gridSurface in gridSurfaces)
+        {
+            Vector3 position = gridSurface.Tf.position;
+            if (position.x < minX) minX = (int)Math.Round(position.x);
+            if (position.z < minZ) minZ = (int)Math.Round(position.z);
+            if (position.x > maxX) maxX = (int)Math.Round(position.x);
+            if (position.z > maxZ) maxZ = (int)Math.Round(position.z);
+        }
+        int offsetS = offsetSurfaceWithFirstCell * 2 + 1;
+
+        #region Set MinX and MaxX
+
+        if (minX < offsetS)
+        {
+            int offsetX = offsetS - minX;
+            foreach (GridSurface gridSurface in gridSurfaces)
+            {
+                Vector3 position = gridSurface.Tf.position;
+                position.x += offsetX;
+                gridSurface.Tf.position = position;
+            }
+
+            foreach (GridUnit gridUnit in gridUnits)
+            {
+                Vector3 position = gridUnit.Tf.position;
+                position.x += offsetX;
+                gridUnit.Tf.position = position;
+            }
+
+            minX += offsetX;
+            maxX += offsetX;
+        }
+        else if (minX > offsetS)
+        {
+            int offsetX = minX - offsetS;
+            foreach (GridSurface gridSurface in gridSurfaces)
+            {
+                Vector3 position = gridSurface.Tf.position;
+                position.x -= offsetX;
+                gridSurface.Tf.position = position;
+            }
+
+            foreach (GridUnit gridUnit in gridUnits)
+            {
+                Vector3 position = gridUnit.Tf.position;
+                position.x -= offsetX;
+                gridUnit.Tf.position = position;
+            }
+
+            minX -= offsetX;
+            maxX -= offsetX;
+        }
+
+        maxX += offsetS - 1; // add five more cell to maxX and maxY
+
+        #endregion
+
+        #region Set MinZ and MaxZ
+
+        if (minZ < offsetS)
+        {
+            int offsetZ = offsetS - minZ;
+            foreach (GridSurface gridSurface in gridSurfaces)
+            {
+                Vector3 position = gridSurface.Tf.position;
+                position.z += offsetZ;
+                gridSurface.Tf.position = position;
+            }
+
+            foreach (GridUnit gridUnit in gridUnits)
+            {
+                Vector3 position = gridUnit.Tf.position;
+                position.z += offsetZ;
+                gridUnit.Tf.position = position;
+            }
+
+            minZ += offsetZ;
+            maxZ += offsetZ;
+        }
+        else if (minZ > offsetS)
+        {
+            int offsetZ = minZ - offsetS;
+            foreach (GridSurface gridSurface in gridSurfaces)
+            {
+                Vector3 position = gridSurface.Tf.position;
+                position.z -= offsetZ;
+                gridSurface.Tf.position = position;
+            }
+
+            foreach (GridUnit gridUnit in gridUnits)
+            {
+                Vector3 position = gridUnit.Tf.position;
+                position.z -= offsetZ;
+                gridUnit.Tf.position = position;
+            }
+
+            minZ -= offsetZ;
+            maxZ -= offsetZ;
+        }
+
+        maxZ += offsetS - 1;
+        const int cellOffset = 1;
+        maxX = (maxX + cellOffset) / 2;
+        maxZ = (maxZ + cellOffset) / 2;
+
+        #endregion
+        
+        // Set gridMapSize
+
+        Vector2Int size = new(maxX, maxZ);
+        
+        #endregion
+        
+        #region Setup GridSurfaceData
+        
+        // Create a list of GridSurfaceData
+        List<RawLevelData.GridSurfaceData> gridSurfaceDataList = new();
+        
+        // Loop all gridSurface 
+        foreach (GridSurface gridSurface in gridSurfaces)
+        {
+            // Save the position of gridSurface
+            Vector3 position = gridSurface.Tf.position;
+            // Get the x and z index of gridSurface
+            int x = (int)(position.x - 1) / 2;
+            int z = (int)(position.z - 1) / 2;
+            // Save the data to gridSurfaceData
+            RawLevelData.GridSurfaceData gridSurfaceData = new()
+            {
+                p = new Vector2Int(x, z),
+                t = (int)gridSurface.PoolType,
+                d = (int)BuildingUnitData.GetDirection(gridSurface.Tf.eulerAngles.y),
+                // save the ground material if it is ground surface
+                m = gridSurface is GroundSurface groundSurface ? (int)groundSurface.groundMaterialEnum : -1
+            };
+            // Add gridSurfaceData to gridSurfaceDataList
+            gridSurfaceDataList.Add(gridSurfaceData);
+        }
+        
+        #endregion
+
+        #region Setup GridUnitData
+
+        // Create a list of GridUnitData
+        List<RawLevelData.GridUnitData> gridUnitDataList = new();
+        
+        // Loop all gridUnit
+        
+        foreach (GridUnit gridUnit in gridUnits)
+        {
+            // Save the position of gridUnit
+            Vector3 position = gridUnit.Tf.position;
+            // Get the x and z index of gridUnit
+            int x = (int)(position.x - 1) / 2;
+            int z = (int)(position.z - 1) / 2;
+            // Save the data to gridUnitData
+            RawLevelData.GridUnitData gridUnitData = new()
+            {
+                c = new Vector2Int(x, z),
+                t = (int)gridUnit.PoolType,
+                // rotationDirection = (int)gridUnit.SkinRotationDirection
+                // TEST
+                d = (int)BuildingUnitData.GetDirection(gridUnit.Tf.eulerAngles.y),
+            };
+            // Add gridUnitData to gridUnitDataList
+            gridUnitDataList.Add(gridUnitData);
+        }
+
+        #endregion
+
+        #region Setup ShadowUnitData
+        
+        // Create a list of ShadowUnitData
+        List<RawLevelData.ShadowUnitData> shadowUnitDataList = new();
+
+        // Loop all shadowUnit
+        foreach (GridUnit shadowUnit in shadowUnits)
+        {
+            // Check if unit is down
+            Vector3 rotationAngle = shadowUnit.Tf.eulerAngles;
+            // if rotation round int of x and z divided by 180, then it is up
+            bool isUp = Mathf.RoundToInt(rotationAngle.x) % 180 == 0 
+                        && Mathf.RoundToInt(rotationAngle.z) % 180 == 0;
+            // if not up, add the offset
+            if (!isUp)
+            {
+                // if y position is floating number (not near integer with 0.05f), then it is done already, and we dont do anything
+                // but if the y position is near integer with 0.05f, then we need to add the offset
+                Vector3 position = shadowUnit.Tf.position;
+                if (Mathf.Abs(position.y - Mathf.RoundToInt(position.y)) < 0.05f)
+                {
+                    position.y -= shadowUnit.yOffsetOnDown;
+                    // Round the y position to 2 decimal
+                    position.y = (float)Math.Round(position.y, 2);
+                }
+            }
+            
+            // Save the data to shadowUnitData
+            RawLevelData.ShadowUnitData shadowUnitData = new()
+            {
+                p = shadowUnit.Tf.position,
+                rA = rotationAngle,
+                t = (int)shadowUnit.PoolType
+            };
+            // Add shadowUnitData to shadowUnitDataList
+            shadowUnitDataList.Add(shadowUnitData);
+        }
+        
+        #endregion
+        
+        #region Setup HintTrailData
+        
+        // Create a list of HintTrailData
+        List<RawLevelData.HintTrailData> hintTrailDataList = new();
+
+        bool isNotVerify = hintLineString.Any(c => !char.IsDigit(c) && c != ' ' && c != ';');
+        
+        // Check the hintLineString
+        if (!isNotVerify)
+        {
+            // separate the hintLineString to each Vector3(x,3f,z)
+            string[] splitHintLineString = hintLineString.Split(" ; ");
+            // if hintLineString is empty, return
+            if (splitHintLineString.Length == 0) return;
+            foreach (string s in splitHintLineString)
+            {
+                string[] split = s.Split(' ');
+                if (split.Length != 2) continue;
+                if (!float.TryParse(split[0], out float x)) continue;
+                if (!float.TryParse(split[1], out float z)) continue;
+                RawLevelData.HintTrailData hintTrailData = new()
+                {
+                    p = new Vector2(x, z)
+                };
+                hintTrailDataList.Add(hintTrailData);
+            }
+        }
+        
+        #endregion
+        
+        RawLevelData levelData = new()
+        {
+            s = size,
+            sfD = gridSurfaceDataList.ToArray(),
+            uD = gridUnitDataList.ToArray(),
+            suD = shadowUnitDataList.ToArray(),
+            htD = hintTrailDataList.ToArray()
+        };
+        // Convert levelData to json
+        DevLog.Log(DevId.Hoang, "Save levelData: " + levelData.sfD.Length);
+        string json = JsonUtility.ToJson(levelData);
+        // Format json
+        DevLog.Log(DevId.Hoang, "Save json: " + json);
+        // Save json to file
+        string path = "Assets/_Game/Resources/Level/" + mapLevelName + ".json";
+        DevLog.Log(DevId.Hoang, "Save to path: " + path);
+        File.WriteAllText(path, json);
+        
+        // check if gridData contain this textAsset with this name, if not, add it 
+        TextAsset textAsset = Resources.Load<TextAsset>("Level/" + mapLevelName);
+        if (DataManager.Ins.HasGridTextData(textAsset)) return;
+        // Add new txt file to gridData from DataManager from path 
+        DataManager.Ins.AddGridTextData(textAsset);
+    }
+     
     private void TestHintTrail()
     {
         // separate the hintLineString to each Vector3(x,3f,z)
@@ -675,12 +983,5 @@ public class GridMapDataGenerator : MonoBehaviour
         float offsetY = (float)HeightLevel.One / 2 * Constants.CELL_SIZE;
         if (unit.UnitTypeY == UnitTypeY.Down) offsetY -= unit.yOffsetOnDown;
         return cell.WorldPos + Vector3.up * offsetY;
-    }
-     
-    private struct ShadowUnitData
-    {
-        public Vector3 position;
-        public Vector3 rotationAngle;
-        public int type;
     }
 }
