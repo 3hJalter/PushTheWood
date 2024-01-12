@@ -113,6 +113,20 @@ namespace _Game._Scripts.InGame
             return new Vector3(centerX, 0, centerZ);
         }
 
+        public Vector3 GetBottomLeftPos()
+        {
+            GameGridCell cell = GridMap.GetGridCell(0, 0);
+
+            return new Vector3(cell.WorldX, 0f, cell.WorldY);
+        }
+
+        public Vector3 GetTopRightPos()
+        {
+            GameGridCell cell = GridMap.GetGridCell(GridSizeX - 1, gridSizeY - 1);
+            
+            return new Vector3(cell.WorldX, 0f, cell.WorldY);
+        }
+
         public float GetMaxZPos()
         {
             return GridMap.GetGridCell(0, gridSizeY - 1).WorldY;
