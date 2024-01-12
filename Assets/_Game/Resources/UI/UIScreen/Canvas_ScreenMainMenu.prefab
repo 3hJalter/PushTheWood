@@ -33,7 +33,7 @@ RectTransform:
   m_Children:
   - {fileID: 4422229975591509148}
   m_Father: {fileID: 5352854967292660263}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2821,7 +2821,7 @@ RectTransform:
   - {fileID: 2565916011459188705}
   - {fileID: 6494509535071954770}
   m_Father: {fileID: 1878410169944309732}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -4330,8 +4330,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1744720612907457760}
   - {fileID: 2061765652788169156}
+  - {fileID: 1744720612907457760}
   - {fileID: 5997072130810091144}
   m_Father: {fileID: 8842534761249019573}
   m_RootOrder: 2
@@ -5945,7 +5945,7 @@ RectTransform:
   m_Children:
   - {fileID: 3180716960152035840}
   m_Father: {fileID: 5352854967292660263}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -6501,8 +6501,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 9174977841999195458}
   - {fileID: 1577909489851692056}
+  - {fileID: 9174977841999195458}
   - {fileID: 4537778673771368717}
   m_Father: {fileID: 4730223165368726813}
   m_RootOrder: 0
@@ -8098,14 +8098,14 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _tabButtonList:
-  - {fileID: 7981391001675565098}
   - {fileID: 2849646562909081610}
+  - {fileID: 7981391001675565098}
   - {fileID: 7582005745431931354}
   _tabPageList:
-  - {fileID: 6443702629738973578}
   - {fileID: 7573738836167675790}
+  - {fileID: 6443702629738973578}
   - {fileID: 1529534554266733086}
-  _activeTabIndex: 0
+  _activeTabIndex: 1
   _useCustomSprite: 0
   _tabIdleSprite: {fileID: 0}
   _tabHoverSprite: {fileID: 0}
@@ -8523,7 +8523,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1878410169944309732}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

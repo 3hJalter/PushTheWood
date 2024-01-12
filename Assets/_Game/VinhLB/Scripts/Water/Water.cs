@@ -13,7 +13,7 @@ namespace VinhLB
         
         private void OnTriggerEnter(Collider collider)
         {
-            DevLog.Log(DevId.Vinh, $"Something fall into water");
+            DevLog.Log(DevId.Vinh, $"Something fall into water: {collider.gameObject.name}");
             Vector3 contactPoint = collider.transform.position;
             contactPoint.y = _surfaceHeight;
             ParticlePool.Play(PoolController.Ins.Particles[VFXType.WaterSplash], contactPoint);
