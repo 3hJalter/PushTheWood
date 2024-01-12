@@ -106,6 +106,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             //NOTE: Saving when push dynamic object that make grid change
             if (MovingData.blockDynamicUnits.Count > 0)
             {
+                #region Save
                 LevelManager.Ins.SaveGameState(true);
                 mainCell.ValueChange();
                 for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
@@ -113,17 +114,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                     MovingData.blockDynamicUnits[i].MainCell.ValueChange();
                 }
                 LevelManager.Ins.SaveGameState(false);
+                #endregion
                 for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
                 {
                     MovingData.blockDynamicUnits[i].OnBePushed(direction, this);
-                }
-
-                //NOTE: Checking if push dynamic object does not create any change in grid -> discard the newest save.
-                if(!LevelManager.Ins.CurrentLevel.GridMap.IsChange)
-                    LevelManager.Ins.DiscardSaveState();
-            }
-
-            
+                }               
+            }          
             for (int i = 0; i < MovingData.blockStaticUnits.Count; i++)
                 MovingData.blockStaticUnits[i].OnBePushed(direction, this);
         }
@@ -180,7 +176,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         public void OnRideVehicle(Direction tDirection)
         {
+            #region Save
+            LevelManager.Ins.SaveGameState(true);
+            MainCell.ValueChange();
+            ((GridUnit)_vehicle).MainCell.ValueChange();
+            LevelManager.Ins.SaveGameState(false);
+            #endregion
             isRideVehicle = true;
+            LevelManager.Ins.IsCanUndo = false;
             _vehicle.Ride(tDirection, this);
         }
 
@@ -211,6 +214,46 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public MovingData MovingData => _movingData ??= new MovingData(this);
         public CutTreeData CutTreeData => _cutTreeData ??= new CutTreeData(this);
 
-        #endregion     
+        #endregion
+
+        #region SAVING DATA
+        public override IMemento Save()
+        {
+            IMemento save;
+            if (overrideSpawnSave != null)
+            {
+                save = overrideSpawnSave;
+                overrideSpawnSave = null;
+            }
+            else
+            {
+                save = new PlayerMemento(this, Tf.parent, isRideVehicle, _vehicle, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
+                , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID, lastPushedDirection);
+            }
+            return save;
+        }
+
+        public class PlayerMemento : DynamicUnitMemento<Player>
+        {
+            protected IVehicle vehicle = null;
+            protected bool isRideVehicle;
+            protected Transform parentTf;
+            public PlayerMemento(GridUnitDynamic main, Transform parentTf, bool isRideVehicle, IVehicle vehicle, StateEnum currentState, params object[] data) : base(main, currentState, data)
+            {
+                this.vehicle = vehicle;
+                this.isRideVehicle = isRideVehicle;
+                this.parentTf = parentTf;
+            }
+
+            public override void Restore()
+            {
+                base.Restore();
+                main._vehicle = vehicle;
+                main.isRideVehicle = isRideVehicle;
+                if(main.Tf.parent != parentTf)
+                    main.Tf.SetParent(parentTf);
+            }
+        }
+        #endregion
     }
 }

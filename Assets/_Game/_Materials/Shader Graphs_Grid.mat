@@ -52,7 +52,7 @@ Material:
     - _BUILTIN_QueueOffset: 0
     - _QueueControl: 0
     - _QueueOffset: 1
-    - _Thickness: 0.07
+    - _Thickness: 0.05
     - _Transperent: 1
     m_Colors:
     - _Color: {r: 0.9150943, g: 0, b: 0.08336791, a: 1}

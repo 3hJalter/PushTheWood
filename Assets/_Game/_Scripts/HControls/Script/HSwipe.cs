@@ -1,5 +1,6 @@
 ﻿using _Game.Camera;
 using _Game.Managers;
+using _Game.Utilities;
 using GG.Infrastructure.Utils.Swipe;
 using UnityEngine;
 
@@ -18,11 +19,12 @@ namespace HControls
         private static void OnUnHold()
         {
             if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.ZoomOutCamera))
-                CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
+                CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera, Constants.ZOOM_OUT_TIME);
         }
         
         private static void OnSwipe(string direction)
         {
+            DevLog.Log(DevId.Hung, $"Swipe - {direction}");
             switch (direction)
             {
                 case DirectionId.ID_LEFT:
@@ -40,7 +42,7 @@ namespace HControls
                 case Constants.NONE:
                     HInputManager.SetDirectionInput(Direction.None);
                     // TODO: Zoom In function when swipe out
-                    CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera);
+                    CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera,  Constants.ZOOM_OUT_TIME);
                     break;
             }
         }

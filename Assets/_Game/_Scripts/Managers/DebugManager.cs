@@ -8,13 +8,23 @@ using UnityEngine;
 public class DebugManager : SimpleSingleton<DebugManager>
 {
     private Grid<GameGridCell, GameGridCellData>.DebugGrid debugGrid;
-
-    private void Awake()
-    {
-        debugGrid = new Grid<GameGridCell, GameGridCellData>.DebugGrid();
-    }
+    [SerializeField]
+    GameObject FpsDebug;
+    [SerializeField]
+    GameObject LogDebug;
+    public bool IsDebugGridLogic => debugGrid != null ? true : false;
     public void DebugGridData(Grid<GameGridCell, GameGridCellData> grid)
     {
-        debugGrid.DrawGrid(grid, true);
+        debugGrid?.DrawGrid(grid, true);
+    }
+    public void OnInit(bool isDebugGridLogic, bool isDebugFps, bool isDebugLog)
+    {
+        if(isDebugGridLogic)
+        {
+            debugGrid = new Grid<GameGridCell, GameGridCellData>.DebugGrid();
+        }
+
+        FpsDebug.SetActive(isDebugFps);
+        LogDebug.SetActive(isDebugLog);
     }
 }

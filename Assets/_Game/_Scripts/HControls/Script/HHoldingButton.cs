@@ -21,7 +21,7 @@ namespace HControls
             {
                 if (isHolding)
                 {
-                    CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera);
+                    CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera, Constants.ZOOM_OUT_TIME);
                 }
             });
         }
@@ -37,7 +37,7 @@ namespace HControls
             isHolding = false;
             timer.Stop();
             if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.ZoomOutCamera))
-                CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
+                CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera, Constants.ZOOM_OUT_TIME);
         }
     }
 }

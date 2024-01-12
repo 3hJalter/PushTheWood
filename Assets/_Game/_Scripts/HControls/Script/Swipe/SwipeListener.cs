@@ -77,6 +77,8 @@ namespace GG.Infrastructure.Utils.Swipe
                 _isHolding = false;
             }
             
+            if (Input.GetMouseButtonDown(0) && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
+            
             if (Input.GetMouseButtonDown(0)) InitSwipe();
 
             if (_waitForSwipe && Input.GetMouseButton(0)) CheckSwipe();

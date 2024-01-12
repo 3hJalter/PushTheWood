@@ -24,6 +24,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         public void OnEnter(Chump t)
         {
             blockObjects.Clear();
+            LevelManager.Ins.IsCanUndo = false;
+            OnExecute(t);
+        }
+
+        public void OnExecute(Chump t)
+        {
             switch (t.UnitTypeY)
             {
                 case UnitTypeY.Up:
@@ -43,8 +49,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     .SetEase(Ease.OutQuad)
                     .OnComplete(() => t.StateMachine.ChangeState(StateEnum.Idle));
 
-                    
-                    if(blockObjects.Count > 0)
+
+                    if (blockObjects.Count > 0)
                         TimerManager.Inst.WaitForTime(Constants.MOVING_TIME * 0.5f, ObjectBlocking);
                     break;
                 case UnitTypeY.Down:
@@ -52,7 +58,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     GetBlockObjects(t.MainMovingData);
                     blockDirection = t.MainMovingData.inputDirection;
                     if (!IsSamePushDirection())
-                    {                       
+                    {
                         Vector3 originPos = t.Tf.position;
                         moveTween = t.Tf.DOMove(originPos + Constants.DirVector3F[blockDirection] * Constants.CELL_SIZE / 2f, Constants.MOVING_TIME * 0.5f).SetEase(Ease.InQuad)
                             .OnComplete(() => t.Tf.DOMove(originPos, Constants.MOVING_TIME * 0.5f).SetEase(Ease.OutQuad).OnComplete(ChangeToIdle));
@@ -76,18 +82,22 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 blockObjects.AddRange(data.blockStaticUnits);
                 blockObjects.AddRange(data.blockDynamicUnits);
             }
-            
+
             void ObjectBlocking()
             {
                 for (int i = 0; i < blockObjects.Count; i++)
                 {
                     blockObjects[i].OnBePushed(blockDirection);
                 }
+                if (t.MainMovingData.blockDynamicUnits.Count > 0) t.OnPush(t.MainMovingData.inputDirection, t.MainMovingData);
+                //NOTE: Checking if push dynamic object does not create any change in grid -> discard the newest save.
+                if (!LevelManager.Ins.CurrentLevel.GridMap.IsChange)
+                    LevelManager.Ins.DiscardSaveState();
             }
 
             bool IsSamePushDirection()
             {
-                if((t.UnitTypeXZ == UnitTypeXZ.Horizontal && (t.MainMovingData.inputDirection == Direction.Left || t.MainMovingData.inputDirection == Direction.Right)) 
+                if ((t.UnitTypeXZ == UnitTypeXZ.Horizontal && (t.MainMovingData.inputDirection == Direction.Left || t.MainMovingData.inputDirection == Direction.Right))
                     || (t.UnitTypeXZ == UnitTypeXZ.Vertical && (t.MainMovingData.inputDirection == Direction.Forward || t.MainMovingData.inputDirection == Direction.Back)))
                 {
                     return true;
@@ -101,13 +111,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             }
         }
 
-        public void OnExecute(Chump t)
-        {
-            
-        }
-
         public void OnExit(Chump t)
         {
+            LevelManager.Ins.IsCanUndo = true;
             moveTween.Kill();
         }
 

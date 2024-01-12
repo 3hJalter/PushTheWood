@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using _Game._Scripts.InGame.GameCondition.Data;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
@@ -37,9 +38,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
 
         public void Ride(Direction direction, GridUnit rideUnit)
         {
-            if (!IsCurrentStateIs(StateEnum.Idle) && rideUnit is Player.Player) return;
-            // Check if there is a unit in the direction of the raft
             rideRaftDirection = direction;
+            if (!IsCurrentStateIs(StateEnum.Idle) && rideUnit is Player.Player) return;
+            // Check if there is a unit in the direction of the raft           
             stateMachine.ChangeState(StateEnum.Move);
         }
 
@@ -79,7 +80,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
 
         protected override void OnEnterTriggerUpper(GridUnit triggerUnit)
         {
-            if (!IsCurrentStateIs(StateEnum.Idle)) return;
+            if (!(IsCurrentStateIs(StateEnum.Idle) || IsCurrentStateIs(StateEnum.Emerge))) return;
             if (triggerUnit is Player.Player playerIn)
             {
                 playerIn.SetVehicle(this);
@@ -91,7 +92,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
 
         protected override void OnOutTriggerUpper(GridUnit triggerUnit)
         {
-            if (!IsCurrentStateIs(StateEnum.Idle)) return;
+            if (!(IsCurrentStateIs(StateEnum.Idle) || IsCurrentStateIs(StateEnum.Emerge))) return;
             if (triggerUnit is Player.Player playerIn)
             {
                 playerIn.SetVehicle(null);
@@ -116,5 +117,60 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
 
             _lastDirectionSpawn = direction;
         }
+
+        #region SAVING DATA
+        public override IMemento Save()
+        {
+            IMemento save;
+            if (overrideSpawnSave != null)
+            {
+                save = overrideSpawnSave;
+                overrideSpawnSave = null;
+            }
+            else
+            {
+                save = new RaftMemento(this, player, rideRaftDirection, blockDirectionUnits, CarryUnits, 
+                    CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight, unitTypeY, unitTypeXZ, 
+                    belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID, lastPushedDirection);
+            }
+            return save;
+        }
+
+        public class RaftMemento : DynamicUnitMemento<Raft> 
+        {
+            protected Player.Player player;
+            protected Direction rideRaftDirection;
+            protected GridUnit[] blockDirectionUnits;
+            protected GridUnit[] carryUnit;
+            public RaftMemento(GridUnitDynamic main, Player.Player player, Direction rideRaftDirection, List<GridUnit> blockDirectionUnits, HashSet<GridUnit> carryUnit,
+                StateEnum currentState, params object[] data) : base(main, currentState, data)
+            {
+                this.currentState = currentState;
+                this.player = player;
+                this.rideRaftDirection = rideRaftDirection;
+                this.blockDirectionUnits = blockDirectionUnits.ToArray();
+                this.carryUnit = carryUnit.ToArray();
+            }
+
+            public override void Restore()
+            {
+                base.Restore();
+                main.player = player;
+                main.rideRaftDirection = rideRaftDirection;
+
+                main.blockDirectionUnits.Clear();
+                for(int i = 0; i < blockDirectionUnits.Length; i++)
+                {
+                    main.blockDirectionUnits.Add(blockDirectionUnits[i]);
+                }
+
+                main.CarryUnits.Clear();
+                for (int i = 0; i < carryUnit.Length; i++)
+                {
+                    main.CarryUnits.Add(carryUnit[i]);
+                }
+            }
+        }
+        #endregion
     }
 }

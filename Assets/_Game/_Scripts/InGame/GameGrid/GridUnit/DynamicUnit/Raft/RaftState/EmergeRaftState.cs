@@ -20,6 +20,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
             moveTween = t.Tf.DOMoveY((float)Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] / 2 * Constants.CELL_SIZE - t.yOffsetOnDown, Constants.MOVING_TIME * 1.5f).OnComplete(() =>
             {
                 t.StateMachine.ChangeState(StateEnum.Idle);
+                //NOTE: If player is ride vehicle in emerge state
+                if (t.player.isRideVehicle)
+                {
+                    t.Ride(t.rideRaftDirection, t.player);
+                }
             });
 
         }

@@ -88,6 +88,12 @@ namespace _Game.UIs.Screen
             undoTimer.Start(COOL_DOWN_TIME, () => undoButton.interactable = true);
         }
 
+        public void SetActiveUndo(bool active)
+        {
+            undoTimer.Stop();
+            undoButton.interactable = active;
+        }
+
         private void OnDestroy()
         {
             TimerManager.Inst.PushSTimer(undoTimer);

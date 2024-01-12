@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using _Game.DesignPattern.StateMachine;
+using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using DG.Tweening;
 using UnityEngine;
 
@@ -7,18 +8,19 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
 {
     public class MoveRaftState : IState<Raft>
     {
-        private const float COUNTER_PLAYER_ANIM_TIME = 0.5f;
         private Direction _inverseDirection;
+        private Tween moveTween;
         private bool _isMove;
 
         public StateEnum Id => StateEnum.Move;
 
         public void OnEnter(Raft t)
         {
+            moveTween = null;
             if (t.blockDirectionUnits.Count > 0)
             {
                 t.player.ChangeAnim(Constants.PUSH_ANIM);
-                DOVirtual.DelayedCall(COUNTER_PLAYER_ANIM_TIME, () =>
+                DOVirtual.DelayedCall(Constants.PUSH_TIME, () =>
                 {
                     t.player.ChangeAnim(Constants.IDLE_ANIM);
                     for (int i = 0; i < t.blockDirectionUnits.Count; i++)
@@ -44,8 +46,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
             if (!_isMove)
             {
                 if (t.MovingData.blockDynamicUnits.Count > 0) t.OnPush(t.MovingData.inputDirection, t.MovingData);
-                t.player.isRideVehicle = false;
                 t.StateMachine.ChangeState(StateEnum.Idle);
+                t.player.isRideVehicle = false;
+                LevelManager.Ins.IsCanUndo = true;
+                //DEV: May be error here, old parent may not be null
+                foreach (GridUnit unit in t.CarryUnits) unit.Tf.SetParent(null);              
             }
             else
             {
@@ -54,7 +59,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
                     t.MovingData.enterCells);
                 t.OnOutCells();
                 t.OnEnterCells(t.MovingData.enterMainCell, t.MovingData.enterCells);
-                t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME)
+                moveTween = t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME)
                     .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                     {
                         foreach (GridUnit unit in t.CarryUnits)
@@ -78,7 +83,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
 
         public void OnExit(Raft t)
         {
-
+            moveTween?.Kill();
         }
     }
 }

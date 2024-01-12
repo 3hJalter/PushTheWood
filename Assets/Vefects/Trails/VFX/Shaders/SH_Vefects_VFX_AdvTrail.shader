@@ -720,7 +720,7 @@ Shader "Vefects/SH_Vefects_VFX_AdvTrail"
 	
 	}
 	
-	CustomEditor "UnityEditor.ShaderGraph.PBRMasterGUI"
+	CustomEditor "UnityEditor.ShaderGraph.GenericShaderGraphMaterialGUI"
 	Fallback "Hidden/InternalErrorShader"
 	
 }
