@@ -159,6 +159,7 @@ namespace _Game.GameGrid
             // player.OnInit(CurrentLevel.firstPlayerInitCell);
             SetCameraToPlayerIsland();
             // FxManager.Ins.ResetTrackedTrampleObjectList();
+            _fishSpawner.SpawnFish();
         }
 
         public void ResetGameState()
