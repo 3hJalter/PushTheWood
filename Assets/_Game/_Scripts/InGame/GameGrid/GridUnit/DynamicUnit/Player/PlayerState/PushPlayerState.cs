@@ -11,6 +11,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         float originAnimSpeed;
         float _counterTime;
         private bool _isExecuted;
+        private Direction direction;
         public StateEnum Id => StateEnum.Push;
 
         public void OnEnter(Player t)
@@ -20,11 +21,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             t.SetAnimSpeed(originAnimSpeed * Constants.PUSH_ANIM_TIME / Constants.PUSH_TIME);
             _counterTime = Constants.PUSH_TIME;
             _isExecuted = false;
+            direction = Direction.None;
         }
 
         public void OnExecute(Player t)
         {
             // BUG: The time checks Idle anim instead of Push anim
+            if (t.Direction != Direction.None)
+                direction = t.Direction;
             if (_counterTime > 0)
             {
                 _counterTime -= Time.fixedDeltaTime;
@@ -42,6 +46,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 DOVirtual.DelayedCall(Constants.PUSH_TIME, OnCompletePush);
                 void OnCompletePush()
                 {
+                    t.InputCache.Enqueue(direction);
                     t.StateMachine.ChangeState(StateEnum.Idle);
                 }
             }

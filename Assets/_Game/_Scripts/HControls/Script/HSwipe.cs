@@ -1,5 +1,6 @@
 ﻿using _Game.Camera;
 using _Game.Managers;
+using _Game.Utilities;
 using GG.Infrastructure.Utils.Swipe;
 using UnityEngine;
 
@@ -23,6 +24,7 @@ namespace HControls
         
         private static void OnSwipe(string direction)
         {
+            DevLog.Log(DevId.Hung, $"Swipe - {direction}");
             switch (direction)
             {
                 case DirectionId.ID_LEFT:
