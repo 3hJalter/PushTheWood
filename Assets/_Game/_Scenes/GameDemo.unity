@@ -1185,6 +1185,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &591048777 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 591048777, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+  m_PrefabInstance: {fileID: 7030098244278345276}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe6313f7145787f41a96f335e726a0e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &604519934
 GameObject:
   m_ObjectHideFlags: 0
@@ -1970,6 +1981,7 @@ MonoBehaviour:
     SerializationNodes: []
   levelIndex: 0
   FontMaterial: {fileID: 2100000, guid: 9ad269c99dcf42b7aedefd83dd5a7b9d, type: 2}
+  _fishSpawner: {fileID: 591048777}
   IsConstructingLevel: 0
   player: {fileID: 0}
 --- !u!1 &1072006142
@@ -3614,6 +3626,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 591048777, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 591048777, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
     - target: {fileID: 1119362967, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
       propertyPath: serializationData.Prefab
       value: 

@@ -68,7 +68,7 @@ namespace _Game.UIs.Screen
 
         public void OnClickResetIslandButton()
         {
-            LevelManager.Ins.CurrentLevel.ResetIslandPlayerOn();
+            LevelManager.Ins.ResetLevelIsland();
             resetIslandButton.interactable = false;
             resetTimer.Start(COOL_DOWN_TIME, () => resetIslandButton.interactable = true);
         }
