@@ -132,7 +132,7 @@ namespace _Game.Utilities.Grid
         protected virtual void OnGridCellValueChange(int x, int y, bool isRevert)
         {
             #region DEBUG
-            if (DebugManager.Ins)
+            if (DebugManager.Ins && DebugManager.Ins.IsDebugGridLogic)
             {
                 TimerManager.Inst.WaitForFrame(2, () => DebugData(x, y));
                 void DebugData(int x, int y)
