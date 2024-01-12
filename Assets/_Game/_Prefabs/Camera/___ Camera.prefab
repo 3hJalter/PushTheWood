@@ -301,6 +301,7 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+  brain: {fileID: 6469700256872215686}
   currentVirtualCamera: {fileID: 3346765444090300846}
   brainCamera: {fileID: 6469700256872215672}
   cameraTarget: {fileID: 6469700258097662802}

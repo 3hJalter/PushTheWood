@@ -16,6 +16,7 @@ namespace _Game.Managers
     {
         private const int CAMERA_PRIORITY_ACTIVE = 99;
         private const int CAMERA_PRIORITY_INACTIVE = 1;
+        [SerializeField] private CinemachineBrain brain;
         [SerializeField] private CinemachineVirtualCameraBase currentVirtualCamera;
 
         [SerializeField] private UnityEngine.Camera brainCamera;
@@ -43,7 +44,7 @@ namespace _Game.Managers
             return currentVirtualCamera == virtualCameraDic[eCameraType];
         }
 
-        public void ChangeCamera(ECameraType eCameraType)
+        public void ChangeCamera(ECameraType eCameraType, float blendTime = 2f)
         {
             if (currentVirtualCamera != null)
             {
@@ -53,6 +54,7 @@ namespace _Game.Managers
             currentVirtualCamera = virtualCameraDic[eCameraType];
             currentVirtualCamera.Priority = CAMERA_PRIORITY_ACTIVE;
             currentVirtualCamera.enabled = true;
+            brain.m_DefaultBlend.m_Time = blendTime;
         }
 
         public void ChangeCameraTargetPosition(Vector3 position, float moveTime = -1f)

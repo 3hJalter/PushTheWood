@@ -18,7 +18,7 @@ namespace HControls
         private static void OnUnHold()
         {
             if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.ZoomOutCamera))
-                CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
+                CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera, Constants.ZOOM_OUT_TIME);
         }
         
         private static void OnSwipe(string direction)
@@ -40,7 +40,7 @@ namespace HControls
                 case Constants.NONE:
                     HInputManager.SetDirectionInput(Direction.None);
                     // TODO: Zoom In function when swipe out
-                    CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera);
+                    CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera,  Constants.ZOOM_OUT_TIME);
                     break;
             }
         }
