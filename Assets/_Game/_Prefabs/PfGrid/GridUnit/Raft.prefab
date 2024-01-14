@@ -150,7 +150,7 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: _carryUnits
+    - Name: CarryUnits
       Entry: 7
       Data: 5|System.Collections.Generic.HashSet`1[[_Game.GameGrid.Unit.GridUnit,
         Assembly-CSharp]], System.Core
@@ -166,11 +166,12 @@ MonoBehaviour:
   poolType: 6
   skin: {fileID: 6370191254414802909}
   meshRenderer: {fileID: 8791217663884550529}
+  _collider: {fileID: 0}
   size: {x: 1, y: 1, z: 1}
   isMinusHalfSizeY: 0
   startHeight: 2
   endHeight: 0
-  yOffsetOnDown: 0.5
+  yOffsetOnDown: 0.35
   islandID: -1
   unitTypeY: 1
   unitTypeXZ: 2

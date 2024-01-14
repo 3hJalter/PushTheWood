@@ -519,11 +519,13 @@ MonoBehaviour:
       Data: 
   poolType: 5
   skin: {fileID: 7392072108781793883}
+  meshRenderer: {fileID: 0}
+  _collider: {fileID: 0}
   size: {x: 1, y: 2, z: 1}
   isMinusHalfSizeY: 0
   startHeight: 2
   endHeight: 0
-  yOffsetOnDown: 0.4
+  yOffsetOnDown: 0.35
   islandID: -1
   unitTypeY: 0
   unitTypeXZ: -1

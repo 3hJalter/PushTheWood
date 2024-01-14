@@ -21,7 +21,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
             {
                 t.StateMachine.ChangeState(StateEnum.Idle);
                 //NOTE: If player is ride vehicle in emerge state
-                if (t.player.isRideVehicle)
+                if (t.player && t.player.isRideVehicle)
                 {
                     t.Ride(t.rideRaftDirection, t.player);
                 }
