@@ -1405,6 +1405,26 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 189703956683398109, guid: 1b8b3f696f65ce74d9b29781ee667b9d, type: 3}
+    - target: {fileID: 189703956683398109, guid: 1b8b3f696f65ce74d9b29781ee667b9d, type: 3}
+      propertyPath: serializationData.PrefabModifications.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 189703956683398109, guid: 1b8b3f696f65ce74d9b29781ee667b9d, type: 3}
+      propertyPath: serializationData.PrefabModifications.Array.data[0]
+      value: '"path":"Particles.{1es}","value":$eref:0'
+      objectReference: {fileID: 0}
+    - target: {fileID: 189703956683398109, guid: 1b8b3f696f65ce74d9b29781ee667b9d, type: 3}
+      propertyPath: serializationData.ReferencedUnityObjects.Array.data[1]
+      value: 
+      objectReference: {fileID: 3621228533405246995, guid: 427b3dce5e4ffa9419e7deb366213891, type: 3}
+    - target: {fileID: 189703956683398109, guid: 1b8b3f696f65ce74d9b29781ee667b9d, type: 3}
+      propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 189703956683398109, guid: 1b8b3f696f65ce74d9b29781ee667b9d, type: 3}
+      propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 198016214904594908, guid: a312715abb227c246acf4ae4abbc1501, type: 3}
     - target: {fileID: 189703956683398110, guid: 1b8b3f696f65ce74d9b29781ee667b9d, type: 3}
       propertyPath: m_RootOrder
       value: 3
