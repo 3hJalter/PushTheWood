@@ -5,7 +5,6 @@
 // Include some helper functions
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
-#include "Assets/Amazing Assets/Curved World/Shaders/CGINC/Little Planet/CurvedWorld_LittlePlanet_Y_ID1.cginc"
 #include "NMGBladeGrassGraphicsHelpers.hlsl"
 #include "GrassTrample.hlsl"
 
@@ -59,18 +58,7 @@ Varyings Vertex(Attributes input)
 
     UNITY_SETUP_INSTANCE_ID(input);
     UNITY_TRANSFER_INSTANCE_ID(input, output);
-
-    // Curved world vertex transformations
-    // #if defined(CURVEDWORLD_IS_INSTALLED) && !defined(CURVEDWORLD_DISABLED_ON)
-    // #ifdef CURVEDWORLD_NORMAL_TRANSFORMATION_ON
-    // CURVEDWORLD_TRANSFORM_VERTEX_AND_NORMAL(input.positionOS, input.normalOS.xyz, input.tangentOS)
-    // #else
-    // CURVEDWORLD_TRANSFORM_VERTEX(input.positionOS)
-    // #endif
-    // #endif
-
-    CurvedWorld_LittlePlanet_Y_ID1(input.positionOS, input.normalOS, input.tangentOS);
-
+    
     float3 bladeAnchorWS = GetVertexPositionInputs(input.bladeAnchorOS).positionWS;
     // Get a plane perpendicular to the normal
     float3 normalWS = GetVertexNormalInputs(input.normalOS).normalWS;

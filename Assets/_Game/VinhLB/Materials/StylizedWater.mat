@@ -214,7 +214,7 @@ Material:
     - _IntersectionFoamColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShallowColor: {r: 0, g: 0.5964391, b: 1, a: 0.5019608}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SurfaceFoamColor: {r: 1, g: 1, b: 1, a: 0.0627451}
+    - _SurfaceFoamColor: {r: 1, g: 1, b: 1, a: 0.19215687}
     - _SurfaceNoiseScroll: {r: 0.03, g: 0.03, b: 0, a: 0}
     - _WaveDirections: {r: 0.1, g: 0.43, b: -0.11, a: -6.12}
   m_BuildTextureStacks: []

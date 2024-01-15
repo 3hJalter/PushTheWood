@@ -1,6 +1,6 @@
 // Made with Amplify Shader Editor
 // Available at the Unity Asset Store - http://u3d.as/y3X 
-Shader "/_Vefects_/T/SH_Vefects_VFX_Distor"
+Shader "Vefects/SH_Vefects_VFX_Distor"
 {
 	Properties
 	{
