@@ -78,11 +78,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 chump.OnInit(t.CutTreeData.tree.MainCell, t.CutTreeData.tree.StartHeight + 1);
                 LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(chump);
                 //DEV: Save state for new object
-                // Push the Chump with the direction
-                chump.OnBePushed(t.CutTreeData.inputDirection, t);
                 // Despawn the Tree
                 t.CutTreeData.tree.OnDespawn();
                 LevelManager.Ins.SaveGameState(true);
+                // Push the Chump with the direction
+                chump.OnBePushed(t.CutTreeData.inputDirection, t);     
+                chump.MainCell.ValueChange();
                 ParticlePool.Play(PoolController.Ins.Particles[VFXType.LeafExplosion], t.CutTreeData.tree.Tf.position + Vector3.up * 2f);
             }
         }
