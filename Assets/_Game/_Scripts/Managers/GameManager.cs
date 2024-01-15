@@ -13,7 +13,7 @@ namespace _Game.Managers
         Pause,
         Transition
     }
-
+    [DefaultExecutionOrder(-95)]
     public class GameManager : Dispatcher<GameManager>
     {
         [SerializeField]
@@ -55,6 +55,15 @@ namespace _Game.Managers
                 PostEvent(EventID.UnPause);
             }
 
+            switch (gameStateI)
+            {
+                case GameState.InGame:
+                    PostEvent(EventID.StartGame);
+                    break;
+                case GameState.MainMenu:
+                    PostEvent(EventID.EndGame);
+                    break;
+            }
             _gameState = gameStateI;
         }
 

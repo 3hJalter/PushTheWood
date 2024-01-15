@@ -5,6 +5,7 @@ using _Game.Managers;
 using _Game.UIs.Popup;
 using _Game.Utilities.Timer;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using VinhLB;
@@ -18,6 +19,20 @@ namespace _Game.UIs.Screen
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private Button undoButton;
         [SerializeField] private Button resetIslandButton;
+        [SerializeField] private TMP_Text timeText;
+
+        private int time;
+        public int Time
+        {
+            get => time;
+            set
+            {
+                time = value;
+                int second = time % 60;
+                int minute = time / 60;
+                timeText.text = $"{minute.ToString("00")}:{second.ToString("00")}";
+            }
+        }
 
         STimer undoTimer;
         STimer resetTimer;

@@ -41,6 +41,8 @@ namespace _Game.DesignPattern
     public enum EventID
     {
         Pause = 0,
-        UnPause = 1
+        UnPause = 1,
+        StartGame = 2,
+        EndGame = 3,
     }
 }

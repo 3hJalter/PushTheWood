@@ -4,6 +4,7 @@ using _Game._Scripts.InGame.GameCondition.Data;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState;
+using _Game.Managers;
 using GameGridEnum;
 using UnityEngine;
 
@@ -127,7 +128,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
         protected override void OnOutTriggerBelow(GridUnit triggerUnit)
         {
             base.OnOutTriggerBelow(triggerUnit);
-            if (IsCurrentStateIs(StateEnum.Idle)) stateMachine.ChangeState(StateEnum.Fall);
+            if (GameManager.Ins.IsState(GameState.InGame) && IsCurrentStateIs(StateEnum.Idle)) 
+                stateMachine.ChangeState(StateEnum.Fall);
         }
 
         protected override void OnEnterTriggerUpper(GridUnit triggerUnit)
