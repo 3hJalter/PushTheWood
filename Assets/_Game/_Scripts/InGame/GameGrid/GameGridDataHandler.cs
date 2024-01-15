@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using _Game.Data;
 using _Game.Managers;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -7,9 +8,9 @@ namespace _Game.GameGrid
 {
     public static class GameGridDataHandler
     {
-        public static TextGridData CreateGridData(int mapIndex)
+        public static TextGridData CreateGridData(LevelType type, int mapIndex)
         {
-            TextAsset textAsset = DataManager.Ins.GetGridTextData(mapIndex);
+            TextAsset textAsset = DataManager.Ins.GetNormalLevelData(type, mapIndex);
             string[] splitData = textAsset.text.Split('@');
             return new TextGridData(
                 splitData[(int)GridDataType.SurfaceData],

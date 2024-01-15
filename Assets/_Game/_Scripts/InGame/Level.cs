@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid;
@@ -9,13 +7,11 @@ using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Managers;
-using _Game.Utilities;
 using _Game.Utilities.Grid;
 using DG.Tweening;
 using GameGridEnum;
 using MapEnum;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 
 namespace _Game._Scripts.InGame
@@ -24,14 +20,14 @@ namespace _Game._Scripts.InGame
     {
         #region constructor
 
-        public Level(int index, Transform parent = null)
+        public Level(LevelType type, int index, Transform parent = null)
         {
             IsInit = false;
             // Set GridMap
             Index = index;
             // Get data
             // _textGridData = GameGridDataHandler.CreateGridData(index);
-            _rawLevelData = JsonGridDataHandler.CreateLevelData(index);
+            _rawLevelData = JsonGridDataHandler.CreateLevelData(type, index);
             GridSizeX = _rawLevelData.s.x;
             gridSizeY = _rawLevelData.s.y;
             // Create Grid Map
@@ -75,11 +71,11 @@ namespace _Game._Scripts.InGame
         public Dictionary<int, Island> Islands { get; } = new();
 
         // Some other data
-        public GameGridCell firstPlayerInitCell;
-        public Direction firstPlayerDirection;
+        private GameGridCell firstPlayerInitCell;
+        private Direction firstPlayerDirection;
 
         // Get Data
-        public int GridSizeX { get; }
+        private int GridSizeX { get; }
 
         public int Index { get; }
 

@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using _Game._Scripts.Managers;
-using _Game.Managers;
 using _Game.Utilities;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -77,9 +76,9 @@ namespace _Game.GameGrid.Unit
         protected GameGridCell mainCell;
         #region Saving Spawn State
         // Is GridUnit is spawn or not - save state of unit.
-        protected bool isSpawn = false;
-        protected IMemento overrideSpawnSave = null;
-        protected IMemento overrideDespawnSave = null;
+        protected bool isSpawn;
+        protected IMemento overrideSpawnSave;
+        protected IMemento overrideDespawnSave;
         
         public bool IsSpawn => isSpawn;
         #endregion
