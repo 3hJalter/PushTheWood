@@ -24,7 +24,7 @@ public class InitCanvas : UICanvas
     public int StartLevel => int.Parse(levelInputField.text);
     void Start()
     {
-        levelInputField.text = "-1";
+        levelInputField.text = PlayerPrefs.GetInt(Constants.LEVEL_INDEX).ToString();
         gridLogicDebugToggle._OnValueChange = OnToggleValueChange;
         fpsDebugToggle._OnValueChange = OnToggleValueChange;
         logToggle._OnValueChange = OnToggleValueChange;        

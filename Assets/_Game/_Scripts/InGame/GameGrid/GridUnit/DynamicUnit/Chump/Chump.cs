@@ -128,7 +128,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
         protected override void OnOutTriggerBelow(GridUnit triggerUnit)
         {
             base.OnOutTriggerBelow(triggerUnit);
-            if (GameManager.Ins.IsState(GameState.InGame) && IsCurrentStateIs(StateEnum.Idle)) 
+            if (!LevelManager.Ins.IsConstructingLevel && IsCurrentStateIs(StateEnum.Idle)) 
                 stateMachine.ChangeState(StateEnum.Fall);
         }
 

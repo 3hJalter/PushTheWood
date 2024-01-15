@@ -54,16 +54,6 @@ namespace _Game.Managers
                 AudioManager.Ins.UnPauseSfx();
                 PostEvent(EventID.UnPause);
             }
-
-            switch (gameStateI)
-            {
-                case GameState.InGame:
-                    PostEvent(EventID.StartGame);
-                    break;
-                case GameState.MainMenu:
-                    PostEvent(EventID.EndGame);
-                    break;
-            }
             _gameState = gameStateI;
         }
 

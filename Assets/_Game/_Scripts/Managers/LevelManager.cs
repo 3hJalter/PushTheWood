@@ -87,6 +87,7 @@ namespace _Game.GameGrid
             DebugManager.Ins?.DebugGridData(_currentLevel.GridMap);
             // TEMPORARY: CUTSCENE, player will be show when cutscene end
             if (levelIndex == 0) HidePlayer(true);
+            GameManager.Ins.PostEvent(EventID.StartGame);
         }
 
         public void ResetLevelIsland()
@@ -132,6 +133,7 @@ namespace _Game.GameGrid
             // Temporary handle when out of level
             if (levelIndex >= DataManager.Ins.CountLevel) levelIndex = 0;
             PlayerPrefs.SetInt(Constants.LEVEL_INDEX, levelIndex);
+            GameManager.Ins.PostEvent(EventID.EndGame);
             // Future: Add reward collected in-game
         }
 
@@ -155,7 +157,6 @@ namespace _Game.GameGrid
                 TutorialManager.Ins.OnDestroyCutsceneObject();
             }
             OnGenerateLevel(true);
-            
             // OnChangeTutorialIndex();
         }
 
