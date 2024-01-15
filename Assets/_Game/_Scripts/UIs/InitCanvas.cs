@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using _Game.Utilities.UI;
+using TMPro;
 
 public class InitCanvas : UICanvas
 {
@@ -17,11 +18,16 @@ public class InitCanvas : UICanvas
     UIToggle logToggle;
     [SerializeField]
     Button startButton;
+    [SerializeField]
+    TMP_InputField levelInputField;
+    [SerializeField]
+    public int StartLevel => int.Parse(levelInputField.text);
     void Start()
     {
+        levelInputField.text = "-1";
         gridLogicDebugToggle._OnValueChange = OnToggleValueChange;
         fpsDebugToggle._OnValueChange = OnToggleValueChange;
-        logToggle._OnValueChange = OnToggleValueChange;
+        logToggle._OnValueChange = OnToggleValueChange;        
         startButton.onClick.AddListener(OnStartButtonClick);
     }
 

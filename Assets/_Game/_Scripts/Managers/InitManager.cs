@@ -51,7 +51,7 @@ public class InitManager : Singleton<InitManager>
         if (isDebug)
         {
             debugManager = Instantiate(debugObject).GetComponent<DebugManager>();
-            debugManager.OnInit(isDebugGridLogic, isDebugFps, isDebugLog);
+            debugManager.OnInit(isDebugGridLogic, isDebugFps, isDebugLog, debugCanvas.StartLevel);
             DontDestroyOnLoad(debugManager.gameObject);
         }
         SceneManager.LoadScene(1);

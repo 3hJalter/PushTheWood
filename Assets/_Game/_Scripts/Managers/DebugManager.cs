@@ -12,12 +12,14 @@ public class DebugManager : SimpleSingleton<DebugManager>
     GameObject FpsDebug;
     [SerializeField]
     GameObject LogDebug;
+    int level = -1;
     public bool IsDebugGridLogic => debugGrid != null ? true : false;
+    public int Level => level;
     public void DebugGridData(Grid<GameGridCell, GameGridCellData> grid)
     {
         debugGrid?.DrawGrid(grid, true);
     }
-    public void OnInit(bool isDebugGridLogic, bool isDebugFps, bool isDebugLog)
+    public void OnInit(bool isDebugGridLogic, bool isDebugFps, bool isDebugLog, int level = -1)
     {
         if(isDebugGridLogic)
         {
@@ -26,5 +28,6 @@ public class DebugManager : SimpleSingleton<DebugManager>
 
         FpsDebug.SetActive(isDebugFps);
         LogDebug.SetActive(isDebugLog);
+        this.level = level;
     }
 }
