@@ -50,7 +50,7 @@ MonoBehaviour:
     ReferencedUnityObjects:
     - {fileID: 1695681371256372886, guid: ff4cd4027d4ffe747b1d6f442eaffea9, type: 3}
     - {fileID: 3621228533405246995, guid: 427b3dce5e4ffa9419e7deb366213891, type: 3}
-    - {fileID: 1153293632304127962, guid: 21073639b76f106429e4c72c6558f587, type: 3}
+    - {fileID: 504145988742481807, guid: 3029e32594d6e8e45ae0207404001543, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -123,7 +123,7 @@ MonoBehaviour:
   - prefab: {fileID: 1695681371256372886, guid: ff4cd4027d4ffe747b1d6f442eaffea9, type: 3}
     amount: 5
     root: {fileID: 189703956683398110}
-  - prefab: {fileID: 1153293632304127962, guid: 21073639b76f106429e4c72c6558f587, type: 3}
+  - prefab: {fileID: 504145988742481807, guid: 3029e32594d6e8e45ae0207404001543, type: 3}
     amount: 5
     root: {fileID: 189703956683398110}
   - prefab: {fileID: 198016214904594908, guid: a312715abb227c246acf4ae4abbc1501, type: 3}
