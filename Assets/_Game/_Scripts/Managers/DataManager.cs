@@ -20,7 +20,7 @@ namespace _Game.Managers
 
         public AudioData AudioData => audioData;
 
-        public int CountLevel => gridData.CountLevel;
+        public int CountNormalLevel => gridData.CountNormalLevel;
 
         public int CountSurfaceMaterial => materialData.CountSurfaceMaterial;
         
@@ -44,19 +44,19 @@ namespace _Game.Managers
         //     return tutorialData.GetTutorial(index);
         // }
         
-        public TextAsset GetGridTextData(int index)
+        public TextAsset GetNormalLevelData(LevelType type, int index)
         {
-            return gridData.GetGridTextData(index);
+            return gridData.GetLevelData(type, index);
         }
         
-        public void AddGridTextData(TextAsset textAsset)
+        public void AddGridTextData(LevelType type, TextAsset textAsset)
         {
-            gridData.AddGridTextData(textAsset);
+            gridData.AddGridTextData(type, textAsset);
         }
         
-        public bool HasGridTextData(TextAsset textAsset)
+        public bool HasGridTextData(LevelType type, TextAsset textAsset)
         {
-            return gridData.HasGridTextData(textAsset);
+            return gridData.HasGridTextData(type, textAsset);
         }
 
         public GridSurface GetGridSurface(PoolType poolType)
@@ -67,6 +67,11 @@ namespace _Game.Managers
         public GridUnit GetGridUnit(PoolType poolType)
         {
             return gridData.GetGridUnit(poolType);
+        }
+
+        public int GetGridTextDataIndex(LevelType type, TextAsset load)
+        {
+            return gridData.GetGridTextDataIndex(type, load);
         }
     }
 }

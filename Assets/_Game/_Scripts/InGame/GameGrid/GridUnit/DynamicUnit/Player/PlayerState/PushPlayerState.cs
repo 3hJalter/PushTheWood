@@ -51,7 +51,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 DOVirtual.DelayedCall(Constants.PUSH_TIME / 2, OnCompletePush);
                 void OnCompletePush()
                 {
-                    t.InputCache.Enqueue(direction);
+                    if(direction != Direction.None)
+                        t.InputCache.Enqueue(direction);
                     t.StateMachine.ChangeState(StateEnum.Idle);
                 }
             }

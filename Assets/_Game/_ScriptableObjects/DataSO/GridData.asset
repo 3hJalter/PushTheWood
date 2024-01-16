@@ -924,16 +924,20 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  gridTextDataList:
-  - {fileID: 4900000, guid: aa19f777834c4ea478cd276eba389cb6, type: 3}
-  - {fileID: 4900000, guid: 08ac92eb13533ec4ea11c5250b5b7132, type: 3}
-  - {fileID: 4900000, guid: 8e060107d46378244a77d288c238f375, type: 3}
-  - {fileID: 4900000, guid: cf4bee0298c085f478e6a2f72fbfa84e, type: 3}
-  - {fileID: 4900000, guid: efb44612414da7b4ea527e855e79086a, type: 3}
-  - {fileID: 4900000, guid: 1efb7388fac625442b891a80a7817b95, type: 3}
-  - {fileID: 4900000, guid: 8c09ce371afe23e428b0e57a307a7d85, type: 3}
-  - {fileID: 4900000, guid: a07f16010985037439162e5f1000c511, type: 3}
-  - {fileID: 4900000, guid: e21b0fa852cd056479ef03bba06dbb97, type: 3}
-  - {fileID: 4900000, guid: 9e6a699d924ee0342a7799166dfc9a93, type: 3}
-  - {fileID: 4900000, guid: 99d785c33f2781646847cc2bc671302e, type: 3}
-  - {fileID: 4900000, guid: 91ab6190d8f9915439caab1ed1cfe3c7, type: 3}
+  normalLevel:
+  - {fileID: 4900000, guid: b54bde155f59ddd4186015be40215c40, type: 3}
+  - {fileID: 4900000, guid: b372a93e69d838f4380920d972c48ed8, type: 3}
+  - {fileID: 4900000, guid: 7332427225da8d142b7dc1b8d4b973ec, type: 3}
+  - {fileID: 4900000, guid: 916c60c72afac6a4c92765b2eb69306c, type: 3}
+  - {fileID: 4900000, guid: 38723237ef672ad4e802148a17ca7058, type: 3}
+  - {fileID: 4900000, guid: 2a97d9049159bcb4e8e1322537cb59b5, type: 3}
+  - {fileID: 4900000, guid: 1be2c13f7097e404f964fc983e27a578, type: 3}
+  - {fileID: 4900000, guid: efd5cd35e6f8c3f43a3a5fb78b710875, type: 3}
+  - {fileID: 4900000, guid: 4f97dfc521c303c42b0fff9505f6e1e6, type: 3}
+  - {fileID: 4900000, guid: 1ecb37694e46c42479aca826b3764d86, type: 3}
+  - {fileID: 4900000, guid: b6e0df4582718574b8c1df1644545880, type: 3}
+  - {fileID: 4900000, guid: 1dbef46b5ca1b154ea369f7d0baa3a17, type: 3}
+  dailyChallengerLevel:
+  - {fileID: 4900000, guid: 58026dccfb4a4250b69fe6ebdf773377, type: 3}
+  secretLevel:
+  - {fileID: 4900000, guid: 7cf5425d920679442a58b11454552cbb, type: 3}

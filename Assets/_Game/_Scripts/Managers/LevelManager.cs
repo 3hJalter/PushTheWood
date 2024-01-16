@@ -4,6 +4,7 @@ using _Game._Scripts.InGame;
 using _Game._Scripts.Managers;
 using _Game._Scripts.Tutorial;
 using _Game.Camera;
+using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
@@ -50,7 +51,7 @@ namespace _Game.GameGrid
         {
             // TEST
             // PlayerPrefs.SetInt(Constants.LEVEL_INDEX, 0);
-            if(DebugManager.Ins && DebugManager.Ins.Level > 0)
+            if(DebugManager.Ins && DebugManager.Ins.Level >= 0)
             {
                 PlayerPrefs.SetInt(Constants.LEVEL_INDEX, DebugManager.Ins.Level);
             }
@@ -64,7 +65,7 @@ namespace _Game.GameGrid
         {
             OnCheckTutorial();
             IsConstructingLevel = true;
-            _currentLevel = new Level(levelIndex);
+            _currentLevel = new Level(LevelType.Normal, levelIndex);
             if (needInit && !CurrentLevel.IsInit)
             {
                 InitLevel();
@@ -131,7 +132,7 @@ namespace _Game.GameGrid
             // +1 LevelIndex and save
             levelIndex++;
             // Temporary handle when out of level
-            if (levelIndex >= DataManager.Ins.CountLevel) levelIndex = 0;
+            if (levelIndex >= DataManager.Ins.CountNormalLevel) levelIndex = 0;
             PlayerPrefs.SetInt(Constants.LEVEL_INDEX, levelIndex);
             GameManager.Ins.PostEvent(EventID.EndGame);
             // Future: Add reward collected in-game

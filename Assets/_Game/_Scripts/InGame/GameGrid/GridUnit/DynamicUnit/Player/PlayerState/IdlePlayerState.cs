@@ -45,7 +45,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             if (!t.conditionMergeOnMoving.IsApplicable(t.MovingData))
             {
                 //NOTE: Checking to push an dynamic object
-                if (t.MovingData.blockDynamicUnits.Count > 0 && t.InputDetection.InputAction == InputAction.ButtonDown)
+                if (t.MovingData.blockDynamicUnits.Count > 0)
                     t.StateMachine.ChangeState(StateEnum.Push);               
                 else if (!_isChangeAnim) t.ChangeAnim(Constants.IDLE_ANIM);
 
