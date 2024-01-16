@@ -1,5 +1,6 @@
 using _Game._Scripts.Managers;
 using _Game.DesignPattern.StateMachine;
+using _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates;
 using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState;
 using _Game.Managers;
@@ -42,7 +43,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             if (_isWaitAFrame)
             {
                 _isWaitAFrame = false;
-                Direction = Direction.None;
+                //Direction = Direction.None;
                 // TEST: Reset the Input if Direction is not none and Move is Swipe (Swipe only take one input per swipe)
                 stateMachine?.UpdateState();
                 return;
@@ -53,9 +54,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             stateMachine?.UpdateState();
         }
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
-            bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
+            bool isUseInitData = false, Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
-            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
+            base.OnInit(mainCellIn, startHeightIn, false, skinDirection, hasSetPosAndRot); //DEV: Not use init data
             if (!_isAddState)
             {
                 _isAddState = true;
@@ -63,11 +64,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
                 AddState();
             }
             //stateMachine.Debug = true;
+            Direction = skinDirection;
             stateMachine.ChangeState(StateEnum.Idle);
         }
         private void AddState()
         {
-
+            stateMachine.AddState(StateEnum.Idle, new IdleArcherEnemyState());
+            stateMachine.AddState(StateEnum.Attack, new AttackArcherEnemyState());
+            stateMachine.AddState(StateEnum.Die, new DieArcherEnemyState());
         }
         public void ChangeAnim(string animName, bool forceAnim = false)
         {

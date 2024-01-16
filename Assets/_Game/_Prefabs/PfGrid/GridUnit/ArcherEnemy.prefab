@@ -294,7 +294,7 @@ MonoBehaviour:
   skin: {fileID: 7201353118747304535}
   meshRenderer: {fileID: 0}
   _collider: {fileID: 0}
-  size: {x: 0, y: 0, z: 0}
+  size: {x: 1, y: 1, z: 1}
   isMinusHalfSizeY: 0
   startHeight: 2
   endHeight: 0
@@ -303,7 +303,7 @@ MonoBehaviour:
   unitTypeY: 0
   unitTypeXZ: -1
   skinRotationDirection: -1
-  gridUnitDynamicType: 0
+  gridUnitDynamicType: 100
   anchor: {fileID: 7201353118211979960}
   animator: {fileID: 7201353119226068969}
 --- !u!1001 &7201353119226068972

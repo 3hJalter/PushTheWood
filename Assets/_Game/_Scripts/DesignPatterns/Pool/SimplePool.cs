@@ -431,6 +431,6 @@ namespace _Game.DesignPattern
         SurfaceGround2Side = 146,
 
         //VFX
-        VFX_Dust = 1000,
+        DangerIndicator = 1000,
     }
 }
