@@ -15,16 +15,18 @@ namespace VinhLB
         private Image _background;
         [SerializeField]
         private Image _icon;
+        [SerializeField]
+        private LayoutElement _layoutElement;
 
         private bool _active;
         private Transform _iconTransform;
 
         public void SetActiveState(bool active, bool animated)
         {
-            if (active == _active)
-            {
-                return;
-            }
+            // if (active == _active)
+            // {
+            //     return;
+            // }
 
             _active = active;
 
@@ -46,12 +48,16 @@ namespace VinhLB
                 {
                     _iconTransform.localScale = Vector3.one * 1.25f;
                 }
+
+                _layoutElement.flexibleWidth = 1f;
             }
             else
             {
                 SetBackgroundAlpha(0f);
                 
                 _iconTransform.localScale = Vector3.one;
+                
+                _layoutElement.flexibleWidth = 0f;
             }
         }
         

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1744720612907457760}
   - component: {fileID: 5926629771600706022}
   - component: {fileID: 4679017875935522966}
+  - component: {fileID: 2230065263647313023}
   - component: {fileID: 7981391001675565098}
   m_Layer: 5
   m_Name: HomeButton
@@ -78,6 +79,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2230065263647313023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352209411827490921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 300
+  m_PreferredHeight: -1
+  m_FlexibleWidth: 1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!114 &7981391001675565098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,6 +123,7 @@ MonoBehaviour:
   _tabGroup: {fileID: 2915115477121344800}
   _background: {fileID: 4679017875935522966}
   _icon: {fileID: 3575292238188418122}
+  _layoutElement: {fileID: 2230065263647313023}
 --- !u!1 &362723999315466739
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,6 +251,7 @@ GameObject:
   - component: {fileID: 5997072130810091144}
   - component: {fileID: 1719754081120750871}
   - component: {fileID: 4473318275510520537}
+  - component: {fileID: 8159526368135347163}
   - component: {fileID: 7582005745431931354}
   m_Layer: 5
   m_Name: ShopButton
@@ -296,6 +319,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8159526368135347163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 741830124414801874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 300
+  m_PreferredHeight: -1
+  m_FlexibleWidth: 1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!114 &7582005745431931354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,6 +363,7 @@ MonoBehaviour:
   _tabGroup: {fileID: 2915115477121344800}
   _background: {fileID: 4473318275510520537}
   _icon: {fileID: 8743935461805920794}
+  _layoutElement: {fileID: 8159526368135347163}
 --- !u!1 &1028897120149921228
 GameObject:
   m_ObjectHideFlags: 0
@@ -4360,7 +4404,7 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 0
   m_Spacing: 0
-  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
@@ -5923,6 +5967,7 @@ GameObject:
   - component: {fileID: 2061765652788169156}
   - component: {fileID: 6710798516854432294}
   - component: {fileID: 7373102875402315623}
+  - component: {fileID: 3967665982374666677}
   - component: {fileID: 2849646562909081610}
   m_Layer: 5
   m_Name: InventoryButton
@@ -5990,6 +6035,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3967665982374666677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6633851536705194417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 300
+  m_PreferredHeight: -1
+  m_FlexibleWidth: 1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!114 &2849646562909081610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6014,6 +6079,7 @@ MonoBehaviour:
   _tabGroup: {fileID: 2915115477121344800}
   _background: {fileID: 7373102875402315623}
   _icon: {fileID: 6021871383323093070}
+  _layoutElement: {fileID: 3967665982374666677}
 --- !u!1 &6676244588500944741
 GameObject:
   m_ObjectHideFlags: 0
