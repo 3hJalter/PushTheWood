@@ -44,7 +44,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
                 _isWaitAFrame = false;
                 Direction = Direction.None;
                 // TEST: Reset the Input if Direction is not none and Move is Swipe (Swipe only take one input per swipe)
-                if (Direction != Direction.None && MoveInputManager.Ins.CurrentChoice is MoveInputManager.MoveChoice.Swipe) HInputManager.SetDefault();
                 stateMachine?.UpdateState();
                 return;
             }
