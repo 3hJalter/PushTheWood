@@ -51,7 +51,7 @@ namespace _Game.GameGrid
         {
             // TEST
             // PlayerPrefs.SetInt(Constants.LEVEL_INDEX, 0);
-            if(DebugManager.Ins && DebugManager.Ins.Level > 0)
+            if(DebugManager.Ins && DebugManager.Ins.Level >= 0)
             {
                 PlayerPrefs.SetInt(Constants.LEVEL_INDEX, DebugManager.Ins.Level);
             }
