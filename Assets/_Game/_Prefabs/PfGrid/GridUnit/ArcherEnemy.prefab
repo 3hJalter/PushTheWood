@@ -290,7 +290,7 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  poolType: 3
+  poolType: 16
   skin: {fileID: 7201353118747304535}
   meshRenderer: {fileID: 0}
   _collider: {fileID: 0}
