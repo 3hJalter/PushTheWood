@@ -194,7 +194,7 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _GlowIntensity: 1
-    - _HorizonDistance: 2
+    - _HorizonDistance: 1.5
     - _IntersectionClipping: 0.5
     - _IntersectionFalloff: 0.5
     - _IntersectionLength: 1.5
@@ -277,7 +277,7 @@ Material:
     - _ZTest: 2
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0, g: 0.101960786, b: 0.5019608, a: 1}
+    - _BaseColor: {r: 0.015686275, g: 0.10980392, b: 0.19607843, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Direction: {r: 0, g: -1, b: 0, a: 0}
     - _DissolveMaskChannel: {r: 0, g: 1, b: 0, a: 0}
@@ -285,7 +285,7 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
     - _FoamTiling: {r: 0.05, g: 0.05, b: 0, a: 0}
-    - _HorizonColor: {r: 0, g: 1.1345841, b: 0.36692932, a: 0.78431374}
+    - _HorizonColor: {r: 0, g: 0.5684584, b: 0.18301588, a: 0.78431374}
     - _IntersectionColor: {r: 0.8820755, g: 0.9646274, b: 1, a: 1}
     - _NormalTiling: {r: 0.05, g: 0.05, b: 0, a: 0}
     - _ShallowColor: {r: 0.18039215, g: 0.6431373, b: 0.6151185, a: 0.5019608}
