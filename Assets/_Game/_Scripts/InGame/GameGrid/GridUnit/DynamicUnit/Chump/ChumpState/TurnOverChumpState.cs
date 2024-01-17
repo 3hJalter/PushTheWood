@@ -56,12 +56,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 t.OnOutCells();
 
                 if (t.UnitTypeY is UnitTypeY.Up ||
-                    (t.TurnOverData.enterMainCell.SurfaceType is not GridSurfaceType.Water &&
+                    (!t.TurnOverData.enterMainCell.Data.canFloating &&
                      t.UnitTypeY is UnitTypeY.Down))
                     t.SwitchType(t.TurnOverData.inputDirection);
-                else if (t.TurnOverData.enterMainCell.SurfaceType is GridSurfaceType.Water
+                else if (t.TurnOverData.enterMainCell.Data.canFloating
                          && t.TurnOverData.enterMainCell.GetGridUnitAtHeight(
-                             Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]) is not null)
+                             Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + t.FloatingHeightOffset) is not null)
                     t.SwitchType(t.TurnOverData.inputDirection);
 
                 t.OnEnterCells(t.TurnOverData.enterMainCell, t.TurnOverData.enterCells);
