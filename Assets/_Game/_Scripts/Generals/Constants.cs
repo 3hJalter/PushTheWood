@@ -104,7 +104,7 @@ public static class Constants
     public static readonly Dictionary<GridSurfaceType, HeightLevel> DirFirstHeightOfSurface = new()
     {
         { GridSurfaceType.Ground, HeightLevel.One },
-        { GridSurfaceType.Water, HeightLevel.ZeroPointFive }
+        { GridSurfaceType.Water, HeightLevel.Zero }
     };
 
     public static readonly Dictionary<Direction, Vector3> DirVector3F = new()

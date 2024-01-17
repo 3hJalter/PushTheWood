@@ -159,7 +159,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
         }
         public bool IsInWater()
         {
-            return startHeight == Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] &&
+            return startHeight <= Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + FloatingHeightOffset &&
                    cellInUnits.All(t => t.SurfaceType is GridSurfaceType.Water);
         }
         public MovingData MainMovingData

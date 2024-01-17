@@ -23,11 +23,12 @@ namespace _Game.GameGrid
 
         public int IslandID => data.gridSurface == null ? -1 : data.gridSurface.IslandID;
 
-        public void SetSurface(GridSurface.GridSurface surface, bool canMoving = true)
+        public void SetSurface(GridSurface.GridSurface surface, bool canMoving = true, bool canFloating = false)
         {
             data.gridSurface = surface;
             data.gridSurfaceType = surface.SurfaceType;
             data.canMovingDirectly = canMoving;
+            data.canFloating = canFloating;
         }
 
 
@@ -43,7 +44,7 @@ namespace _Game.GameGrid
 
         public GridUnit GetGridUnitAtHeight(HeightLevel heightLevel)
         {
-            return data.gridUnits[(int)heightLevel];
+            return heightLevel is HeightLevel.None ? null : data.gridUnits[(int)heightLevel];
         }
 
         public void ClearGridUnit()
@@ -249,7 +250,7 @@ namespace _Game.GameGrid
     public class GameGridCellData
     {
         public bool canMovingDirectly;
-
+        public bool canFloating;
         public GridSurface.GridSurface gridSurface;
 
         // Type of cell
@@ -259,6 +260,7 @@ namespace _Game.GameGrid
         public void OnInit()
         {
             gridSurfaceType = gridSurface == null ? GridSurfaceType.Water : gridSurface.SurfaceType;
+            canFloating = gridSurfaceType == GridSurfaceType.Water;
             gridUnits = new GridUnit[Enum.GetValues(typeof(HeightLevel)).Length - 1];
         }
     }

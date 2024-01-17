@@ -172,6 +172,7 @@ MonoBehaviour:
   startHeight: 2
   endHeight: 0
   yOffsetOnDown: 0.35
+  floatingHeightOffset: 1
   islandID: -1
   unitTypeY: 1
   unitTypeXZ: 2

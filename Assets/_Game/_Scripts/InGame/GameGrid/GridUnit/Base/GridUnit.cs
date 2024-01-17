@@ -40,6 +40,11 @@ namespace _Game.GameGrid.Unit
         // Offset when unit is down
         [SerializeField] public float yOffsetOnDown = 0.5f;
 
+        // Is unit can floating on water
+        [SerializeField] private int floatingHeightOffset; // How many height level can floating up when unit is on water
+
+        public int FloatingHeightOffset => floatingHeightOffset;
+
         // The island that this unit is on
         public int islandID = -1;
 
@@ -427,6 +432,8 @@ namespace _Game.GameGrid.Unit
         {
             HeightLevel enterStartHeight = Constants.MIN_HEIGHT;
             HeightLevel initHeight = Constants.DirFirstHeightOfSurface[enterCell.SurfaceType];
+            if (enterCell.Data.canFloating) 
+                initHeight = Constants.DirFirstHeightOfSurface[enterCell.SurfaceType] + floatingHeightOffset; // Zero point five
             if (initHeight > enterStartHeight) enterStartHeight = initHeight;
             for (HeightLevel heightLevel = initHeight;
                  heightLevel <= BelowStartHeight;
@@ -439,12 +446,14 @@ namespace _Game.GameGrid.Unit
             return enterStartHeight;
         }
 
-        public HeightLevel GetEnterStartHeight(List<GameGridCell> enterCells)
+        private HeightLevel GetEnterStartHeight(List<GameGridCell> enterCells)
         {
             HeightLevel enterStartHeight = Constants.MIN_HEIGHT;
             foreach (GameGridCell cell in enterCells)
             {
                 HeightLevel initHeight = Constants.DirFirstHeightOfSurface[cell.SurfaceType];
+                if (cell.Data.canFloating) 
+                    initHeight = Constants.DirFirstHeightOfSurface[cell.SurfaceType] + floatingHeightOffset; // Zero point five
                 if (initHeight > enterStartHeight) enterStartHeight = initHeight;
                 for (HeightLevel heightLevel = initHeight;
                      heightLevel <= BelowStartHeight;
