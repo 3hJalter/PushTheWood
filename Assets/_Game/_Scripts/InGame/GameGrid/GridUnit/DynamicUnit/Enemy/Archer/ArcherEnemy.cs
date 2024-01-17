@@ -16,7 +16,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
     public class ArcherEnemy : GridUnitDynamic
     {
         [SerializeField] private Animator animator;
-
+        public bool IsDead = false;
         private StateMachine<ArcherEnemy> stateMachine;
         public StateMachine<ArcherEnemy> StateMachine => stateMachine;
         public override StateEnum CurrentStateId
@@ -50,7 +50,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             }
 
             _isWaitAFrame = true;
-            //stateMachine.Debug = true;
             stateMachine?.UpdateState();
         }
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
@@ -63,9 +62,20 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
                 stateMachine = new StateMachine<ArcherEnemy>(this);
                 AddState();
             }
-            //stateMachine.Debug = true;
+            IsDead = false;
             Direction = Direction.None;
             stateMachine.ChangeState(StateEnum.Idle);
+        }
+        public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
+        {
+            if (pushUnit is Player.Player)
+            {
+                LookDirection(Constants.InvDirection[direction]);
+                stateMachine.ChangeState(StateEnum.Idle);
+                GameManager.Ins.PostEvent(DesignPattern.EventID.PlayerInDangerCell, pushUnit.MainCell);
+                return;
+            }
+            IsDead = true;
         }
         private void AddState()
         {
@@ -93,6 +103,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
         public void LookDirection(Direction directionIn)
         {
             if (directionIn is Direction.None) return;
+            skinRotationDirection = directionIn;
             skin.DOLookAt(Tf.position + Constants.DirVector3[directionIn], 0.2f, AxisConstraint.Y, Vector3.up);
         }
     }

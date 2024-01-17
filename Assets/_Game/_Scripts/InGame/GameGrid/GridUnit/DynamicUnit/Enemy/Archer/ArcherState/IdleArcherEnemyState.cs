@@ -39,6 +39,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
 
         public void OnExecute(ArcherEnemy t)
         {
+            if (t.IsDead)
+            {
+                t.StateMachine.ChangeState(StateEnum.Die);
+                return;
+            }
             if (isAttack)
             {
                 t.StateMachine.ChangeState(StateEnum.Attack);

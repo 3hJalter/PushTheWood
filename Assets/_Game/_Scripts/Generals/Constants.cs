@@ -134,6 +134,14 @@ public static class Constants
         { Direction.Forward, Vector2Int.up },
         { Direction.Back, Vector2Int.down }
     };
+    public static readonly Dictionary<Direction, Direction> InvDirection = new()
+    {
+        {Direction.None, Direction.None },
+        {Direction.Left, Direction.Right },
+        {Direction.Right, Direction.Left },
+        {Direction.Forward, Direction.Back },
+        {Direction.Back, Direction.Forward },
+    };
 }
 
 
