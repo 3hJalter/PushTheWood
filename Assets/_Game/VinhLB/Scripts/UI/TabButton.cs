@@ -16,6 +16,8 @@ namespace VinhLB
         [SerializeField]
         private Image _icon;
         [SerializeField]
+        private GameObject _activeGO;
+        [SerializeField]
         private LayoutElement _layoutElement;
 
         private bool _active;
@@ -38,7 +40,7 @@ namespace VinhLB
             
             if (_active)
             {
-                SetBackgroundAlpha(0.1f);
+                _activeGO.SetActive(true);
                 
                 if (animated)
                 {
@@ -53,7 +55,7 @@ namespace VinhLB
             }
             else
             {
-                SetBackgroundAlpha(0f);
+                _activeGO.SetActive(false);
                 
                 _iconTransform.localScale = Vector3.one;
                 
