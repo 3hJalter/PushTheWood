@@ -2,6 +2,7 @@ using _Game.GameGrid.Unit;
 using _Game.Utilities;
 using System.Collections;
 using System.Collections.Generic;
+using _Game.GameGrid.Unit.DynamicUnit.Box.BoxState;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -22,7 +23,7 @@ namespace _Game.DesignPattern.StateMachine
             this.main = main;
             OverrideState = StateEnum.None;
         }
-        public void AddState(StateEnum id,  IState<T> state)
+        public void AddState(StateEnum id, IState<T> state)
         {
             if(states.ContainsKey(id))
             {

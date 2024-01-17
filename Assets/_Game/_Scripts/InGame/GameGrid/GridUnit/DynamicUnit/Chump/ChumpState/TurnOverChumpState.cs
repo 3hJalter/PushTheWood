@@ -17,7 +17,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
         public void OnEnter(Chump t)
         {
-            t.TurnOverData.SetData(t.ChumpBeInteractedData.inputDirection);
+            t.TurnOverData.SetData(t.BeInteractedData.inputDirection);
             _isTurnOver = t.ConditionMergeOnBePushed.IsApplicable(t.TurnOverData);
             anchorAdd.Set(0, 0, 0);
             LevelManager.Ins.IsCanUndo = false;

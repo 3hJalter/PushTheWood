@@ -4,7 +4,6 @@ using _Game._Scripts.InGame.GameCondition.Data;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState;
-using _Game.Managers;
 using GameGridEnum;
 using UnityEngine;
 
@@ -20,20 +19,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
         public StateMachine<Chump> StateMachine => stateMachine;
         public override StateEnum CurrentStateId
         {
-            get 
-            {
-                if (stateMachine == null) return StateEnum.Idle;
-                return stateMachine.CurrentStateId;
-            } 
-            set
-            {
-                stateMachine.ChangeState(value);
-            }
+            get => stateMachine?.CurrentStateId ?? StateEnum.Idle;
+            set => stateMachine.ChangeState(value);
         }
 
         private bool _isAddState;
         // Hand
-        public Chump TriggerChump { get; private set; }
+        private Chump TriggerChump { get; set; }
 
         public Raft.Raft RaftPrefab => raftPrefab;
 
@@ -93,8 +85,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
 
             #region Check Condition
 
-            ChumpBeInteractedData.SetData(direction, pushUnit);
-            if (!conditionMergeOnBeInteracted.IsApplicable(ChumpBeInteractedData))
+            BeInteractedData.SetData(direction, pushUnit);
+            if (!conditionMergeOnBeInteracted.IsApplicable(BeInteractedData))
                 // if (_currentState != states[StateEnum.Idle])
                 //     ChangeState(StateEnum.Idle); 
                 return;
@@ -152,7 +144,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
             TriggerChump.StateMachine.ChangeState(StateEnum.Fall);
         }
 
-        public bool IsOnWater()
+        private bool IsOnWater()
         {
             return startHeight == Constants.DirFirstHeightOfSurface[GridSurfaceType.Ground] &&
                    cellInUnits.All(t => t.SurfaceType is GridSurfaceType.Water);
@@ -162,16 +154,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
             return startHeight <= Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + FloatingHeightOffset &&
                    cellInUnits.All(t => t.SurfaceType is GridSurfaceType.Water);
         }
-        public MovingData MainMovingData
-        {
-            get => TurnOverData.UsingTurnId > MovingData.UsingTurnId ? TurnOverData : MovingData;
-        }
+        public MovingData MainMovingData => TurnOverData.UsingTurnId > MovingData.UsingTurnId ? TurnOverData : MovingData;
 
         public override bool IsCurrentStateIs(StateEnum stateEnum)
         {
             return stateMachine.CurrentState.Id == stateEnum;
         }
 
+        
         public void SwitchType(Direction direction)
         {
             if (unitTypeY is UnitTypeY.Up)
@@ -199,18 +189,21 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
         public ConditionMerge ConditionMergeOnBeInteracted => conditionMergeOnBeInteracted;
         public ConditionMerge ConditionMergeOnBePushed => conditionMergeOnBePushed;
 
-        private ChumpBeInteractedData _chumpBeInteractedData;
+        private BeInteractedData beInteractedData;
         private TurnOverData turnOverData;
         private MovingData _movingData;
 
-        public ChumpBeInteractedData ChumpBeInteractedData =>
-            _chumpBeInteractedData ??= new ChumpBeInteractedData(this);
+        public BeInteractedData BeInteractedData =>
+            beInteractedData ??= new BeInteractedData(this);
 
         public TurnOverData TurnOverData => turnOverData ??= new TurnOverData(this);
         public MovingData MovingData => _movingData ??= new MovingData(this);
         #endregion
 
         #region SAVING DATA
+        
+        // Current Empty
+        
         #endregion
     }
 }
