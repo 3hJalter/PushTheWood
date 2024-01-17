@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using _Game._Scripts.InGame.GameCondition.Data;
 using UnityEngine;
+using _Game.Utilities;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 {
@@ -85,11 +86,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
             void ObjectBlocking()
             {
+                string objectBlocking = "BLOCKING - ";
                 for (int i = 0; i < blockObjects.Count; i++)
                 {
                     blockObjects[i].OnBePushed(blockDirection);
+                    objectBlocking += $"{blockObjects[i]} ";
                 }
                 if (t.MainMovingData.blockDynamicUnits.Count > 0) t.OnPush(t.MainMovingData.inputDirection, t.MainMovingData);
+                DevLog.Log(DevId.Hung, $"{objectBlocking} || DYNAMIC - {t.MainMovingData.blockDynamicUnits.Count}");
                 //NOTE: Checking if push dynamic object does not create any change in grid -> discard the newest save.
                 if (!LevelManager.Ins.CurrentLevel.GridMap.IsChange)
                     LevelManager.Ins.DiscardSaveState();

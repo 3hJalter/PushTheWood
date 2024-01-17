@@ -37,21 +37,22 @@ namespace _Game.Managers
                 screen.Time = time;
                 if(time <= 0)
                 {
-                    DevLog.Log(DevId.Hung, "Out of time!");
+                    OnLoseGame();
                 }
             }
         }
 
         private void OnWinGame()
         {
+            UIManager.Ins.OpenUI<WinScreen>();
             timer.Stop();
-
+            DevLog.Log(DevId.Hung, "ENDGAME - Show Win Screen");
         }
 
         private void OnLoseGame()
         {
             timer.Stop();
-
+            DevLog.Log(DevId.Hung, "ENDGAME - Show Lose Screen");
         }
 
         private void OnDestroy()

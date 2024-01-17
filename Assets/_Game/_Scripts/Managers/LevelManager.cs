@@ -128,7 +128,6 @@ namespace _Game.GameGrid
         public void OnWin()
         {
             // Show win screen
-            UIManager.Ins.OpenUI<WinScreen>();
             // +1 LevelIndex and save
             levelIndex++;
             // Temporary handle when out of level
