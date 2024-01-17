@@ -554,6 +554,11 @@ namespace _Game.GameGrid.Unit
                 {
                     main.Despawn();
                     main.isSpawn = false;
+                    main.belowUnits.Clear();
+                    main.upperUnits.Clear();
+                    main.neighborUnits.Clear();
+                    main.cellInUnits.Clear();
+                    main.mainCell = null;
                     return;
                 }
                 
@@ -596,7 +601,6 @@ namespace _Game.GameGrid.Unit
 
 
                 main.mainCell = mainCell;
-
                 main.cellInUnits.Clear();
                 foreach (GameGridCell cell in cellInUnits)
                 {

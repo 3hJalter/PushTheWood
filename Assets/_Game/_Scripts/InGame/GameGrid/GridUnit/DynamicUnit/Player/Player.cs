@@ -49,7 +49,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             protected set
             {
                 mainCell = value;
-                if (mainCell != null)
+                if (mainCell != null && mainCell.Data.IsDanger)
                     GameManager.Ins.PostEvent(DesignPattern.EventID.LoseGame);
             }
         }
