@@ -21,10 +21,11 @@ namespace _Game.Managers
             screen = UIManager.Ins.GetUI<InGameScreen>();
             screen.Close();
             timer = TimerManager.Inst.PopSTimer();
-            GameManager.Ins.RegisterListenerEvent(EventID.StartGame, StartGame);
-            GameManager.Ins.RegisterListenerEvent(EventID.EndGame, StopGame);
+            GameManager.Ins.RegisterListenerEvent(EventID.StartGame, OnStartGame);
+            GameManager.Ins.RegisterListenerEvent(EventID.WinGame, OnWinGame);
+            GameManager.Ins.RegisterListenerEvent(EventID.LoseGame, OnLoseGame);
         }
-        private void StartGame()
+        private void OnStartGame()
         {
             time = Constants.LEVEL_TIME;
             undoCount = Constants.UNDO_COUNT;
@@ -40,10 +41,19 @@ namespace _Game.Managers
                 }
             }
         }
-        private void StopGame()
+
+        private void OnWinGame()
         {
             timer.Stop();
+
         }
+
+        private void OnLoseGame()
+        {
+            timer.Stop();
+
+        }
+
         private void OnDestroy()
         {
             TimerManager.Inst.PushSTimer(timer);

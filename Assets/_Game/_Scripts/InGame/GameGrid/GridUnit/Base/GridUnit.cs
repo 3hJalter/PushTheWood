@@ -25,7 +25,7 @@ namespace _Game.GameGrid.Unit
         // Collider for water interaction
         [SerializeField]
         private Collider _collider;
-        
+
         // Size of this unit, the X and Z equal to the size of the main cell, the Y equal to height level
         [SerializeField] protected Vector3Int size;
 
@@ -79,7 +79,7 @@ namespace _Game.GameGrid.Unit
         protected bool isSpawn;
         protected IMemento overrideSpawnSave;
         protected IMemento overrideDespawnSave;
-        
+
         public bool IsSpawn => isSpawn;
         #endregion
 
@@ -101,7 +101,11 @@ namespace _Game.GameGrid.Unit
             set => unitTypeY = value;
         }
 
-        public GameGridCell MainCell => mainCell;
+        public virtual GameGridCell MainCell
+        {
+            get => mainCell;
+            protected set => mainCell = value;
+        }
 
         public HeightLevel StartHeight
         {
@@ -197,7 +201,7 @@ namespace _Game.GameGrid.Unit
             OnOutTrigger();
             ClearNeighbor();
             cellInUnits.Clear();
-            mainCell = null;
+            MainCell = null;
         }
 
         public Vector3 GetUnitWorldPos(GameGridCell cell = null)
@@ -238,7 +242,7 @@ namespace _Game.GameGrid.Unit
 
             void InitCellsToUnit(GameGridCell enterMainCellIn, List<GameGridCell> enterCells = null)
             {
-                mainCell = enterMainCellIn;
+                MainCell = enterMainCellIn;
                 // Add all nextCells to cellInUnits
                 if (enterCells is not null)
                     for (int i = 0; i < enterCells.Count; i++)
@@ -381,7 +385,7 @@ namespace _Game.GameGrid.Unit
         private List<GameGridCell> InitCell(GameGridCell mainCellIn, Direction skinDirection)
         {
             List<GameGridCell> initCells = new();
-            mainCell = mainCellIn;
+            MainCell = mainCellIn;
             initCells.Add(mainCell);
             switch (skinDirection)
             {

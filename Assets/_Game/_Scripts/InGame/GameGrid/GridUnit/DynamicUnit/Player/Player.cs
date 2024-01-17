@@ -43,7 +43,16 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public Direction Direction { get; private set; } = Direction.None;
         public InputDetection InputDetection { get; private set; } = new InputDetection();
         public float AnimSpeed => animator.speed;
-
+        public override GameGridCell MainCell 
+        { 
+            get => mainCell; 
+            protected set
+            {
+                mainCell = value;
+                if (mainCell != null)
+                    GameManager.Ins.PostEvent(DesignPattern.EventID.LoseGame);
+            }
+        }
         private void FixedUpdate()
         {
             if (!GameManager.Ins.IsState(GameState.InGame)) return;

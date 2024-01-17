@@ -28,7 +28,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
             {
                 cell = cell.GetNeighborCell(attackDirection);
                 if (cell == null || cell.Data.gridSurfaceType == GridSurfaceType.Water) break;
-                
+                cell.Data.IsDanger = true;
                 attackRange.Add(cell);
                 dangerIndicators.Add(SimplePool.Spawn<DangerIndicator>(PoolType.DangerIndicator, cell.WorldPos + Vector3.up * 1.25f, Quaternion.identity));
 
@@ -50,11 +50,16 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
 
         public void OnExit(ArcherEnemy t)
         {
+            foreach (GameGridCell cell in attackRange)
+            {
+                cell.Data.IsDanger = false;
+            }
             attackRange.Clear();
             foreach(DangerIndicator cell in dangerIndicators)
             {
                 SimplePool.Despawn(cell);
             }
+            dangerIndicators.Clear();
         }
     }
 }

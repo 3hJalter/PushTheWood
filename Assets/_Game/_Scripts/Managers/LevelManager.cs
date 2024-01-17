@@ -134,7 +134,7 @@ namespace _Game.GameGrid
             // Temporary handle when out of level
             if (levelIndex >= DataManager.Ins.CountNormalLevel) levelIndex = 0;
             PlayerPrefs.SetInt(Constants.LEVEL_INDEX, levelIndex);
-            GameManager.Ins.PostEvent(EventID.EndGame);
+            GameManager.Ins.PostEvent(EventID.WinGame);
             // Future: Add reward collected in-game
         }
 
