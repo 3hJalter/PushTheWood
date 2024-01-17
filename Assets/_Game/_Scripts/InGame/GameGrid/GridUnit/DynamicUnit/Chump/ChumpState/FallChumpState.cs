@@ -10,6 +10,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 {
     public class FallChumpState : IState<Chump>
     {
+        private readonly Vector3 WATER_SPLASH_OFFSET = Vector3.up * 0.1f;
         private Tween moveTween;
         public StateEnum Id => StateEnum.Fall;
 
@@ -45,9 +46,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     Sequence s = DOTween.Sequence();
                     moveTween = s;
                     s.Append(t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME * 0.6f).SetEase(Ease.Linear)
-                            .OnComplete(
-                                () => ParticlePool.Play(PoolController.Ins.Particles[VFXType.WaterSplash],
-                                    t.Tf.position)))
+                            .OnComplete(() => ParticlePool.Play(PoolController.Ins.Particles[VFXType.WaterSplash]
+                            , t.Tf.position + WATER_SPLASH_OFFSET)))
                         .Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 0.6f).SetEase(Ease.Linear))
                         .OnComplete(() =>
                         {
