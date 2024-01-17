@@ -20,6 +20,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
     {
         [SerializeField] private Animator animator;
         public bool isRideVehicle;
+        public bool IsDead = false;
         public readonly Queue<Direction> InputCache = new();
 
         private StateMachine<Player> stateMachine;
@@ -49,8 +50,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             protected set
             {
                 mainCell = value;
-                if (mainCell != null && mainCell.Data.IsDanger)
-                    GameManager.Ins.PostEvent(DesignPattern.EventID.LoseGame);
+                if (mainCell != null && !IsDead && mainCell.Data.IsDanger)
+                    GameManager.Ins.PostEvent(DesignPattern.EventID.PlayerInDangerCell, mainCell);
             }
         }
         private void FixedUpdate()
@@ -88,6 +89,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 AddState();
             }
             //stateMachine.Debug = true;
+            IsDead = false;
             stateMachine.ChangeState(StateEnum.Idle);
         }
 
@@ -147,7 +149,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             _currentAnim = animName;
             animator.SetTrigger(_currentAnim);
         }
-
         public void SetAnimSpeed(float speed)
         {
             animator.speed = speed;

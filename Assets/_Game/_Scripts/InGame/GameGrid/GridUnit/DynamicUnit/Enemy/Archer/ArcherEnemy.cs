@@ -64,7 +64,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
                 AddState();
             }
             //stateMachine.Debug = true;
-            Direction = skinDirection;
+            Direction = Direction.None;
             stateMachine.ChangeState(StateEnum.Idle);
         }
         private void AddState()

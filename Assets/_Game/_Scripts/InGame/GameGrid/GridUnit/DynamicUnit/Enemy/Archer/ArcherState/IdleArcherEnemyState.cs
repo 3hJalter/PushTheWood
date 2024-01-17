@@ -18,11 +18,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
         List<GameGridCell> attackRange = new List<GameGridCell>();
         List<DangerIndicator> dangerIndicators = new List<DangerIndicator>();
         Direction attackDirection = Direction.None;
+        private bool isAttack = false;
         public StateEnum Id => StateEnum.Idle;
 
         public void OnEnter(ArcherEnemy t)
         {
-            attackDirection = t.Direction;
+            GameManager.Ins.RegisterListenerEvent(EventID.PlayerInDangerCell, IsAttackPlayer);
+            isAttack = false;
+            attackDirection = t.SkinRotationDirection;
             GameGridCell cell = t.MainCell;
             for (int i = 0; i < MAX_RANGE; i++)
             {
@@ -31,12 +34,18 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
                 cell.Data.IsDanger = true;
                 attackRange.Add(cell);
                 dangerIndicators.Add(SimplePool.Spawn<DangerIndicator>(PoolType.DangerIndicator, cell.WorldPos + Vector3.up * 1.25f, Quaternion.identity));
-
             }
         }
 
         public void OnExecute(ArcherEnemy t)
         {
+            if (isAttack)
+            {
+                t.StateMachine.ChangeState(StateEnum.Attack);
+                isAttack = false;
+                return;
+            }
+
             if (t.Direction == Direction.None)
             {
                 if (!_isChangeAnim)
@@ -45,7 +54,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
                     t.ChangeAnim(Constants.IDLE_ANIM);
                 }
                 return;
-            }
+            }           
         }
 
         public void OnExit(ArcherEnemy t)
@@ -60,6 +69,21 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
                 SimplePool.Despawn(cell);
             }
             dangerIndicators.Clear();
+            GameManager.Ins.UnregisterListenerEvent(EventID.PlayerInDangerCell, IsAttackPlayer);
+            _isChangeAnim = false;
+        }
+
+        private void IsAttackPlayer(object value)
+        {
+            GameGridCell mainCell = value as GameGridCell;
+            foreach(GameGridCell cell in attackRange)
+            {
+                if (cell == mainCell)
+                {
+                    isAttack = true;
+                    break;
+                }
+            }
         }
     }
 }

@@ -24,6 +24,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         public void OnExecute(Player t)
         {
             //NOTE:Checking for IdleState
+            if (t.IsDead)
+            {
+                t.StateMachine.ChangeState(StateEnum.Die);
+                return;
+            }
             if (t.Direction == Direction.None)
             {
                 if (!_isChangeAnim && !t.isRideVehicle)
