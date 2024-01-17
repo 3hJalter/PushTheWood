@@ -52,7 +52,7 @@ namespace _Game._Scripts.InGame.GameCondition.Condition
                     switch (firstUnit.UnitTypeXZ)
                     {
                         case UnitTypeXZ.None:
-                            if (firstUnit.StartHeight == belowSurfaceStartHeight && !canMoveDirectly)
+                            if (firstUnit.StartHeight == belowSurfaceStartHeight  && !canMoveDirectly)
                                 return false; // TEMP
                             switch (firstUnit)
                             {
@@ -69,7 +69,9 @@ namespace _Game._Scripts.InGame.GameCondition.Condition
                         case UnitTypeXZ.Vertical when data.inputDirection is Direction.Forward or Direction.Back:
                             return true;
                         case UnitTypeXZ.Vertical:
-                            if (firstUnit.StartHeight == belowSurfaceStartHeight && !canMoveDirectly)
+                            if (firstUnit.StartHeight == belowSurfaceStartHeight 
+                                + (data.enterMainCell.Data.canFloating ? firstUnit.FloatingHeightOffset : 0) 
+                                && !canMoveDirectly)
                                 return false; // TEMP
                             switch (firstUnit)
                             {
@@ -85,7 +87,9 @@ namespace _Game._Scripts.InGame.GameCondition.Condition
                         case UnitTypeXZ.Horizontal when data.inputDirection is Direction.Left or Direction.Right:
                             return true;
                         case UnitTypeXZ.Horizontal:
-                            if (firstUnit.StartHeight == belowSurfaceStartHeight && !canMoveDirectly)
+                            if (firstUnit.StartHeight == belowSurfaceStartHeight 
+                                + (data.enterMainCell.Data.canFloating ? firstUnit.FloatingHeightOffset : 0) 
+                                && !canMoveDirectly)
                                 return false; // TEMP
                             switch (firstUnit)
                             {

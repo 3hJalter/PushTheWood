@@ -129,15 +129,15 @@ namespace _Game.GameGrid.Unit
         // Get below units from cellInUnits (only the first below height)
         public static List<GridUnit> GetBelowUnits(this GridUnit unit)
         {
-            List<GridUnit> aboveUnits = new();
+            List<GridUnit> belowUnits = new();
             for (int i = 0; i < unit.cellInUnits.Count; i++)
             {
                 GridUnit aboveUnit = unit.cellInUnits[i].GetGridUnitAtHeight(unit.BelowStartHeight);
-                if (aboveUnit is null || aboveUnits.Contains(aboveUnit)) continue;
-                aboveUnits.Add(aboveUnit);
+                if (aboveUnit is null || belowUnits.Contains(aboveUnit)) continue;
+                belowUnits.Add(aboveUnit);
             }
 
-            return aboveUnits;
+            return belowUnits;
         }
 
         // Get all below units from cellInUnits (all below height)
