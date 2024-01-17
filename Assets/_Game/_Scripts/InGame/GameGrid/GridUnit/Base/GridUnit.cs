@@ -40,8 +40,8 @@ namespace _Game.GameGrid.Unit
         // Offset when unit is down
         [SerializeField] public float yOffsetOnDown = 0.5f;
 
-        // Is unit can floating on water
-        [SerializeField] private int floatingHeightOffset; // How many height level can floating up when unit is on water
+        // How many height level can floating up when unit is on floating Surface (bool canFloating at GameGridCell)
+        [SerializeField] private int floatingHeightOffset;
 
         public int FloatingHeightOffset => floatingHeightOffset;
 
