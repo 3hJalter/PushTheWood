@@ -366,6 +366,7 @@ namespace _Game.DesignPattern
         FinalPoint = 13,
         Box = 14,
         Bomb = 15,
+        Archer_Enemy = 16,
 
         // Grid Unit Placed Object
         HouseMain = 50,

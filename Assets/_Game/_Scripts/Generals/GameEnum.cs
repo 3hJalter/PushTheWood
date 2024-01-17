@@ -119,7 +119,9 @@ namespace GameGridEnum
         Raft = 3,
         RaftLong = 4,
         Box = 5,
-        Bomb = 6
+        Bomb = 6,
+        
+        Archer_Enemy = 100,
     }
     
     public enum VFXType
