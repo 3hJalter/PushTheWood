@@ -16,19 +16,19 @@ using VinhLB;
 public class GridMapDataGenerator : MonoBehaviour
 {
     [Title("Level Data")]
-    [Tooltip("The distance between the corner cells and the surfaceUnit closest to it")] 
+    [Tooltip("The distance between the corner cells and the surfaceUnit closest to it")]
     [SerializeField] private int offsetSurfaceWithFirstCell = 3; // Should be 3
-    [InlineButton("SaveLevelAsJson","Save Level")]
+    [InlineButton("SaveLevelAsJson", "Save Level")]
     [InfoBox("The name of the level, must be in the format Lvl_number or Lvl_DC_number or Lvl_S_number")]
     [SerializeField] private string mapLevelName = "Lvl_0";
-    
+
     [Title("Load Level")]
     [InlineButton("LoadLevels", "Load")]
     [InlineButton("UnLoadLevels", "UnLoad")]
     [SerializeField] private new string name = "Lvl_";
     private Level _loadedLevel;
 
-    [Title("Level Map Container")] 
+    [Title("Level Map Container")]
     [InlineButton("TestHintTrail", "Run")]
     [SerializeField]
     private TestHintLineInEditMode hintLineTrail;
@@ -52,7 +52,7 @@ public class GridMapDataGenerator : MonoBehaviour
     [SerializeField] private Transform shadowContainer;
     [FoldoutGroup("Container")]
     [SerializeField] private Transform hintLineContainer;
-   
+
     [FoldoutGroup("Grid Utilities")]
     [HorizontalGroup("Grid Utilities/Horizontal")]
     [Button]
@@ -81,7 +81,7 @@ public class GridMapDataGenerator : MonoBehaviour
             if (gridUnit.Tf.parent != unitContainer && gridUnit.Tf.parent != shadowContainer) gridUnit.Tf.parent = unitContainer;
         }
     }
-    
+
     [BoxGroup("Grid Utilities/Horizontal/1")]
     [Button]
     private void DestroyAllHintLine()
@@ -92,7 +92,7 @@ public class GridMapDataGenerator : MonoBehaviour
         }
         hintLineObj.Clear();
     }
-    
+
     [BoxGroup("Grid Utilities/Horizontal/2")]
     [Button]
     private void DestroyAllShadow()
@@ -100,7 +100,7 @@ public class GridMapDataGenerator : MonoBehaviour
         GridUnit[] gridUnits = shadowContainer.GetComponentsInChildren<GridUnit>();
         foreach (GridUnit gridUnit in gridUnits) DestroyImmediate(gridUnit.gameObject);
     }
-    
+
     [BoxGroup("Grid Utilities/Horizontal/2")]
     [Button]
     private void DestroyAllUnit()
@@ -108,7 +108,7 @@ public class GridMapDataGenerator : MonoBehaviour
         GridUnit[] gridUnits = unitContainer.GetComponentsInChildren<GridUnit>();
         foreach (GridUnit gridUnit in gridUnits) DestroyImmediate(gridUnit.gameObject);
     }
-    
+
     [BoxGroup("Grid Utilities/Horizontal/2")]
     [Button]
     private void DestroyAllSurface()
@@ -132,7 +132,7 @@ public class GridMapDataGenerator : MonoBehaviour
             if (i != countChild - 1) hintLineString += " ; ";
         }
     }
-    
+
     [ContextMenu("Add New Hint Line Object List")]
     private void AddNewHintLineObjectList()
     {
@@ -149,7 +149,7 @@ public class GridMapDataGenerator : MonoBehaviour
             if (i != countChild - 1) hintLineString += " ; ";
         }
     }
-    
+
     [ContextMenu("Load Levels")]
     private void LoadLevels()
     {
@@ -205,7 +205,7 @@ public class GridMapDataGenerator : MonoBehaviour
         // Destroy the empty object
         DestroyImmediate(levelObject);
     }
-    
+
     private void UnLoadLevels()
     {
         SetObjectToContainer();
@@ -229,14 +229,14 @@ public class GridMapDataGenerator : MonoBehaviour
                 Debug.LogError("Level name can not be empty");
                 return;
         }
-        
+
         LevelType levelType = VerifyLevelName(mapLevelName);
         if (levelType == LevelType.None)
         {
             Debug.LogError("Level name must be in the format Lvl_number or Lvl_DC_number or Lvl_S_number");
             return;
         }
-        
+
         // Verify Grid Surface
         GridSurface[] gridSurfaces = surfaceContainer.GetComponentsInChildren<GridSurface>();
         if (gridSurfaces.Length == 0)
@@ -254,11 +254,11 @@ public class GridMapDataGenerator : MonoBehaviour
         }
 
         GridUnit[] shadowUnits = shadowContainer.GetComponentsInChildren<GridUnit>();
-        
+
         #endregion
-        
+
         #region Setup GridMapSize
-        
+
         int minX = int.MaxValue;
         int minZ = int.MaxValue;
         int maxX = int.MinValue;
@@ -373,18 +373,18 @@ public class GridMapDataGenerator : MonoBehaviour
         maxZ = (maxZ + cellOffset) / 2;
 
         #endregion
-        
+
         // Set gridMapSize
 
         Vector2Int size = new(maxX, maxZ);
-        
+
         #endregion
-        
+
         #region Setup GridSurfaceData
-        
+
         // Create a list of GridSurfaceData
         List<RawLevelData.GridSurfaceData> gridSurfaceDataList = new();
-        
+
         // Loop all gridSurface 
         foreach (GridSurface gridSurface in gridSurfaces)
         {
@@ -394,27 +394,40 @@ public class GridMapDataGenerator : MonoBehaviour
             int x = (int)(position.x - 1) / 2;
             int z = (int)(position.z - 1) / 2;
             // Save the data to gridSurfaceData
+            int m = -1;
+            if (gridSurface is GroundSurface groundSurface)
+            {
+                if (groundSurface.groundMaterialEnum == MaterialEnum.None)
+                {
+                    // Random from 0 to last index of MaterialEnum
+                    m = UnityEngine.Random.Range(0, Enum.GetValues(typeof(MaterialEnum)).Length - 1);
+                }
+                else
+                {
+                    m = (int)groundSurface.groundMaterialEnum;
+                }
+            }
             RawLevelData.GridSurfaceData gridSurfaceData = new()
             {
                 p = new Vector2Int(x, z),
                 t = (int)gridSurface.PoolType,
                 d = (int)BuildingUnitData.GetDirection(gridSurface.Tf.eulerAngles.y),
-                // save the ground material if it is ground surface
-                m = gridSurface is GroundSurface groundSurface ? (int)groundSurface.groundMaterialEnum : -1
+                // save the ground material if it is ground surface, and if MaterialEnum is None, random it from 0 to 2
+                m = m
             };
             // Add gridSurfaceData to gridSurfaceDataList
             gridSurfaceDataList.Add(gridSurfaceData);
         }
-        
+
         #endregion
 
         #region Setup GridUnitData
 
         // Create a list of GridUnitData
         List<RawLevelData.GridUnitData> gridUnitDataList = new();
-        
+
         // Loop all gridUnit
-        
+
         foreach (GridUnit gridUnit in gridUnits)
         {
             // Save the position of gridUnit
@@ -438,7 +451,7 @@ public class GridMapDataGenerator : MonoBehaviour
         #endregion
 
         #region Setup ShadowUnitData
-        
+
         // Create a list of ShadowUnitData
         List<RawLevelData.ShadowUnitData> shadowUnitDataList = new();
 
@@ -448,7 +461,7 @@ public class GridMapDataGenerator : MonoBehaviour
             // Check if unit is down
             Vector3 rotationAngle = shadowUnit.Tf.eulerAngles;
             // if rotation round int of x and z divided by 180, then it is up
-            bool isUp = Mathf.RoundToInt(rotationAngle.x) % 180 == 0 
+            bool isUp = Mathf.RoundToInt(rotationAngle.x) % 180 == 0
                         && Mathf.RoundToInt(rotationAngle.z) % 180 == 0;
             // if not up, add the offset
             if (!isUp)
@@ -463,7 +476,7 @@ public class GridMapDataGenerator : MonoBehaviour
                     position.y = (float)Math.Round(position.y, 2);
                 }
             }
-            
+
             // Save the data to shadowUnitData
             RawLevelData.ShadowUnitData shadowUnitData = new()
             {
@@ -474,16 +487,16 @@ public class GridMapDataGenerator : MonoBehaviour
             // Add shadowUnitData to shadowUnitDataList
             shadowUnitDataList.Add(shadowUnitData);
         }
-        
+
         #endregion
-        
+
         #region Setup HintTrailData
-        
+
         // Create a list of HintTrailData
         List<RawLevelData.HintTrailData> hintTrailDataList = new();
 
         bool isNotVerify = hintLineString.Any(c => !char.IsDigit(c) && c != ' ' && c != ';');
-        
+
         // Check the hintLineString
         if (!isNotVerify)
         {
@@ -504,9 +517,9 @@ public class GridMapDataGenerator : MonoBehaviour
                 hintTrailDataList.Add(hintTrailData);
             }
         }
-        
+
         #endregion
-        
+
         RawLevelData levelData = new()
         {
             s = size,
@@ -531,7 +544,7 @@ public class GridMapDataGenerator : MonoBehaviour
         // Add new txt file to gridData from DataManager from path 
         DataManager.Ins.AddGridTextData(levelType, textAsset);
     }
-     
+
     [ContextMenu("Test Hint Trail")]
     private void TestHintTrail()
     {
@@ -563,12 +576,12 @@ public class GridMapDataGenerator : MonoBehaviour
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
-    
+
     private static string GetLongPathFromName(LevelType type, string levelName)
     {
         return "Assets/_Game/Resources/" + GetPathFromName(type, levelName) + ".json";
     }
-    
+
     private static LevelType VerifyLevelName(string verifyName)
     {
         // if name is null or empty, return

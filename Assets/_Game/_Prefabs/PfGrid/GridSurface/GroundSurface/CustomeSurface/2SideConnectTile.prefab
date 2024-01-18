@@ -137,7 +137,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  poolType: 141
+  poolType: 147
   surfaceType: 1
   islandID: -1
   grassRenderer: {fileID: 226491553816531716}
