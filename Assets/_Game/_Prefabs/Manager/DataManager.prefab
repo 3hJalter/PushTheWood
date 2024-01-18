@@ -56,3 +56,5 @@ MonoBehaviour:
   audioData: {fileID: 11400000, guid: f774e44247074ad4ea7897795f3fb8af, type: 2}
   gridData: {fileID: 11400000, guid: b3fb808f99240ed49ae49c173d49f0b2, type: 2}
   materialData: {fileID: 11400000, guid: de7b0bd30bebbfd419110e79bf11edd3, type: 2}
+  _vfxData: {fileID: 11400000, guid: 97033d85e8260c34988b48242acc0a56, type: 2}
+  _environmentObjectData: {fileID: 11400000, guid: 8bcae4d030b1fb648b3893d700c1bacf, type: 2}

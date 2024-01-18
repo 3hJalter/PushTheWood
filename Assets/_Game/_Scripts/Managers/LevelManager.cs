@@ -67,6 +67,7 @@ namespace _Game.GameGrid
 
         public void InitLevel()
         {
+            GameManager.Ins.PostEvent(EventID.StartGame);
             if (CurrentLevel.IsInit) return;
             _currentLevel.OnInitLevelSurfaceAndUnit();
             _currentLevel.OnInitPlayerToLevel();

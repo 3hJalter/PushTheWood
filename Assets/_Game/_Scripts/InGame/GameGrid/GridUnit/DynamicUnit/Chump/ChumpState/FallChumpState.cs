@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using _Game.DesignPattern;
 using _Game.DesignPattern.StateMachine;
+using _Game.Managers;
 using _Game.Utilities;
 using DG.Tweening;
 using GameGridEnum;
@@ -45,9 +46,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     DevLog.Log(DevId.Hung, "Fall into water cell that do not have anything");
                     Sequence s = DOTween.Sequence();
                     moveTween = s;
-                    s.Append(t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME * 0.6f).SetEase(Ease.Linear)
-                            .OnComplete(() => ParticlePool.Play(PoolController.Ins.Particles[VFXType.WaterSplash]
-                            , t.Tf.position + WATER_SPLASH_OFFSET)))
+                    s.Append(t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME * 0.6f).SetEase(Ease.Linear).OnComplete(
+                        () => ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.WaterSplash), t.Tf.position + WATER_SPLASH_OFFSET)))
                         .Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 0.6f).SetEase(Ease.Linear))
                         .OnComplete(() =>
                         {

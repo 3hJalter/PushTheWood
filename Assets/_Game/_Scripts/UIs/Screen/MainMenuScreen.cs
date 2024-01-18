@@ -44,7 +44,6 @@ namespace _Game.UIs.Screen
         {
             UIManager.Ins.OpenUI<InGameScreen>();
             LevelManager.Ins.InitLevel();
-            GameManager.Ins.PostEvent(EventID.StartGame);
             Close();
         }
         

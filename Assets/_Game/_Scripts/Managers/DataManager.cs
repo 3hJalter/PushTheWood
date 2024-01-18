@@ -3,6 +3,7 @@ using _Game.DesignPattern;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
 using UnityEngine;
+using VinhLB;
 
 namespace _Game.Managers
 {
@@ -12,17 +13,24 @@ namespace _Game.Managers
         
         public GameData GameData => _gameData ?? new GameData();
         
-        [SerializeField] private AudioData audioData;
-
-        [SerializeField] private GridData gridData;
-
-        [SerializeField] private MaterialData materialData;
+        [SerializeField]
+        private AudioData audioData;
+        [SerializeField]
+        private GridData gridData;
+        [SerializeField]
+        private MaterialData materialData;
+        [SerializeField]
+        private VFXData _vfxData;
+        [SerializeField]
+        private EnvironmentObjectData _environmentObjectData;
 
         public AudioData AudioData => audioData;
 
         public int CountNormalLevel => gridData.CountNormalLevel;
-
         public int CountSurfaceMaterial => materialData.CountSurfaceMaterial;
+
+        public VFXData VFXData => _vfxData;
+        public EnvironmentObjectData EnvironmentObjectData => _environmentObjectData;
         
         public Material GetTransparentMaterial()
         {

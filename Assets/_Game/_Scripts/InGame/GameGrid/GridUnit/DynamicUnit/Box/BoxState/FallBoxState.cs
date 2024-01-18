@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using _Game.DesignPattern;
 using _Game.DesignPattern.StateMachine;
+using _Game.Managers;
 using _Game.Utilities;
 using DG.Tweening;
 using GameGridEnum;
@@ -10,6 +11,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box.BoxState
 {
     public class FallBoxState : IState<Box>
     {
+        private readonly Vector3 WATER_SPLASH_OFFSET = Vector3.up * 0.18f;
         private Tween moveTween;
         public StateEnum Id => StateEnum.Fall;
         public void OnEnter(Box t)
@@ -45,15 +47,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box.BoxState
                     Sequence s = DOTween.Sequence();
                     moveTween = s;
                     s.Append(t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME * 0.6f).SetEase(Ease.Linear)
-                            .OnComplete(
-                                () => ParticlePool.Play(PoolController.Ins.Particles[VFXType.WaterSplash],
-                                    t.Tf.position)))
+                        .OnComplete(() => ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.WaterSplash), t.transform.position + WATER_SPLASH_OFFSET)))
                         .Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 0.6f).SetEase(Ease.Linear))
                         .OnComplete(() =>
                         {
                             t.OnEnterTrigger(t);
                             t.StateMachine.ChangeState(StateEnum.Emerge);
                         });
+
                 }
                 else
                 {

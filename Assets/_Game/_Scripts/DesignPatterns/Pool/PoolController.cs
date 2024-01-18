@@ -9,7 +9,6 @@ namespace _Game.DesignPattern
         [Header("Pool")] public PoolAmount[] pool;
 
         [Header("Particle")] public ParticleAmount[] particle;
-        public Dictionary<VFXType, ParticleSystem> Particles;
 
         public void Awake()
         {
