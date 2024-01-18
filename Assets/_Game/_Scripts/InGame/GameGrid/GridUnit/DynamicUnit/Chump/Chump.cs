@@ -4,6 +4,7 @@ using _Game._Scripts.InGame.GameCondition.Data;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState;
+using _Game.Utilities;
 using GameGridEnum;
 using UnityEngine;
 
@@ -94,6 +95,17 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
             #endregion
 
             base.OnBePushed(direction, pushUnit);
+
+            #region Be push when below Box and in water
+
+            if (pushUnit is Box.Box && IsInWater())
+            {
+                stateMachine.ChangeState(StateEnum.Move);
+                return;
+            }
+
+            #endregion
+            
             if (unitTypeY is UnitTypeY.Up)
             {
                 stateMachine.ChangeState(StateEnum.TurnOver);
@@ -126,22 +138,42 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
 
         protected override void OnEnterTriggerUpper(GridUnit triggerUnit)
         {
-            if (triggerUnit is not Chump triggerChump) return;
-            // Only need one below Unit to check if the TriggerChump can form Raft
-            if (triggerChump.IsCurrentStateIs(StateEnum.FormRaft)) return;
-            if (!triggerChump.IsOnWater()) return;
-            // Loop all below unit of TriggerChump, include this unit self
-            foreach (GridUnit belowUnit in triggerChump.belowUnits)
+            switch (triggerUnit)
             {
-                // if one of all below unit of TriggerChump is not Chump, return
-                if (belowUnit is not Chump) return;
-                // if the TriggerChump is Down and one of all below unit of TriggerChump is not same UnitTypeXZ, return
-                if (triggerChump.UnitTypeY is UnitTypeY.Up) continue;
-                if (triggerChump.UnitTypeXZ != belowUnit.UnitTypeXZ) return;
+                case Box.Box box:
+                    OnBePushed(lastPushedDirection, box);
+                    break;
+                case Chump chump:
+                    if (!chump.IsCurrentStateIs(StateEnum.FormRaft) && chump.IsOnWater())
+                    {
+                        foreach (GridUnit belowUnit in chump.belowUnits)
+                        {
+                            // if one of all below unit of TriggerChump is not Chump, return
+                            if (belowUnit is not Chump) return;
+                            // if the TriggerChump is Down and one of all below unit of TriggerChump is not same UnitTypeXZ, return
+                            if (chump.UnitTypeY is UnitTypeY.Up) continue;
+                            if (chump.UnitTypeXZ != belowUnit.UnitTypeXZ) return;
+                        }
+                        TriggerChump = chump;
+                        TriggerChump.StateMachine.ChangeState(StateEnum.Fall);
+                    }
+                    break;
             }
-
-            TriggerChump = triggerChump;
-            TriggerChump.StateMachine.ChangeState(StateEnum.Fall);
+            
+            // if (triggerUnit is not Chump triggerChump) return;
+            // // Only need one below Unit to check if the TriggerChump can form Raft
+            // if (triggerChump.IsCurrentStateIs(StateEnum.FormRaft) || !triggerChump.IsOnWater()) return;
+            // // Loop all below unit of TriggerChump, include this unit self
+            // foreach (GridUnit belowUnit in triggerChump.belowUnits)
+            // {
+            //     // if one of all below unit of TriggerChump is not Chump, return
+            //     if (belowUnit is not Chump) return;
+            //     // if the TriggerChump is Down and one of all below unit of TriggerChump is not same UnitTypeXZ, return
+            //     if (triggerChump.UnitTypeY is UnitTypeY.Up) continue;
+            //     if (triggerChump.UnitTypeXZ != belowUnit.UnitTypeXZ) return;
+            // }
+            // TriggerChump = triggerChump;
+            // TriggerChump.StateMachine.ChangeState(StateEnum.Fall);
         }
 
         private bool IsOnWater()

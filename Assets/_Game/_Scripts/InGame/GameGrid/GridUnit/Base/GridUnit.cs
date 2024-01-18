@@ -74,6 +74,8 @@ namespace _Game.GameGrid.Unit
         // The last direction that this unit is pushed
         protected Direction lastPushedDirection = Direction.None;
 
+        public Direction LastPushedDirection => lastPushedDirection;
+
         // The main cell that this unit is on
         protected GameGridCell mainCell;
         #region Saving Spawn State

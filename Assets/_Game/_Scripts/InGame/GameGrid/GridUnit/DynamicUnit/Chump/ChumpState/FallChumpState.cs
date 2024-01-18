@@ -45,6 +45,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     // Tween to final position
                     DevLog.Log(DevId.Hung, "Fall into water cell that do not have anything");
                     Sequence s = DOTween.Sequence();
+                    // Kill the other tween that currently running on the object
                     moveTween = s;
                     s.Append(t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME * 0.6f).SetEase(Ease.Linear).OnComplete(
                         () => ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.WaterSplash), t.Tf.position + WATER_SPLASH_OFFSET)))

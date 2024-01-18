@@ -41,7 +41,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box.BoxState
                         else
                         {
                             t.OnEnterTrigger(t);
-                            t.StateMachine.ChangeState(StateEnum.Idle);
+                            if (t.CurrentStateId == Id) t.StateMachine.ChangeState(StateEnum.Idle);
                         }
                     });
             }
