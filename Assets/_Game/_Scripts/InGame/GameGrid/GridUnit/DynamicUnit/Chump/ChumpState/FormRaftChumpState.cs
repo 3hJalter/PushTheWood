@@ -12,6 +12,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 {
     public class FormRaftChumpState : IState<Chump>
     {
+        private readonly Vector3 WATER_SPLASH_OFFSET = Vector3.up * 0.18f;
         private readonly List<GameGridCell> createRaftCells = new();
         private List<GameGridCell> createChumpCells = new();
         private Chump chumpInWater;
@@ -23,11 +24,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         public void OnEnter(Chump t)
         {
             t.StateMachine.OverrideState = StateEnum.FormRaft;
-
+            
             InitData(t);
             #region ANIM
             Sequence s = DOTween.Sequence();
             moveTween = s;
+            ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.WaterSplash), chumpInWater.Tf.position + WATER_SPLASH_OFFSET);
+
             s.Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 1.2f).SetEase(Ease.Linear).OnComplete(() =>
             {
                 OnExit(t);
@@ -59,7 +62,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             HashSet<GameGridCell> cells = new(t.belowUnits.SelectMany(unit => unit.cellInUnits));
             foreach (GameGridCell cell in cells)
             {
-                GameUnit unit = cell.GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]);
+                GameUnit unit = cell.GetGridUnitAtHeight(
+                    Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]
+                    + t.FloatingHeightOffset); // Check the floating unit, also we know water is floatSurface, no need to check its bool
                 if(unit != null)
                 {
                     chumpInWater = (Chump)unit;
@@ -99,7 +104,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 for (int i = 0; i < createRaftCells.Count; i++)
                 {
                     Raft.Raft raft = SimplePool.Spawn<Raft.Raft>(DataManager.Ins.GetGridUnit(PoolType.Raft));
-                    raft.OnInit(createRaftCells[i], HeightLevel.ZeroPointFive, false, spawnRaftDirection);
+                    raft.OnInit(createRaftCells[i], Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + raft.FloatingHeightOffset, 
+                        false, spawnRaftDirection);
                     raft.islandID = t.islandID;
                     LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(raft);
                     spawnUnits.Add(raft);
@@ -111,7 +117,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 Chump chumpUnit =
                     SimplePool.Spawn<Chump>(DataManager.Ins.GetGridUnit(PoolType.ChumpShort));
                 chumpUnit.UnitTypeY = UnitTypeY.Down;
-                chumpUnit.OnInit(createChumpCells[i], Constants.DirFirstHeightOfSurface[GridSurfaceType.Water], false);
+                chumpUnit.OnInit(createChumpCells[i], Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + chumpUnit.FloatingHeightOffset, false); 
                 chumpUnit.StateMachine.ChangeState(StateEnum.Emerge);
                 chumpUnit.islandID = t.islandID;
                 LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(chumpUnit);

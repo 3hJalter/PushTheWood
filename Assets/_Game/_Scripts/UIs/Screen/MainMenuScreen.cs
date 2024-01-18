@@ -1,4 +1,5 @@
 ﻿using _Game.Camera;
+using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Popup;

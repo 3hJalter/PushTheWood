@@ -5,6 +5,7 @@ using _Game.Managers;
 using _Game.UIs.Popup;
 using _Game.Utilities.Timer;
 using DG.Tweening;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +15,10 @@ namespace _Game.UIs.Screen
 {
     public class InGameScreen : UICanvas
     {
-        private float COOL_DOWN_TIME = 0.3f;
+        public event Action OnUndo;
+        public event Action OnResetIsland;
+
+        private float UNDO_CD_TIME = 0.3f;
         [SerializeField] private Image blockPanel;
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private Button undoButton;
@@ -35,11 +39,11 @@ namespace _Game.UIs.Screen
         }
 
         STimer undoTimer;
-        STimer resetTimer;
+        STimer resetIslandTimer;
         private void Awake()
         {
             undoTimer = TimerManager.Inst.PopSTimer();
-            resetTimer = TimerManager.Inst.PopSTimer();
+            resetIslandTimer = TimerManager.Inst.PopSTimer();
         }
 
         public override void Setup()
@@ -83,24 +87,23 @@ namespace _Game.UIs.Screen
 
         public void OnClickResetIslandButton()
         {
-            LevelManager.Ins.ResetLevelIsland();
+            OnResetIsland?.Invoke();
             resetIslandButton.interactable = false;
-            resetTimer.Start(COOL_DOWN_TIME, () => resetIslandButton.interactable = true);
+            resetIslandTimer.Start(UNDO_CD_TIME, () => resetIslandButton.interactable = true);
         }
 
         public void OnClickToggleBuildingMode()
         {
             Close();
             UIManager.Ins.OpenUI<BuildingScreen>();
-
             GridBuildingManager.Ins.ToggleBuildMode();
         }
 
         public void OnClickUndo()
         {
-            LevelManager.Ins.OnUndo();
+            OnUndo?.Invoke();
             undoButton.interactable = false;
-            undoTimer.Start(COOL_DOWN_TIME, () => undoButton.interactable = true);
+            undoTimer.Start(UNDO_CD_TIME, () => undoButton.interactable = true);
         }
 
         public void SetActiveUndo(bool active)
@@ -109,10 +112,16 @@ namespace _Game.UIs.Screen
             undoButton.interactable = active;
         }
 
+        public void SetActiveResetIsland(bool active)
+        {
+            resetIslandTimer.Stop();
+            resetIslandButton.interactable = active;
+        }
+
         private void OnDestroy()
         {
             TimerManager.Inst.PushSTimer(undoTimer);
-            TimerManager.Inst.PushSTimer(resetTimer);
+            TimerManager.Inst.PushSTimer(resetIslandTimer);
         }
 
         public void OnShowShadowObj()

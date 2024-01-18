@@ -47,6 +47,7 @@ public static class Constants
     public const string DIE_ANIM = "die";
     public const string HAPPY_ANIM = "happy";
     public const string OPEN_ANIM = "open";
+    public const string ATTACK = "attack";
     public const float CUT_TREE_ANIM_TIME = 0.5f;
     public const float PUSH_ANIM_TIME = 0.4f;
     public const int WAIT_CUT_TREE_FRAMES = 15;
@@ -104,7 +105,7 @@ public static class Constants
     public static readonly Dictionary<GridSurfaceType, HeightLevel> DirFirstHeightOfSurface = new()
     {
         { GridSurfaceType.Ground, HeightLevel.One },
-        { GridSurfaceType.Water, HeightLevel.ZeroPointFive }
+        { GridSurfaceType.Water, HeightLevel.Zero }
     };
 
     public static readonly Dictionary<Direction, Vector3> DirVector3F = new()
@@ -132,6 +133,14 @@ public static class Constants
         { Direction.Right, Vector2Int.right },
         { Direction.Forward, Vector2Int.up },
         { Direction.Back, Vector2Int.down }
+    };
+    public static readonly Dictionary<Direction, Direction> InvDirection = new()
+    {
+        {Direction.None, Direction.None },
+        {Direction.Left, Direction.Right },
+        {Direction.Right, Direction.Left },
+        {Direction.Forward, Direction.Back },
+        {Direction.Back, Direction.Forward },
     };
 }
 

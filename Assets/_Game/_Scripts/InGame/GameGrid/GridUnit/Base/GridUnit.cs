@@ -22,7 +22,7 @@ namespace _Game.GameGrid.Unit
         [SerializeField] public Transform skin; // Model location
         // MeshRenderer of Unit
         [SerializeField] private MeshRenderer meshRenderer;
-        
+
         // Size of this unit, the X and Z equal to the size of the main cell, the Y equal to height level
         [SerializeField] protected Vector3Int size;
 
@@ -36,6 +36,11 @@ namespace _Game.GameGrid.Unit
 
         // Offset when unit is down
         [SerializeField] public float yOffsetOnDown = 0.5f;
+
+        // How many height level can floating up when unit is on floating Surface (bool canFloating at GameGridCell)
+        [SerializeField] private int floatingHeightOffset;
+
+        public int FloatingHeightOffset => floatingHeightOffset;
 
         // The island that this unit is on
         public int islandID = -1;
@@ -76,7 +81,7 @@ namespace _Game.GameGrid.Unit
         protected bool isSpawn;
         protected IMemento overrideSpawnSave;
         protected IMemento overrideDespawnSave;
-        
+
         public bool IsSpawn => isSpawn;
         #endregion
 
@@ -98,7 +103,11 @@ namespace _Game.GameGrid.Unit
             set => unitTypeY = value;
         }
 
-        public GameGridCell MainCell => mainCell;
+        public virtual GameGridCell MainCell
+        {
+            get => mainCell;
+            protected set => mainCell = value;
+        }
 
         public HeightLevel StartHeight
         {
@@ -117,11 +126,7 @@ namespace _Game.GameGrid.Unit
         public HeightLevel BelowStartHeight => startHeight - Constants.BELOW_HEIGHT;
         public HeightLevel UpperEndHeight => endHeight + Constants.UPPER_HEIGHT;
 
-        protected virtual void Awake()
-        {
-            SaveInitData(size, unitTypeY, skin);
-        }
-
+        public UnitInitData UnitUnitData => _unitInitData; //DEV: Can be optimize
         public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
             bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRos = false)
         {
@@ -130,6 +135,7 @@ namespace _Game.GameGrid.Unit
                 overrideSpawnSave = Save();
             else
                 overrideSpawnSave = null;
+            SaveInitData(size, unitTypeY, skin);
             if (isUseInitData) GetInitData();
             islandID = mainCellIn.IslandID;
             SetHeight(startHeightIn);
@@ -194,7 +200,7 @@ namespace _Game.GameGrid.Unit
             OnOutTrigger();
             ClearNeighbor();
             cellInUnits.Clear();
-            mainCell = null;
+            MainCell = null;
         }
 
         public Vector3 GetUnitWorldPos(GameGridCell cell = null)
@@ -235,7 +241,8 @@ namespace _Game.GameGrid.Unit
 
             void InitCellsToUnit(GameGridCell enterMainCellIn, List<GameGridCell> enterCells = null)
             {
-                mainCell = enterMainCellIn;
+
+                MainCell = enterMainCellIn;
                 // Add all nextCells to cellInUnits
                 if (enterCells is not null)
                     for (int i = 0; i < enterCells.Count; i++)
@@ -352,8 +359,9 @@ namespace _Game.GameGrid.Unit
         }
 
         private void SaveInitData(Vector3Int sizeI, UnitTypeY unitTypeYi, Transform skinI)
-        {
-            _unitInitData = new UnitInitData(sizeI, unitTypeYi, skinI.localPosition, skinI.localRotation);
+        {    
+            if(_unitInitData == null)
+                _unitInitData = new UnitInitData(this);
         }
 
         private void GetInitData()
@@ -367,7 +375,7 @@ namespace _Game.GameGrid.Unit
         private List<GameGridCell> InitCell(GameGridCell mainCellIn, Direction skinDirection)
         {
             List<GameGridCell> initCells = new();
-            mainCell = mainCellIn;
+            MainCell = mainCellIn;
             initCells.Add(mainCell);
             switch (skinDirection)
             {
@@ -413,6 +421,8 @@ namespace _Game.GameGrid.Unit
         {
             HeightLevel enterStartHeight = Constants.MIN_HEIGHT;
             HeightLevel initHeight = Constants.DirFirstHeightOfSurface[enterCell.SurfaceType];
+            if (enterCell.Data.canFloating) 
+                initHeight = Constants.DirFirstHeightOfSurface[enterCell.SurfaceType] + floatingHeightOffset; // Zero point five
             if (initHeight > enterStartHeight) enterStartHeight = initHeight;
             for (HeightLevel heightLevel = initHeight;
                  heightLevel <= BelowStartHeight;
@@ -425,12 +435,14 @@ namespace _Game.GameGrid.Unit
             return enterStartHeight;
         }
 
-        public HeightLevel GetEnterStartHeight(List<GameGridCell> enterCells)
+        private HeightLevel GetEnterStartHeight(List<GameGridCell> enterCells)
         {
             HeightLevel enterStartHeight = Constants.MIN_HEIGHT;
             foreach (GameGridCell cell in enterCells)
             {
                 HeightLevel initHeight = Constants.DirFirstHeightOfSurface[cell.SurfaceType];
+                if (cell.Data.canFloating) 
+                    initHeight = Constants.DirFirstHeightOfSurface[cell.SurfaceType] + floatingHeightOffset; // Zero point five
                 if (initHeight > enterStartHeight) enterStartHeight = initHeight;
                 for (HeightLevel heightLevel = initHeight;
                      heightLevel <= BelowStartHeight;
@@ -536,6 +548,11 @@ namespace _Game.GameGrid.Unit
                 {
                     main.Despawn();
                     main.isSpawn = false;
+                    main.belowUnits.Clear();
+                    main.upperUnits.Clear();
+                    main.neighborUnits.Clear();
+                    main.cellInUnits.Clear();
+                    main.mainCell = null;
                     return;
                 }
                 
@@ -578,7 +595,6 @@ namespace _Game.GameGrid.Unit
 
 
                 main.mainCell = mainCell;
-
                 main.cellInUnits.Clear();
                 foreach (GameGridCell cell in cellInUnits)
                 {
@@ -608,18 +624,23 @@ namespace _Game.GameGrid.Unit
 
     public class UnitInitData
     {
-        public UnitInitData(Vector3Int size, UnitTypeY unitTypeY, Vector3 localSkinPos, Quaternion localSkinRot)
+        public UnitInitData(GridUnit main)
         {
-            Size = size;
-            UnitTypeY = unitTypeY;
-            LocalSkinPos = localSkinPos;
-            LocalSkinRot = localSkinRot;
+            Size = main.Size;
+            UnitTypeY = main.UnitTypeY;
+            LocalSkinPos = main.skin.transform.localPosition;
+            LocalSkinRot = main.skin.transform.localRotation;
+            Type = main.PoolType;
+            StartHeight = main.StartHeight;
+            SkinDirection = main.SkinRotationDirection;
         }
-
+        public PoolType Type { get; }
         public Vector3Int Size { get; }
         public UnitTypeY UnitTypeY { get; }
         public Vector3 LocalSkinPos { get; }
         public Quaternion LocalSkinRot { get; }
+        public HeightLevel StartHeight { get; }
+        public Direction SkinDirection { get; }
     }
 
     public class EnterCellPosData

@@ -3,7 +3,7 @@ using _Game.GameGrid.Unit;
 
 namespace _Game._Scripts.InGame.GameCondition.Data
 {
-    public class ChumpBeInteractedData : ConditionData
+    public class BeInteractedData : ConditionData
     {
         // InputData
         public Direction inputDirection;
@@ -11,7 +11,7 @@ namespace _Game._Scripts.InGame.GameCondition.Data
         public GridUnit pushUnit;
 
         // Constructor
-        public ChumpBeInteractedData(GridUnit owner)
+        public BeInteractedData(GridUnit owner)
         {
             this.owner = owner;
         }

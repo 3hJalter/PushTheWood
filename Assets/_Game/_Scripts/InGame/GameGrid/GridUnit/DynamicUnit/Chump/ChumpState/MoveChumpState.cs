@@ -12,7 +12,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
         public void OnEnter(Chump t)
         {
-            t.MovingData.SetData(t.ChumpBeInteractedData.inputDirection);
+            t.MovingData.SetData(t.BeInteractedData.inputDirection);
             _isMove = t.ConditionMergeOnBePushed.IsApplicable(t.MovingData);
             OnExecute(t);
         }

@@ -13,7 +13,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
         public void OnEnter(Chump t)
         {
-            t.MovingData.SetData(t.ChumpBeInteractedData.inputDirection);
+            t.MovingData.SetData(t.BeInteractedData.inputDirection);
             _isRoll = t.ConditionMergeOnBePushed.IsApplicable(t.MovingData);
             OnExecute(t);
         }
@@ -47,7 +47,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                             t.OnEnterTrigger(t);
                             t.StateMachine.ChangeState(StateEnum.Idle);
                             if (t.gameObject.activeSelf)
-                                t.OnBePushed(t.ChumpBeInteractedData.inputDirection, t.ChumpBeInteractedData.pushUnit);
+                                t.OnBePushed(t.BeInteractedData.inputDirection, t.BeInteractedData.pushUnit);
                         }
                     });
             }

@@ -435,6 +435,6 @@ namespace _Game.DesignPattern
         Shark = 201,
 
         //VFX
-        VFX_Dust = 1000,
+        DangerIndicator = 1000,
     }
 }

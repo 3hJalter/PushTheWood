@@ -18,10 +18,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 {
     public class Player : GridUnitDynamic, IJumpTreeRootUnit
     {
-        [SerializeField] private Animator animator;
+        #region PROPERTYS
         public bool isRideVehicle;
-        public readonly Queue<Direction> InputCache = new();
+        public bool IsDead = false;
+        public bool IsStun = false;
+        #endregion
 
+        public readonly Queue<Direction> InputCache = new();
+        [SerializeField] private Animator animator;
         private StateMachine<Player> stateMachine;
         public StateMachine<Player> StateMachine => stateMachine;
         public override StateEnum CurrentStateId
@@ -43,7 +47,15 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public Direction Direction { get; private set; } = Direction.None;
         public InputDetection InputDetection { get; private set; } = new InputDetection();
         public float AnimSpeed => animator.speed;
-
+        public override GameGridCell MainCell 
+        { 
+            get => mainCell; 
+            protected set
+            {
+                mainCell = value;
+                CheckingStunState();
+            }
+        }
         private void FixedUpdate()
         {
             if (!GameManager.Ins.IsState(GameState.InGame)) return;
@@ -79,6 +91,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 AddState();
             }
             //stateMachine.Debug = true;
+            IsDead = false;
+            IsStun = false;
             stateMachine.ChangeState(StateEnum.Idle);
         }
 
@@ -99,6 +113,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             stateMachine.AddState(StateEnum.CutTree, new CutTreePlayerState());
             stateMachine.AddState(StateEnum.Die, new DiePlayerState());
             stateMachine.AddState(StateEnum.Happy, new HappyPlayerState());
+            stateMachine.AddState(StateEnum.Stun, new StunPlayerState());
         }
 
         public override void OnPush(Direction direction, ConditionData conditionData = null)
@@ -138,7 +153,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             _currentAnim = animName;
             animator.SetTrigger(_currentAnim);
         }
-
         public void SetAnimSpeed(float speed)
         {
             animator.speed = speed;
@@ -183,7 +197,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             LevelManager.Ins.SaveGameState(false);
             #endregion
             isRideVehicle = true;
-            LevelManager.Ins.IsCanUndo = false;
+            GameplayManager.Ins.IsCanUndo = false;
             _vehicle.Ride(tDirection, this);
         }
 
@@ -203,6 +217,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             // Set the unit to the vehicle
             r.blockDirectionUnits = units;
             return true;
+        }
+        public void CheckingStunState()
+        {
+            if (mainCell != null && !IsStun && mainCell.Data.IsDanger)
+            {
+                GameManager.Ins.PostEvent(DesignPattern.EventID.PlayerInDangerCell, mainCell);
+                IsStun = true;
+            }
         }
 
         #region Rule

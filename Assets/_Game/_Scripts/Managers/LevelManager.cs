@@ -33,16 +33,7 @@ namespace _Game.GameGrid
 
         public Level CurrentLevel => _currentLevel;
         public bool IsConstructingLevel;
-        private bool isCanUndo = true;
-        public bool IsCanUndo
-        {
-            get => isCanUndo;
-            set
-            {
-                isCanUndo = value;
-                UIManager.Ins.GetUI<InGameScreen>().SetActiveUndo(value);
-            }
-        }
+        
         
         private CareTaker savingState;
         public Player player;
@@ -76,6 +67,7 @@ namespace _Game.GameGrid
 
         public void InitLevel()
         {
+            GameManager.Ins.PostEvent(EventID.StartGame);
             if (CurrentLevel.IsInit) return;
             _currentLevel.OnInitLevelSurfaceAndUnit();
             _currentLevel.OnInitPlayerToLevel();
@@ -88,7 +80,6 @@ namespace _Game.GameGrid
             DebugManager.Ins?.DebugGridData(_currentLevel.GridMap);
             // TEMPORARY: CUTSCENE, player will be show when cutscene end
             if (levelIndex == 0) HidePlayer(true);
-            GameManager.Ins.PostEvent(EventID.StartGame);
         }
 
         public void ResetLevelIsland()
@@ -128,13 +119,12 @@ namespace _Game.GameGrid
         public void OnWin()
         {
             // Show win screen
-            UIManager.Ins.OpenUI<WinScreen>();
             // +1 LevelIndex and save
             levelIndex++;
             // Temporary handle when out of level
             if (levelIndex >= DataManager.Ins.CountNormalLevel) levelIndex = 0;
             PlayerPrefs.SetInt(Constants.LEVEL_INDEX, levelIndex);
-            GameManager.Ins.PostEvent(EventID.EndGame);
+            GameManager.Ins.PostEvent(EventID.WinGame);
             // Future: Add reward collected in-game
         }
 
@@ -160,12 +150,6 @@ namespace _Game.GameGrid
             OnGenerateLevel(true);
             // OnChangeTutorialIndex();
         }
-
-        public void OnLose()
-        {
-            // Show lose screen
-        }
-
         public void OnRestart()
         {
             player.OnDespawn();
@@ -183,8 +167,7 @@ namespace _Game.GameGrid
             savingState.Reset();
         }
         public void OnUndo()
-        {
-            if (!isCanUndo) return;
+        {      
             savingState.Undo();
             SetCameraToPlayerIsland();
         }

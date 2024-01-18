@@ -1,5 +1,6 @@
 ﻿using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.StaticUnit;
+using _Game.Managers;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
@@ -17,10 +18,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
         public void OnEnter(Chump t)
         {
-            t.TurnOverData.SetData(t.ChumpBeInteractedData.inputDirection);
+            t.TurnOverData.SetData(t.BeInteractedData.inputDirection);
             _isTurnOver = t.ConditionMergeOnBePushed.IsApplicable(t.TurnOverData);
             anchorAdd.Set(0, 0, 0);
-            LevelManager.Ins.IsCanUndo = false;
+            GameplayManager.Ins.IsCanUndo = false;
             OnExecute(t);
         }
 
@@ -56,12 +57,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 t.OnOutCells();
 
                 if (t.UnitTypeY is UnitTypeY.Up ||
-                    (t.TurnOverData.enterMainCell.SurfaceType is not GridSurfaceType.Water &&
+                    (!t.TurnOverData.enterMainCell.Data.canFloating &&
                      t.UnitTypeY is UnitTypeY.Down))
                     t.SwitchType(t.TurnOverData.inputDirection);
-                else if (t.TurnOverData.enterMainCell.SurfaceType is GridSurfaceType.Water
+                else if (t.TurnOverData.enterMainCell.Data.canFloating
                          && t.TurnOverData.enterMainCell.GetGridUnitAtHeight(
-                             Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]) is not null)
+                             Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + t.FloatingHeightOffset) is not null)
                     t.SwitchType(t.TurnOverData.inputDirection);
 
                 t.OnEnterCells(t.TurnOverData.enterMainCell, t.TurnOverData.enterCells);
@@ -123,7 +124,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         {
             if (!isContinueTurnOver)
             {
-                LevelManager.Ins.IsCanUndo = true;
+                GameplayManager.Ins.IsCanUndo = true;
             }
             isContinueTurnOver = false;
         }
