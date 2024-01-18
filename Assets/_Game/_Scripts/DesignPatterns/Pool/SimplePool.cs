@@ -368,7 +368,7 @@ namespace _Game.DesignPattern
         Bomb = 15,
         Archer_Enemy = 16,
 
-        // Grid Unit Placed Object
+        // Grid Unit Building Object
         HouseMain = 50,
         Fence = 51,
         StationFishing = 52,
@@ -429,6 +429,10 @@ namespace _Game.DesignPattern
         SurfaceGround4Side = 144,
         SurfaceGround3Side = 145,
         SurfaceGround2Side = 146,
+        
+        // Environment Object
+        Cloud = 200,
+        Shark = 201,
 
         //VFX
         VFX_Dust = 1000,

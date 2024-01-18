@@ -21,7 +21,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: _bgmDic
+    - Name: _bgmDict
       Entry: 7
       Data: 0|System.Collections.Generic.Dictionary`2[[AudioEnum.BgmType, Assembly-CSharp],[UnityEngine.AudioClip,
         UnityEngine.AudioModule]], mscorlib
@@ -47,7 +47,7 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: _sfxDic
+    - Name: _sfxDict
       Entry: 7
       Data: 2|System.Collections.Generic.Dictionary`2[[AudioEnum.SfxType, Assembly-CSharp],[UnityEngine.AudioClip,
         UnityEngine.AudioModule]], mscorlib

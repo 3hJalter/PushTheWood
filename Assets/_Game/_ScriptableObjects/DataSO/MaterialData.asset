@@ -28,7 +28,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: _surfaceMaterialDic
+    - Name: _surfaceMaterialDict
       Entry: 7
       Data: 0|System.Collections.Generic.Dictionary`2[[_Game.Data.MaterialEnum, Assembly-CSharp],[UnityEngine.Material,
         UnityEngine.CoreModule]], mscorlib
@@ -102,7 +102,7 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: _grassMaterialDic
+    - Name: _grassMaterialDict
       Entry: 7
       Data: 2|System.Collections.Generic.Dictionary`2[[_Game.Data.MaterialEnum, Assembly-CSharp],[UnityEngine.Material,
         UnityEngine.CoreModule]], mscorlib

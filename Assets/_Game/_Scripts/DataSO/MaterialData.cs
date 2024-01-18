@@ -15,23 +15,25 @@ namespace _Game.Data
         }
 
         [Title("Surface Material")]
-        [SerializeField] private readonly Dictionary<MaterialEnum, Material> _surfaceMaterialDic = new();
+        [SerializeField]
+        private readonly Dictionary<MaterialEnum, Material> _surfaceMaterialDict = new();
         
         [Title("Grass Material")]
-        [SerializeField] private readonly Dictionary<MaterialEnum, Material> _grassMaterialDic = new();
+        [SerializeField]
+        private readonly Dictionary<MaterialEnum, Material> _grassMaterialDict = new();
         
-        public int CountSurfaceMaterial => _surfaceMaterialDic.Count;
+        public int CountSurfaceMaterial => _surfaceMaterialDict.Count;
         
-        public int CountGrassMaterial => _grassMaterialDic.Count;
+        public int CountGrassMaterial => _grassMaterialDict.Count;
         
         public Material GetSurfaceMaterial(MaterialEnum materialEnum)
         {
-            return _surfaceMaterialDic.GetValueOrDefault(materialEnum);
+            return _surfaceMaterialDict.GetValueOrDefault(materialEnum);
         }
         
         public Material GetGrassMaterial(MaterialEnum materialEnum)
         {
-            return _grassMaterialDic.GetValueOrDefault(materialEnum);
+            return _grassMaterialDict.GetValueOrDefault(materialEnum);
         }
     }
 

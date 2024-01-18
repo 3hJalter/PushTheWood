@@ -10,24 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8287e45599d4089aa83d8b2e7d5b10d, type: 3}
-  m_Name: EnvironmentObjectData
+  m_Name: EnvironmentData
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
-    SerializedBytes: 
+    SerializedBytes: []
     ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: _environmentObjectDict
+    - Name: _environmentDict
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[VinhLB.EnvironmentObjectType,
+      Data: 0|System.Collections.Generic.Dictionary`2[[VinhLB.EnvironmentUnitType,
         Assembly-CSharp],[UnityEngine.GameObject[], UnityEngine.CoreModule]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[VinhLB.EnvironmentObjectType,
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[VinhLB.EnvironmentUnitType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12

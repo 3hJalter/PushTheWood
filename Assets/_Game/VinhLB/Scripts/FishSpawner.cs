@@ -10,9 +10,6 @@ namespace VinhLB
 {
     public class FishSpawner : HMonoBehaviour
     {
-        [SerializeField]
-        private Fish _sharkPrefab;
-
         private Fish _shark;
 
         public void SpawnFish(bool resetPath = true)
@@ -63,10 +60,8 @@ namespace VinhLB
 
                 if (_shark == null)
                 {
-                    _shark = Instantiate(_sharkPrefab, Tf);
-                    // _shark = SimplePool
-                    //     .Spawn<GameObject>(DataManager.Ins.GetRandomEnvironmentObject(EnvironmentObjectType.Shark))
-                    //     .GetComponent<Fish>();
+                    // _shark = Instantiate(_sharkPrefab, Tf);
+                    _shark = SimplePool.Spawn<Fish>(DataManager.Ins.GetRandomEnvironmentObject(PoolType.Shark));
                 }
                 _shark.Initialize(waypointList);
             }

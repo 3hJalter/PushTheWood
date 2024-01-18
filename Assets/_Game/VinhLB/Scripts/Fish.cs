@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    public class Fish : HMonoBehaviour
+    public class Fish : EnvironmentObject
     {
         private const float MIN_DISTANCE = 0.1f;
 
