@@ -10,7 +10,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 {
     public class FallChumpState : IState<Chump>
     {
-        private readonly Vector3 WATER_SPLASH_OFFSET = Vector3.up * 0.1f;
+        private readonly Vector3 WATER_SPLASH_OFFSET = Vector3.up * 0.18f;
         private Tween moveTween;
         public StateEnum Id => StateEnum.Fall;
 
