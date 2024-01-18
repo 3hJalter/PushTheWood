@@ -22,5 +22,6 @@
         Emerge = 14,
 
         Attack = 100,
+        Stun = 101,
     }
 }

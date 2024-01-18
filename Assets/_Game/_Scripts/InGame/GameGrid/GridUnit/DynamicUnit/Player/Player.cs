@@ -18,11 +18,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 {
     public class Player : GridUnitDynamic, IJumpTreeRootUnit
     {
-        [SerializeField] private Animator animator;
+        #region PROPERTYS
         public bool isRideVehicle;
         public bool IsDead = false;
-        public readonly Queue<Direction> InputCache = new();
+        public bool IsStun = false;
+        #endregion
 
+        public readonly Queue<Direction> InputCache = new();
+        [SerializeField] private Animator animator;
         private StateMachine<Player> stateMachine;
         public StateMachine<Player> StateMachine => stateMachine;
         public override StateEnum CurrentStateId
@@ -51,7 +54,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             {
                 mainCell = value;
                 if (mainCell != null && !IsDead && mainCell.Data.IsDanger)
-                    GameManager.Ins.PostEvent(DesignPattern.EventID.PlayerInDangerCell, mainCell);
+                {
+                    GameManager.Ins.PostEvent(DesignPattern.EventID.PlayerInDangerCell, mainCell);     
+                    IsStun = true;
+                }
             }
         }
         private void FixedUpdate()
@@ -90,6 +96,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             }
             //stateMachine.Debug = true;
             IsDead = false;
+            IsStun = false;
             stateMachine.ChangeState(StateEnum.Idle);
         }
 
@@ -110,6 +117,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             stateMachine.AddState(StateEnum.CutTree, new CutTreePlayerState());
             stateMachine.AddState(StateEnum.Die, new DiePlayerState());
             stateMachine.AddState(StateEnum.Happy, new HappyPlayerState());
+            stateMachine.AddState(StateEnum.Stun, new StunPlayerState());
         }
 
         public override void OnPush(Direction direction, ConditionData conditionData = null)
@@ -193,7 +201,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             LevelManager.Ins.SaveGameState(false);
             #endregion
             isRideVehicle = true;
-            LevelManager.Ins.IsCanUndo = false;
+            GameplayManager.Ins.IsCanUndo = false;
             _vehicle.Ride(tDirection, this);
         }
 

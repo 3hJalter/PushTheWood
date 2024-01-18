@@ -23,10 +23,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 
         public void OnExecute(Player t)
         {
-            //NOTE:Checking for IdleState
-            if (t.IsDead)
+            //NOTE:Checking for IdleState            
+            if (t.IsStun)
             {
-                t.StateMachine.ChangeState(StateEnum.Die);
+                t.StateMachine.ChangeState(StateEnum.Stun);
                 return;
             }
             if (t.Direction == Direction.None)

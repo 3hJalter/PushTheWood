@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using _Game._Scripts.InGame.GameCondition.Data;
 using UnityEngine;
 using _Game.Utilities;
+using _Game.Managers;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 {
@@ -25,7 +26,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         public void OnEnter(Chump t)
         {
             blockObjects.Clear();
-            LevelManager.Ins.IsCanUndo = false;
+            GameplayManager.Ins.IsCanUndo = false;
             OnExecute(t);
         }
 
@@ -117,7 +118,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
         public void OnExit(Chump t)
         {
-            LevelManager.Ins.IsCanUndo = true;
+            GameplayManager.Ins.IsCanUndo = true;
             moveTween.Kill();
         }
 

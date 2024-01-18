@@ -1,7 +1,9 @@
 using _Game.DesignPattern;
+using _Game.GameGrid;
 using _Game.UIs.Screen;
 using _Game.Utilities;
 using _Game.Utilities.Timer;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +18,28 @@ namespace _Game.Managers
         STimer timer;
 
         InGameScreen screen;
+
+        private bool isCanUndo = true;
+        private bool isCanResetIsland = true;
+        public bool IsCanUndo
+        {
+            get => isCanUndo;
+            set
+            {
+                isCanUndo = value;
+                screen.SetActiveUndo(value);
+            }
+        }
+
+        public bool IsCanResetIsland
+        {
+            get => isCanResetIsland;
+            set
+            {
+                isCanResetIsland = value;
+                screen.SetActiveResetIsland(value);
+            }
+        }
         private void Awake()
         {
             screen = UIManager.Ins.GetUI<InGameScreen>();
@@ -24,12 +48,16 @@ namespace _Game.Managers
             GameManager.Ins.RegisterListenerEvent(EventID.StartGame, OnStartGame);
             GameManager.Ins.RegisterListenerEvent(EventID.WinGame, OnWinGame);
             GameManager.Ins.RegisterListenerEvent(EventID.LoseGame, OnLoseGame);
+            screen.OnUndo += OnUndo;
+            screen.OnResetIsland += OnResetIsland;
         }
         private void OnStartGame()
         {
             time = Constants.LEVEL_TIME;
             undoCount = Constants.UNDO_COUNT;
             screen.Time = time;
+            IsCanResetIsland = true;
+            IsCanUndo = true;
             timer.Start(1f, CountTime, true);
             void CountTime()
             {
@@ -57,7 +85,24 @@ namespace _Game.Managers
 
         private void OnDestroy()
         {
-            TimerManager.Inst.PushSTimer(timer);
+            GameManager.Ins.UnregisterListenerEvent(EventID.StartGame, OnStartGame);
+            GameManager.Ins.UnregisterListenerEvent(EventID.WinGame, OnWinGame);
+            GameManager.Ins.UnregisterListenerEvent(EventID.LoseGame, OnLoseGame);
+            screen.OnUndo -= OnUndo;
+            screen.OnResetIsland -= OnResetIsland;
+            TimerManager.Inst.PushSTimer(timer);         
+        }
+
+        private void OnUndo()
+        {
+            if (!isCanUndo) return;
+            LevelManager.Ins.OnUndo();
+        }
+
+        private void OnResetIsland()
+        {
+            if (!isCanResetIsland) return;
+            LevelManager.Ins.ResetLevelIsland();
         }
     }
 }
