@@ -1,10 +1,5 @@
 ﻿using _Game.DesignPattern.StateMachine;
-using _Game.GameGrid.Unit.DynamicUnit.Chump;
-using _Game.GameGrid.Unit.DynamicUnit.Player;
-using _Game.Utilities;
 using GameGridEnum;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit

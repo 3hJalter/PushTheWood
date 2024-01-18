@@ -62,7 +62,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
             return _stateMachine.CurrentState.Id == stateEnum;
         }
         
-        private void AddState()
+        protected virtual void AddState()
         {
             _stateMachine.AddState(StateEnum.Idle, new IdleBoxState());
             _stateMachine.AddState(StateEnum.Move, new MoveBoxState());
@@ -79,7 +79,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
         protected override void OnOutTriggerBelow(GridUnit triggerUnit)
         {
             base.OnOutTriggerBelow(triggerUnit);
-            DevLog.Log(DevId.Hoang, "Current state: " + CurrentStateId);
             if (!LevelManager.Ins.IsConstructingLevel) 
                 _stateMachine.ChangeState(StateEnum.Fall);
         }

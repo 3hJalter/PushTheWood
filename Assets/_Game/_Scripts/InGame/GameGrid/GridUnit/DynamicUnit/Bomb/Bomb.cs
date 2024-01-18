@@ -1,13 +1,89 @@
-﻿using _Game.DesignPattern.StateMachine;
+﻿using _Game._Scripts.InGame.GameCondition.Data;
+using _Game.DesignPattern.ConditionRule;
+using _Game.DesignPattern.StateMachine;
+using _Game.GameGrid.Unit.DynamicUnit.Bomb.BombState;
+using a;
+using GameGridEnum;
+using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Bomb
 {
     public class Bomb : GridUnitDynamic
     {
-        // Check Old Commit
-        public override StateEnum CurrentStateId { 
-            get => throw new System.NotImplementedException(); 
-            set => throw new System.NotImplementedException(); }
+        private StateMachine<Bomb> _stateMachine;
+        
+        public StateMachine<Bomb> StateMachine => _stateMachine;
+        
+        private bool _isAddState;
+
+        public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
+            Direction skinDirection = Direction.None, bool hasSetPosAndRos = false)
+        {
+            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRos);
+            if (!_isAddState)
+            {
+                _isAddState = true;
+                _stateMachine = new StateMachine<Bomb>(this);
+                AddState();
+            }
+            _stateMachine.ChangeState(StateEnum.Idle);
+        }
+        
+        public override void OnDespawn()
+        {
+            base.OnDespawn();
+            _stateMachine.ChangeState(StateEnum.Idle);
+        }
+        
+        public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
+        {
+            BeInteractedData.SetData(direction, pushUnit);
+            if (!ConditionMergeOnBeInteracted.IsApplicable(BeInteractedData)) return;
+            
+            base.OnBePushed(direction, pushUnit);
+            _stateMachine.ChangeState(StateEnum.Roll);
+        }
+        
+        public override bool IsCurrentStateIs(StateEnum stateEnum)
+        {
+            return _stateMachine.CurrentState.Id == stateEnum;
+        }
+        
+        private void AddState()
+        {
+            _stateMachine.AddState(StateEnum.Idle, new IdleBombState());
+            _stateMachine.AddState(StateEnum.Fall, new FallBombState());
+            _stateMachine.AddState(StateEnum.Roll, new RollBombState());
+            _stateMachine.AddState(StateEnum.Explode, new ExplodeBombState());
+        }
+        
+        public override StateEnum CurrentStateId 
+        { 
+            get => _stateMachine?.CurrentStateId ?? StateEnum.Idle;
+            set => _stateMachine.ChangeState(value);
+        }
+        
+        protected override void OnOutTriggerBelow(GridUnit triggerUnit)
+        {
+            base.OnOutTriggerBelow(triggerUnit);
+            if (!LevelManager.Ins.IsConstructingLevel)  
+                _stateMachine.ChangeState(StateEnum.Fall);
+        }
+
+        #region Ruling
+
+        [SerializeField] private ConditionMerge conditionMergeOnBePushed;
+        [SerializeField] private ConditionMerge conditionMergeOnBeInteracted;
+        public ConditionMerge ConditionMergeOnBePushed => conditionMergeOnBePushed;
+        private ConditionMerge ConditionMergeOnBeInteracted => conditionMergeOnBeInteracted;
+
+        private MovingData _movingData;
+        private BeInteractedData _beInteractedData;
+        
+        public MovingData MovingData => _movingData ??= new MovingData(this);
+        public BeInteractedData BeInteractedData => _beInteractedData ??= new BeInteractedData(this);
+
+        #endregion
     }
 }
 
