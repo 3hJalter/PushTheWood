@@ -7,8 +7,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 {
     public class IdleChumpState : IState<Chump>
     {
-        private float MOVE_Y_VALUE = 0.06f;
-        private float MOVE_Y_TIME = 2f;
+        private const float MOVE_Y_VALUE = 0.06f;
+        private const float MOVE_Y_TIME = 2f;
 
         private Tween floatingTween;
         
@@ -23,10 +23,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             if (t.IsInWater())
             {
                 originTransform = t.Tf.transform.position;
-                floatingTween = DOVirtual.Float(0 ,MOVE_Y_TIME, MOVE_Y_TIME, i =>
-                {
-                    SetSinWavePosition(i);
-                }).SetLoops(-1).SetEase(Ease.Linear);
+                floatingTween = DOVirtual.Float(0 ,MOVE_Y_TIME, MOVE_Y_TIME, SetSinWavePosition).SetLoops(-1).SetEase(Ease.Linear);
             }
             else
             {

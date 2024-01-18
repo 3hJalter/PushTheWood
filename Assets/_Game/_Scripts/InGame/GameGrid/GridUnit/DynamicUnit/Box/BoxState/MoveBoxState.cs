@@ -1,69 +1,55 @@
 ﻿using _Game.DesignPattern.StateMachine;
-using _Game.Utilities;
 using DG.Tweening;
-using UnityEngine;
 
-namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
+namespace _Game.GameGrid.Unit.DynamicUnit.Box.BoxState
 {
-    public class RollChumpState : IState<Chump>
+    public class MoveBoxState : IState<Box>
     {
-        private bool _isRoll;
+        private bool _isMove;
         Tween moveTween;
-        public StateEnum Id => StateEnum.Roll;
-
-        public void OnEnter(Chump t)
+        public StateEnum Id => StateEnum.Move;
+        
+        public void OnEnter(Box t)
         {
             t.MovingData.SetData(t.BeInteractedData.inputDirection);
-            _isRoll = t.ConditionMergeOnBePushed.IsApplicable(t.MovingData);
+            _isMove = t.ConditionMergeOnBePushed.IsApplicable(t.MovingData);
             OnExecute(t);
         }
 
-        public void OnExecute(Chump t)
+        public void OnExecute(Box t)
         {
-            if (!_isRoll)
+            if (!_isMove)
             {
-                t.StateMachine.ChangeState(StateEnum.RollBlock);
+                if (t.MovingData.blockDynamicUnits.Count > 0) t.OnPush(t.MovingData.inputDirection, t.MovingData);
+                t.StateMachine.ChangeState(StateEnum.Idle);
             }
             else
             {
-
                 t.SetEnterCellData(t.MovingData.inputDirection, t.MovingData.enterMainCell, t.UnitTypeY, false,
                     t.MovingData.enterCells);
                 t.OnOutCells();
                 t.OnEnterCells(t.MovingData.enterMainCell, t.MovingData.enterCells);
                 // Animation and complete
-                // TODO: rotate in place animation for skin
                 moveTween = t.Tf.DOMove(t.EnterPosData.initialPos,
                         t.EnterPosData.isFalling ? Constants.MOVING_TIME / 2 : Constants.MOVING_TIME)
                     .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                     {
                         if (t.EnterPosData.isFalling)
                         {
-                            //Falling to water
                             t.StateMachine.ChangeState(StateEnum.Fall);
                         }
                         else
                         {
                             t.OnEnterTrigger(t);
                             t.StateMachine.ChangeState(StateEnum.Idle);
-                            if (t.gameObject.activeSelf)
-                                t.OnBePushed(t.BeInteractedData.inputDirection, t.BeInteractedData.pushUnit);
                         }
                     });
             }
         }
 
-        public void OnExit(Chump t)
+        public void OnExit(Box t)
         {
             moveTween.Kill();
-        }
-
-        private Vector3 GetRotateAxis(GridUnit t, Direction direction)
-        {
-            Vector3 axis = t.skin.localRotation.eulerAngles;
-            if (direction is Direction.Back or Direction.Forward) axis.x += 359;
-            else if (direction is Direction.Left or Direction.Right) axis.z += 359;
-            return axis;
         }
     }
 }

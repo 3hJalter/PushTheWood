@@ -6,12 +6,12 @@ using UnityEngine;
 
 namespace _Game._Scripts.InGame.GameCondition.Condition
 {
-    [CreateAssetMenu(fileName = "CanChumpBeInteracted", menuName = "ConditionSO/Interact/CanBeInteract", order = 1)]
+    [CreateAssetMenu(fileName = "CanChumpBeInteracted", menuName = "ConditionSO/Interact/CanChumpBeInteracted", order = 1)]
     public class CanChumpBeInteracted : ScriptableObject, ICondition
     {
         public bool IsApplicable(ConditionData dataIn)
         {
-            if (dataIn is not ChumpBeInteractedData data) return false;
+            if (dataIn is not BeInteractedData data) return false;
             if (data.pushUnit is Player) return true;
             UnitTypeXZ type = data.owner.UnitTypeXZ;
             Direction direction = data.inputDirection;
