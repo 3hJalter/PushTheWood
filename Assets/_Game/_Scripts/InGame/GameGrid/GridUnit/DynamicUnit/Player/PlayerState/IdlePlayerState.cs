@@ -123,6 +123,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                     Island island = LevelManager.Ins.CurrentLevel.Islands[t.MovingData.enterMainCell.IslandID];
                     SetUpCamera(island, t);
                 }
+                else
+                {
+                    Island island = LevelManager.Ins.CurrentLevel.Islands[t.islandID];
+                    SetUpCamera(island, t);
+                }
             }
             
             t.OnOutCells();
@@ -137,15 +142,24 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         {
             _isChangeAnim = false;
         }
-
+        
         private static void SetUpCamera(Island island, Player t)
         {
             // TRICK: Take offset = 3 to make camera not really see the edge of the island
+            const int outOfIslandCellBeforeTargetCamToPlayer = 1;
             const float offset = 3f;
             const float moveTime = 0.25f;
+            float x = t.MovingData.enterMainCell.WorldPos.x;
             // NOTE: If the island is small (Size.x < 7), the camera will not change target pos
             if (island.isSmallIsland) return;
-            float x = t.MovingData.enterMainCell.WorldPos.x;
+            
+            // If the player is out of the island 2 cell, the camera will change target to Player
+            if (island.minXIslandPos.x - x > Constants.CELL_SIZE * outOfIslandCellBeforeTargetCamToPlayer ||
+                x - island.maxXIslandPos.x > Constants.CELL_SIZE * outOfIslandCellBeforeTargetCamToPlayer)
+            {
+                CameraManager.Ins.ChangeCameraTargetPosition(t.MovingData.enterMainCell.WorldPos, moveTime);  
+                return;
+            }
             if (Mathf.Abs(x - island.minXIslandPos.x) < 0.1f) // if minX
             {
                 CameraManager.Ins.ChangeCameraTargetPosition(new Vector3(island.minXIslandPos.x + offset, 0, island.centerIslandPos.z), moveTime);

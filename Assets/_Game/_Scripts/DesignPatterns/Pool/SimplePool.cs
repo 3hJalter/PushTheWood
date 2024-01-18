@@ -375,51 +375,6 @@ namespace _Game.DesignPattern
 
         // From 100 -> Grid Surface List
         SurfaceWater = 100,
-
-        // Medium Ground Surface
-        SurfaceGround = 101,
-        SurfaceGroundTop = 102,
-        SurfaceGroundBottom = 103,
-        SurfaceGroundLeft = 104,
-        SurfaceGroundRight = 105,
-        SurfaceGroundConnectTopLeft = 106,
-        SurfaceGroundConnectTopRight = 107,
-        SurfaceGroundConnectBottomLeft = 108,
-        SurfaceGroundConnectBottomRight = 109,
-        SurfaceGroundCornerTopLeft = 110,
-        SurfaceGroundCornerTopRight = 111,
-        SurfaceGroundCornerBottomLeft = 112,
-        SurfaceGroundCornerBottomRight = 113,
-
-        // Light Ground Surface
-        SurfaceGroundLight = 114,
-        SurfaceGroundLightTop = 115,
-        SurfaceGroundLightBottom = 116,
-        SurfaceGroundLightLeft = 117,
-        SurfaceGroundLightRight = 118,
-        SurfaceGroundLightConnectTopLeft = 119,
-        SurfaceGroundLightConnectTopRight = 120,
-        SurfaceGroundLightConnectBottomLeft = 121,
-        SurfaceGroundLightConnectBottomRight = 122,
-        SurfaceGroundLightCornerTopLeft = 123,
-        SurfaceGroundLightCornerTopRight = 124,
-        SurfaceGroundLightCornerBottomLeft = 125,
-        SurfaceGroundLightCornerBottomRight = 126,
-
-        // Dark Ground Surface
-        SurfaceGroundDark = 127,
-        SurfaceGroundDarkTop = 128,
-        SurfaceGroundDarkBottom = 129,
-        SurfaceGroundDarkLeft = 130,
-        SurfaceGroundDarkRight = 131,
-        SurfaceGroundDarkConnectTopLeft = 132,
-        SurfaceGroundDarkConnectTopRight = 133,
-        SurfaceGroundDarkConnectBottomLeft = 134,
-        SurfaceGroundDarkConnectBottomRight = 135,
-        SurfaceGroundDarkCornerTopLeft = 136,
-        SurfaceGroundDarkCornerTopRight = 137,
-        SurfaceGroundDarkCornerBottomLeft = 138,
-        SurfaceGroundDarkCornerBottomRight = 139,
         
         // Customize Ground Surface
         SurfaceGroundC = 140,

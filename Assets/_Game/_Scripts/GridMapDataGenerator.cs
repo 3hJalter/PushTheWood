@@ -394,13 +394,26 @@ public class GridMapDataGenerator : MonoBehaviour
             int x = (int)(position.x - 1) / 2;
             int z = (int)(position.z - 1) / 2;
             // Save the data to gridSurfaceData
+            int m = -1;
+            if (gridSurface is GroundSurface groundSurface)
+            {
+                if (groundSurface.groundMaterialEnum == MaterialEnum.None)
+                {
+                    // Random from 0 to last index of MaterialEnum
+                    m = UnityEngine.Random.Range(0, Enum.GetValues(typeof(MaterialEnum)).Length - 1);
+                }
+                else
+                {
+                    m = (int)groundSurface.groundMaterialEnum;
+                }
+            }
             RawLevelData.GridSurfaceData gridSurfaceData = new()
             {
                 p = new Vector2Int(x, z),
                 t = (int)gridSurface.PoolType,
                 d = (int)BuildingUnitData.GetDirection(gridSurface.Tf.eulerAngles.y),
-                // save the ground material if it is ground surface
-                m = gridSurface is GroundSurface groundSurface ? (int)groundSurface.groundMaterialEnum : -1
+                // save the ground material if it is ground surface, and if MaterialEnum is None, random it from 0 to 2
+                m = m
             };
             // Add gridSurfaceData to gridSurfaceDataList
             gridSurfaceDataList.Add(gridSurfaceData);
