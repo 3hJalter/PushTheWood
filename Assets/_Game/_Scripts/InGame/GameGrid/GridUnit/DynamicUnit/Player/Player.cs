@@ -53,11 +53,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             protected set
             {
                 mainCell = value;
-                if (mainCell != null && !IsDead && mainCell.Data.IsDanger)
-                {
-                    GameManager.Ins.PostEvent(DesignPattern.EventID.PlayerInDangerCell, mainCell);     
-                    IsStun = true;
-                }
+                CheckingStunState();
             }
         }
         private void FixedUpdate()
@@ -221,6 +217,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             // Set the unit to the vehicle
             r.blockDirectionUnits = units;
             return true;
+        }
+        public void CheckingStunState()
+        {
+            if (mainCell != null && !IsStun && mainCell.Data.IsDanger)
+            {
+                GameManager.Ins.PostEvent(DesignPattern.EventID.PlayerInDangerCell, mainCell);
+                IsStun = true;
+            }
         }
 
         #region Rule

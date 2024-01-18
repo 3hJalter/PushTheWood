@@ -72,7 +72,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             {
                 LookDirection(Constants.InvDirection[direction]);
                 stateMachine.ChangeState(StateEnum.Idle);
-                GameManager.Ins.PostEvent(DesignPattern.EventID.PlayerInDangerCell, pushUnit.MainCell);
+                ((Player.Player)pushUnit).CheckingStunState();
                 return;
             }
             IsDead = true;

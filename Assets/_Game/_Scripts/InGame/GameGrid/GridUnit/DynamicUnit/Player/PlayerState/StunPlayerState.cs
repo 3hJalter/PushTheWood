@@ -24,7 +24,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 
         public void OnExit(Player t)
         {
-            t.IsStun = false;
             GameplayManager.Ins.IsCanUndo = true;
             GameplayManager.Ins.IsCanResetIsland = true;
         }
