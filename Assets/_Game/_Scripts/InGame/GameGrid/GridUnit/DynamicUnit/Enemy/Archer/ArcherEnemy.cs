@@ -55,7 +55,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
             bool isUseInitData = false, Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
-            base.OnInit(mainCellIn, startHeightIn, false, skinDirection, hasSetPosAndRot); //DEV: Not use init data
+            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot); //DEV: Not use init data
             if (!_isAddState)
             {
                 _isAddState = true;

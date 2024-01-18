@@ -14,7 +14,7 @@ namespace _Game.UIs.Screen
 {
     public class InGameScreen : UICanvas
     {
-        private float COOL_DOWN_TIME = 0.3f;
+        private float UNDO_CD_TIME = 0.3f;
         [SerializeField] private Image blockPanel;
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private Button undoButton;
@@ -85,7 +85,7 @@ namespace _Game.UIs.Screen
         {
             LevelManager.Ins.ResetLevelIsland();
             resetIslandButton.interactable = false;
-            resetTimer.Start(COOL_DOWN_TIME, () => resetIslandButton.interactable = true);
+            resetTimer.Start(UNDO_CD_TIME, () => resetIslandButton.interactable = true);
         }
 
         public void OnClickToggleBuildingMode()
@@ -100,7 +100,7 @@ namespace _Game.UIs.Screen
         {
             LevelManager.Ins.OnUndo();
             undoButton.interactable = false;
-            undoTimer.Start(COOL_DOWN_TIME, () => undoButton.interactable = true);
+            undoTimer.Start(UNDO_CD_TIME, () => undoButton.interactable = true);
         }
 
         public void SetActiveUndo(bool active)

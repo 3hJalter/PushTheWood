@@ -128,12 +128,7 @@ namespace _Game.GameGrid.Unit
 
         public HeightLevel BelowStartHeight => startHeight - Constants.BELOW_HEIGHT;
         public HeightLevel UpperEndHeight => endHeight + Constants.UPPER_HEIGHT;
-
-        protected virtual void Awake()
-        {
-            SaveInitData(size, unitTypeY, skin);
-        }
-
+        public UnitInitData UnitUnitData => _unitInitData; //DEV: Can be optimize
         public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
             bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRos = false)
         {
@@ -142,6 +137,7 @@ namespace _Game.GameGrid.Unit
                 overrideSpawnSave = Save();
             else
                 overrideSpawnSave = null;
+            SaveInitData(size, unitTypeY, skin);
             if (isUseInitData) GetInitData();
             islandID = mainCellIn.IslandID;
             SetHeight(startHeightIn);
@@ -376,7 +372,8 @@ namespace _Game.GameGrid.Unit
 
         private void SaveInitData(Vector3Int sizeI, UnitTypeY unitTypeYi, Transform skinI)
         {
-            _unitInitData = new UnitInitData(sizeI, unitTypeYi, skinI.localPosition, skinI.localRotation);
+            if(_unitInitData == null)
+                _unitInitData = new UnitInitData(this);
         }
 
         private void GetInitData()
@@ -639,18 +636,23 @@ namespace _Game.GameGrid.Unit
 
     public class UnitInitData
     {
-        public UnitInitData(Vector3Int size, UnitTypeY unitTypeY, Vector3 localSkinPos, Quaternion localSkinRot)
+        public UnitInitData(GridUnit main)
         {
-            Size = size;
-            UnitTypeY = unitTypeY;
-            LocalSkinPos = localSkinPos;
-            LocalSkinRot = localSkinRot;
+            Size = main.Size;
+            UnitTypeY = main.UnitTypeY;
+            LocalSkinPos = main.skin.transform.localPosition;
+            LocalSkinRot = main.skin.transform.localRotation;
+            Type = main.PoolType;
+            StartHeight = main.StartHeight;
+            SkinDirection = main.SkinRotationDirection;
         }
-
+        public PoolType Type { get; }
         public Vector3Int Size { get; }
         public UnitTypeY UnitTypeY { get; }
         public Vector3 LocalSkinPos { get; }
         public Quaternion LocalSkinRot { get; }
+        public HeightLevel StartHeight { get; }
+        public Direction SkinDirection { get; }
     }
 
     public class EnterCellPosData
