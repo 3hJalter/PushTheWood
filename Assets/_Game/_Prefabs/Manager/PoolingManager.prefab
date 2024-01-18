@@ -53,12 +53,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  pool:
-  - root: {fileID: 189703956683398110}
-    prefab: {fileID: 8956248557540126228, guid: 9203ff7b4e0598b40a04be596d1ac05b, type: 3}
-    amount: 20
-    collect: 1
-    clamp: 0
+  pool: []
   particle:
   - prefab: {fileID: 1695681371256372886, guid: ff4cd4027d4ffe747b1d6f442eaffea9, type: 3}
     amount: 5
