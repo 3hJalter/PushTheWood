@@ -150,6 +150,7 @@ namespace _Game.GameGrid
             OnGenerateLevel(true);
             // OnChangeTutorialIndex();
         }
+        
         public void OnRestart()
         {
             player.OnDespawn();

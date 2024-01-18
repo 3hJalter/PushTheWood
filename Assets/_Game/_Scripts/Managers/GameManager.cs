@@ -13,6 +13,7 @@ namespace _Game.Managers
         Pause,
         Transition
     }
+    
     [DefaultExecutionOrder(-95)]
     public class GameManager : Dispatcher<GameManager>
     {
