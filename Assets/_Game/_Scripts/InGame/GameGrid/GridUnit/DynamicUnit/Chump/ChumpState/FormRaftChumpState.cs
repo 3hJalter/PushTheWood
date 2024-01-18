@@ -29,8 +29,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             #region ANIM
             Sequence s = DOTween.Sequence();
             moveTween = s;
-            ParticlePool.Play(PoolController.Ins.Particles[VFXType.WaterSplash]
-                            , chumpInWater.Tf.position + WATER_SPLASH_OFFSET);
+            ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.WaterSplash), chumpInWater.Tf.position + WATER_SPLASH_OFFSET);
 
             s.Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 1.2f).SetEase(Ease.Linear).OnComplete(() =>
             {

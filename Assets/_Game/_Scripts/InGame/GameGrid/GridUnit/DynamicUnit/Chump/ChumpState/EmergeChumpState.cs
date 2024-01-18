@@ -1,5 +1,6 @@
 using _Game.DesignPattern;
 using _Game.DesignPattern.StateMachine;
+using _Game.Managers;
 using _Game.Utilities;
 using DG.Tweening;
 using GameGridEnum;
@@ -21,8 +22,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 .OnComplete(() =>
             {
                 t.StateMachine.ChangeState(StateEnum.Idle);
-                ParticlePool.Play(PoolController.Ins.Particles[VFXType.WaterSplash]
-                            , t.Tf.position + WATER_SPLASH_OFFSET);
+                ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.WaterSplash), t.Tf.position + WATER_SPLASH_OFFSET);
             });
         }
 

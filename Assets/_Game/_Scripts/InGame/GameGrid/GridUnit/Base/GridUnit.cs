@@ -22,9 +22,6 @@ namespace _Game.GameGrid.Unit
         [SerializeField] public Transform skin; // Model location
         // MeshRenderer of Unit
         [SerializeField] private MeshRenderer meshRenderer;
-        // Collider for water interaction
-        [SerializeField]
-        private Collider _collider;
 
         // Size of this unit, the X and Z equal to the size of the main cell, the Y equal to height level
         [SerializeField] protected Vector3Int size;
@@ -128,6 +125,7 @@ namespace _Game.GameGrid.Unit
 
         public HeightLevel BelowStartHeight => startHeight - Constants.BELOW_HEIGHT;
         public HeightLevel UpperEndHeight => endHeight + Constants.UPPER_HEIGHT;
+
         public UnitInitData UnitUnitData => _unitInitData; //DEV: Can be optimize
         public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
             bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRos = false)
@@ -243,6 +241,7 @@ namespace _Game.GameGrid.Unit
 
             void InitCellsToUnit(GameGridCell enterMainCellIn, List<GameGridCell> enterCells = null)
             {
+
                 MainCell = enterMainCellIn;
                 // Add all nextCells to cellInUnits
                 if (enterCells is not null)
@@ -252,7 +251,7 @@ namespace _Game.GameGrid.Unit
             }
         }
 
-        #region Hint, MeshRenderer, Shadow and Collider
+        #region Hint, MeshRenderer and Shadow
 
         public void ChangeMaterial(Material material)
         {
@@ -273,17 +272,6 @@ namespace _Game.GameGrid.Unit
         public void ChangeReceiveShadow(bool isReceive)
         {
             meshRenderer.shadowCastingMode = isReceive ? ShadowCastingMode.On : ShadowCastingMode.Off;
-        }
-
-        public void SetColliderActive(bool active)
-        {
-            if (_collider == null)
-            {
-                DevLog.Log(DevId.Vinh, "Collider is not exist");
-                return;
-            }
-            
-            _collider.enabled = active;
         }
         
         #endregion
@@ -371,7 +359,7 @@ namespace _Game.GameGrid.Unit
         }
 
         private void SaveInitData(Vector3Int sizeI, UnitTypeY unitTypeYi, Transform skinI)
-        {
+        {    
             if(_unitInitData == null)
                 _unitInitData = new UnitInitData(this);
         }

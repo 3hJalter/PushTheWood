@@ -1,5 +1,6 @@
 ﻿using System;
 using _Game.DesignPattern;
+using _Game.Managers;
 using _Game.Utilities;
 using GameGridEnum;
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace VinhLB
             DevLog.Log(DevId.Vinh, $"Something fall into water: {collider.gameObject.name}");
             Vector3 contactPoint = collider.transform.position;
             contactPoint.y = _surfaceHeight;
-            ParticlePool.Play(PoolController.Ins.Particles[VFXType.WaterSplash], contactPoint);
+            ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.WaterSplash), contactPoint);
         }
     }
 }
