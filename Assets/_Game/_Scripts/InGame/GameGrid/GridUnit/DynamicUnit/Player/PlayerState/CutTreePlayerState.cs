@@ -16,7 +16,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         float originAnimSpeed;
         const float STATE_TIME = 0.4f;
         List<Action> actions = new List<Action>();
-        List<float> times = new List<float>() { Constants.CUT_TREE_TIME, STATE_TIME};
+        List<float> times = new List<float>() { Constants.CUT_TREE_TIME, STATE_TIME };
 
         public StateEnum Id => StateEnum.CutTree;
 
@@ -25,7 +25,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             originAnimSpeed = t.AnimSpeed;
             t.SetAnimSpeed(originAnimSpeed * Constants.CUT_TREE_ANIM_TIME / Constants.CUT_TREE_TIME);
             t.ChangeAnim(Constants.CUT_TREE_ANIM);
-            t.LookDirection(t.CutTreeData.inputDirection);          
+            t.LookDirection(t.CutTreeData.inputDirection);
             CalculateActionAndTime();
             TimerManager.Inst.WaitForTime(times, actions);
 
@@ -50,7 +50,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 
         public void OnExecute(Player t)
         {
-           
         }
 
         public void OnExit(Player t)
@@ -84,7 +83,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 LevelManager.Ins.SaveGameState(true);
                 chump.MainCell.ValueChange();
                 // Push the Chump with the direction
-                ParticlePool.Play(PoolController.Ins.Particles[VFXType.LeafExplosion], t.CutTreeData.tree.Tf.position + Vector3.up * 2f);
+                ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.LeafExplosion),
+                    t.CutTreeData.tree.Tf.position + Vector3.up * 2f);
             }
         }
     }

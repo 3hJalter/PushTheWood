@@ -2,6 +2,7 @@
 using _Game._Scripts.InGame.GameCondition.Data;
 using _Game.DesignPattern;
 using _Game.DesignPattern.StateMachine;
+using _Game.Managers;
 using _Game.Utilities;
 using _Game.Utilities.Timer;
 using DG.Tweening;
@@ -45,7 +46,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     Sequence s = DOTween.Sequence();
                     moveTween = s;
                     s.Append(t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME * 0.6f).SetEase(Ease.Linear).OnComplete(
-                        () => ParticlePool.Play(PoolController.Ins.Particles[VFXType.WaterSplash], t.Tf.position)))
+                        () => ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.WaterSplash), t.Tf.position)))
                         .Append(t.Tf.DOMoveY(Constants.POS_Y_BOTTOM, Constants.MOVING_TIME * 0.6f).SetEase(Ease.Linear))
                         .OnComplete(() =>
                         {

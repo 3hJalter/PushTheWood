@@ -534,7 +534,6 @@ namespace _Game._Scripts.InGame
                 unit.ChangeMaterial(DataManager.Ins.GetTransparentMaterial());
                 unit.SetAlphaTransparency(0);
                 unit.ChangeReceiveShadow(false);
-                unit.SetColliderActive(false);
                 ShadowUnitList.Add(unit);
                 unit.gameObject.SetActive(false);
             }

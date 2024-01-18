@@ -1,5 +1,6 @@
 ﻿using _Game.DesignPattern;
 using _Game.DesignPattern.StateMachine;
+using _Game.Managers;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
@@ -35,7 +36,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                     t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME / 2).SetEase(Ease.Linear)
                         .SetUpdate(UpdateType.Fixed).OnComplete(() =>
                         {
-                            ParticlePool.Play(PoolController.Ins.Particles[VFXType.Dust], t.transform.position - Vector3.up * 0.5f);
+                            ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.Dust),
+                                t.transform.position - Vector3.up * 0.5f);
                             t.InputCache.Enqueue(direction);
                             t.OnEnterTrigger(t);
                             t.StateMachine.ChangeState(StateEnum.Idle);
