@@ -158,7 +158,7 @@ Material:
     - _RampScale: 1
     - _RampSmooth: 0.25
     - _RampSmoothOtherLights: 0.5
-    - _RampSmoothing: 0.164
+    - _RampSmoothing: 0.1
     - _RampThreshold: 0.01
     - _RampThresholdOtherLights: 0.5
     - _RampType: 0

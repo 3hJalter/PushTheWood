@@ -14,7 +14,7 @@ namespace _Game._Scripts.InGame
     {
         private readonly HashSet<GridUnit> _gridUnits = new();
 
-        private readonly Dictionary<GameGridCell, PoolType> _initGridUnitDic = new();
+        private readonly Dictionary<GameGridCell, UnitInitData> _initGridUnitDic = new();
         private readonly int _islandID;
         public HashSet<GridUnit> GridUnits => _gridUnits;
 
@@ -73,10 +73,10 @@ namespace _Game._Scripts.InGame
             GridCells.Add(cell);
         }
 
-        public void AddInitUnitToIsland(GridUnit unit, PoolType type, GameGridCell cell)
+        public void AddInitUnitToIsland(GridUnit unit, UnitInitData data, GameGridCell cell)
         {
             _gridUnits.Add(unit);
-            _initGridUnitDic.Add(cell, type);
+            _initGridUnitDic.Add(cell, data);
         }
 
         public void AddNewUnitToIsland(GridUnit unit)
@@ -105,12 +105,12 @@ namespace _Game._Scripts.InGame
         {
             DOTween.KillAll();
             ClearIsland();
-            foreach (KeyValuePair<GameGridCell, PoolType> pair in _initGridUnitDic)
+            foreach (KeyValuePair<GameGridCell, UnitInitData> pair in _initGridUnitDic)
             {
                 GridUnit unit =
-                    SimplePool.Spawn<GridUnit>(DataManager.Ins.GetGridUnit(pair.Value));
+                    SimplePool.Spawn<GridUnit>(DataManager.Ins.GetGridUnit(pair.Value.Type));
                 unit.ResetData();
-                unit.OnInit(pair.Key);
+                unit.OnInit(pair.Key, pair.Value.StartHeight, true, pair.Value.SkinDirection);
                 AddNewUnitToIsland(unit);
             }
         }

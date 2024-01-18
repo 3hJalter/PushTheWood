@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6338132966119998370}
-  - component: {fileID: 6592955016622386868}
+  - component: {fileID: 412068347200779573}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Untagged
@@ -32,8 +32,8 @@ Transform:
   m_Father: {fileID: 3746253626358163692}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &6592955016622386868
-BoxCollider:
+--- !u!136 &412068347200779573
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -42,8 +42,9 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.75, y: 2, z: 0.75}
+  m_Radius: 0.4
+  m_Height: 2
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1903145844631337018
 GameObject:
@@ -251,7 +252,7 @@ MonoBehaviour:
   poolType: 4
   skin: {fileID: 3746253626358163692}
   meshRenderer: {fileID: 9113291626318848717}
-  _collider: {fileID: 6592955016622386868}
+  _collider: {fileID: 412068347200779573}
   size: {x: 1, y: 1, z: 1}
   isMinusHalfSizeY: 0
   startHeight: 2

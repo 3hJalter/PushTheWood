@@ -9,6 +9,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
     {
         [SerializeField] private Animator chestAnimator;
         [SerializeField] private GameObject chestModel;
+        private bool isInteracted = false;
 
         public override void OnInteract()
         {
@@ -18,6 +19,8 @@ namespace _Game.GameGrid.Unit.StaticUnit
 
         public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
         {
+            if (isInteracted) return;
+            isInteracted = true;
             base.OnBePushed(direction, pushUnit);
             if (pushUnit is not Player) return;
             ShowAnim(true);
@@ -27,6 +30,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         public override void OnDespawn()
         {
             ShowAnim(false);
+            isInteracted = false;
             base.OnDespawn();
         }
 

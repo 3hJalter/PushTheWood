@@ -78,6 +78,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 chump.OnInit(t.CutTreeData.tree.MainCell, t.CutTreeData.tree.StartHeight + 1);
                 LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(chump);
                 chump.OnBePushed(t.CutTreeData.inputDirection, t);
+
                 //DEV: Save state for new object
                 // Despawn the Tree
                 t.CutTreeData.tree.OnDespawn();
