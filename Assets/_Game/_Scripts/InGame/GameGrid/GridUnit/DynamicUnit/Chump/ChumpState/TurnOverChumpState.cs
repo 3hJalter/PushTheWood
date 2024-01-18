@@ -1,5 +1,6 @@
 ﻿using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.StaticUnit;
+using _Game.Managers;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
@@ -20,7 +21,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             t.TurnOverData.SetData(t.ChumpBeInteractedData.inputDirection);
             _isTurnOver = t.ConditionMergeOnBePushed.IsApplicable(t.TurnOverData);
             anchorAdd.Set(0, 0, 0);
-            LevelManager.Ins.IsCanUndo = false;
+            GameplayManager.Ins.IsCanUndo = false;
             OnExecute(t);
         }
 
@@ -123,7 +124,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         {
             if (!isContinueTurnOver)
             {
-                LevelManager.Ins.IsCanUndo = true;
+                GameplayManager.Ins.IsCanUndo = true;
             }
             isContinueTurnOver = false;
         }

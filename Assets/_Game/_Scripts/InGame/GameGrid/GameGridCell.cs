@@ -256,6 +256,7 @@ namespace _Game.GameGrid
         // Type of cell
         public GridSurfaceType gridSurfaceType;
         public GridUnit[] gridUnits;
+        public bool IsDanger = false;
 
         public void OnInit()
         {

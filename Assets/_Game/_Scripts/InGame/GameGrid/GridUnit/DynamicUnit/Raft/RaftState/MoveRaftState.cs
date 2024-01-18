@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Interface;
+using _Game.Managers;
 using DG.Tweening;
 using UnityEngine;
 
@@ -48,7 +49,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
                 if (t.MovingData.blockDynamicUnits.Count > 0) t.OnPush(t.MovingData.inputDirection, t.MovingData);
                 t.StateMachine.ChangeState(StateEnum.Idle);
                 t.player.isRideVehicle = false;
-                LevelManager.Ins.IsCanUndo = true;
+                GameplayManager.Ins.IsCanUndo = true;
                 //DEV: May be error here, old parent may not be null
                 foreach (GridUnit unit in t.CarryUnits) unit.Tf.SetParent(null);              
             }

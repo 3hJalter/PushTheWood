@@ -4,7 +4,6 @@ using _Game._Scripts.InGame.GameCondition.Data;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState;
-using _Game.Managers;
 using GameGridEnum;
 using UnityEngine;
 

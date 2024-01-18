@@ -576,7 +576,7 @@ namespace _Game._Scripts.InGame
             data.unit.OnInit(data.mainCellIn, data.startHeightIn, true, data.directionIn, true);
             if (data.mainCellIn.Data.gridSurface == null) return;
             Islands[data.mainCellIn.Data.gridSurface.IslandID]
-                .AddInitUnitToIsland(data.unit, data.unitType, data.mainCellIn);
+                .AddInitUnitToIsland(data.unit, data.unit.UnitUnitData, data.mainCellIn);
         }
 
         #endregion

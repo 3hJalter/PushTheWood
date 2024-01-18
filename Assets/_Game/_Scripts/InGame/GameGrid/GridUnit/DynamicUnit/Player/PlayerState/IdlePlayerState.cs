@@ -23,7 +23,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 
         public void OnExecute(Player t)
         {
-            //NOTE:Checking for IdleState
+            //NOTE:Checking for IdleState            
+            if (t.IsStun)
+            {
+                t.StateMachine.ChangeState(StateEnum.Stun);
+                return;
+            }
             if (t.Direction == Direction.None)
             {
                 if (!_isChangeAnim && !t.isRideVehicle)
