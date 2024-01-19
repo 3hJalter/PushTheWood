@@ -38,7 +38,7 @@ namespace a
                 moveTween = s;
                 s.Append(t.Tf.DOMove(t.EnterPosData.initialPos,
                         t.EnterPosData.isFalling ? Constants.MOVING_TIME / 2 : Constants.MOVING_TIME))
-                    .Join(t.Tf.DORotate(new Vector3(0, 0, 360),
+                    .Join(t.Tf.DORotate(GetRotation(t.MovingData.inputDirection),
                         t.EnterPosData.isFalling ? Constants.MOVING_TIME / 2 : Constants.MOVING_TIME,
                         RotateMode.FastBeyond360))
                     .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
@@ -62,6 +62,18 @@ namespace a
         public void OnExit(Bomb t)
         {
             moveTween.Kill();
+        }
+
+        private static Vector3 GetRotation(Direction direction)
+        {
+            return direction switch
+            {
+                Direction.Left => new Vector3(0, 0, 360),
+                Direction.Right => new Vector3(0, 0, -360),
+                Direction.Forward => new Vector3(360, 0, 0),
+                Direction.Back => new Vector3(-360, 0, -0),
+                _ => Vector3.zero
+            };
         }
     }
 }
