@@ -31,6 +31,7 @@ namespace _Game.GameGrid
         [SerializeField]
         private FishSpawner _fishSpawner;
 
+        public int LevelIndex => levelIndex;
         public Level CurrentLevel => _currentLevel;
         public bool IsConstructingLevel;
         
