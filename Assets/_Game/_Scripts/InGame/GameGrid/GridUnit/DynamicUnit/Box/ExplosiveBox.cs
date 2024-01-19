@@ -13,7 +13,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
         [SerializeField] private float waitTimeToExplode = 5f;
         [SerializeField] private GameObject waitExplosionObjectEffect;
 
-        private bool _isWaitForExplode;
+        [SerializeField] private bool _isWaitForExplode;
+        
+        private const string EXPLODE_TAG = "Explosion";
         
         protected override void AddState()
         {
@@ -25,13 +27,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
         {
             base.OnBePushed(direction, pushUnit);
             if (_isWaitForExplode) return;
-            if (pushUnit is not Player.Player player) return;
-            LevelManager.Ins.SaveGameState(true);
-            player.MainCell.ValueChange();
-            MainCell.ValueChange();
-            LevelManager.Ins.SaveGameState(false);
+            if (pushUnit is not Player.Player) return;
+            // LevelManager.Ins.SaveGameState(true);
+            // player.MainCell.ValueChange();
+            // MainCell.ValueChange();
+            // LevelManager.Ins.SaveGameState(false);
             _isWaitForExplode = true;
-            Timing.RunCoroutine(WaitToExplode());
+            Timing.RunCoroutine(WaitToExplode(), EXPLODE_TAG);
         }
 
         public override void OnDespawn()
@@ -48,13 +50,54 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
             float waitTime = 0f;
             while (waitTime < waitTimeToExplode)
             {
+                // if _isWaitForExplode is false, stop the coroutine
                 waitTime += 0.5f;
                 waitExplosionObjectEffect.SetActive(!waitExplosionObjectEffect.activeSelf);
                 yield return Timing.WaitForSeconds(0.5f);
             }
+            // if _isWaitForExplode is false, stop the coroutine
             // Change state to explode
             StateMachine.OverrideState = StateEnum.Explode;
             StateMachine.ChangeState(StateEnum.Explode);
+        }
+        
+        private void StopExplode()
+        {
+            _isWaitForExplode = false;
+            Timing.KillCoroutines(EXPLODE_TAG);
+            waitExplosionObjectEffect.SetActive(false);
+            StateMachine.OverrideState = StateEnum.None;
+        }
+        
+        public override IMemento Save()
+        {
+            IMemento save;
+            if (overrideSpawnSave != null)
+            {
+                save = overrideSpawnSave;
+                overrideSpawnSave = null;
+            }
+            else
+            {
+                save = new ExplosiveBoxMemento(this, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
+                    , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID, lastPushedDirection);
+            }
+            return save;
+        }
+
+        private class ExplosiveBoxMemento : DynamicUnitMemento<ExplosiveBox>
+        {
+            public ExplosiveBoxMemento(GridUnitDynamic main, StateEnum currentState, params object[] data) : base(main, currentState, data)
+            {
+            }
+            
+            public override void Restore()
+            {
+                base.Restore();
+                if (main._isWaitForExplode) main.StopExplode();
+            }
+
+            
         }
     }
 }

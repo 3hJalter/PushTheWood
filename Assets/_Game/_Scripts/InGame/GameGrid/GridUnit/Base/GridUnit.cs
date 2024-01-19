@@ -69,9 +69,9 @@ namespace _Game.GameGrid.Unit
         public readonly List<GameGridCell> cellInUnits = new();
         
         // All neighbor units of this unit
-        [SerializeField] protected readonly HashSet<GridUnit> neighborUnits = new();
-        [SerializeField] protected readonly HashSet<GridUnit> upperUnits = new();
-        [SerializeField] public readonly HashSet<GridUnit> belowUnits = new();
+        public readonly HashSet<GridUnit> neighborUnits = new();
+        public readonly HashSet<GridUnit> upperUnits = new();
+        public readonly HashSet<GridUnit> belowUnits = new();
 
         // Save init data on first Initialize
         private UnitInitData _unitInitData;

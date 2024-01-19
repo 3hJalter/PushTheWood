@@ -9,11 +9,12 @@ using GameGridEnum;
 using HControls;
 using System.Collections;
 using System.Collections.Generic;
+using _Game.Utilities;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
 {
-    public class ArcherEnemy : GridUnitDynamic
+    public class ArcherEnemy : GridUnitDynamic, ICharacter
     {
         [SerializeField] private Animator animator;
         public bool IsDead = false;
@@ -105,6 +106,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             if (directionIn is Direction.None) return;
             skinRotationDirection = directionIn;
             skin.DOLookAt(Tf.position + Constants.DirVector3[directionIn], 0.2f, AxisConstraint.Y, Vector3.up);
+        }
+
+        public void OnCharacterDie()
+        {
+            DevLog.Log(DevId.Hoang, "TODO: Archer Die Logic");
+            // IsDead = true;
+            // stateMachine.ChangeState(StateEnum.Die);
         }
     }
 }

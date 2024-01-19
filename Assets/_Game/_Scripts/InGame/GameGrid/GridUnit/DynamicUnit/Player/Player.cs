@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player
 {
-    public class Player : GridUnitDynamic, IJumpTreeRootUnit
+    public class Player : GridUnitDynamic, IJumpTreeRootUnit, ICharacter
     {
         #region PROPERTYS
         public bool isRideVehicle;
@@ -277,5 +277,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             }
         }
         #endregion
+
+        public void OnCharacterDie()
+        {
+            DevLog.Log(DevId.Hoang, "TODO: Player Die Logic");
+            // IsDead = true;
+            // stateMachine.ChangeState(StateEnum.Die);
+        }
     }
 }
