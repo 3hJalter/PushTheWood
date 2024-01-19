@@ -30,6 +30,8 @@ namespace _Game.GameGrid
         [SerializeField] Material FontMaterial;
         [SerializeField]
         private FishSpawner _fishSpawner;
+        [SerializeField]
+        private CloudSpawner _cloudSpawner;
 
         public int LevelIndex => levelIndex;
         public Level CurrentLevel => _currentLevel;
@@ -64,6 +66,7 @@ namespace _Game.GameGrid
             }
             
             _fishSpawner.SpawnFish();
+            _cloudSpawner.SpawnClouds();
         }
 
         public void InitLevel()
@@ -86,7 +89,9 @@ namespace _Game.GameGrid
         public void ResetLevelIsland()
         {
             _currentLevel.ResetIslandPlayerOn();
-            _fishSpawner.SpawnFish(false);
+            
+            // _fishSpawner.SpawnFish(false);
+            // _cloudSpawner.SpawnClouds();
         }
 
         private void OnCheckTutorial()

@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3118995670614265220}
-  - component: {fileID: 3118995670614265223}
+  - component: {fileID: -4091481902002242569}
   m_Layer: 0
   m_Name: Cloud1
   m_TagString: Untagged
@@ -65,7 +65,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3118995670614265223
+--- !u!114 &-4091481902002242569
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74,7 +74,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3118995670614265222}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb94a067456648f9a0d8164e64cbc1bd, type: 3}
+  m_Script: {fileID: 11500000, guid: 629e997f64994a728c55e00b00c2186c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
@@ -94,6 +94,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4591167643866664187}
     m_Modifications:
+    - target: {fileID: 5748758837228493785, guid: 3b8e1d3266aa9074c99ab3199428f285, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5748758837228493785, guid: 3b8e1d3266aa9074c99ab3199428f285, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5748758837228493785, guid: 3b8e1d3266aa9074c99ab3199428f285, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 7663782357360615930, guid: 3b8e1d3266aa9074c99ab3199428f285, type: 3}
       propertyPath: m_Name
       value: Cloud1Visual

@@ -3391,6 +3391,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1824299030540152757, guid: cf16a3b4422e38d4994c64eb52428912, type: 3}
   m_PrefabInstance: {fileID: 1493026547}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1527101614 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1527101614, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+  m_PrefabInstance: {fileID: 7030098244278345276}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c632851c64674ea5ad0b63bdc9789256, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1584344168
 GameObject:
   m_ObjectHideFlags: 0
@@ -4283,9 +4294,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 181067517}
     - target: {fileID: 1915671661371006086, guid: 293a8c7352bbcbd4faba9fa9295f5828, type: 3}
+      propertyPath: _cloudSpawner
+      value: 
+      objectReference: {fileID: 1527101614}
+    - target: {fileID: 1915671661371006086, guid: 293a8c7352bbcbd4faba9fa9295f5828, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 1915671661371006086, guid: 293a8c7352bbcbd4faba9fa9295f5828, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 1915671661371006087, guid: 293a8c7352bbcbd4faba9fa9295f5828, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -4348,6 +4363,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 522463765}
     m_Modifications:
+    - target: {fileID: 2008952253, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 735478975531831342, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
+      propertyPath: m_Lens.NearClipPlane
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1731150631019081141, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
+      propertyPath: m_Lens.NearClipPlane
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346765444090300846, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
+      propertyPath: m_Lens.NearClipPlane
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3688385371128492462, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
+      propertyPath: m_Lens.NearClipPlane
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4016213124189603824, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
+      propertyPath: m_Lens.NearClipPlane
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 6469700256872215687, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -4537,6 +4576,18 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 591048777, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+    - target: {fileID: 1527101614, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+      propertyPath: _minMaxSpawnInterval.x
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1527101614, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+      propertyPath: _minMaxSpawnInterval.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1527101614, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 1527101614, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
     - target: {fileID: 7030098244278345279, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
       propertyPath: serializationData.Prefab
       value: 

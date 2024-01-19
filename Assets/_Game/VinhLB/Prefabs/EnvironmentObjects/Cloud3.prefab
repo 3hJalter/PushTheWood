@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6000229794859338129}
-  - component: {fileID: 6000229794859338130}
+  - component: {fileID: 8407841716924856001}
   m_Layer: 0
   m_Name: Cloud3
   m_TagString: Untagged
@@ -65,7 +65,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6000229794859338130
+--- !u!114 &8407841716924856001
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74,7 +74,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6000229794859338131}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb94a067456648f9a0d8164e64cbc1bd, type: 3}
+  m_Script: {fileID: 11500000, guid: 629e997f64994a728c55e00b00c2186c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
@@ -86,7 +86,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  poolType: 202
+  poolType: 200
 --- !u!1001 &1231830913848120846
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -94,6 +94,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3016081625721849361}
     m_Modifications:
+    - target: {fileID: 116356438984454572, guid: 6d26642bb05151044847c517d73d9492, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 116356438984454572, guid: 6d26642bb05151044847c517d73d9492, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 116356438984454572, guid: 6d26642bb05151044847c517d73d9492, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 692851312849814972, guid: 6d26642bb05151044847c517d73d9492, type: 3}
       propertyPath: m_RootOrder
       value: 0
