@@ -1,26 +1,55 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Box.BoxState;
-using MEC;
+using _Game.GameGrid.Unit.DynamicUnit.Interface;
+using _Game.Utilities.Timer;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Box
 {
-    public class ExplosiveBox : Box
+    public class ExplosiveBox : Box, IExplosives
     {
         [Title("Explosive Box")]
-        [SerializeField] private float waitTimeToExplode = 5f;
         [SerializeField] private GameObject waitExplosionObjectEffect;
 
-        [SerializeField] private bool _isWaitForExplode;
+        private bool _isWaitForExplode;
         
-        private const string EXPLODE_TAG = "Explosion";
-        
+        private const int TIK_BEFORE_EXPLODE = 5; // 1 Tick = 0.5f
+        private const float TIME_PER_TIK = 0.5f;
+        private readonly List<float> times = new();
+        private readonly List<Action> actions = new();
+        private STimer timer;
+
+        private void ChangeWaitExplosionObjectEffect()
+        {
+            waitExplosionObjectEffect.SetActive(!waitExplosionObjectEffect.activeSelf);
+        }
+
+        public void Explode()
+        {
+            if (StateMachine.CurrentState.Id == StateEnum.Explode) return;
+            StateMachine.OverrideState = StateEnum.Explode;
+            StateMachine.ChangeState(StateEnum.Explode);
+        }
+
         protected override void AddState()
         {
             base.AddState();
             StateMachine.AddState(StateEnum.Explode, new ExplodeBoxState());
+
+            #region Set Timer for Explode State
+
+            for (int i = 0; i < TIK_BEFORE_EXPLODE; i++)
+            {
+                times.Add(TIME_PER_TIK * (i+1));
+                actions.Add(ChangeWaitExplosionObjectEffect);
+            }
+            times.Add(TIME_PER_TIK * (TIK_BEFORE_EXPLODE + 1));
+            actions.Add(Explode);
+
+            #endregion
         }
 
         public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
@@ -28,12 +57,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
             base.OnBePushed(direction, pushUnit);
             if (_isWaitForExplode) return;
             if (pushUnit is not Player.Player) return;
-            // LevelManager.Ins.SaveGameState(true);
-            // player.MainCell.ValueChange();
-            // MainCell.ValueChange();
-            // LevelManager.Ins.SaveGameState(false);
             _isWaitForExplode = true;
-            Timing.RunCoroutine(WaitToExplode(), EXPLODE_TAG);
+            timer = TimerManager.Inst.WaitForTime(times, actions);
         }
 
         public override void OnDespawn()
@@ -44,27 +69,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
             base.OnDespawn();
         }
         
-        private IEnumerator<float> WaitToExplode()
-        {
-            // Wait each 0.5s, to set the waitExplosionObjectEffect active or not
-            float waitTime = 0f;
-            while (waitTime < waitTimeToExplode)
-            {
-                // if _isWaitForExplode is false, stop the coroutine
-                waitTime += 0.5f;
-                waitExplosionObjectEffect.SetActive(!waitExplosionObjectEffect.activeSelf);
-                yield return Timing.WaitForSeconds(0.5f);
-            }
-            // if _isWaitForExplode is false, stop the coroutine
-            // Change state to explode
-            StateMachine.OverrideState = StateEnum.Explode;
-            StateMachine.ChangeState(StateEnum.Explode);
-        }
-        
-        private void StopExplode()
+        public void StopExplode()
         {
             _isWaitForExplode = false;
-            Timing.KillCoroutines(EXPLODE_TAG);
+            TimerManager.Inst.StopTimer(ref timer);
+            // Timing.KillCoroutines(EXPLODE_TAG);
             waitExplosionObjectEffect.SetActive(false);
             StateMachine.OverrideState = StateEnum.None;
         }
@@ -96,8 +105,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
                 base.Restore();
                 if (main._isWaitForExplode) main.StopExplode();
             }
-
-            
         }
     }
 }

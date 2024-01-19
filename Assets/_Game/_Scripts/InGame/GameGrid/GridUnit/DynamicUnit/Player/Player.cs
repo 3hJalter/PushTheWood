@@ -31,10 +31,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public override StateEnum CurrentStateId
         {
             get => StateEnum.Idle;
-            set
-            {
-                stateMachine.ChangeState(value);
-            }
+            set => stateMachine.ChangeState(value);
         }
 
         private string _currentAnim = Constants.INIT_ANIM;
@@ -99,6 +96,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public override void OnDespawn()
         {
             _vehicle = null;
+            stateMachine.OverrideState = StateEnum.None;
             base.OnDespawn();
         }
 
@@ -281,8 +279,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public void OnCharacterDie()
         {
             DevLog.Log(DevId.Hoang, "TODO: Player Die Logic");
-            // IsDead = true;
-            // stateMachine.ChangeState(StateEnum.Die);
+            stateMachine.OverrideState = StateEnum.Die;
+            IsDead = true;
+            stateMachine.ChangeState(StateEnum.Die);
         }
     }
 }

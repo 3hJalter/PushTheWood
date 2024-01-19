@@ -1,24 +1,61 @@
 ﻿using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Bomb;
+using DG.Tweening;
 
 namespace a
 {
     public class RollBombState : IState<Bomb>
     {
+        private bool _isRoll;
+        private Tween moveTween;
         public StateEnum Id => StateEnum.Roll;
+
         public void OnEnter(Bomb t)
         {
-            throw new System.NotImplementedException();
+            t.MovingData.SetData(t.BeInteractedData.inputDirection);
+            _isRoll = t.ConditionMergeOnBePushed.IsApplicable(t.MovingData);
+            t.StartWaitForExplode();
+            OnExecute(t);
         }
 
         public void OnExecute(Bomb t)
         {
-            throw new System.NotImplementedException();
+            if (!_isRoll)
+            {
+                t.StateMachine.ChangeState(StateEnum.RollBlock);
+            }
+            else
+            {
+
+                t.SetEnterCellData(t.MovingData.inputDirection, t.MovingData.enterMainCell, t.UnitTypeY, false,
+                    t.MovingData.enterCells);
+                t.OnOutCells();
+                t.OnEnterCells(t.MovingData.enterMainCell, t.MovingData.enterCells);
+                // Animation and complete
+                // TODO: rotate in place animation for skin
+                moveTween = t.Tf.DOMove(t.EnterPosData.initialPos,
+                        t.EnterPosData.isFalling ? Constants.MOVING_TIME / 2 : Constants.MOVING_TIME)
+                    .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
+                    {
+                        if (t.EnterPosData.isFalling)
+                        {
+                            //Falling to water
+                            t.StateMachine.ChangeState(StateEnum.Fall);
+                        }
+                        else
+                        {
+                            t.OnEnterTrigger(t);
+                            t.StateMachine.ChangeState(StateEnum.Idle);
+                            if (t.gameObject.activeSelf)
+                                t.OnBePushed(t.BeInteractedData.inputDirection, t.BeInteractedData.pushUnit);
+                        }
+                    });
+            }
         }
 
         public void OnExit(Bomb t)
         {
-            throw new System.NotImplementedException();
+            moveTween.Kill();
         }
     }
 }

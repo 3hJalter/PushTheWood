@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using _Game.DesignPattern;
 using _Game.DesignPattern.StateMachine;
+using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using _Game.Managers;
 using _Game.Utilities;
 using GameGridEnum;
@@ -40,7 +41,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box.BoxState
             units.Add(t);
             // Despawn all units, include this unit
             // TODO: Handle with Player and Enemy -> Die State instead of Despawn
-            units.ForEach(unit => unit.OnDespawn());
+            for (int index = 0; index < units.Count; index++)
+            {
+                GridUnit unit = units[index];
+                if (unit is ICharacter character) character.OnCharacterDie();
+                else if (unit != t && unit is IExplosives explosives) explosives.Explode();
+                else unit.OnDespawn();
+            }
         }
     }
 }

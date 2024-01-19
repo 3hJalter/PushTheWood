@@ -1,21 +1,37 @@
-﻿using _Game._Scripts.InGame.GameCondition.Data;
+﻿using System;
+using System.Collections.Generic;
+using _Game._Scripts.InGame.GameCondition.Data;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Bomb.BombState;
+using _Game.GameGrid.Unit.DynamicUnit.Interface;
+using _Game.Utilities.Timer;
 using a;
 using GameGridEnum;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace _Game.GameGrid.Unit.DynamicUnit.Bomb
+namespace _Game.GameGrid.Unit.DynamicUnit.Bomb 
 {
-    public class Bomb : GridUnitDynamic
+    public class Bomb : GridUnitDynamic, IExplosives
     {
+        [Title("Bomb")]
+        [SerializeField] private GameObject waitExplosionObjectEffect;
+        
         private StateMachine<Bomb> _stateMachine;
         
         public StateMachine<Bomb> StateMachine => _stateMachine;
         
         private bool _isAddState;
 
+        private bool _isWaitForExplode;
+        
+        private const int TIK_BEFORE_EXPLODE = 5; // 1 Tick = 0.5f
+        private const float TIME_PER_TIK = 0.5f;
+        private readonly List<float> times = new();
+        private readonly List<Action> actions = new();
+        private STimer timer;
+        
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
             Direction skinDirection = Direction.None, bool hasSetPosAndRos = false)
         {
@@ -31,8 +47,17 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Bomb
         
         public override void OnDespawn()
         {
-            base.OnDespawn();
+            _isWaitForExplode = false;
+            StateMachine.OverrideState = StateEnum.None;
+            waitExplosionObjectEffect.SetActive(false);
             _stateMachine.ChangeState(StateEnum.Idle);
+            base.OnDespawn();
+        }
+        
+        public override void OnPush(Direction direction, ConditionData conditionData = null)
+        {
+            if (conditionData is not MovingData movingData) return;
+            for (int i = 0; i < movingData.blockDynamicUnits.Count; i++) movingData.blockDynamicUnits[i].OnBePushed(direction, this);
         }
         
         public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
@@ -42,6 +67,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Bomb
             
             base.OnBePushed(direction, pushUnit);
             _stateMachine.ChangeState(StateEnum.Roll);
+        }
+        
+        public void StartWaitForExplode()
+        {
+            if (_isWaitForExplode) return;
+            _isWaitForExplode = true;
+            timer = TimerManager.Inst.WaitForTime(times, actions);
         }
         
         public override bool IsCurrentStateIs(StateEnum stateEnum)
@@ -55,6 +87,31 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Bomb
             _stateMachine.AddState(StateEnum.Fall, new FallBombState());
             _stateMachine.AddState(StateEnum.Roll, new RollBombState());
             _stateMachine.AddState(StateEnum.Explode, new ExplodeBombState());
+            _stateMachine.AddState(StateEnum.RollBlock, new RollBlockBombState());
+            
+            #region Set Timer for Explode State
+
+            for (int i = 0; i < TIK_BEFORE_EXPLODE; i++)
+            {
+                times.Add(TIME_PER_TIK * (i+1));
+                actions.Add(ChangeWaitExplosionObjectEffect);
+            }
+            times.Add(TIME_PER_TIK * (TIK_BEFORE_EXPLODE + 1));
+            actions.Add(Explode);
+
+            #endregion
+        }
+        
+        private void ChangeWaitExplosionObjectEffect()
+        {
+            waitExplosionObjectEffect.SetActive(!waitExplosionObjectEffect.activeSelf);
+        }
+
+        public void Explode()
+        {
+            if (_stateMachine.CurrentState.Id == StateEnum.Explode) return;
+            StateMachine.OverrideState = StateEnum.Explode;
+            StateMachine.ChangeState(StateEnum.Explode);
         }
         
         public override StateEnum CurrentStateId 
@@ -68,6 +125,44 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Bomb
             base.OnOutTriggerBelow(triggerUnit);
             if (!LevelManager.Ins.IsConstructingLevel)  
                 _stateMachine.ChangeState(StateEnum.Fall);
+        }
+
+        public void StopExplode()
+        {
+            _isWaitForExplode = false;
+            TimerManager.Inst.StopTimer(ref timer);
+            // Timing.KillCoroutines(EXPLODE_TAG);
+            waitExplosionObjectEffect.SetActive(false);
+            StateMachine.OverrideState = StateEnum.None;
+        }
+        
+        public override IMemento Save()
+        {
+            IMemento save;
+            if (overrideSpawnSave != null)
+            {
+                save = overrideSpawnSave;
+                overrideSpawnSave = null;
+            }
+            else
+            {
+                save = new ExplosiveBombMemento(this, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
+                    , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID, lastPushedDirection);
+            }
+            return save;
+        }
+
+        private class ExplosiveBombMemento : DynamicUnitMemento<Bomb>
+        {
+            public ExplosiveBombMemento(GridUnitDynamic main, StateEnum currentState, params object[] data) : base(main, currentState, data)
+            {
+            }
+            
+            public override void Restore()
+            {
+                base.Restore();
+                if (main._isWaitForExplode) main.StopExplode();
+            }
         }
 
         #region Ruling
@@ -86,147 +181,3 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Bomb
         #endregion
     }
 }
-
-/*
-
-using System;
-using System.Collections.Generic;
-using _Game._Scripts.Utilities;
-using _Game.DesignPattern;
-using _Game.GameRule.RuleEngine;
-using DG.Tweening;
-using GameGridEnum;
-using UnityEngine;
-
-namespace _Game.GameGrid.Unit.DynamicUnit
-{
-    public class BombUnit : GridUnitDynamic
-    {
-        [SerializeField] private RuleEngine ruleInteractEngine;
-        [SerializeField] private RuleEngine ruleRollingEngine;
-        
-        private RuleInteractData _ruleInteractData;
-        private RuleRollingData _ruleRollingData;
-        
-        private RuleInteractData RuleInteractData => _ruleInteractData ??= new RuleInteractData(this);
-        private RuleRollingData RuleRollingData => _ruleRollingData ??= new RuleRollingData(this);
-        
-        public override void OnInteract(Direction direction, GridUnit interactUnit = null)
-        {
-            base.OnInteract(direction, interactUnit);
-            if (isInAction) return;
-            RuleInteractData.SetData(direction, interactUnit);
-            ruleInteractEngine.ApplyRules(RuleInteractData);
-            if (!RuleInteractData.isInteractAccept) return;
-            OnPush(direction);
-        }
-
-        private void OnPush(Direction direction)
-        {
-            RuleRollingData.SetData(direction);
-            ruleRollingEngine.ApplyRules(RuleRollingData);
-            if (!MoveAccept)
-            {
-                if (!_hasRoll) return;
-                OnActiveBomb();
-                
-                return;
-            }
-            OnRoll(direction, RuleRollingData.nextSize, RuleRollingData.nextEndHeight, RuleRollingData.nextMainCell,
-                RuleRollingData.nextCells);
-        }
-
-        private bool _hasRoll;
-        
-        private void OnRoll(Direction direction, Vector3Int sizeAfterRotate, HeightLevel endHeightAfterRotate,
-            GameGridCell nextMainCell, HashSet<GameGridCell> nextCells)
-        {
-            if (isInAction) return;
-            _hasRoll = true;
-            SetMove(true);
-            size = sizeAfterRotate;
-            endHeight = endHeightAfterRotate;
-            HashSet<GridUnit> aboveUnits = GetAboveUnits();
-            OnOutCurrentCells();
-            OnEnterNextCell(direction, nextMainCell, false, nextCells);
-            isInAction = true;
-
-            Vector3 rotate = Constants.DirVector3[direction] * 360;
-            rotate = rotate.Change(x: -rotate.z, z: -rotate.x);
-            
-            skin.DORotate(rotate, Constants.MOVING_TIME, RotateMode.FastBeyond360)
-                .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
-                {
-                    skin.localRotation = Quaternion.identity;
-                });
-            
-            Tf.DOMove(nextPosData.initialPos, nextPosData.isFalling ? Constants.MOVING_TIME / 2 : Constants.MOVING_TIME)
-                .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
-                {
-                    Tf.position = nextPosData.initialPos;
-                    if (!nextPosData.isFalling)
-                    {
-                        OnMovingDone(false, aboveUnits);
-                        if (unitState == nextUnitState && gameObject.activeSelf) OnPush(direction);
-                        else OnActiveBomb();
-                        unitState = nextUnitState;
-                        unitType = nextUnitType;
-                    }
-                    else
-                    {
-                        // Tween to final position
-                        Tf.DOMove(nextPosData.finalPos, Constants.MOVING_TIME).SetEase(Ease.Linear)
-                            .SetUpdate(UpdateType.Fixed).OnComplete(() =>
-                            {
-                                OnMovingDone(true, aboveUnits);
-                                Tf.position = GetUnitWorldPos(nextMainCell);
-                                OnActiveBomb();
-                                unitState = nextUnitState;
-                                unitType = nextUnitType;
-                            });
-                    }
-                });
-        }
-
-        private void OnActiveBomb()
-        {
-            // Get all unit in 4 direction
-            HashSet<GridUnit> units = new();
-            GridUnit unit = GetNeighborUnit(Direction.Left);
-            if (unit is not null) units.Add(unit);
-            unit = GetNeighborUnit(Direction.Right);
-            if (unit is not null) units.Add(unit);
-            unit = GetNeighborUnit(Direction.Forward);
-            if (unit is not null) units.Add(unit);
-            unit = GetNeighborUnit(Direction.Back);
-            if (unit is not null) units.Add(unit);
-            // Destroy all unit
-            foreach (GridUnit gridUnit in units)
-            {
-                gridUnit.OnDespawn();
-            }
-            // Destroy this unit
-            _hasRoll = false;
-            OnDespawn();
-        }
-        
-        private GridUnit GetNeighborUnit(Direction direction)
-        {
-            GameGridCell neighborCell = LevelManager.Ins.GetNeighbourCell(mainCell, direction);
-            GridUnit unit = neighborCell?.GetGridUnitAtHeight(startHeight);
-            return unit;
-        }
-        
-        private void OnMovingDone(bool isFalling, HashSet<GridUnit> aboveUnits, Action nextAction = null)
-        {   
-            isInAction = false;
-            SetMove(false);
-            foreach (GridUnit unit in aboveUnits)
-                if (unit is GridUnitDynamic dynamicUnit && dynamicUnit.CanFall(out int numHeightDown))
-                    dynamicUnit.OnFall(numHeightDown);
-            nextAction?.Invoke();
-        }
-    }
-}
-
-*/
