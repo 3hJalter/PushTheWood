@@ -47,7 +47,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Bomb
         
         public override void OnDespawn()
         {
-            _isWaitForExplode = false;
+            if (_isWaitForExplode) StopExplode();
             StateMachine.OverrideState = StateEnum.None;
             waitExplosionObjectEffect.SetActive(false);
             _stateMachine.ChangeState(StateEnum.Idle);

@@ -1,6 +1,7 @@
 ﻿using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Bomb;
 using DG.Tweening;
+using UnityEngine;
 
 namespace a
 {
@@ -33,8 +34,13 @@ namespace a
                 t.OnEnterCells(t.MovingData.enterMainCell, t.MovingData.enterCells);
                 // Animation and complete
                 // TODO: rotate in place animation for skin
-                moveTween = t.Tf.DOMove(t.EnterPosData.initialPos,
-                        t.EnterPosData.isFalling ? Constants.MOVING_TIME / 2 : Constants.MOVING_TIME)
+                Sequence s = DOTween.Sequence();
+                moveTween = s;
+                s.Append(t.Tf.DOMove(t.EnterPosData.initialPos,
+                        t.EnterPosData.isFalling ? Constants.MOVING_TIME / 2 : Constants.MOVING_TIME))
+                    .Join(t.Tf.DORotate(new Vector3(0, 0, 360),
+                        t.EnterPosData.isFalling ? Constants.MOVING_TIME / 2 : Constants.MOVING_TIME,
+                        RotateMode.FastBeyond360))
                     .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                     {
                         if (t.EnterPosData.isFalling)
