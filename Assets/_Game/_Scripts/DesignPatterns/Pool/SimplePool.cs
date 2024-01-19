@@ -361,6 +361,7 @@ namespace _Game.DesignPattern
         ArcherEnemy = 16,
         ExplosiveBox = 17,
         
+        
         // Grid Unit Static
         RockShort = 7,
         RockHigh = 8,
@@ -368,7 +369,7 @@ namespace _Game.DesignPattern
         TreeShort = 10,
         TreeHigh = 11,
         FinalPoint = 13,
-        
+        FloatingChest = 18,
 
         // Grid Unit Placed Object
         HouseMain = 50,
