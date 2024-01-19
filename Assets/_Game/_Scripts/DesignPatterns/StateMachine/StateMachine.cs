@@ -1,20 +1,15 @@
 using _Game.GameGrid.Unit;
 using _Game.Utilities;
-using System.Collections;
 using System.Collections.Generic;
-using _Game.GameGrid.Unit.DynamicUnit.Box.BoxState;
-using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace _Game.DesignPattern.StateMachine
 {
     public class StateMachine<T> where T : GridUnit
     {
-        Dictionary<StateEnum, IState<T>> states;
-        IState<T> currentState;
-        public IState<T> CurrentState => currentState;
-        public StateEnum CurrentStateId => currentState != null ? currentState.Id : StateEnum.None;
-        T main;
+        private readonly Dictionary<StateEnum, IState<T>> states;
+        public IState<T> CurrentState { get; private set; }
+        public StateEnum CurrentStateId => CurrentState?.Id ?? StateEnum.None;
+        private readonly T main;
         public StateEnum OverrideState;
         public bool Debug = false;
         public StateMachine(T main)
@@ -45,22 +40,22 @@ namespace _Game.DesignPattern.StateMachine
         {
             if(id == StateEnum.None)
             {
-                currentState = null;
+                CurrentState = null;
                 return;
             }
 
             if (OverrideState != StateEnum.None && OverrideState != id) return;
             if (Debug)
             {
-                DevLog.Log(DevId.Hung, $"{currentState?.Id} -> {id}");
+                DevLog.Log(DevId.Hung, $"{CurrentState?.Id} -> {id}");
             }
-            currentState?.OnExit(main);
-            currentState = states[id];
-            currentState.OnEnter(main);
+            CurrentState?.OnExit(main);
+            CurrentState = states[id];
+            CurrentState.OnEnter(main);
         }
         public void UpdateState()
         {
-            currentState.OnExecute(main);
+            CurrentState.OnExecute(main);
         }
     }
 }

@@ -356,7 +356,11 @@ namespace _Game.DesignPattern
         ChumpHigh = 5,
         Raft = 6,
         RaftLong = 12,
-
+        Box = 14,
+        Bomb = 15,
+        ArcherEnemy = 16,
+        ExplosiveBox = 17,
+        
         // Grid Unit Static
         RockShort = 7,
         RockHigh = 8,
@@ -364,9 +368,7 @@ namespace _Game.DesignPattern
         TreeShort = 10,
         TreeHigh = 11,
         FinalPoint = 13,
-        Box = 14,
-        Bomb = 15,
-        Archer_Enemy = 16,
+        
 
         // Grid Unit Placed Object
         HouseMain = 50,

@@ -188,7 +188,7 @@ Material:
     - _UseShadowTexture: 0
     - _UseSpecular: 0
     - _WorkflowMode: 1
-    - _ZWrite: 1
+    - _ZWrite: 0
     - __dummy__: 0
     m_Colors:
     - _BaseColor: {r: 0.31372547, g: 0.5803921, b: 0.12549016, a: 1}

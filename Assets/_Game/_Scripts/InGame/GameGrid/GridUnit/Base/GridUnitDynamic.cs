@@ -1,11 +1,13 @@
 ﻿using _Game.DesignPattern.StateMachine;
 using GameGridEnum;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit
 {
     public abstract class GridUnitDynamic : GridUnit
     {
+        [Title("Dynamic Unit")]
         [SerializeField] protected GridUnitDynamicType gridUnitDynamicType;
         [SerializeField] public Anchor anchor;
         public abstract StateEnum CurrentStateId

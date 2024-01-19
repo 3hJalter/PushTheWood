@@ -130,5 +130,6 @@ namespace GameGridEnum
         WaterSplash = 1,
         LeafExplosion = 2,
         DangerIndicator = 3,
+        BombExplosion = 4,
     }
 }
