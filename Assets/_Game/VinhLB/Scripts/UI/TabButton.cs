@@ -84,9 +84,14 @@ namespace VinhLB
             _background.color = color;
         }
 
-        public void ChangeBackgroundSprite(Sprite sprite)
+        public void SetBackgroundSprite(Sprite sprite)
         {
             _background.sprite = sprite;
+        }
+
+        public void SetPreferredWidth(float value)
+        {
+            _layoutElement.preferredWidth = value;
         }
 
         public void OnPointerClick(PointerEventData eventData)
