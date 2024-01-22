@@ -3,6 +3,7 @@ using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Screen;
 using UnityEngine;
+using VinhLB;
 
 namespace _Game.UIs.Popup
 {
@@ -91,6 +92,11 @@ namespace _Game.UIs.Popup
         {
             Debug.Log("Click toggle grass button");
             FXManager.Ins.ToggleGrasses();
+        }
+
+        public void OnClickTestBoosterWatchVideo()
+        {
+            UIManager.Ins.OpenUI<BoosterWatchVideoPopup>();
         }
     }
 }

@@ -2084,7 +2084,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1267216522180438114}
         m_TargetAssemblyTypeName: _Game.UIs.Popup.SettingsPopup, Assembly-CSharp
-        m_MethodName: OnClickLikeButton
+        m_MethodName: OnClickTestBoosterWatchVideo
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
