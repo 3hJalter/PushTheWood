@@ -87,7 +87,7 @@ Varyings Vertex(Attributes input)
     float3 positionWS = GetVertexPositionInputs(input.positionOS).positionWS;
     float3 offset;
     float windMultiplier;
-    CalculateTrample_float(positionWS, _TrampleFalloff,
+    CalculateTrample_float(positionWS, _TrampleMaxDistance, _TrampleFalloff,
                            _TramplePushStrength, _TrampleSquishStrength, offset, windMultiplier);
 
     windOffset *= _WindStrength * windMultiplier;

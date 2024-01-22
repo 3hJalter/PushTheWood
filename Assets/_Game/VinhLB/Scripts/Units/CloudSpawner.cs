@@ -69,11 +69,11 @@ namespace VinhLB
 
         private void SpawnCloudInternal()
         {
-            DevLog.Log(DevId.Vinh, $"Spawn cloud: {_spawnInterval}");
+            // DevLog.Log(DevId.Vinh, $"Spawn cloud: {_spawnInterval}");
             Vector3 cloudPosition = new Vector3(
                 _topRightPosition.x + Random.Range(1f, 2f),
                 _cloudHeight + Random.Range(-1f, 1f),
-                Random.Range(_bottomLeftPosition.z, _topRightPosition.z));
+                Random.Range(_bottomLeftPosition.z - 5f, _topRightPosition.z + 5f));
             Quaternion cloudRotation = Quaternion.Euler(
                 0f,
                 Random.Range(0, 2) == 0 ? 0f : 180f,
@@ -85,7 +85,7 @@ namespace VinhLB
                 _bottomLeftPosition.x - Random.Range(1f, 2f),
                 cloudPosition.y,
                 cloudPosition.z);
-            cloud.Initialize(Random.Range(0.5f, 1f), Vector3.left, cloudEndPosition);
+            cloud.Initialize(Random.Range(0.25f, 0.75f), Vector3.left, cloudEndPosition);
             
             _spawnedCloudList.Add(cloud);
 

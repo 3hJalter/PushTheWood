@@ -279,7 +279,7 @@ RectTransform:
   - {fileID: 4143484560180049671}
   - {fileID: 3559077295794001572}
   m_Father: {fileID: 5352854967292660263}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3031,7 +3031,7 @@ RectTransform:
   - {fileID: 6208265771905040102}
   - {fileID: 4576893667317484524}
   m_Father: {fileID: 1878410169944309732}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -5374,9 +5374,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2061765652788169156}
-  - {fileID: 1744720612907457760}
   - {fileID: 5997072130810091144}
+  - {fileID: 1744720612907457760}
+  - {fileID: 2061765652788169156}
   m_Father: {fileID: 8842534761249019573}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5805,7 +5805,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8745099, g: 0.7607844, b: 0.54901963, a: 1}
+  m_Color: {r: 0.8867924, g: 0.7596398, b: 0.52287287, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7356,7 +7356,7 @@ RectTransform:
   - {fileID: 3180716960152035840}
   - {fileID: 2074560055646964790}
   m_Father: {fileID: 5352854967292660263}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -7936,9 +7936,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1577909489851692056}
-  - {fileID: 9174977841999195458}
   - {fileID: 4537778673771368717}
+  - {fileID: 9174977841999195458}
+  - {fileID: 1577909489851692056}
   m_Father: {fileID: 4730223165368726813}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10092,13 +10092,13 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _tabButtonList:
-  - {fileID: 2849646562909081610}
-  - {fileID: 7981391001675565098}
   - {fileID: 7582005745431931354}
+  - {fileID: 7981391001675565098}
+  - {fileID: 2849646562909081610}
   _tabPageList:
-  - {fileID: 7573738836167675790}
-  - {fileID: 6443702629738973578}
   - {fileID: 1529534554266733086}
+  - {fileID: 6443702629738973578}
+  - {fileID: 7573738836167675790}
   _activeTabIndex: 1
   _useCustomSprite: 0
   _tabIdleSprite: {fileID: 0}
@@ -10594,7 +10594,7 @@ RectTransform:
   m_Children:
   - {fileID: 7441275066903222133}
   m_Father: {fileID: 1878410169944309732}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

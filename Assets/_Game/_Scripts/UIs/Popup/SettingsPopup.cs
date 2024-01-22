@@ -17,11 +17,11 @@ namespace _Game.UIs.Popup
 
             if (GameManager.Ins.IsState(GameState.InGame))
             {
-                _mainMenuButton.interactable = true;
+                _mainMenuButton.gameObject.SetActive(true);
             }
             else
             {
-                _mainMenuButton.interactable = false;
+                _mainMenuButton.gameObject.SetActive(false);
             }
         }
 
