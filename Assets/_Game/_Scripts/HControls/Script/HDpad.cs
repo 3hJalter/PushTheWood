@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace HControls
@@ -12,11 +11,6 @@ namespace HControls
         private bool testing;
 
         [SerializeField] private HDpadButton[] dpadButtons;
-        
-        public void OnManualPointerDown(int index)
-        {
-            dpadButtons[index].ManualPointerDown();
-        }
         
         private void OnDisable()
         {
