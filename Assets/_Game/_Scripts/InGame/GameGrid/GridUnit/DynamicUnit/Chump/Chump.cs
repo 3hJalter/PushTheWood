@@ -25,8 +25,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
         }
 
         private bool _isAddState;
-        // Hand
-        private Chump TriggerChump { get; set; }
 
         public Raft.Raft RaftPrefab => raftPrefab;
 
@@ -154,26 +152,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
                             if (chump.UnitTypeY is UnitTypeY.Up) continue;
                             if (chump.UnitTypeXZ != belowUnit.UnitTypeXZ) return;
                         }
-                        TriggerChump = chump;
-                        TriggerChump.StateMachine.ChangeState(StateEnum.Fall);
+                        chump.StateMachine.ChangeState(StateEnum.FormRaft);
                     }
                     break;
             }
-            
-            // if (triggerUnit is not Chump triggerChump) return;
-            // // Only need one below Unit to check if the TriggerChump can form Raft
-            // if (triggerChump.IsCurrentStateIs(StateEnum.FormRaft) || !triggerChump.IsOnWater()) return;
-            // // Loop all below unit of TriggerChump, include this unit self
-            // foreach (GridUnit belowUnit in triggerChump.belowUnits)
-            // {
-            //     // if one of all below unit of TriggerChump is not Chump, return
-            //     if (belowUnit is not Chump) return;
-            //     // if the TriggerChump is Down and one of all below unit of TriggerChump is not same UnitTypeXZ, return
-            //     if (triggerChump.UnitTypeY is UnitTypeY.Up) continue;
-            //     if (triggerChump.UnitTypeXZ != belowUnit.UnitTypeXZ) return;
-            // }
-            // TriggerChump = triggerChump;
-            // TriggerChump.StateMachine.ChangeState(StateEnum.Fall);
         }
 
         private bool IsOnWater()
