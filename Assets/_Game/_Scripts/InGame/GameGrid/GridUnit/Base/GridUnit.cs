@@ -38,6 +38,9 @@ namespace _Game.GameGrid.Unit
 
         [SerializeField] protected HeightLevel endHeight; // Serialize for test
         
+        [Tooltip("Set this to true if you want to override the start height of the unit when it enter a cell by a constant start height value at first init")]
+        public bool overrideStartHeight; // Basically for button Unit, but static Unit is okay too
+        
         // How many height level can floating up when unit is on floating Surface (bool canFloating at GameGridCell)
         [SerializeField] private int floatingHeightOffset;
 
@@ -424,9 +427,10 @@ namespace _Game.GameGrid.Unit
                 }
             }
         }
-
+        
         private HeightLevel GetEnterStartHeight(GameGridCell enterCell)
         {
+            if (overrideStartHeight) return startHeight;
             HeightLevel enterStartHeight = Constants.MIN_HEIGHT;
             HeightLevel initHeight = Constants.DirFirstHeightOfSurface[enterCell.SurfaceType];
             if (enterCell.Data.canFloating) 
@@ -445,6 +449,7 @@ namespace _Game.GameGrid.Unit
 
         private HeightLevel GetEnterStartHeight(List<GameGridCell> enterCells)
         {
+            if (overrideStartHeight) return startHeight;
             HeightLevel enterStartHeight = Constants.MIN_HEIGHT;
             foreach (GameGridCell cell in enterCells)
             {

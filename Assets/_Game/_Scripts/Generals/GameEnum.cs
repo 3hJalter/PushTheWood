@@ -109,6 +109,7 @@ namespace GameGridEnum
         TreeHigh = 4,
         FinalPoint = 5,
         FloatingChest = 6,
+        ButtonUnit = 7,
     }
 
     public enum GridUnitDynamicType

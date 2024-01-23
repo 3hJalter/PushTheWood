@@ -370,6 +370,7 @@ namespace _Game.DesignPattern
         TreeHigh = 11,
         FinalPoint = 13,
         FloatingChest = 18,
+        ButtonUnit = 19,
 
         // Grid Unit Placed Object
         HouseMain = 50,
