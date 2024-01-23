@@ -81,7 +81,9 @@ namespace _Game._Scripts.InGame
 
         public bool IsInit { get; private set; }
 
-        public GridSurface[,] GridSurfaceMap { get; private set; }
+        private GridSurface[,] GridSurfaceMap { get; set; }
+
+        public List<Vector3> HintLinePosList { get; } = new();
 
         public List<LevelUnitData> UnitDataList { get; } = new();
 
@@ -447,15 +449,12 @@ namespace _Game._Scripts.InGame
         }
 
         private void OnSetHintLine() {
-            List<Vector3> hintLinePosList = new();
             // Loop through all htD (hint trail data) in _rawLevelData
             for (int i = 0; i < _rawLevelData.htD.Length; i++)
             {
                 RawLevelData.HintTrailData hintTrailData = _rawLevelData.htD[i];
-                hintLinePosList.Add(new Vector3(hintTrailData.p.x, Constants.DEFAULT_HINT_TRAIL_HEIGHT, hintTrailData.p.y));
+                HintLinePosList.Add(new Vector3(hintTrailData.p.x, Constants.DEFAULT_HINT_TRAIL_HEIGHT, hintTrailData.p.y));
             }
-            
-            FXManager.Ins.TrailHint.SetPath(hintLinePosList);
         }
         
         public void OnInitPlayerToLevel()

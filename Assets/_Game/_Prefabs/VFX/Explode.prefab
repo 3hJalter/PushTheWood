@@ -4892,6 +4892,22 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_UseCustomVertexStreams
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_VertexStreams.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_VertexStreams.Array.data[2]
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 82744996584968374, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
@@ -4974,6 +4990,22 @@ PrefabInstance:
     - target: {fileID: 19856596, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
       propertyPath: playOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_UseCustomVertexStreams
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_VertexStreams.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_VertexStreams.Array.data[2]
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 82744996584968374, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
@@ -5058,6 +5090,22 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_UseCustomVertexStreams
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_VertexStreams.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_VertexStreams.Array.data[2]
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 82744996584968374, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
@@ -5141,6 +5189,22 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_UseCustomVertexStreams
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_VertexStreams.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_VertexStreams.Array.data[2]
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 82744996584968374, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
@@ -5223,6 +5287,22 @@ PrefabInstance:
     - target: {fileID: 19856596, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
       propertyPath: playOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_UseCustomVertexStreams
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_VertexStreams.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19993216, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}
+      propertyPath: m_VertexStreams.Array.data[2]
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 82744996584968374, guid: b037048ffb73dc4419b4445789d3a04c, type: 3}

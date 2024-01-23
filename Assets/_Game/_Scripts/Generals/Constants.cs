@@ -48,8 +48,7 @@ public static class Constants
     public const string HAPPY_ANIM = "happy";
     public const string OPEN_ANIM = "open";
     public const string ATTACK = "attack";
-    public const string ENTER_ANIM = "enter";
-    public const string EXIT_ANIM = "exit";
+    
     
     public const float CUT_TREE_ANIM_TIME = 0.5f;
     public const float PUSH_ANIM_TIME = 0.4f;
@@ -59,9 +58,9 @@ public static class Constants
     ///     UI Animation Trigger
     /// </summary>
     public const string OPEN = "Open";
-
     public const string CLOSE = "Close";
-
+    public const string ENTER_ANIM = "enter";
+    public const string EXIT_ANIM = "exit";
 
     // Value Constants
     public const int UPPER_HEIGHT = 1;
@@ -92,6 +91,9 @@ public static class Constants
     public const float DEFAULT_HINT_TRAIL_HEIGHT = 3f;
     public const int LEVEL_TIME = 180;
     public const int UNDO_COUNT = 10;
+    
+    public const float HINT_LINE_TRAIL_SPEED = 10f;
+    
     // OLD 
 
     public static readonly HeightLevel MaxHeight = (HeightLevel)(Enum.GetValues(typeof(HeightLevel)).Length - 1);

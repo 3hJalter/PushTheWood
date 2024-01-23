@@ -3428,7 +3428,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 9.518e-42, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 1.02e-43, y: 0, z: 0, w: 2.4749968e+20}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -4345,7 +4345,7 @@ PrefabInstance:
     - target: {fileID: 8643770746723842645, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8643770746723842645, guid: 6a551d3bb595b89459262a7449677600, type: 3}
     - target: {fileID: 8643770746981963272, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: testing
       value: 0
@@ -4449,7 +4449,7 @@ PrefabInstance:
     - target: {fileID: 8643770747054678694, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8643770747054678694, guid: 6a551d3bb595b89459262a7449677600, type: 3}
     - target: {fileID: 8643770747183796009, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: eventTrigger
       value: 
@@ -4457,7 +4457,7 @@ PrefabInstance:
     - target: {fileID: 8643770747183796009, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8643770747183796009, guid: 6a551d3bb595b89459262a7449677600, type: 3}
     - target: {fileID: 8643770747366404017, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: eventTrigger
       value: 
@@ -4465,6 +4465,6 @@ PrefabInstance:
     - target: {fileID: 8643770747366404017, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8643770747366404017, guid: 6a551d3bb595b89459262a7449677600, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a551d3bb595b89459262a7449677600, type: 3}

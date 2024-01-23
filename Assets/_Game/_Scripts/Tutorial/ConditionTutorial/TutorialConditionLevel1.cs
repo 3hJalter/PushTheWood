@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using _Game._Scripts.Managers;
 using _Game._Scripts.Tutorial.ObjectTutorial;
 using _Game.GameGrid;
@@ -12,8 +13,8 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
     [CreateAssetMenu(fileName = "TutorialLevel1", menuName = "ScriptableObjects/TutorialData/Lvl1", order = 1)]
     public class TutorialConditionLevel1 : BaseTutorialData, ITutorialCondition
     {
-        private BaseObjectTutorial glowSpot;
-        private ArrowDirection arrowDirection;
+        // private BaseObjectTutorial glowSpot;
+        // private ArrowDirection arrowDirection;
         
         public void OnForceShowTutorial(int index, bool isIncrement = true)
         {
@@ -37,8 +38,9 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
                         MoveInputManager.Ins.OnForceResetMove();
                         currentScreen = UIManager.Ins.OpenUIDirectly(tutorialScreens[currentTutIndex]);
                         currentTutIndex++;
-                        Destroy(glowSpot.gameObject);
-                        Destroy(arrowDirection.gameObject);
+                        FXManager.Ins.TrailHint.OnCancel();
+                        // Destroy(glowSpot.gameObject);
+                        // Destroy(arrowDirection.gameObject);
                     }
                     else
                     {
@@ -46,11 +48,16 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
                         {
                             // currentScreen.CloseDirectly();
                             currentScreen = null;
-                            glowSpot = Instantiate(TutorialManager.Ins.TutorialObjList[TutorialObj.LightSpot],
-                                new Vector3(7,0,11), Quaternion.identity);
-                            arrowDirection = (ArrowDirection) Instantiate(TutorialManager.Ins.TutorialObjList[TutorialObj.Arrow],
-                                new Vector3(9,0,7), Quaternion.identity);
-                            arrowDirection.PointerToHeight(2, Direction.Forward, true);
+                            FXManager.Ins.TrailHint.OnPlay(new List<Vector3>()
+                            {
+                                new(7,3,7),
+                                new(7,3,13),
+                            }, 8f, true);
+                            // glowSpot = Instantiate(TutorialManager.Ins.TutorialObjList[TutorialObj.LightSpot],
+                            //     new Vector3(7,0,11), Quaternion.identity);
+                            // arrowDirection = (ArrowDirection) Instantiate(TutorialManager.Ins.TutorialObjList[TutorialObj.Arrow],
+                            //     new Vector3(9,0,7), Quaternion.identity);
+                            // arrowDirection.PointerToHeight(2, Direction.Forward, true);
                         }
                     }
                     break;
