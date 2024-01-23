@@ -26,10 +26,10 @@ namespace VinhLB
         public PoolType PoolType;
         public GridSurfaceType BelowSurfaceType;
         public bool CheckAdjacentCells;
-
-        [ShowIf(nameof(CheckAdjacentCells))] public GridSurfaceType AdjacentSurfaceType;
-
-        [ShowIf(nameof(CheckAdjacentCells))] public int MinAdjacentCells;
+        [ShowIf(nameof(CheckAdjacentCells))]
+        public GridSurfaceType AdjacentSurfaceType;
+        [ShowIf(nameof(CheckAdjacentCells))]
+        public int MinAdjacentCells;
 
         public static Direction GetNextDirection(Direction direction)
         {

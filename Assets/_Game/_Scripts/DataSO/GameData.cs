@@ -1,5 +1,4 @@
 ﻿using System;
-using _Game.Managers;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -31,10 +30,12 @@ namespace _Game.Data
             
             //Other Data
             public int sessionPlayed;
-            private int _keyCount;
-            public DateTime lastDailyRewardClaimTime = DateTime.MinValue;
+            public DateTime startDailyRewardClaimTime = DateTime.Now.Date;
+            public DateTime lastDailyRewardClaimTime = DateTime.Now.AddHours(-24);
             public DateTime lastFreeSpinTime = DateTime.MinValue;
             public DateTime lastTimeLogOut = DateTime.Now;
+            
+            private int _keyCount;
 
             public int KeyCount
             {
@@ -63,9 +64,9 @@ namespace _Game.Data
     {
         private const string DATA_KEY = "GameData";
 
-        public static void SaveData()
+        public static void SaveData(GameData data)
         {
-            string dataString = JsonConvert.SerializeObject(DataManager.Ins.GameData);
+            string dataString = JsonConvert.SerializeObject(data);
             PlayerPrefs.SetString(DATA_KEY, dataString);
             PlayerPrefs.Save();
         }
@@ -73,7 +74,10 @@ namespace _Game.Data
         public static GameData LoadData()
         {
             if (!PlayerPrefs.HasKey(DATA_KEY))
-                return null;
+            {
+                return new GameData();
+            }
+            
             return JsonConvert.DeserializeObject<GameData>(PlayerPrefs.GetString(DATA_KEY));
         }
     }

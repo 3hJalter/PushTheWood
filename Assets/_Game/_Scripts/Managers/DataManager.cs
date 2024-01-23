@@ -10,10 +10,6 @@ namespace _Game.Managers
 {
     public class DataManager : Singleton<DataManager>
     {
-        private GameData _gameData;
-        
-        public GameData GameData => _gameData ?? new GameData();
-        
         [SerializeField]
         private AudioData audioData;
         [SerializeField]
@@ -23,12 +19,18 @@ namespace _Game.Managers
         [SerializeField]
         private VFXData _vfxData;
 
+        private GameData _gameData;
+        
         public AudioData AudioData => audioData;
-
+        public VFXData VFXData => _vfxData;
+        public GameData GameData => _gameData ??= Database.LoadData();
         public int CountNormalLevel => gridData.CountNormalLevel;
         public int CountSurfaceMaterial => materialData.CountSurfaceMaterial;
 
-        public VFXData VFXData => _vfxData;
+        public void Save()
+        {
+            Database.SaveData(_gameData);
+        }
         
         public Material GetTransparentMaterial()
         {
