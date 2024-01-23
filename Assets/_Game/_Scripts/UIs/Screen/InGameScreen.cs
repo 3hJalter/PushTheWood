@@ -69,7 +69,6 @@ namespace _Game.UIs.Screen
 
         public override void Close()
         {
-            MoveInputManager.Ins.HideButton();
             MoveInputManager.Ins.ShowContainer(false);
             base.Close();
         }

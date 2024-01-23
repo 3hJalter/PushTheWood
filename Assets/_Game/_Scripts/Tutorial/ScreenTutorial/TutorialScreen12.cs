@@ -12,7 +12,7 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
     {
         public override void CloseDirectly()
         {
-            MoveInputManager.Ins.WaitToForceResetMove(Time.fixedDeltaTime * 2);
+            // MoveInputManager.Ins.WaitToForceResetMove(Time.fixedDeltaTime * 2);
             base.CloseDirectly();
         }
     }

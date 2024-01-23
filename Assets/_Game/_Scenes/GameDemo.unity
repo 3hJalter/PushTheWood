@@ -686,6 +686,17 @@ MonoBehaviour:
   activeGround: 1
   activeWater: 1
   activeGrid: 0
+--- !u!114 &254257163 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8643770747183796014, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+  m_PrefabInstance: {fileID: 8643770747962081730}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &276119171
 GameObject:
   m_ObjectHideFlags: 0
@@ -1352,6 +1363,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7030098244451390856, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
   m_PrefabInstance: {fileID: 7030098244278345276}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &518383023 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8643770747366404022, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+  m_PrefabInstance: {fileID: 8643770747962081730}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &522463764
 GameObject:
   m_ObjectHideFlags: 0
@@ -2295,6 +2317,17 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0
+--- !u!114 &967434964 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8643770747054678695, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+  m_PrefabInstance: {fileID: 8643770747962081730}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &998437949 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1267216522180438110, guid: de75fb9b1d37d924daae5f8609c6330c, type: 3}
@@ -3214,6 +3247,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1824299030540152757, guid: cf16a3b4422e38d4994c64eb52428912, type: 3}
   m_PrefabInstance: {fileID: 1493026547}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1500424744 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8643770746723842650, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+  m_PrefabInstance: {fileID: 8643770747962081730}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1584344168
 GameObject:
   m_ObjectHideFlags: 0
@@ -3305,7 +3349,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  container: {fileID: 956933210}
+  container: {fileID: 13734018}
   hSwitch: {fileID: 1799324507}
   dpad: {fileID: 1173657546}
   hSwipe: {fileID: 1808547880}
@@ -3384,7 +3428,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 3.4e-44, z: 0, w: NaN}
+  m_BoundingSphereOverride: {x: 0, y: 9.518e-42, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -4295,9 +4339,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1816619650764841853, guid: 6a551d3bb595b89459262a7449677600, type: 3}
     - target: {fileID: 8643770746723842645, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+      propertyPath: eventTrigger
+      value: 
+      objectReference: {fileID: 1500424744}
+    - target: {fileID: 8643770746723842645, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 8643770746723842645, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 8643770746981963272, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: testing
       value: 0
@@ -4305,7 +4353,7 @@ PrefabInstance:
     - target: {fileID: 8643770746981963272, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8643770746981963272, guid: 6a551d3bb595b89459262a7449677600, type: 3}
     - target: {fileID: 8643770746981963274, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Name
       value: DPad
@@ -4395,16 +4443,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8643770747054678694, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+      propertyPath: eventTrigger
+      value: 
+      objectReference: {fileID: 967434964}
+    - target: {fileID: 8643770747054678694, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 8643770747054678694, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+      objectReference: {fileID: 0}
+    - target: {fileID: 8643770747183796009, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+      propertyPath: eventTrigger
+      value: 
+      objectReference: {fileID: 254257163}
     - target: {fileID: 8643770747183796009, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 8643770747183796009, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+      objectReference: {fileID: 0}
+    - target: {fileID: 8643770747366404017, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+      propertyPath: eventTrigger
+      value: 
+      objectReference: {fileID: 518383023}
     - target: {fileID: 8643770747366404017, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 8643770747366404017, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a551d3bb595b89459262a7449677600, type: 3}

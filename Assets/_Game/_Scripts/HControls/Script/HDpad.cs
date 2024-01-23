@@ -12,7 +12,12 @@ namespace HControls
         private bool testing;
 
         [SerializeField] private HDpadButton[] dpadButtons;
-
+        
+        public void OnManualPointerDown(int index)
+        {
+            dpadButtons[index].ManualPointerDown();
+        }
+        
         private void OnDisable()
         {
             for (int i = 0; i < dpadButtons.Length; i++) dpadButtons[i].PointerDownImg.SetActive(false);

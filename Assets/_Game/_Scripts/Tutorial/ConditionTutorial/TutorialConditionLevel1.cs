@@ -44,7 +44,7 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
                     {
                         if (currentScreen is not null)
                         {
-                            currentScreen.CloseDirectly();
+                            // currentScreen.CloseDirectly();
                             currentScreen = null;
                             glowSpot = Instantiate(TutorialManager.Ins.TutorialObjList[TutorialObj.LightSpot],
                                 new Vector3(7,0,11), Quaternion.identity);
