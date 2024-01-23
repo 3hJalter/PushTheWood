@@ -25,47 +25,61 @@ MonoBehaviour:
   OneCycleOnly: 0
   DifferentFirstCycle: 1
   MissRewardIfNotLogin: 0
-  FirstCycleRewardArray:
-  - Name: Gold
+  FirstCycleRewards:
+  - RewardType: 0
+    Name: Gold
     IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
     Amount: 50
-  - Name: Gold
+  - RewardType: 0
+    Name: Gold
     IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
     Amount: 50
-  - Name: Gold
+  - RewardType: 0
+    Name: Gold
     IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
     Amount: 50
-  - Name: Gold
+  - RewardType: 0
+    Name: Gold
     IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
     Amount: 50
-  - Name: Gold
+  - RewardType: 0
+    Name: Gold
     IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
     Amount: 50
-  - Name: Gold
+  - RewardType: 0
+    Name: Gold
     IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
     Amount: 50
-  - Name: Gem
+  - RewardType: 1
+    Name: Gem
     IconSprite: {fileID: 21300000, guid: 5dfb16ae0220748c98c6d5ab5220b70a, type: 3}
     Amount: 500
-  RewardArray:
-  - Name: Gold
+  Rewards:
+  - RewardType: 0
+    Name: Gold
     IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
     Amount: 100
-  - Name: Gold
+  - RewardType: 0
+    Name: Gold
     IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
     Amount: 100
-  - Name: Gold
+  - RewardType: 0
+    Name: Gold
     IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
     Amount: 100
-  - Name: Gold
+  - RewardType: 0
+    Name: Gold
     IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
     Amount: 100
-  - Name: Gold
+  - RewardType: 0
+    Name: Gold
     IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
     Amount: 100
-  - Name: Gold
+  - RewardType: 0
+    Name: Gold
     IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
     Amount: 100
-  - Name: Gold
+  - RewardType: 0
+    Name: Gold
     IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
     Amount: 1000

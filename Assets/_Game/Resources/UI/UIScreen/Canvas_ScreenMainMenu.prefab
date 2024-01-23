@@ -475,7 +475,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: -4
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -4212,7 +4212,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -18, y: 0}
+  m_AnchoredPosition: {x: -16, y: 0}
   m_SizeDelta: {x: 152, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1299057210342769268
@@ -6880,7 +6880,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: -4
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -7220,7 +7220,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -18, y: 0}
+  m_AnchoredPosition: {x: -16, y: 0}
   m_SizeDelta: {x: 152, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &571952782768819581
@@ -8833,7 +8833,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: -4
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -10736,6 +10736,8 @@ MonoBehaviour:
   _canvasGroup: {fileID: 8897314877290242475}
   _blockPanel: {fileID: 941367108468269405}
   _bottomNavigationTabGroup: {fileID: 2915115477121344800}
+  _goldValueText: {fileID: 8861748252358295296}
+  _gemValueText: {fileID: 3417165548306138449}
 --- !u!1 &8911930661490769453
 GameObject:
   m_ObjectHideFlags: 0

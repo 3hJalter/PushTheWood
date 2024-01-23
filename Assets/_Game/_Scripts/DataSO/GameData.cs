@@ -16,7 +16,8 @@ namespace _Game.Data
             public int inGameLevel;
 
             //Progress Data
-            public int money;
+            public int gold;
+            public int gems;
             public int score;
             public int luckyWheelProgress;
             public bool lastFreeSpinState;

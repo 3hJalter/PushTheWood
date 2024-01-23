@@ -14,10 +14,15 @@ namespace VinhLB
     public class CloudSpawner : HMonoBehaviour
     {
         [SerializeField]
+        private bool _canSpawn = true;
+        [SerializeField]
         private float _cloudHeight = 10f;
         [SerializeField]
-        [MinMaxSlider(0f, 20f, true)]
+        [MinMaxSlider(0.1f, 20f, true)]
         private Vector2 _minMaxSpawnInterval = new Vector2(1f, 2f);
+        [SerializeField]
+        [MinMaxSlider(0.1f, 10f, true)]
+        private Vector2 _minMaxCloudSpeed = new Vector2(0.5f, 1f);
 
         private float _spawnInterval;
         private STimer _timer;
@@ -37,6 +42,11 @@ namespace VinhLB
 
         public void SpawnClouds()
         {
+            if (!_canSpawn)
+            {
+                return;
+            }
+            
             if (_timer.IsStart)
             {
                 _timer.Stop();
@@ -46,12 +56,12 @@ namespace VinhLB
             {
                 _spawnedCloudList[i].Despawn();
             }
-            
+
             _bottomLeftPosition = LevelManager.Ins.CurrentLevel.GetBottomLeftPos();
             _topRightPosition = LevelManager.Ins.CurrentLevel.GetTopRightPos();
 
             SpawnCloudInternal();
-            
+
             StartSpawnCloudTimer();
         }
 
@@ -69,7 +79,7 @@ namespace VinhLB
 
         private void SpawnCloudInternal()
         {
-            // DevLog.Log(DevId.Vinh, $"Spawn cloud: {_spawnInterval}");
+            DevLog.Log(DevId.Vinh, $"Spawn cloud: {_spawnInterval}");
             Vector3 cloudPosition = new Vector3(
                 _topRightPosition.x + Random.Range(1f, 2f),
                 _cloudHeight + Random.Range(-1f, 1f),
@@ -85,8 +95,8 @@ namespace VinhLB
                 _bottomLeftPosition.x - Random.Range(1f, 2f),
                 cloudPosition.y,
                 cloudPosition.z);
-            cloud.Initialize(Random.Range(0.25f, 0.75f), Vector3.left, cloudEndPosition);
-            
+            cloud.Initialize(Random.Range(_minMaxCloudSpeed.x, _minMaxCloudSpeed.y), Vector3.left, cloudEndPosition);
+
             _spawnedCloudList.Add(cloud);
 
             StartSpawnCloudTimer();

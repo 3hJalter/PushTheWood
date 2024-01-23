@@ -4,6 +4,7 @@ using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Popup;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using VinhLB;
@@ -18,6 +19,10 @@ namespace _Game.UIs.Screen
         private Image _blockPanel;
         [SerializeField]
         private TabGroup _bottomNavigationTabGroup;
+        [SerializeField]
+        private TMP_Text _goldValueText;
+        [SerializeField]
+        private TMP_Text _gemValueText;
         
         private bool _isFirstOpen;
 
@@ -26,6 +31,8 @@ namespace _Game.UIs.Screen
             base.Setup();
             
             _blockPanel.gameObject.SetActive(true);
+            _goldValueText.text = $"{DataManager.Ins.GameData.user.gold}";
+            _gemValueText.text = $"{DataManager.Ins.GameData.user.gems}";
         }
 
         public override void Open()

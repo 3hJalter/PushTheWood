@@ -110,10 +110,6 @@ namespace VinhLB
         [SerializeField]
         private DailyRewardSettingsSO _dailyRewardSettingsSO;
 
-        // private DateTime _startDateTime;
-        // private DateTime _lastDailyRewardDate;
-        private bool _isEnabled;
-
         #region Properties
         public DailyRewardSettingsSO DailyRewardSettingsSO => _dailyRewardSettingsSO;
         public bool IsTodayRewardObtained =>
@@ -124,8 +120,8 @@ namespace VinhLB
         public int CycleDay => TotalDays % _dailyRewardSettingsSO.CycleDays;
         public bool IsInFirstCycle => TotalDays / _dailyRewardSettingsSO.CycleDays == 0;
         public Reward[] Rewards => IsInFirstCycle && _dailyRewardSettingsSO.DifferentFirstCycle
-            ? _dailyRewardSettingsSO.FirstCycleRewardArray
-            : _dailyRewardSettingsSO.RewardArray;
+            ? _dailyRewardSettingsSO.FirstCycleRewards
+            : _dailyRewardSettingsSO.Rewards;
         public Reward CurrentReward => Rewards[CycleDay];
         #endregion
 

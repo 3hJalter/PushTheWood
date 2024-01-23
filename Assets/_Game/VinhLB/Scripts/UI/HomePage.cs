@@ -1,6 +1,5 @@
 ﻿using _Game.GameGrid;
 using _Game.Managers;
-using _Game.UIs.Popup;
 using _Game.Utilities;
 using TMPro;
 using UnityEngine;
@@ -49,10 +48,10 @@ namespace VinhLB
         {
             base.Open();
 
-            Invoke(nameof(UpdateLevelText), 0.01f);
+            Invoke(nameof(UpdateStatus), 0.01f);
         }
 
-        private void UpdateLevelText()
+        private void UpdateStatus()
         {
             _levelText.text = $"Level\n{LevelManager.Ins.LevelIndex + 1}";
         }
