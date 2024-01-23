@@ -99,7 +99,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             stateMachine.OverrideState = StateEnum.None;
             base.OnDespawn();
         }
-
+        
         private void AddState()
         {
             stateMachine.AddState(StateEnum.Idle, new IdlePlayerState());
@@ -135,6 +135,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             }          
             for (int i = 0; i < MovingData.blockStaticUnits.Count; i++)
                 MovingData.blockStaticUnits[i].OnBePushed(direction, this);
+        }
+
+        protected override void OnOutTriggerBelow(GridUnit triggerUnit)
+        {
+            base.OnOutTriggerBelow(triggerUnit);
+            // TODO: Need Player Fall State
         }
 
         public override bool IsCurrentStateIs(StateEnum stateEnum)
