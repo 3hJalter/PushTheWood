@@ -67,6 +67,7 @@ namespace _Game.Managers
             undoCount = Constants.UNDO_COUNT;
             IsCanResetIsland = true;
             IsCanUndo = true;
+            GameManager.Ins.ChangeState(GameState.InGame);
         }
 
         private void OnWinGame()
@@ -74,6 +75,7 @@ namespace _Game.Managers
             timer.Stop();
             DevLog.Log(DevId.Hung, "ENDGAME - Show Win Screen");
             UIManager.Ins.OpenUI<WinScreen>();
+            GameManager.Ins.ChangeState(GameState.EndGame);
         }
 
         private void OnLoseGame()
@@ -81,6 +83,7 @@ namespace _Game.Managers
             timer.Stop();
             DevLog.Log(DevId.Hung, "ENDGAME - Show Lose Screen");
             UIManager.Ins.OpenUI<LoseScreen>();
+            GameManager.Ins.ChangeState(GameState.EndGame);
         }
 
         private void OnDestroy()
