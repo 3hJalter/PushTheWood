@@ -10,26 +10,18 @@ namespace _Game._Scripts.InGame
 {
     public class HintLineTrail : HMonoBehaviour
     {
-        [SerializeField] private float moveSpeed = 7f;
-        [SerializeField] private TrailRenderer trail;
-        [SerializeField] private Material trailMaterial;
+        [SerializeField] private ParticleSystem particleTrail;
+        [ReadOnly]
+        [SerializeField] private float moveSpeed = Constants.HINT_LINE_TRAIL_SPEED;
         [ReadOnly]
         [SerializeField] private Vector3 currentDestination;
         [ReadOnly]
         [SerializeField] private bool isMoving;
         [ReadOnly]
+        [SerializeField] private bool isLooping;
+        [ReadOnly]
         [SerializeField] private List<Vector3> path = new();
         private int _pathDestinationIndex;
-        
-        // _EmissiveIntensity id
-        private static readonly int EmissiveIntensity = Shader.PropertyToID("_EmissiveIntensity");
-        private const float EMISSIVE_INTENSITY = 2f;
-        private float _initialEmissiveIntensity;
-        
-        private void Start()
-        {
-            _initialEmissiveIntensity = EMISSIVE_INTENSITY;
-        }
 
         private void Update()
         {
@@ -41,49 +33,62 @@ namespace _Game._Scripts.InGame
             if (_pathDestinationIndex < path.Count - 1)
             {
                 _pathDestinationIndex++;
-                currentDestination = path[_pathDestinationIndex];
+                currentDestination = GetDestination(_pathDestinationIndex);
             }
             else
             {
                 isMoving = false;
+                if (!isLooping) return;
+                // Start from the beginning
+               Timing.RunCoroutine(OnLoop(), LOOP_TAG);
             }
         }
-        
-        public void SetPath(List<Vector3> pathIn)
+
+        private const string LOOP_TAG = "Loop";
+        private IEnumerator<float> OnLoop(float timing = 1f)
         {
-            if (pathIn.Count == 0) return;
-            path = pathIn;
+            yield return Timing.WaitForSeconds(timing);
+            particleTrail.Stop();
+            OnPlay(path, moveSpeed, isLooping);
         }
         
-        public void OnPlay()
+        public void OnPlay(List<Vector3> pathIn, float speed = -1, bool isLoop = false)
         {
-            if (path.Count == 0) return;
+            if (pathIn.Count == 0) return;
+            isLooping = isLoop;
+            path = pathIn;
+            Tf.position = GetDestination(0);
             // Reset the trail
-            trail.Clear();
-            fadeOut?.Kill();
-            trailMaterial.SetFloat(EmissiveIntensity, _initialEmissiveIntensity);
-            Timing.RunCoroutine(WaitOneFrameToSetEmitting(true));
+            moveSpeed = speed > 0 ? speed : Constants.HINT_LINE_TRAIL_SPEED;
+            // particleTrail.Stop();
+            // particleTrail.Clear();
+            Timing.RunCoroutine(WaitOneFrameToStart());
             isMoving = true;
-            Tf.position = path[0];
             _pathDestinationIndex = 1;
-            currentDestination = path[_pathDestinationIndex];
+            currentDestination = GetDestination(_pathDestinationIndex);
+        }
+
+        private Vector3 GetDestination(int index)
+        {
+            return index > path.Count - 1 ? Vector3.zero : path[index];
         }
         
         public void OnCancel()
         {
             isMoving = false;
-            trail.emitting = false;
-            fadeOut = DOVirtual.Float(EMISSIVE_INTENSITY, 0, 1f, value =>
-                trailMaterial.SetFloat(EmissiveIntensity, value)).SetEase(Ease.OutQuart);
+            if (isLooping)
+            {
+                isLooping = false;
+                Timing.KillCoroutines(LOOP_TAG);
+            }
+            particleTrail.Stop();
         }
         
         // Wait one frame, then set the trail to emitting = true 
-        private IEnumerator<float> WaitOneFrameToSetEmitting(bool isEmitting)
+        private IEnumerator<float> WaitOneFrameToStart()
         {
             yield return Timing.WaitForOneFrame;
-            trail.emitting = isEmitting;
+            particleTrail.Play();
         }
-
-        private Tween fadeOut;
     }
 }

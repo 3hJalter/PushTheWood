@@ -69,7 +69,6 @@ namespace _Game.UIs.Screen
 
         public override void Close()
         {
-            MoveInputManager.Ins.HideButton();
             MoveInputManager.Ins.ShowContainer(false);
             base.Close();
         }
@@ -127,7 +126,8 @@ namespace _Game.UIs.Screen
         public void OnShowShadowObj()
         {
             LevelManager.Ins.CurrentLevel.ChangeShadowUnitAlpha(false);
-            FXManager.Ins.TrailHint.OnPlay();
+            FXManager.Ins.TrailHint.OnPlay(
+                LevelManager.Ins.CurrentLevel.HintLinePosList);
         }
 
         public void OnHideShadowObj()

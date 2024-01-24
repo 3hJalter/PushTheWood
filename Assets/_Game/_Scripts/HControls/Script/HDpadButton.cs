@@ -7,7 +7,6 @@ namespace HControls
     {
         [SerializeField] private Direction direction;
         [SerializeField] private GameObject pointerDownImg;
-
         public Direction Direction => direction;
 
         public GameObject PointerDownImg => pointerDownImg;

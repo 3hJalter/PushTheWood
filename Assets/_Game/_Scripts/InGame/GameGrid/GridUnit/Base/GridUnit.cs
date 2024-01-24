@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _Game._Scripts.Managers;
 using _Game.Utilities;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
@@ -18,37 +19,40 @@ namespace _Game.GameGrid.Unit
 {
     public abstract class GridUnit : GameUnit, IOriginator
     {
+        [Title("Skin")]
         // Model of Unit
         [SerializeField] public Transform skin; // Model location
         // MeshRenderer of Unit
         [SerializeField] private MeshRenderer meshRenderer;
 
+        [Title("Size")]
         // Size of this unit, the X and Z equal to the size of the main cell, the Y equal to height level
         [SerializeField] protected Vector3Int size;
 
         // Use when the init size Y need to be x.5 when Up (ex: 1.5, 2.5, 3.5)
         [SerializeField] protected bool isMinusHalfSizeY;
 
+        [Title("Height & Rotation Type")]
         // Height level of this unit
         [SerializeField] protected HeightLevel startHeight = HeightLevel.One; // Serialize for test
 
         [SerializeField] protected HeightLevel endHeight; // Serialize for test
-
-        // Offset when unit is down
-        [SerializeField] public float yOffsetOnDown = 0.5f;
-
+        
+        [Tooltip("Set this to true if you want to override the start height of the unit when it enter a cell by a constant start height value at first init")]
+        public bool overrideStartHeight; // Basically for button Unit, but static Unit is okay too
+        
         // How many height level can floating up when unit is on floating Surface (bool canFloating at GameGridCell)
         [SerializeField] private int floatingHeightOffset;
 
         public int FloatingHeightOffset => floatingHeightOffset;
-
-        // The island that this unit is on
-        public int islandID = -1;
-
+        
         // The current state of this unit (Up or Down)
         [FormerlySerializedAs("unitState")]
         [SerializeField]
         protected UnitTypeY unitTypeY = UnitTypeY.Up; // Serialize for test
+        
+        // Offset when unit is down
+        [SerializeField] public float yOffsetOnDown = 0.5f;
 
         // The type of this unit (Horizontal, Vertical, Both or None)
         [FormerlySerializedAs("unitType")]
@@ -57,22 +61,28 @@ namespace _Game.GameGrid.Unit
 
         [SerializeField] protected Direction skinRotationDirection = Direction.None;
 
-        [SerializeField] public readonly HashSet<GridUnit> belowUnits = new();
-
-        public readonly List<GameGridCell> cellInUnits = new();
-
+        
+        [Title("In Game Data")]
+        // The island that this unit is on
+        public int islandID = -1;
+        
         // Position data when this unit enter a cell
         public readonly EnterCellPosData EnterPosData = new();
 
+        public readonly List<GameGridCell> cellInUnits = new();
+        
         // All neighbor units of this unit
-        [SerializeField] protected readonly HashSet<GridUnit> neighborUnits = new();
-        [SerializeField] protected readonly HashSet<GridUnit> upperUnits = new();
+        public readonly HashSet<GridUnit> neighborUnits = new();
+        public readonly HashSet<GridUnit> upperUnits = new();
+        public readonly HashSet<GridUnit> belowUnits = new();
 
         // Save init data on first Initialize
         private UnitInitData _unitInitData;
 
         // The last direction that this unit is pushed
         protected Direction lastPushedDirection = Direction.None;
+
+        public Direction LastPushedDirection => lastPushedDirection;
 
         // The main cell that this unit is on
         protected GameGridCell mainCell;
@@ -181,6 +191,7 @@ namespace _Game.GameGrid.Unit
                 overrideDespawnSave = null;
             OnOutCells();
             this.Despawn();
+            lastPushedDirection = Direction.None;
             isSpawn = false;
         }
 
@@ -416,9 +427,10 @@ namespace _Game.GameGrid.Unit
                 }
             }
         }
-
+        
         private HeightLevel GetEnterStartHeight(GameGridCell enterCell)
         {
+            if (overrideStartHeight) return startHeight;
             HeightLevel enterStartHeight = Constants.MIN_HEIGHT;
             HeightLevel initHeight = Constants.DirFirstHeightOfSurface[enterCell.SurfaceType];
             if (enterCell.Data.canFloating) 
@@ -437,6 +449,7 @@ namespace _Game.GameGrid.Unit
 
         private HeightLevel GetEnterStartHeight(List<GameGridCell> enterCells)
         {
+            if (overrideStartHeight) return startHeight;
             HeightLevel enterStartHeight = Constants.MIN_HEIGHT;
             foreach (GameGridCell cell in enterCells)
             {

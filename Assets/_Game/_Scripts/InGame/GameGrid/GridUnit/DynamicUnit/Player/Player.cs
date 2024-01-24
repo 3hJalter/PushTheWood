@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player
 {
-    public class Player : GridUnitDynamic, IJumpTreeRootUnit
+    public class Player : GridUnitDynamic, IJumpTreeRootUnit, ICharacter
     {
         #region PROPERTYS
         public bool isRideVehicle;
@@ -31,10 +31,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public override StateEnum CurrentStateId
         {
             get => StateEnum.Idle;
-            set
-            {
-                stateMachine.ChangeState(value);
-            }
+            set => stateMachine.ChangeState(value);
         }
 
         private string _currentAnim = Constants.INIT_ANIM;
@@ -99,9 +96,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public override void OnDespawn()
         {
             _vehicle = null;
+            stateMachine.OverrideState = StateEnum.None;
             base.OnDespawn();
         }
-
+        
         private void AddState()
         {
             stateMachine.AddState(StateEnum.Idle, new IdlePlayerState());
@@ -137,6 +135,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             }          
             for (int i = 0; i < MovingData.blockStaticUnits.Count; i++)
                 MovingData.blockStaticUnits[i].OnBePushed(direction, this);
+        }
+
+        protected override void OnOutTriggerBelow(GridUnit triggerUnit)
+        {
+            base.OnOutTriggerBelow(triggerUnit);
+            // TODO: Need Player Fall State
         }
 
         public override bool IsCurrentStateIs(StateEnum stateEnum)
@@ -277,5 +281,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             }
         }
         #endregion
+
+        public void OnCharacterDie()
+        {
+            DevLog.Log(DevId.Hoang, "TODO: Player Die Logic");
+            stateMachine.OverrideState = StateEnum.Die;
+            IsDead = true;
+            stateMachine.ChangeState(StateEnum.Die);
+        }
     }
 }

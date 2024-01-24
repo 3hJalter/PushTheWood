@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 namespace _Game.DesignPattern
 {
     public class SimpleSingleton<T> : HMonoBehaviour where T : HMonoBehaviour

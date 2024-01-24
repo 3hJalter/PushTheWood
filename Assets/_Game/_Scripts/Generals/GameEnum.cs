@@ -107,7 +107,9 @@ namespace GameGridEnum
         TreeRoot = 2,
         TreeShort = 3,
         TreeHigh = 4,
-        FinalPoint = 5
+        FinalPoint = 5,
+        FloatingChest = 6,
+        ButtonUnit = 7,
     }
 
     public enum GridUnitDynamicType
@@ -130,5 +132,6 @@ namespace GameGridEnum
         WaterSplash = 1,
         LeafExplosion = 2,
         DangerIndicator = 3,
+        BombExplosion = 4,
     }
 }

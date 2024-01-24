@@ -8,6 +8,7 @@ namespace _Game.GameGrid.Unit
 {
     public abstract class GridUnitStatic : GridUnit
     {
+        [Title("Static Unit")]
         [SerializeField] protected GridUnitStaticType gridUnitStaticType;
         [SerializeField] protected Anchor anchor;
 

@@ -33,7 +33,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _RandomJitterRadius: 0
-    - _ShadowLightness: 0.2
+    - _ShadowLightness: 0.025
     - _TrampleFalloff: 1
     - _TrampleMaxDistance: 1
     - _TramplePushStrength: 0.25

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace HControls
@@ -12,7 +11,7 @@ namespace HControls
         private bool testing;
 
         [SerializeField] private HDpadButton[] dpadButtons;
-
+        
         private void OnDisable()
         {
             for (int i = 0; i < dpadButtons.Length; i++) dpadButtons[i].PointerDownImg.SetActive(false);

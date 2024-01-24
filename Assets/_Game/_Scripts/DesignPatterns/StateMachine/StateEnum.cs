@@ -20,7 +20,8 @@
         FormRaft = 12,
         RollBlock = 13, 
         Emerge = 14,
-
+        Explode = 15,
+        
         Attack = 100,
         Stun = 101,
     }

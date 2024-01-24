@@ -1,16 +1,13 @@
 ﻿using _Game.DesignPattern.StateMachine;
-using _Game.GameGrid.Unit.DynamicUnit.Chump;
-using _Game.GameGrid.Unit.DynamicUnit.Player;
-using _Game.Utilities;
 using GameGridEnum;
-using System.Collections.Generic;
-using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit
 {
     public abstract class GridUnitDynamic : GridUnit
     {
+        [Title("Dynamic Unit")]
         [SerializeField] protected GridUnitDynamicType gridUnitDynamicType;
         [SerializeField] public Anchor anchor;
         public abstract StateEnum CurrentStateId

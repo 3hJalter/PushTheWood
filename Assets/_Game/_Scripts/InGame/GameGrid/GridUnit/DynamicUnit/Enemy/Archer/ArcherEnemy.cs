@@ -1,19 +1,15 @@
-using _Game._Scripts.Managers;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates;
 using _Game.GameGrid.Unit.DynamicUnit.Interface;
-using _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState;
 using _Game.Managers;
 using DG.Tweening;
 using GameGridEnum;
-using HControls;
-using System.Collections;
-using System.Collections.Generic;
+using _Game.Utilities;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
 {
-    public class ArcherEnemy : GridUnitDynamic
+    public class ArcherEnemy : GridUnitDynamic, ICharacter
     {
         [SerializeField] private Animator animator;
         public bool IsDead = false;
@@ -22,10 +18,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
         public override StateEnum CurrentStateId
         {
             get => StateEnum.Idle;
-            set
-            {
-                stateMachine.ChangeState(value);
-            }
+            set => stateMachine.ChangeState(value);
         }
 
         private string _currentAnim = Constants.INIT_ANIM;
@@ -68,11 +61,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
         }
         public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
         {
-            if (pushUnit is Player.Player)
+            if (pushUnit is Player.Player player)
             {
                 LookDirection(Constants.InvDirection[direction]);
                 stateMachine.ChangeState(StateEnum.Idle);
-                ((Player.Player)pushUnit).CheckingStunState();
+                player.CheckingStunState();
                 return;
             }
             IsDead = true;
@@ -100,11 +93,19 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
         {
             return animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1;
         }
-        public void LookDirection(Direction directionIn)
+
+        private void LookDirection(Direction directionIn)
         {
             if (directionIn is Direction.None) return;
             skinRotationDirection = directionIn;
             skin.DOLookAt(Tf.position + Constants.DirVector3[directionIn], 0.2f, AxisConstraint.Y, Vector3.up);
+        }
+
+        public void OnCharacterDie()
+        {
+            DevLog.Log(DevId.Hoang, "TODO: Archer Die Logic");
+            IsDead = true;
+            stateMachine.ChangeState(StateEnum.Die);
         }
     }
 }

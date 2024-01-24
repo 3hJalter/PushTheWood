@@ -15,7 +15,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         private bool _firstTime;
         private Direction direction;
         public StateEnum Id => StateEnum.Push;
-
+        
         public void OnEnter(Player t)
         {
             originAnimSpeed = t.AnimSpeed;

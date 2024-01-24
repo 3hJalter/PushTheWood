@@ -45,7 +45,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             Vector3 axis = Vector3.Cross(Vector3.up, Constants.DirVector3[direction]);
             float lastAngle = 0;
             ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.LeafExplosion),
-                gameObject.transform.position + Vector3.up * 2f);
+                Tf.position + Vector3.up * 2f);
             DOVirtual.Float(0, DEGREE * 4 * DECAY_VALUE * DECAY_VALUE, Constants.MOVING_TIME * 1f, i =>
                 {
                     float rotateAngle;

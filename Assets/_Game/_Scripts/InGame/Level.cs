@@ -81,7 +81,9 @@ namespace _Game._Scripts.InGame
 
         public bool IsInit { get; private set; }
 
-        public GridSurface[,] GridSurfaceMap { get; private set; }
+        private GridSurface[,] GridSurfaceMap { get; set; }
+
+        public List<Vector3> HintLinePosList { get; } = new();
 
         public List<LevelUnitData> UnitDataList { get; } = new();
 
@@ -331,42 +333,6 @@ namespace _Game._Scripts.InGame
             }
         }
         
-        // private void SpawnGridSurfaceToGrid()
-        // {
-        //     string[] surfaceData = _textGridData.SurfaceData.Split('\n');
-        //     string[] surfaceRotationDirectionData = _textGridData.SurfaceRotationDirectionData.Split('\n');
-        //     surfaceRotationDirectionData = surfaceRotationDirectionData.Skip(1).ToArray();
-        //     string[] surfaceMaterialData = _textGridData.SurfaceMaterialData.Split('\n');
-        //     surfaceMaterialData = surfaceMaterialData.Skip(1).ToArray();
-        //     GridSurfaceMap = new GridSurface[surfaceData.Length, surfaceData[0].Split(' ').Length];
-        //     for (int x = 0; x < GridSizeX; x++)
-        //     {
-        //         string[] surfaceDataSplit = surfaceData[x].Split(' ');
-        //         string[] surfaceRotationDirectionDataSplit = surfaceRotationDirectionData[x].Split(' ');
-        //         string[] surfaceMaterialDataSplit = surfaceMaterialData[x].Split(' ');
-        //         if (surfaceDataSplit.Length != gridSizeY) continue;
-        //         for (int y = 0; y < gridSizeY; y++)
-        //         {
-        //             if (!int.TryParse(surfaceDataSplit[y], out int cell)) continue;
-        //             if (!Enum.IsDefined(typeof(PoolType), cell)) continue;
-        //             GridSurface gridSurface = DataManager.Ins.GetGridSurface((PoolType)cell);
-        //             if (gridSurface is null) return;
-        //             GameGridCell gridCell = GridMap.GetGridCell(x, y);
-        //             GridSurface surfaceClone = SimplePool.Spawn<GridSurface>(gridSurface,
-        //                 new Vector3(gridCell.WorldX, 0, gridCell.WorldY), Quaternion.identity);
-        //             gridCell.SetSurface(surfaceClone);
-        //             GridSurfaceMap[x, y] = gridCell.Data.gridSurface;
-        //
-        //             if (!int.TryParse(surfaceRotationDirectionDataSplit[y], out int directionSurface)) continue;
-        //             if (!Enum.IsDefined(typeof(Direction), directionSurface)) continue;
-        //             if (!int.TryParse(surfaceMaterialDataSplit[y], out int materialSurface)) continue;
-        //             if (!Enum.IsDefined(typeof(MaterialEnum), materialSurface)) continue;
-        //             surfaceClone.OnInit((Direction)directionSurface,
-        //                 (MaterialEnum)materialSurface);
-        //         }
-        //     }
-        // }
-
         private void AddIslandIdToSurface()
         {
             int currentIslandID = 0;
@@ -411,37 +377,6 @@ namespace _Game._Scripts.InGame
 
         private void OnSpawnUnits()
         {
-            // string[] unitData = _textGridData.UnitData.Split('\n');
-            // // Remove the first line of unitData
-            // unitData = unitData.Skip(1).ToArray();
-            // string[] unitRotationDirectionData = _textGridData.UnitRotationDirectionData.Split('\n');
-            // unitRotationDirectionData = unitRotationDirectionData.Skip(1).ToArray();
-            // for (int x = 0; x < GridSizeX; x++)
-            // {
-            //     string[] unitDataSplit = unitData[x].Split(' ');
-            //     string[] unitRotationDirectionDataSplit = unitRotationDirectionData[x].Split(' ');
-            //     if (unitDataSplit.Length != gridSizeY) continue;
-            //     for (int y = 0; y < gridSizeY; y++)
-            //     {
-            //         if (!int.TryParse(unitDataSplit[y], out int unitCell)) continue;
-            //         if (!Enum.IsDefined(typeof(PoolType), unitCell)) continue;
-            //         if (!int.TryParse(unitRotationDirectionDataSplit[y], out int directionCell)) continue;
-            //         if (!Enum.IsDefined(typeof(Direction), directionCell)) continue;
-            //         if ((PoolType)unitCell is not PoolType.Player)
-            //         {
-            //             SpawnUnit(x, y, (PoolType)unitCell, (Direction)directionCell);
-            //         }
-            //         else
-            //         {
-            //             if (LevelManager.Ins.player != null) LevelManager.Ins.player.OnDespawn();
-            //             firstPlayerInitCell = GridMap.GetGridCell(x, y);
-            //             firstPlayerDirection = (Direction)directionCell;
-            //             LevelManager.Ins.player = (Player) SpawnUnit(x, y, (PoolType)unitCell, (Direction)directionCell);
-            //         }
-            //
-            //     }
-            // }
-            
             // Loop through all uD (unit data) in _rawLevelData
             for (int i = 0; i < _rawLevelData.uD.Length; i++)
             {
@@ -470,20 +405,21 @@ namespace _Game._Scripts.InGame
             {
                 GameGridCell cell = GridMap.GetGridCell(x, y);
                 GridUnit unit = SimplePool.Spawn<GridUnit>(DataManager.Ins.GetGridUnit(type));
-                UnitDataList.Add(new LevelUnitData
+                LevelUnitData levelUnitData = new LevelUnitData
                 {
                     mainCellIn = cell,
-                    startHeightIn = HeightLevel.One,
+                    startHeightIn = unit.overrideStartHeight ? unit.StartHeight : HeightLevel.One,
                     directionIn = direction,
                     unitType = type,
                     unit = unit
-                });
-                unit.OnSetPositionAndRotation(PredictUnitPos(), direction);
+                };
+                UnitDataList.Add(levelUnitData);
+                unit.OnSetPositionAndRotation(PredictUnitPos(levelUnitData.startHeightIn), direction);
                 return unit;
 
-                Vector3 PredictUnitPos()
+                Vector3 PredictUnitPos(HeightLevel heightLevel)
                 {
-                    float offsetY = (float)HeightLevel.One / 2 * Constants.CELL_SIZE;
+                    float offsetY = (float) heightLevel / 2 * Constants.CELL_SIZE;
                     if (unit.UnitTypeY == UnitTypeY.Down) offsetY -= unit.yOffsetOnDown;
                     return cell.WorldPos + Vector3.up * offsetY;
                 }
@@ -492,33 +428,6 @@ namespace _Game._Scripts.InGame
 
         private void OnSpawnShadowUnit()
         {
-            // // shadow unit has format x y z xAngle yAngle zAngle unitType
-            // // each shadow unit is split by '\n'
-            // string[] shadowUnitData = _textGridData.ShadowUnitData.Split('\n').Skip(1).ToArray();
-            // for (int i = 0; i < shadowUnitData.Length; i++)
-            // {
-            //     string[] shadowUnitDataSplit = shadowUnitData[i].Split(' ');
-            //     if (shadowUnitDataSplit.Length != 7) continue;
-            //     if (!int.TryParse(shadowUnitDataSplit[6], out int unitCell)) continue;
-            //     if (!Enum.IsDefined(typeof(PoolType), unitCell)) continue;
-            //     PoolType type = (PoolType)unitCell;
-            //     Vector3 position = new(float.Parse(shadowUnitDataSplit[0], CultureInfo.InvariantCulture), 
-            //         float.Parse(shadowUnitDataSplit[1], CultureInfo.InvariantCulture), 
-            //         float.Parse(shadowUnitDataSplit[2], CultureInfo.InvariantCulture));
-            //     Vector3 eulerAngle = new(float.Parse(shadowUnitDataSplit[3], CultureInfo.InvariantCulture), 
-            //         float.Parse(shadowUnitDataSplit[4], CultureInfo.InvariantCulture), 
-            //         float.Parse(shadowUnitDataSplit[5], CultureInfo.InvariantCulture));
-            //     GridUnit unit = Object.Instantiate(DataManager.Ins.GetGridUnit(type));
-            //     unit.Tf.position = position;
-            //     DevLog.Log(DevId.Hoang, "Init shadow unit at: " + position);
-            //     unit.Tf.eulerAngles = eulerAngle;
-            //     unit.ChangeMaterial(DataManager.Ins.GetTransparentMaterial());
-            //     unit.SetAlphaTransparency(0);
-            //     unit.ChangeReceiveShadow(false);
-            //     ShadowUnitList.Add(unit);
-            //     unit.gameObject.SetActive(false);
-            // }
-            
             // Loop through all suD (shadow unit data) in _rawLevelData
             for (int i = 0; i < _rawLevelData.suD.Length; i++)
             {
@@ -540,27 +449,12 @@ namespace _Game._Scripts.InGame
         }
 
         private void OnSetHintLine() {
-            List<Vector3> hintLinePosList = new();
-            // string[] splitHintLineString = _textGridData.TrailHintData.Split(" ; ");
-            // if (splitHintLineString.Length == 0) return;
-            
-            // foreach (string s in splitHintLineString)
-            // {
-            //     string[] split = s.Split(' ');
-            //     if (split.Length != 2) continue;
-            //     if (!float.TryParse(split[0], out float x)) continue;
-            //     if (!float.TryParse(split[1], out float z)) continue;
-            //     hintLinePosList.Add(new Vector3(x, Constants.DEFAULT_HINT_TRAIL_HEIGHT, z));
-            // }
-            
             // Loop through all htD (hint trail data) in _rawLevelData
             for (int i = 0; i < _rawLevelData.htD.Length; i++)
             {
                 RawLevelData.HintTrailData hintTrailData = _rawLevelData.htD[i];
-                hintLinePosList.Add(new Vector3(hintTrailData.p.x, Constants.DEFAULT_HINT_TRAIL_HEIGHT, hintTrailData.p.y));
+                HintLinePosList.Add(new Vector3(hintTrailData.p.x, Constants.DEFAULT_HINT_TRAIL_HEIGHT, hintTrailData.p.y));
             }
-            
-            FXManager.Ins.TrailHint.SetPath(hintLinePosList);
         }
         
         public void OnInitPlayerToLevel()

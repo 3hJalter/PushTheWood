@@ -48,7 +48,7 @@ namespace _Game._Scripts.Managers
             OnForceResetMove();
         }
         
-        public void HideButton()
+        private void HideButton()
         {
             HInputManager.SetDefault();
             DpadObj.SetActive(false);
@@ -89,6 +89,7 @@ namespace _Game._Scripts.Managers
         public void ShowContainer(bool isShow)
         {
             container.SetActive(isShow);
+            if (!isShow) HideButton();
         }
     }
 }
