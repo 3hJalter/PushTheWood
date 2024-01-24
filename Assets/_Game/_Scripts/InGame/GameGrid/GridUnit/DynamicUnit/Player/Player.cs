@@ -226,7 +226,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         {
             if (mainCell != null && !IsStun && mainCell.Data.IsDanger)
             {
-                GameManager.Ins.PostEvent(DesignPattern.EventID.PlayerInDangerCell, mainCell);
+                GameManager.Ins.PostEvent(DesignPattern.EventID.ObjectInOutDangerCell, mainCell);
                 IsStun = true;
             }
         }
