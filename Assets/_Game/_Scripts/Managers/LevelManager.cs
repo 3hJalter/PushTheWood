@@ -169,6 +169,7 @@ namespace _Game.GameGrid
         {
             player.OnDespawn();
             CurrentLevel.ResetAllIsland();
+            CurrentLevel.ResetNonIslandUnit();
             CurrentLevel.GridMap.Reset();
             // player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
             // player.OnInit(CurrentLevel.firstPlayerInitCell);
