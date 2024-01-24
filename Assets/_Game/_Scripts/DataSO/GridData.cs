@@ -19,27 +19,26 @@ namespace _Game.Data
         [SerializeField] private List<TextAsset> dailyChallengerLevel = new();
         [SerializeField] private List<TextAsset> secretLevel = new();
         
-        [Title("Building Unit")]
-        // ReSharper disable once Unity.RedundantSerializeFieldAttribute
-        [SerializeField]
-        private readonly Dictionary<PoolType, BuildingUnit> _buildingUnitDic = new();
-
         [Title("Dynamic Unit")]
-        // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         [SerializeField]
-        private readonly Dictionary<PoolType, GridUnitDynamic> _dynamicUnitDic = new();
+        private readonly Dictionary<PoolType, GridUnitDynamic> _dynamicUnitDict = new();
 
         [Title("Static Unit")]
-        // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         [SerializeField]
-        private readonly Dictionary<PoolType, GridUnitStatic> _staticUnitDic = new();
-
+        private readonly Dictionary<PoolType, GridUnitStatic> _staticUnitDict = new();
+        
+        [Title("Building Unit")]
+        [SerializeField]
+        private readonly Dictionary<PoolType, BuildingUnit> _buildingUnitDict = new();
+        
         [Title("Surface")]
-        // ReSharper disable once Unity.RedundantSerializeFieldAttribute
-        // ReSharper disable once CollectionNeverUpdated.Local
         [SerializeField]
-        private readonly Dictionary<PoolType, GridSurface> _surfaceDic = new();
+        private readonly Dictionary<PoolType, GridSurface> _surfaceDict = new();
 
+        [Title("Environment Object")]
+        [SerializeField]
+        private readonly Dictionary<PoolType, EnvironmentObject[]> _environmentObjectsDict = new();
+        
         public int CountNormalLevel => normalLevel.Count;
 
         public TextAsset GetLevelData(LevelType type, int index)
@@ -55,18 +54,29 @@ namespace _Game.Data
 
         public GridSurface GetGridSurface(PoolType poolType)
         {
-            return _surfaceDic.GetValueOrDefault(poolType);
+            return _surfaceDict.GetValueOrDefault(poolType);
         }
 
         public GridUnit GetGridUnit(PoolType poolType)
         {
             // Get from dictionary static unit first
-            if (_staticUnitDic.TryGetValue(poolType, out GridUnitStatic staticUnit)) return staticUnit;
+            if (_staticUnitDict.TryGetValue(poolType, out GridUnitStatic staticUnit)) return staticUnit;
             // else get from dictionary dynamic unit
-            if (_dynamicUnitDic.TryGetValue(poolType, out GridUnitDynamic dynamicUnit)) return dynamicUnit;
+            if (_dynamicUnitDict.TryGetValue(poolType, out GridUnitDynamic dynamicUnit)) return dynamicUnit;
             // else get from dictionary building unit or return null (default)
-            return _buildingUnitDic.GetValueOrDefault(poolType);
+            return _buildingUnitDict.GetValueOrDefault(poolType);
+        }
+
+        public EnvironmentObject GetRandomEnvironmentObject(PoolType poolType)
+        {
+            EnvironmentObject[] environmentObjects = _environmentObjectsDict.GetValueOrDefault(poolType);
+            if (environmentObjects == null || environmentObjects.Length == 0)
+            {
+                return null;
+            }
+            int randomIndex = UnityEngine.Random.Range(0, environmentObjects.Length);
             
+            return _environmentObjectsDict[poolType][randomIndex];
         }
 
         public void AddGridTextData(LevelType type, TextAsset textAsset)

@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VinhLB;
 
 namespace _Game.Managers
 {
@@ -21,6 +22,7 @@ namespace _Game.Managers
 
         private bool isCanUndo = true;
         private bool isCanResetIsland = true;
+        
         public bool IsCanUndo
         {
             get => isCanUndo;
@@ -72,15 +74,16 @@ namespace _Game.Managers
 
         private void OnWinGame()
         {
-            UIManager.Ins.OpenUI<WinScreen>();
             timer.Stop();
             DevLog.Log(DevId.Hung, "ENDGAME - Show Win Screen");
+            UIManager.Ins.OpenUI<WinScreen>();
         }
 
         private void OnLoseGame()
         {
             timer.Stop();
             DevLog.Log(DevId.Hung, "ENDGAME - Show Lose Screen");
+            UIManager.Ins.OpenUI<LoseScreen>();
         }
 
         private void OnDestroy()

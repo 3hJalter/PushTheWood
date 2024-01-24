@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
@@ -14,6 +15,8 @@ namespace VinhLB
         [SerializeField]
         private int _activeTabIndex;
         [SerializeField]
+        private float _inactiveTabButtonWidth = 300f;
+        [SerializeField]
         private bool _useCustomSprite;
         [ShowIf(nameof(_useCustomSprite), false)]
         [SerializeField]
@@ -26,7 +29,15 @@ namespace VinhLB
         private Sprite _tabActiveSprite;
 
         private TabButton _selectedTabButton;
-        
+
+        private void Start()
+        {
+            for (int i = 0; i < _tabButtonList.Count; i++)
+            {
+                _tabButtonList[i].SetPreferredWidth(_inactiveTabButtonWidth);
+            }
+        }
+
         public void ResetSelectedTab()
         {
             if (_tabButtonList.Count > 0)
@@ -79,7 +90,7 @@ namespace VinhLB
             }
             else
             {
-                button.ChangeBackgroundSprite(_tabActiveSprite);
+                button.SetBackgroundSprite(_tabActiveSprite);
             }
 
             int index = _tabButtonList.IndexOf(button);
@@ -111,7 +122,7 @@ namespace VinhLB
                 }
                 else
                 {
-                    _tabButtonList[i].ChangeBackgroundSprite(_tabIdleSprite);
+                    _tabButtonList[i].SetBackgroundSprite(_tabIdleSprite);
                 }
             }
         }

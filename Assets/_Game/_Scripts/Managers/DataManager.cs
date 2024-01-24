@@ -3,16 +3,13 @@ using _Game.DesignPattern;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VinhLB;
 
 namespace _Game.Managers
 {
     public class DataManager : Singleton<DataManager>
     {
-        private GameData _gameData;
-        
-        public GameData GameData => _gameData ?? new GameData();
-        
         [SerializeField]
         private AudioData audioData;
         [SerializeField]
@@ -21,16 +18,19 @@ namespace _Game.Managers
         private MaterialData materialData;
         [SerializeField]
         private VFXData _vfxData;
-        [SerializeField]
-        private EnvironmentObjectData _environmentObjectData;
 
+        private GameData _gameData;
+        
         public AudioData AudioData => audioData;
-
+        public VFXData VFXData => _vfxData;
+        public GameData GameData => _gameData ??= Database.LoadData();
         public int CountNormalLevel => gridData.CountNormalLevel;
         public int CountSurfaceMaterial => materialData.CountSurfaceMaterial;
 
-        public VFXData VFXData => _vfxData;
-        public EnvironmentObjectData EnvironmentObjectData => _environmentObjectData;
+        public void Save()
+        {
+            Database.SaveData(_gameData);
+        }
         
         public Material GetTransparentMaterial()
         {
@@ -80,6 +80,11 @@ namespace _Game.Managers
         public int GetGridTextDataIndex(LevelType type, TextAsset load)
         {
             return gridData.GetGridTextDataIndex(type, load);
+        }
+
+        public EnvironmentObject GetRandomEnvironmentObject(PoolType poolType)
+        {
+            return gridData.GetRandomEnvironmentObject(poolType);
         }
     }
 }

@@ -8,15 +8,17 @@ namespace _Game.Data
     [CreateAssetMenu(fileName = "AudioData", menuName = "ScriptableObjects/AudioData", order = 1)]
     public class AudioData : SerializedScriptableObject
     {
-        // ReSharper disable once Unity.RedundantSerializeFieldAttribute
-        [Title("BGM")] [SerializeField] private readonly Dictionary<BgmType, AudioClip> _bgmDic;
+        [Title("BGM")]
+        [SerializeField]
+        private readonly Dictionary<BgmType, AudioClip> _bgmDict;
+        
+        [Title("SFX")]
+        [SerializeField]
+        private readonly Dictionary<SfxType, AudioClip> _sfxDict;
 
-        // ReSharper disable once Unity.RedundantSerializeFieldAttribute
-        [Title("SFX")] [SerializeField] private readonly Dictionary<SfxType, AudioClip> _sfxDic;
+        public Dictionary<BgmType, AudioClip> BGMDict => _bgmDict;
 
-        public Dictionary<BgmType, AudioClip> BGMDic => _bgmDic;
-
-        public Dictionary<SfxType, AudioClip> SfxDic => _sfxDic;
+        public Dictionary<SfxType, AudioClip> SfxDict => _sfxDict;
     }
 }
 

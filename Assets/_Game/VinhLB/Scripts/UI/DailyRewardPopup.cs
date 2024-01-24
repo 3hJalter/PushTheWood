@@ -21,9 +21,9 @@ namespace VinhLB
         {
             for (int i = 0; i < DailyRewardManager.Ins.DailyRewardSettingsSO.CycleDays; i++)
             {
-                if (_dailyRewardItemList[i].Reward != DailyRewardManager.Ins.RewardArray[i])
+                if (_dailyRewardItemList[i].Reward != DailyRewardManager.Ins.Rewards[i])
                 {
-                    _dailyRewardItemList[i].Initialize(i, DailyRewardManager.Ins.RewardArray[i]);
+                    _dailyRewardItemList[i].Initialize(i, DailyRewardManager.Ins.Rewards[i]);
                 }
 
                 _dailyRewardItemList[i].UpdateVisual();

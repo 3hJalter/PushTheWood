@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -12,13 +13,17 @@ namespace VinhLB
         [SerializeField]
         private TabGroup _tabGroup;
         [SerializeField]
+        private bool _interactable = true;
+        [SerializeField]
         private Image _background;
         [SerializeField]
-        private Image _icon;
+        private LayoutElement _layoutElement;
         [SerializeField]
         private GameObject _activeGO;
         [SerializeField]
-        private LayoutElement _layoutElement;
+        private Image _icon;
+        [SerializeField]
+        private TMP_Text _nameText;
 
         private bool _active;
         private Transform _iconTransform;
@@ -37,32 +42,41 @@ namespace VinhLB
                 _iconTransform = _icon.transform;
             }
             _iconTransform.DOKill();
-            
+
             if (_active)
             {
+                _layoutElement.flexibleWidth = 1f;
+
                 _activeGO.SetActive(true);
-                
+
+                _nameText.gameObject.SetActive(true);
+
                 if (animated)
                 {
-                    _iconTransform.DOScale(1.25f, 0.25f).SetEase(Ease.OutBack);
+                    float duration = 0.2f;
+                    Sequence sequence = DOTween.Sequence();
+                    sequence.Append(_iconTransform.DOLocalMove(Vector3.up * 50f, duration).SetEase(Ease.OutBack))
+                        .Join(_iconTransform.DOScale(1.25f, duration).SetEase(Ease.OutBack));
                 }
                 else
                 {
+                    _iconTransform.localPosition = Vector3.up * 50f;
                     _iconTransform.localScale = Vector3.one * 1.25f;
                 }
-
-                _layoutElement.flexibleWidth = 1f;
             }
             else
             {
-                _activeGO.SetActive(false);
-                
-                _iconTransform.localScale = Vector3.one;
-                
                 _layoutElement.flexibleWidth = 0f;
+
+                _activeGO.SetActive(false);
+
+                _nameText.gameObject.SetActive(false);
+
+                _iconTransform.localPosition = Vector3.zero;
+                _iconTransform.localScale = Vector3.one;
             }
         }
-        
+
         public void SetBackgroundAlpha(float value)
         {
             Color color = _background.color;
@@ -70,24 +84,47 @@ namespace VinhLB
             _background.color = color;
         }
 
-        public void ChangeBackgroundSprite(Sprite sprite)
+        public void SetBackgroundSprite(Sprite sprite)
         {
             _background.sprite = sprite;
         }
 
+        public void SetPreferredWidth(float value)
+        {
+            _layoutElement.preferredWidth = value;
+        }
+
         public void OnPointerClick(PointerEventData eventData)
         {
-            _tabGroup.OnTabSelected(this, true);
+            if (_interactable)
+            {
+                _tabGroup.OnTabSelected(this, true);
+            }
+            else
+            {
+            }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            _tabGroup.OnTabEnter(this);
+            if (_interactable)
+            {
+                _tabGroup.OnTabEnter(this);
+            }
+            else
+            {
+            }
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            _tabGroup.OnTabExit(this);
+            if (_interactable)
+            {
+                _tabGroup.OnTabExit(this);
+            }
+            else
+            {
+            }
         }
     }
 }

@@ -47,6 +47,7 @@ namespace _Game.DesignPattern
             else
                 Debug.LogWarning("EventID " + eventID + " not found");
         }
+        
         public void PostEvent(EventID eventID, object param)
         {
             if (_listenerEventDictionaryParam.TryGetValue(eventID, out Action<object> value))

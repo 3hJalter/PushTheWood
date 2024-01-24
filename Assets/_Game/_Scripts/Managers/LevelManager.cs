@@ -13,6 +13,7 @@ using _Game.UIs.Screen;
 using _Game.Utilities;
 using _Game.Utilities.Grid;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VinhLB;
 using static _Game.Utilities.Grid.Grid<_Game.GameGrid.GameGridCell, _Game.GameGrid.GameGridCellData>;
 
@@ -24,17 +25,23 @@ namespace _Game.GameGrid
 
         // public Dictionary<int, Level> PreLoadLevels => _preLoadLevels;
 
-        [SerializeField] private int levelIndex;
+        [SerializeField]
+        private int _levelIndex;
+
         private Level _currentLevel;
         //Test
-        [SerializeField] Material FontMaterial;
+        [SerializeField]
+        private Material _fontMaterial;
         [SerializeField]
         private FishSpawner _fishSpawner;
+        [SerializeField]
+        private CloudSpawner _cloudSpawner;
 
+        public int LevelIndex => _levelIndex;
         public Level CurrentLevel => _currentLevel;
         public bool IsConstructingLevel;
-        
-        
+
+
         private CareTaker savingState;
         public Player player;
 
@@ -42,13 +49,13 @@ namespace _Game.GameGrid
         {
             // TEST
             // PlayerPrefs.SetInt(Constants.LEVEL_INDEX, 0);
-            if(DebugManager.Ins && DebugManager.Ins.Level >= 0)
+            if (DebugManager.Ins && DebugManager.Ins.Level >= 0)
             {
                 PlayerPrefs.SetInt(Constants.LEVEL_INDEX, DebugManager.Ins.Level);
             }
-            levelIndex = PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0);
-            GridUtilities.OverlayMaterial = FontMaterial;
-            OnGenerateLevel(levelIndex == 0);
+            _levelIndex = PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0);
+            GridUtilities.OverlayMaterial = _fontMaterial;
+            OnGenerateLevel(_levelIndex == 0);
             SetCameraToPosition(CurrentLevel.GetCenterPos());
         }
 
@@ -56,19 +63,22 @@ namespace _Game.GameGrid
         {
             OnCheckTutorial();
             IsConstructingLevel = true;
-            _currentLevel = new Level(LevelType.Normal, levelIndex);
-            if (needInit && !CurrentLevel.IsInit)
+            _currentLevel = new Level(LevelType.Normal, _levelIndex);
+            if (needInit && !_currentLevel.IsInit)
             {
                 InitLevel();
             }
-            
+
             _fishSpawner.SpawnFish();
+            // _cloudSpawner.SpawnClouds();
+            FXManager.Ins.UpdateFogColliderPositionAndScale(_currentLevel.GetBottomLeftPos(),
+                _currentLevel.GetTopRightPos());
         }
 
         public void InitLevel()
         {
             GameManager.Ins.PostEvent(EventID.StartGame);
-            if (CurrentLevel.IsInit) return;
+            if (_currentLevel.IsInit) return;
             _currentLevel.OnInitLevelSurfaceAndUnit();
             _currentLevel.OnInitPlayerToLevel();
             savingState = new CareTaker(this);
@@ -79,28 +89,32 @@ namespace _Game.GameGrid
             //NOTE: Test
             DebugManager.Ins?.DebugGridData(_currentLevel.GridMap);
             // TEMPORARY: CUTSCENE, player will be show when cutscene end
-            if (levelIndex == 0) HidePlayer(true);
+            if (_levelIndex == 0) HidePlayer(true);
         }
 
         public void ResetLevelIsland()
         {
             _currentLevel.ResetIslandPlayerOn();
-            _fishSpawner.SpawnFish(false);
+
+            // _fishSpawner.SpawnFish(false);
+            // _cloudSpawner.SpawnClouds();
+            // FXManager.Ins.UpdateFogColliderPositionAndSize(_currentLevel.GetBottomLeftPos(),
+            //     _currentLevel.GetTopRightPos());
         }
 
         private void OnCheckTutorial()
         {
-            if (TutorialManager.Ins.TutorialList.TryGetValue(levelIndex, out ITutorialCondition tutorialData))
+            if (TutorialManager.Ins.TutorialList.TryGetValue(_levelIndex, out ITutorialCondition tutorialData))
             {
                 tutorialData.ResetTutorial();
             }
         }
-        
+
         public void HidePlayer(bool isHide)
         {
             player.gameObject.SetActive(!isHide);
         }
-        
+
         public void SetCameraToPlayerIsland()
         {
             SetCameraToIsland(player.islandID);
@@ -110,7 +124,7 @@ namespace _Game.GameGrid
         {
             CameraManager.Ins.ChangeCameraTargetPosition(CurrentLevel.GetIsland(index).centerIslandPos);
         }
-        
+
         private void SetCameraToPosition(Vector3 position)
         {
             CameraManager.Ins.ChangeCameraTargetPosition(position);
@@ -120,18 +134,18 @@ namespace _Game.GameGrid
         {
             // Show win screen
             // +1 LevelIndex and save
-            levelIndex++;
+            _levelIndex++;
             // Temporary handle when out of level
-            if (levelIndex >= DataManager.Ins.CountNormalLevel) levelIndex = 0;
-            PlayerPrefs.SetInt(Constants.LEVEL_INDEX, levelIndex);
+            if (_levelIndex >= DataManager.Ins.CountNormalLevel) _levelIndex = 0;
+            PlayerPrefs.SetInt(Constants.LEVEL_INDEX, _levelIndex);
             GameManager.Ins.PostEvent(EventID.WinGame);
             // Future: Add reward collected in-game
         }
 
         public void OnGoLevel(int index)
         {
-            if (levelIndex == index) return;
-            levelIndex = index;
+            if (_levelIndex == index) return;
+            _levelIndex = index;
             IsConstructingLevel = true;
             _currentLevel.OnDeSpawnLevel();
             OnGenerateLevel(true);
@@ -143,13 +157,14 @@ namespace _Game.GameGrid
             IsConstructingLevel = true;
             _currentLevel.OnDeSpawnLevel();
             // TEMPORARY: Destroy object on cutscene at level 1, need other way to handle this
-            if (levelIndex - 1 == 0)
+            if (_levelIndex - 1 == 0)
             {
                 TutorialManager.Ins.OnDestroyCutsceneObject();
             }
             OnGenerateLevel(true);
             // OnChangeTutorialIndex();
         }
+
         public void OnRestart()
         {
             player.OnDespawn();
@@ -166,19 +181,23 @@ namespace _Game.GameGrid
         {
             savingState.Reset();
         }
+
         public void OnUndo()
-        {      
+        {
             savingState.Undo();
             SetCameraToPlayerIsland();
         }
+
         public void SaveGameState(bool isMerge)
         {
             savingState.Save(isMerge);
         }
+
         public void DiscardSaveState()
         {
             savingState.PopSave();
         }
+
         private void SetCameraToPlayer()
         {
             // CameraFollow.Ins.SetTarget(Player.Tf);`
@@ -190,9 +209,11 @@ namespace _Game.GameGrid
             LevelManager main;
             Stack<IMemento> dataHistorys = new Stack<IMemento>();
             Stack<List<IMemento>> objectHistorys = new Stack<List<IMemento>>();
+
             public CareTaker(LevelManager main)
             {
                 this.main = main;
+
                 #region Init Spawn State
                 SavingObjects();
                 HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
@@ -203,12 +224,13 @@ namespace _Game.GameGrid
                 SavingState();
                 #endregion
             }
+
             public void Undo()
             {
                 if (main.CurrentLevel.GridMap.IsChange)
                 {
                     SavingState(true);
-                    if(objectHistorys.Count < dataHistorys.Count)
+                    if (objectHistorys.Count < dataHistorys.Count)
                         objectHistorys.Push(objectHistorys.Peek());
                 }
                 if (dataHistorys.Count > 0)
@@ -226,7 +248,6 @@ namespace _Game.GameGrid
                 }
                 else
                 {
-
                     DevLog.Log(DevId.Hung, "UNDO_STATE - FAILURE!!");
                 }
             }
@@ -236,11 +257,13 @@ namespace _Game.GameGrid
                 SavingState(isMerge);
                 SavingObjects(isMerge);
             }
+
             public void PopSave()
             {
                 dataHistorys.Pop();
                 objectHistorys.Pop();
             }
+
             private void SavingState(bool isMerge = false)
             {
                 if (!isMerge || dataHistorys.Count == 0)
@@ -257,6 +280,7 @@ namespace _Game.GameGrid
                     stateData.Merge((GridMemento)main._currentLevel.GridMap.Save());
                 }
             }
+
             private void SavingObjects(bool isMerge = false)
             {
                 List<IMemento> states;
@@ -266,7 +290,7 @@ namespace _Game.GameGrid
                     HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
                     foreach (GridUnit gridUnit in gridUnits)
                     {
-                        if(gridUnit.IsSpawn)
+                        if (gridUnit.IsSpawn)
                             states.Add(gridUnit.Save());
                     }
                     objectHistorys.Push(states);
@@ -277,16 +301,17 @@ namespace _Game.GameGrid
                     HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
                     foreach (GridUnit gridUnit in gridUnits)
                     {
-                        if(gridUnit.IsSpawn && !states.Any(x => x.Id == gridUnit.GetHashCode()))
+                        if (gridUnit.IsSpawn && !states.Any(x => x.Id == gridUnit.GetHashCode()))
                             states.Add(gridUnit.Save());
                     }
                 }
             }
-            
+
             public void Reset()
             {
                 dataHistorys.Clear();
                 objectHistorys.Clear();
+
                 #region Init Spawn State
                 SavingObjects();
                 HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
@@ -299,5 +324,4 @@ namespace _Game.GameGrid
             }
         }
     }
-
 }

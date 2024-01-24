@@ -21,12 +21,12 @@ namespace _Game.Managers
 
         public AudioClip GetBgm(BgmType type)
         {
-            return GetAudio(audioData.BGMDic, type);
+            return GetAudio(audioData.BGMDict, type);
         }
 
         public AudioClip GetSfx(SfxType type)
         {
-            return GetAudio(audioData.SfxDic, type);
+            return GetAudio(audioData.SfxDict, type);
         }
 
         private static AudioClip GetAudio<T>(IReadOnlyDictionary<T, AudioClip> audioDictionary, T type)
@@ -37,21 +37,21 @@ namespace _Game.Managers
         public void PlayBgm(BgmType type, float fadeFloat = 0.3f)
         {
             bgm.loop = true;
-            if (fadeFloat == 0f || bgm.mute) PlayAudio(bgm, audioData.BGMDic, type);
+            if (fadeFloat == 0f || bgm.mute) PlayAudio(bgm, audioData.BGMDict, type);
             // FadeOut, Then Play
             else
                 DOVirtual.Float(1, 0, fadeFloat, value => VolumeDown(bgm, value))
                     .SetEase(Ease.Linear)
                     .OnComplete(() =>
                     {
-                        PlayAudio(bgm, audioData.BGMDic, type);
+                        PlayAudio(bgm, audioData.BGMDict, type);
                         bgm.volume = 1;
                     });
         }
 
         public void PlaySfx(SfxType type)
         {
-            PlayAudio(sfx, audioData.SfxDic, type);
+            PlayAudio(sfx, audioData.SfxDict, type);
         }
 
         public void PlaySfx(AudioClip audioClip)
@@ -79,7 +79,7 @@ namespace _Game.Managers
             List<AudioClip> audioClips = new();
             for (int i = 0; i < sfxTypes.Count; i++)
             {
-                AudioClip audioClip = audioData.SfxDic.TryGetValue(sfxTypes[i], out AudioClip sfx1) ? sfx1 : null;
+                AudioClip audioClip = audioData.SfxDict.TryGetValue(sfxTypes[i], out AudioClip sfx1) ? sfx1 : null;
                 if (audioClip == null) continue;
                 audioClips.Add(audioClip);
             }

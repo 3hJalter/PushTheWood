@@ -1,5 +1,4 @@
 ﻿using Sirenix.OdinInspector;
-using UnityEditor;
 using UnityEngine;
 
 namespace VinhLB
@@ -11,22 +10,35 @@ namespace VinhLB
         public bool OneCycleOnly = false;
         public bool DifferentFirstCycle = true;
         public bool MissRewardIfNotLogin = false;
-
         [ShowIf(nameof(DifferentFirstCycle), false)]
-        public Reward[] FirstCycleRewardArray;
-        public Reward[] RewardArray;
+        public Reward[] FirstCycleRewards;
+        public Reward[] Rewards;
     }
 
     [System.Serializable]
     public class Reward
     {
+        public RewardType RewardType;
         public string Name;
         public Sprite IconSprite;
         public int Amount;
 
         public void Obtain()
         {
-            
+            switch (RewardType)
+            {
+                case RewardType.Gold:
+                    break;
+                case RewardType.Gem:
+                    break;
+            }
         }
+    }
+
+    public enum RewardType
+    {
+        None = -1,
+        Gold = 0,
+        Gem = 1
     }
 }

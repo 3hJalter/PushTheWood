@@ -372,7 +372,7 @@ namespace _Game.DesignPattern
         FloatingChest = 18,
         ButtonUnit = 19,
 
-        // Grid Unit Placed Object
+        // Grid Unit Building Object
         HouseMain = 50,
         Fence = 51,
         StationFishing = 52,
@@ -389,6 +389,9 @@ namespace _Game.DesignPattern
         SurfaceGround3Side = 145,
         SurfaceGround2Side = 146,
         SurfaceGround2SideConnect = 147,
+        // Environment Object
+        Cloud = 200,
+        Shark = 201,
 
         //VFX
         DangerIndicator = 1000,

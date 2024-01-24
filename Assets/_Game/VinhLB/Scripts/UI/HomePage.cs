@@ -1,6 +1,7 @@
-﻿using _Game.Managers;
-using _Game.UIs.Popup;
+﻿using _Game.GameGrid;
+using _Game.Managers;
 using _Game.Utilities;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,8 @@ namespace VinhLB
         private Button _dailyChallengeButton;
         [SerializeField]
         private Button _secretMapButton;
+        [SerializeField]
+        private TMP_Text _levelText;
 
         private void Awake()
         {
@@ -39,6 +42,18 @@ namespace VinhLB
             {
                 UIManager.Ins.OpenUI<DailyRewardPopup>();
             }
+        }
+
+        public override void Open()
+        {
+            base.Open();
+
+            Invoke(nameof(UpdateStatus), 0.01f);
+        }
+
+        private void UpdateStatus()
+        {
+            _levelText.text = $"Level\n{LevelManager.Ins.LevelIndex + 1}";
         }
     }
 }

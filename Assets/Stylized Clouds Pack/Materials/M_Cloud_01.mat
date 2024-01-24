@@ -94,7 +94,7 @@ Material:
     - Vector1_2A06FCBD: 0.5
     - Vector1_A8FABF8F: 0.1
     - Vector1_D652EA7E: 0.1
-    - _AO_Strength: 1
+    - _AO_Strength: 0
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1

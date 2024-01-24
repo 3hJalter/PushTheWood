@@ -32,8 +32,8 @@ float _NumGrassTramplePositions;
 float4 _GrassTramplePositions[MAX_SIZE];
 float _GrassTrampleRadius[MAX_SIZE];
 
-void CalculateTrample_float(float3 WorldPosition, float Falloff, float PushAwayStrength, float PushDownStrength,
-                            out float3 Offset, out float WindMultiplier)
+void CalculateTrample_float(float3 WorldPosition, float MaxDistance, float Falloff, float PushAwayStrength,
+                            float PushDownStrength, out float3 Offset, out float WindMultiplier)
 {
     Offset = 0;
     WindMultiplier = 1;
