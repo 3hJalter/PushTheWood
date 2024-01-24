@@ -419,7 +419,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   panel: {fileID: 411562655595668974}
   deco: {fileID: 3430171826756397673}
-  dpad: {fileID: 0}
+  dpad: {fileID: 8906838841443468395}
   dpadButtonLeft: {fileID: 8906838841449345221}
   dpadButtonRight: {fileID: 8906838841114306614}
   dpadButtonUp: {fileID: 8906838841645309258}

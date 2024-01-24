@@ -245,7 +245,7 @@ GameObject:
   - component: {fileID: 6630061401179279427}
   - component: {fileID: 6630061401179279425}
   - component: {fileID: 6630061401179279430}
-  - component: {fileID: 4266264504525308849}
+  - component: {fileID: 4260204160995290605}
   m_Layer: 5
   m_Name: Tut_1_1
   m_TagString: Untagged
@@ -324,7 +324,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &4266264504525308849
+--- !u!114 &4260204160995290605
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -333,13 +333,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 6630061401179279428}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e777ecbe33e498a8eb7990583b1716a, type: 3}
+  m_Script: {fileID: 11500000, guid: 76c96dbf611948219faef4263031a390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDestroyOnClose: 1
+  isDestroyOnClose: 0
   useAnimator: 0
   animator: {fileID: 0}
-  panel: {fileID: 6630061402600170696}
+  panel: {fileID: 1478311394600487042}
   deco: {fileID: 5634189108057250001}
 --- !u!1 &6630061402600170702
 GameObject:
@@ -477,7 +477,7 @@ PrefabInstance:
     - target: {fileID: 8643770746723842650, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4266264504525308849}
+      objectReference: {fileID: 4260204160995290605}
     - target: {fileID: 8643770746723842650, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -485,7 +485,7 @@ PrefabInstance:
     - target: {fileID: 8643770746723842650, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4266264504525308849}
+      objectReference: {fileID: 4260204160995290605}
     - target: {fileID: 8643770746723842650, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -516,7 +516,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8643770746723842650, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: _Game._Scripts.Tutorial.ScreenTutorial.TutorialScreen12, Assembly-CSharp
+      value: _Game._Scripts.Tutorial.ScreenTutorial.TutorialScreen11, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8643770746723842650, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -524,7 +524,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8643770746723842650, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: _Game._Scripts.Tutorial.ScreenTutorial.TutorialScreen12, Assembly-CSharp
+      value: _Game._Scripts.Tutorial.TutorialScreen, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8643770746723842650, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -709,7 +709,7 @@ PrefabInstance:
     - target: {fileID: 8643770747054678695, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4266264504525308849}
+      objectReference: {fileID: 4260204160995290605}
     - target: {fileID: 8643770747054678695, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -717,7 +717,7 @@ PrefabInstance:
     - target: {fileID: 8643770747054678695, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4266264504525308849}
+      objectReference: {fileID: 4260204160995290605}
     - target: {fileID: 8643770747054678695, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -748,7 +748,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8643770747054678695, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: _Game._Scripts.Tutorial.ScreenTutorial.TutorialScreen12, Assembly-CSharp
+      value: _Game._Scripts.Tutorial.ScreenTutorial.TutorialScreen11, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8643770747054678695, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -756,7 +756,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8643770747054678695, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: _Game._Scripts.Tutorial.ScreenTutorial.TutorialScreen12, Assembly-CSharp
+      value: _Game._Scripts.Tutorial.TutorialScreen, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8643770747054678695, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -809,7 +809,7 @@ PrefabInstance:
     - target: {fileID: 8643770747183796014, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4266264504525308849}
+      objectReference: {fileID: 4260204160995290605}
     - target: {fileID: 8643770747183796014, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -817,7 +817,7 @@ PrefabInstance:
     - target: {fileID: 8643770747183796014, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4266264504525308849}
+      objectReference: {fileID: 4260204160995290605}
     - target: {fileID: 8643770747183796014, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -848,7 +848,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8643770747183796014, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: _Game._Scripts.Tutorial.ScreenTutorial.TutorialScreen12, Assembly-CSharp
+      value: _Game._Scripts.Tutorial.ScreenTutorial.TutorialScreen11, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8643770747183796014, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -856,7 +856,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8643770747183796014, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: _Game._Scripts.Tutorial.ScreenTutorial.TutorialScreen12, Assembly-CSharp
+      value: _Game._Scripts.Tutorial.TutorialScreen, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8643770747183796014, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -925,7 +925,7 @@ PrefabInstance:
     - target: {fileID: 8643770747366404022, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4266264504525308849}
+      objectReference: {fileID: 4260204160995290605}
     - target: {fileID: 8643770747366404022, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -933,7 +933,7 @@ PrefabInstance:
     - target: {fileID: 8643770747366404022, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4266264504525308849}
+      objectReference: {fileID: 4260204160995290605}
     - target: {fileID: 8643770747366404022, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -964,7 +964,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8643770747366404022, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: _Game._Scripts.Tutorial.ScreenTutorial.TutorialScreen12, Assembly-CSharp
+      value: _Game._Scripts.Tutorial.ScreenTutorial.TutorialScreen11, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8643770747366404022, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -972,7 +972,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8643770747366404022, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: _Game._Scripts.Tutorial.ScreenTutorial.TutorialScreen12, Assembly-CSharp
+      value: _Game._Scripts.Tutorial.TutorialScreen, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8643770747366404022, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -1048,3 +1048,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8643770746981963275, guid: 6a551d3bb595b89459262a7449677600, type: 3}
   m_PrefabInstance: {fileID: 8395702483484541997}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1478311394600487042 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6919642892992842927, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+  m_PrefabInstance: {fileID: 8395702483484541997}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
