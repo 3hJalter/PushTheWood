@@ -23,6 +23,11 @@ namespace _Game.GameGrid.Unit.StaticUnit
             Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
+            SetFloatingTween();
+        }
+
+        private void SetFloatingTween()
+        {
             #region ANIM
             //DEV: Refactor anim system
             if (IsInWater())
@@ -63,6 +68,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             ShowAnim(false);
             isInteracted = false;
+            floatingTween?.Kill();
             base.OnDespawn();
         }
 
