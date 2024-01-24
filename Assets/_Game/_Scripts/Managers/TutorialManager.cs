@@ -4,6 +4,7 @@ using _Game._Scripts.Tutorial.ObjectTutorial;
 using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.GameGrid.Unit;
+using _Game.Managers;
 using _Game.Utilities;
 using UnityEngine;
 
@@ -34,7 +35,7 @@ namespace _Game._Scripts.Managers
         
         private void Start()
         {
-            int index = PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0);
+            int index = DataManager.Ins.GameData.user.normalLevelIndex;
             if (index == 0) // TEMPORARY: need other way to handle this
             {
                 DevLog.Log(DevId.Hoang, "Play Animation");

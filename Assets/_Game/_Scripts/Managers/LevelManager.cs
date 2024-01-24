@@ -47,13 +47,11 @@ namespace _Game.GameGrid
 
         private void Start()
         {
-            // TEST
-            // PlayerPrefs.SetInt(Constants.LEVEL_INDEX, 0);
             if (DebugManager.Ins && DebugManager.Ins.Level >= 0)
             {
-                PlayerPrefs.SetInt(Constants.LEVEL_INDEX, DebugManager.Ins.Level);
+                DataManager.Ins.GameData.user.normalLevelIndex = DebugManager.Ins.Level;
             }
-            _levelIndex = PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0);
+            _levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
             GridUtilities.OverlayMaterial = _fontMaterial;
             OnGenerateLevel(_levelIndex == 0);
             SetCameraToPosition(CurrentLevel.GetCenterPos());
@@ -137,7 +135,8 @@ namespace _Game.GameGrid
             _levelIndex++;
             // Temporary handle when out of level
             if (_levelIndex >= DataManager.Ins.CountNormalLevel) _levelIndex = 0;
-            PlayerPrefs.SetInt(Constants.LEVEL_INDEX, _levelIndex);
+            DataManager.Ins.GameData.user.normalLevelIndex = _levelIndex;
+            DataManager.Ins.Save();
             GameManager.Ins.PostEvent(EventID.WinGame);
             // Future: Add reward collected in-game
         }

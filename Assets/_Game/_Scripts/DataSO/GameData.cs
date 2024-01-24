@@ -1,4 +1,5 @@
 ﻿using System;
+using _Game.Utilities;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -13,17 +14,18 @@ namespace _Game.Data
         [Serializable]
         public class UserData
         {
-            public int inGameLevel;
-
-            //Progress Data
+            // Level Progress Data
+            public int normalLevelIndex;
+            public int dailyLevelIndex;
+            public int secretLevelIndex;
+            
+            // Income Progress Data
             public int gold;
             public int gems;
-            public int score;
-            public int luckyWheelProgress;
-            public bool lastFreeSpinState;
+            public int ticket;
             public int dailyRewardClaimedCount;
 
-            //Purchase & First rate Data
+            // Purchase & First rate Data
             public bool purchasedNoAds;
             public bool rated;
 
@@ -33,7 +35,6 @@ namespace _Game.Data
             public int sessionPlayed;
             public DateTime startDailyRewardClaimTime = DateTime.Now.Date;
             public DateTime lastDailyRewardClaimTime = DateTime.Now.AddHours(-24);
-            public DateTime lastFreeSpinTime = DateTime.MinValue;
             public DateTime lastTimeLogOut = DateTime.Now;
             
             private int _keyCount;
@@ -74,7 +75,16 @@ namespace _Game.Data
 
         public static GameData LoadData()
         {
-            return PlayerPrefs.HasKey(DATA_KEY) ? JsonConvert.DeserializeObject<GameData>(PlayerPrefs.GetString(DATA_KEY)) : null;
+
+            if (PlayerPrefs.HasKey(DATA_KEY))
+            {
+                return JsonConvert.DeserializeObject<GameData>(PlayerPrefs.GetString(DATA_KEY));
+            }
+            // If no game data can be loaded, create new one
+            DevLog.Log(DevId.Hoang, "No game data can be loaded, create new one");
+            GameData gameData = new();
+            SaveData(gameData);
+            return gameData;
         }
     }
 }

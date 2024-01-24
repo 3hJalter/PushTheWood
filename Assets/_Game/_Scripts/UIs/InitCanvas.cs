@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using _Game.Data;
 using UnityEngine;
 using UnityEngine.UI;
 using _Game.Utilities.UI;
@@ -24,7 +25,7 @@ public class InitCanvas : UICanvas
     public int StartLevel => int.Parse(levelInputField.text);
     void Start()
     {
-        levelInputField.text = PlayerPrefs.GetInt(Constants.LEVEL_INDEX).ToString();
+        levelInputField.text = Database.LoadData().user.normalLevelIndex.ToString();
         gridLogicDebugToggle._OnValueChange = OnToggleValueChange;
         fpsDebugToggle._OnValueChange = OnToggleValueChange;
         logToggle._OnValueChange = OnToggleValueChange;        

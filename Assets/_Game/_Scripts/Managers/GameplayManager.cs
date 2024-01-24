@@ -53,23 +53,20 @@ namespace _Game.Managers
             screen.OnUndo += OnUndo;
             screen.OnResetIsland += OnResetIsland;
         }
+
+        public void OnResetTime()
+        {
+            time += Constants.LEVEL_TIME;
+            screen.Time = time;
+            timer.Start(1f, CountTime, true);
+        }
+        
         private void OnStartGame()
         {
-            time = Constants.LEVEL_TIME;
+            OnResetTime();
             undoCount = Constants.UNDO_COUNT;
-            screen.Time = time;
             IsCanResetIsland = true;
             IsCanUndo = true;
-            timer.Start(1f, CountTime, true);
-            void CountTime()
-            {
-                time -= 1;
-                screen.Time = time;
-                if(time <= 0)
-                {
-                    OnLoseGame();
-                }
-            }
         }
 
         private void OnWinGame()
@@ -106,6 +103,16 @@ namespace _Game.Managers
         {
             if (!isCanResetIsland) return;
             LevelManager.Ins.ResetLevelIsland();
+        }
+        
+        private void CountTime()
+        {
+            time -= 1;
+            screen.Time = time;
+            if(time <= 0)
+            {
+                OnLoseGame();
+            }
         }
     }
 }

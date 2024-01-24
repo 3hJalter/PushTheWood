@@ -1,9 +1,9 @@
-﻿using _Game.Data;
+﻿using _Game._Scripts.Managers;
+using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
 using UnityEngine;
-using UnityEngine.Serialization;
 using VinhLB;
 
 namespace _Game.Managers
@@ -14,17 +14,17 @@ namespace _Game.Managers
         #region Game Saving Data
         private GameData _gameData;
         
-        public GameData GameData => _gameData ?? LoadData();
+        public GameData GameData => _gameData ?? Load();
 
-        public GameData LoadData()
+        private GameData Load()
         {
             _gameData = Database.LoadData();
-            if (_gameData != null) return _gameData;
-            // If no game data can be loaded, create new one
-            _gameData = new GameData();
-            Database.SaveData(_gameData);
             return _gameData;
         }      
+        public void Save()
+        {
+            Database.SaveData(_gameData);
+        }
         #endregion
 
         #region In-Game Data
@@ -35,22 +35,63 @@ namespace _Game.Managers
         [SerializeField]
         private MaterialData materialData;
         [SerializeField]
-        private VFXData _vfxData;
+        private VFXData vfxData;
+        
+        public AudioData AudioData => audioData;
+        public VFXData VFXData => vfxData;
+        
         #endregion
 
+        #region Income Data function
+        
+        public void AddGold(int gold)
+        {
+            _gameData.user.gold += gold;
+            EventGlobalManager.Ins.OnMoneyGoldChanged?.Dispatch(_gameData.user.gold);
+            Save();
+        }
+        
+        public void AddGem(int gem)
+        {
+            _gameData.user.gems += gem;
+            EventGlobalManager.Ins.OnMoneyGemChanged?.Dispatch(_gameData.user.gems);
+            Save();
+        }
+        
+        public void AddTicket(int ticket)
+        {
+            _gameData.user.ticket += ticket;
+            EventGlobalManager.Ins.OnTicketChanged?.Dispatch(_gameData.user.ticket);
+            Save();
+        }
+        
+        public void SpendGold(int gold)
+        {
+            _gameData.user.gold -= gold;
+            EventGlobalManager.Ins.OnMoneyGoldChanged?.Dispatch(_gameData.user.gold);
+            Save();
+        }
+        
+        public void SpendGem(int gem)
+        {
+            _gameData.user.gems -= gem;
+            EventGlobalManager.Ins.OnMoneyGemChanged?.Dispatch(_gameData.user.gems);
+            Save();
+        }
+        
+        public void SpendTicket(int ticket)
+        {
+            _gameData.user.ticket -= ticket;
+            EventGlobalManager.Ins.OnTicketChanged?.Dispatch(_gameData.user.ticket);
+            Save();
+        }
 
-        public AudioData AudioData => audioData;
-        public VFXData VFXData => _vfxData;
+        #endregion
+        
+        #region In-Game Function
 
         public int CountNormalLevel => gridData.CountNormalLevel;
         public int CountSurfaceMaterial => materialData.CountSurfaceMaterial;
-
-        public void Save()
-        {
-            Database.SaveData(_gameData);
-        }
-
-       
         
         public Material GetTransparentMaterial()
         {
@@ -101,5 +142,9 @@ namespace _Game.Managers
         {
             return gridData.GetRandomEnvironmentObject(poolType);
         }
+
+        #endregion
+
+
     }
 }

@@ -1,8 +1,12 @@
+using System;
+using _Game._Scripts.Managers;
 using _Game.Data;
 using _Game.DesignPattern;
 using _Game.UIs.Screen;
+using _Game.Utilities;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Game.Managers
 {
@@ -19,9 +23,9 @@ namespace _Game.Managers
     public class GameManager : Dispatcher<GameManager>
     {
         [SerializeField]
-        private GameState _gameState;
+        private GameState gameState;
         [SerializeField]
-        private bool _reduceScreenResolution;
+        private bool reduceScreenResolution;
 
         private GameData _gameData;
         
@@ -31,7 +35,7 @@ namespace _Game.Managers
             Application.targetFrameRate = 60;
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
-            if (_reduceScreenResolution)
+            if (reduceScreenResolution)
             {
                 const int maxScreenHeight = 1280;
                 float ratio = Screen.currentResolution.width / (float)Screen.currentResolution.height;
@@ -39,14 +43,15 @@ namespace _Game.Managers
                     Screen.SetResolution(Mathf.RoundToInt(ratio * maxScreenHeight), maxScreenHeight, true);
             }
             
-            _gameData = LoadGameData();
-            
+            _gameData = DataManager.Ins.GameData;
             // TODO: Handle Loaded Data
             
             // TEST
-            if (PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0) != 0) UIManager.Ins.OpenUI<MainMenuScreen>();
+            if (_gameData.user.normalLevelIndex > 0) UIManager.Ins.OpenUI<MainMenuScreen>();
             // DontDestroyOnLoad(Tf.root.gameObject);
         }
+
+        #region Game State Handling
 
         public void ChangeState(GameState gameStateI)
         {
@@ -56,23 +61,46 @@ namespace _Game.Managers
                 AudioManager.Ins.PauseSfx();
                 PostEvent(EventID.Pause);
             }
-            else if (_gameState == GameState.Pause)
+            else if (gameState == GameState.Pause)
             {
                 DOTween.PlayAll();
                 AudioManager.Ins.UnPauseSfx();
                 PostEvent(EventID.UnPause);
             }
-            _gameState = gameStateI;
+            gameState = gameStateI;
         }
 
         public bool IsState(GameState gameStateI)
         {
-            return _gameState == gameStateI;
+            return gameState == gameStateI;
         }
 
-        private static GameData LoadGameData()
+        #endregion
+
+
+        #region OnApplication
+
+        private void OnApplicationFocus(bool hasFocus)
         {
-            return DataManager.Ins.LoadData();
+            if (hasFocus) return;
+            DevLog.Log(DevId.Hoang, "Application is in background");
+            DataManager.Ins.Save();
         }
+        
+        private void OnApplicationPause(bool pauseStatus)
+        {
+            if (!pauseStatus) return;
+            DevLog.Log(DevId.Hoang, "Application is in background");
+            DataManager.Ins.Save();
+        }
+        
+        private void OnApplicationQuit()
+        {
+            DevLog.Log(DevId.Hoang, "Application is quitting");
+            DataManager.Ins.Save();
+        }
+        
+        #endregion
+        
     }
 }

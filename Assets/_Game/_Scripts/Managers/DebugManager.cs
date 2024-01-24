@@ -3,6 +3,7 @@ using _Game.GameGrid;
 using _Game.Utilities.Grid;
 using System.Collections;
 using System.Collections.Generic;
+using _Game.Data;
 using UnityEngine;
 
 public class DebugManager : SimpleSingleton<DebugManager>
@@ -25,9 +26,12 @@ public class DebugManager : SimpleSingleton<DebugManager>
         {
             debugGrid = new Grid<GameGridCell, GameGridCellData>.DebugGrid();
         }
-
         FpsDebug.SetActive(isDebugFps);
         LogDebug.SetActive(isDebugLog);
         this.level = level;
+        // Save the level to database
+        GameData gameData = Database.LoadData();
+        gameData.user.normalLevelIndex = level;
+        Database.SaveData(gameData);
     }
 }
