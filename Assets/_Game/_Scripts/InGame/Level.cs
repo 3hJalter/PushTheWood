@@ -86,6 +86,7 @@ namespace _Game._Scripts.InGame
         public List<Vector3> HintLinePosList { get; } = new();
 
         public List<LevelUnitData> UnitDataList { get; } = new();
+        private List<GridUnit> nonIslandUnitLis =  new();
 
         public List<GridUnit> ShadowUnitList { get; } = new();
 
@@ -199,7 +200,10 @@ namespace _Game._Scripts.InGame
                     Island island = Islands[i];
                     island.ClearIsland();
                 }
-
+                for (int i = 0; i < nonIslandUnitLis.Count; i++)
+                {
+                    nonIslandUnitLis[i].OnDespawn();
+                }
                 // Set player to null
                 LevelManager.Ins.player.OnDespawn();
                 LevelManager.Ins.player = null;
@@ -467,7 +471,11 @@ namespace _Game._Scripts.InGame
         {
             data.unit.ResetData();
             data.unit.OnInit(data.mainCellIn, data.startHeightIn, true, data.directionIn, true);
-            if (data.mainCellIn.Data.gridSurface == null) return;
+            if (data.mainCellIn.Data.gridSurface == null)
+            {
+                nonIslandUnitLis.Add(data.unit);
+                return;
+            }
             Islands[data.mainCellIn.Data.gridSurface.IslandID]
                 .AddInitUnitToIsland(data.unit, data.unit.UnitUnitData, data.mainCellIn);
         }

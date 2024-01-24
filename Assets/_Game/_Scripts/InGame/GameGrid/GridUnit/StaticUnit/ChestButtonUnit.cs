@@ -2,6 +2,7 @@
 using _Game._Scripts.Managers;
 using _Game.DesignPattern;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
+using _Game.Managers;
 using _Game.Utilities;
 using DG.Tweening;
 using GameGridEnum;
@@ -31,7 +32,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         [SerializeField] private Animator chestAnimator;
         [SerializeField] private GameObject chestModel;
         [SerializeField] private GameObject lockedChestModel;
-        
+        [SerializeField] private ParticleSystem chestUnlockParticle;
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
             Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
@@ -74,8 +75,8 @@ namespace _Game.GameGrid.Unit.StaticUnit
             chestAnimator.gameObject.SetActive(true);
             chestModel.SetActive(true);
             lockedChestModel.SetActive(false);
-            canvas.SetActive(false);
-            // TODO: Dust effect
+            canvas.SetActive(false); 
+            chestUnlockParticle.Play();
         }
 
         private void SetText()

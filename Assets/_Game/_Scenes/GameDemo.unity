@@ -4252,6 +4252,10 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 3831606463841547381, guid: e5a095b28c16ee4498f594cbdd501931, type: 3}
+    - target: {fileID: 4228621076834520581, guid: e5a095b28c16ee4498f594cbdd501931, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 4228621076834520581, guid: e5a095b28c16ee4498f594cbdd501931, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5a095b28c16ee4498f594cbdd501931, type: 3}
 --- !u!1001 &6469700258730696710

@@ -33,7 +33,7 @@ MonoBehaviour:
     - {fileID: 8538035402792478575, guid: e51b66539c236b94386021d95f746ece, type: 3}
     - {fileID: 2553979289197978373, guid: 1bce3ee87a601454ea022ac203bf1dc9, type: 3}
     - {fileID: 3138856877929832973, guid: e48086e444c6b4c449635853210706fd, type: 3}
-    - {fileID: 0}
+    - {fileID: 3831606463841547381, guid: e5a095b28c16ee4498f594cbdd501931, type: 3}
     - {fileID: -684823040248915490, guid: 4c4972374503a684ba75a09118924d31, type: 3}
     - {fileID: -5441964512500297059, guid: fd2f6663f9d4bd54c86f8293b86544b0, type: 3}
     - {fileID: -5441964512500297059, guid: 07204eebc6a6cf6459a4188f1f724e0e, type: 3}
@@ -592,6 +592,7 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 1ecb37694e46c42479aca826b3764d86, type: 3}
   - {fileID: 4900000, guid: b6e0df4582718574b8c1df1644545880, type: 3}
   - {fileID: 4900000, guid: 1dbef46b5ca1b154ea369f7d0baa3a17, type: 3}
+  - {fileID: 4900000, guid: 5904e576d2b1f6444946d90cc1eec33d, type: 3}
   - {fileID: 4900000, guid: f2c9877245a153d408790aea8be53715, type: 3}
   dailyChallengerLevel:
   - {fileID: 4900000, guid: 58026dccfb4a4250b69fe6ebdf773377, type: 3}
