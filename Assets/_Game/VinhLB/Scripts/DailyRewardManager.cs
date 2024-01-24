@@ -8,6 +8,62 @@ namespace VinhLB
 {
     public class DailyRewardManager : Singleton<DailyRewardManager>
     {
+        public event Action OnDailyRewardParamsChanged;
+
+        [SerializeField]
+        private DailyRewardSettingsSO _dailyRewardSettingsSO;
+
+        #region Properties
+        public DailyRewardSettingsSO DailyRewardSettingsSO => _dailyRewardSettingsSO;
+        public bool IsTodayRewardObtained =>
+            DateTime.Now.Date <= DataManager.Ins.GameData.user.lastDailyRewardClaimTime;
+        public int TotalDays => _dailyRewardSettingsSO.MissRewardIfNotLogin
+            ? (DateTime.Now.Date - DataManager.Ins.GameData.user.startDailyRewardClaimTime.Date).Days
+            : (DataManager.Ins.GameData.user.dailyRewardClaimedCount - (IsTodayRewardObtained ? 1 : 0));
+        public int CycleDay => TotalDays % _dailyRewardSettingsSO.CycleDays;
+        public bool IsInFirstCycle => TotalDays / _dailyRewardSettingsSO.CycleDays == 0;
+        public Reward[] Rewards => IsInFirstCycle && _dailyRewardSettingsSO.DifferentFirstCycle
+            ? _dailyRewardSettingsSO.FirstCycleRewards
+            : _dailyRewardSettingsSO.Rewards;
+        public Reward CurrentReward => Rewards[CycleDay];
+        #endregion
+
+        public void ObtainTodayReward()
+        {
+            if (IsTodayRewardObtained)
+            {
+                DevLog.Log(DevId.Vinh, $"Day {CycleDay + 1} reward is obtained");
+                return;
+            }
+
+            DevLog.Log(DevId.Vinh, $"Obtain day {CycleDay + 1} reward");
+            // CurrentReward.Obtain();
+            UIManager.Ins.GetUI<RewardPopup>().Open(new Reward[]{ CurrentReward });
+
+            DataManager.Ins.GameData.user.dailyRewardClaimedCount += 1;
+            DataManager.Ins.GameData.user.lastDailyRewardClaimTime = DateTime.Now.Date;
+            DataManager.Ins.Save();
+
+            Ins.OnDailyRewardParamsChanged?.Invoke();
+        }
+
+        private void SetPlayerPrefsDateTime(string key, DateTime dateTime)
+        {
+            string dateTimeString = dateTime.ToShortDateString();
+            PlayerPrefs.SetString(key, dateTimeString);
+        }
+
+        private DateTime GetPlayerPrefsDateTime(string key, DateTime defaultDateTime = default)
+        {
+            string dateTimeString = PlayerPrefs.GetString(key);
+            if (!DateTime.TryParse(dateTimeString, out DateTime dateTime))
+            {
+                dateTime = defaultDateTime;
+            }
+
+            return dateTime;
+        }
+        
         #region Debug
 #if UNITY_EDITOR
         // [UnityEditor.MenuItem("Debug/Daily Reward/Print Parameters")]
@@ -104,60 +160,5 @@ namespace VinhLB
         }
 #endif
         #endregion
-
-        public event Action OnDailyRewardParamsChanged;
-
-        [SerializeField]
-        private DailyRewardSettingsSO _dailyRewardSettingsSO;
-
-        #region Properties
-        public DailyRewardSettingsSO DailyRewardSettingsSO => _dailyRewardSettingsSO;
-        public bool IsTodayRewardObtained =>
-            DateTime.Now.Date <= DataManager.Ins.GameData.user.lastDailyRewardClaimTime;
-        public int TotalDays => _dailyRewardSettingsSO.MissRewardIfNotLogin
-            ? (DateTime.Now.Date - DataManager.Ins.GameData.user.startDailyRewardClaimTime.Date).Days
-            : (DataManager.Ins.GameData.user.dailyRewardClaimedCount - (IsTodayRewardObtained ? 1 : 0));
-        public int CycleDay => TotalDays % _dailyRewardSettingsSO.CycleDays;
-        public bool IsInFirstCycle => TotalDays / _dailyRewardSettingsSO.CycleDays == 0;
-        public Reward[] Rewards => IsInFirstCycle && _dailyRewardSettingsSO.DifferentFirstCycle
-            ? _dailyRewardSettingsSO.FirstCycleRewards
-            : _dailyRewardSettingsSO.Rewards;
-        public Reward CurrentReward => Rewards[CycleDay];
-        #endregion
-
-        public void ObtainTodayReward()
-        {
-            if (IsTodayRewardObtained)
-            {
-                DevLog.Log(DevId.Vinh, $"Day {CycleDay + 1} reward is obtained");
-                return;
-            }
-
-            DevLog.Log(DevId.Vinh, $"Obtain day {CycleDay + 1} reward successfully");
-            CurrentReward.Obtain();
-
-            DataManager.Ins.GameData.user.dailyRewardClaimedCount += 1;
-            DataManager.Ins.GameData.user.lastDailyRewardClaimTime = DateTime.Now.Date;
-            DataManager.Ins.Save();
-
-            Ins.OnDailyRewardParamsChanged?.Invoke();
-        }
-
-        private void SetPlayerPrefsDateTime(string key, DateTime dateTime)
-        {
-            string dateTimeString = dateTime.ToShortDateString();
-            PlayerPrefs.SetString(key, dateTimeString);
-        }
-
-        private DateTime GetPlayerPrefsDateTime(string key, DateTime defaultDateTime = default)
-        {
-            string dateTimeString = PlayerPrefs.GetString(key);
-            if (!DateTime.TryParse(dateTimeString, out DateTime dateTime))
-            {
-                dateTime = defaultDateTime;
-            }
-
-            return dateTime;
-        }
     }
 }
