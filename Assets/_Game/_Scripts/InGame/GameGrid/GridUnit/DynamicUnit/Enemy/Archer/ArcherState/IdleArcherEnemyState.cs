@@ -37,7 +37,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
             for (int i = 0; i < MAX_RANGE; i++)
             {
                 cell = cell.GetNeighborCell(attackDirection);
-                if (cell == null || cell.Data.gridSurfaceType == GridSurfaceType.Water || IsPreventAttack()) break;
+                if (cell == null || cell.Data.gridSurfaceType == GridSurfaceType.Water) break;
+                if (IsPreventAttack())
+                {
+                    cell.Data.IsDanger = true;
+                    attackRange.Add(cell);
+                    break;
+                }
+
                 cell.Data.IsDanger = true;
                 isAttack = isAttack || IsPlayerInAttackRange();
                 attackRange.Add(cell);
@@ -109,6 +116,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
         }     
         private void IsResetAttackRange(object value)
         {
+            if (!GameManager.Ins.IsState(GameState.InGame)) return;
             if(attackRange.Contains((GameGridCell)value))
                 main.StateMachine.ChangeState(StateEnum.Idle);
         }
