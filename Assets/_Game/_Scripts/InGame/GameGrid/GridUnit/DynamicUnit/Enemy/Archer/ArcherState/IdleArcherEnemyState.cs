@@ -25,7 +25,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
 
         public IdleArcherEnemyState()
         {
-            GameManager.Ins.RegisterListenerEvent(EventID.ObjectInDangerCell, IsResetAttackRange);
+            GameManager.Ins.RegisterListenerEvent(EventID.ObjectInOutDangerCell, IsResetAttackRange);
         }
 
         public void OnEnter(ArcherEnemy t)
@@ -115,7 +115,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
         ~IdleArcherEnemyState()
         {
             if(GameManager.Ins)
-                GameManager.Ins.UnregisterListenerEvent(EventID.ObjectInDangerCell, IsResetAttackRange);
+                GameManager.Ins.UnregisterListenerEvent(EventID.ObjectInOutDangerCell, IsResetAttackRange);
         }
     }
 }

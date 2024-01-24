@@ -118,12 +118,12 @@ namespace _Game.GameGrid.Unit
         {
             get => mainCell;
             protected set
-            {              
+            {
+                if (mainCell != null && mainCell.Data.IsDanger)
+                    GameManager.Ins.PostEvent(EventID.ObjectInOutDangerCell, mainCell);           
                 mainCell = value;
                 if (mainCell != null && mainCell.Data.IsDanger)
-                {
-                    GameManager.Ins.PostEvent(EventID.ObjectInDangerCell);
-                }
+                    GameManager.Ins.PostEvent(EventID.ObjectInOutDangerCell, mainCell);
             }
         }
 
@@ -260,13 +260,12 @@ namespace _Game.GameGrid.Unit
 
             void InitCellsToUnit(GameGridCell enterMainCellIn, List<GameGridCell> enterCells = null)
             {
-
-                MainCell = enterMainCellIn;
                 // Add all nextCells to cellInUnits
                 if (enterCells is not null)
                     for (int i = 0; i < enterCells.Count; i++)
                         AddCell(enterCells[i]);
                 else AddCell(enterMainCellIn);
+                MainCell = enterMainCellIn;
             }
         }
 
