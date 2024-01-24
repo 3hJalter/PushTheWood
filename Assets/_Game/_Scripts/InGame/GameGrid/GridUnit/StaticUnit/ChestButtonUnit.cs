@@ -2,7 +2,6 @@
 using _Game._Scripts.Managers;
 using _Game.DesignPattern;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
-using _Game.Managers;
 using _Game.Utilities;
 using DG.Tweening;
 using GameGridEnum;
@@ -55,7 +54,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
                 if (isEntered) numberOfButtonEntered++;
                 else numberOfButtonEntered--;
                 SetText();
-                if (numberOfButtonEntered == numberOfButtonInLevel) OnUnlockChest();
+                if (numberOfButtonEntered == numberOfButtonInLevel && isLocked) OnUnlockChest();
             };
         }
 
