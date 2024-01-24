@@ -53,8 +53,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  levelIndex: 0
-  FontMaterial: {fileID: 2100000, guid: 9ad269c99dcf42b7aedefd83dd5a7b9d, type: 2}
+  _levelIndex: 0
+  _fontMaterial: {fileID: 0}
   _fishSpawner: {fileID: 0}
+  _cloudSpawner: {fileID: 0}
   IsConstructingLevel: 0
   player: {fileID: 0}
