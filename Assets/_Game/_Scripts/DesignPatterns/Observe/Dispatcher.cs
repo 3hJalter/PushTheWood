@@ -69,6 +69,6 @@ namespace _Game.DesignPattern
         StartGame = 2,
         WinGame = 3,
         LoseGame = 4,
-        PlayerInDangerCell = 5,
+        ObjectInDangerCell = 5,
     }
 }

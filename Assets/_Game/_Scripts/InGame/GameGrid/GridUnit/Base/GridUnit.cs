@@ -14,6 +14,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 using VinhLB;
+using _Game.Managers;
 
 namespace _Game.GameGrid.Unit
 {
@@ -116,7 +117,14 @@ namespace _Game.GameGrid.Unit
         public virtual GameGridCell MainCell
         {
             get => mainCell;
-            protected set => mainCell = value;
+            protected set
+            {              
+                mainCell = value;
+                if (mainCell != null && mainCell.Data.IsDanger)
+                {
+                    GameManager.Ins.PostEvent(EventID.ObjectInDangerCell);
+                }
+            }
         }
 
         public HeightLevel StartHeight
@@ -607,7 +615,7 @@ namespace _Game.GameGrid.Unit
                 }
 
 
-                main.mainCell = mainCell;
+                main.MainCell = mainCell;
                 main.cellInUnits.Clear();
                 foreach (GameGridCell cell in cellInUnits)
                 {
