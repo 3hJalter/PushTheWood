@@ -619,6 +619,18 @@ namespace _Game.GameGrid.Unit
             }
         }
         #endregion
+
+        protected bool IsOnWater()
+        {
+            return startHeight == Constants.DirFirstHeightOfSurface[GridSurfaceType.Ground] &&
+                   cellInUnits.All(t => t.SurfaceType is GridSurfaceType.Water);
+        }
+        
+        public bool IsInWater()
+        {
+            return startHeight <= Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + FloatingHeightOffset &&
+                   cellInUnits.All(t => t.SurfaceType is GridSurfaceType.Water);
+        }
     }
 
     public enum UnitTypeY
