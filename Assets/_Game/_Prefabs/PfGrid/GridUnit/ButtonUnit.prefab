@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &20460264286518762
 Transform:
   m_ObjectHideFlags: 0
@@ -163,11 +163,8 @@ MonoBehaviour:
   unitTypeXZ: 2
   skinRotationDirection: -1
   islandID: -1
-  gridUnitStaticType: 7
+  gridUnitDynamicType: 7
   anchor: {fileID: 0}
-  hasInteractBtn: 0
-  btnCanvas: {fileID: 0}
-  interactBtn: {fileID: 0}
   animator: {fileID: 20460264388084939}
 --- !u!1 &20460266034920787
 GameObject:
