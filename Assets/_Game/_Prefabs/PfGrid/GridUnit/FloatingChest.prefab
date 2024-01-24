@@ -763,6 +763,7 @@ MonoBehaviour:
   isMinusHalfSizeY: 0
   startHeight: 2
   endHeight: 0
+  overrideStartHeight: 0
   floatingHeightOffset: 1
   unitTypeY: 0
   yOffsetOnDown: 0.5

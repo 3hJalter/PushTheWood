@@ -10,6 +10,24 @@ namespace _Game.Managers
 {
     public class DataManager : Singleton<DataManager>
     {
+
+        #region Game Saving Data
+        private GameData _gameData;
+        
+        public GameData GameData => _gameData ?? LoadData();
+
+        public GameData LoadData()
+        {
+            _gameData = Database.LoadData();
+            if (_gameData != null) return _gameData;
+            // If no game data can be loaded, create new one
+            _gameData = new GameData();
+            Database.SaveData(_gameData);
+            return _gameData;
+        }      
+        #endregion
+
+        #region In-Game Data
         [SerializeField]
         private AudioData audioData;
         [SerializeField]
@@ -18,12 +36,12 @@ namespace _Game.Managers
         private MaterialData materialData;
         [SerializeField]
         private VFXData _vfxData;
+        #endregion
 
-        private GameData _gameData;
-        
+
         public AudioData AudioData => audioData;
         public VFXData VFXData => _vfxData;
-        public GameData GameData => _gameData ??= Database.LoadData();
+
         public int CountNormalLevel => gridData.CountNormalLevel;
         public int CountSurfaceMaterial => materialData.CountSurfaceMaterial;
 
@@ -31,6 +49,8 @@ namespace _Game.Managers
         {
             Database.SaveData(_gameData);
         }
+
+       
         
         public Material GetTransparentMaterial()
         {
@@ -46,11 +66,6 @@ namespace _Game.Managers
         {
             return materialData.GetGrassMaterial(materialEnum);
         }
-        
-        // public TutorialContext GetTutorial(int index)
-        // {
-        //     return tutorialData.GetTutorial(index);
-        // }
         
         public TextAsset GetNormalLevelData(LevelType type, int index)
         {

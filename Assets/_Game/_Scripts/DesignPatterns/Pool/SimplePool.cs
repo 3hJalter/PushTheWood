@@ -360,7 +360,7 @@ namespace _Game.DesignPattern
         Bomb = 15,
         ArcherEnemy = 16,
         ExplosiveBox = 17,
-        
+        ButtonUnit = 19,
         
         // Grid Unit Static
         RockShort = 7,
@@ -370,7 +370,8 @@ namespace _Game.DesignPattern
         TreeHigh = 11,
         FinalPoint = 13,
         FloatingChest = 18,
-        ButtonUnit = 19,
+        ChestButtonUnit = 20,
+        
 
         // Grid Unit Building Object
         HouseMain = 50,

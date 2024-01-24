@@ -21,6 +21,7 @@
         RollBlock = 13, 
         Emerge = 14,
         Explode = 15,
+        Enter = 16,
         
         Attack = 100,
         Stun = 101,

@@ -1,3 +1,4 @@
+using _Game.Data;
 using _Game.DesignPattern;
 using _Game.UIs.Screen;
 using DG.Tweening;
@@ -22,6 +23,8 @@ namespace _Game.Managers
         [SerializeField]
         private bool _reduceScreenResolution;
 
+        private GameData _gameData;
+        
         private void Awake()
         {
             Input.multiTouchEnabled = false;
@@ -35,7 +38,11 @@ namespace _Game.Managers
                 if (Screen.currentResolution.height > maxScreenHeight)
                     Screen.SetResolution(Mathf.RoundToInt(ratio * maxScreenHeight), maxScreenHeight, true);
             }
-
+            
+            _gameData = LoadGameData();
+            
+            // TODO: Handle Loaded Data
+            
             // TEST
             if (PlayerPrefs.GetInt(Constants.LEVEL_INDEX, 0) != 0) UIManager.Ins.OpenUI<MainMenuScreen>();
             // DontDestroyOnLoad(Tf.root.gameObject);
@@ -61,6 +68,11 @@ namespace _Game.Managers
         public bool IsState(GameState gameStateI)
         {
             return _gameState == gameStateI;
+        }
+
+        private static GameData LoadGameData()
+        {
+            return DataManager.Ins.LoadData();
         }
     }
 }

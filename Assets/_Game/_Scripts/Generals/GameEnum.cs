@@ -108,8 +108,8 @@ namespace GameGridEnum
         TreeShort = 3,
         TreeHigh = 4,
         FinalPoint = 5,
-        FloatingChest = 6,
-        ButtonUnit = 7,
+        FloatingChest = 6, 
+        ChestButtonUnit = 7,
     }
 
     public enum GridUnitDynamicType
@@ -122,7 +122,7 @@ namespace GameGridEnum
         RaftLong = 4,
         Box = 5,
         Bomb = 6,
-        
+        ButtonUnit = 7,
         Archer_Enemy = 100,
     }
     

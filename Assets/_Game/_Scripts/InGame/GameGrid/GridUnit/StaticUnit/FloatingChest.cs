@@ -46,12 +46,6 @@ namespace _Game.GameGrid.Unit.StaticUnit
             #endregion
         }
 
-        public override void OnInteract()
-        {
-            ShowAnim(true);
-            DOVirtual.DelayedCall(1f, () => LevelManager.Ins.OnWin());
-        }
-
         public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
         {
             if (isInteracted) return;
