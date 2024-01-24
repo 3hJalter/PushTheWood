@@ -46,6 +46,19 @@ namespace _Game._Scripts.InGame
 
         #endregion
 
+        public void ResetNonIslandUnit()
+        {
+            for (int i = 0; i < nonIslandUnitLis.Count; i++)
+            {
+                nonIslandUnitLis[i].unit.OnDespawn();
+                nonIslandUnitLis[i].unit.ResetData();
+                // Spawn
+                GridUnit unit = (GridUnit) SimplePool.SpawnDirectFromPool(nonIslandUnitLis[i].unit, Vector3.zero, Quaternion.identity);
+                unit.OnInit(nonIslandUnitLis[i].mainCellIn, nonIslandUnitLis[i].startHeightIn, true,
+                    nonIslandUnitLis[i].directionIn);
+            }
+        }
+
         public struct LevelUnitData
         {
             public GameGridCell mainCellIn;
@@ -86,6 +99,7 @@ namespace _Game._Scripts.InGame
         public List<Vector3> HintLinePosList { get; } = new();
 
         public List<LevelUnitData> UnitDataList { get; } = new();
+        private readonly List<LevelUnitData> nonIslandUnitLis = new();
 
         public List<GridUnit> ShadowUnitList { get; } = new();
 
@@ -124,7 +138,7 @@ namespace _Game._Scripts.InGame
         public Vector3 GetTopRightPos()
         {
             GameGridCell cell = GridMap.GetGridCell(GridSizeX - 1, gridSizeY - 1);
-            
+
             return new Vector3(cell.WorldX, 0f, cell.WorldY);
         }
 
@@ -200,6 +214,8 @@ namespace _Game._Scripts.InGame
                     island.ClearIsland();
                 }
 
+                for (int i = 0; i < nonIslandUnitLis.Count; i++) nonIslandUnitLis[i].unit.OnDespawn();
+                nonIslandUnitLis.Clear();
                 // Set player to null
                 LevelManager.Ins.player.OnDespawn();
                 LevelManager.Ins.player = null;
@@ -251,7 +267,7 @@ namespace _Game._Scripts.InGame
                 _tweenShadowUnitList = DOVirtual.Float(currentAlphaTransparency, 0.5f, 0.5f - currentAlphaTransparency,
                     value => ShadowUnitList[0].SetAlphaTransparency(value));
             }
-            
+
         }
 
         public void ChangeShadowUnitAlpha(bool isHide, int index)
@@ -272,10 +288,8 @@ namespace _Game._Scripts.InGame
                 ShadowUnitList[index].gameObject.SetActive(true);
                 Debug.Log("Show shadow unit is active: " + ShadowUnitList[index].gameObject.activeSelf);
                 _tweenShadowUnitList = DOVirtual.Float(currentAlphaTransparency, 0.5f, 0.5f - currentAlphaTransparency,
-                    value =>
-                    {
-                        ShadowUnitList[index].SetAlphaTransparency(value);
-                    }).OnComplete(() => Debug.Log("Show shadow unit is active 2: " + ShadowUnitList[index].gameObject.activeSelf));
+                    value => { ShadowUnitList[index].SetAlphaTransparency(value); }).OnComplete(() =>
+                    Debug.Log("Show shadow unit is active 2: " + ShadowUnitList[index].gameObject.activeSelf));
                 Debug.Log("Show shadow unit is active 3: " + ShadowUnitList[index].gameObject.activeSelf);
             }
         }
@@ -332,7 +346,7 @@ namespace _Game._Scripts.InGame
                 surfaceClone.OnInit((Direction)surfaceData.d, (MaterialEnum)surfaceData.m);
             }
         }
-        
+
         private void AddIslandIdToSurface()
         {
             int currentIslandID = 0;
@@ -391,7 +405,8 @@ namespace _Game._Scripts.InGame
                     if (LevelManager.Ins.player != null) LevelManager.Ins.player.OnDespawn();
                     firstPlayerInitCell = GridMap.GetGridCell(unitData.c.x, unitData.c.y);
                     firstPlayerDirection = (Direction)unitData.d;
-                    LevelManager.Ins.player = (Player) SpawnUnit(unitData.c.x, unitData.c.y, (PoolType)unitData.t, (Direction)unitData.d);
+                    LevelManager.Ins.player = (Player)SpawnUnit(unitData.c.x, unitData.c.y, (PoolType)unitData.t,
+                        (Direction)unitData.d);
                 }
                 else
                 {
@@ -405,7 +420,7 @@ namespace _Game._Scripts.InGame
             {
                 GameGridCell cell = GridMap.GetGridCell(x, y);
                 GridUnit unit = SimplePool.Spawn<GridUnit>(DataManager.Ins.GetGridUnit(type));
-                LevelUnitData levelUnitData = new LevelUnitData
+                LevelUnitData levelUnitData = new()
                 {
                     mainCellIn = cell,
                     startHeightIn = unit.overrideStartHeight ? unit.StartHeight : HeightLevel.One,
@@ -419,7 +434,7 @@ namespace _Game._Scripts.InGame
 
                 Vector3 PredictUnitPos(HeightLevel heightLevel)
                 {
-                    float offsetY = (float) heightLevel / 2 * Constants.CELL_SIZE;
+                    float offsetY = (float)heightLevel / 2 * Constants.CELL_SIZE;
                     if (unit.UnitTypeY == UnitTypeY.Down) offsetY -= unit.yOffsetOnDown;
                     return cell.WorldPos + Vector3.up * offsetY;
                 }
@@ -448,15 +463,17 @@ namespace _Game._Scripts.InGame
             }
         }
 
-        private void OnSetHintLine() {
+        private void OnSetHintLine()
+        {
             // Loop through all htD (hint trail data) in _rawLevelData
             for (int i = 0; i < _rawLevelData.htD.Length; i++)
             {
                 RawLevelData.HintTrailData hintTrailData = _rawLevelData.htD[i];
-                HintLinePosList.Add(new Vector3(hintTrailData.p.x, Constants.DEFAULT_HINT_TRAIL_HEIGHT, hintTrailData.p.y));
+                HintLinePosList.Add(new Vector3(hintTrailData.p.x, Constants.DEFAULT_HINT_TRAIL_HEIGHT,
+                    hintTrailData.p.y));
             }
         }
-        
+
         public void OnInitPlayerToLevel()
         {
             LevelManager.Ins.player.OnInit(firstPlayerInitCell, HeightLevel.One, true, firstPlayerDirection);
@@ -467,42 +484,51 @@ namespace _Game._Scripts.InGame
         {
             data.unit.ResetData();
             data.unit.OnInit(data.mainCellIn, data.startHeightIn, true, data.directionIn, true);
-            if (data.mainCellIn.Data.gridSurface == null) return;
+            if (data.mainCellIn.Data.gridSurface == null)
+            {
+                nonIslandUnitLis.Add(data);
+                return;
+            }
+
             Islands[data.mainCellIn.Data.gridSurface.IslandID]
                 .AddInitUnitToIsland(data.unit, data.unit.UnitUnitData, data.mainCellIn);
         }
 
         #endregion
     }
-    
+
     [Serializable]
-    public struct RawLevelData {
+    public struct RawLevelData
+    {
         public Vector2Int s; // SIZE
         public GridSurfaceData[] sfD; // SURFACE DATA
         public GridUnitData[] uD; // UNIT DATA
         public ShadowUnitData[] suD; // SHADOW UNIT DATA
         public HintTrailData[] htD; // HINT TRAIL DATA
-        
+
         [Serializable]
-        public struct GridSurfaceData {
+        public struct GridSurfaceData
+        {
             public Vector2Int p; // POSITION
             public int t; // TYPE
             public int d; // DIRECTION
             public int m; // MATERIAL
         }
-        
+
         [Serializable]
-        public struct GridUnitData {
+        public struct GridUnitData
+        {
             public Vector2Int c; // CELL
             public int t; // TYPE 
             public int d; // DIRECTION
         }
-        
+
         [Serializable]
-        public struct ShadowUnitData {
-           public Vector3 p; // POSITION
-           public Vector3 rA; // ROTATION ANGLE
-           public int t; // TYPE
+        public struct ShadowUnitData
+        {
+            public Vector3 p; // POSITION
+            public Vector3 rA; // ROTATION ANGLE
+            public int t; // TYPE
         }
 
         [Serializable]

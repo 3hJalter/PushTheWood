@@ -31,7 +31,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         [SerializeField] private Animator chestAnimator;
         [SerializeField] private GameObject chestModel;
         [SerializeField] private GameObject lockedChestModel;
-        
+        [SerializeField] private ParticleSystem chestUnlockParticle;
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
             Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
@@ -54,7 +54,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
                 if (isEntered) numberOfButtonEntered++;
                 else numberOfButtonEntered--;
                 SetText();
-                if (numberOfButtonEntered == numberOfButtonInLevel) OnUnlockChest();
+                if (numberOfButtonEntered == numberOfButtonInLevel && isLocked) OnUnlockChest();
             };
         }
 
@@ -74,8 +74,8 @@ namespace _Game.GameGrid.Unit.StaticUnit
             chestAnimator.gameObject.SetActive(true);
             chestModel.SetActive(true);
             lockedChestModel.SetActive(false);
-            canvas.SetActive(false);
-            // TODO: Dust effect
+            canvas.SetActive(false); 
+            chestUnlockParticle.Play();
         }
 
         private void SetText()
