@@ -10,18 +10,10 @@ namespace VinhLB
 {
     public class FishSpawner : HMonoBehaviour
     {
-        [SerializeField]
-        private bool _canSpawn = true;
-        
         private Fish _shark;
 
         public void SpawnFish(bool resetPath = true)
         {
-            if (!_canSpawn)
-            {
-                return;
-            }
-            
             SpawnFishInternal(resetPath);
         }
 

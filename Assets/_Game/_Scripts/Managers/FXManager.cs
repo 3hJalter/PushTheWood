@@ -4,6 +4,7 @@ using AmazingAssets.CurvedWorld;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.VFX;
 using VinhLB;
 
 namespace _Game.Managers
@@ -12,7 +13,8 @@ namespace _Game.Managers
     {
         // [SerializeField]
         // private CurvedWorldController curvedWorldController;
-        [SerializeField] private HintLineTrail trailHint;
+        [SerializeField]
+        private HintLineTrail trailHint;
 
         public HintLineTrail TrailHint => trailHint;
 
@@ -20,10 +22,10 @@ namespace _Game.Managers
         private GameObject _groundGO;
         [SerializeField]
         private GameObject _waterGO;
-        // [SerializeField]
-        // private GameObject _cloudsGO;
         [SerializeField]
         private GameObject _gridGO;
+        [SerializeField]
+        private VisualEffect _fogVisualEffect;
         [SerializeField]
         private UniversalRendererData _rendererData;
         [SerializeField]
@@ -31,18 +33,23 @@ namespace _Game.Managers
         [SerializeField]
         private UniversalAdditionalCameraData _cameraData;
 
-        [SerializeField] private bool activeGround = true;
-        [SerializeField] private bool activeWater = true;
-        [SerializeField] private bool activeGrid;
-        
+        [SerializeField]
+        private bool _activeGround = true;
+        [SerializeField]
+        private bool _activeWater = true;
+        [SerializeField]
+        private bool _activeGrid = false;
+        [SerializeField]
+        private bool _activeFog = true;
+
         private GrassTrampleFeature _feature;
 
         private void Awake()
         {
-            _groundGO.SetActive(activeGround);
-            _waterGO.SetActive(activeWater);
-            // _cloudsGO.SetActive(true);
-            _gridGO.SetActive(activeGrid);
+            _groundGO.SetActive(_activeGround);
+            _waterGO.SetActive(_activeWater);
+            _gridGO.SetActive(_activeGrid);
+            _fogVisualEffect.gameObject.SetActive(_activeFog);
 
             VinhLB.Utilities.TryGetRendererFeature(_rendererData, out _feature);
         }
@@ -57,14 +64,14 @@ namespace _Game.Managers
         }
 
         private Tween _changePlantCurveTween;
-        
+
         // public void ChangePlanetCurvatureSize(float curve = 7f, float time = 1f)
         // {
         //     _changePlantCurveTween?.Kill();
         //     float currentCurve = curvedWorldController.bendCurvatureSize;
         //     _changePlantCurveTween = DOVirtual.Float(currentCurve, curve, time, value => curvedWorldController.bendCurvatureSize = value);
         // }
-        
+
         public void ResetTrackedTrampleObjectList()
         {
             _feature.ResetTrackedTrampleList();
@@ -88,7 +95,7 @@ namespace _Game.Managers
                 grassGOs[i].SetActive(!grassGOs[i].activeInHierarchy);
             }
         }
-        
+
         public void SwitchGridActive(bool manual = false, bool active = true)
         {
             if (!manual)
@@ -99,6 +106,21 @@ namespace _Game.Managers
             {
                 _gridGO.SetActive(active);
             }
+        }
+
+        public void UpdateFogColliderPositionAndScale(Vector3 bottomLeftPosition, Vector3 topRightPosition)
+        {
+            Vector3 colliderPosition =
+                (bottomLeftPosition + topRightPosition) / 2f - _fogVisualEffect.transform.position;
+            colliderPosition.z -= 5.5f;
+            colliderPosition.y = 0f;
+            _fogVisualEffect.SetVector3("Collider Position", colliderPosition);
+
+            Vector3 colliderScale = topRightPosition - bottomLeftPosition;
+            colliderScale.x = Mathf.Abs(colliderScale.x) * 0.45f;
+            colliderScale.z = Mathf.Abs(colliderScale.z) * 0.55f;
+            colliderScale.y = 8f;
+            _fogVisualEffect.SetVector3("Collider Scale", colliderScale);
         }
     }
 }

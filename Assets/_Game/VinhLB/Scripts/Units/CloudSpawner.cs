@@ -14,8 +14,6 @@ namespace VinhLB
     public class CloudSpawner : HMonoBehaviour
     {
         [SerializeField]
-        private bool _canSpawn = true;
-        [SerializeField]
         private float _cloudHeight = 10f;
         [SerializeField]
         [MinMaxSlider(0.1f, 20f, true)]
@@ -42,11 +40,6 @@ namespace VinhLB
 
         public void SpawnClouds()
         {
-            if (!_canSpawn)
-            {
-                return;
-            }
-            
             if (_timer.IsStart)
             {
                 _timer.Stop();
