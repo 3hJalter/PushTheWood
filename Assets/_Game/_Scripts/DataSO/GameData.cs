@@ -72,9 +72,7 @@ namespace _Game.Data
 
         public static GameData LoadData()
         {
-            if (!PlayerPrefs.HasKey(DATA_KEY))
-                return null;
-            return JsonConvert.DeserializeObject<GameData>(PlayerPrefs.GetString(DATA_KEY));
+            return PlayerPrefs.HasKey(DATA_KEY) ? JsonConvert.DeserializeObject<GameData>(PlayerPrefs.GetString(DATA_KEY)) : null;
         }
     }
 }

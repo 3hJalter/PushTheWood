@@ -9,10 +9,26 @@ namespace _Game.Managers
 {
     public class DataManager : Singleton<DataManager>
     {
+        #region Game Saving Data
+
         private GameData _gameData;
         
-        public GameData GameData => _gameData ?? new GameData();
+        public GameData GameData => _gameData ?? LoadData();
+
+        public GameData LoadData()
+        {
+            _gameData = Database.LoadData();
+            if (_gameData != null) return _gameData;
+            // If no game data can be loaded, create new one
+            _gameData = new GameData();
+            Database.SaveData();
+            return _gameData;
+        }
         
+        #endregion
+
+        #region In-Game Data
+
         [SerializeField]
         private AudioData audioData;
         [SerializeField]
@@ -31,6 +47,8 @@ namespace _Game.Managers
 
         public VFXData VFXData => _vfxData;
         public EnvironmentObjectData EnvironmentObjectData => _environmentObjectData;
+
+       
         
         public Material GetTransparentMaterial()
         {
@@ -46,11 +64,6 @@ namespace _Game.Managers
         {
             return materialData.GetGrassMaterial(materialEnum);
         }
-        
-        // public TutorialContext GetTutorial(int index)
-        // {
-        //     return tutorialData.GetTutorial(index);
-        // }
         
         public TextAsset GetNormalLevelData(LevelType type, int index)
         {
@@ -81,5 +94,9 @@ namespace _Game.Managers
         {
             return gridData.GetGridTextDataIndex(type, load);
         }
+
+        #endregion
+        
+
     }
 }
