@@ -33,24 +33,16 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box.BoxState
 
         private static void Explode(GridUnit t)
         {
-            // If this unit is In Water, only despawn this unit and upper units
-            if (t.IsInWater())
-            {
-                foreach (GridUnit unit in t.upperUnits)
-                {
-                    if (unit is ICharacter character) character.OnCharacterDie();
-                    else if (unit != t && unit is IExplosives explosives) explosives.Explode();
-                    else unit.OnDespawn();
-                }
-                t.OnDespawn();
-                return;
-            }
-            // Merge all neighbor, below, upper units
             List<GridUnit> units = new();
-            units.AddRange(t.neighborUnits);
-            units.AddRange(t.belowUnits);
             units.AddRange(t.upperUnits);
             units.Add(t);
+            // If this unit is In Water, only despawn this unit and upper units
+            // Else Merge all neighbor, below, upper units
+            if (!t.IsInWater())
+            {
+                units.AddRange(t.neighborUnits);
+                units.AddRange(t.belowUnits);
+            }
             // Despawn all units, include this unit
             // TODO: Handle with Player and Enemy -> Die State instead of Despawn
             for (int index = 0; index < units.Count; index++)
