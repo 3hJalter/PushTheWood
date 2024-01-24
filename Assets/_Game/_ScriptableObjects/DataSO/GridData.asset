@@ -580,6 +580,7 @@ MonoBehaviour:
   - {fileID: 4900000, guid: b6e0df4582718574b8c1df1644545880, type: 3}
   - {fileID: 4900000, guid: 1dbef46b5ca1b154ea369f7d0baa3a17, type: 3}
   - {fileID: 4900000, guid: f2c9877245a153d408790aea8be53715, type: 3}
+  - {fileID: 4900000, guid: 082e822f199ab6e4e97066bac18000f2, type: 3}
   dailyChallengerLevel:
   - {fileID: 4900000, guid: 58026dccfb4a4250b69fe6ebdf773377, type: 3}
   secretLevel:
