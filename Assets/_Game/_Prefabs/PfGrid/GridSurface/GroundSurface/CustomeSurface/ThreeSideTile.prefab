@@ -58,7 +58,7 @@ MonoBehaviour:
   surfaceType: 1
   islandID: -1
   grassRenderer: {fileID: 8366740158726622409}
-  groundMeshRenderer: {fileID: 7241879588896579804}
+  groundMeshRenderer: {fileID: 559019480753035349}
   groundMaterialEnum: -1
 --- !u!1 &3236816967825628786
 GameObject:

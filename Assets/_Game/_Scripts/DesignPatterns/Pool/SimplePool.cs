@@ -388,6 +388,7 @@ namespace _Game.DesignPattern
         SurfaceGround4Side = 144,
         SurfaceGround3Side = 145,
         SurfaceGround2Side = 146,
+        SurfaceGround2SideConnect = 147,
 
         //VFX
         DangerIndicator = 1000,
