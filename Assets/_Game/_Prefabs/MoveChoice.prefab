@@ -763,6 +763,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DPad
       objectReference: {fileID: 0}
+    - target: {fileID: 8643770746981963274, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8643770746981963275, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

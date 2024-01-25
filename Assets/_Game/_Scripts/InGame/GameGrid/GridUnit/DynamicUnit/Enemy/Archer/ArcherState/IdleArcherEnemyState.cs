@@ -27,7 +27,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
         {
             GameManager.Ins.RegisterListenerEvent(EventID.ObjectInOutDangerCell, IsResetAttackRange);
         }
-
         public void OnEnter(ArcherEnemy t)
         {
             isAttack = false;
@@ -40,12 +39,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
                 if (cell == null || cell.Data.gridSurfaceType == GridSurfaceType.Water) break;
                 if (IsPreventAttack())
                 {
-                    cell.Data.IsDanger = true;
+                    cell.Data.IsBlockDanger = true;
                     attackRange.Add(cell);
                     break;
                 }
 
                 cell.Data.IsDanger = true;
+                cell.Data.IsBlockDanger = false;
                 isAttack = isAttack || IsPlayerInAttackRange();
                 attackRange.Add(cell);
                 dangerIndicators.Add(SimplePool.Spawn<DangerIndicator>(PoolType.DangerIndicator, cell.WorldPos + Vector3.up * 1.25f, Quaternion.identity));
@@ -105,6 +105,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
             foreach (GameGridCell cell in attackRange)
             {
                 cell.Data.IsDanger = false;
+                cell.Data.IsBlockDanger = false;
             }
             attackRange.Clear();
             foreach(DangerIndicator cell in dangerIndicators)

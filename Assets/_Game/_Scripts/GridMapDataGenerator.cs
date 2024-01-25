@@ -7,6 +7,7 @@ using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
+using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
 using _Game.Utilities;
 using Sirenix.OdinInspector;
@@ -18,6 +19,8 @@ public class GridMapDataGenerator : MonoBehaviour
     [Title("Level Data")]
     [Tooltip("The distance between the corner cells and the surfaceUnit closest to it")]
     [SerializeField] private int offsetSurfaceWithFirstCell = 3; // Should be 3
+    [Tooltip("Random rotation for rock")]
+    [SerializeField] private bool isRandomRotationForRock = true;
     [InlineButton("SaveLevelAsJson", "Save Level")]
     [InfoBox("The name of the level, must be in the format Lvl_number or Lvl_DC_number or Lvl_S_number")]
     [SerializeField] private string mapLevelName = "Lvl_0";
@@ -188,6 +191,14 @@ public class GridMapDataGenerator : MonoBehaviour
         foreach (GridUnit unit in _loadedLevel.UnitDataList.Select(levelUnitData => levelUnitData.unit).Where(unit => unit.Tf.parent != unitContainer))
         {
             unit.Tf.parent = unitContainer;
+            // Change the rotation of unit in Skin to the rotation in Tf
+            // Get child with name Skin
+            Transform skin = unit.Tf.Find("Skin");
+            if (skin == null) continue;
+            // Set the local rotation Tf to the local rotation of Skin
+            unit.Tf.localRotation = skin.localRotation;
+            // Set the local rotation of Skin to identity
+            skin.localRotation = Quaternion.identity;
         }
         // Set all GridUnit from _loadedLevel.ShadowUnitList to shadowContainer
         if (_loadedLevel.ShadowUnitList.Count <= 0)
@@ -212,7 +223,7 @@ public class GridMapDataGenerator : MonoBehaviour
         DestroyAll();
         _loadedLevel = null;
     }
-
+    
     [ContextMenu("Save JSON")]
     private void SaveLevelAsJson()
     {
@@ -435,6 +446,12 @@ public class GridMapDataGenerator : MonoBehaviour
             // Get the x and z index of gridUnit
             int x = (int)(position.x - 1) / 2;
             int z = (int)(position.z - 1) / 2;
+            // Check if gridUnit is Rock
+            if (gridUnit is Rock && isRandomRotationForRock)
+            {
+                // Set random rotation for rock (0, 90, 180, 270)
+                gridUnit.Tf.eulerAngles = new Vector3(0, UnityEngine.Random.Range(0, 4) * 90, 0);
+            }
             // Save the data to gridUnitData
             RawLevelData.GridUnitData gridUnitData = new()
             {

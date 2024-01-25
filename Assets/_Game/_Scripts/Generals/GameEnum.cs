@@ -110,6 +110,8 @@ namespace GameGridEnum
         FinalPoint = 5,
         FloatingChest = 6, 
         ChestButtonUnit = 7,
+        RockUnderwaterSmall = 8,
+        RockUnderWaterBig = 9,
     }
 
     public enum GridUnitDynamicType
@@ -124,6 +126,7 @@ namespace GameGridEnum
         Bomb = 6,
         ButtonUnit = 7,
         Archer_Enemy = 100,
+        Mage_Enemy = 101,
     }
     
     public enum VFXType

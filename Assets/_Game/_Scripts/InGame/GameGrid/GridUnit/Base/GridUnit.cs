@@ -119,8 +119,10 @@ namespace _Game.GameGrid.Unit
             get => mainCell;
             protected set
             {
-                if (mainCell != null && mainCell.Data.IsDanger)
-                    GameManager.Ins.PostEvent(EventID.ObjectInOutDangerCell, mainCell);           
+                if (mainCell != null && mainCell.Data.IsBlockDanger)
+                {
+                    GameManager.Ins.PostEvent(EventID.ObjectInOutDangerCell, mainCell);
+                }
                 mainCell = value;
                 if (mainCell != null && mainCell.Data.IsDanger)
                     GameManager.Ins.PostEvent(EventID.ObjectInOutDangerCell, mainCell);
@@ -626,6 +628,18 @@ namespace _Game.GameGrid.Unit
             }
         }
         #endregion
+
+        protected bool IsOnWater()
+        {
+            return startHeight == Constants.DirFirstHeightOfSurface[GridSurfaceType.Ground] &&
+                   cellInUnits.All(t => t.SurfaceType is GridSurfaceType.Water);
+        }
+        
+        public bool IsInWater()
+        {
+            return startHeight <= Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + FloatingHeightOffset &&
+                   cellInUnits.All(t => t.SurfaceType is GridSurfaceType.Water);
+        }
     }
 
     public enum UnitTypeY

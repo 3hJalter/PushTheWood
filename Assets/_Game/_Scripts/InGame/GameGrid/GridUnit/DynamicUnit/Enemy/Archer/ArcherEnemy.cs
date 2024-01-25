@@ -11,7 +11,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
 {
     public class ArcherEnemy : GridUnitDynamic, ICharacter
     {
-        [SerializeField] private Animator animator;
+        [SerializeField] 
+        private Animator animator;
+        [HideInInspector]
         public bool IsDead = false;
         private StateMachine<ArcherEnemy> stateMachine;
         public StateMachine<ArcherEnemy> StateMachine => stateMachine;

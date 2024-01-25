@@ -361,6 +361,7 @@ namespace _Game.DesignPattern
         ArcherEnemy = 16,
         ExplosiveBox = 17,
         ButtonUnit = 19,
+        MageEnemy = 20,
         
         // Grid Unit Static
         RockShort = 7,
@@ -371,7 +372,10 @@ namespace _Game.DesignPattern
         FinalPoint = 13,
         FloatingChest = 18,
         ChestButtonUnit = 20,
-        
+        RockUnderwaterSmall = 21,
+        RockUnderwaterBig = 22,
+        LightHouse = 23,
+
 
         // Grid Unit Building Object
         HouseMain = 50,
