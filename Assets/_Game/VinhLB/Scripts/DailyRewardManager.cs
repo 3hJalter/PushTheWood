@@ -38,7 +38,7 @@ namespace VinhLB
 
             DevLog.Log(DevId.Vinh, $"Obtain day {CycleDay + 1} reward");
             // CurrentReward.Obtain();
-            UIManager.Ins.GetUI<RewardPopup>().Open(new Reward[]{ CurrentReward });
+            UIManager.Ins.GetUI<RewardPopup>().Open(new Reward[] { CurrentReward });
 
             DataManager.Ins.GameData.user.dailyRewardClaimedCount += 1;
             DataManager.Ins.GameData.user.lastDailyRewardClaimTime = DateTime.Now.Date;
@@ -63,15 +63,15 @@ namespace VinhLB
 
             return dateTime;
         }
-        
+
         #region Debug
 #if UNITY_EDITOR
         // [UnityEditor.MenuItem("Debug/Daily Reward/Print Parameters")]
         public static void PrintParameters()
         {
-            DevLog.Log(DevId.Vinh, 
+            DevLog.Log(DevId.Vinh,
                 $"StartDailyRewardDateTime: {DataManager.Ins.GameData.user.startDailyRewardClaimTime}");
-            DevLog.Log(DevId.Vinh, 
+            DevLog.Log(DevId.Vinh,
                 $"DailyRewardCount: {DataManager.Ins.GameData.user.dailyRewardClaimedCount}");
             DevLog.Log(DevId.Vinh,
                 $"LastDailyRewardDateTime: {DataManager.Ins.GameData.user.lastDailyRewardClaimTime}");
@@ -106,7 +106,8 @@ namespace VinhLB
                     DataManager.Ins.GameData.user.startDailyRewardClaimTime.AddDays(-1);
                 DataManager.Ins.Save();
 
-                DevLog.Log(DevId.Vinh, $"StartDailyRewardDateTime: {DataManager.Ins.GameData.user.startDailyRewardClaimTime}");
+                DevLog.Log(DevId.Vinh,
+                    $"StartDailyRewardDateTime: {DataManager.Ins.GameData.user.startDailyRewardClaimTime}");
             }
             else
             {
@@ -133,7 +134,8 @@ namespace VinhLB
                     DataManager.Ins.Save();
                 }
 
-                DevLog.Log(DevId.Vinh, $"StartDailyRewardDateTime: {DataManager.Ins.GameData.user.startDailyRewardClaimTime}");
+                DevLog.Log(DevId.Vinh,
+                    $"StartDailyRewardDateTime: {DataManager.Ins.GameData.user.startDailyRewardClaimTime}");
             }
             else
             {

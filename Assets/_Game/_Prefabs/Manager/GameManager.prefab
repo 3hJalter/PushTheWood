@@ -53,5 +53,5 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _gameState: 1
-  _reduceScreenResolution: 1
+  gameState: 0
+  reduceScreenResolution: 1
