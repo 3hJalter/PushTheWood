@@ -11,7 +11,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
 {
     public class MageEnemy : GridUnitDynamic, ICharacter
     {
-        [SerializeField] private Animator animator;
+        [SerializeField] 
+        private Animator animator;
+        [HideInInspector] 
         public bool IsDead = false;
         private StateMachine<MageEnemy> stateMachine;
         public StateMachine<MageEnemy> StateMachine => stateMachine;
