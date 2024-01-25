@@ -110,6 +110,8 @@ namespace GameGridEnum
         FinalPoint = 5,
         FloatingChest = 6, 
         ChestButtonUnit = 7,
+        RockUnderwaterSmall = 8,
+        RockUnderWaterBig = 9,
     }
 
     public enum GridUnitDynamicType
