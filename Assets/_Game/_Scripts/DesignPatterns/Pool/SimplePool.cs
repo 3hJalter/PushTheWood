@@ -361,7 +361,7 @@ namespace _Game.DesignPattern
         ArcherEnemy = 16,
         ExplosiveBox = 17,
         ButtonUnit = 19,
-        MageEnemy = 20,
+        MageEnemy = 24,
         
         // Grid Unit Static
         RockShort = 7,
