@@ -394,6 +394,7 @@ namespace _Game.DesignPattern
         SurfaceGround3Side = 145,
         SurfaceGround2Side = 146,
         SurfaceGround2SideConnect = 147,
+        SurfaceGroundEdgeAndConnect = 148,
         // Environment Object
         Cloud = 200,
         Shark = 201,

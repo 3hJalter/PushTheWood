@@ -89,7 +89,7 @@ public static class Constants
     public const string NONE = "None";
 
     public const float DEFAULT_HINT_TRAIL_HEIGHT = 3f;
-    public const int LEVEL_TIME = 30;
+    public const int LEVEL_TIME = 600;
     public const int UNDO_COUNT = 10;
     
     public const float HINT_LINE_TRAIL_SPEED = 10f;
