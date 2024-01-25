@@ -56,6 +56,9 @@ namespace VinhLB
                     _rewardContentRectTF.anchorMax = new Vector2(0.5f, _rewardContentRectTF.anchorMax.y);
                     _rewardContentRectTF.pivot = new Vector2(0.5f, 0.5f);
                     _rewardContentRectTF.anchoredPosition = Vector2.zero;
+                    
+                    _leftArrowGO.SetActive(false);
+                    _rightArrowGO.SetActive(false);
                 }
                 else
                 {
@@ -64,9 +67,9 @@ namespace VinhLB
                     _rewardContentRectTF.anchorMax = new Vector2(0f, _rewardContentRectTF.anchorMax.y);
                     _rewardContentRectTF.pivot = new Vector2(0f, 0.5f);
                     _rewardContentRectTF.anchoredPosition = Vector2.zero;
+                    
+                    OnRewardScrollRectValueChanged(_rewardScrollRect.normalizedPosition);
                 }
-                
-                OnRewardScrollRectValueChanged(_rewardScrollRect.normalizedPosition);
                 
                 // Adjust _rewardItemList size
                 int differentInSize = rewards.Length - _rewardItemList.Count;
