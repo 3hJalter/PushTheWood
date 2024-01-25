@@ -10,7 +10,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
 {
     public class IdleMageEnemyState : IState<MageEnemy>
     {
-        private const int MAX_RANGE = 20;
+        private const int MAX_RANGE = 2;
 
         private bool _isChangeAnim;
         List<GameGridCell> attackRange = new List<GameGridCell>();
@@ -30,25 +30,40 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
             attackDirection = t.SkinRotationDirection;
             GameGridCell cell = t.MainCell;
             main = t;
-            for (int i = 0; i < MAX_RANGE; i++)
+            for (int i = 0; i < 2; i++)
             {
                 cell = cell.GetNeighborCell(attackDirection);
-                if (cell == null || cell.Data.gridSurfaceType == GridSurfaceType.Water) break;
-                if (IsPreventAttack())
+                CheckingAttackCell(cell);
+                if (Constants.DirVector[attackDirection].x != 0)
                 {
-                    cell.Data.IsBlockDanger = true;
-                    attackRange.Add(cell);
-                    break;
+                    CheckingAttackCell(cell.GetNeighborCell(Direction.Forward));
+                    CheckingAttackCell(cell.GetNeighborCell(Direction.Back));
+                }
+                else if (Constants.DirVector[attackDirection].y != 0)
+                {
+                    CheckingAttackCell(cell.GetNeighborCell(Direction.Left));
+                    CheckingAttackCell(cell.GetNeighborCell(Direction.Right));
                 }
 
+            }
+
+            void CheckingAttackCell(GameGridCell cell)
+            {
+                if (cell == null || cell.Data.gridSurfaceType == GridSurfaceType.Water) return;
+                if (IsPreventAttack(cell))
+                {
+                    cell.Data.IsBlockDanger = true;
+                }
+                else
+                {
+                    cell.Data.IsBlockDanger = false;
+                }
                 cell.Data.IsDanger = true;
-                cell.Data.IsBlockDanger = false;
-                isAttack = isAttack || IsPlayerInAttackRange();
+                isAttack = isAttack || IsHavePlayer(cell);
                 attackRange.Add(cell);
                 dangerIndicators.Add(SimplePool.Spawn<DangerIndicator>(PoolType.DangerIndicator, cell.WorldPos + Vector3.up * 1.25f, Quaternion.identity));
             }
-
-            bool IsPreventAttack()
+            bool IsPreventAttack(GameGridCell cell)
             {
                 for (int i = (int)t.StartHeight; i <= (int)t.EndHeight; i++)
                 {
@@ -59,7 +74,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
                 }
                 return false;
             }
-            bool IsPlayerInAttackRange()
+            bool IsHavePlayer(GameGridCell cell)
             {
                 for (int i = (int)t.StartHeight; i <= (int)t.EndHeight; i++)
                 {
