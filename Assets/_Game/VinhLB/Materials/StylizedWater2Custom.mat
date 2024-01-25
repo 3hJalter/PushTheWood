@@ -161,7 +161,7 @@ Material:
     - _CustomPanSwitch: 0
     - _Cutoff: 0.5
     - _DepthExp: 0
-    - _DepthHorizontal: 0.87
+    - _DepthHorizontal: 1
     - _DepthVertical: 4
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
