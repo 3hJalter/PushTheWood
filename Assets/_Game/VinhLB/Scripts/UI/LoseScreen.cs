@@ -15,6 +15,13 @@ namespace VinhLB
         private CanvasGroup _canvasGroup;
         [SerializeField]
         private Image _blockPanel;
+        
+        public override void Setup()
+        {
+            base.Setup();
+            
+            _canvasGroup.alpha = 0f;
+        }
 
         public override void Open()
         {

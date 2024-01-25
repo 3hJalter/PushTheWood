@@ -19,8 +19,8 @@ namespace _Game.UIs.Screen
         public event Action OnResetIsland;
 
         private float UNDO_CD_TIME = 0.3f;
-        [SerializeField] private Image blockPanel;
         [SerializeField] private CanvasGroup canvasGroup;
+        [SerializeField] private Image blockPanel;
         [SerializeField] private Button undoButton;
         [SerializeField] private Button resetIslandButton;
         [SerializeField] private TMP_Text timeText;
@@ -57,13 +57,15 @@ namespace _Game.UIs.Screen
             // CameraFollow.Ins.ChangeCamera(ECameraType.InGameCamera);
             if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
             CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
+            canvasGroup.alpha = 0f;
             blockPanel.enabled = true;
         }
 
         public override void Open()
         {
             base.Open();
-            DOVirtual.Float(0, 1, 1f, value => canvasGroup.alpha = value)
+            
+            DOVirtual.Float(0f, 1f, 1f, value => canvasGroup.alpha = value)
                 .OnComplete(() => { blockPanel.enabled = false; });
         }
 

@@ -9,6 +9,8 @@ namespace VinhLB
     public class RewardPopup : UICanvas
     {
         [SerializeField]
+        private Canvas _canvas;
+        [SerializeField]
         private RewardItem _rewardItemPrefab;
         [SerializeField]
         private ScrollRect _rewardScrollRect;
@@ -27,6 +29,9 @@ namespace VinhLB
 
         private void Awake()
         {
+            _canvas.overrideSorting = true;
+            _canvas.sortingOrder = 10;
+            
             _collectButton.onClick.AddListener(() =>
             {
                 DevLog.Log(DevId.Vinh, "Collect rewards");
@@ -41,6 +46,7 @@ namespace VinhLB
             {
                 DevLog.Log(DevId.Vinh, "Claim X2 rewards");
             });
+            
             _rewardScrollRect.onValueChanged.AddListener(OnRewardScrollRectValueChanged);
         }
 

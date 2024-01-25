@@ -66,9 +66,11 @@ namespace VinhLB
 
         public override void Open()
         {
+            _canvasGroup.alpha = 0f;
+            
             base.Open();
 
-            DOVirtual.Float(0, 1, 1f, value => _canvasGroup.alpha = value)
+            DOVirtual.Float(0f, 1f, 1f, value => _canvasGroup.alpha = value)
                 .OnComplete(() => _blockPanel.gameObject.SetActive(false));
         }
     }
