@@ -46,7 +46,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
 
                 cell.Data.IsDanger = true;
                 cell.Data.IsBlockDanger = false;
-                isAttack = isAttack || IsPlayerInAttackRange();
+                isAttack = isAttack || IsHavePlayer();
                 attackRange.Add(cell);
                 dangerIndicators.Add(SimplePool.Spawn<DangerIndicator>(PoolType.DangerIndicator, cell.WorldPos + Vector3.up * 1.25f, Quaternion.identity));
             }
@@ -62,7 +62,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
                 }
                 return false;
             }
-            bool IsPlayerInAttackRange()
+            bool IsHavePlayer()
             {
                 for (int i = (int)t.StartHeight; i <= (int)t.EndHeight; i++)
                 {
