@@ -15,6 +15,10 @@ namespace VinhLB
         [SerializeField]
         private RectTransform _rewardContentRectTF;
         [SerializeField]
+        private GameObject _leftArrowGO;
+        [SerializeField]
+        private GameObject _rightArrowGO;
+        [SerializeField]
         private Button _collectButton;
         [SerializeField]
         private Button _claimX2Button;
@@ -37,6 +41,7 @@ namespace VinhLB
             {
                 DevLog.Log(DevId.Vinh, "Claim X2 rewards");
             });
+            _rewardScrollRect.onValueChanged.AddListener(OnRewardScrollRectValueChanged);
         }
 
         public void Open(Reward[] rewards)
@@ -60,6 +65,8 @@ namespace VinhLB
                     _rewardContentRectTF.pivot = new Vector2(0f, 0.5f);
                     _rewardContentRectTF.anchoredPosition = Vector2.zero;
                 }
+                
+                OnRewardScrollRectValueChanged(_rewardScrollRect.normalizedPosition);
                 
                 // Adjust _rewardItemList size
                 int differentInSize = rewards.Length - _rewardItemList.Count;
@@ -90,6 +97,27 @@ namespace VinhLB
             }
             
             Open();
+        }
+        
+        private void OnRewardScrollRectValueChanged(Vector2 value)
+        {
+            if (_rewardScrollRect.horizontalNormalizedPosition < 0.05f)
+            {
+                _leftArrowGO.SetActive(false);
+            }
+            else
+            {
+                _leftArrowGO.SetActive(true);
+            }
+
+            if (_rewardScrollRect.horizontalNormalizedPosition > 0.95f)
+            {
+                _rightArrowGO.SetActive(false);
+            }
+            else
+            {
+                _rightArrowGO.SetActive(true);
+            }
         }
     }
 }
