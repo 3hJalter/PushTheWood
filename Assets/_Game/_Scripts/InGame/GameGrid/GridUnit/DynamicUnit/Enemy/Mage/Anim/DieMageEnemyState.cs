@@ -8,12 +8,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
     public class DieMageEnemyState : IState<MageEnemy>
     {
         private const float DIE_TIME = 1.08f;
+        private STimer timer;
         public StateEnum Id => StateEnum.Die;
 
         public void OnEnter(MageEnemy t)
         {
+            timer = TimerManager.Inst.PopSTimer();
             t.ChangeAnim(Constants.DIE_ANIM);
-            TimerManager.Inst.WaitForTime(DIE_TIME, t.OnDespawn);
+            timer.Start(DIE_TIME, t.OnDespawn);
         }
 
         public void OnExecute(MageEnemy t)
@@ -23,7 +25,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
 
         public void OnExit(MageEnemy t)
         {
-            
+            timer.Stop();
+            TimerManager.Inst.PushSTimer(timer);
         }
     }
 }

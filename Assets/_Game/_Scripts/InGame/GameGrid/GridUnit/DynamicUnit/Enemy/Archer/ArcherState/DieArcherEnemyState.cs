@@ -10,12 +10,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
     public class DieArcherEnemyState : IState<ArcherEnemy>
     {
         private const float DIE_TIME = 1.08f;
+        private STimer timer;
         public StateEnum Id => StateEnum.Die;
 
         public void OnEnter(ArcherEnemy t)
         {
+            timer = TimerManager.Inst.PopSTimer();
             t.ChangeAnim(Constants.DIE_ANIM);
-            TimerManager.Inst.WaitForTime(DIE_TIME, t.OnDespawn);
+            timer.Start(DIE_TIME, t.OnDespawn);
         }
 
         public void OnExecute(ArcherEnemy t)
@@ -25,7 +27,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
 
         public void OnExit(ArcherEnemy t)
         {
-
+            timer.Stop();
+            TimerManager.Inst.PushSTimer(timer);
         }
     }
 }

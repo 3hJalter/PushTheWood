@@ -9,29 +9,16 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
 {
-    public class ArcherEnemy : GridUnitDynamic, ICharacter
+    public class ArcherEnemy : GridUnitCharacter
     {
-        [SerializeField] 
-        private Animator animator;
-        [HideInInspector]
-        public bool IsDead = false;
-        private StateMachine<ArcherEnemy> stateMachine;
+        protected StateMachine<ArcherEnemy> stateMachine;
         public StateMachine<ArcherEnemy> StateMachine => stateMachine;
         public override StateEnum CurrentStateId
         {
             get => StateEnum.Idle;
             set => stateMachine.ChangeState(value);
         }
-
-        private string _currentAnim = Constants.INIT_ANIM;
-        private bool _isAddState;
-
-
-        private bool _isWaitAFrame;
-
-        public Direction Direction { get; private set; } = Direction.None;
-        public float AnimSpeed => animator.speed;
-
+    
         private void FixedUpdate()
         {
             if (!GameManager.Ins.IsState(GameState.InGame)) return;
@@ -72,40 +59,15 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             }
             IsDead = true;
         }
-        private void AddState()
+        protected override void AddState()
         {
             stateMachine.AddState(StateEnum.Idle, new IdleArcherEnemyState());
             stateMachine.AddState(StateEnum.Attack, new AttackArcherEnemyState());
             stateMachine.AddState(StateEnum.Die, new DieArcherEnemyState());
-        }
-        public void ChangeAnim(string animName, bool forceAnim = false)
+        }   
+        public override void OnCharacterDie()
         {
-            if (!forceAnim)
-                if (_currentAnim.Equals(animName))
-                    return;
-            animator.ResetTrigger(_currentAnim);
-            _currentAnim = animName;
-            animator.SetTrigger(_currentAnim);
-        }
-        public void SetAnimSpeed(float speed)
-        {
-            animator.speed = speed;
-        }
-        public bool IsCurrentAnimDone()
-        {
-            return animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1;
-        }
-
-        private void LookDirection(Direction directionIn)
-        {
-            if (directionIn is Direction.None) return;
-            skinRotationDirection = directionIn;
-            skin.DOLookAt(Tf.position + Constants.DirVector3[directionIn], 0.2f, AxisConstraint.Y, Vector3.up);
-        }
-
-        public void OnCharacterDie()
-        {
-            DevLog.Log(DevId.Hoang, "TODO: Archer Die Logic");
+            DevLog.Log(DevId.Hoang, "TODO: Character Die Logic");
             IsDead = true;
             stateMachine.ChangeState(StateEnum.Die);
         }
