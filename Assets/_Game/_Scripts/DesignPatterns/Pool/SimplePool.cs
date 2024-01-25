@@ -371,7 +371,9 @@ namespace _Game.DesignPattern
         FinalPoint = 13,
         FloatingChest = 18,
         ChestButtonUnit = 20,
-        
+        RockUnderwaterSmall = 21,
+        RockUnderwaterBig = 22,
+
 
         // Grid Unit Building Object
         HouseMain = 50,
