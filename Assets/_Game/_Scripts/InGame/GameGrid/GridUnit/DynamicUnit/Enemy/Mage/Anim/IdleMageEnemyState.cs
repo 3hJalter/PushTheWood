@@ -1,17 +1,14 @@
-using _Game._Scripts.InGame;
 using _Game.DesignPattern;
 using _Game.DesignPattern.StateMachine;
-using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
-using _Game.Utilities.Grid;
 using GameGridEnum;
+
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
 {
-    public class IdleArcherEnemyState : IState<ArcherEnemy>
+    public class IdleMageEnemyState : IState<MageEnemy>
     {
         private const int MAX_RANGE = 20;
 
@@ -20,14 +17,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
         List<DangerIndicator> dangerIndicators = new List<DangerIndicator>();
         Direction attackDirection = Direction.None;
         private bool isAttack = false;
-        private ArcherEnemy main;
+        private MageEnemy main;
         public StateEnum Id => StateEnum.Idle;
 
-        public IdleArcherEnemyState()
+        public IdleMageEnemyState()
         {
             GameManager.Ins.RegisterListenerEvent(EventID.ObjectInOutDangerCell, IsResetAttackRange);
         }
-        public void OnEnter(ArcherEnemy t)
+        public void OnEnter(MageEnemy t)
         {
             isAttack = false;
             attackDirection = t.SkinRotationDirection;
@@ -68,7 +65,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
                 {
                     if (cell.Data.gridUnits[i] && cell.Data.gridUnits[i] is Player.Player player)
                     {
-                        if(!player.IsDead)
+                        if (!player.IsDead)
                             return true;
                         return false;
                     }
@@ -76,7 +73,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
                 return false;
             }
         }
-        public void OnExecute(ArcherEnemy t)
+        public void OnExecute(MageEnemy t)
         {
             if (t.IsDead)
             {
@@ -98,9 +95,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
                     t.ChangeAnim(Constants.IDLE_ANIM);
                 }
                 return;
-            }           
+            }
         }
-        public void OnExit(ArcherEnemy t)
+        public void OnExit(MageEnemy t)
         {
             foreach (GameGridCell cell in attackRange)
             {
@@ -108,22 +105,22 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
                 cell.Data.IsBlockDanger = false;
             }
             attackRange.Clear();
-            foreach(DangerIndicator cell in dangerIndicators)
+            foreach (DangerIndicator cell in dangerIndicators)
             {
                 SimplePool.Despawn(cell);
             }
             dangerIndicators.Clear();
             _isChangeAnim = false;
-        }     
+        }
         private void IsResetAttackRange(object value)
         {
             if (!GameManager.Ins.IsState(GameState.InGame)) return;
-            if(attackRange.Contains((GameGridCell)value))
+            if (attackRange.Contains((GameGridCell)value))
                 main.StateMachine.ChangeState(StateEnum.Idle);
         }
-        ~IdleArcherEnemyState()
+        ~IdleMageEnemyState()
         {
-            if(GameManager.Ins)
+            if (GameManager.Ins)
                 GameManager.Ins.UnregisterListenerEvent(EventID.ObjectInOutDangerCell, IsResetAttackRange);
         }
     }

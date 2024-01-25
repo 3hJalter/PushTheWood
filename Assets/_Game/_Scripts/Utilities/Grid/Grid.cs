@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Game.GameGrid;
 using _Game.Utilities.Timer;
 using MapEnum;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using VinhLB;
 using static _Game.GameGrid.GameGridCell;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace _Game.Utilities.Grid
 {
@@ -56,9 +56,6 @@ namespace _Game.Utilities.Grid
 
                     gridArray[x, y].OnValueChange += OnGridCellValueChange;
                 }
-            //NOTE: Debug Here
-            //debug = new DebugGrid();
-            //debug.DrawGrid(this, true);
         }
 
         public float CellSize { get; }
