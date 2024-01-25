@@ -373,6 +373,7 @@ namespace _Game.DesignPattern
         ChestButtonUnit = 20,
         RockUnderwaterSmall = 21,
         RockUnderwaterBig = 22,
+        LightHouse = 23,
 
 
         // Grid Unit Building Object
