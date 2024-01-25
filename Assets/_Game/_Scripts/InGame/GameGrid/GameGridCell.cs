@@ -257,6 +257,7 @@ namespace _Game.GameGrid
         public GridSurfaceType gridSurfaceType;
         public GridUnit[] gridUnits;
         public bool IsDanger = false;
+        public bool IsBlockDanger = false;
 
         public void OnInit()
         {

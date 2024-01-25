@@ -119,8 +119,10 @@ namespace _Game.GameGrid.Unit
             get => mainCell;
             protected set
             {
-                if (mainCell != null && mainCell.Data.IsDanger)
-                    GameManager.Ins.PostEvent(EventID.ObjectInOutDangerCell, mainCell);           
+                if (mainCell != null && mainCell.Data.IsBlockDanger)
+                {
+                    GameManager.Ins.PostEvent(EventID.ObjectInOutDangerCell, mainCell);
+                }
                 mainCell = value;
                 if (mainCell != null && mainCell.Data.IsDanger)
                     GameManager.Ins.PostEvent(EventID.ObjectInOutDangerCell, mainCell);

@@ -9,14 +9,14 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
 {
-    public class ArcherEnemy : GridUnitDynamic, ICharacter
+    public class MageEnemy : GridUnitDynamic, ICharacter
     {
         [SerializeField] 
         private Animator animator;
-        [HideInInspector]
+        [HideInInspector] 
         public bool IsDead = false;
-        private StateMachine<ArcherEnemy> stateMachine;
-        public StateMachine<ArcherEnemy> StateMachine => stateMachine;
+        private StateMachine<MageEnemy> stateMachine;
+        public StateMachine<MageEnemy> StateMachine => stateMachine;
         public override StateEnum CurrentStateId
         {
             get => StateEnum.Idle;
@@ -54,7 +54,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             if (!_isAddState)
             {
                 _isAddState = true;
-                stateMachine = new StateMachine<ArcherEnemy>(this);
+                stateMachine = new StateMachine<MageEnemy>(this);
                 AddState();
             }
             IsDead = false;
@@ -74,9 +74,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
         }
         private void AddState()
         {
-            stateMachine.AddState(StateEnum.Idle, new IdleArcherEnemyState());
-            stateMachine.AddState(StateEnum.Attack, new AttackArcherEnemyState());
-            stateMachine.AddState(StateEnum.Die, new DieArcherEnemyState());
+            stateMachine.AddState(StateEnum.Idle, new IdleMageEnemyState());
+            stateMachine.AddState(StateEnum.Attack, new AttackMageEnemyState());
+            stateMachine.AddState(StateEnum.Die, new DieMageEnemyState());
         }
         public void ChangeAnim(string animName, bool forceAnim = false)
         {

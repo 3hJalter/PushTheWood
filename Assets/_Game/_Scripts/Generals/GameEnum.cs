@@ -124,6 +124,7 @@ namespace GameGridEnum
         Bomb = 6,
         ButtonUnit = 7,
         Archer_Enemy = 100,
+        Mage_Enemy = 101,
     }
     
     public enum VFXType
