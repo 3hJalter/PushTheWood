@@ -34,7 +34,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 // Animation and complete
                 // TODO: rotate in place animation for skin
                 moveTween = t.Tf.DOMove(t.EnterPosData.initialPos,
-                        t.EnterPosData.isFalling ? Constants.MOVING_TIME / 2 : Constants.MOVING_TIME)
+                        t.EnterPosData.isFalling ? Constants.MOVING_TIME * 0.8f : Constants.MOVING_TIME)
                     .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                     {
                         if (t.EnterPosData.isFalling)

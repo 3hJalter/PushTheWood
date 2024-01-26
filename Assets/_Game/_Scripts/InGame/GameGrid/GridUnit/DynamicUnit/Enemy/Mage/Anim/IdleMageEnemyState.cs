@@ -53,15 +53,18 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
                 if (IsPreventAttack(cell))
                 {
                     cell.Data.IsBlockDanger = true;
+                    cell.Data.IsDanger = false;
+                    attackRange.Add(cell);
                 }
                 else
                 {
                     cell.Data.IsBlockDanger = false;
+                    cell.Data.IsDanger = true;
+                    isAttack = isAttack || IsHavePlayer(cell);
+                    attackRange.Add(cell);
+                    dangerIndicators.Add(SimplePool.Spawn<DangerIndicator>(PoolType.DangerIndicator, cell.WorldPos + Vector3.up * 1.25f, Quaternion.identity));
                 }
-                cell.Data.IsDanger = true;
-                isAttack = isAttack || IsHavePlayer(cell);
-                attackRange.Add(cell);
-                dangerIndicators.Add(SimplePool.Spawn<DangerIndicator>(PoolType.DangerIndicator, cell.WorldPos + Vector3.up * 1.25f, Quaternion.identity));
+                
             }
             bool IsPreventAttack(GameGridCell cell)
             {

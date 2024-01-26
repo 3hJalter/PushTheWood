@@ -69,7 +69,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                         .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                         {
                             t.OnEnterTrigger(t);
-                            t.StateMachine.ChangeState(StateEnum.Idle);
+                            if (t.MainMovingData.inputDirection == Direction.None)
+                                t.StateMachine.ChangeState(StateEnum.Idle);
+                            else
+                                t.ChangeRollState(t.MainMovingData.inputDirection);
                         });
                 }
 
@@ -80,7 +83,19 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                     {
                         t.OnEnterTrigger(t);
-                        t.StateMachine.ChangeState(StateEnum.Idle);
+                        if (t.UnitTypeY == UnitTypeY.Up)
+                            t.StateMachine.ChangeState(StateEnum.Idle);
+                        else
+                        {
+                            if (t.IsPerpendicular(t.MainMovingData.inputDirection))
+                            {
+                                t.ChangeRollState(t.MainMovingData.inputDirection);
+                            }
+                            else
+                            {
+                                t.StateMachine.ChangeState(StateEnum.Idle);
+                            }
+                        }
                     });
             }
         }

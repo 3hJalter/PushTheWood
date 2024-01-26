@@ -12,12 +12,18 @@ namespace _Game.UIs.Screen
         [SerializeField]
         private Image _blockPanel;
 
+        public override void Setup()
+        {
+            base.Setup();
+            
+            _canvasGroup.alpha = 0f;
+        }
+
         public override void Open()
         {
             base.Open();
-            Debug.Log(_canvasGroup.alpha);
             
-            DOVirtual.Float(0, 1, 0.25f, value => _canvasGroup.alpha = value)
+            DOVirtual.Float(0f, 1f, 0.25f, value => _canvasGroup.alpha = value)
                 .OnComplete(() => _blockPanel.gameObject.SetActive(false));
         }
         

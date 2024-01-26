@@ -1,6 +1,7 @@
 ﻿using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
+using _Game.Utilities;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 {
     public class TurnOverChumpState : IState<Chump>
     {
+        private const float STATE_TIME = Constants.MOVING_TIME * 0.8f;
         private bool _isTurnOver;
         private bool isContinueTurnOver = false;
         private Vector3 anchorAdd;
@@ -78,7 +80,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 {
                     case CONDITION.BE_BLOCKED_BY_TREE_ROOT:
                     Vector3 position = t.Tf.position;
-                    t.Tf.DOMove(new Vector3(position.x, t.EnterPosData.finalPos.y, position.z), Constants.MOVING_TIME)
+                    t.Tf.DOMove(new Vector3(position.x, t.EnterPosData.finalPos.y, position.z), STATE_TIME)
                         .SetEase(Ease.Linear)
                         .SetUpdate(UpdateType.Fixed);
                         break;
@@ -90,7 +92,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
                 // TEMPORARY FIX: anchor position is not correct when Player Turn Over Chump at Raft
                 
-                DOVirtual.Float(0, 90, Constants.MOVING_TIME, i =>
+                DOVirtual.Float(0, 90, STATE_TIME, i =>
                 {
                     t.skin.RotateAround(t.anchor.Tf.position + anchorAdd, axis, i - lastAngle);
                     lastAngle = i;

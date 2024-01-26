@@ -33,6 +33,8 @@ namespace _Game.UIs.Screen
             _blockPanel.gameObject.SetActive(true);
             _goldValueText.text = $"{DataManager.Ins.GameData.user.gold}";
             _gemValueText.text = $"{DataManager.Ins.GameData.user.gems}";
+            
+            _canvasGroup.alpha = 0f;
         }
 
         public override void Open()
@@ -43,6 +45,7 @@ namespace _Game.UIs.Screen
             GameManager.Ins.ChangeState(GameState.MainMenu);
             CameraManager.Ins.ChangeCamera(ECameraType.MainMenuCamera);
             _bottomNavigationTabGroup.ResetSelectedTab();
+            
             DOVirtual.Float(0, 1, 1f, value => _canvasGroup.alpha = value)
                 .OnComplete(() => _blockPanel.gameObject.SetActive(false));
         }

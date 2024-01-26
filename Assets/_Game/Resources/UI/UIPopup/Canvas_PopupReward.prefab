@@ -1454,6 +1454,7 @@ MonoBehaviour:
   isDestroyOnClose: 0
   useAnimator: 0
   animator: {fileID: 0}
+  _canvas: {fileID: 488945922023722314}
   _rewardItemPrefab: {fileID: 2064312540448371345, guid: 24b2b8b1dc11c1a4cb5415737c37ec6d, type: 3}
   _rewardScrollRect: {fileID: 4327712272000009547}
   _rewardContentRectTF: {fileID: 4327712271809062990}

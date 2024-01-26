@@ -17,7 +17,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             Vector3 position = t.Tf.position;
             position = new Vector3(position.x, Constants.POS_Y_BOTTOM, position.z);
             t.Tf.position = position;
-            moveTween = t.Tf.DOMoveY((float)(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + t.FloatingHeightOffset) / 2 * Constants.CELL_SIZE - t.yOffsetOnDown, Constants.MOVING_TIME * 1.5f)
+            moveTween = t.Tf.DOMoveY((float)(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + t.FloatingHeightOffset) / 2 * Constants.CELL_SIZE - t.yOffsetOnDown
+                , Constants.MOVING_TIME * 1.5f)
                 .OnComplete(() =>
             {
                 t.StateMachine.ChangeState(StateEnum.Idle);
