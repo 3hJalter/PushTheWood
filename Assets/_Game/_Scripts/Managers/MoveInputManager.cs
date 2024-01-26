@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using _Game.DesignPattern;
+using _Game.Managers;
 using HControls;
 using MEC;
 using UnityEngine;
@@ -84,12 +85,23 @@ namespace _Game._Scripts.Managers
             }
 
             CurrentChoice = moveChoice;
+            DataManager.Ins.GameData.setting.moveChoice = (int) moveChoice;
         }
         
+        private bool _isFirstOpen;
         public void ShowContainer(bool isShow)
         {
             container.SetActive(isShow);
             if (!isShow) HideButton();
+            else
+            {
+                if (!_isFirstOpen)
+                {
+                    _isFirstOpen = true;
+                    CurrentChoice = (MoveChoice) DataManager.Ins.GameData.setting.moveChoice;
+                }
+                OnChangeMoveChoice(CurrentChoice);
+            }
         }
     }
 }

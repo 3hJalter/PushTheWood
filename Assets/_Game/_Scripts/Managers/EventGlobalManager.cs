@@ -6,9 +6,6 @@ namespace _Game._Scripts.Managers
     public class EventGlobalManager : Singleton<EventGlobalManager>
     {
         // Global events
-        public Relay<int> OnMoneyGoldChanged;
-        public Relay<int> OnMoneyGemChanged;
-        public Relay<int> OnTicketChanged;
         public Relay OnStartLoadScene;
         public Relay OnFinishLoadScene;
         public Relay OnUpdateSetting;
@@ -22,9 +19,6 @@ namespace _Game._Scripts.Managers
 
         private void Awake()
         {
-            OnMoneyGoldChanged = new Relay<int>();
-            OnMoneyGemChanged = new Relay<int>();
-            OnTicketChanged = new Relay<int>();
             OnStartLoadScene = new Relay();
             OnFinishLoadScene = new Relay();
             OnUpdateSetting = new Relay();

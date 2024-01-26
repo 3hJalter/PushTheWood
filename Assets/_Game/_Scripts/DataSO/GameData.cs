@@ -51,14 +51,12 @@ namespace _Game.Data
         {
             public bool enablePn;
             public bool requestedPn;
-
             public bool haptic = true;
             public float soundVolume = 1;
             public float musicVolume = 1;
-
             public int highPerformance = 1;
-
             public bool iOsTrackingRequested;
+            public int moveChoice = 0;
         }
     }
 

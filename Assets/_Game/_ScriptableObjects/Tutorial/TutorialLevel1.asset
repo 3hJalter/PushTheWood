@@ -23,4 +23,4 @@ MonoBehaviour:
     SerializationNodes: []
   tutorialScreens:
   - {fileID: 4260204160995290605, guid: a7bc9e7b5e26eff40b2dccddae165859, type: 3}
-  - {fileID: 337122715070888230, guid: cc302e564b178f046b2cee31ade91eed, type: 3}
+  - {fileID: 337122715070888230, guid: b0c0efb26041c59448144793c643a8bb, type: 3}

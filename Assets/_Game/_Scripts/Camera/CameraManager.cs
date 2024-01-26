@@ -1,13 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using _Game._Scripts.InGame;
 using _Game.Camera;
 using _Game.DesignPattern;
-using _Game.GameGrid;
 using Cinemachine;
 using DG.Tweening;
-using MEC;
 using UnityEngine;
 
 namespace _Game.Managers
@@ -22,13 +17,7 @@ namespace _Game.Managers
         [SerializeField] private UnityEngine.Camera brainCamera;
         [SerializeField] private Transform cameraTarget;
 
-        public Transform CameraTarget => cameraTarget;
-        // [SerializeField] private WorldMapTarget worldMapCameraTarget; // may be redundant later
-
-        // public WorldMapTarget WorldMapCameraTarget => worldMapCameraTarget;
-
         [SerializeField] private float cameraMoveTime = 1f;
-        [SerializeField] private Vector2 worldCameraXYPos;
         
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         // ReSharper disable once CollectionNeverUpdated.Local
@@ -66,19 +55,6 @@ namespace _Game.Managers
             cameraTarget.DOKill();
             cameraTarget.DOMove(position, moveTime).SetEase(Ease.Linear);
         }
-
-        // public void ChangeWorldTargetPosition()
-        // {
-        //     worldMapCameraTarget.Tf.position = new Vector3(
-        //         worldCameraXYPos.x,
-        //         worldCameraXYPos.y,
-        //         LevelManager.Ins.CurrentLevel.GetCenterPos().z);
-        // }
-        
-        // public void EnableWorldCamera(bool enable)
-        // {
-        //     worldMapCameraTarget.gameObject.SetActive(enable);
-        // }
         
         public void ChangeCameraTarget(ECameraType eCameraType, Transform target)
         {

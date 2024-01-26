@@ -70,5 +70,8 @@ namespace _Game.DesignPattern
         WinGame = 3,
         LoseGame = 4,
         ObjectInOutDangerCell = 5,
+        OnGoldMoneyChange = 6,
+        OnGemMoneyChange = 7,
+        OnTicketChange = 8,
     }
 }
