@@ -71,8 +71,6 @@ namespace _Game.UIs.Popup
         
         public void OnClickGoMenuButton()
         {
-            GameManager.Ins.ChangeState(GameState.MainMenu);
-            LevelManager.Ins.OnRestart();
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<MainMenuScreen>();
         }

@@ -22,9 +22,13 @@ namespace _Game.Data
             // Income Progress Data
             public int gold;
             public int gems;
-            public int ticket;
             public int dailyRewardClaimedCount;
 
+            // Booster Data
+            public int hintCount;
+            public int undoCount;
+            public int resetCount;
+            
             // Purchase & First rate Data
             public bool purchasedNoAds;
             public bool rated;

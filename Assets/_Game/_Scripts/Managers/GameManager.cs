@@ -1,12 +1,9 @@
-using System;
-using _Game._Scripts.Managers;
 using _Game.Data;
 using _Game.DesignPattern;
 using _Game.UIs.Screen;
 using _Game.Utilities;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _Game.Managers
 {
@@ -65,6 +62,9 @@ namespace _Game.Managers
             {
                 DOTween.PlayAll();
                 PostEvent(EventID.UnPause);
+            } else if (gameStateI == GameState.MainMenu)
+            {
+                PostEvent(EventID.OnResetToMainMenu);
             }
             gameState = gameStateI;
         }
@@ -92,13 +92,6 @@ namespace _Game.Managers
             Database.SaveData(_gameData);
         }
         
-        public void AddTicket(int ticket)
-        {
-            _gameData.user.ticket += ticket;
-            PostEvent(EventID.OnTicketChange, _gameData.user.ticket);
-            Database.SaveData(_gameData);
-        }
-        
         public void SpendGold(int gold)
         {
             _gameData.user.gold -= gold;
@@ -110,13 +103,6 @@ namespace _Game.Managers
         {
             _gameData.user.gems -= gem;
             PostEvent(EventID.OnGemMoneyChange, _gameData.user.gems);
-            Database.SaveData(_gameData);
-        }
-        
-        public void SpendTicket(int ticket)
-        {
-            _gameData.user.ticket -= ticket;
-            PostEvent(EventID.OnTicketChange, _gameData.user.ticket);
             Database.SaveData(_gameData);
         }
 

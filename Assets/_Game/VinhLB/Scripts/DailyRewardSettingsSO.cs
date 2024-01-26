@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using _Game.Managers;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace VinhLB
@@ -28,8 +29,10 @@ namespace VinhLB
             switch (RewardType)
             {
                 case RewardType.Gold:
+                    GameManager.Ins.AddGold(Amount);
                     break;
                 case RewardType.Gem:
+                    GameManager.Ins.AddGem(Amount);
                     break;
             }
         }

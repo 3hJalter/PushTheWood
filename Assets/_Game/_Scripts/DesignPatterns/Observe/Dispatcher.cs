@@ -72,6 +72,6 @@ namespace _Game.DesignPattern
         ObjectInOutDangerCell = 5,
         OnGoldMoneyChange = 6,
         OnGemMoneyChange = 7,
-        OnTicketChange = 8,
+        OnResetToMainMenu = 8,
     }
 }

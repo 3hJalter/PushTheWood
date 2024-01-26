@@ -15,21 +15,22 @@ namespace _Game.Data
 
         #endregion
         
-        #region Ticket Purchase
+        #region Booster Purchase
 
-        [FoldoutGroup("Ticket Purchase")]
         // Ticket purchase
-        [FoldoutGroup("Ticket Purchase/Booster Purchase Ticket")]
-        public readonly int undoTicketNeed = 5;
-        [FoldoutGroup("Ticket Purchase/Booster Purchase Ticket")]
-        public readonly int resetIslandTicketNeed = 5;
-        [FoldoutGroup("Ticket Purchase/Booster Purchase Ticket")]
-        public readonly int hintTicketNeed = 5;
-        // Cost to buy ticket
-        [FoldoutGroup("Ticket Purchase/Cost to buy ticket")]
-        public readonly int goldBuyPerTicket = 100;
-        [FoldoutGroup("Ticket Purchase/Cost to buy ticket")]
-        public readonly int gemBuyPerTicket = 1;
+        [FoldoutGroup("Booster Purchase")]
+        public readonly int goldPerUndo = 10;
+        [FoldoutGroup("Booster Purchase")]
+        public readonly int goldPerReset = 100;
+        [FoldoutGroup("Booster Purchase")]
+        public readonly int goldPerHint = 200;
+
+        #endregion
+
+        #region Gems Purchase
+
+        [FoldoutGroup("Gems Purchase")]
+        public readonly int gemToGold = 10;
 
         #endregion
         

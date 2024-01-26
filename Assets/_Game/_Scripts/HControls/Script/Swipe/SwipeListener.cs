@@ -16,6 +16,7 @@ namespace GG.Infrastructure.Utils.Swipe
         public UnityEvent onSwipeCancelled;
 
         public SwipeListenerEvent onSwipe;
+        public UnityEvent onCancelSwipe;
         public UnityEvent onUnHold;
         
 
@@ -77,6 +78,8 @@ namespace GG.Infrastructure.Utils.Swipe
                 _isHolding = false;
             }
             
+            if (Input.GetMouseButtonUp(0) && !_waitForSwipe) OnCancelSwipe();
+            
             if (Input.GetMouseButtonDown(0) && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
             
             if (Input.GetMouseButtonDown(0)) InitSwipe();
@@ -131,6 +134,12 @@ namespace GG.Infrastructure.Utils.Swipe
                 SampleSwipeStart();
                 _isHolding = true;
             }
+        }
+        
+        private void OnCancelSwipe()
+        {
+            _waitForSwipe = false;
+            onCancelSwipe?.Invoke();
         }
 
         private void SampleSwipeStart()

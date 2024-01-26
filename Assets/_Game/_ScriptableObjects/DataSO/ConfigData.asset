@@ -23,25 +23,16 @@ MonoBehaviour:
     SerializationNodes:
     - Name: timePerNormalLevel
       Entry: 3
-      Data: 600
-    - Name: holdTouchTime
-      Entry: 4
-      Data: 0.5
-    - Name: zoomOutTime
-      Entry: 4
-      Data: 1
-    - Name: undoTicketNeed
+      Data: 180
+    - Name: goldPerUndo
       Entry: 3
-      Data: 5
-    - Name: resetIslandTicketNeed
-      Entry: 3
-      Data: 5
-    - Name: hintTicketNeed
-      Entry: 3
-      Data: 5
-    - Name: goldBuyPerTicket
+      Data: 10
+    - Name: goldPerReset
       Entry: 3
       Data: 100
-    - Name: gemBuyPerTicket
+    - Name: goldPerHint
       Entry: 3
-      Data: 1
+      Data: 200
+    - Name: gemToGold
+      Entry: 3
+      Data: 10

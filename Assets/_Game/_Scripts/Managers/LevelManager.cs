@@ -179,10 +179,11 @@ namespace _Game.GameGrid
             savingState.Reset();
         }
 
-        public void OnUndo()
+        public bool OnUndo()
         {
-            savingState.Undo();
+            bool success = savingState.Undo();
             SetCameraToPlayerIsland();
+            return success;
         }
 
         public void SaveGameState(bool isMerge)
@@ -222,7 +223,7 @@ namespace _Game.GameGrid
                 #endregion
             }
 
-            public void Undo()
+            public bool Undo()
             {
                 if (main.CurrentLevel.GridMap.IsChange)
                 {
@@ -242,11 +243,10 @@ namespace _Game.GameGrid
                         SavingObjects();
                     }
                     DevLog.Log(DevId.Hung, "UNDO_STATE - SUCCESS!!");
+                    return true;
                 }
-                else
-                {
-                    DevLog.Log(DevId.Hung, "UNDO_STATE - FAILURE!!");
-                }
+                DevLog.Log(DevId.Hung, "UNDO_STATE - FAILURE!!");
+                return false;
             }
 
             public void Save(bool isMerge = false)

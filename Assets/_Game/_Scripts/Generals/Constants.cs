@@ -83,7 +83,7 @@ public static class Constants
 
     public const float TOLERANCE = 0.01f;
     
-    public const float HOLD_TOUCH_TIME = 0.3f;
+    public const float HOLD_TOUCH_TIME = 0.4f;
     public const float ZOOM_OUT_TIME = 1f;
     
     public const string NONE = "None";

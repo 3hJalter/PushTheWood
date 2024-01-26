@@ -1065,6 +1065,9 @@ MonoBehaviour:
   undoButton: {fileID: 596141825877913813}
   resetIslandButton: {fileID: 4602439569922810314}
   timeText: {fileID: 8026146433058201384}
+  undoCountText: {fileID: 2561975736595032557}
+  resetCountText: {fileID: 1858583844383015800}
+  hintCountText: {fileID: 3531546996186365163}
 --- !u!1 &995249275173999333
 GameObject:
   m_ObjectHideFlags: 0
@@ -2012,7 +2015,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6344744513270594892}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

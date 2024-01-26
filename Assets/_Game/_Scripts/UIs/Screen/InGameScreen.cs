@@ -19,7 +19,7 @@ namespace _Game.UIs.Screen
         [SerializeField] private Button undoButton;
         [SerializeField] private Button resetIslandButton;
         [SerializeField] private TMP_Text timeText;
-
+        
         private const float UNDO_CD_TIME = 0.3f;
         private STimer resetIslandTimer;
 
@@ -56,6 +56,10 @@ namespace _Game.UIs.Screen
         public event Action OnHint;
         public event Action OnCancelHint;
 
+        public TextMeshProUGUI undoCountText;
+        public TextMeshProUGUI resetCountText;
+        public TextMeshProUGUI hintCountText;
+        
         public override void Setup()
         {
             base.Setup();
