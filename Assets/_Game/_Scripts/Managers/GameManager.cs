@@ -58,14 +58,17 @@ namespace _Game.Managers
                 DOTween.PauseAll();
                 PostEvent(EventID.Pause);
             }
-            else if (gameState == GameState.Pause)
-            {
-                DOTween.PlayAll();
-                PostEvent(EventID.UnPause);
-            } else if (gameStateI == GameState.MainMenu)
+            else if (gameStateI == GameState.MainMenu)
             {
                 PostEvent(EventID.OnResetToMainMenu);
             }
+            
+            if (gameState == GameState.Pause && gameStateI != GameState.Pause)
+            {
+                DOTween.PlayAll();
+                PostEvent(EventID.UnPause);
+            } 
+            
             gameState = gameStateI;
         }
 
