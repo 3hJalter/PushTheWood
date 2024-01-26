@@ -71,6 +71,9 @@ MonoBehaviour:
   - prefab: {fileID: 198016214904594908, guid: a312715abb227c246acf4ae4abbc1501, type: 3}
     amount: 5
     root: {fileID: 2003738223610586936}
+  - prefab: {fileID: 6523552309750463506, guid: ecdfbd3ab3938d64e91a820ed4180d27, type: 3}
+    amount: 6
+    root: {fileID: 2003738223610586936}
 --- !u!1 &3367628503161717368
 GameObject:
   m_ObjectHideFlags: 0

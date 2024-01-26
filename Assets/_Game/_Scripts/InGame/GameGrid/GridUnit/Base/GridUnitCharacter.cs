@@ -18,6 +18,9 @@ namespace _Game.GameGrid.Unit
         protected string _currentAnim = Constants.INIT_ANIM;
         protected bool _isAddState;
         protected bool _isWaitAFrame;
+        [HideInInspector]
+        public readonly List<GameGridCell> AttackRange = new List<GameGridCell>();
+        public readonly List<DangerIndicator> AttackRangeVFX = new List<DangerIndicator>();
         
         public Direction Direction { get; protected set; } = Direction.None;
         public float AnimSpeed => animator.speed;
