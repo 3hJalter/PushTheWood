@@ -18,26 +18,26 @@ namespace VinhLB
         {
             _maskPositionPropId = Shader.PropertyToID("_MaskPosition");
             _maskScalePropId = Shader.PropertyToID("_MaskScale");
-        }
-
-        private void Start()
-        {
+            
             LevelManager.Ins.OnLevelGenerated += LevelManager_OnLevelGenerated;
-
-            LevelManager_OnLevelGenerated();
         }
-        
+
+        private void OnDestroy()
+        {
+            LevelManager.Ins.OnLevelGenerated -= LevelManager_OnLevelGenerated;
+        }
+
         public void UpdateFogColliderPositionAndScale()
         {
             Vector3 bottomLeftPosition = LevelManager.Ins.CurrentLevel.GetBottomLeftPos();
             Vector3 topRightPosition = LevelManager.Ins.CurrentLevel.GetTopRightPos();
             Vector3 middleCenterPosition = (bottomLeftPosition + topRightPosition) / 2;
-            Vector2 maskPosition = new Vector2(middleCenterPosition.x, middleCenterPosition.z - 10f);
+            Vector2 maskPosition = new Vector2(middleCenterPosition.x, middleCenterPosition.z - 12f);
             _spriteRenderer.sharedMaterial.SetVector(_maskPositionPropId, maskPosition);
             
             Vector3 positionDifference = topRightPosition - bottomLeftPosition;
             Vector2 maskScale = new Vector2(positionDifference.x, positionDifference.z);
-            maskScale.x = Mathf.Abs(maskScale.x) * 0.1f;
+            maskScale.x = Mathf.Abs(maskScale.x) * 0.07f;
             maskScale.y = Mathf.Abs(maskScale.y) * 0.1f;
             _spriteRenderer.sharedMaterial.SetVector(_maskScalePropId, maskScale);
         }
