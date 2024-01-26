@@ -137,5 +137,6 @@ namespace GameGridEnum
         DangerIndicator = 3,
         BombExplosion = 4,
         SmokeExplosion = 5,
+        MageSkill1Explosion = 6,
     }
 }
