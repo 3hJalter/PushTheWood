@@ -38,6 +38,13 @@ namespace VinhLB
             _spawnedCloudList = new List<Cloud>();
         }
 
+        private void Start()
+        {
+            LevelManager.Ins.OnLevelGenerated += LevelManager_OnLevelGenerated;
+
+            LevelManager_OnLevelGenerated();
+        }
+
         public void SpawnClouds()
         {
             if (_timer.IsStart)
@@ -93,6 +100,11 @@ namespace VinhLB
             _spawnedCloudList.Add(cloud);
 
             StartSpawnCloudTimer();
+        }
+        
+        private void LevelManager_OnLevelGenerated()
+        {
+            // SpawnClouds();
         }
     }
 }
