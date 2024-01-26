@@ -13,8 +13,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
         private const int MAX_RANGE = 2;
 
         private bool _isChangeAnim;
-        List<GameGridCell> attackRange = new List<GameGridCell>();
-        List<DangerIndicator> dangerIndicators = new List<DangerIndicator>();
         Direction attackDirection = Direction.None;
         private bool isAttack = false;
         private MageEnemy main;
@@ -54,15 +52,15 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
                 {
                     cell.Data.IsBlockDanger = true;
                     cell.Data.IsDanger = false;
-                    attackRange.Add(cell);
+                    t.AttackRange.Add(cell);
                 }
                 else
                 {
                     cell.Data.IsBlockDanger = false;
                     cell.Data.IsDanger = true;
                     isAttack = isAttack || IsHavePlayer(cell);
-                    attackRange.Add(cell);
-                    dangerIndicators.Add(SimplePool.Spawn<DangerIndicator>(PoolType.DangerIndicator, cell.WorldPos + Vector3.up * 1.25f, Quaternion.identity));
+                    t.AttackRange.Add(cell);
+                    t.AttackRangeVFX.Add(SimplePool.Spawn<DangerIndicator>(PoolType.DangerIndicator, cell.WorldPos + Vector3.up * 1.25f, Quaternion.identity));
                 }
                 
             }
@@ -117,23 +115,23 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
         }
         public void OnExit(MageEnemy t)
         {
-            foreach (GameGridCell cell in attackRange)
+            foreach (GameGridCell cell in t.AttackRange)
             {
                 cell.Data.IsDanger = false;
                 cell.Data.IsBlockDanger = false;
             }
-            attackRange.Clear();
-            foreach (DangerIndicator cell in dangerIndicators)
+            t.AttackRange.Clear();
+            foreach (DangerIndicator cell in t.AttackRangeVFX)
             {
                 SimplePool.Despawn(cell);
             }
-            dangerIndicators.Clear();
+            t.AttackRangeVFX.Clear();
             _isChangeAnim = false;
         }
         private void IsResetAttackRange(object value)
         {
             if (!GameManager.Ins.IsState(GameState.InGame)) return;
-            if (attackRange.Contains((GameGridCell)value))
+            if (main.AttackRange.Contains((GameGridCell)value))
                 main.StateMachine.ChangeState(StateEnum.Idle);
         }
         ~IdleMageEnemyState()
