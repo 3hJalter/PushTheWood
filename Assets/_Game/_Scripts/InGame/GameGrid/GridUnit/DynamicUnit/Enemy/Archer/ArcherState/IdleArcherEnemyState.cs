@@ -40,6 +40,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
                 if (IsPreventAttack())
                 {
                     cell.Data.IsBlockDanger = true;
+                    cell.Data.IsDanger = false;
                     attackRange.Add(cell);
                     break;
                 }
