@@ -1,4 +1,5 @@
 using _Game.DesignPattern;
+using _Game.Utilities.Grid;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,6 +19,8 @@ public class InitManager : Singleton<InitManager>
     GameObject debugObject;
     [SerializeField]
     InitCanvas debugCanvas;
+    [SerializeField]
+    Material _fontMaterial;
     DebugManager debugManager;
     #endregion
     
@@ -27,7 +30,7 @@ public class InitManager : Singleton<InitManager>
         debugCanvas._OnToggleValueChange += OnSetDebug;
         debugCanvas._OnStartGame += OnStartGame;
         debugCanvas.SetData(isDebugGridLogic, isDebugFps, isDebugLog);
-        
+        GridUtilities.OverlayMaterial = _fontMaterial;
     }
 
     private void OnSetDebug(int id, bool value)

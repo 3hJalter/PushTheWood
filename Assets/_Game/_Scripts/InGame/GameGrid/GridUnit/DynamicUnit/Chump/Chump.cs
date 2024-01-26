@@ -93,7 +93,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
             #endregion
 
             base.OnBePushed(direction, pushUnit);
-
             #region Be push when below Box and in water
 
             if (pushUnit is Box.Box && IsInWater())
@@ -103,34 +102,51 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
             }
 
             #endregion
-            
+            ChangeRollState(direction);
+        }
+
+        public void ChangeRollState(Direction direction)
+        {
             if (unitTypeY is UnitTypeY.Up)
             {
                 stateMachine.ChangeState(StateEnum.TurnOver);
             }
             else
             {
-                if (unitTypeXZ is UnitTypeXZ.Horizontal)
+                if (IsPerpendicular(direction))
                 {
-                    if (direction is Direction.Left or Direction.Right)
-                        stateMachine.ChangeState(onBePushedStraightState);
-                    else if (direction is Direction.Forward or Direction.Back)
-                        stateMachine.ChangeState(onBePushedPerpendicularState);
+                    stateMachine.ChangeState(onBePushedPerpendicularState);
                 }
-                else if (unitTypeXZ is UnitTypeXZ.Vertical)
+                else
                 {
-                    if (direction is Direction.Left or Direction.Right)
-                        stateMachine.ChangeState(onBePushedPerpendicularState);
-                    else if (direction is Direction.Forward or Direction.Back)
-                        stateMachine.ChangeState(onBePushedStraightState);
+                    stateMachine.ChangeState(onBePushedStraightState);
                 }
             }
+        }
+
+        public bool IsPerpendicular(Direction direction)
+        {
+            if (unitTypeXZ is UnitTypeXZ.Horizontal)
+            {
+                if (direction is Direction.Left or Direction.Right)
+                    return false;
+                else if (direction is Direction.Forward or Direction.Back)
+                    return true;
+            }
+            else if (unitTypeXZ is UnitTypeXZ.Vertical)
+            {
+                if (direction is Direction.Left or Direction.Right)
+                    return true;
+                else if (direction is Direction.Forward or Direction.Back)
+                    return false;
+            }
+            return false;
         }
 
         protected override void OnOutTriggerBelow(GridUnit triggerUnit)
         {
             base.OnOutTriggerBelow(triggerUnit);
-            if (!LevelManager.Ins.IsConstructingLevel && IsCurrentStateIs(StateEnum.Idle)) 
+            if (!LevelManager.Ins.IsConstructingLevel && IsCurrentStateIs(StateEnum.Idle))
                 stateMachine.ChangeState(StateEnum.Fall);
         }
 
@@ -157,14 +173,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
                     break;
             }
         }
-       
+
         public MovingData MainMovingData => TurnOverData.UsingTurnId > MovingData.UsingTurnId ? TurnOverData : MovingData;
 
         public override bool IsCurrentStateIs(StateEnum stateEnum)
         {
             return stateMachine.CurrentState.Id == stateEnum;
         }
-        
+
         public void SwitchType(Direction direction)
         {
             if (unitTypeY is UnitTypeY.Up)
@@ -204,9 +220,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
         #endregion
 
         #region SAVING DATA
-        
+
         // Current Empty
-        
+
         #endregion
     }
 }

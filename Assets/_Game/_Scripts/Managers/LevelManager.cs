@@ -29,9 +29,6 @@ namespace _Game.GameGrid
         private int _levelIndex;
 
         private Level _currentLevel;
-        //Test
-        [SerializeField]
-        private Material _fontMaterial;
         [SerializeField]
         private FishSpawner _fishSpawner;
         [SerializeField]
@@ -52,7 +49,6 @@ namespace _Game.GameGrid
                 DataManager.Ins.GameData.user.normalLevelIndex = DebugManager.Ins.Level;
             }
             _levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
-            GridUtilities.OverlayMaterial = _fontMaterial;
             OnGenerateLevel(_levelIndex == 0);
             SetCameraToPosition(CurrentLevel.GetCenterPos());
         }
