@@ -7,12 +7,15 @@ namespace _Game.GameGrid.GridSurface
 {
     public class GroundSurface : GridSurface
     {
-        [SerializeField] private MeshRenderer grassRenderer;
-        [SerializeField] protected MeshRenderer groundMeshRenderer;
-        
+        [SerializeField]
+        private MeshRenderer grassRenderer;
+        [SerializeField]
+        protected MeshRenderer groundMeshRenderer;
+
         public MaterialEnum groundMaterialEnum = MaterialEnum.None;
-        
-        public override void OnInit(Direction rotateDirection = Direction.Forward, MaterialEnum materialEnum = MaterialEnum.None)
+
+        public override void OnInit(Direction rotateDirection = Direction.Forward,
+            MaterialEnum materialEnum = MaterialEnum.None, bool hasUnitInMap = false)
         {
             transform.localRotation = Quaternion.Euler(0, BuildingUnitData.GetRotationAngle(rotateDirection), 0);
             // Change material in mesh renderer
@@ -21,8 +24,10 @@ namespace _Game.GameGrid.GridSurface
             groundMeshRenderer.material = DataManager.Ins.GetSurfaceMaterial(materialEnum);
             if (groundMaterialEnum is MaterialEnum.None || grassRenderer == null) return;
             grassRenderer.material = DataManager.Ins.GetGrassMaterial(materialEnum);
+
+            Debug.Log(hasUnitInMap);
         }
-        
+
         [ContextMenu("Set Material to Ground")]
         public void SetMaterialToGround()
         {
