@@ -1,7 +1,9 @@
+using _Game.DesignPattern;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Enemy;
 using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using _Game.Utilities;
+using _Game.Utilities.Grid;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
@@ -69,7 +71,21 @@ namespace _Game.GameGrid.Unit
         }
 
         public abstract void OnCharacterDie();
-
+        public override void OnDespawn()
+        {
+            base.OnDespawn();
+            foreach(GameGridCell cell in AttackRange)
+            {
+                cell.Data.IsBlockDanger = false;
+                cell.Data.IsDanger = false;
+            }
+            AttackRange.Clear();
+            foreach(DangerIndicator indicator in AttackRangeVFX)
+            {
+                SimplePool.Despawn(indicator);
+            }
+            AttackRangeVFX.Clear();
+        }
 
         public class CharacterUnitMemento<T> : DynamicUnitMemento<T> where T : GridUnitCharacter
         {
