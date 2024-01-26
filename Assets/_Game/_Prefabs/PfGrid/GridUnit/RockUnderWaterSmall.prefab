@@ -380,7 +380,7 @@ MonoBehaviour:
   isMinusHalfSizeY: 0
   startHeight: 2
   endHeight: 0
-  overrideStartHeight: 0
+  overrideStartHeight: 1
   floatingHeightOffset: 0
   unitTypeY: 0
   yOffsetOnDown: 0.5
