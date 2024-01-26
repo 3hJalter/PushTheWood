@@ -53,6 +53,9 @@ MonoBehaviour:
     - {fileID: 3183996776406851115, guid: 7244cd34fded9f7499e1a2d2486bbc59, type: 3}
     - {fileID: 8407841716924856001, guid: 06c8c7f64c59dfc4fbea0f7ff0792231, type: 3}
     - {fileID: 1028327251320453201, guid: c98395dbd471057468ecefbbac47f39b, type: 3}
+    - {fileID: -6492541787636497690, guid: 563a0790fbbc1bb438932d4d6d753bcb, type: 3}
+    - {fileID: 6844371137788254552, guid: d559ee9c7d49da243b674c9542f3e0c6, type: 3}
+    - {fileID: -2026251214701203340, guid: 8d79ee0068123434bbe1ba109882044e, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -582,7 +585,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 2
+      Data: 3
     - Name: 
       Entry: 7
       Data: 
@@ -628,6 +631,36 @@ MonoBehaviour:
     - Name: 
       Entry: 10
       Data: 36
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 202
+    - Name: $v
+      Entry: 7
+      Data: 11|VinhLB.EnvironmentObject[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 10
+      Data: 37
+    - Name: 
+      Entry: 10
+      Data: 38
+    - Name: 
+      Entry: 10
+      Data: 39
     - Name: 
       Entry: 13
       Data: 

@@ -31,9 +31,9 @@ namespace _Game._Scripts.InGame
             gridSizeY = _rawLevelData.s.y;
             // Create Grid Map
             CreateGridMap();
-            // Spawn Grid Surface
             // Spawn Units (Not Init)
             OnSpawnUnits();
+            // Spawn Grid Surface
             SpawnGridSurfaceToGrid();
             OnSpawnShadowUnit();
             OnSetHintLine();

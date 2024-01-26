@@ -395,9 +395,11 @@ namespace _Game.DesignPattern
         SurfaceGround2Side = 146,
         SurfaceGround2SideConnect = 147,
         SurfaceGroundEdgeAndConnect = 148,
+        
         // Environment Object
         Cloud = 200,
         Shark = 201,
+        Flower = 202,
 
         //VFX
         DangerIndicator = 1000,
