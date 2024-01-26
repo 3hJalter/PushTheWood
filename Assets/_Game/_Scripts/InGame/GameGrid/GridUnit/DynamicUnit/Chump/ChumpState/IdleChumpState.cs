@@ -2,6 +2,7 @@
 using _Game.Utilities;
 using _Game.Utilities.Timer;
 using DG.Tweening;
+using GameGridEnum;
 using UnityEngine;
 namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 {
@@ -22,7 +23,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             //DEV: Refactor anim system
             if (t.IsInWater())
             {
-                originTransform = t.Tf.transform.position;
+                originTransform = new Vector3(t.Tf.position.x, 
+                    (float)(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + t.FloatingHeightOffset) / 2 * Constants.CELL_SIZE - t.yOffsetOnDown, 
+                    t.Tf.position.z);
                 floatingTween = DOVirtual.Float(0 ,MOVE_Y_TIME, MOVE_Y_TIME, SetSinWavePosition).SetLoops(-1).SetEase(Ease.Linear);
             }
             else

@@ -90,7 +90,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 
                 // TEMPORARY FIX: anchor position is not correct when Player Turn Over Chump at Raft
                 
-                DOVirtual.Float(0, 90, Constants.MOVING_TIME, i =>
+                DOVirtual.Float(0, 90, Constants.MOVING_TIME * 0.8f, i =>
                 {
                     t.skin.RotateAround(t.anchor.Tf.position + anchorAdd, axis, i - lastAngle);
                     lastAngle = i;

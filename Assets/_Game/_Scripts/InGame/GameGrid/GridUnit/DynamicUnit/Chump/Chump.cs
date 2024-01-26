@@ -49,7 +49,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
             {
                 _isAddState = true;
                 stateMachine = new StateMachine<Chump>(this);
-                //stateMachine.Debug = true;
+                stateMachine.Debug = true;
                 AddState();
             }
             stateMachine.ChangeState(StateEnum.Idle);
