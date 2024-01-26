@@ -14,13 +14,18 @@ namespace VinhLB
     {
         private Fish _shark;
 
-        private void Start()
+        private void Awake()
         {
             LevelManager.Ins.OnLevelGenerated += LevelManager_OnLevelGenerated;
             LevelManager.Ins.OnLevelIslandReset += LevelManager_OnLevelIslandReset;
             LevelManager.Ins.OnLevelRestarted += LevelManager_OnLevelRestarted;
+        }
 
-            LevelManager_OnLevelGenerated();
+        private void OnDestroy()
+        {
+            LevelManager.Ins.OnLevelGenerated -= LevelManager_OnLevelGenerated;
+            LevelManager.Ins.OnLevelIslandReset -= LevelManager_OnLevelIslandReset;
+            LevelManager.Ins.OnLevelRestarted -= LevelManager_OnLevelRestarted;
         }
 
         public void SpawnFish(bool resetPath = true)
