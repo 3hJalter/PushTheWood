@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using _Game._Scripts.InGame;
 using _Game._Scripts.Managers;
@@ -25,6 +26,10 @@ namespace _Game.GameGrid
 
         // public Dictionary<int, Level> PreLoadLevels => _preLoadLevels;
 
+        public event Action OnLevelGenerated;
+        public event Action OnLevelRestarted;
+        public event Action OnLevelIslandReset;
+
         [SerializeField]
         private int _levelIndex;
 
@@ -32,10 +37,6 @@ namespace _Game.GameGrid
         //Test
         [SerializeField]
         private Material _fontMaterial;
-        [SerializeField]
-        private FishSpawner _fishSpawner;
-        [SerializeField]
-        private CloudSpawner _cloudSpawner;
 
         public int LevelIndex => _levelIndex;
         public Level CurrentLevel => _currentLevel;
@@ -66,11 +67,8 @@ namespace _Game.GameGrid
             {
                 InitLevel();
             }
-
-            _fishSpawner.SpawnFish();
-            // _cloudSpawner.SpawnClouds();
-            FXManager.Ins.UpdateFogColliderPositionAndScale(_currentLevel.GetBottomLeftPos(),
-                _currentLevel.GetTopRightPos());
+            
+            OnLevelGenerated?.Invoke();
         }
 
         public void InitLevel()
@@ -93,11 +91,8 @@ namespace _Game.GameGrid
         public void ResetLevelIsland()
         {
             _currentLevel.ResetIslandPlayerOn();
-
-            // _fishSpawner.SpawnFish(false);
-            // _cloudSpawner.SpawnClouds();
-            // FXManager.Ins.UpdateFogColliderPositionAndSize(_currentLevel.GetBottomLeftPos(),
-            //     _currentLevel.GetTopRightPos());
+            
+            OnLevelIslandReset?.Invoke();
         }
 
         private void OnCheckTutorial()
@@ -174,8 +169,9 @@ namespace _Game.GameGrid
             // player.OnInit(CurrentLevel.firstPlayerInitCell);
             SetCameraToPlayerIsland();
             // FxManager.Ins.ResetTrackedTrampleObjectList();
-            _fishSpawner.SpawnFish();
             savingState.Reset();
+            
+            OnLevelRestarted?.Invoke();
         }
 
         public void ResetGameState()

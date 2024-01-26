@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using _Game.DesignPattern;
@@ -5,12 +6,22 @@ using _Game.GameGrid;
 using _Game.Managers;
 using _Game.Utilities;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace VinhLB
 {
     public class FishSpawner : HMonoBehaviour
     {
         private Fish _shark;
+
+        private void Start()
+        {
+            LevelManager.Ins.OnLevelGenerated += LevelManager_OnLevelGenerated;
+            LevelManager.Ins.OnLevelIslandReset += LevelManager_OnLevelIslandReset;
+            LevelManager.Ins.OnLevelRestarted += LevelManager_OnLevelRestarted;
+
+            LevelManager_OnLevelGenerated();
+        }
 
         public void SpawnFish(bool resetPath = true)
         {
@@ -72,6 +83,21 @@ namespace VinhLB
                     _shark.ResetMovement();
                 }
             }
+        }
+        
+        private void LevelManager_OnLevelGenerated()
+        {
+            SpawnFish();
+        }
+        
+        private void LevelManager_OnLevelIslandReset()
+        {
+            SpawnFish(false);
+        }
+        
+        private void LevelManager_OnLevelRestarted()
+        {
+            SpawnFish();
         }
     }
 }
