@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _Game.Data;
 using _Game.DesignPattern;
 using AudioEnum;
 using DG.Tweening;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace _Game.Managers
 {
@@ -17,6 +19,14 @@ namespace _Game.Managers
         {
             audioData = DataManager.Ins.AudioData;
             PlayBgm(BgmType.MainMenu);
+            GameManager.Ins.RegisterListenerEvent(EventID.Pause, PauseSfx);
+            GameManager.Ins.RegisterListenerEvent(EventID.UnPause, UnPauseSfx);
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.Ins.UnregisterListenerEvent(EventID.Pause, PauseSfx);
+            GameManager.Ins.UnregisterListenerEvent(EventID.UnPause, UnPauseSfx);
         }
 
         public AudioClip GetBgm(BgmType type)

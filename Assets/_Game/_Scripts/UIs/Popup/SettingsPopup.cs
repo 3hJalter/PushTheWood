@@ -19,6 +19,7 @@ namespace _Game.UIs.Popup
             if (GameManager.Ins.IsState(GameState.InGame))
             {
                 _mainMenuButton.gameObject.SetActive(true);
+                GameManager.Ins.ChangeState(GameState.Pause);
             }
             else
             {
@@ -35,7 +36,11 @@ namespace _Game.UIs.Popup
         public override void Close()
         {
             base.Close();
-            if (UIManager.Ins.IsOpened<InGameScreen>()) MoveInputManager.Ins.ShowContainer(true);
+            if (UIManager.Ins.IsOpened<InGameScreen>())
+            {
+                GameManager.Ins.ChangeState(GameState.InGame);
+                MoveInputManager.Ins.ShowContainer(true);
+            }
         }
 
         public void OnClickChangeBgmStatusButton()

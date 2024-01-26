@@ -1060,8 +1060,8 @@ MonoBehaviour:
   isDestroyOnClose: 0
   useAnimator: 0
   animator: {fileID: 0}
-  blockPanel: {fileID: 2725511117278880449}
   canvasGroup: {fileID: 995249274732087731}
+  blockPanel: {fileID: 2725511117278880449}
   undoButton: {fileID: 596141825877913813}
   resetIslandButton: {fileID: 4602439569922810314}
   timeText: {fileID: 8026146433058201384}
@@ -1670,7 +1670,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 995249274732087689}
           m_TargetAssemblyTypeName: _Game.UIs.Screen.InGameScreen, Assembly-CSharp
-          m_MethodName: OnShowShadowObj
+          m_MethodName: OnShowHint
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1686,7 +1686,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 995249274732087689}
           m_TargetAssemblyTypeName: _Game.UIs.Screen.InGameScreen, Assembly-CSharp
-          m_MethodName: OnHideShadowObj
+          m_MethodName: OnHideHint
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

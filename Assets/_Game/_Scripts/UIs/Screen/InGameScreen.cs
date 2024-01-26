@@ -1,11 +1,10 @@
-﻿using _Game._Scripts.Managers;
+﻿using System;
+using _Game._Scripts.Managers;
 using _Game.Camera;
-using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Popup;
 using _Game.Utilities.Timer;
 using DG.Tweening;
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,17 +14,19 @@ namespace _Game.UIs.Screen
 {
     public class InGameScreen : UICanvas
     {
-        public event Action OnUndo;
-        public event Action OnResetIsland;
-
-        private float UNDO_CD_TIME = 0.3f;
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private Image blockPanel;
         [SerializeField] private Button undoButton;
         [SerializeField] private Button resetIslandButton;
         [SerializeField] private TMP_Text timeText;
 
+        private const float UNDO_CD_TIME = 0.3f;
+        private STimer resetIslandTimer;
+
         private int time;
+
+        private STimer undoTimer;
+
         public int Time
         {
             get => time;
@@ -34,27 +35,32 @@ namespace _Game.UIs.Screen
                 time = value;
                 int second = time % 60;
                 int minute = time / 60;
-                timeText.text = $"{minute.ToString("00")}:{second.ToString("00")}";
+                timeText.text = $"{minute:00}:{second:00}";
             }
         }
 
-        STimer undoTimer;
-        STimer resetIslandTimer;
         private void Awake()
         {
             undoTimer = TimerManager.Inst.PopSTimer();
             resetIslandTimer = TimerManager.Inst.PopSTimer();
         }
 
+        private void OnDestroy()
+        {
+            TimerManager.Inst.PushSTimer(undoTimer);
+            TimerManager.Inst.PushSTimer(resetIslandTimer);
+        }
+
+        public event Action OnUndo;
+        public event Action OnResetIsland;
+        public event Action OnHint;
+        public event Action OnCancelHint;
+
         public override void Setup()
         {
             base.Setup();
             GameManager.Ins.ChangeState(GameState.InGame);
             MoveInputManager.Ins.ShowContainer(true);
-            MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.Ins
-                .CurrentChoice); // TODO: Change to use PlayerRef 
-            // if (CameraFollow.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
-            // CameraFollow.Ins.ChangeCamera(ECameraType.InGameCamera);
             if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
             CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
             canvasGroup.alpha = 0f;
@@ -64,7 +70,7 @@ namespace _Game.UIs.Screen
         public override void Open()
         {
             base.Open();
-            
+
             DOVirtual.Float(0f, 1f, 1f, value => canvasGroup.alpha = value)
                 .OnComplete(() => { blockPanel.enabled = false; });
         }
@@ -79,20 +85,7 @@ namespace _Game.UIs.Screen
         {
             UIManager.Ins.OpenUI<SettingsPopup>();
         }
-
-        public void OnClickOpenMapButton()
-        {
-            Close();
-            UIManager.Ins.OpenUI<WorldMapScreen>();
-        }
-
-        public void OnClickResetIslandButton()
-        {
-            OnResetIsland?.Invoke();
-            resetIslandButton.interactable = false;
-            resetIslandTimer.Start(UNDO_CD_TIME, () => resetIslandButton.interactable = true);
-        }
-
+        
         public void OnClickToggleBuildingMode()
         {
             Close();
@@ -100,12 +93,6 @@ namespace _Game.UIs.Screen
             GridBuildingManager.Ins.ToggleBuildMode();
         }
 
-        public void OnClickUndo()
-        {
-            OnUndo?.Invoke();
-            undoButton.interactable = false;
-            undoTimer.Start(UNDO_CD_TIME, () => undoButton.interactable = true);
-        }
 
         public void SetActiveUndo(bool active)
         {
@@ -119,23 +106,33 @@ namespace _Game.UIs.Screen
             resetIslandButton.interactable = active;
         }
 
-        private void OnDestroy()
+        #region Booster
+
+        public void OnClickUndo()
         {
-            TimerManager.Inst.PushSTimer(undoTimer);
-            TimerManager.Inst.PushSTimer(resetIslandTimer);
+            // Check number of ticket to use
+            OnUndo?.Invoke();
+            undoButton.interactable = false;
+            undoTimer.Start(UNDO_CD_TIME, () => undoButton.interactable = true);
         }
 
-        public void OnShowShadowObj()
+        public void OnClickResetIslandButton()
         {
-            LevelManager.Ins.CurrentLevel.ChangeShadowUnitAlpha(false);
-            FXManager.Ins.TrailHint.OnPlay(
-                LevelManager.Ins.CurrentLevel.HintLinePosList);
+            OnResetIsland?.Invoke();
+            resetIslandButton.interactable = false;
+            resetIslandTimer.Start(UNDO_CD_TIME, () => resetIslandButton.interactable = true);
         }
 
-        public void OnHideShadowObj()
+        public void OnShowHint()
         {
-            LevelManager.Ins.CurrentLevel.ChangeShadowUnitAlpha(true);
-            FXManager.Ins.TrailHint.OnCancel();
+            OnHint?.Invoke();
         }
+
+        public void OnHideHint()
+        {
+            OnCancelHint?.Invoke();
+        }
+
+        #endregion
     }
 }

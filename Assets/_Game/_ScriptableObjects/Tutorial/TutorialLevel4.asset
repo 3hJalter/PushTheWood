@@ -21,4 +21,5 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  tutorialScreens: []
+  tutorialScreens:
+  - {fileID: 7727380018450095427, guid: cc302e564b178f046b2cee31ade91eed, type: 3}
