@@ -3,7 +3,17 @@ guid: c77914ea81e6cdf48aef10326bbadcbf
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: EnemyFat_rig01_M_Weapon
+    second: {fileID: 2100000, guid: 187dd8ac28638344e95a6cb010706627, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: EnemyFat_rig01_M_native_fat
+    second: {fileID: 2100000, guid: 284eceb8e64d1f644a20338471041aef, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -1,7 +1,9 @@
+using _Game.DesignPattern;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Enemy;
 using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using _Game.Utilities;
+using _Game.Utilities.Grid;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,6 +20,9 @@ namespace _Game.GameGrid.Unit
         protected string _currentAnim = Constants.INIT_ANIM;
         protected bool _isAddState;
         protected bool _isWaitAFrame;
+        [HideInInspector]
+        public readonly List<GameGridCell> AttackRange = new List<GameGridCell>();
+        public readonly List<DangerIndicator> AttackRangeVFX = new List<DangerIndicator>();
         
         public Direction Direction { get; protected set; } = Direction.None;
         public float AnimSpeed => animator.speed;
@@ -66,7 +71,21 @@ namespace _Game.GameGrid.Unit
         }
 
         public abstract void OnCharacterDie();
-
+        public override void OnDespawn()
+        {
+            base.OnDespawn();
+            foreach(GameGridCell cell in AttackRange)
+            {
+                cell.Data.IsBlockDanger = false;
+                cell.Data.IsDanger = false;
+            }
+            AttackRange.Clear();
+            foreach(DangerIndicator indicator in AttackRangeVFX)
+            {
+                SimplePool.Despawn(indicator);
+            }
+            AttackRangeVFX.Clear();
+        }
 
         public class CharacterUnitMemento<T> : DynamicUnitMemento<T> where T : GridUnitCharacter
         {

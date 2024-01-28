@@ -13,9 +13,17 @@ namespace HControls
         private void OnEnable()
         {
             swipeListener.onSwipe.AddListener(OnSwipe);
+            swipeListener.onCancelSwipe.AddListener(OnCancelSwipe);
             swipeListener.onUnHold.AddListener(OnUnHold);
+            
         }
 
+        private static void OnCancelSwipe()
+        {
+            DevLog.Log(DevId.Hoang, "Cancel swipe");
+            HInputManager.SetDirectionInput(Direction.None);
+        }
+        
         private static void OnUnHold()
         {
             if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.ZoomOutCamera))
@@ -24,7 +32,7 @@ namespace HControls
         
         private static void OnSwipe(string direction)
         {
-            DevLog.Log(DevId.Hung, $"Swipe - {direction}");
+            DevLog.Log(DevId.Hoang, $"Swipe - {direction}");
             switch (direction)
             {
                 case DirectionId.ID_LEFT:

@@ -83,14 +83,12 @@ public static class Constants
 
     public const float TOLERANCE = 0.01f;
     
-    public const float HOLD_TOUCH_TIME = 0.3f;
+    public const float HOLD_TOUCH_TIME = 0.4f;
     public const float ZOOM_OUT_TIME = 1f;
     
     public const string NONE = "None";
 
     public const float DEFAULT_HINT_TRAIL_HEIGHT = 3f;
-    public const int LEVEL_TIME = 600;
-    public const int UNDO_COUNT = 10;
     
     public const float HINT_LINE_TRAIL_SPEED = 10f;
     

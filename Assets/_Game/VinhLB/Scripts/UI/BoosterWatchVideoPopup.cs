@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using _Game.Managers;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,14 +16,26 @@ namespace VinhLB
         [SerializeField]
         private TMP_Text _currencyAmountText;
 
-        public void OnClickBuyButton()
+        public override void Setup()
         {
-            
+            base.Setup();
+            GameManager.Ins.ChangeState(GameState.Pause);
+        }
+
+        public void OnClickBuyButton()
+        { 
+            Close();   
         }
 
         public void OnClickClaimButton()
         {
-            
+            Close();
+        }
+
+        public override void Close()
+        {
+            GameManager.Ins.ChangeState(GameState.InGame);
+            base.Close();
         }
     }
 }

@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &11101223 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 910453651, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+  m_PrefabInstance: {fileID: 7030098244278345276}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &13734018 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7937655173850625682, guid: e4cb9b930e39beb41a1717324195966b, type: 3}
@@ -805,17 +810,19 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   trailHint: {fileID: 7030098244278345278}
+  _gridGO: {fileID: 517049268}
   _groundGO: {fileID: 1266336787}
   _waterGO: {fileID: 1119362961}
-  _gridGO: {fileID: 517049268}
-  _fogVisualEffect: {fileID: 1740951911}
+  _rollingFogGO: {fileID: 698761953}
+  _windDustGO: {fileID: 11101223}
   _rendererData: {fileID: 11400000, guid: 82b4ed0936573764e945e1fb602913e0, type: 2}
   _renderPipelineAsset: {fileID: 11400000, guid: 27753c6e9514d924dab306f724c17974, type: 2}
   _cameraData: {fileID: 1929008257}
+  _activeGrid: 0
   _activeGround: 1
   _activeWater: 1
-  _activeGrid: 0
-  _activeFog: 1
+  _activeRollingFog: 1
+  _activeWindDust: 1
 --- !u!1001 &290731783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1723,6 +1730,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49c3c2881e0dea244968508da94463cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &698761953 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 561809458, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+  m_PrefabInstance: {fileID: 7030098244278345276}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &770300478
 GameObject:
   m_ObjectHideFlags: 0
@@ -2227,15 +2239,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: OnMoneyGoldChanged
-      Entry: 6
-      Data: 
-    - Name: OnMoneyGemChanged
-      Entry: 6
-      Data: 
-    - Name: OnTicketChanged
-      Entry: 6
-      Data: 
     - Name: OnStartLoadScene
       Entry: 7
       Data: 0|Sigtrap.Relays.Relay, Assembly-CSharp-firstpass
@@ -3347,7 +3350,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 1.02e-43, y: 0, z: 0, w: 2.4749968e+20}
+  m_BoundingSphereOverride: {x: 1.02e-43, y: 0, z: 0, w: 3.410255e+25}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -3391,11 +3394,6 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: 6469700257093512041, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
   m_PrefabInstance: {fileID: 6469700258730696710}
-  m_PrefabAsset: {fileID: 0}
---- !u!2083052967 &1740951911 stripped
-VisualEffect:
-  m_CorrespondingSourceObject: {fileID: 325275177, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-  m_PrefabInstance: {fileID: 7030098244278345276}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1794946949
 PrefabInstance:
@@ -3771,7 +3769,7 @@ PrefabInstance:
     - target: {fileID: 1915671661371006086, guid: 293a8c7352bbcbd4faba9fa9295f5828, type: 3}
       propertyPath: _cloudSpawner
       value: 
-      objectReference: {fileID: 7030098244278345279}
+      objectReference: {fileID: 0}
     - target: {fileID: 1915671661371006086, guid: 293a8c7352bbcbd4faba9fa9295f5828, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -4022,10 +4020,10 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 591048777, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-    - target: {fileID: 1527101614, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+    - target: {fileID: 698761956, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 1527101614, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+      objectReference: {fileID: 698761956, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
     - target: {fileID: 7030098245580201128, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -4089,17 +4087,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28c9efb16eab43e3bf8c96e948fdf433, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7030098244278345279 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1527101614, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
-  m_PrefabInstance: {fileID: 7030098244278345276}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c632851c64674ea5ad0b63bdc9789256, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &7937655173839185424
@@ -4255,7 +4242,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7937655175006482906, guid: e4cb9b930e39beb41a1717324195966b, type: 3}
       propertyPath: testing
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7937655175006482906, guid: e4cb9b930e39beb41a1717324195966b, type: 3}
       propertyPath: serializationData.Prefab

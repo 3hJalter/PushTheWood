@@ -7,10 +7,12 @@ namespace _Game.GameGrid.GridSurface
 {
     public abstract class GridSurface : GameUnit
     {
-        [SerializeField] protected GridSurfaceType surfaceType;
-        [SerializeField] private int islandID = -1;
-       
-        
+        [SerializeField]
+        protected GridSurfaceType surfaceType;
+        [SerializeField]
+        private int islandID = -1;
+
+
         public int IslandID
         {
             get => islandID;
@@ -23,10 +25,11 @@ namespace _Game.GameGrid.GridSurface
 
         public GridSurfaceType SurfaceType => surfaceType;
 
-        public virtual void OnInit(Direction rotateDirection = Direction.Forward, MaterialEnum materialEnum = MaterialEnum.None)
+        public virtual void OnInit(Direction rotateDirection = Direction.Forward,
+            MaterialEnum materialEnum = MaterialEnum.None, bool hasUnitInMap = false)
         {
         }
-        
+
         public virtual void OnDespawn()
         {
             islandID = -1;

@@ -22,9 +22,13 @@ namespace _Game.Data
             // Income Progress Data
             public int gold;
             public int gems;
-            public int ticket;
             public int dailyRewardClaimedCount;
 
+            // Booster Data
+            public int hintCount;
+            public int undoCount;
+            public int resetCount;
+            
             // Purchase & First rate Data
             public bool purchasedNoAds;
             public bool rated;
@@ -51,14 +55,12 @@ namespace _Game.Data
         {
             public bool enablePn;
             public bool requestedPn;
-
             public bool haptic = true;
             public float soundVolume = 1;
             public float musicVolume = 1;
-
             public int highPerformance = 1;
-
             public bool iOsTrackingRequested;
+            public int moveChoice = 0;
         }
     }
 

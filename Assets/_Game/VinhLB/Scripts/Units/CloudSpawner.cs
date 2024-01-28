@@ -36,6 +36,13 @@ namespace VinhLB
             _actionList = new List<Action>();
             _timeList = new List<float>();
             _spawnedCloudList = new List<Cloud>();
+            
+            LevelManager.Ins.OnLevelGenerated += LevelManager_OnLevelGenerated;
+        }
+
+        private void OnDestroy()
+        {
+            LevelManager.Ins.OnLevelGenerated -= LevelManager_OnLevelGenerated;
         }
 
         public void SpawnClouds()
@@ -93,6 +100,11 @@ namespace VinhLB
             _spawnedCloudList.Add(cloud);
 
             StartSpawnCloudTimer();
+        }
+        
+        private void LevelManager_OnLevelGenerated()
+        {
+            // SpawnClouds();
         }
     }
 }

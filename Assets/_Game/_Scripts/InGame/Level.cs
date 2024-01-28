@@ -19,7 +19,6 @@ namespace _Game._Scripts.InGame
     public class Level
     {
         #region constructor
-
         public Level(LevelType type, int index, Transform parent = null)
         {
             IsInit = false;
@@ -32,10 +31,10 @@ namespace _Game._Scripts.InGame
             gridSizeY = _rawLevelData.s.y;
             // Create Grid Map
             CreateGridMap();
-            // Spawn Grid Surface
-            SpawnGridSurfaceToGrid();
             // Spawn Units (Not Init)
             OnSpawnUnits();
+            // Spawn Grid Surface
+            SpawnGridSurfaceToGrid();
             OnSpawnShadowUnit();
             OnSetHintLine();
             // if isInit -> AddIsland & InitUnit
@@ -43,7 +42,6 @@ namespace _Game._Scripts.InGame
             // Set parent
             SetParent(parent);
         }
-
         #endregion
 
         public void ResetNonIslandUnit()
@@ -53,7 +51,9 @@ namespace _Game._Scripts.InGame
                 nonIslandUnitLis[i].unit.OnDespawn();
                 nonIslandUnitLis[i].unit.ResetData();
                 // Spawn
-                GridUnit unit = (GridUnit) SimplePool.SpawnDirectFromPool(nonIslandUnitLis[i].unit, Vector3.zero, Quaternion.identity);
+                GridUnit unit =
+                    (GridUnit)SimplePool.SpawnDirectFromPool(nonIslandUnitLis[i].unit, Vector3.zero,
+                        Quaternion.identity);
                 unit.OnInit(nonIslandUnitLis[i].mainCellIn, nonIslandUnitLis[i].startHeightIn, true,
                     nonIslandUnitLis[i].directionIn);
             }
@@ -69,7 +69,6 @@ namespace _Game._Scripts.InGame
         }
 
         #region data
-
         // Init Data
         // private readonly TextGridData _textGridData;
         private readonly RawLevelData _rawLevelData;
@@ -95,6 +94,7 @@ namespace _Game._Scripts.InGame
         public bool IsInit { get; private set; }
 
         private GridSurface[,] GridSurfaceMap { get; set; }
+        private bool[,] HasUnitInMap { get; set; }
 
         public List<Vector3> HintLinePosList { get; } = new();
 
@@ -104,11 +104,9 @@ namespace _Game._Scripts.InGame
         public List<GridUnit> ShadowUnitList { get; } = new();
 
         public Grid<GameGridCell, GameGridCellData> GridMap { get; private set; }
-
         #endregion
 
         #region public function
-
         public void OnInitLevelSurfaceAndUnit()
         {
             AddIslandIdToSurface();
@@ -267,7 +265,6 @@ namespace _Game._Scripts.InGame
                 _tweenShadowUnitList = DOVirtual.Float(currentAlphaTransparency, 0.5f, 0.5f - currentAlphaTransparency,
                     value => ShadowUnitList[0].SetAlphaTransparency(value));
             }
-
         }
 
         public void ChangeShadowUnitAlpha(bool isHide, int index)
@@ -294,10 +291,13 @@ namespace _Game._Scripts.InGame
             }
         }
 
+        public bool HasUnitOnCell(int x, int y)
+        {
+            return HasUnitInMap[x, y];
+        }
         #endregion
 
         #region private function
-
         private void SetParent(Transform parent)
         {
             // set all gridSurface tp parent
@@ -321,11 +321,12 @@ namespace _Game._Scripts.InGame
         {
             GridMap = new Grid<GameGridCell, GameGridCellData>(GridSizeX, gridSizeY, Constants.CELL_SIZE,
                 default, () => new GameGridCell(), GridPlane.XZ);
+            GridSurfaceMap = new GridSurface[GridSizeX, gridSizeY];
+            HasUnitInMap = new bool[GridSizeX, gridSizeY];
         }
 
         private void SpawnGridSurfaceToGrid()
         {
-            GridSurfaceMap = new GridSurface[GridSizeX, gridSizeY];
             // Loop through all sfD (surface data) in _rawLevelData
             for (int i = 0; i < _rawLevelData.sfD.Length; i++)
             {
@@ -336,6 +337,7 @@ namespace _Game._Scripts.InGame
                 if (gridSurface is null) continue;
                 // Spawn surface
                 GameGridCell gridCell = GridMap.GetGridCell(surfaceData.p.x, surfaceData.p.y);
+                
                 GridSurface surfaceClone = SimplePool.Spawn<GridSurface>(gridSurface,
                     new Vector3(gridCell.WorldX, 0, gridCell.WorldY), Quaternion.identity);
                 // Set surface to grid cell
@@ -343,7 +345,8 @@ namespace _Game._Scripts.InGame
                 // Set surface to GridSurfaceMap
                 GridSurfaceMap[surfaceData.p.x, surfaceData.p.y] = surfaceClone;
                 // Init surface
-                surfaceClone.OnInit((Direction)surfaceData.d, (MaterialEnum)surfaceData.m);
+                surfaceClone.OnInit((Direction)surfaceData.d, (MaterialEnum)surfaceData.m,
+                    HasUnitInMap[gridCell.X, gridCell.Y]);
             }
         }
 
@@ -429,6 +432,7 @@ namespace _Game._Scripts.InGame
                     unit = unit
                 };
                 UnitDataList.Add(levelUnitData);
+                HasUnitInMap[x, y] = true;
                 unit.OnSetPositionAndRotation(PredictUnitPos(levelUnitData.startHeightIn), direction);
                 return unit;
 
@@ -493,7 +497,6 @@ namespace _Game._Scripts.InGame
             Islands[data.mainCellIn.Data.gridSurface.IslandID]
                 .AddInitUnitToIsland(data.unit, data.unit.UnitUnitData, data.mainCellIn);
         }
-
         #endregion
     }
 

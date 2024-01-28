@@ -1,12 +1,9 @@
-using System;
-using _Game._Scripts.Managers;
 using _Game.Data;
 using _Game.DesignPattern;
 using _Game.UIs.Screen;
 using _Game.Utilities;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _Game.Managers
 {
@@ -59,15 +56,19 @@ namespace _Game.Managers
             if (gameStateI == GameState.Pause)
             {
                 DOTween.PauseAll();
-                AudioManager.Ins.PauseSfx();
                 PostEvent(EventID.Pause);
             }
-            else if (gameState == GameState.Pause)
+            else if (gameStateI == GameState.MainMenu)
+            {
+                PostEvent(EventID.OnResetToMainMenu);
+            }
+            
+            if (gameState == GameState.Pause && gameStateI != GameState.Pause)
             {
                 DOTween.PlayAll();
-                AudioManager.Ins.UnPauseSfx();
                 PostEvent(EventID.UnPause);
-            }
+            } 
+            
             gameState = gameStateI;
         }
 
@@ -78,6 +79,38 @@ namespace _Game.Managers
 
         #endregion
 
+        #region Income Data function
+        
+        public void AddGold(int gold)
+        {
+            _gameData.user.gold += gold;
+            PostEvent(EventID.OnGoldMoneyChange, _gameData.user.gold);
+            Database.SaveData(_gameData);
+        }
+        
+        public void AddGem(int gem)
+        {
+            _gameData.user.gems += gem;
+            PostEvent(EventID.OnGemMoneyChange, _gameData.user.gems);
+            Database.SaveData(_gameData);
+        }
+        
+        public void SpendGold(int gold)
+        {
+            _gameData.user.gold -= gold;
+            PostEvent(EventID.OnGoldMoneyChange, _gameData.user.gold);
+            Database.SaveData(_gameData);
+        }
+        
+        public void SpendGem(int gem)
+        {
+            _gameData.user.gems -= gem;
+            PostEvent(EventID.OnGemMoneyChange, _gameData.user.gems);
+            Database.SaveData(_gameData);
+        }
+
+        #endregion
+        
 
         #region OnApplication
 

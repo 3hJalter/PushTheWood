@@ -22,6 +22,12 @@ namespace VinhLB
         {
             OpenGlobalScene("MapEditor");
         }
+        
+        [MenuItem("Tools/VinhLB/Scenes/SecretMapEditor")]
+        private static void OpenSecretMapEditorScene()
+        {
+            OpenVinhLBScene("SecretMapEditor");
+        }
 
         [MenuItem("Tools/VinhLB/Scenes/BuildingTest")]
         private static void OpenBuildingTestScene()

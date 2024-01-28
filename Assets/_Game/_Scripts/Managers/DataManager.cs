@@ -1,5 +1,4 @@
-﻿using _Game._Scripts.Managers;
-using _Game.Data;
+﻿using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
@@ -26,8 +25,10 @@ namespace _Game.Managers
             Database.SaveData(_gameData);
         }
         #endregion
-
+        
         #region In-Game Data
+        [SerializeField] 
+        private ConfigData configData;
         [SerializeField]
         private AudioData audioData;
         [SerializeField]
@@ -37,55 +38,10 @@ namespace _Game.Managers
         [SerializeField]
         private VFXData vfxData;
         
+        public ConfigData ConfigData => configData;
         public AudioData AudioData => audioData;
         public VFXData VFXData => vfxData;
         
-        #endregion
-
-        #region Income Data function
-        
-        public void AddGold(int gold)
-        {
-            _gameData.user.gold += gold;
-            EventGlobalManager.Ins.OnMoneyGoldChanged?.Dispatch(_gameData.user.gold);
-            Save();
-        }
-        
-        public void AddGem(int gem)
-        {
-            _gameData.user.gems += gem;
-            EventGlobalManager.Ins.OnMoneyGemChanged?.Dispatch(_gameData.user.gems);
-            Save();
-        }
-        
-        public void AddTicket(int ticket)
-        {
-            _gameData.user.ticket += ticket;
-            EventGlobalManager.Ins.OnTicketChanged?.Dispatch(_gameData.user.ticket);
-            Save();
-        }
-        
-        public void SpendGold(int gold)
-        {
-            _gameData.user.gold -= gold;
-            EventGlobalManager.Ins.OnMoneyGoldChanged?.Dispatch(_gameData.user.gold);
-            Save();
-        }
-        
-        public void SpendGem(int gem)
-        {
-            _gameData.user.gems -= gem;
-            EventGlobalManager.Ins.OnMoneyGemChanged?.Dispatch(_gameData.user.gems);
-            Save();
-        }
-        
-        public void SpendTicket(int ticket)
-        {
-            _gameData.user.ticket -= ticket;
-            EventGlobalManager.Ins.OnTicketChanged?.Dispatch(_gameData.user.ticket);
-            Save();
-        }
-
         #endregion
         
         #region In-Game Function
@@ -144,7 +100,6 @@ namespace _Game.Managers
         }
 
         #endregion
-
-
+        
     }
 }

@@ -339,7 +339,7 @@ MonoBehaviour:
   isDestroyOnClose: 0
   useAnimator: 0
   animator: {fileID: 0}
-  panel: {fileID: 1478311394600487042}
+  panel: {fileID: 6630061402600170696}
   deco: {fileID: 5634189108057250001}
 --- !u!1 &6630061402600170702
 GameObject:
@@ -430,6 +430,10 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 1816619650764841853, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+    - target: {fileID: 4383887000833745438, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5449289803483981252, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -1048,14 +1052,3 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8643770746981963275, guid: 6a551d3bb595b89459262a7449677600, type: 3}
   m_PrefabInstance: {fileID: 8395702483484541997}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1478311394600487042 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6919642892992842927, guid: 6a551d3bb595b89459262a7449677600, type: 3}
-  m_PrefabInstance: {fileID: 8395702483484541997}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
