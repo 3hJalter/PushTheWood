@@ -27,6 +27,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
             isAttack = false;
             attackDirection = t.SkinRotationDirection;
             GameGridCell cell = t.MainCell;
+            t.AttackRangePos.Clear();
             main = t;
             for (int i = 0; i < 2; i++)
             {
@@ -61,6 +62,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
                     isAttack = isAttack || IsHavePlayer(cell);
                     t.AttackRange.Add(cell);
                     t.AttackRangeVFX.Add(SimplePool.Spawn<DangerIndicator>(PoolType.DangerIndicator, cell.WorldPos + Vector3.up * 1.25f, Quaternion.identity));
+                    t.AttackRangePos.Add(cell.WorldPos);
                 }
                 
             }

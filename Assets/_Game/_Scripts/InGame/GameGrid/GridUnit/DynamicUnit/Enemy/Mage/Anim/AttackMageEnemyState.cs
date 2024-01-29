@@ -1,5 +1,8 @@
+using _Game.DesignPattern;
 using _Game.DesignPattern.StateMachine;
+using _Game.Managers;
 using _Game.Utilities.Timer;
+using GameGridEnum;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,6 +28,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
 
             void Attack()
             {
+                foreach (Vector3 pos in t.AttackRangePos)
+                {
+                    ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.MageSkill1Explosion), pos + Vector3.up * 1.25f);
+                }
                 LevelManager.Ins.player.IsDead = true;
             }
             void ChangeToIdle()

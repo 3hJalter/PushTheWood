@@ -23,6 +23,7 @@ namespace _Game.GameGrid.Unit
         [HideInInspector]
         public readonly List<GameGridCell> AttackRange = new List<GameGridCell>();
         public readonly List<DangerIndicator> AttackRangeVFX = new List<DangerIndicator>();
+        public readonly List<Vector3> AttackRangePos = new List<Vector3>();
         
         public Direction Direction { get; protected set; } = Direction.None;
         public float AnimSpeed => animator.speed;
