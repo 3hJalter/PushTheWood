@@ -87,7 +87,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 stateMachine = new StateMachine<Player>(this);
                 AddState();
             }
-            //stateMachine.Debug = true;
+            stateMachine.Debug = true;
             IsDead = false;
             IsStun = false;
             stateMachine.ChangeState(StateEnum.Idle);
@@ -112,6 +112,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             stateMachine.AddState(StateEnum.Die, new DiePlayerState());
             stateMachine.AddState(StateEnum.Happy, new HappyPlayerState());
             stateMachine.AddState(StateEnum.Stun, new StunPlayerState());
+            stateMachine.AddState(StateEnum.Sleep, new SleepPlayerState());
         }
 
         public override void OnPush(Direction direction, ConditionData conditionData = null)

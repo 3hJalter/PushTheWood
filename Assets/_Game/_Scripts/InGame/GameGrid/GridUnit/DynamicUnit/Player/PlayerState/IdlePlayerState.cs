@@ -2,6 +2,7 @@
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
+using _Game.Utilities.Timer;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
@@ -12,6 +13,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         private bool isFirstStop;
         private int cutTreeFrameCount;
         bool hasTreeRoot = false;
+        STimer sleepTimer;
 
         public StateEnum Id => StateEnum.Idle;
 
@@ -19,6 +21,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         {
             isFirstStop = true;
             cutTreeFrameCount = Constants.WAIT_CUT_TREE_FRAMES;
+            if(sleepTimer == null)
+                sleepTimer = TimerManager.Inst.PopSTimer();
+            sleepTimer.Start(Constants.SLEEP_TIME, ChangeSleepState);
+
+            void ChangeSleepState()
+            {
+                t.StateMachine.ChangeState(StateEnum.Sleep);
+            }
         }
 
         public void OnExecute(Player t)
@@ -142,6 +152,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         public void OnExit(Player t)
         {
             _isChangeAnim = false;
+            sleepTimer.Stop();
         }
         
         private static void SetUpCamera(Island island, Player t)

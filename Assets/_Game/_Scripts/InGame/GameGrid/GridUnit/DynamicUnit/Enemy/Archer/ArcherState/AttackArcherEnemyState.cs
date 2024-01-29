@@ -19,7 +19,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
 
         public void OnEnter(ArcherEnemy t)
         {
-            t.ChangeAnim(Constants.ATTACK, true);
+            t.ChangeAnim(Constants.ATTACK_ANIM, true);
             actions.Clear();
             actions.Add(Attack);
             actions.Add(ChangeToIdle);
