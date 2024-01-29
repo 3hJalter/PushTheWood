@@ -47,7 +47,10 @@ public static class Constants
     public const string DIE_ANIM = "die";
     public const string HAPPY_ANIM = "happy";
     public const string OPEN_ANIM = "open";
-    public const string ATTACK = "attack";
+    public const string ATTACK_ANIM = "attack";
+    public const string SLEEP_ANIM = "sleep";
+    public const string SIT_DOWN_ANIM = "sitDown";
+    public const string SLEEP_UP_ANIM = "sleepUp";
     
     
     public const float CUT_TREE_ANIM_TIME = 0.5f;
@@ -82,7 +85,9 @@ public static class Constants
     public const string BASE_COLOR = "_BaseColor";
 
     public const float TOLERANCE = 0.01f;
-    
+
+    public const float SLEEP_TIME = 10f;
+    public const float SLEEP_UP_TIME = 1f;
     public const float HOLD_TOUCH_TIME = 0.4f;
     public const float ZOOM_OUT_TIME = 1f;
     

@@ -25,5 +25,6 @@
         
         Attack = 100,
         Stun = 101,
+        Sleep = 102,
     }
 }
