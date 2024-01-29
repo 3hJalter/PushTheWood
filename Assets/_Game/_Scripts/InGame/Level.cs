@@ -337,7 +337,7 @@ namespace _Game._Scripts.InGame
                 if (gridSurface is null) continue;
                 // Spawn surface
                 GameGridCell gridCell = GridMap.GetGridCell(surfaceData.p.x, surfaceData.p.y);
-                
+
                 GridSurface surfaceClone = SimplePool.Spawn<GridSurface>(gridSurface,
                     new Vector3(gridCell.WorldX, 0, gridCell.WorldY), Quaternion.identity);
                 // Set surface to grid cell
@@ -345,8 +345,8 @@ namespace _Game._Scripts.InGame
                 // Set surface to GridSurfaceMap
                 GridSurfaceMap[surfaceData.p.x, surfaceData.p.y] = surfaceClone;
                 // Init surface
-                surfaceClone.OnInit((Direction)surfaceData.d, (MaterialEnum)surfaceData.m,
-                    HasUnitInMap[gridCell.X, gridCell.Y]);
+                surfaceClone.OnInit(gridCell.X, gridCell.Y, GridSizeX, gridSizeY, (Direction)surfaceData.d,
+                    (MaterialEnum)surfaceData.m, HasUnitInMap[gridCell.X, gridCell.Y]);
             }
         }
 

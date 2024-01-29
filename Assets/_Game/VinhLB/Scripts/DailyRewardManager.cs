@@ -1,4 +1,5 @@
 ﻿using System;
+using _Game.Data;
 using _Game.DesignPattern;
 using _Game.Managers;
 using _Game.Utilities;
@@ -38,7 +39,6 @@ namespace VinhLB
 
             DevLog.Log(DevId.Vinh, $"Obtain day {CycleDay + 1} reward");
             UIManager.Ins.GetUI<RewardPopup>().Open(new Reward[] { CurrentReward });
-            CurrentReward.Obtain();
             DataManager.Ins.GameData.user.dailyRewardClaimedCount += 1;
             DataManager.Ins.GameData.user.lastDailyRewardClaimTime = DateTime.Now.Date;
             DataManager.Ins.Save();
