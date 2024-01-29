@@ -49,6 +49,7 @@ MonoBehaviour:
     - {fileID: 5048377069955769027, guid: 54af9b6b22f383740967c4f90b557764, type: 3}
     - {fileID: 1332537592136573042, guid: 671da27861a429149b4d5866a3c99c9d, type: 3}
     - {fileID: 5943012525026567017, guid: 45a0051824dd6d94daec68c98b28c8d8, type: 3}
+    - {fileID: 1704600907059805368, guid: d08b803b40ca0364ab74f78d2c292796, type: 3}
     - {fileID: -4091481902002242569, guid: ddba473a82248f5479bc90664b37c320, type: 3}
     - {fileID: 3183996776406851115, guid: 7244cd34fded9f7499e1a2d2486bbc59, type: 3}
     - {fileID: 8407841716924856001, guid: 06c8c7f64c59dfc4fbea0f7ff0792231, type: 3}
@@ -556,7 +557,7 @@ MonoBehaviour:
       Data: 148
     - Name: $v
       Entry: 10
-      Data: 32
+      Data: 33
     - Name: 
       Entry: 8
       Data: 
@@ -600,13 +601,13 @@ MonoBehaviour:
       Data: 3
     - Name: 
       Entry: 10
-      Data: 33
-    - Name: 
-      Entry: 10
       Data: 34
     - Name: 
       Entry: 10
       Data: 35
+    - Name: 
+      Entry: 10
+      Data: 36
     - Name: 
       Entry: 13
       Data: 
@@ -630,7 +631,7 @@ MonoBehaviour:
       Data: 1
     - Name: 
       Entry: 10
-      Data: 36
+      Data: 37
     - Name: 
       Entry: 13
       Data: 
@@ -654,13 +655,13 @@ MonoBehaviour:
       Data: 3
     - Name: 
       Entry: 10
-      Data: 37
-    - Name: 
-      Entry: 10
       Data: 38
     - Name: 
       Entry: 10
       Data: 39
+    - Name: 
+      Entry: 10
+      Data: 40
     - Name: 
       Entry: 13
       Data: 
@@ -707,6 +708,9 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 5904e576d2b1f6444946d90cc1eec33d, type: 3}
   - {fileID: 4900000, guid: 9adb46a4a30c95841a4daa2767121d04, type: 3}
   - {fileID: 4900000, guid: 9dc00fe2f83beb24f8211e0409531988, type: 3}
+  - {fileID: 4900000, guid: 0661212bb5b993e478c77e78b72e5caa, type: 3}
+  - {fileID: 4900000, guid: 85ce2cf2ad5c1844fa681abf79fb462f, type: 3}
+  - {fileID: 4900000, guid: 7a1f38a4eb5932c4cb3fc0c731b92430, type: 3}
   dailyChallengerLevel:
   - {fileID: 4900000, guid: 58026dccfb4a4250b69fe6ebdf773377, type: 3}
   secretLevel:
