@@ -809,20 +809,22 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  _rendererData: {fileID: 11400000, guid: 82b4ed0936573764e945e1fb602913e0, type: 2}
+  _renderPipelineAsset: {fileID: 11400000, guid: 27753c6e9514d924dab306f724c17974, type: 2}
+  _cameraData: {fileID: 1929008257}
   trailHint: {fileID: 7030098244278345278}
   _gridGO: {fileID: 517049268}
   _groundGO: {fileID: 1266336787}
   _waterGO: {fileID: 1119362961}
   _rollingFogGO: {fileID: 698761953}
   _windDustGO: {fileID: 11101223}
-  _rendererData: {fileID: 11400000, guid: 82b4ed0936573764e945e1fb602913e0, type: 2}
-  _renderPipelineAsset: {fileID: 11400000, guid: 27753c6e9514d924dab306f724c17974, type: 2}
-  _cameraData: {fileID: 1929008257}
+  _rainGO: {fileID: 7030098244278345277}
   _activeGrid: 0
   _activeGround: 1
   _activeWater: 1
   _activeRollingFog: 1
   _activeWindDust: 1
+  _activeRain: 0
 --- !u!1001 &290731783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2068,8 +2070,8 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingLayerID: -118727557
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!1001 &989792409
 PrefabInstance:
@@ -4016,6 +4018,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 561809458, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 561809459, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 591048777, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -4078,6 +4088,11 @@ PrefabInstance:
       objectReference: {fileID: 8151466118629404027, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+--- !u!1 &7030098244278345277 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6965982327036553442, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+  m_PrefabInstance: {fileID: 7030098244278345276}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7030098244278345278 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8151466118629404027, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}

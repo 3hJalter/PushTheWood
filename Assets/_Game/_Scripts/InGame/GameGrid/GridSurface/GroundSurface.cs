@@ -22,7 +22,7 @@ namespace _Game.GameGrid.GridSurface
 
         private List<Flower> _flowerList = new List<Flower>();
 
-        public override void OnInit(int x, int y, int gridSizeX, int gridSizeY,
+        public override void OnInit(int levelIndex, Vector2Int gridCellPos, Vector2Int gridSize,
             Direction rotateDirection = Direction.Forward, MaterialEnum materialEnum = MaterialEnum.None,
             bool hasUnitInMap = false)
         {
@@ -35,10 +35,10 @@ namespace _Game.GameGrid.GridSurface
             grassRenderer.material = DataManager.Ins.GetGrassMaterial(materialEnum);
 
             // Spawn flowers if it does not has unit in map
-            if (CanSpawnFlowers(x, y, gridSizeX, gridSizeY, hasUnitInMap))
+            if (CanSpawnFlowers(levelIndex, gridCellPos, gridSize, hasUnitInMap))
             {
                 List<int> indexList = new List<int>();
-                int flowerAmount = Random.Range(1, Mathf.Min(4, _flowerSpawnPoints.Length));
+                int flowerAmount = Random.Range(1, Mathf.Min(3, _flowerSpawnPoints.Length));
                 while (indexList.Count < flowerAmount)
                 {
                     int randomIndex = Random.Range(0, _flowerSpawnPoints.Length);
@@ -81,7 +81,7 @@ namespace _Game.GameGrid.GridSurface
             groundMeshRenderer.material = DataManager.Ins.GetSurfaceMaterial(groundMaterialEnum);
         }
 
-        private bool CanSpawnFlowers(int x, int y, int gridSizeX, int gridSizeY, bool hasUnitInMap)
+        private bool CanSpawnFlowers(int levelIndex, Vector2Int gridCellPos, Vector2Int gridSize, bool hasUnitInMap)
         {
             if (hasUnitInMap)
             {
@@ -114,12 +114,12 @@ namespace _Game.GameGrid.GridSurface
             // }
 
             // Procedure spawn
-            float scale = 2f;
-            Vector2 offset = new Vector2(0.5f, 0f);
-            float xCoord = (float)x / gridSizeX * scale + offset.x;
-            float yCoord = (float)y / gridSizeY * scale + offset.y;
+            float scale = 5f;
+            Vector2 offset = new Vector2(levelIndex * 0.1f, levelIndex * 0.1f);
+            float xCoord = (float)gridCellPos.x / gridSize.x * scale + offset.x;
+            float yCoord = (float)gridCellPos.y / gridSize.y * scale + offset.y;
             float value = Mathf.PerlinNoise(xCoord, yCoord);
-            Debug.Log($"({x}, {y}): {value}");
+            // Debug.Log($"Level {levelIndex + 1} | Cell[{gridCellPos.x}, {gridCellPos.y}]: {value}");
             result = value > 0.5f;
 
             return result;

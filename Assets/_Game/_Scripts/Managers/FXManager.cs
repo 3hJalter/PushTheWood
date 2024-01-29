@@ -11,13 +11,19 @@ namespace _Game.Managers
 {
     public class FXManager : Singleton<FXManager>
     {
+        [Header("General")]
+        [SerializeField]
+        private UniversalRendererData _rendererData;
+        [SerializeField]
+        private UniversalRenderPipelineAsset _renderPipelineAsset;
+        [SerializeField]
+        private UniversalAdditionalCameraData _cameraData;
+        
+        [Header("Environment Effects")]
         // [SerializeField]
         // private CurvedWorldController curvedWorldController;
         [SerializeField]
         private HintLineTrail trailHint;
-
-        public HintLineTrail TrailHint => trailHint;
-
         [SerializeField]
         private GameObject _gridGO;
         [SerializeField]
@@ -29,12 +35,7 @@ namespace _Game.Managers
         [SerializeField]
         private GameObject _windDustGO;
         [SerializeField]
-        private UniversalRendererData _rendererData;
-        [SerializeField]
-        private UniversalRenderPipelineAsset _renderPipelineAsset;
-        [SerializeField]
-        private UniversalAdditionalCameraData _cameraData;
-
+        private GameObject _rainGO;
         [SerializeField]
         private bool _activeGrid = false;
         [SerializeField]
@@ -45,8 +46,12 @@ namespace _Game.Managers
         private bool _activeRollingFog = true;
         [SerializeField]
         private bool _activeWindDust = true;
+        [SerializeField]
+        private bool _activeRain = false;
 
         private GrassTrampleFeature _feature;
+
+        public HintLineTrail TrailHint => trailHint;
 
         private void Awake()
         {
@@ -55,6 +60,7 @@ namespace _Game.Managers
             _waterGO.SetActive(_activeWater);
             _rollingFogGO.SetActive(_activeRollingFog);
             _windDustGO.SetActive(_activeWindDust);
+            _rainGO.SetActive(_activeRain);
 
             VinhLB.Utilities.TryGetRendererFeature(_rendererData, out _feature);
         }

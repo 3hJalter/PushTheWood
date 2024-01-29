@@ -25,7 +25,7 @@ namespace _Game.GameGrid.GridSurface
 
         public GridSurfaceType SurfaceType => surfaceType;
 
-        public virtual void OnInit(int x, int y, int gridSizeX, int gridSizeY,
+        public virtual void OnInit(int levelIndex, Vector2Int gridCellPos, Vector2Int gridSize,
             Direction rotateDirection = Direction.Forward, MaterialEnum materialEnum = MaterialEnum.None,
             bool hasUnitInMap = false)
         {

@@ -345,8 +345,8 @@ namespace _Game._Scripts.InGame
                 // Set surface to GridSurfaceMap
                 GridSurfaceMap[surfaceData.p.x, surfaceData.p.y] = surfaceClone;
                 // Init surface
-                surfaceClone.OnInit(gridCell.X, gridCell.Y, GridSizeX, gridSizeY, (Direction)surfaceData.d,
-                    (MaterialEnum)surfaceData.m, HasUnitInMap[gridCell.X, gridCell.Y]);
+                surfaceClone.OnInit(Index, gridCell.GetCellPosition(), new Vector2Int(GridSizeX, gridSizeY),
+                    (Direction)surfaceData.d, (MaterialEnum)surfaceData.m, HasUnitInMap[gridCell.X, gridCell.Y]);
             }
         }
 

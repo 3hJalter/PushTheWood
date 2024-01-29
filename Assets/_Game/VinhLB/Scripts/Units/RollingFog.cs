@@ -9,7 +9,7 @@ namespace VinhLB
     public class RollingFog : HMonoBehaviour
     {
         [SerializeField]
-        private SpriteRenderer _spriteRenderer;
+        private Renderer _renderer;
 
         private int _maskPositionPropId;
         private int _maskScalePropId;
@@ -33,13 +33,13 @@ namespace VinhLB
             Vector3 topRightPosition = LevelManager.Ins.CurrentLevel.GetTopRightPos();
             Vector3 middleCenterPosition = (bottomLeftPosition + topRightPosition) / 2;
             Vector2 maskPosition = new Vector2(middleCenterPosition.x, middleCenterPosition.z - 12f);
-            _spriteRenderer.sharedMaterial.SetVector(_maskPositionPropId, maskPosition);
+            _renderer.sharedMaterial.SetVector(_maskPositionPropId, maskPosition);
             
             Vector3 positionDifference = topRightPosition - bottomLeftPosition;
             Vector2 maskScale = new Vector2(positionDifference.x, positionDifference.z);
             maskScale.x = Mathf.Abs(maskScale.x) * 0.07f;
             maskScale.y = Mathf.Abs(maskScale.y) * 0.1f;
-            _spriteRenderer.sharedMaterial.SetVector(_maskScalePropId, maskScale);
+            _renderer.sharedMaterial.SetVector(_maskScalePropId, maskScale);
         }
 
         private void LevelManager_OnLevelGenerated()
