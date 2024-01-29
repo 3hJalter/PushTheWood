@@ -5,6 +5,7 @@ using GameGridEnum;
 
 using System.Collections.Generic;
 using UnityEngine;
+using VinhLB;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
 {
@@ -26,6 +27,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
         {
             isAttack = false;
             attackDirection = t.SkinRotationDirection;
+            t.skin.rotation = Quaternion.Euler(0f, BuildingUnitData.GetRotationAngle(attackDirection), 0f);
             GameGridCell cell = t.MainCell;
             t.AttackRangePos.Clear();
             main = t;
