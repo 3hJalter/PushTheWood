@@ -155,7 +155,7 @@ namespace _Game.GameGrid.Unit
                 overrideSpawnSave = Save();
             else
                 overrideSpawnSave = null;
-            SaveInitData(size, unitTypeY, skin);
+            SaveInitData();
             if (isUseInitData) GetInitData();
             islandID = mainCellIn.IslandID;
             SetHeight(startHeightIn);
@@ -378,7 +378,7 @@ namespace _Game.GameGrid.Unit
             endHeight = CalculateEndHeight(startHeightIn, size);
         }
 
-        private void SaveInitData(Vector3Int sizeI, UnitTypeY unitTypeYi, Transform skinI)
+        private void SaveInitData()
         {    
             if(_unitInitData == null)
                 _unitInitData = new UnitInitData(this);
@@ -390,6 +390,7 @@ namespace _Game.GameGrid.Unit
             unitTypeY = _unitInitData.UnitTypeY;
             skin.localPosition = _unitInitData.LocalSkinPos;
             skin.localRotation = _unitInitData.LocalSkinRot;
+            skinRotationDirection = _unitInitData.SkinDirection;
         }
 
         private List<GameGridCell> InitCell(GameGridCell mainCellIn, Direction skinDirection)
