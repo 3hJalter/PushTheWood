@@ -285,7 +285,7 @@ namespace _Game.GameGrid
                     HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
                     foreach (GridUnit gridUnit in gridUnits)
                     {
-                        if (gridUnit.IsSpawn)
+                        if (gridUnit.IsSpawn && gridUnit.MainCell != null)
                             states.Add(gridUnit.Save());
                     }
                     objectHistorys.Push(states);

@@ -17,6 +17,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
         {
             timer = TimerManager.Inst.PopSTimer();
             t.ChangeAnim(Constants.DIE_ANIM);
+            t.OnOutCells();
             timer.Start(DIE_TIME, t.OnDespawn);
         }
 
