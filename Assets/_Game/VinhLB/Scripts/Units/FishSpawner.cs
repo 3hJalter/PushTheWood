@@ -12,6 +12,9 @@ namespace VinhLB
 {
     public class FishSpawner : HMonoBehaviour
     {
+        [SerializeField]
+        private Vector3 _cornerPointOffset;
+        
         private Fish _shark;
 
         private void Awake()
@@ -41,8 +44,8 @@ namespace VinhLB
 
             if (resetPath)
             {
-                Vector3 bottomLeftPoint = LevelManager.Ins.CurrentLevel.GetBottomLeftPos();
-                Vector3 topRightPoint = LevelManager.Ins.CurrentLevel.GetTopRightPos();
+                Vector3 bottomLeftPoint = LevelManager.Ins.CurrentLevel.GetBottomLeftPos() - _cornerPointOffset;
+                Vector3 topRightPoint = LevelManager.Ins.CurrentLevel.GetTopRightPos() + _cornerPointOffset;
                 Vector3 bottomRightPoint = bottomLeftPoint;
                 bottomRightPoint.x = topRightPoint.x;
                 Vector3 topLeftPoint = topRightPoint;
