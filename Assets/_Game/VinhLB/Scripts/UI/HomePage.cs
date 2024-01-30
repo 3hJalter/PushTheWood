@@ -53,7 +53,7 @@ namespace VinhLB
 
         private void UpdateStatus()
         {
-            _levelText.text = $"Level\n{LevelManager.Ins.LevelIndex + 1}";
+            _levelText.text = $"Level\n{LevelManager.Ins.NormalLevelIndex + 1}";
         }
     }
 }

@@ -40,6 +40,7 @@ namespace _Game.Data
         private readonly Dictionary<PoolType, EnvironmentObject[]> _environmentObjectsDict = new();
         
         public int CountNormalLevel => normalLevel.Count;
+        public int CountSecretLevel => secretLevel.Count;
 
         public TextAsset GetLevelData(LevelType type, int index)
         {

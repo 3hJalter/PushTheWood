@@ -8,14 +8,13 @@ using _Game.Camera;
 using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid.Unit;
+using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Managers;
-using _Game.UIs.Screen;
 using _Game.Utilities;
-using _Game.Utilities.Grid;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
-using VinhLB;
 using static _Game.Utilities.Grid.Grid<_Game.GameGrid.GameGridCell, _Game.GameGrid.GameGridCellData>;
 
 namespace _Game.GameGrid
@@ -29,48 +28,64 @@ namespace _Game.GameGrid
         public event Action OnLevelGenerated;
         public event Action OnLevelRestarted;
         public event Action OnLevelIslandReset;
+        public event Action OnCheckWinCondition;
 
         [SerializeField]
-        private int _levelIndex;
+        [ReadOnly]
+        private int normalLevelIndex;
+        [SerializeField]
+        [ReadOnly]
+        private int secretLevelIndex;
 
         private Level _currentLevel;
         [SerializeField]
 
 
-        public int LevelIndex => _levelIndex;
+        public int NormalLevelIndex => normalLevelIndex;
         public Level CurrentLevel => _currentLevel;
         public bool IsConstructingLevel;
 
 
         private CareTaker savingState;
+        
+        [ReadOnly]
         public Player player;
 
+        [ReadOnly] public List<IEnemy> enemies = new();
+        
+        // DEBUG:
+        [ReadOnly]
+        [SerializeField] private LevelWinCondition levelWinCondition;
+        
         private void Start()
         {
             if (DebugManager.Ins && DebugManager.Ins.Level >= 0)
             {
                 DataManager.Ins.GameData.user.normalLevelIndex = DebugManager.Ins.Level;
             }
-            _levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
-            OnGenerateLevel(_levelIndex == 0);
+            normalLevelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
+            secretLevelIndex = DataManager.Ins.GameData.user.secretLevelIndex;
+            OnGenerateLevel(LevelType.Normal,normalLevelIndex == 0);
             SetCameraToPosition(CurrentLevel.GetCenterPos());
         }
 
-        public void OnGenerateLevel(bool needInit)
+        public void OnGenerateLevel(LevelType type, bool needInit)
         {
-            OnCheckTutorial();
+            if (type == LevelType.Normal) OnCheckTutorial();
             IsConstructingLevel = true;
-            _currentLevel = new Level(LevelType.Normal, _levelIndex);
+            _currentLevel = new Level(type, normalLevelIndex);
+            enemies.Clear();
             if (needInit && !_currentLevel.IsInit)
             {
                 InitLevel();
             }
-            
             OnLevelGenerated?.Invoke();
         }
 
         public void InitLevel()
         {
+            levelWinCondition = CurrentLevel.LevelWinCondition;
+            OnAddWinCondition(CurrentLevel.LevelWinCondition);
             GameManager.Ins.PostEvent(EventID.StartGame);
             if (_currentLevel.IsInit) return;
             _currentLevel.OnInitLevelSurfaceAndUnit();
@@ -83,7 +98,7 @@ namespace _Game.GameGrid
             //NOTE: Test
             DebugManager.Ins?.DebugGridData(_currentLevel.GridMap);
             // TEMPORARY: CUTSCENE, player will be show when cutscene end
-            if (_levelIndex == 0) HidePlayer(true);
+            if (normalLevelIndex == 0) HidePlayer(true);
         }
 
         public void ResetLevelIsland()
@@ -95,7 +110,7 @@ namespace _Game.GameGrid
 
         private void OnCheckTutorial()
         {
-            if (TutorialManager.Ins.TutorialList.TryGetValue(_levelIndex, out ITutorialCondition tutorialData))
+            if (TutorialManager.Ins.TutorialList.TryGetValue(normalLevelIndex, out ITutorialCondition tutorialData))
             {
                 tutorialData.ResetTutorial();
             }
@@ -123,37 +138,58 @@ namespace _Game.GameGrid
 
         public void OnWin()
         {
-            // Show win screen
-            // +1 LevelIndex and save
-            _levelIndex++;
-            // Temporary handle when out of level
-            if (_levelIndex >= DataManager.Ins.CountNormalLevel) _levelIndex = 0;
-            DataManager.Ins.GameData.user.normalLevelIndex = _levelIndex;
+            switch (_currentLevel.LevelType)
+            {
+              case LevelType.Normal:
+                  // +1 LevelIndex and save
+                  normalLevelIndex++;
+                  // Temporary handle when out of level
+                  if (normalLevelIndex >= DataManager.Ins.CountNormalLevel) normalLevelIndex = 0;
+                  DataManager.Ins.GameData.user.normalLevelIndex = normalLevelIndex;
+                  break;
+              case LevelType.Secret:
+                  // +1 LevelIndex and save
+                  secretLevelIndex++;
+                  // Temporary handle when out of level
+                  if (secretLevelIndex >= DataManager.Ins.CountSecretLevel) secretLevelIndex = 0; 
+                  DataManager.Ins.GameData.user.secretLevelIndex = secretLevelIndex;
+                  break;
+              case LevelType.DailyChallenger:
+                  // Check if contain
+                  if (DataManager.Ins.GameData.user.dailyLevelIndexComplete.Contains(DateTime.Now.Day)) break;
+                  DataManager.Ins.GameData.user.dailyLevelIndexComplete.Add(DateTime.Now.Day);
+                  break;
+              case LevelType.None:
+              default:
+                  break;
+            }
             DataManager.Ins.Save();
             GameManager.Ins.PostEvent(EventID.WinGame);
             // Future: Add reward collected in-game
         }
 
-        public void OnGoLevel(int index)
+        public void OnGoLevel(LevelType type, int index)
         {
-            if (_levelIndex == index) return;
-            _levelIndex = index;
+            if (normalLevelIndex == index) return;
+            normalLevelIndex = index;
             IsConstructingLevel = true;
+            OnRemoveWinCondition();
             _currentLevel.OnDeSpawnLevel();
-            OnGenerateLevel(true);
+            OnGenerateLevel(type, true);
         }
 
-        public void OnNextLevel()
+        public void OnNextLevel(LevelType type, bool needInit = true)
         {
             // Load next level
             IsConstructingLevel = true;
+            OnRemoveWinCondition();
             _currentLevel.OnDeSpawnLevel();
             // TEMPORARY: Destroy object on cutscene at level 1, need other way to handle this
-            if (_levelIndex - 1 == 0)
+            if (normalLevelIndex - 1 == 0)
             {
                 TutorialManager.Ins.OnDestroyCutsceneObject();
             }
-            OnGenerateLevel(true);
+            OnGenerateLevel(type, true);
             // OnChangeTutorialIndex();
         }
 
@@ -172,6 +208,34 @@ namespace _Game.GameGrid
             OnLevelRestarted?.Invoke();
         }
 
+        private void OnAddWinCondition(LevelWinCondition condition)
+        {
+            switch (condition)
+            {
+                case LevelWinCondition.DefeatAllEnemy:
+                    OnCheckWinCondition += () =>
+                    {
+                        if (enemies.Count == 0)
+                        {
+                            OnWin();
+                        }
+                    };
+                    break;
+                case LevelWinCondition.FindingChest: 
+                case LevelWinCondition.CollectAllStar:
+                default:
+                    break;
+            }
+            EventGlobalManager.Ins.OnEnemyDie.AddListener(OnCheckWinCondition);
+        }
+        
+        private void OnRemoveWinCondition()
+        {
+            // Remove all win condition
+            OnCheckWinCondition = null;
+            EventGlobalManager.Ins.OnEnemyDie.RemoveListener(OnCheckWinCondition);
+        }
+        
         public void ResetGameState()
         {
             savingState.Reset();

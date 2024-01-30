@@ -10,7 +10,7 @@ namespace _Game.GameGrid
     {
         public static TextGridData CreateGridData(LevelType type, int mapIndex)
         {
-            TextAsset textAsset = DataManager.Ins.GetNormalLevelData(type, mapIndex);
+            TextAsset textAsset = DataManager.Ins.GetLevelData(type, mapIndex);
             string[] splitData = textAsset.text.Split('@');
             return new TextGridData(
                 splitData[(int)GridDataType.SurfaceData],

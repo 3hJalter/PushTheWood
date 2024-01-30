@@ -21,6 +21,10 @@ public class GridMapDataGenerator : MonoBehaviour
     [SerializeField] private int offsetSurfaceWithFirstCell = 3; // Should be 3
     [Tooltip("Random rotation for rock")]
     [SerializeField] private bool isRandomRotationForRock = true;
+    [SerializeField] private bool overrideLevelType;
+    [ShowIf(nameof(overrideLevelType))]
+    [SerializeField] private LevelType levelType;
+    [SerializeField] private LevelWinCondition winCondition;
     [InlineButton("SaveLevelAsJson", "Save Level")]
     [InfoBox("The name of the level, must be in the format Lvl_number or Lvl_DC_number or Lvl_S_number")]
     [SerializeField] private string mapLevelName = "Lvl_0";
@@ -537,8 +541,15 @@ public class GridMapDataGenerator : MonoBehaviour
 
         #endregion
 
+        if (overrideLevelType && this.levelType is not LevelType.None)
+        {
+            levelType = this.levelType;
+        }
+        
         RawLevelData levelData = new()
         {
+            lt = (int) levelType,
+            wc = (int) winCondition,
             s = size,
             sfD = gridSurfaceDataList.ToArray(),
             uD = gridUnitDataList.ToArray(),

@@ -47,6 +47,7 @@ namespace _Game.Managers
         #region In-Game Function
 
         public int CountNormalLevel => gridData.CountNormalLevel;
+        public int CountSecretLevel => gridData.CountSecretLevel;
         public int CountSurfaceMaterial => materialData.CountSurfaceMaterial;
         
         public Material GetTransparentMaterial()
@@ -64,7 +65,7 @@ namespace _Game.Managers
             return materialData.GetGrassMaterial(materialEnum);
         }
         
-        public TextAsset GetNormalLevelData(LevelType type, int index)
+        public TextAsset GetLevelData(LevelType type, int index)
         {
             return gridData.GetLevelData(type, index);
         }

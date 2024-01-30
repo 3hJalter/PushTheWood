@@ -83,7 +83,7 @@ namespace _Game.GameGrid.Unit
             AttackRange.Clear();
             foreach(DangerIndicator indicator in AttackRangeVFX)
             {
-                SimplePool.Despawn(indicator);
+                indicator.Despawn();
             }
             AttackRangeVFX.Clear();
         }
@@ -101,8 +101,13 @@ namespace _Game.GameGrid.Unit
             public override void Restore()
             {
                 base.Restore();
+                if (isDead == false && main.IsDead && main is IEnemy mainEnemy)
+                {
+                    mainEnemy.AddToLevelManager();
+                }
                 main.IsDead = isDead;
                 main.ChangeAnim(currentAnim, true);
+                
             }
         }
         #endregion

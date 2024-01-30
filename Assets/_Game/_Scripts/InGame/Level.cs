@@ -104,6 +104,9 @@ namespace _Game._Scripts.InGame
         public List<GridUnit> ShadowUnitList { get; } = new();
 
         public Grid<GameGridCell, GameGridCellData> GridMap { get; private set; }
+        
+        public LevelType LevelType => (LevelType) _rawLevelData.lt;
+        public LevelWinCondition LevelWinCondition => (LevelWinCondition) _rawLevelData.wc;
         #endregion
 
         #region public function
@@ -500,9 +503,18 @@ namespace _Game._Scripts.InGame
         #endregion
     }
 
+    public enum LevelWinCondition
+    {
+        FindingChest = 0,
+        DefeatAllEnemy = 1,
+        CollectAllStar = 2,
+    }
+    
     [Serializable]
     public struct RawLevelData
     {
+        public int lt; // LEVEL TYPE
+        public int wc; // WIN CONDITION
         public Vector2Int s; // SIZE
         public GridSurfaceData[] sfD; // SURFACE DATA
         public GridUnitData[] uD; // UNIT DATA

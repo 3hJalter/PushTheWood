@@ -5,6 +5,7 @@ using _Game.Utilities.Grid;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using _Game.Data;
 using _Game.GameGrid.Unit;
 using _Game.Managers;
 using UnityEngine;
@@ -65,7 +66,7 @@ namespace VinhLB
 
             if (_testing)
             {
-                LevelManager.Ins.OnGenerateLevel(true);
+                LevelManager.Ins.OnGenerateLevel(LevelType.Normal, true);
                 _homeGrid = LevelManager.Ins.CurrentLevel.GridMap;
 
                 var debugGrid = new Grid<GameGridCell, GameGridCellData>.DebugGrid();

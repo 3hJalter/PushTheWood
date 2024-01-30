@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using _Game.Utilities;
 using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Game.Data
 {
@@ -16,8 +18,8 @@ namespace _Game.Data
         {
             // Level Progress Data
             public int normalLevelIndex;
-            public int dailyLevelIndex;
             public int secretLevelIndex;
+            public List<int> dailyLevelIndexComplete = new();
             
             // Income Progress Data
             public int gold;
@@ -40,6 +42,7 @@ namespace _Game.Data
             public DateTime startDailyRewardClaimTime = DateTime.Now.Date;
             public DateTime lastDailyRewardClaimTime = DateTime.Now.AddHours(-24);
             public DateTime lastTimeLogOut = DateTime.Now;
+            public bool isFirstDayOfMonthCheck;
             
             private int _keyCount;
 

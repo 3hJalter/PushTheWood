@@ -14,11 +14,13 @@ namespace _Game._Scripts.Managers
         // public Relay OnPurchaseNoAds;
         
         // In-game events
-        // Unit Button
-        // ReSharper disable once Unity.RedundantHideInInspectorAttribute
-        public Relay<bool> OnButtonUnitEnter;
-        public Relay<BoosterType, int> OnChangeBoosterAmount;
 
+        public Relay<bool> OnButtonUnitEnter { get; private set; } // For Unit Button
+        public Relay OnEnemyDie { get; private set; } // For Enemy
+
+        public Relay<BoosterType, int> OnChangeBoosterAmount { get; private set; }
+        
+        
         private void Awake()
         {
             // OnStartLoadScene = new Relay();
@@ -27,6 +29,7 @@ namespace _Game._Scripts.Managers
             // OnGameInit = new Relay();
             // OnPurchaseNoAds = new Relay();
             OnButtonUnitEnter = new Relay<bool>();
+            OnEnemyDie = new Relay();
             OnChangeBoosterAmount = new Relay<BoosterType, int>();
         }
     }
