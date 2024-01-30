@@ -142,6 +142,8 @@ MonoBehaviour:
   islandID: -1
   grassRenderer: {fileID: 226491553816531716}
   groundMeshRenderer: {fileID: 6755160183424213283}
+  _flowersParentTF: {fileID: 0}
+  _flowerSpawnPoints: []
   groundMaterialEnum: -1
 --- !u!1 &5182671267301678821
 GameObject:
@@ -154,6 +156,7 @@ GameObject:
   - component: {fileID: 6158031200672259153}
   - component: {fileID: 5221137390158535575}
   - component: {fileID: 319824135293737836}
+  - component: {fileID: 2847320130491784787}
   m_Layer: 0
   m_Name: cn_l_rock
   m_TagString: Untagged
@@ -226,6 +229,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2847320130491784787
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5182671267301678821}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.027786383, y: 0.10257615, z: 0.022926202}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5192432996758015503
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,6 +289,7 @@ GameObject:
   - component: {fileID: 23945347932425687}
   - component: {fileID: 8391848262256324402}
   - component: {fileID: 3017830126580329325}
+  - component: {fileID: 5680060974611321641}
   m_Layer: 0
   m_Name: cn_l_ground
   m_TagString: Untagged
@@ -345,6 +362,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5680060974611321641
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8598285663863253943}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.1, y: 0.1, z: 0.1}
+  m_Center: {x: 0, y: -0.049999997, z: 0}
 --- !u!1 &8881495465254621641
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,6 +386,7 @@ GameObject:
   - component: {fileID: 1411656076947888680}
   - component: {fileID: 8320948593392682455}
   - component: {fileID: 7342516099138182323}
+  - component: {fileID: 681232385013185936}
   m_Layer: 0
   m_Name: cn_l_rock (1)
   m_TagString: Untagged
@@ -428,6 +459,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &681232385013185936
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8881495465254621641}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.027786383, y: 0.10257615, z: 0.022926202}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1558380405828015510
 PrefabInstance:
   m_ObjectHideFlags: 0

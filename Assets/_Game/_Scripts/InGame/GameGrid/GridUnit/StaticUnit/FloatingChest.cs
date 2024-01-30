@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using _Game.DesignPattern;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.GameGrid.Unit.StaticUnit.Interface;
 using _Game.Utilities;

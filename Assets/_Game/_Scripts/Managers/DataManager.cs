@@ -100,6 +100,11 @@ namespace _Game.Managers
             return gridData.GetRandomEnvironmentObject(poolType);
         }
 
+        public WorldUI GetWorldUI(PoolType poolType)
+        {
+            return gridData.GetWorldUI(poolType);
+        }
+
         #endregion
         
     }

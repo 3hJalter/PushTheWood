@@ -22,11 +22,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 
         public void OnEnter(Player t)
         {
-            t.ChangeAnim(Constants.SLEEP_ANIM);
-            if(timer == null)
+            if (timer == null)
             {
                 timer = TimerManager.Inst.PopSTimer();
             }
+            t.ChangeAnim(Constants.SLEEP_ANIM);           
             isSleeping = true;
             initAnimSpeed = t.AnimSpeed;
             sleepingParticle = ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.SleepingzZz), t.VFXPositions[0].position);
