@@ -1,22 +1,34 @@
 ﻿using System.Collections.Generic;
-using GameGridEnum;
+using Sirenix.OdinInspector;
 using UnityEngine;
+using VinhLB;
 
 namespace _Game.DesignPattern
 {
     public class PoolController : Singleton<PoolController>
     {
-        [Header("Pool")] public PoolAmount[] pool;
+        [Title("Amounts")]
+        [SerializeField]
+        private PoolAmount[] _poolAmounts;
+        [SerializeField]
+        private ParticleAmount[] _particleAmounts;
+        
+        [Title("Spawners")]
+        [SerializeField]
+        private FishSpawner _fishSpawner;
+        [SerializeField]
+        private WorldUISpawner _worldUISpawner;
 
-        [Header("Particle")] public ParticleAmount[] particle;
+        public FishSpawner FishSpawner => _fishSpawner;
+        public WorldUISpawner WorldUISpawner => _worldUISpawner;
 
         public void Awake()
         {
-            for (int i = 0; i < particle.Length; i++)
-                ParticlePool.Preload(particle[i].prefab, particle[i].amount, particle[i].root);
+            for (int i = 0; i < _particleAmounts.Length; i++)
+                ParticlePool.Preload(_particleAmounts[i].prefab, _particleAmounts[i].amount, _particleAmounts[i].root);
 
-            for (int i = 0; i < pool.Length; i++)
-                SimplePool.Preload(pool[i].prefab, pool[i].amount, pool[i].root, pool[i].collect, pool[i].clamp);
+            for (int i = 0; i < _poolAmounts.Length; i++)
+                SimplePool.Preload(_poolAmounts[i].prefab, _poolAmounts[i].amount, _poolAmounts[i].root, _poolAmounts[i].collect, _poolAmounts[i].clamp);
 
         }
     }

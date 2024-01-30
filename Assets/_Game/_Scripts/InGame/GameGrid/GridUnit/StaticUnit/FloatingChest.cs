@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using _Game.DesignPattern;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Utilities;
 using DG.Tweening;
@@ -61,6 +62,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             DOVirtual.DelayedCall(1f, () =>
             {
                 DevLog.Log(DevId.Hoang, "Loot something");
+                // PoolController.Ins.WorldUISpawner.SpawnFloatingUI(Tf);
             });
         }
 

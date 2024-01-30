@@ -2,6 +2,7 @@ using _Game._Scripts.InGame;
 using _Game.DesignPattern;
 using AmazingAssets.CurvedWorld;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.VFX;
@@ -11,7 +12,7 @@ namespace _Game.Managers
 {
     public class FXManager : Singleton<FXManager>
     {
-        [Header("General")]
+        [Title("General")]
         [SerializeField]
         private UniversalRendererData _rendererData;
         [SerializeField]
@@ -19,7 +20,7 @@ namespace _Game.Managers
         [SerializeField]
         private UniversalAdditionalCameraData _cameraData;
         
-        [Header("Environment Effects")]
+        [Title("Environment Effects")]
         // [SerializeField]
         // private CurvedWorldController curvedWorldController;
         [SerializeField]

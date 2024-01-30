@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8818013469584843840}
   - component: {fileID: 114813433123138940}
   - component: {fileID: 964332395733782076}
+  - component: {fileID: 4684015013326287580}
   m_Layer: 0
   m_Name: cn_l_rock
   m_TagString: Untagged
@@ -31,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1390434512741748491}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &114813433123138940
 MeshFilter:
@@ -83,6 +84,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4684015013326287580
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731861608733581905}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.027786383, y: 0.10257615, z: 0.022926202}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2084082314788988417
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,6 +156,8 @@ MonoBehaviour:
   islandID: -1
   grassRenderer: {fileID: 6389510728217781204}
   groundMeshRenderer: {fileID: 5499226538259221192}
+  _flowersParentTF: {fileID: 0}
+  _flowerSpawnPoints: []
   groundMaterialEnum: -1
 --- !u!1 &2370774982800358381
 GameObject:
@@ -256,8 +272,8 @@ Transform:
   m_Children:
   - {fileID: 1535446967816773291}
   - {fileID: 2345232635962548933}
-  - {fileID: 445859619784089070}
   - {fileID: 8818013469584843840}
+  - {fileID: 445859619784089070}
   m_Father: {fileID: 1704600907059805371}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -272,6 +288,7 @@ GameObject:
   - component: {fileID: 2345232635962548933}
   - component: {fileID: 2226877419153819047}
   - component: {fileID: 5433970696991267124}
+  - component: {fileID: 6876569600437590437}
   m_Layer: 0
   m_Name: d_l_ground
   m_TagString: Untagged
@@ -344,6 +361,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6876569600437590437
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4192766984873701709}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.1, y: 0.1, z: 0.10000001}
+  m_Center: {x: 0, y: -0.05, z: 0}
 --- !u!1001 &294910837638083908
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -353,7 +383,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 155296321085860010, guid: f2bb3b8f255d57745a483379214c8c3d, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 155296321085860010, guid: f2bb3b8f255d57745a483379214c8c3d, type: 3}
       propertyPath: m_LocalScale.z

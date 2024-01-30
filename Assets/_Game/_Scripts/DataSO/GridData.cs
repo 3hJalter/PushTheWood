@@ -39,6 +39,10 @@ namespace _Game.Data
         [SerializeField]
         private readonly Dictionary<PoolType, EnvironmentObject[]> _environmentObjectsDict = new();
         
+        [Title("World UI")]
+        [SerializeField]
+        private readonly Dictionary<PoolType, WorldUI> _worldUIDict = new();
+        
         public int CountNormalLevel => normalLevel.Count;
 
         public TextAsset GetLevelData(LevelType type, int index)
@@ -77,6 +81,11 @@ namespace _Game.Data
             int randomIndex = UnityEngine.Random.Range(0, environmentObjects.Length);
             
             return _environmentObjectsDict[poolType][randomIndex];
+        }
+
+        public WorldUI GetWorldUI(PoolType poolType)
+        {
+            return _worldUIDict.GetValueOrDefault(poolType);
         }
 
         public void AddGridTextData(LevelType type, TextAsset textAsset)

@@ -177,8 +177,8 @@ namespace _Game.DesignPattern
     [Serializable]
     public struct ParticleAmount
     {
+        public Transform root;
         public ParticleSystem prefab;
         public int amount;
-        public Transform root;
     }
 }
