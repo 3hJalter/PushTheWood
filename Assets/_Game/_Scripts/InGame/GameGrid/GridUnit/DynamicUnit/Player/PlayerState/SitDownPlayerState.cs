@@ -53,7 +53,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 t.SetAnimSpeed(initAnimSpeed * Constants.SIT_UP_ANIM_TIME / SIT_UP_TIME);
                 timer.Start(SIT_UP_TIME, ChangeIdleState);
                 t.skin.transform.DOLocalMove(oldSkinPos, SIT_UP_TIME);
-                musicalNotes.Stop();
+                musicalNotes?.Stop();
                 isSitDown = false;
             }
 
@@ -66,8 +66,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         public void OnExit(Player t)
         {
             t.SetAnimSpeed(initAnimSpeed);
-            timer.Stop();
-            musicalNotes.Stop();
+            timer?.Stop();
+            musicalNotes?.Stop();
             t.skin.transform.localPosition = oldSkinPos;
         }
     }

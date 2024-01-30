@@ -52,7 +52,22 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
-  _levelIndex: 0
+    SerializationNodes:
+    - Name: enemies
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[_Game.GameGrid.Unit.DynamicUnit.Interface.IEnemy,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  normalLevelIndex: 0
+  secretLevelIndex: 0
   IsConstructingLevel: 0
   player: {fileID: 0}
+  levelWinCondition: 0
