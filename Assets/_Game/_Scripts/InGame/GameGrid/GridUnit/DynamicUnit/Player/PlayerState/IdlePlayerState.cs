@@ -106,6 +106,15 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                             break;
                     }
                 }
+
+                switch (t.MovingData.Condition)
+                {
+                    case CONDITION.SIT_DOWN:
+                        t.StateMachine.ChangeState(StateEnum.SitDown);
+                        break;
+                    default:
+                        break;
+                }
                 return;
             }
 

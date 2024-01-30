@@ -11,9 +11,9 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
         [SerializeField] private Image panel;
         [SerializeField] private GameObject deco;
 
-        public override void Setup()
+        public override void Setup(object param = null)
         {
-            base.Setup();
+            base.Setup(param);
             panel.raycastTarget = false;
             TimerManager.Inst.WaitForTime(1.5f, () =>
             {

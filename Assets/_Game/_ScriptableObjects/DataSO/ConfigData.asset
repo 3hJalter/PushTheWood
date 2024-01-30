@@ -15,7 +15,10 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 21300000, guid: 8fd521d3fc1eb46fd92b0f29508e5f76, type: 3}
+    - {fileID: 21300000, guid: 4b00db671a20143a8be8c3b5301d6a23, type: 3}
+    - {fileID: 21300000, guid: e2531dbb210c447358dfd4dd637545c5, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -24,15 +27,113 @@ MonoBehaviour:
     - Name: timePerNormalLevel
       Entry: 3
       Data: 180
-    - Name: goldPerUndo
+    - Name: boosterConfigs
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[_Game.Managers.BoosterType,
+        Assembly-CSharp],[_Game.Data.BoosterConfig, Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[_Game.Managers.BoosterType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 7
+      Data: _Game.Data.BoosterConfig, Assembly-CSharp
+    - Name: type
+      Entry: 3
+      Data: 0
+    - Name: name
+      Entry: 1
+      Data: Undo
+    - Name: icon
+      Entry: 10
+      Data: 0
+    - Name: goldPerBuyTen
       Entry: 3
       Data: 10
-    - Name: goldPerReset
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
       Entry: 3
-      Data: 100
-    - Name: goldPerHint
+      Data: 1
+    - Name: $v
+      Entry: 7
+      Data: _Game.Data.BoosterConfig, Assembly-CSharp
+    - Name: type
       Entry: 3
-      Data: 200
+      Data: 1
+    - Name: name
+      Entry: 1
+      Data: Reset Island
+    - Name: icon
+      Entry: 10
+      Data: 1
+    - Name: goldPerBuyTen
+      Entry: 3
+      Data: 10
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 7
+      Data: _Game.Data.BoosterConfig, Assembly-CSharp
+    - Name: type
+      Entry: 3
+      Data: 2
+    - Name: name
+      Entry: 1
+      Data: Show Hint
+    - Name: icon
+      Entry: 10
+      Data: 2
+    - Name: goldPerBuyTen
+      Entry: 3
+      Data: 10
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: gemToGold
       Entry: 3
       Data: 10

@@ -54,7 +54,5 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _levelIndex: 0
-  _fishSpawner: {fileID: 0}
-  _cloudSpawner: {fileID: 0}
   IsConstructingLevel: 0
   player: {fileID: 0}

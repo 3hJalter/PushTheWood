@@ -49,10 +49,10 @@ public static class Constants
     public const string OPEN_ANIM = "open";
     public const string ATTACK_ANIM = "attack";
     public const string SLEEP_ANIM = "sleep";
-    public const string SIT_DOWN_ANIM = "sitDown";
     public const string SLEEP_UP_ANIM = "sleepUp";
-    
-    
+    public const string SIT_DOWN_ANIM = "sitDown";
+    public const string SIT_UP_ANIM = "sitUp";
+
     public const float CUT_TREE_ANIM_TIME = 0.5f;
     public const float PUSH_ANIM_TIME = 0.4f;
     public const int WAIT_CUT_TREE_FRAMES = 15;
@@ -79,7 +79,7 @@ public static class Constants
 
     public const HeightLevel MIN_HEIGHT = HeightLevel.Zero;
     public const HeightLevel MAX_HEIGHT = HeightLevel.FourPointFive;
-    
+
     public const int MAX_SMALL_ISLAND_SIZE = 5;
 
     public const string BASE_COLOR = "_BaseColor";
@@ -87,16 +87,18 @@ public static class Constants
     public const float TOLERANCE = 0.01f;
 
     public const float SLEEP_TIME = 10f;
-    public const float SLEEP_UP_TIME = 1f;
+    public const float SLEEP_UP_ANIM_TIME = 1f;
+    public const float SIT_DOWN_ANIM_TIME = 5f / 6;
+    public const float SIT_UP_ANIM_TIME = 5f / 6;
     public const float HOLD_TOUCH_TIME = 0.4f;
     public const float ZOOM_OUT_TIME = 1f;
-    
+
     public const string NONE = "None";
 
     public const float DEFAULT_HINT_TRAIL_HEIGHT = 3f;
-    
+
     public const float HINT_LINE_TRAIL_SPEED = 10f;
-    
+
     // OLD 
 
     public static readonly HeightLevel MaxHeight = (HeightLevel)(Enum.GetValues(typeof(HeightLevel)).Length - 1);

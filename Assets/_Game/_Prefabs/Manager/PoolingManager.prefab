@@ -81,6 +81,12 @@ MonoBehaviour:
   - root: {fileID: 2003738223610586936}
     prefab: {fileID: 6523552309750463506, guid: ecdfbd3ab3938d64e91a820ed4180d27, type: 3}
     amount: 6
+  - root: {fileID: 2003738223610586936}
+    prefab: {fileID: 1897147931421555926, guid: 48caa6c8c0c2b02459e34bc9453152ff, type: 3}
+    amount: 2
+  - root: {fileID: 2003738223610586936}
+    prefab: {fileID: 6414450504511976959, guid: b515b592d9ea82c4d8aa51ca0ed194dc, type: 3}
+    amount: 2
   _fishSpawner: {fileID: 3212642321361187348}
   _worldUISpawner: {fileID: 2103450192750005411}
 --- !u!1 &576269568389227063

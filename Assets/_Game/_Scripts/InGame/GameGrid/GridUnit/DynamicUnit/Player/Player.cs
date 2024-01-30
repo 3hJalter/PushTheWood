@@ -19,9 +19,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
     public class Player : GridUnitDynamic, IJumpTreeRootUnit, ICharacter
     {
         #region PROPERTYS
+        [HideInInspector]
         public bool isRideVehicle;
+        [HideInInspector]
         public bool IsDead = false;
+        [HideInInspector]
         public bool IsStun = false;
+        public Transform[] VFXPositions;
         #endregion
 
         public readonly Queue<Direction> InputCache = new();
@@ -113,6 +117,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             stateMachine.AddState(StateEnum.Happy, new HappyPlayerState());
             stateMachine.AddState(StateEnum.Stun, new StunPlayerState());
             stateMachine.AddState(StateEnum.Sleep, new SleepPlayerState());
+            stateMachine.AddState(StateEnum.SitDown, new SitDownPlayerState());
         }
 
         public override void OnPush(Direction direction, ConditionData conditionData = null)

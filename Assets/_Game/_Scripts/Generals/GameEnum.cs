@@ -29,6 +29,8 @@ public enum CONDITION
     NONE = -1,
     BE_BLOCKED_BY_TREE_ROOT = 0,
     ROLL_AROUND_BLOCK_CHUMP = 1,
+    SIT_DOWN = 2,
+    PEEK = 3,
 }
 
 namespace TweenTypeEnum
@@ -138,5 +140,7 @@ namespace GameGridEnum
         BombExplosion = 4,
         SmokeExplosion = 5,
         MageSkill1Explosion = 6,
+        SleepingzZz = 7,
+        MusicalNotes = 8,
     }
 }

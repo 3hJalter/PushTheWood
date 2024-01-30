@@ -66,18 +66,18 @@ namespace _Game.UIs.Screen
                 });
         }
 
-        public override void Setup()
+        public override void Setup(object param = null)
         {
-            base.Setup();
+            base.Setup(param);
             _blockPanel.gameObject.SetActive(true);
             _goldValueText.text = $"{DataManager.Ins.GameData.user.gold}";
             _gemValueText.text = $"{DataManager.Ins.GameData.user.gems}";
             _canvasGroup.alpha = 0f;
         }
 
-        public override void Open()
+        public override void Open(object param = null)
         {
-            base.Open();
+            base.Open(param);
             // CameraFollow.Ins.ChangeCamera(ECameraType.MainMenuCamera);
             // FxManager.Ins.PlayTweenFog();
             GameManager.Ins.ChangeState(GameState.MainMenu);

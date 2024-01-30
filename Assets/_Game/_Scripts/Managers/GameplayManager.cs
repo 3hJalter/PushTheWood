@@ -1,8 +1,11 @@
+using System;
+using _Game._Scripts.Managers;
 using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.UIs.Screen;
 using _Game.Utilities;
 using _Game.Utilities.Timer;
+using TMPro;
 using UnityEngine;
 using VinhLB;
 
@@ -38,8 +41,6 @@ namespace _Game.Managers
                 screen.SetActiveResetIsland(value);
             }
         }
-        
-        public bool IsBoughtHint { get; set; }
 
         private void Awake()
         {
@@ -62,6 +63,33 @@ namespace _Game.Managers
             screen.hintCountText.text = DataManager.Ins.GameData.user.hintCount.ToString();
         }
 
+        private void Start()
+        {
+            EventGlobalManager.Ins.OnChangeBoosterAmount.AddListener(OnChangeBoosterAmount);
+        }
+
+        private void OnChangeBoosterAmount(BoosterType boosterType, int amount)
+        {
+            switch (boosterType)
+            {
+                case BoosterType.Undo:
+                    UpdateBoosterCount(ref DataManager.Ins.GameData.user.undoCount, screen.undoCountText, amount);
+                    break;
+                case BoosterType.ResetIsland:
+                    UpdateBoosterCount(ref DataManager.Ins.GameData.user.resetCount, screen.resetCountText, amount);
+                    break;
+                case BoosterType.Hint:
+                    UpdateBoosterCount(ref DataManager.Ins.GameData.user.hintCount, screen.hintCountText, amount);
+                    break;
+            }
+        }
+        
+        private void UpdateBoosterCount(ref int boosterCount, TMP_Text text, int amount)
+        {
+            boosterCount += amount;
+            text.text = boosterCount.ToString();
+        }
+        
         private void OnToMainMenu()
         {
             timer.Stop();
@@ -132,13 +160,8 @@ namespace _Game.Managers
             if (!isCanUndo) return;
             if (DataManager.Ins.GameData.user.undoCount <= 0)
             {
-                // TODO: Show popup to buy undo
                 DevLog.Log(DevId.Hoang, "Show popup to buy undo");
-                UIManager.Ins.OpenUI<BoosterWatchVideoPopup>();
-                // Temporary +10 undo
-                DevLog.Log(DevId.Hoang, "Temporary +10 undo");
-                DataManager.Ins.GameData.user.undoCount+=10;
-                screen.undoCountText.text = DataManager.Ins.GameData.user.undoCount.ToString();
+                UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(DataManager.Ins.ConfigData.boosterConfigs[BoosterType.Undo]);
             }
             else
             {
@@ -156,11 +179,7 @@ namespace _Game.Managers
             {
                 // TODO: Show popup to buy reset
                 DevLog.Log(DevId.Hoang, "Show popup to buy reset");
-                UIManager.Ins.OpenUI<BoosterWatchVideoPopup>();
-                // Temporary +10 reset
-                DevLog.Log(DevId.Hoang, "Temporary +10 reset");
-                DataManager.Ins.GameData.user.resetCount+=10;
-                screen.resetCountText.text = DataManager.Ins.GameData.user.resetCount.ToString();
+                UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(DataManager.Ins.ConfigData.boosterConfigs[BoosterType.ResetIsland]);
             }
             else
             {
@@ -178,11 +197,7 @@ namespace _Game.Managers
             {
                 // TODO: Show popup to buy hint
                 DevLog.Log(DevId.Hoang, "Show popup to buy hint");
-                UIManager.Ins.OpenUI<BoosterWatchVideoPopup>();
-                // Temporary +10 hint
-                DevLog.Log(DevId.Hoang, "Temporary +10 hint");
-                DataManager.Ins.GameData.user.hintCount+=10;
-                screen.hintCountText.text = DataManager.Ins.GameData.user.hintCount.ToString();
+                UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(DataManager.Ins.ConfigData.boosterConfigs[BoosterType.Hint]);
             }
             else
             {
@@ -210,5 +225,12 @@ namespace _Game.Managers
                 OnLoseGame();
             }
         }
+    }
+    
+    public enum BoosterType
+    {
+        Undo,
+        ResetIsland,
+        Hint,
     }
 }

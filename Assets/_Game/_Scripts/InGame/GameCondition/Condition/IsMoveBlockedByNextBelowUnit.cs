@@ -16,8 +16,18 @@ namespace _Game._Scripts.InGame.GameCondition.Condition
         {
             if (dataIn is not MovingData data) return false;
             if (data.owner is not GridUnitDynamic player) return false;
-            if (data.enterMainCell is null) return false;
+            if (data.enterMainCell is null) return false;           
             bool canMoveDirectly = data.enterMainCell.Data.canMovingDirectly;
+            switch (data.enterMainCell.Data.gridSurfaceType)
+            {
+                case GridSurfaceType.Water:
+                    dataIn.Condition = CONDITION.SIT_DOWN;
+                    break;
+                default:
+                    data.Condition = CONDITION.NONE;
+                    break;
+            }
+
             HeightLevel belowSurfaceStartHeight = Constants.DirFirstHeightOfSurface[data.enterMainCell.SurfaceType];
             // Get all objects in next cell from below this (Player) to Surface Start Height
             List<GridUnit> unitsInNextCell = new();

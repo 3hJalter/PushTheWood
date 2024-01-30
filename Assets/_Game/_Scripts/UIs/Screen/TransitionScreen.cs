@@ -4,9 +4,9 @@ namespace _Game.UIs.Screen
 {
     public class TransitionScreen : UICanvas
     {
-        public override void Open()
+        public override void Open(object param = null)
         {
-            base.Open();
+            base.Open(param);
         }
         
         public override void Close()
