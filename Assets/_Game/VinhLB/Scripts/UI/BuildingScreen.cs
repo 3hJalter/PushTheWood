@@ -64,11 +64,11 @@ namespace VinhLB
             }
         }
 
-        public override void Open()
+        public override void Open(object param = null)
         {
             _canvasGroup.alpha = 0f;
             
-            base.Open();
+            base.Open(param);
 
             DOVirtual.Float(0f, 1f, 1f, value => _canvasGroup.alpha = value)
                 .OnComplete(() => _blockPanel.gameObject.SetActive(false));

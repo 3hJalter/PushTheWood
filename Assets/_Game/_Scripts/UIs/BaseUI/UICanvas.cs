@@ -29,7 +29,7 @@ public class UICanvas : MonoBehaviour
         }
     }
 
-    public virtual void Setup()
+    public virtual void Setup(object param = null)
     {
         UIManager.Ins.AddBackUI(this);
         UIManager.Ins.PushBackAction(this, BackKey);
@@ -40,7 +40,7 @@ public class UICanvas : MonoBehaviour
 
     }
 
-    public virtual void Open()
+    public virtual void Open(object param = null)
     {
         gameObject.SetActive(true);
         //anim

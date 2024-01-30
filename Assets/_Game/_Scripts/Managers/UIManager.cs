@@ -30,6 +30,14 @@ namespace _Game.Managers
 
             return (T)canvas;
         }
+
+        public T OpenUI<T>(object param) where T : UICanvas
+        {
+            UICanvas canvas = GetUI<T>();
+            canvas.Setup(param);
+            canvas.Open(param);
+            return (T)canvas;
+        }
         
         public UICanvas OpenUIDirectly(UICanvas ui)
         {
