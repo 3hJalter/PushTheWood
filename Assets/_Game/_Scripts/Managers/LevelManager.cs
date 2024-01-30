@@ -29,6 +29,7 @@ namespace _Game.GameGrid
         public event Action OnLevelGenerated;
         public event Action OnLevelRestarted;
         public event Action OnLevelIslandReset;
+        public event Action OnLevelNext;
 
         [SerializeField]
         private int _levelIndex;
@@ -155,6 +156,7 @@ namespace _Game.GameGrid
             }
             OnGenerateLevel(true);
             // OnChangeTutorialIndex();
+            OnLevelNext?.Invoke();
         }
 
         public void OnRestart()

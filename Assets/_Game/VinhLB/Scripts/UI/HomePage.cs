@@ -33,6 +33,7 @@ namespace VinhLB
             _secretMapButton.onClick.AddListener(() =>
             {
                 DevLog.Log(DevId.Vinh, "Click secret map button");
+                UIManager.Ins.OpenUI<SecretMapPopup>();
             });
         }
 

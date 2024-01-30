@@ -1,6 +1,7 @@
 ﻿using System;
 using _Game._Scripts.Managers;
 using _Game.Camera;
+using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Popup;
 using _Game.Utilities.Timer;
@@ -14,12 +15,19 @@ namespace _Game.UIs.Screen
 {
     public class InGameScreen : UICanvas
     {
-        [SerializeField] private CanvasGroup canvasGroup;
-        [SerializeField] private Image blockPanel;
-        [SerializeField] private Button undoButton;
-        [SerializeField] private Button resetIslandButton;
-        [SerializeField] private TMP_Text timeText;
-        
+        [SerializeField]
+        private CanvasGroup canvasGroup;
+        [SerializeField]
+        private Image blockPanel;
+        [SerializeField]
+        private Button undoButton;
+        [SerializeField]
+        private Button resetIslandButton;
+        [SerializeField]
+        private TMP_Text timeText;
+        [SerializeField]
+        private TMP_Text _levelText;
+
         private const float UNDO_CD_TIME = 0.3f;
         private STimer resetIslandTimer;
 
@@ -41,12 +49,16 @@ namespace _Game.UIs.Screen
 
         private void Awake()
         {
+            LevelManager.Ins.OnLevelNext += LevelManager_OnLevelNext;
+            
             undoTimer = TimerManager.Inst.PopSTimer();
             resetIslandTimer = TimerManager.Inst.PopSTimer();
         }
 
         private void OnDestroy()
         {
+            LevelManager.Ins.OnLevelNext -= LevelManager_OnLevelNext;
+            
             TimerManager.Inst.PushSTimer(undoTimer);
             TimerManager.Inst.PushSTimer(resetIslandTimer);
         }
@@ -62,13 +74,15 @@ namespace _Game.UIs.Screen
         
         public override void Setup()
         {
-            base.Setup();
+            base.Setup(); ;
             GameManager.Ins.ChangeState(GameState.InGame);
             MoveInputManager.Ins.ShowContainer(true);
             if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
             CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
             canvasGroup.alpha = 0f;
             blockPanel.enabled = true;
+            
+            UpdateLevelText();
         }
 
         public override void Open()
@@ -89,14 +103,13 @@ namespace _Game.UIs.Screen
         {
             UIManager.Ins.OpenUI<SettingsPopup>();
         }
-        
+
         public void OnClickToggleBuildingMode()
         {
             Close();
             UIManager.Ins.OpenUI<BuildingScreen>();
             GridBuildingManager.Ins.ToggleBuildMode();
         }
-
 
         public void SetActiveUndo(bool active)
         {
@@ -111,7 +124,6 @@ namespace _Game.UIs.Screen
         }
 
         #region Booster
-
         public void OnClickUndo()
         {
             // Check number of ticket to use
@@ -136,7 +148,16 @@ namespace _Game.UIs.Screen
         {
             OnCancelHint?.Invoke();
         }
-
         #endregion
+
+        private void UpdateLevelText()
+        {
+            _levelText.text = $"Level {LevelManager.Ins.LevelIndex + 1}";
+        }
+
+        private void LevelManager_OnLevelNext()
+        {
+            UpdateLevelText();
+        }
     }
 }
