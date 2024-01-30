@@ -9,6 +9,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit
     public class ButtonUnit : GridUnitDynamic
     {
         private StateMachine<ButtonUnit> StateMachine { get; set; }
+        [SerializeField] private Transform btnModelTransform;
+
+        public Transform BtnModelTransform => btnModelTransform;
+
         [SerializeField] private List<MeshRenderer> btnMeshRenderer;
         [SerializeField] private Material btnOffMaterial;
         [SerializeField] private Material btnOnMaterial;
