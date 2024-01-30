@@ -217,7 +217,7 @@ namespace _Game.GameGrid
                     {
                         if (enemies.Count == 0 && GameManager.Ins.IsState(GameState.InGame))
                         {
-                            OnWin();
+                            OnWin();    
                         }
                     };
                     break;
