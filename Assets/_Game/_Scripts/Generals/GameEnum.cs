@@ -141,5 +141,6 @@ namespace GameGridEnum
         SmokeExplosion = 5,
         MageSkill1Explosion = 6,
         SleepingzZz = 7,
+        MusicalNotes = 8,
     }
 }
