@@ -215,7 +215,7 @@ namespace _Game.GameGrid
                 case LevelWinCondition.DefeatAllEnemy:
                     OnCheckWinCondition += () =>
                     {
-                        if (enemies.Count == 0)
+                        if (enemies.Count == 0 && GameManager.Ins.IsState(GameState.InGame))
                         {
                             OnWin();
                         }
