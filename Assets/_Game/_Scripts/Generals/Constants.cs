@@ -87,7 +87,7 @@ public static class Constants
     public const float TOLERANCE = 0.01f;
 
     public const float SLEEP_TIME = 10f;
-    public const float SLEEP_UP_TIME = 1f;
+    public const float SLEEP_UP_ANIM_TIME = 1f;
     public const float HOLD_TOUCH_TIME = 0.4f;
     public const float ZOOM_OUT_TIME = 1f;
     public const float CHEST_OPEN_TIME = 1f;
