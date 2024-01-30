@@ -1,4 +1,5 @@
-﻿using _Game.DesignPattern.StateMachine;
+﻿using System.Collections.Generic;
+using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.ButtonUnitState;
 using GameGridEnum;
 using UnityEngine;
@@ -7,10 +8,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit
 {
     public class ButtonUnit : GridUnitDynamic
     {
-        [SerializeField] private Animator animator;
-        private string _currentAnimName = " ";
-
-        public StateMachine<ButtonUnit> StateMachine { get; private set; }
+        private StateMachine<ButtonUnit> StateMachine { get; set; }
+        [SerializeField] private List<MeshRenderer> btnMeshRenderer;
+        [SerializeField] private Material btnOffMaterial;
+        [SerializeField] private Material btnOnMaterial;
 
         private bool _isAddState;
 
@@ -25,6 +26,15 @@ namespace _Game.GameGrid.Unit.DynamicUnit
                 AddState();
             }
             StateMachine.ChangeState(StateEnum.Idle);
+        }
+        
+        public void ChangeButton(bool isOn)
+        {
+            for (int index = 0; index < btnMeshRenderer.Count; index++)
+            {
+                MeshRenderer meshRenderer = btnMeshRenderer[index];
+                meshRenderer.material = isOn ? btnOnMaterial : btnOffMaterial;
+            }
         }
 
         private void AddState()
@@ -43,13 +53,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit
         {
             if (CurrentStateId == StateEnum.Idle) return;
             StateMachine.ChangeState(StateEnum.Idle);
-        }
-        
-        public void ChangeAnim(string animName)
-        {
-            if (_currentAnimName == animName) return;
-            _currentAnimName = animName;
-            animator.SetTrigger(_currentAnimName);
         }
 
         public override StateEnum CurrentStateId 

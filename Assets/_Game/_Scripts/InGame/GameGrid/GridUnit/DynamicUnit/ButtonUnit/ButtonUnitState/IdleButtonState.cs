@@ -7,6 +7,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.ButtonUnitState
         public StateEnum Id => StateEnum.Idle;
         public void OnEnter(ButtonUnit t)
         {
+            t.ChangeButton(false);
         }
 
         public void OnExecute(ButtonUnit t)
