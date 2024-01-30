@@ -226,14 +226,17 @@ namespace _Game.GameGrid
                 default:
                     break;
             }
-            EventGlobalManager.Ins.OnEnemyDie.AddListener(OnCheckWinCondition);
+            if (OnCheckWinCondition is not null) EventGlobalManager.Ins.OnEnemyDie.AddListener(OnCheckWinCondition);
         }
         
         private void OnRemoveWinCondition()
         {
             // Remove all win condition
-            OnCheckWinCondition = null;
-            EventGlobalManager.Ins.OnEnemyDie.RemoveListener(OnCheckWinCondition);
+            if (OnCheckWinCondition is not null)
+            {
+                EventGlobalManager.Ins.OnEnemyDie.RemoveListener(OnCheckWinCondition);
+                OnCheckWinCondition = null;
+            }
         }
         
         public void ResetGameState()
