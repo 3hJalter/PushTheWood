@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17757887, g: 0.2223226, b: 0.30451846, a: 1}
+  m_IndirectSpecularColor: {r: 0.1775786, g: 0.22232212, b: 0.3045177, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2468,10 +2468,6 @@ PrefabInstance:
       value: DataManager
       objectReference: {fileID: 0}
     - target: {fileID: 5293325261100666983, guid: 5946b84d6d1de3640b8baac008b01ed9, type: 3}
-      propertyPath: vfxData
-      value: 
-      objectReference: {fileID: 11400000, guid: 97033d85e8260c34988b48242acc0a56, type: 2}
-    - target: {fileID: 5293325261100666983, guid: 5946b84d6d1de3640b8baac008b01ed9, type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 5293325261100666983, guid: 5946b84d6d1de3640b8baac008b01ed9, type: 3}
@@ -3352,7 +3348,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 1.02e-43, y: 0, z: 0, w: 3.410255e+25}
+  m_BoundingSphereOverride: {x: 0, y: NaN, z: 1.3563156e-19, w: 69099.56}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0

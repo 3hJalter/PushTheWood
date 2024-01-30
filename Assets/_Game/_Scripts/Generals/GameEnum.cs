@@ -138,5 +138,6 @@ namespace GameGridEnum
         BombExplosion = 4,
         SmokeExplosion = 5,
         MageSkill1Explosion = 6,
+        SleepingzZz = 7,
     }
 }

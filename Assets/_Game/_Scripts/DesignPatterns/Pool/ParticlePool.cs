@@ -49,12 +49,12 @@ namespace _Game.DesignPattern
             Init(prefab, qty, parent);
         }
 
-        public static void Play(ParticleSystem prefab, Vector3 pos, Quaternion rot = default)
+        public static ParticleSystem Play(ParticleSystem prefab, Vector3 pos, Quaternion rot = default)
         {
             if (prefab == null)
             {
                 Debug.Log(prefab.name + " is null");
-                return;
+                return null;
             }
 
             if (!pools.ContainsKey(prefab.GetInstanceID()))
@@ -64,7 +64,7 @@ namespace _Game.DesignPattern
                 pools[prefab.GetInstanceID()] = new Pool(prefab, 10, newRoot);
             }
 
-            pools[prefab.GetInstanceID()].Play(pos, rot);
+            return pools[prefab.GetInstanceID()].Play(pos, rot);
         }
 
         public static void Release(ParticleSystem prefab)
@@ -144,7 +144,7 @@ namespace _Game.DesignPattern
             public int Count => inactive.Count;
 
             // Spawn an object from our pool
-            public void Play(Vector3 pos, Quaternion rot)
+            public ParticleSystem Play(Vector3 pos, Quaternion rot)
             {
                 index = index + 1 < inactive.Count ? index + 1 : 0;
 
@@ -159,6 +159,7 @@ namespace _Game.DesignPattern
 
                 obj.transform.SetPositionAndRotation(pos, rot);
                 obj.Play();
+                return obj;
             }
 
             public void Release()
