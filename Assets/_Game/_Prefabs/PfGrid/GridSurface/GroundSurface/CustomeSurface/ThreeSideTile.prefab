@@ -59,6 +59,8 @@ MonoBehaviour:
   islandID: -1
   grassRenderer: {fileID: 8366740158726622409}
   groundMeshRenderer: {fileID: 559019480753035349}
+  _flowersParentTF: {fileID: 0}
+  _flowerSpawnPoints: []
   groundMaterialEnum: -1
 --- !u!1 &3236816967825628786
 GameObject:
@@ -188,6 +190,7 @@ GameObject:
   - component: {fileID: 1095211551710568833}
   - component: {fileID: 3568172323226249755}
   - component: {fileID: 7241879588896579804}
+  - component: {fileID: 4375518507968145767}
   m_Layer: 0
   m_Name: thsidec_l_ground
   m_TagString: Untagged
@@ -260,6 +263,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4375518507968145767
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5675369689704941849}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.1, y: 0.1, z: 0.10000001}
+  m_Center: {x: 0, y: -0.05, z: 0}
 --- !u!1001 &3519912345940355568
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -400,8 +400,11 @@ namespace _Game.DesignPattern
         Cloud = 200,
         Shark = 201,
         Flower = 202,
+        
+        // World UI
+        FloatingUI = 500,
 
-        //VFX
+        // VFX
         DangerIndicator = 1000,
     }
 }
