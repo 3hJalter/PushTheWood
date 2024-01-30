@@ -40,24 +40,6 @@ namespace _Game._Scripts.InGame.GameCondition.Condition
                 default: 
                     return false;
             }
-
-            //return movingData.blockDynamicUnits.Count switch
-            //{
-            //    0 when movingData.blockStaticUnits.Count == 0 => true,
-            //    0 when movingData.blockStaticUnits.Count == 1 && movingData.blockStaticUnits[0] is TreeRoot =>
-            //        movingData.owner is IJumpTreeRootUnit jumpTreeRootUnit && jumpTreeRootUnit.CanJumpOnTreeRoot(movingData.inputDirection),             
-            //    1 when (movingData.blockDynamicUnits[0] is Chump blockChump && blockChump.UnitTypeY == UnitTypeY.Down) 
-            //    && (movingData.owner is Chump pushChump && pushChump.UnitTypeY == UnitTypeY.Up) && IsDifferentDirection(movingData.inputDirection, blockChump.UnitTypeXZ) => true,
-            //    _ => false,
-            //};
-            // Temporary for handle TreeRoot
-            // for (int i = 0; i < movingData.blockDynamicUnits.Count; i++)
-            // {
-            //     GridUnit unit = movingData.blockDynamicUnits[i];
-            //     if (!unit.CanMoveFromUnit(movingData.inputDirection, movingData.owner)) return false;
-            // }
-            // Temporary for handle Tree Root
-
         }
 
         private bool IsDifferentDirection(Direction direction, UnitTypeXZ type)

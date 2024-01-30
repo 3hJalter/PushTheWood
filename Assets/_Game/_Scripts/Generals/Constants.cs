@@ -49,10 +49,10 @@ public static class Constants
     public const string OPEN_ANIM = "open";
     public const string ATTACK_ANIM = "attack";
     public const string SLEEP_ANIM = "sleep";
-    public const string SIT_DOWN_ANIM = "sitDown";
     public const string SLEEP_UP_ANIM = "sleepUp";
-    
-    
+    public const string SIT_DOWN_ANIM = "sitDown";
+    public const string SIT_UP_ANIM = "sitUp";
+
     public const float CUT_TREE_ANIM_TIME = 0.5f;
     public const float PUSH_ANIM_TIME = 0.4f;
     public const int WAIT_CUT_TREE_FRAMES = 15;
