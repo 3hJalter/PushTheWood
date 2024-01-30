@@ -117,6 +117,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             stateMachine.AddState(StateEnum.Happy, new HappyPlayerState());
             stateMachine.AddState(StateEnum.Stun, new StunPlayerState());
             stateMachine.AddState(StateEnum.Sleep, new SleepPlayerState());
+            stateMachine.AddState(StateEnum.SitDown, new SitDownPlayerState());
         }
 
         public override void OnPush(Direction direction, ConditionData conditionData = null)
