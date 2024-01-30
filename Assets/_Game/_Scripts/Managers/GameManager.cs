@@ -95,18 +95,22 @@ namespace _Game.Managers
             Database.SaveData(_gameData);
         }
         
-        public void SpendGold(int gold)
+        public bool SpendGold(int gold)
         {
+            if (_gameData.user.gold < gold) return false;
             _gameData.user.gold -= gold;
             PostEvent(EventID.OnGoldMoneyChange, _gameData.user.gold);
             Database.SaveData(_gameData);
+            return true;
         }
         
-        public void SpendGem(int gem)
+        public bool SpendGem(int gem)
         {
+            if (_gameData.user.gems < gem) return false;
             _gameData.user.gems -= gem;
             PostEvent(EventID.OnGemMoneyChange, _gameData.user.gems);
             Database.SaveData(_gameData);
+            return true;
         }
 
         #endregion

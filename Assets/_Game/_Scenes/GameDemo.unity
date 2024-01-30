@@ -2241,41 +2241,14 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: OnStartLoadScene
-      Entry: 7
-      Data: 0|Sigtrap.Relays.Relay, Assembly-CSharp-firstpass
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: OnFinishLoadScene
-      Entry: 7
-      Data: 1|Sigtrap.Relays.Relay, Assembly-CSharp-firstpass
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: OnUpdateSetting
-      Entry: 7
-      Data: 2|Sigtrap.Relays.Relay, Assembly-CSharp-firstpass
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: OnGameInit
-      Entry: 7
-      Data: 3|Sigtrap.Relays.Relay, Assembly-CSharp-firstpass
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: OnPurchaseNoAds
-      Entry: 7
-      Data: 4|Sigtrap.Relays.Relay, Assembly-CSharp-firstpass
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: OnButtonUnitEnter
       Entry: 7
-      Data: 5|Sigtrap.Relays.Relay`1[[System.Boolean, mscorlib]], Assembly-CSharp-firstpass
+      Data: 0|Sigtrap.Relays.Relay`1[[System.Boolean, mscorlib]], Assembly-CSharp-firstpass
     - Name: 
       Entry: 8
+      Data: 
+    - Name: OnChangeBoosterAmount
+      Entry: 6
       Data: 
 --- !u!4 &1060345616 stripped
 Transform:
@@ -3352,7 +3325,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 1.02e-43, y: 0, z: 0, w: 3.410255e+25}
+  m_BoundingSphereOverride: {x: 1.1495e-41, y: 6e-44, z: 0, w: NaN}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0

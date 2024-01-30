@@ -60,9 +60,9 @@ namespace _Game.UIs.Screen
         public TextMeshProUGUI resetCountText;
         public TextMeshProUGUI hintCountText;
         
-        public override void Setup()
+        public override void Setup(object param = null)
         {
-            base.Setup();
+            base.Setup(param);
             GameManager.Ins.ChangeState(GameState.InGame);
             MoveInputManager.Ins.ShowContainer(true);
             if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
@@ -71,9 +71,9 @@ namespace _Game.UIs.Screen
             blockPanel.enabled = true;
         }
 
-        public override void Open()
+        public override void Open(object param = null)
         {
-            base.Open();
+            base.Open(param);
 
             DOVirtual.Float(0f, 1f, 1f, value => canvasGroup.alpha = value)
                 .OnComplete(() => { blockPanel.enabled = false; });

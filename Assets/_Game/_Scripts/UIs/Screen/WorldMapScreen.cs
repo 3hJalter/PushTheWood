@@ -9,13 +9,13 @@ namespace _Game.UIs.Screen
     {
         [SerializeField] private CanvasGroup canvasGroup;
 
-        public override void Setup()
+        public override void Setup(object param = null)
         {
-            base.Setup();
+            base.Setup(param);
             canvasGroup.alpha = 0f;
         }
 
-        public override void Open()
+        public override void Open(object param = null)
         {
             base.Open();
             // CameraFollow.Ins.ChangeCamera(ECameraType.WorldMapCamera);

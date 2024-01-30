@@ -12,9 +12,9 @@ namespace _Game.UIs.Popup
         [SerializeField]
         private HButton _mainMenuButton;
         
-        public override void Setup()
+        public override void Setup(object param = null)
         {
-            base.Setup();
+            base.Setup(param);
 
             if (GameManager.Ins.IsState(GameState.InGame))
             {
@@ -27,9 +27,9 @@ namespace _Game.UIs.Popup
             }
         }
 
-        public override void Open()
+        public override void Open(object param = null)
         {
-            base.Open();
+            base.Open(param);
             MoveInputManager.Ins.ShowContainer(false);
         }
 

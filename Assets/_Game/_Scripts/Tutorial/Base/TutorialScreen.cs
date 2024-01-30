@@ -5,9 +5,9 @@ namespace _Game._Scripts.Tutorial
 {
     public class TutorialScreen : UICanvas
     {
-        public override void Setup()
+        public override void Setup(object param = null)
         {
-            base.Setup();
+            base.Setup(param);
             // if InInGameScreen is open, hide it
             if (UIManager.Ins.IsOpened<InGameScreen>()) UIManager.Ins.CloseUI<InGameScreen>();
         }

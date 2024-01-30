@@ -21,9 +21,9 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
         [SerializeField] private HDpadButton dpadButtonUp;
         [SerializeField] private HDpadButton dpadButtonDown;
        
-        public override void Open()
+        public override void Open(object param = null)
         {
-            base.Open();
+            base.Open(param);
             Timing.RunCoroutine(WaitOneFrame(() =>
             {
                 panel.enabled = true;

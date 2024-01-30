@@ -54,9 +54,9 @@ namespace _Game.UIs.Screen
             // LevelManager.Ins.OnGoLevel(levelIndex);
         }
         
-        public override void Setup()
+        public override void Setup(object param = null)
         {
-            base.Setup();
+            base.Setup(param);
             GameManager.Ins.ChangeState(GameState.WorldMap);
             // CurveWorld
             // FxManager.Ins.ChangePlanetCurvatureSize();

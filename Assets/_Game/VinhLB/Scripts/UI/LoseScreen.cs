@@ -16,16 +16,16 @@ namespace VinhLB
         [SerializeField]
         private Image _blockPanel;
         
-        public override void Setup()
+        public override void Setup(object param = null)
         {
-            base.Setup();
+            base.Setup(param);
             
             _canvasGroup.alpha = 0f;
         }
 
-        public override void Open()
+        public override void Open(object param = null)
         {
-            base.Open();
+            base.Open(param);
             
             DOVirtual.Float(0, 1, 0.25f, value => _canvasGroup.alpha = value)
                 .OnComplete(() => _blockPanel.gameObject.SetActive(false));

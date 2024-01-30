@@ -1,4 +1,7 @@
-﻿using Sirenix.OdinInspector;
+﻿using System;
+using System.Collections.Generic;
+using _Game.Managers;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace _Game.Data
@@ -19,11 +22,7 @@ namespace _Game.Data
 
         // Ticket purchase
         [FoldoutGroup("Booster Purchase")]
-        public readonly int goldPerUndo = 10;
-        [FoldoutGroup("Booster Purchase")]
-        public readonly int goldPerReset = 100;
-        [FoldoutGroup("Booster Purchase")]
-        public readonly int goldPerHint = 200;
+        public readonly Dictionary<BoosterType, BoosterConfig> boosterConfigs = new();
 
         #endregion
 
@@ -35,5 +34,24 @@ namespace _Game.Data
         #endregion
         
         // [BoxGroup("Monetize")]
+    }
+
+    [Serializable]
+    public struct BoosterConfig
+    {
+        [SerializeField] private BoosterType type;
+        [SerializeField] private string name;
+        [SerializeField] private Sprite icon;
+        [SerializeField] private int goldPerBuyTen;
+        
+        public BoosterType Type => type;
+
+        public string Name => name;
+
+        public Sprite Icon => icon;
+
+        public int GoldPerBuyTen => goldPerBuyTen;
+
+        // Do with goldPerBuyMore
     }
 }
