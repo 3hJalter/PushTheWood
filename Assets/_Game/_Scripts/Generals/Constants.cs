@@ -99,6 +99,7 @@ public static class Constants
     public const float HOLD_TOUCH_TIME = 0.4f;
     public const float ZOOM_OUT_TIME = 1f;
     public const float CHEST_OPEN_TIME = 1f;
+    public const int REQUIRE_SECRET_MAP_PIECES = 8;
     
 
     public const string NONE = "None";

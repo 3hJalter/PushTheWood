@@ -123,8 +123,14 @@ namespace _Game.Managers
         }
         public void AddSecretMapPiece(int piece)
         {
-            _gameData.user.secretMapPieces += piece;
+            _gameData.user.secretMapPieces += piece;          
+            if(_gameData.user.secretMapPieces >= Constants.REQUIRE_SECRET_MAP_PIECES)
+            {
+                _gameData.user.secretLevelUnlock += 1;
+                _gameData.user.secretMapPieces -= Constants.REQUIRE_SECRET_MAP_PIECES;
+            }
             PostEvent(EventID.OnSecretMapPieceChange, _gameData.user.secretMapPieces);
+            PostEvent(EventID.OnUnlockSecretMap, _gameData.user.secretLevelUnlock);
             Database.SaveData(_gameData);
         }
         public bool SpendGold(int gold)

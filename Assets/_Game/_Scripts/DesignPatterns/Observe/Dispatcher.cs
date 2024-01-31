@@ -74,5 +74,6 @@ namespace _Game.DesignPattern
         OnGemMoneyChange = 7,
         OnResetToMainMenu = 8,
         OnSecretMapPieceChange = 9,
+        OnUnlockSecretMap = 10;
     }
 }

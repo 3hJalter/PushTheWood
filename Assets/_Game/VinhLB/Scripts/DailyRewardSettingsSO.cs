@@ -34,6 +34,9 @@ namespace VinhLB
                 case RewardType.Gem:
                     GameManager.Ins.AddGem(Amount);
                     break;
+                case RewardType.SecretMapPiece:
+                    GameManager.Ins.AddSecretMapPiece(Amount);
+                    break;
             }
         }
     }
