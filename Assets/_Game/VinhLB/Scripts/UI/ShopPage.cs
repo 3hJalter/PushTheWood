@@ -8,9 +8,9 @@ namespace VinhLB
         [SerializeField]
         private ScrollRect _scrollRect;
 
-        public override void Open()
+        public override void Open(object param = null)
         {
-            base.Open();
+            base.Open(param);
 
             _scrollRect.verticalNormalizedPosition = 1f;
         }

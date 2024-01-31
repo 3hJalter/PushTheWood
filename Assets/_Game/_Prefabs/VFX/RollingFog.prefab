@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7968515746695607532}
   - component: {fileID: 8730214479965841920}
   - component: {fileID: 245145823870929241}
-  - component: {fileID: 7646928246538042188}
   - component: {fileID: 7968515746818899515}
   m_Layer: 0
   m_Name: RollingFog
@@ -85,17 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!210 &7646928246538042188
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7968515746695607533}
-  m_Enabled: 1
-  m_SortingLayerID: 990382425
-  m_SortingLayer: 1
-  m_SortingOrder: 10
 --- !u!114 &7968515746818899515
 MonoBehaviour:
   m_ObjectHideFlags: 0
