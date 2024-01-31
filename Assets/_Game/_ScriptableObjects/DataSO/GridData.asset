@@ -750,6 +750,7 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 0661212bb5b993e478c77e78b72e5caa, type: 3}
   - {fileID: 4900000, guid: 85ce2cf2ad5c1844fa681abf79fb462f, type: 3}
   - {fileID: 4900000, guid: 7a1f38a4eb5932c4cb3fc0c731b92430, type: 3}
+  - {fileID: 4900000, guid: 99aacf09c274a9d47b6bd83661ed127f, type: 3}
   dailyChallengerLevel:
   - {fileID: 4900000, guid: 58026dccfb4a4250b69fe6ebdf773377, type: 3}
   secretLevel:
