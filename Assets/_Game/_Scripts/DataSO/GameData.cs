@@ -19,11 +19,13 @@ namespace _Game.Data
             // Level Progress Data
             public int normalLevelIndex;
             public int secretLevelIndex;
+            public int secretLevelUnlock;
             public List<int> dailyLevelIndexComplete = new();
             
             // Income Progress Data
             public int gold;
             public int gems;
+            public int secretMapPieces;
             public int dailyRewardClaimedCount;
 
             // Booster Data
