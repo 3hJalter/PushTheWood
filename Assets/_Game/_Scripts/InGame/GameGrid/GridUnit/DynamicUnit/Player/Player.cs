@@ -118,6 +118,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             stateMachine.AddState(StateEnum.Stun, new StunPlayerState());
             stateMachine.AddState(StateEnum.Sleep, new SleepPlayerState());
             stateMachine.AddState(StateEnum.SitDown, new SitDownPlayerState());
+            stateMachine.AddState(StateEnum.RunAboveChump, new RunAboveChumpPlayerState());
         }
 
         public override void OnPush(Direction direction, ConditionData conditionData = null)

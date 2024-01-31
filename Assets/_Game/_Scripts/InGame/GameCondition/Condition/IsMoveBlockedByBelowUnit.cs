@@ -15,6 +15,7 @@ namespace _Game._Scripts.InGame.GameCondition.Condition
         {
             if (dataIn is not MovingData data) return false;
             if (data.owner is not GridUnitDynamic player) return false;
+            dataIn.Condition = CONDITION.NONE;
             // Get Below Player Information
             GameGridCell currentCell = player.MainCell;
             bool canMoveDirectly = currentCell.Data.canMovingDirectly;
@@ -25,14 +26,26 @@ namespace _Game._Scripts.InGame.GameCondition.Condition
             GridUnit belowUnit = player.GetBelowUnitAtMainCell();
             if (!belowUnit) return false;
             // Only Consider the first unit (MainCell)
-            return belowUnit.UnitTypeXZ switch
+            bool returnVal = true;
+            switch (belowUnit.UnitTypeXZ)
             {
-                UnitTypeXZ.None => false,
-                UnitTypeXZ.Both => true,
-                UnitTypeXZ.Vertical => data.inputDirection is Direction.Forward or Direction.Back,
-                UnitTypeXZ.Horizontal => data.inputDirection is Direction.Left or Direction.Right,
-                _ => true
-            };
+                case UnitTypeXZ.None:
+                    return false;
+                case UnitTypeXZ.Both:
+                    return true;
+                case UnitTypeXZ.Vertical:                  
+                    returnVal = data.inputDirection is Direction.Forward or Direction.Back;
+                    if(!returnVal)
+                        dataIn.Condition = CONDITION.RUN_ABOVE_CHUMP;
+                    break;
+                case UnitTypeXZ.Horizontal:
+                    returnVal = data.inputDirection is Direction.Left or Direction.Right;
+                    if (!returnVal)
+                        dataIn.Condition = CONDITION.RUN_ABOVE_CHUMP;
+                    break;
+
+            }
+            return returnVal;
         }
     }
 }
