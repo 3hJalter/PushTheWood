@@ -1551,7 +1551,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   _canvasGroup: {fileID: 7239107388192199635}
   _blockPanel: {fileID: 6636795778640806458}
-  nextLevelButton: {fileID: 8043432127670588564}
+  _nextLevelButton: {fileID: 8043432127670588564}
 --- !u!1 &7714375733455302753
 GameObject:
   m_ObjectHideFlags: 0

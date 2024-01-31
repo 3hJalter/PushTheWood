@@ -1,9 +1,11 @@
-﻿using _Game.GameGrid;
+﻿using System;
+using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Popup;
 using _Game.Utilities;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace VinhLB
@@ -11,7 +13,7 @@ namespace VinhLB
     public class HomePage : TabPage
     {
         [SerializeField] 
-        private HButton dailyChallengeButton;
+        private Button _dailyChallengeButton;
         [SerializeField]
         private Button _dailyRewardButton;
         [SerializeField]
@@ -23,7 +25,7 @@ namespace VinhLB
 
         private void Awake()
         {
-            dailyChallengeButton.onClick.AddListener( () =>
+            _dailyChallengeButton.onClick.AddListener( () =>
             {
                 DevLog.Log(DevId.Vinh, "Click daily challenge button");
                 UIManager.Ins.OpenUI<NotificationPopup>(Constants.FEATURE_COMING_SOON);
@@ -53,10 +55,8 @@ namespace VinhLB
             }
         }
 
-        public override void Open()
+        private void OnEnable()
         {
-            base.Open();
-
             Invoke(nameof(UpdateStatus), 0.01f);
         }
 

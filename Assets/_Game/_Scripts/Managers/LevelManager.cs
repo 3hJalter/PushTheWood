@@ -29,6 +29,7 @@ namespace _Game.GameGrid
         public event Action OnLevelRestarted;
         public event Action OnLevelIslandReset;
         public event Action OnCheckWinCondition;
+        public event Action OnLevelNext;
 
         [SerializeField]
         [ReadOnly]
@@ -38,9 +39,7 @@ namespace _Game.GameGrid
         private int secretLevelIndex;
 
         private Level _currentLevel;
-        [SerializeField]
-
-
+        
         public int NormalLevelIndex => normalLevelIndex;
         public Level CurrentLevel => _currentLevel;
         public bool IsConstructingLevel;
@@ -154,7 +153,7 @@ namespace _Game.GameGrid
                   if (secretLevelIndex >= DataManager.Ins.CountSecretLevel) secretLevelIndex = 0; 
                   DataManager.Ins.GameData.user.secretLevelIndex = secretLevelIndex;
                   break;
-              case LevelType.DailyChallenger:
+              case LevelType.DailyChallenge:
                   // Check if contain
                   if (DataManager.Ins.GameData.user.dailyLevelIndexComplete.Contains(DateTime.Now.Day)) break;
                   DataManager.Ins.GameData.user.dailyLevelIndexComplete.Add(DateTime.Now.Day);
@@ -191,6 +190,8 @@ namespace _Game.GameGrid
             }
             OnGenerateLevel(type, true);
             // OnChangeTutorialIndex();
+            
+            OnLevelNext?.Invoke();
         }
 
         public void OnRestart()

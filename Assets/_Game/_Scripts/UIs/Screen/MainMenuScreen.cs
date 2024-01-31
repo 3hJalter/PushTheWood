@@ -13,19 +13,19 @@ namespace _Game.UIs.Screen
 {
     public class MainMenuScreen : UICanvas
     {
-        [SerializeField] private CanvasGroup _canvasGroup;
-
-        [SerializeField] private Image _blockPanel;
-
-        [SerializeField] private TabGroup _bottomNavigationTabGroup;
-
-        [SerializeField] private TMP_Text _goldValueText;
-
-        [SerializeField] private TMP_Text _gemValueText;
+        [SerializeField]
+        private CanvasGroup _canvasGroup;
+        [SerializeField]
+        private Image _blockPanel;
+        [SerializeField]
+        private TabGroup _bottomNavigationTabGroup;
+        [SerializeField]
+        private TMP_Text _goldValueText;
+        [SerializeField]
+        private TMP_Text _gemValueText;
 
         private bool _isFirstOpen;
-
-        private Tween goldChangeTween;
+        private Tween _goldChangeTween;
 
         private void Awake()
         {
@@ -44,8 +44,8 @@ namespace _Game.UIs.Screen
             // If screen not open yet, just set value
             if (!gameObject.activeSelf) return;
             // If screen is open, play tween
-            goldChangeTween?.Kill();
-            goldChangeTween = DOTween.To(() => int.Parse(_goldValueText.text.Replace(",", "")),
+            _goldChangeTween?.Kill();
+            _goldChangeTween = DOTween.To(() => int.Parse(_goldValueText.text.Replace(",", "")),
                     x => _goldValueText.text = x.ToString("#,#"), value, 0.5f)
                 .OnKill(() =>
                 {
@@ -57,13 +57,10 @@ namespace _Game.UIs.Screen
         private void ChangeGemValue(int value)
         {
             if (!gameObject.activeSelf) return;
-            goldChangeTween?.Kill();
-            goldChangeTween = DOTween.To(() => int.Parse(_gemValueText.text.Replace(",", "")),
+            _goldChangeTween?.Kill();
+            _goldChangeTween = DOTween.To(() => int.Parse(_gemValueText.text.Replace(",", "")),
                     x => _gemValueText.text = x.ToString("#,#"), value, 0.5f)
-                .OnKill(() =>
-                {
-                    _gemValueText.text = value.ToString("#,#");
-                });
+                .OnKill(() => { _gemValueText.text = value.ToString("#,#"); });
         }
 
         public override void Setup(object param = null)
