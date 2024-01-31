@@ -39,6 +39,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             bool isUseInitData = false, Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot); //DEV: Not use init data
+            SaveInitData(LevelManager.Ins.CurrentLevel.Index);
             if (!_isAddState)
             {
                 _isAddState = true;
