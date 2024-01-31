@@ -121,7 +121,12 @@ namespace _Game.Managers
             PostEvent(EventID.OnGemMoneyChange, _gameData.user.gems);
             Database.SaveData(_gameData);
         }
-        
+        public void AddSecretMapPiece(int piece)
+        {
+            _gameData.user.secretMapPieces += piece;
+            PostEvent(EventID.OnSecretMapPieceChange, _gameData.user.secretMapPieces);
+            Database.SaveData(_gameData);
+        }
         public bool SpendGold(int gold)
         {
             if (_gameData.user.gold < gold) return false;

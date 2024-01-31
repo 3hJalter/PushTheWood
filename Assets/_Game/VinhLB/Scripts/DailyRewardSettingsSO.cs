@@ -42,6 +42,7 @@ namespace VinhLB
     {
         None = -1,
         Gold = 0,
-        Gem = 1
+        Gem = 1,
+        SecretMapPiece = 2,
     }
 }
