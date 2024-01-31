@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: map_tex
-    second: {fileID: 2100000, guid: b558f0e1c612b62418a8707d7d57850c, type: 2}
+      name: button_tex
+    second: {fileID: 2100000, guid: 10ca565d4fe9dfc478da3a2da1f4a74a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -72,7 +72,7 @@ namespace _Game.UIs.Screen
         public TextMeshProUGUI resetCountText;
         public TextMeshProUGUI hintCountText;
         
-        public override void Setup()
+        public override void Setup(object param = null)
         {
             base.Setup(); ;
             GameManager.Ins.ChangeState(GameState.InGame);
@@ -85,7 +85,7 @@ namespace _Game.UIs.Screen
             UpdateLevelText();
         }
 
-        public override void Open()
+        public override void Open(object param = null)
         {
             base.Open();
 
@@ -152,7 +152,7 @@ namespace _Game.UIs.Screen
 
         private void UpdateLevelText()
         {
-            _levelText.text = $"Level {LevelManager.Ins.LevelIndex + 1}";
+            _levelText.text = $"Level {LevelManager.Ins.NormalLevelIndex + 1}";
         }
 
         private void LevelManager_OnLevelNext()

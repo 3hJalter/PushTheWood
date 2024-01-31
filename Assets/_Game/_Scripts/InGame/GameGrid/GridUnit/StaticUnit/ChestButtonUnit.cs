@@ -2,6 +2,7 @@
 using _Game._Scripts.Managers;
 using _Game.DesignPattern;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
+using _Game.GameGrid.Unit.StaticUnit.Interface;
 using _Game.Utilities;
 using DG.Tweening;
 using GameGridEnum;
@@ -15,7 +16,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
      * This class is used for listen from button unit
      * The chest will be opened when all button units are entered
      */
-    public class ChestButtonUnit : GridUnitStatic
+    public class ChestButtonUnit : GridUnitStatic, IChest
     {
         private int numberOfButtonInLevel;
         private int numberOfButtonEntered;
@@ -90,10 +91,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             base.OnBePushed(direction, pushUnit);
             if (pushUnit is not Player) return;
             ShowAnim(true);
-            DOVirtual.DelayedCall(1f, () =>
-            {
-                DevLog.Log(DevId.Hoang, "Loot something");
-            });
+            DOVirtual.DelayedCall(Constants.CHEST_OPEN_TIME, OnOpenChestComplete);
         }
         
         private void ShowAnim(bool isShow)
@@ -125,6 +123,11 @@ namespace _Game.GameGrid.Unit.StaticUnit
             EventGlobalManager.Ins.OnButtonUnitEnter.RemoveListener(OnButtonUnitEnter());
             numberOfButtonEntered = 0;
             numberOfButtonInLevel = 0;
+        }
+
+        public void OnOpenChestComplete()
+        {
+            LevelManager.Ins.OnWin();
         }
     }
 }

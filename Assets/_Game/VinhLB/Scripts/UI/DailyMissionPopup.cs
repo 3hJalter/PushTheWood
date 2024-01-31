@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    public class DailyChallengePopup : UICanvas
+    public class DailyMissionPopup : UICanvas
     {
         
     }

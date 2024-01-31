@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using _Game.DesignPattern;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
+using _Game.GameGrid.Unit.StaticUnit.Interface;
 using _Game.Utilities;
 using DG.Tweening;
 using GameGridEnum;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.StaticUnit
 {
-    public class FloatingChest : GridUnitStatic
+    public class FloatingChest : GridUnitStatic, IChest
     {
         [SerializeField] private Animator chestAnimator;
         [SerializeField] private GameObject chestModel;
@@ -59,11 +60,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             base.OnBePushed(direction, pushUnit);
             if (pushUnit is not Player) return;
             ShowAnim(true);
-            DOVirtual.DelayedCall(1f, () =>
-            {
-                DevLog.Log(DevId.Hoang, "Loot something");
-                // PoolController.Ins.WorldUISpawner.SpawnFloatingUI(Tf);
-            });
+            DOVirtual.DelayedCall(Constants.CHEST_OPEN_TIME, OnOpenChestComplete);
         }
 
         public override void OnDespawn()
@@ -89,6 +86,11 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             return startHeight <= Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + FloatingHeightOffset &&
                    cellInUnits.All(t => t.SurfaceType is GridSurfaceType.Water);
+        }
+
+        public void OnOpenChestComplete()
+        {
+            DevLog.Log(DevId.Hoang, "Loot something");
         }
     }
 }

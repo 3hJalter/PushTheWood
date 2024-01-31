@@ -41,7 +41,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 t.ChangeAnim(Constants.SLEEP_UP_ANIM);
                 t.SetAnimSpeed(initAnimSpeed * Constants.SLEEP_UP_ANIM_TIME / SLEEP_UP_TIME);
                 isSleeping = false;
-                sleepingParticle.Stop();
+                sleepingParticle?.Stop();
                 timer.Start(SLEEP_UP_TIME, ChangeIdleState);
             }
 
@@ -54,7 +54,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         public void OnExit(Player t)
         {
             timer.Stop();
-            sleepingParticle.Stop();
+            sleepingParticle?.Stop();
             t.SetAnimSpeed(initAnimSpeed);
         }
     }

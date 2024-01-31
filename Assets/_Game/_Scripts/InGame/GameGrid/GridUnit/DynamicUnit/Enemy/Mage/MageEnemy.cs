@@ -1,16 +1,14 @@
+using _Game._Scripts.Managers;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates;
 using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using _Game.Managers;
-using DG.Tweening;
 using GameGridEnum;
 using _Game.Utilities;
-using UnityEngine;
-using System.Collections.Generic;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
 {
-    public class MageEnemy : GridUnitCharacter
+    public class MageEnemy : GridUnitCharacter, IEnemy
     {
         private StateMachine<MageEnemy> stateMachine;
         public StateMachine<MageEnemy> StateMachine => stateMachine;
@@ -47,6 +45,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             }
             IsDead = false;
             Direction = Direction.None;
+            AddToLevelManager();
             stateMachine.ChangeState(StateEnum.Idle);
         }
         public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
@@ -71,6 +70,23 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             DevLog.Log(DevId.Hoang, "TODO: Mage Die Logic");
             IsDead = true;
             stateMachine.ChangeState(StateEnum.Die);
+        }
+
+        public override void OnDespawn()
+        {
+            RemoveFromLevelManager();
+            base.OnDespawn();
+        }
+
+        public void AddToLevelManager()
+        {
+            LevelManager.Ins.enemies.Add(this);
+        }
+
+        public void RemoveFromLevelManager()
+        {
+            LevelManager.Ins.enemies.Remove(this);
+            EventGlobalManager.Ins.OnEnemyDie.Dispatch();
         }
     }
 }

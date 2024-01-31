@@ -151,7 +151,7 @@ MonoBehaviour:
       Data: 
   poolType: 19
   skin: {fileID: 20460266273879261}
-  meshRenderer: {fileID: 1695927560001223753}
+  meshRenderer: {fileID: 8415119603925374665}
   size: {x: 1, y: 1, z: 1}
   isMinusHalfSizeY: 1
   startHeight: 1
@@ -165,7 +165,12 @@ MonoBehaviour:
   islandID: -1
   gridUnitDynamicType: 7
   anchor: {fileID: 0}
-  animator: {fileID: 20460264388084939}
+  btnModelTransform: {fileID: 7242824410568732070}
+  btnMeshRenderer:
+  - {fileID: 8415119603925374665}
+  - {fileID: 449780111253173457}
+  btnOffMaterial: {fileID: 2100000, guid: 10ca565d4fe9dfc478da3a2da1f4a74a, type: 2}
+  btnOnMaterial: {fileID: 2100000, guid: d2427005b0f5cb047ace9bdf1a6d09f5, type: 2}
 --- !u!1 &20460266034920787
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,11 +254,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 559020289446709030}
+  - {fileID: 7242824410568732070}
   m_Father: {fileID: 20460264286518762}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &20460265078808781
+--- !u!1001 &7136260442514999885
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -278,11 +283,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cf8fa29c051d8d74d8c680dc6b43c9f4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cf8fa29c051d8d74d8c680dc6b43c9f4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.16
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cf8fa29c051d8d74d8c680dc6b43c9f4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -294,7 +299,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cf8fa29c051d8d74d8c680dc6b43c9f4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cf8fa29c051d8d74d8c680dc6b43c9f4, type: 3}
       propertyPath: m_LocalRotation.y
@@ -316,48 +321,24 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: cf8fa29c051d8d74d8c680dc6b43c9f4, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cf8fa29c051d8d74d8c680dc6b43c9f4, type: 3}
       propertyPath: m_Name
       value: button
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf8fa29c051d8d74d8c680dc6b43c9f4, type: 3}
---- !u!4 &559020289446709030 stripped
+--- !u!23 &449780111253173457 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7292708443251588764, guid: cf8fa29c051d8d74d8c680dc6b43c9f4, type: 3}
+  m_PrefabInstance: {fileID: 7136260442514999885}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7242824410568732070 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cf8fa29c051d8d74d8c680dc6b43c9f4, type: 3}
-  m_PrefabInstance: {fileID: 20460265078808781}
+  m_PrefabInstance: {fileID: 7136260442514999885}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &903492143589711260 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cf8fa29c051d8d74d8c680dc6b43c9f4, type: 3}
-  m_PrefabInstance: {fileID: 20460265078808781}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &20460264388084939
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 903492143589711260}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8d3465779c4f0d749bd9084c9bce303d, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
---- !u!23 &1695927560001223753 stripped
+--- !u!23 &8415119603925374665 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: cf8fa29c051d8d74d8c680dc6b43c9f4, type: 3}
-  m_PrefabInstance: {fileID: 20460265078808781}
+  m_PrefabInstance: {fileID: 7136260442514999885}
   m_PrefabAsset: {fileID: 0}

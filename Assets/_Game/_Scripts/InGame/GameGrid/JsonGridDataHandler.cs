@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace _Game.GameGrid
 {
-    public class JsonGridDataHandler
+    public static class JsonGridDataHandler
     {
         // Convert json file to LevelData
         public static RawLevelData CreateLevelData(LevelType type, int mapIndex) {
-            return JsonUtility.FromJson<RawLevelData>(DataManager.Ins.GetNormalLevelData(type, mapIndex).text);
+            return JsonUtility.FromJson<RawLevelData>(DataManager.Ins.GetLevelData(type, mapIndex).text);
         }
         
     }

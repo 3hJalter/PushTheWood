@@ -40,15 +40,42 @@ namespace _Game.Managers
                 if (Screen.currentResolution.height > maxScreenHeight)
                     Screen.SetResolution(Mathf.RoundToInt(ratio * maxScreenHeight), maxScreenHeight, true);
             }
-            
-            _gameData = DataManager.Ins.GameData;
-            // TODO: Handle Loaded Data
-            
-            // TEST
-            if (_gameData.user.normalLevelIndex > 0) UIManager.Ins.OpenUI<MainMenuScreen>();
-            // DontDestroyOnLoad(Tf.root.gameObject);
+            VerifyGameData();
         }
 
+        private void VerifyGameData()
+        {
+            _gameData = DataManager.Ins.GameData;
+
+            #region Handle first day of month
+
+            // bool check if today is the first day of month
+            bool isFirstDayOfMonth = System.DateTime.Now.Day == 1;
+            if (isFirstDayOfMonth)
+            {
+                if (!_gameData.user.isFirstDayOfMonthCheck)
+                {
+                    // Clear daily level progress
+                    _gameData.user.dailyLevelIndexComplete.Clear();
+                    _gameData.user.isFirstDayOfMonthCheck = true;
+                    DevLog.Log(DevId.Hoang, "First day of month, clear daily level progress");
+                }
+            }
+            else
+            {
+                DevLog.Log(DevId.Hoang, "Not first day of month");
+                _gameData.user.isFirstDayOfMonthCheck = false;
+            }
+
+            #endregion
+
+            #region Handle If user passes first level
+
+            if (_gameData.user.normalLevelIndex > 0) UIManager.Ins.OpenUI<MainMenuScreen>();
+            
+            #endregion
+        }
+        
         #region Game State Handling
 
         public void ChangeState(GameState gameStateI)
@@ -115,7 +142,6 @@ namespace _Game.Managers
 
         #endregion
         
-
         #region OnApplication
 
         private void OnApplicationFocus(bool hasFocus)

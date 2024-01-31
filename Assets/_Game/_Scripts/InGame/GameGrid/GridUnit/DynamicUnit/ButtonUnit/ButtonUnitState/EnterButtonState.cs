@@ -12,12 +12,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.ButtonUnitState
         private Tween _tween;
         public void OnEnter(ButtonUnit t)
         {
-            t.ChangeAnim(Constants.ENTER_ANIM);
-            // DUST Effect
-            // Wait for animation complete
-            _tween = DOVirtual.DelayedCall(BUTTON_ENTER_TIME, () =>
+            // Tween to change the size y from 100 to 20 in BUTTON_ENTER_TIME
+            _isComplete = false;
+            _tween?.Kill();
+            _tween = t.BtnModelTransform.DOScaleY(20, BUTTON_ENTER_TIME).SetEase(Ease.OutBack).OnComplete(() =>
             {
                 _isComplete = true;
+                t.ChangeButton(_isComplete);
                 EventGlobalManager.Ins.OnButtonUnitEnter?.Dispatch(true);
             });
         }
@@ -28,12 +29,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.ButtonUnitState
 
         public void OnExit(ButtonUnit t)
         {
-            t.ChangeAnim(Constants.EXIT_ANIM);
-            _tween.Kill();
+            _tween?.Kill();
+            // Tween to change the size y from 20 to 100 in BUTTON_ENTER_TIME
+            _tween = t.BtnModelTransform.DOScaleY(100, BUTTON_ENTER_TIME).SetEase(Ease.OutBack);
             // Check if complete tween
             if (!_isComplete) return;
-            EventGlobalManager.Ins.OnButtonUnitEnter?.Dispatch(false);
             _isComplete = false;
+            EventGlobalManager.Ins.OnButtonUnitEnter?.Dispatch(false);
             // DUST Effect
         }
     }

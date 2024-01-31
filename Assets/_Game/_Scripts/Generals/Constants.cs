@@ -65,6 +65,11 @@ public static class Constants
     public const string ENTER_ANIM = "enter";
     public const string EXIT_ANIM = "exit";
 
+    /// <summary>
+    ///  Update Feature soon
+    /// </summary>
+    public const string FEATURE_COMING_SOON = "This feature is coming soon!";
+    
     // Value Constants
     public const int UPPER_HEIGHT = 1;
     public const int BELOW_HEIGHT = 1;
@@ -92,6 +97,8 @@ public static class Constants
     public const float SIT_UP_ANIM_TIME = 5f / 6;
     public const float HOLD_TOUCH_TIME = 0.4f;
     public const float ZOOM_OUT_TIME = 1f;
+    public const float CHEST_OPEN_TIME = 1f;
+    
 
     public const string NONE = "None";
 

@@ -21,6 +21,10 @@ public class GridMapDataGenerator : MonoBehaviour
     [SerializeField] private int offsetSurfaceWithFirstCell = 3; // Should be 3
     [Tooltip("Random rotation for rock")]
     [SerializeField] private bool isRandomRotationForRock = true;
+    [SerializeField] private bool overrideLevelType;
+    [ShowIf(nameof(overrideLevelType))]
+    [SerializeField] private LevelType levelType;
+    [SerializeField] private LevelWinCondition winCondition;
     [InlineButton("SaveLevelAsJson", "Save Level")]
     [InfoBox("The name of the level, must be in the format Lvl_number or Lvl_DC_number or Lvl_S_number")]
     [SerializeField] private string mapLevelName = "Lvl_0";
@@ -537,8 +541,15 @@ public class GridMapDataGenerator : MonoBehaviour
 
         #endregion
 
+        if (overrideLevelType && this.levelType is not LevelType.None)
+        {
+            levelType = this.levelType;
+        }
+        
         RawLevelData levelData = new()
         {
+            lt = (int) levelType,
+            wc = (int) winCondition,
             s = size,
             sfD = gridSurfaceDataList.ToArray(),
             uD = gridUnitDataList.ToArray(),
@@ -587,7 +598,7 @@ public class GridMapDataGenerator : MonoBehaviour
         return "Level/" + type switch
         {
             LevelType.Normal => "Normal/" + levelName,
-            LevelType.DailyChallenger => "DailyChallenger/" + levelName,
+            LevelType.DailyChallenge => "DailyChallenger/" + levelName,
             LevelType.Secret => "Secret/" + levelName,
             LevelType.None => throw new ArgumentOutOfRangeException(nameof(type), type, null),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
@@ -618,7 +629,7 @@ public class GridMapDataGenerator : MonoBehaviour
             // if split length is 3
             // if split[0] is "Lvl" and split[1] is "DC" and split[2] is a number, return LevelType.DailyChallenger
             3 when split[0] == "Lvl" && split[1] == "DC" && int.TryParse(split[2], out int _) => LevelType
-                .DailyChallenger,
+                .DailyChallenge,
             // if split[0] is "Lvl" and split[1] is "S" and split[2] is a number, return LevelType.Secret
             3 when split[0] == "Lvl" && split[1] == "S" && int.TryParse(split[2], out int _) => LevelType.Secret,
             3 => LevelType.None,

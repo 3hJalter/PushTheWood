@@ -146,6 +146,7 @@ namespace _Game.Managers
             GameManager.Ins.UnregisterListenerEvent(EventID.LoseGame, OnLoseGame);
             GameManager.Ins.UnregisterListenerEvent(EventID.Pause, OnPauseGame);
             GameManager.Ins.UnregisterListenerEvent(EventID.UnPause, OnUnPauseGame);
+            EventGlobalManager.Ins.OnChangeBoosterAmount.RemoveListener(OnChangeBoosterAmount);
             screen.OnUndo -= OnUndo;
             screen.OnResetIsland -= OnResetIsland;
             screen.OnHint -= OnShowHint;
