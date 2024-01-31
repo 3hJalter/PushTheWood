@@ -3,6 +3,7 @@ using _Game.GameGrid;
 using _Game.Managers;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace _Game.UIs.Screen
@@ -14,14 +15,14 @@ namespace _Game.UIs.Screen
         [SerializeField]
         private Image _blockPanel;
         [SerializeField]
-        private HButton nextLevelButton;
+        private Button _nextLevelButton;
 
         public override void Setup(object param = null)
         {
             base.Setup(param);
             _canvasGroup.alpha = 0f;
             // Hide the next level button if the current level is not Normal level
-            nextLevelButton.gameObject.SetActive(LevelManager.Ins.CurrentLevel.LevelType == LevelType.Normal);
+            _nextLevelButton.gameObject.SetActive(LevelManager.Ins.CurrentLevel.LevelType == LevelType.Normal);
         }
 
         public override void Open(object param = null)

@@ -51,7 +51,7 @@ namespace _Game.Data
             return type switch
             {
                 LevelType.Normal => normalLevel[index],
-                LevelType.DailyChallenger => dailyChallengerLevel[index],
+                LevelType.DailyChallenge => dailyChallengerLevel[index],
                 LevelType.Secret => secretLevel[index],
                 _ => null
             };
@@ -96,7 +96,7 @@ namespace _Game.Data
                 case LevelType.Normal:
                     normalLevel.Add(textAsset);
                     break;
-                case LevelType.DailyChallenger:
+                case LevelType.DailyChallenge:
                     dailyChallengerLevel.Add(textAsset);
                     break;
                 case LevelType.Secret:
@@ -113,7 +113,7 @@ namespace _Game.Data
             return type switch
             {
                 LevelType.Normal => normalLevel.Contains(textAsset),
-                LevelType.DailyChallenger => dailyChallengerLevel.Contains(textAsset),
+                LevelType.DailyChallenge => dailyChallengerLevel.Contains(textAsset),
                 LevelType.Secret => secretLevel.Contains(textAsset),
                 _ => false
             };
@@ -127,7 +127,7 @@ namespace _Game.Data
                 case LevelType.Normal:
                     if (!normalLevel.Contains(load)) return -1;
                     return normalLevel.IndexOf(load);
-                case LevelType.DailyChallenger:
+                case LevelType.DailyChallenge:
                     if (!dailyChallengerLevel.Contains(load)) return -1;
                     return dailyChallengerLevel.IndexOf(load);
                 case LevelType.Secret:
@@ -144,7 +144,7 @@ namespace _Game.Data
     {
         None = -1,
         Normal = 0,
-        DailyChallenger = 1,
+        DailyChallenge = 1,
         Secret = 2,
     }
 }
