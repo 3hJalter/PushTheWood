@@ -50,9 +50,16 @@ namespace VinhLB
             _rewardScrollRect.onValueChanged.AddListener(OnRewardScrollRectValueChanged);
         }
 
-        public void Open(Reward[] rewards)
+        public override void Open(object param = null)
         {
-            if (rewards != null && rewards.Length > 0)
+            base.Open(param);
+
+            if (param is not Reward[] rewards)
+            {
+                return;
+            }
+
+            if (rewards.Length > 0)
             {
                 // Adjust rewards parent
                 if (rewards.Length < 3)
@@ -104,8 +111,6 @@ namespace VinhLB
                     _rewardItemList[i].Initialize(rewards[i]);
                 }   
             }
-            
-            Open();
         }
         
         private void OnRewardScrollRectValueChanged(Vector2 value)

@@ -1015,7 +1015,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &995249274732087732
 MonoBehaviour:
@@ -1033,7 +1033,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 32
 --- !u!225 &995249274732087731
 CanvasGroup:
   m_ObjectHideFlags: 0

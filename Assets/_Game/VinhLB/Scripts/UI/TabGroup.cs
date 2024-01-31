@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using _Game.Managers;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -10,8 +11,6 @@ namespace VinhLB
     {
         [SerializeField]
         private List<TabButton> _tabButtonList;
-        [SerializeField]
-        private List<TabPage> _tabPageList;
         [SerializeField]
         private int _activeTabIndex;
         [SerializeField]
@@ -28,13 +27,22 @@ namespace VinhLB
         [SerializeField]
         private Sprite _tabActiveSprite;
 
+        private Dictionary<TabButton, TabPage> _tabGroupDict = new Dictionary<TabButton, TabPage>();
         private TabButton _selectedTabButton;
 
-        private void Start()
+        private void Awake()
         {
-            for (int i = 0; i < _tabButtonList.Count; i++)
+            if (_tabButtonList.Count > 0)
             {
-                _tabButtonList[i].SetPreferredWidth(_inactiveTabButtonWidth);
+                for (int i = 0; i < _tabButtonList.Count; i++)
+                {
+                    _tabButtonList[i].SetPreferredWidth(_inactiveTabButtonWidth);
+                }
+                
+                if (_activeTabIndex < 0 || _activeTabIndex >= _tabButtonList.Count)
+                {
+                    _activeTabIndex = 0;
+                }
             }
         }
 
@@ -42,12 +50,15 @@ namespace VinhLB
         {
             if (_tabButtonList.Count > 0)
             {
-                if (_activeTabIndex < 0 || _activeTabIndex >= _tabButtonList.Count)
-                {
-                    _activeTabIndex = 0;
-                }
-
-                OnTabSelected(_tabButtonList[_activeTabIndex], false);
+                OnTabSelected(_tabButtonList[_activeTabIndex], false, true);
+            }
+        }
+        
+        public void ClearSelectedTab()
+        {
+            if (_tabButtonList.Count > 0)
+            {
+                OnTabSelected(null, false, false);
             }
         }
 
@@ -73,7 +84,7 @@ namespace VinhLB
             // ResetTabs();
         }
 
-        public void OnTabSelected(TabButton button, bool animated)
+        public void OnTabSelected(TabButton button, bool buttonAnimated, bool pageAnimated)
         {
             if (button == _selectedTabButton)
             {
@@ -84,25 +95,33 @@ namespace VinhLB
 
             ResetTabs();
 
-            if (!_useCustomSprite)
+            if (_selectedTabButton != null)
             {
-                button.SetActiveState(true, animated);
-            }
-            else
-            {
-                button.SetBackgroundSprite(_tabActiveSprite);
-            }
-
-            int index = _tabButtonList.IndexOf(button);
-            for (int i = 0; i < _tabPageList.Count; i++)
-            {
-                if (i == index)
+                if (!_useCustomSprite)
                 {
-                    _tabPageList[i].Open();
+                    _selectedTabButton.SetActiveState(true, buttonAnimated);
                 }
                 else
                 {
-                    _tabPageList[i].Close();
+                    _selectedTabButton.SetBackgroundSprite(_tabActiveSprite);
+                }
+                
+                if (!_tabGroupDict.ContainsKey(_selectedTabButton))
+                {
+                    int index = _tabButtonList.IndexOf(_selectedTabButton);
+                    _tabGroupDict[_selectedTabButton] = GetTabPage((TabPageType)index);
+                }
+            }
+            
+            foreach (KeyValuePair<TabButton, TabPage> element in _tabGroupDict)
+            {
+                if (element.Key == _selectedTabButton)
+                {
+                    element.Value.Open(pageAnimated);
+                }
+                else
+                {
+                    element.Value.Close();
                 }
             }
         }
@@ -126,5 +145,27 @@ namespace VinhLB
                 }
             }
         }
+
+        private TabPage GetTabPage(TabPageType type)
+        {
+            switch (type)
+            {
+                case TabPageType.Shop:
+                    return UIManager.Ins.GetUI<ShopPage>();
+                case TabPageType.Home:
+                    return UIManager.Ins.GetUI<HomePage>();
+                case TabPageType.Inventory:
+                    return UIManager.Ins.GetUI<InventoryPage>();
+            }
+
+            return null;
+        }
+    }
+    
+    public enum TabPageType
+    {
+        Shop = 0,
+        Home = 1,
+        Inventory = 2
     }
 }

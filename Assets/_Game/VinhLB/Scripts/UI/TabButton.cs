@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using _Game.Managers;
+using _Game.UIs.Popup;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -98,10 +100,11 @@ namespace VinhLB
         {
             if (_interactable)
             {
-                _tabGroup.OnTabSelected(this, true);
+                _tabGroup.OnTabSelected(this, true, false);
             }
             else
             {
+                UIManager.Ins.OpenUI<NotificationPopup>(Constants.FEATURE_COMING_SOON);
             }
         }
 
