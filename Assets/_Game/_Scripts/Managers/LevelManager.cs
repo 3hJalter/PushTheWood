@@ -209,6 +209,7 @@ namespace _Game.GameGrid
 
         public void OnRestart()
         {
+            if (!CurrentLevel.IsInit) return; // No Init -> Means No Restart
             player.OnDespawn();
             CurrentLevel.ResetAllIsland();
             CurrentLevel.ResetNonIslandUnit();
