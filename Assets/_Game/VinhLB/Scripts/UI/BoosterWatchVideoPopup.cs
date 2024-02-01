@@ -20,20 +20,24 @@ namespace VinhLB
         private Image _currencyIcon;
         [SerializeField]
         private TMP_Text _currencyAmountText;
+        [SerializeField]
+        private ContentSizeFitter _currencyAmountTextContentSizeFitter;
 
         private BoosterConfig _boosterConfig;
         
-        public override void Setup(object o = null)
+        public override void Setup(object param = null)
         {
-            base.Setup(o);
-            // Cast o to BoosterConfig
-            if (o != null)
+            base.Setup(param);
+            // Cast param to BoosterConfig
+            if (param != null)
             {
-                _boosterConfig = (BoosterConfig) o;
+                _boosterConfig = (BoosterConfig) param;
                 // Change the _boosterIcon to boosterConfig.icon & _boosterText to boosterConfig.name
                 _boosterIcon.sprite = _boosterConfig.Icon;
                 _boosterText.text = _boosterConfig.Name;
                 _currencyAmountText.text = _boosterConfig.GoldPerBuyTen.ToString(("#,#"));
+
+                // _currencyAmountTextContentSizeFitter.enabled = false;
             }
             GameManager.Ins.ChangeState(GameState.Pause);
         }
