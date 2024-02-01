@@ -37,7 +37,7 @@ namespace VinhLB
                 DevLog.Log(DevId.Vinh, "Collect rewards");
                 for (int i = 0; i < _rewardItemList.Count; i++)
                 {
-                    _rewardItemList[i].Reward.Obtain();
+                    _rewardItemList[i].Reward.Obtain(_rewardItemList[i].IconImagePosition);
                 }
                 
                 Close();

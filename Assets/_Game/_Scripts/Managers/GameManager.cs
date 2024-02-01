@@ -4,6 +4,7 @@ using _Game.UIs.Screen;
 using _Game.Utilities;
 using DG.Tweening;
 using UnityEngine;
+using VinhLB;
 
 namespace _Game.Managers
 {
@@ -109,17 +110,33 @@ namespace _Game.Managers
 
         #region Income Data function
         
-        public void AddGold(int gold)
+        public void AddGold(int value, Vector3 fromPosition)
         {
-            _gameData.user.gold += gold;
-            PostEvent(EventID.OnGoldMoneyChange, _gameData.user.gold);
+            ResourceChangeData data = new ResourceChangeData()
+            {
+                ChangedAmount = value,
+                OldValue = _gameData.user.gold,
+                NewValue = _gameData.user.gold + value,
+                FromPosition = fromPosition
+            };
+            
+            _gameData.user.gold += value;
+            PostEvent(EventID.OnGoldMoneyChange, data);
             Database.SaveData(_gameData);
         }
         
-        public void AddGem(int gem)
+        public void AddGem(int value, Vector3 fromPosition)
         {
-            _gameData.user.gems += gem;
-            PostEvent(EventID.OnGemMoneyChange, _gameData.user.gems);
+            ResourceChangeData data = new ResourceChangeData()
+            {
+                ChangedAmount = value,
+                OldValue = _gameData.user.gems,
+                NewValue = _gameData.user.gems + value,
+                FromPosition = fromPosition
+            };
+            
+            _gameData.user.gems += value;
+            PostEvent(EventID.OnGemMoneyChange, data);
             Database.SaveData(_gameData);
         }
         public void AddSecretMapPiece(int piece)
