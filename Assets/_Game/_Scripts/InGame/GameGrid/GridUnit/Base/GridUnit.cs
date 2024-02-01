@@ -203,7 +203,6 @@ namespace _Game.GameGrid.Unit
             this.Despawn();
             lastPushedDirection = Direction.None;
             isSpawn = false;
-            islandID = -1;
         }
 
         public virtual void OnPush(Direction direction, ConditionData conditionData = null)
