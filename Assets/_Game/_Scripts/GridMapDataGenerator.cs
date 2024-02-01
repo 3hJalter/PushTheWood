@@ -185,6 +185,8 @@ public class GridMapDataGenerator : MonoBehaviour
         // Create a new empty object
         GameObject levelObject = new(name);
         _loadedLevel = new Level(levelType, index, levelObject.transform);
+        winCondition = _loadedLevel.LevelWinCondition;
+        mapLevelName = name;
         // Set all GridSurface to surfaceContainer
         GridSurface[] gridSurfaces = FindObjectsOfType<GridSurface>();
         foreach (GridSurface gridSurface in gridSurfaces)
