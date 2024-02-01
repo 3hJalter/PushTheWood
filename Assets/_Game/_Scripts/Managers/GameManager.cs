@@ -94,6 +94,7 @@ namespace _Game.Managers
             {
                 DOTween.PlayAll();
                 PostEvent(EventID.UnPause);
+                PostEvent(EventID.UnPause, gameStateI);
             } 
             
             gameState = gameStateI;
