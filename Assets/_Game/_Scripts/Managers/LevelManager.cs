@@ -127,6 +127,7 @@ namespace _Game.GameGrid
 
         public void SetCameraToPlayerIsland()
         {
+            if (player.islandID == -1) return;
             SetCameraToIsland(player.islandID);
         }
 
