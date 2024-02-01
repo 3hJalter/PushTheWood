@@ -34,6 +34,9 @@ namespace _Game.GameGrid
         [SerializeField]
         [ReadOnly]
         private int normalLevelIndex;
+        [SerializeField] 
+        [ReadOnly]
+        private int dailyLevelIndex;
         [SerializeField]
         [ReadOnly]
         private int secretLevelIndex;
@@ -41,6 +44,8 @@ namespace _Game.GameGrid
         private Level _currentLevel;
         
         public int NormalLevelIndex => normalLevelIndex;
+        public int DailyLevelIndex => dailyLevelIndex;
+        public int SecretLevelIndex => secretLevelIndex;
         public Level CurrentLevel => _currentLevel;
         public bool IsConstructingLevel;
 
@@ -64,15 +69,15 @@ namespace _Game.GameGrid
             }
             normalLevelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
             secretLevelIndex = DataManager.Ins.GameData.user.secretLevelIndex;
-            OnGenerateLevel(LevelType.Normal,normalLevelIndex == 0);
+            OnGenerateLevel(LevelType.Normal,normalLevelIndex, normalLevelIndex == 0);
             SetCameraToPosition(CurrentLevel.GetCenterPos());
         }
 
-        public void OnGenerateLevel(LevelType type, bool needInit)
+        public void OnGenerateLevel(LevelType type, int index, bool needInit)
         {
             if (type == LevelType.Normal) OnCheckTutorial();
             IsConstructingLevel = true;
-            _currentLevel = new Level(type, normalLevelIndex);
+            _currentLevel = new Level(type, index);
             enemies.Clear();
             if (needInit && !_currentLevel.IsInit)
             {
@@ -155,8 +160,8 @@ namespace _Game.GameGrid
                   break;
               case LevelType.DailyChallenge:
                   // Check if contain
-                  if (DataManager.Ins.GameData.user.dailyLevelIndexComplete.Contains(DateTime.Now.Day)) break;
-                  DataManager.Ins.GameData.user.dailyLevelIndexComplete.Add(DateTime.Now.Day);
+                  if (DataManager.Ins.GameData.user.dailyLevelIndexComplete.Contains(dailyLevelIndex)) break;
+                  DataManager.Ins.GameData.user.dailyLevelIndexComplete.Add(dailyLevelIndex);
                   break;
               case LevelType.None:
               default:
@@ -169,12 +174,19 @@ namespace _Game.GameGrid
 
         public void OnGoLevel(LevelType type, int index)
         {
-            if (normalLevelIndex == index) return;
-            normalLevelIndex = index;
+            // Dev: Currently make it work only for daily challenge
+            switch (type)
+            {
+                case LevelType.Normal: normalLevelIndex = index; break;
+                case LevelType.Secret: secretLevelIndex = index; break;
+                case LevelType.DailyChallenge: dailyLevelIndex = index; break;
+                case LevelType.None: 
+                default: break;
+            }
             IsConstructingLevel = true;
             OnRemoveWinCondition();
             _currentLevel.OnDeSpawnLevel();
-            OnGenerateLevel(type, true);
+            OnGenerateLevel(type, index, true);
         }
 
         public void OnNextLevel(LevelType type, bool needInit = true)
@@ -188,7 +200,7 @@ namespace _Game.GameGrid
             {
                 TutorialManager.Ins.OnDestroyCutsceneObject();
             }
-            OnGenerateLevel(type, true);
+            OnGenerateLevel(type, normalLevelIndex, needInit);
             // OnChangeTutorialIndex();
             
             OnLevelNext?.Invoke();

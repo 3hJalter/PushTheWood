@@ -1,4 +1,5 @@
 ﻿using _Game._Scripts.Managers;
+using _Game.Data;
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Screen;
@@ -71,6 +72,10 @@ namespace _Game.UIs.Popup
         
         public void OnClickGoMenuButton()
         {
+            if (LevelManager.Ins.CurrentLevel.LevelType != LevelType.Normal)
+            {
+                LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex);
+            }
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<MainMenuScreen>();
         }

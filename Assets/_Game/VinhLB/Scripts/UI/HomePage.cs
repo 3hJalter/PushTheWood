@@ -37,8 +37,8 @@ namespace VinhLB
             });
             _dailyChallengeButton.onClick.AddListener( () =>
             {
-                DevLog.Log(DevId.Vinh, "Click daily challenge button");
-                UIManager.Ins.OpenUI<NotificationPopup>(Constants.FEATURE_COMING_SOON);
+                DevLog.Log(DevId.Hoang, "Click daily challenge button");
+                UIManager.Ins.OpenUI<DailyChallengePopup>();
             });
             _dailyRewardButton.onClick.AddListener(() =>
             {

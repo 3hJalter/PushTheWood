@@ -1,6 +1,8 @@
 ﻿using System;
+using _Game._Scripts.InGame;
 using _Game._Scripts.Managers;
 using _Game.Camera;
+using _Game.Data;
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Popup;
@@ -27,6 +29,8 @@ namespace _Game.UIs.Screen
         private TMP_Text timeText;
         [SerializeField]
         private TMP_Text _levelText;
+        [SerializeField]
+        private TextMeshProUGUI objectiveText;
 
         private const float UNDO_CD_TIME = 0.3f;
         private STimer resetIslandTimer;
@@ -81,8 +85,8 @@ namespace _Game.UIs.Screen
             CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
             canvasGroup.alpha = 0f;
             blockPanel.enabled = true;
-            
             UpdateLevelText();
+            UpdateObjectiveText();
         }
 
         public override void Open(object param = null)
@@ -152,12 +156,39 @@ namespace _Game.UIs.Screen
 
         private void UpdateLevelText()
         {
-            _levelText.text = $"Level {LevelManager.Ins.NormalLevelIndex + 1}";
+            int levelIndex = 1;
+            switch (LevelManager.Ins.CurrentLevel.LevelType)
+            {
+                case LevelType.Normal:
+                    levelIndex += LevelManager.Ins.NormalLevelIndex;
+                    _levelText.text = $"Level {levelIndex}";
+                    break;
+                case LevelType.Secret:
+                    levelIndex += LevelManager.Ins.SecretLevelIndex;
+                    _levelText.text = $"Level {levelIndex}";
+                    break;
+                case LevelType.DailyChallenge:
+                    levelIndex += LevelManager.Ins.DailyLevelIndex;
+                    _levelText.text = $"Day {levelIndex}";
+                    break;
+            }
         }
 
+        private void UpdateObjectiveText()
+        {
+            objectiveText.text = LevelManager.Ins.CurrentLevel.LevelWinCondition switch
+            {
+                LevelWinCondition.FindingChest => Constants.FIND_CHEST,
+                LevelWinCondition.DefeatAllEnemy => Constants.DEFEAT_ENEMY,
+                LevelWinCondition.CollectAllStar => Constants.COLLECT_ALL_STARS,
+                _ => objectiveText.text
+            };
+        }
+        
         private void LevelManager_OnLevelNext()
         {
             UpdateLevelText();
+            UpdateObjectiveText();
         }
     }
 }
