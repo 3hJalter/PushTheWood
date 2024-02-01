@@ -31,6 +31,7 @@ public enum CONDITION
     ROLL_AROUND_BLOCK_CHUMP = 1,
     SIT_DOWN = 2,
     PEEK = 3,
+    RUN_ABOVE_CHUMP = 4,
 }
 
 namespace TweenTypeEnum

@@ -113,6 +113,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                         if(t.InputDetection.InputAction == InputAction.ButtonDown)
                             t.StateMachine.ChangeState(StateEnum.SitDown);
                         break;
+                    case CONDITION.RUN_ABOVE_CHUMP:
+                        t.StateMachine.ChangeState(StateEnum.RunAboveChump);
+                        break;
                     default:
                         break;
                 }
