@@ -2,7 +2,9 @@
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Popup;
+using _Game.UIs.Screen;
 using _Game.Utilities;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -12,6 +14,8 @@ namespace VinhLB
 {
     public class HomePage : TabPage
     {
+        [SerializeField] 
+        private Button _playButton;
         [SerializeField] 
         private Button _dailyChallengeButton;
         [SerializeField]
@@ -25,6 +29,12 @@ namespace VinhLB
 
         private void Awake()
         {
+            _playButton.onClick.AddListener(() =>
+            {
+                UIManager.Ins.CloseAll();
+                LevelManager.Ins.InitLevel();
+                UIManager.Ins.OpenUI<InGameScreen>();
+            });
             _dailyChallengeButton.onClick.AddListener( () =>
             {
                 DevLog.Log(DevId.Vinh, "Click daily challenge button");

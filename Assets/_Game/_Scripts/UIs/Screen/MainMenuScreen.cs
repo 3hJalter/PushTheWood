@@ -66,10 +66,11 @@ namespace _Game.UIs.Screen
         public override void Setup(object param = null)
         {
             base.Setup(param);
+            
+            _canvasGroup.alpha = 0f;
             _blockPanel.gameObject.SetActive(true);
             _goldValueText.text = $"{DataManager.Ins.GameData.user.gold}";
             _gemValueText.text = $"{DataManager.Ins.GameData.user.gems}";
-            _canvasGroup.alpha = 0f;
         }
 
         public override void Open(object param = null)
@@ -79,10 +80,19 @@ namespace _Game.UIs.Screen
             // FxManager.Ins.PlayTweenFog();
             GameManager.Ins.ChangeState(GameState.MainMenu);
             CameraManager.Ins.ChangeCamera(ECameraType.MainMenuCamera);
+            
+            DOVirtual.Float(0f, 1f, 1f, value => _canvasGroup.alpha = value)
+                .OnComplete(() => _blockPanel.gameObject.SetActive(false));
+            
             _bottomNavigationTabGroup.ResetSelectedTab();
 
-            DOVirtual.Float(0, 1, 1f, value => _canvasGroup.alpha = value)
-                .OnComplete(() => _blockPanel.gameObject.SetActive(false));
+        }
+
+        public override void Close()
+        {
+            base.Close();
+            
+            _bottomNavigationTabGroup.ClearSelectedTab();
         }
 
         public void OnClickStart()

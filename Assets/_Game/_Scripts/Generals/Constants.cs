@@ -52,6 +52,7 @@ public static class Constants
     public const string SLEEP_UP_ANIM = "sleepUp";
     public const string SIT_DOWN_ANIM = "sitDown";
     public const string SIT_UP_ANIM = "sitUp";
+    public const string RUN_ABOVE_CHUMP = "runAboveChump";
 
     public const float CUT_TREE_ANIM_TIME = 0.5f;
     public const float PUSH_ANIM_TIME = 0.4f;
@@ -98,6 +99,7 @@ public static class Constants
     public const float HOLD_TOUCH_TIME = 0.4f;
     public const float ZOOM_OUT_TIME = 1f;
     public const float CHEST_OPEN_TIME = 1f;
+    public const int REQUIRE_SECRET_MAP_PIECES = 8;
     
 
     public const string NONE = "None";
