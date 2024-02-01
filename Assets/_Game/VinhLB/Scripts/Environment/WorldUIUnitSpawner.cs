@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    public class WorldUISpawner : HMonoBehaviour
+    public class WorldUIUnitSpawner : HMonoBehaviour
     {
         [SerializeField]
         private Canvas _worldCanvas;
@@ -13,16 +13,17 @@ namespace VinhLB
         [SerializeField]
         private Camera _uiCamera;
 
-        public void SpawnFloatingUI(Transform objectTF)
+        public void SpawnFloatingWorldUI(Transform objectTF)
         {
-            FloatingUI floatingUI = SimplePool.Spawn<FloatingUI>(DataManager.Ins.GetWorldUI(PoolType.FloatingUI));
+            FloatingWorldUI floatingWorldUI =
+                SimplePool.Spawn<FloatingWorldUI>(DataManager.Ins.GetWorldUIUnit(PoolType.FloatingWorldUI));
 
-            SetupWorldUI(floatingUI.Tf, objectTF);
-                
-            floatingUI.Initialize(null, "x1");
+            SetupWorldUIUnit(floatingWorldUI.Tf, objectTF);
+
+            floatingWorldUI.Initialize(null, "x1");
         }
 
-        private void SetupWorldUI(Transform worldUITF, Transform objectTF)
+        private void SetupWorldUIUnit(Transform worldUITF, Transform objectTF)
         {
             // worldUITF.SetParent(_worldCanvas.transform, false);
             //

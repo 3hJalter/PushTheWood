@@ -398,11 +398,14 @@ namespace _Game.DesignPattern
         
         // Environment Object
         Cloud = 200,
-        Shark = 201,
-        Flower = 202,
+        Flower = 201,
+        Shark = 202,
+        
+        // UI
+        Coin = 400,
         
         // World UI
-        FloatingUI = 500,
+        FloatingWorldUI = 500,
 
         // VFX
         DangerIndicator = 1000,

@@ -95,14 +95,19 @@ namespace _Game.Managers
             return gridData.GetGridTextDataIndex(type, load);
         }
 
-        public EnvironmentObject GetRandomEnvironmentObject(PoolType poolType)
+        public EnvironmentUnit GetRandomEnvironmentObject(PoolType poolType)
         {
             return gridData.GetRandomEnvironmentObject(poolType);
         }
 
-        public WorldUI GetWorldUI(PoolType poolType)
+        public UIUnit GetUIUnit(PoolType poolType)
         {
-            return gridData.GetWorldUI(poolType);
+            return gridData.GetUIUnit(poolType);
+        }
+        
+        public UIUnit GetWorldUIUnit(PoolType poolType)
+        {
+            return gridData.GetWorldUIUnit(poolType);
         }
 
         #endregion

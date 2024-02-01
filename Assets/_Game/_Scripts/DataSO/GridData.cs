@@ -14,11 +14,14 @@ namespace _Game.Data
     [CreateAssetMenu(fileName = "GridData", menuName = "ScriptableObjects/GridData", order = 1)]
     public class GridData : SerializedScriptableObject
     {
-        [Title("Level Text Data")] 
-        [SerializeField] private List<TextAsset> normalLevel = new();
-        [SerializeField] private List<TextAsset> dailyChallengerLevel = new();
-        [SerializeField] private List<TextAsset> secretLevel = new();
-        
+        [Title("Level Text Data")]
+        [SerializeField]
+        private List<TextAsset> normalLevel = new();
+        [SerializeField]
+        private List<TextAsset> dailyChallengerLevel = new();
+        [SerializeField]
+        private List<TextAsset> secretLevel = new();
+
         [Title("Dynamic Unit")]
         [SerializeField]
         private readonly Dictionary<PoolType, GridUnitDynamic> _dynamicUnitDict = new();
@@ -26,23 +29,25 @@ namespace _Game.Data
         [Title("Static Unit")]
         [SerializeField]
         private readonly Dictionary<PoolType, GridUnitStatic> _staticUnitDict = new();
-        
+
         [Title("Building Unit")]
         [SerializeField]
         private readonly Dictionary<PoolType, BuildingUnit> _buildingUnitDict = new();
-        
+
         [Title("Surface")]
         [SerializeField]
         private readonly Dictionary<PoolType, GridSurface> _surfaceDict = new();
 
-        [Title("Environment Object")]
+        [Title("Environment Unit")]
         [SerializeField]
-        private readonly Dictionary<PoolType, EnvironmentObject[]> _environmentObjectsDict = new();
-        
-        [Title("World UI")]
+        private readonly Dictionary<PoolType, EnvironmentUnit[]> _environmentUnitDict = new();
+
+        [Title("UI Unit")]
         [SerializeField]
-        private readonly Dictionary<PoolType, WorldUI> _worldUIDict = new();
-        
+        private readonly Dictionary<PoolType, UIUnit> _uiUnitDict = new();
+        [SerializeField]
+        private readonly Dictionary<PoolType, UIUnit> _worldUIUnitDict = new();
+
         public int CountNormalLevel => normalLevel.Count;
         public int CountSecretLevel => secretLevel.Count;
 
@@ -72,21 +77,26 @@ namespace _Game.Data
             return _buildingUnitDict.GetValueOrDefault(poolType);
         }
 
-        public EnvironmentObject GetRandomEnvironmentObject(PoolType poolType)
+        public EnvironmentUnit GetRandomEnvironmentObject(PoolType poolType)
         {
-            EnvironmentObject[] environmentObjects = _environmentObjectsDict.GetValueOrDefault(poolType);
+            EnvironmentUnit[] environmentObjects = _environmentUnitDict.GetValueOrDefault(poolType);
             if (environmentObjects == null || environmentObjects.Length == 0)
             {
                 return null;
             }
             int randomIndex = UnityEngine.Random.Range(0, environmentObjects.Length);
-            
-            return _environmentObjectsDict[poolType][randomIndex];
+
+            return _environmentUnitDict[poolType][randomIndex];
         }
 
-        public WorldUI GetWorldUI(PoolType poolType)
+        public UIUnit GetUIUnit(PoolType poolType)
         {
-            return _worldUIDict.GetValueOrDefault(poolType);
+            return _uiUnitDict.GetValueOrDefault(poolType);
+        }
+            
+        public UIUnit GetWorldUIUnit(PoolType poolType)
+        {
+            return _worldUIUnitDict.GetValueOrDefault(poolType);
         }
 
         public void AddGridTextData(LevelType type, TextAsset textAsset)
