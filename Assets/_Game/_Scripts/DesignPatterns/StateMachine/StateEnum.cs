@@ -27,5 +27,6 @@
         Stun = 101,
         Sleep = 102,
         SitDown = 103,
+        RunAboveChump = 104,
     }
 }

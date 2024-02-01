@@ -94,6 +94,7 @@ namespace _Game.Managers
             {
                 DOTween.PlayAll();
                 PostEvent(EventID.UnPause);
+                PostEvent(EventID.UnPause, gameStateI);
             } 
             
             gameState = gameStateI;
@@ -121,7 +122,18 @@ namespace _Game.Managers
             PostEvent(EventID.OnGemMoneyChange, _gameData.user.gems);
             Database.SaveData(_gameData);
         }
-        
+        public void AddSecretMapPiece(int piece)
+        {
+            _gameData.user.secretMapPieces += piece;          
+            if(_gameData.user.secretMapPieces >= Constants.REQUIRE_SECRET_MAP_PIECES)
+            {
+                _gameData.user.secretLevelUnlock += 1;
+                _gameData.user.secretMapPieces -= Constants.REQUIRE_SECRET_MAP_PIECES;
+            }
+            PostEvent(EventID.OnSecretMapPieceChange, _gameData.user.secretMapPieces);
+            PostEvent(EventID.OnUnlockSecretMap, _gameData.user.secretLevelUnlock);
+            Database.SaveData(_gameData);
+        }
         public bool SpendGold(int gold)
         {
             if (_gameData.user.gold < gold) return false;

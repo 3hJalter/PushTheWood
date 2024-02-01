@@ -1,4 +1,3 @@
-using System;
 using _Game._Scripts.Managers;
 using _Game.DesignPattern;
 using _Game.GameGrid;
@@ -101,9 +100,12 @@ namespace _Game.Managers
             timer.Stop();
         }
 
-        private void OnUnPauseGame()
+        private void OnUnPauseGame(object o)
         {
-            timer.Start(1f, CountTime, true);
+            // Cast o to GameState
+            GameState nextState = (GameState) o;
+            // More check for some level that not need timer
+            if (nextState is GameState.InGame) timer.Start(1f, CountTime, true);
         }
         
         public void OnResetTime()
