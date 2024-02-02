@@ -39,6 +39,12 @@ namespace _Game.UIs.Screen
             GameManager.Ins.UnregisterListenerEvent(EventID.OnGemMoneyChange, value => ChangeGemValue((int)value));
         }
 
+        public override void UIUpdate()
+        {
+            ChangeGoldValue(GameManager.Ins.Gold);
+            ChangeGemValue(GameManager.Ins.Gem);
+        }
+
         private void ChangeGoldValue(int value)
         {
             // If screen not open yet, just set value
@@ -78,6 +84,7 @@ namespace _Game.UIs.Screen
             base.Open(param);
             // CameraFollow.Ins.ChangeCamera(ECameraType.MainMenuCamera);
             // FxManager.Ins.PlayTweenFog();
+            DebugManager.Ins?.OpenDebugCanvas(UI_POSITION.MAIN_MENU);
             GameManager.Ins.ChangeState(GameState.MainMenu);
             CameraManager.Ins.ChangeCamera(ECameraType.MainMenuCamera);
             

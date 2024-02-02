@@ -88,7 +88,7 @@ namespace _Game.UIs.Screen
         public override void Open(object param = null)
         {
             base.Open();
-
+            DebugManager.Ins?.OpenDebugCanvas(UI_POSITION.IN_GAME);
             DOVirtual.Float(0f, 1f, 1f, value => canvasGroup.alpha = value)
                 .OnComplete(() => { blockPanel.enabled = false; });
         }

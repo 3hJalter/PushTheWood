@@ -57,6 +57,8 @@ MonoBehaviour:
     SerializationNodes: []
   FpsDebug: {fileID: 4291094713015642588}
   LogDebug: {fileID: 4291094713512389667}
+  DebugCanvass:
+  - {fileID: 0}
 --- !u!1001 &4291094713015475258
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -209,7 +211,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00018310547
+      value: 0.00012207031
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x

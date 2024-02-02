@@ -102,6 +102,13 @@ namespace _Game.Managers
             return uiCanvasPrefab[typeof(T)] as T;
         }
 
+        public void UIsUpdate()
+        {
+            for(int i = 0; i < backCanvas.Count; i++)
+            {
+                backCanvas[i].UIUpdate();
+            }
+        }
         #endregion
 
         #region Back Button
