@@ -70,6 +70,8 @@ public static class Constants
     ///  Update Feature soon
     /// </summary>
     public const string FEATURE_COMING_SOON = "This feature is coming soon!";
+
+    public const string VALUE_FORMAT = "#,#;#,#;0";
     
     // Value Constants
     public const int UPPER_HEIGHT = 1;
@@ -162,7 +164,6 @@ public static class Constants
         {Direction.Back, Direction.Forward },
     };
 }
-
 
 namespace _Game
 {

@@ -110,14 +110,14 @@ namespace _Game.Managers
 
         #region Income Data function
         
-        public void AddGold(int value, Vector3 fromPosition = default)
+        public void AddGold(int value, object source = null)
         {
             ResourceChangeData data = new ResourceChangeData()
             {
+                Source = source,
                 ChangedAmount = value,
                 OldValue = _gameData.user.gold,
                 NewValue = _gameData.user.gold + value,
-                FromPosition = fromPosition
             };
             
             _gameData.user.gold += value;
@@ -125,14 +125,14 @@ namespace _Game.Managers
             Database.SaveData(_gameData);
         }
         
-        public void AddGem(int value, Vector3 fromPosition = default)
+        public void AddGem(int value,  object source = null)
         {
             ResourceChangeData data = new ResourceChangeData()
             {
+                Source = source,
                 ChangedAmount = value,
                 OldValue = _gameData.user.gems,
                 NewValue = _gameData.user.gems + value,
-                FromPosition = fromPosition
             };
             
             _gameData.user.gems += value;
@@ -184,7 +184,26 @@ namespace _Game.Managers
             Database.SaveData(_gameData);
             return true;
         }
+        
+        public void ResetUserData()
+        {
+            _gameData.user.gold = 0;
+            SmoothGold = 0f;
+            PostEvent(EventID.OnGoldMoneyChange, new ResourceChangeData() { NewValue = _gameData.user.gold});
+            
+            _gameData.user.gems = 0;
+            SmoothGem = 0f;
+            PostEvent(EventID.OnGemMoneyChange, new ResourceChangeData() { NewValue = _gameData.user.gems});
+            
+            _gameData.user.secretLevelUnlock = 0;
+            _gameData.user.secretLevelIndex = 0;
 
+        }
+        public int SecretLevelUnlock => _gameData.user.secretLevelUnlock;
+        public int Gold => _gameData.user.gold;
+        public int Gems => _gameData.user.gems;
+        public float SmoothGold { get; set; }
+        public float SmoothGem { get; set; }
         #endregion
         
         #region OnApplication

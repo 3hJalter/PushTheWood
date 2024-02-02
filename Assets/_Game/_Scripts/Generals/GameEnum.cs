@@ -34,6 +34,12 @@ public enum CONDITION
     RUN_ABOVE_CHUMP = 4,
 }
 
+public enum UI_POSITION
+{
+    NONE = -1,
+    MAIN_MENU = 0,
+    IN_GAME = 1,
+}
 namespace TweenTypeEnum
 {
     public enum EasingType
