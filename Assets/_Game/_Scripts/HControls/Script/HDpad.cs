@@ -4,14 +4,22 @@ namespace HControls
 {
     public class HDpad : HMonoBehaviour
     {
-        [Tooltip("0 is Left, 1 is Right, 2 is Up, 3 is Down")] 
+        [Tooltip("0 is Left, 1 is Right, 2 is Up, 3 is Down")]
         [SerializeField]
         private bool highlightButton = true;
         [SerializeField]
         private bool testing;
 
         [SerializeField] private HDpadButton[] dpadButtons;
-        
+
+        #if UNITY_EDITOR
+        private void Awake()
+        {
+            testing = true;
+        }
+        #endif
+
+
         private void OnDisable()
         {
             for (int i = 0; i < dpadButtons.Length; i++) dpadButtons[i].PointerDownImg.SetActive(false);
