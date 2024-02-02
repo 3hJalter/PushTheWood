@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    public class Cloud : EnvironmentObject
+    public class Cloud : EnvironmentUnit
     {
         private float _speed = 2f;
         private Vector3 _direction;

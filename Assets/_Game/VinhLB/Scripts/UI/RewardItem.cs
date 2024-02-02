@@ -15,6 +15,7 @@ namespace VinhLB
         
         private Reward _reward = null;
 
+        public Vector3 IconImagePosition => _iconImage.transform.position;
         public Reward Reward => _reward;
 
         public void Initialize(Reward reward)
