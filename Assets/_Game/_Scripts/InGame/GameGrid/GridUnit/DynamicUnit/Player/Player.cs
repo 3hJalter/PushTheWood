@@ -100,7 +100,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public override void OnDespawn()
         {
             _vehicle = null;
-            stateMachine.OverrideState = StateEnum.None;
+            if (_isAddState) stateMachine.OverrideState = StateEnum.None;
             base.OnDespawn();
         }
         

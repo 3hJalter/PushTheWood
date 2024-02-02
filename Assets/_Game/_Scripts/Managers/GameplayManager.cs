@@ -136,8 +136,8 @@ namespace _Game.Managers
         {
             timer.Stop();
             DevLog.Log(DevId.Hung, "ENDGAME - Show Lose Screen");
-            // TODO: Show Different Lose based on reason (Ex: Lose by Die will not show More time booster, instead show retry)
-            UIManager.Ins.OpenUI<LoseScreen>();
+            // Show Different Lose based on reason (Ex: Lose by Die will not show More time booster, instead show Revive) -> Check by the time remaining
+            UIManager.Ins.OpenUI<LoseScreen>(time <= 0);
             GameManager.Ins.ChangeState(GameState.EndGame);
         }
 

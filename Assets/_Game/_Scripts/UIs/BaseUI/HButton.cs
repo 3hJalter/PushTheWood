@@ -22,7 +22,7 @@ public class HButton : Button
     }
 
     [ContextMenu("Setup")]
-    private void Setup()
+    protected virtual void Setup()
     {
         buttonAnim = GetComponent<ButtonAnim>();
     }
