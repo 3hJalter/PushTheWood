@@ -24,15 +24,15 @@ namespace VinhLB
         public Sprite IconSprite;
         public int Amount;
 
-        public void Obtain()
+        public void Obtain(Vector3 fromPosition = default)
         {
             switch (RewardType)
             {
                 case RewardType.Gold:
-                    GameManager.Ins.AddGold(Amount);
+                    GameManager.Ins.AddGold(Amount, fromPosition);
                     break;
                 case RewardType.Gem:
-                    GameManager.Ins.AddGem(Amount);
+                    GameManager.Ins.AddGem(Amount, fromPosition);
                     break;
                 case RewardType.SecretMapPiece:
                     GameManager.Ins.AddSecretMapPiece(Amount);

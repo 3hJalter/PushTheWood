@@ -71,6 +71,13 @@ public static class Constants
     /// </summary>
     public const string FEATURE_COMING_SOON = "This feature is coming soon!";
     
+    /// <summary>
+    /// Objective
+    /// </summary>
+    public const string FIND_CHEST = "OBJECTIVE:\nFind the chest";
+    public const string DEFEAT_ENEMY = "OBJECTIVE:\nDefeat all enemies";
+    public const string COLLECT_ALL_STARS = "OBJECTIVE:\nCollect all stars";
+    
     // Value Constants
     public const int UPPER_HEIGHT = 1;
     public const int BELOW_HEIGHT = 1;

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace VinhLB
 {
-    public class FloatingUI : WorldUI
+    public class FloatingWorldUI : UIUnit
     {
         [Title("References")]
         // [SerializeField]

@@ -53,10 +53,12 @@ MonoBehaviour:
     - {fileID: -4091481902002242569, guid: ddba473a82248f5479bc90664b37c320, type: 3}
     - {fileID: 3183996776406851115, guid: 7244cd34fded9f7499e1a2d2486bbc59, type: 3}
     - {fileID: 8407841716924856001, guid: 06c8c7f64c59dfc4fbea0f7ff0792231, type: 3}
-    - {fileID: 1028327251320453201, guid: c98395dbd471057468ecefbbac47f39b, type: 3}
     - {fileID: -6492541787636497690, guid: 563a0790fbbc1bb438932d4d6d753bcb, type: 3}
     - {fileID: 6844371137788254552, guid: d559ee9c7d49da243b674c9542f3e0c6, type: 3}
     - {fileID: -2026251214701203340, guid: 8d79ee0068123434bbe1ba109882044e, type: 3}
+    - {fileID: 1028327251320453201, guid: c98395dbd471057468ecefbbac47f39b, type: 3}
+    - {fileID: 3644550193287672870, guid: 28a4f251c4df0574a86d6ce28d83525a, type: 3}
+    - {fileID: 2423863395047940138, guid: a85b1545da49038499b8abb1df62b516, type: 3}
     - {fileID: 3039115369026176717, guid: 4ade82e13c0381d43843c130e0424bd0, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
@@ -568,10 +570,10 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: _environmentObjectsDict
+    - Name: _environmentUnitDict
       Entry: 7
       Data: 7|System.Collections.Generic.Dictionary`2[[_Game.DesignPattern.PoolType,
-        Assembly-CSharp],[VinhLB.EnvironmentObject[], Assembly-CSharp]], mscorlib
+        Assembly-CSharp],[VinhLB.EnvironmentUnit[], Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
       Data: 8|System.Collections.Generic.EnumEqualityComparer`1[[_Game.DesignPattern.PoolType,
@@ -596,7 +598,7 @@ MonoBehaviour:
       Data: 200
     - Name: $v
       Entry: 7
-      Data: 9|VinhLB.EnvironmentObject[], Assembly-CSharp
+      Data: 9|VinhLB.EnvironmentUnit[], Assembly-CSharp
     - Name: 
       Entry: 12
       Data: 3
@@ -626,13 +628,19 @@ MonoBehaviour:
       Data: 201
     - Name: $v
       Entry: 7
-      Data: 10|VinhLB.EnvironmentObject[], Assembly-CSharp
+      Data: 10|VinhLB.EnvironmentUnit[], Assembly-CSharp
     - Name: 
       Entry: 12
-      Data: 1
+      Data: 3
     - Name: 
       Entry: 10
       Data: 37
+    - Name: 
+      Entry: 10
+      Data: 38
+    - Name: 
+      Entry: 10
+      Data: 39
     - Name: 
       Entry: 13
       Data: 
@@ -650,16 +658,10 @@ MonoBehaviour:
       Data: 202
     - Name: $v
       Entry: 7
-      Data: 11|VinhLB.EnvironmentObject[], Assembly-CSharp
+      Data: 11|VinhLB.EnvironmentUnit[], Assembly-CSharp
     - Name: 
       Entry: 12
-      Data: 3
-    - Name: 
-      Entry: 10
-      Data: 38
-    - Name: 
-      Entry: 10
-      Data: 39
+      Data: 1
     - Name: 
       Entry: 10
       Data: 40
@@ -678,23 +680,53 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: _worldUIDict
+    - Name: _uiUnitDict
       Entry: 7
       Data: 12|System.Collections.Generic.Dictionary`2[[_Game.DesignPattern.PoolType,
-        Assembly-CSharp],[VinhLB.WorldUI, Assembly-CSharp]], mscorlib
+        Assembly-CSharp],[VinhLB.UIUnit, Assembly-CSharp]], mscorlib
     - Name: comparer
-      Entry: 7
-      Data: 13|System.Collections.Generic.EnumEqualityComparer`1[[_Game.DesignPattern.PoolType,
-        Assembly-CSharp]], mscorlib
+      Entry: 9
+      Data: 8
     - Name: 
       Entry: 12
-      Data: 0
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 400
+    - Name: $v
+      Entry: 10
+      Data: 41
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 401
+    - Name: $v
+      Entry: 10
+      Data: 42
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 13
       Data: 
     - Name: 
       Entry: 8
       Data: 
+    - Name: _worldUIUnitDict
+      Entry: 7
+      Data: 13|System.Collections.Generic.Dictionary`2[[_Game.DesignPattern.PoolType,
+        Assembly-CSharp],[VinhLB.UIUnit, Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 9
+      Data: 8
     - Name: 
       Entry: 12
       Data: 1
@@ -706,7 +738,7 @@ MonoBehaviour:
       Data: 500
     - Name: $v
       Entry: 10
-      Data: 41
+      Data: 43
     - Name: 
       Entry: 8
       Data: 
@@ -748,7 +780,6 @@ MonoBehaviour:
   - {fileID: 4900000, guid: f2c9877245a153d408790aea8be53715, type: 3}
   - {fileID: 4900000, guid: 082e822f199ab6e4e97066bac18000f2, type: 3}
   - {fileID: 4900000, guid: b6adb31e861f7ac408eafd0ec9d9454f, type: 3}
-  - {fileID: 4900000, guid: e0e456d6d00c25d4cb284441711aaae9, type: 3}
   - {fileID: 4900000, guid: 5904e576d2b1f6444946d90cc1eec33d, type: 3}
   - {fileID: 4900000, guid: 9adb46a4a30c95841a4daa2767121d04, type: 3}
   - {fileID: 4900000, guid: 9dc00fe2f83beb24f8211e0409531988, type: 3}
@@ -757,6 +788,6 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 7a1f38a4eb5932c4cb3fc0c731b92430, type: 3}
   - {fileID: 4900000, guid: 99aacf09c274a9d47b6bd83661ed127f, type: 3}
   dailyChallengerLevel:
-  - {fileID: 4900000, guid: 58026dccfb4a4250b69fe6ebdf773377, type: 3}
+  - {fileID: 4900000, guid: e0e456d6d00c25d4cb284441711aaae9, type: 3}
   secretLevel:
   - {fileID: 4900000, guid: 7cf5425d920679442a58b11454552cbb, type: 3}

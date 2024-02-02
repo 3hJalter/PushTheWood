@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5001951780489845761}
   - component: {fileID: 3039115369026176717}
   m_Layer: 5
-  m_Name: FloatingUI
+  m_Name: FloatingWorldUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

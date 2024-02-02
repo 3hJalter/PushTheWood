@@ -2,7 +2,7 @@
 
 namespace VinhLB
 {
-    public class Flower : EnvironmentObject
+    public class Flower : EnvironmentUnit
     {
         
     }
