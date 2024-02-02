@@ -5102,6 +5102,7 @@ GameObject:
   - component: {fileID: 6641119119544292983}
   - component: {fileID: 6178493981268095029}
   - component: {fileID: 7714847989998738404}
+  - component: {fileID: 9163946736346290543}
   m_Layer: 0
   m_Name: SmokeExplosionWhite(Clone)
   m_TagString: Untagged
@@ -9884,6 +9885,17 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!210 &9163946736346290543
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777869414165951765}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
 --- !u!1 &2201806388849915610
 GameObject:
   m_ObjectHideFlags: 0

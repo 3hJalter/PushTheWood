@@ -775,7 +775,6 @@ MonoBehaviour:
   - {fileID: 4900000, guid: f2c9877245a153d408790aea8be53715, type: 3}
   - {fileID: 4900000, guid: 082e822f199ab6e4e97066bac18000f2, type: 3}
   - {fileID: 4900000, guid: b6adb31e861f7ac408eafd0ec9d9454f, type: 3}
-  - {fileID: 4900000, guid: e0e456d6d00c25d4cb284441711aaae9, type: 3}
   - {fileID: 4900000, guid: 5904e576d2b1f6444946d90cc1eec33d, type: 3}
   - {fileID: 4900000, guid: 9adb46a4a30c95841a4daa2767121d04, type: 3}
   - {fileID: 4900000, guid: 9dc00fe2f83beb24f8211e0409531988, type: 3}
@@ -784,6 +783,6 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 7a1f38a4eb5932c4cb3fc0c731b92430, type: 3}
   - {fileID: 4900000, guid: 99aacf09c274a9d47b6bd83661ed127f, type: 3}
   dailyChallengerLevel:
-  - {fileID: 4900000, guid: 58026dccfb4a4250b69fe6ebdf773377, type: 3}
+  - {fileID: 4900000, guid: e0e456d6d00c25d4cb284441711aaae9, type: 3}
   secretLevel:
   - {fileID: 4900000, guid: 7cf5425d920679442a58b11454552cbb, type: 3}

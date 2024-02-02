@@ -195,6 +195,8 @@ namespace _Game.Managers
             SmoothGem = 0f;
             PostEvent(EventID.OnGemMoneyChange, new ResourceChangeData() { NewValue = _gameData.user.gems});
             
+            SpendGold(_gameData.user.gold);
+            SpendGem(_gameData.user.gems);
             _gameData.user.secretLevelUnlock = 0;
             _gameData.user.secretLevelIndex = 0;
 

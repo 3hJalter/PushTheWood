@@ -15,12 +15,15 @@ namespace VinhLB
         private CanvasGroup _canvasGroup;
         [SerializeField]
         private Image _blockPanel;
-        
+        [SerializeField] 
+        private HButton moreTimeButton;
         public override void Setup(object param = null)
         {
             base.Setup(param);
-            
             _canvasGroup.alpha = 0f;
+            // cover param to bool
+            bool isTimeOut = param != null && (bool) param;
+            moreTimeButton.gameObject.SetActive(isTimeOut);
         }
 
         public override void Open(object param = null)
