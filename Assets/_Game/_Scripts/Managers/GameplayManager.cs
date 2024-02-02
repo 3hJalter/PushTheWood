@@ -95,11 +95,16 @@ namespace _Game.Managers
             LevelManager.Ins.OnRestart();
         }
         
-        private void OnPauseGame()
+        public void OnPauseGame()
         {
             timer.Stop();
         }
 
+        public void OnUnPause()
+        {
+            timer.Start(1f, CountTime, true);
+        }
+        
         private void OnUnPauseGame(object o)
         {
             // Cast o to GameState
@@ -190,8 +195,6 @@ namespace _Game.Managers
                 screen.resetCountText.text = DataManager.Ins.GameData.user.resetCount.ToString();
                 LevelManager.Ins.ResetLevelIsland();
             }
-
-            
         }
 
         private void OnShowHint()

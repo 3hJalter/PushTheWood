@@ -42,7 +42,8 @@ namespace _Game.GameGrid
         private int secretLevelIndex;
 
         private Level _currentLevel;
-        
+        private bool _isRestarting;
+        private bool _isResetting;
         public int NormalLevelIndex => normalLevelIndex;
         public int DailyLevelIndex => dailyLevelIndex;
         public int SecretLevelIndex => secretLevelIndex;
@@ -107,9 +108,10 @@ namespace _Game.GameGrid
 
         public void ResetLevelIsland()
         {
+            _isResetting = true;
             _currentLevel.ResetIslandPlayerOn();
-            
             OnLevelIslandReset?.Invoke();
+            _isResetting = false;
         }
 
         private void OnCheckTutorial()
@@ -210,6 +212,7 @@ namespace _Game.GameGrid
         public void OnRestart()
         {
             if (!CurrentLevel.IsInit) return; // No Init -> Means No Restart
+            _isRestarting = true;
             CurrentLevel.GridMap.Reset();
             IsConstructingLevel = true;
             player.OnDespawn();
@@ -220,8 +223,8 @@ namespace _Game.GameGrid
             SetCameraToPlayerIsland();
             // FxManager.Ins.ResetTrackedTrampleObjectList();
             IsConstructingLevel = false;
-            savingState.Reset();            
             OnLevelRestarted?.Invoke();
+            _isRestarting = false;
         }
 
         private void OnAddWinCondition(LevelWinCondition condition)
@@ -231,7 +234,7 @@ namespace _Game.GameGrid
                 case LevelWinCondition.DefeatAllEnemy:
                     OnCheckWinCondition += () =>
                     {
-                        if (enemies.Count == 0 && GameManager.Ins.IsState(GameState.InGame))
+                        if (enemies.Count == 0 && GameManager.Ins.IsState(GameState.InGame) && !_isRestarting && !_isResetting)
                         {
                             OnWin();    
                         }

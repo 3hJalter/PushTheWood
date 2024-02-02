@@ -70,7 +70,7 @@ namespace _Game.UIs.Popup
             // click today button
             OnClickDailyChallengeButton(currentDay - 1);
         }
-
+        
         public override void Close()
         {
             // Remove listener for buttons
@@ -78,11 +78,13 @@ namespace _Game.UIs.Popup
             {
                 dailyChallengeButtons[index].onClick.RemoveAllListeners();
             }
+            _currentBtnClick = null;
             base.Close();
         }
 
         private void OnClickDailyChallengeButton(int index)
         {
+            if (dailyChallengeButtons[index] == _currentBtnClick) return;
             DevLog.Log(DevId.Hoang, $"OnClick Daily Challenge Button with index {index}");
             if (_currentBtnClick != null)
                 _currentBtnClick.OnUnHover();

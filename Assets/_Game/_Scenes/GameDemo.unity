@@ -4704,7 +4704,7 @@ PrefabInstance:
     - target: {fileID: 4287837532690632099, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
       propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 40f82fcb80621624e836e880da1e002e, type: 2}
+      objectReference: {fileID: 11400000, guid: 1c56817b1440126488887871b311e4db, type: 2}
     - target: {fileID: 4287837532690632157, guid: 2b552f3acbe7aed45b148561130df8aa, type: 3}
       propertyPath: m_Name
       value: TutorialManager

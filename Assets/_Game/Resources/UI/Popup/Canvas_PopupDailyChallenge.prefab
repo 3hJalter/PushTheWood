@@ -419,19 +419,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6837264186634379725}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UICanvas, Assembly-CSharp
-        m_MethodName: Close
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   buttonAnim: {fileID: 2032352375823241224}
 --- !u!225 &6804617034743009517
 CanvasGroup:
@@ -1936,19 +1924,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6665495468556537581}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 352794305399869245}
-        m_TargetAssemblyTypeName: _Game.UIs.Popup.DailyChallengePopup, Assembly-CSharp
-        m_MethodName: OnClickReplayButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   buttonAnim: {fileID: 6767013010413116146}
 --- !u!225 &8073395585036447944
 CanvasGroup:
@@ -2727,19 +2703,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7315421397187656267}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 352794305399869245}
-        m_TargetAssemblyTypeName: _Game.UIs.Popup.DailyChallengePopup, Assembly-CSharp
-        m_MethodName: OnClickPlayButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   buttonAnim: {fileID: 8496373517916501411}
 --- !u!225 &4312101351095653562
 CanvasGroup:
