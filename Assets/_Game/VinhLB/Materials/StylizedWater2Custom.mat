@@ -93,7 +93,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _IntersectionNoise:
-        m_Texture: {fileID: 2800000, guid: bedbf2aef12a10943ad456c8161b2968, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5ea3d632911c4b648893c5f9eb4b46a0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -161,7 +161,7 @@ Material:
     - _CustomPanSwitch: 0
     - _Cutoff: 0.5
     - _DepthExp: 0
-    - _DepthHorizontal: 1.3
+    - _DepthHorizontal: 1.5
     - _DepthVertical: 4
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
@@ -196,10 +196,10 @@ Material:
     - _GlowIntensity: 1
     - _HorizonDistance: 1.5
     - _IntersectionClipping: 0.5
-    - _IntersectionFalloff: 0.5
-    - _IntersectionLength: 1.5
+    - _IntersectionFalloff: 0.533
+    - _IntersectionLength: 1.75
     - _IntersectionRippleDist: 32
-    - _IntersectionRippleStrength: 0.5
+    - _IntersectionRippleStrength: 1
     - _IntersectionSource: 0
     - _IntersectionSpeed: 0.2
     - _IntersectionStyle: 2
@@ -263,11 +263,11 @@ Material:
     - _VertexColorDepth: 0
     - _VertexColorFoam: 0
     - _VertexColorWaveFlattening: 0
-    - _WaveCount: 2
-    - _WaveDistance: 0.955
+    - _WaveCount: 3
+    - _WaveDistance: 0.95
     - _WaveHeight: 0.2
     - _WaveNormalStr: 32
-    - _WaveSpeed: 2
+    - _WaveSpeed: 1
     - _WaveSteepness: 0
     - _WaveTint: 0
     - _WavesOn: 1

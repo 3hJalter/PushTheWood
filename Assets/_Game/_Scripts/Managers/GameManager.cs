@@ -110,7 +110,7 @@ namespace _Game.Managers
 
         #region Income Data function
         
-        public void AddGold(int value, Vector3 fromPosition)
+        public void AddGold(int value, Vector3 fromPosition = default)
         {
             ResourceChangeData data = new ResourceChangeData()
             {
@@ -125,7 +125,7 @@ namespace _Game.Managers
             Database.SaveData(_gameData);
         }
         
-        public void AddGem(int value, Vector3 fromPosition)
+        public void AddGem(int value, Vector3 fromPosition = default)
         {
             ResourceChangeData data = new ResourceChangeData()
             {
@@ -154,8 +154,16 @@ namespace _Game.Managers
         public bool SpendGold(int gold)
         {
             if (_gameData.user.gold < gold) return false;
+            
+            ResourceChangeData data = new ResourceChangeData()
+            {
+                ChangedAmount = gold,
+                OldValue = _gameData.user.gold,
+                NewValue = _gameData.user.gold - gold,
+            };
+            
             _gameData.user.gold -= gold;
-            PostEvent(EventID.OnGoldMoneyChange, _gameData.user.gold);
+            PostEvent(EventID.OnGoldMoneyChange, data);
             Database.SaveData(_gameData);
             return true;
         }
@@ -163,8 +171,16 @@ namespace _Game.Managers
         public bool SpendGem(int gem)
         {
             if (_gameData.user.gems < gem) return false;
+            
+            ResourceChangeData data = new ResourceChangeData()
+            {
+                ChangedAmount = gem,
+                OldValue = _gameData.user.gems,
+                NewValue = _gameData.user.gems - gem,
+            };
+            
             _gameData.user.gems -= gem;
-            PostEvent(EventID.OnGemMoneyChange, _gameData.user.gems);
+            PostEvent(EventID.OnGemMoneyChange, data);
             Database.SaveData(_gameData);
             return true;
         }
