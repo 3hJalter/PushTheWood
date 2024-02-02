@@ -114,8 +114,7 @@ namespace _Game.Managers
             _gameData.user.gold += gold;
             PostEvent(EventID.OnGoldMoneyChange, _gameData.user.gold);
             Database.SaveData(_gameData);
-        }
-        
+        }        
         public void AddGem(int gem)
         {
             _gameData.user.gems += gem;
@@ -141,8 +140,7 @@ namespace _Game.Managers
             PostEvent(EventID.OnGoldMoneyChange, _gameData.user.gold);
             Database.SaveData(_gameData);
             return true;
-        }
-        
+        }       
         public bool SpendGem(int gem)
         {
             if (_gameData.user.gems < gem) return false;
@@ -151,7 +149,16 @@ namespace _Game.Managers
             Database.SaveData(_gameData);
             return true;
         }
-
+        public void ResetUserData()
+        {
+            _gameData.user.gold = 0;
+            _gameData.user.gems = 0;
+            _gameData.user.secretLevelUnlock = 0;
+            _gameData.user.secretLevelIndex = 0;
+        }
+        public int SecretLevelUnlock => _gameData.user.secretLevelUnlock;
+        public int Gold => _gameData.user.gold;
+        public int Gem => _gameData.user.gems;
         #endregion
         
         #region OnApplication
