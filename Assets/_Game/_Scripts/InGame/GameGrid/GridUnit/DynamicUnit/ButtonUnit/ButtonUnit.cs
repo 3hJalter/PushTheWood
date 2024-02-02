@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.ButtonUnitState;
+using _Game.Utilities;
+using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
 
@@ -18,7 +20,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit
         [SerializeField] private Material btnOnMaterial;
 
         private bool _isAddState;
-
+        public Tween animTween;
+        
+        
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
             Direction skinDirection = Direction.None, bool hasSetPosAndRos = false)
         {
@@ -51,12 +55,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit
         {
             if (CurrentStateId == StateEnum.Enter) return;
             StateMachine.ChangeState(StateEnum.Enter);
+            DevLog.Log(DevId.Hoang, "Enter Button at time: " + Time.time);
         }
         
         protected override void OnOutTriggerUpper(GridUnit triggerUnit)
         {
             if (CurrentStateId == StateEnum.Idle) return;
             StateMachine.ChangeState(StateEnum.Idle);
+            DevLog.Log(DevId.Hoang, "Exit Button at time: " + Time.time);
         }
 
         public override StateEnum CurrentStateId 
