@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VinhLB;
 
 namespace _Game.DesignPattern
@@ -16,11 +17,12 @@ namespace _Game.DesignPattern
         [Title("Spawners")]
         [SerializeField]
         private FishSpawner _fishSpawner;
+        [FormerlySerializedAs("_worldUISpawner")]
         [SerializeField]
-        private WorldUISpawner _worldUISpawner;
+        private WorldUIUnitSpawner _worldUIUnitSpawner;
 
         public FishSpawner FishSpawner => _fishSpawner;
-        public WorldUISpawner WorldUISpawner => _worldUISpawner;
+        public WorldUIUnitSpawner WorldUIUnitSpawner => _worldUIUnitSpawner;
 
         public void Awake()
         {

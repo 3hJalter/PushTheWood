@@ -86,7 +86,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  poolType: 202
+  poolType: 201
 --- !u!1001 &7399287485563519908
 PrefabInstance:
   m_ObjectHideFlags: 0

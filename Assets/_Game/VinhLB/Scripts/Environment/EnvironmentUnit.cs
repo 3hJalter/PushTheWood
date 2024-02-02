@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    public class EnvironmentObject : GameUnit
+    public class EnvironmentUnit : GameUnit
     {
         
     }

@@ -5,6 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using _Game.Data;
 using UnityEngine;
+using _Game.Managers;
+using _Game.UIs.Screen;
 
 public class DebugManager : SimpleSingleton<DebugManager>
 {
@@ -13,12 +15,31 @@ public class DebugManager : SimpleSingleton<DebugManager>
     GameObject FpsDebug;
     [SerializeField]
     GameObject LogDebug;
+    List<UICanvas> DebugCanvass = new List<UICanvas>();
     int level = -1;
     public bool IsDebugGridLogic => debugGrid != null ? true : false;
     public int Level => level;
     public void DebugGridData(Grid<GameGridCell, GameGridCellData> grid)
     {
         debugGrid?.DrawGrid(grid, true);
+    }
+    public void OpenDebugCanvas(UI_POSITION position)
+    {
+        if(position == UI_POSITION.NONE) return;
+        for (int i = 0; i < DebugCanvass.Count; i++)
+        {
+            DebugCanvass[i].Close();
+        }
+        UICanvas canvas;       
+        switch (position)
+        {
+            case UI_POSITION.MAIN_MENU:
+                canvas = UIManager.Ins.OpenUI<DebugMainMenuScreen>();
+                if(!DebugCanvass.Contains(canvas))
+                    DebugCanvass.Add(canvas);
+                break;
+        }
+        
     }
     public void OnInit(bool isDebugGridLogic, bool isDebugFps, bool isDebugLog, int level = -1)
     {

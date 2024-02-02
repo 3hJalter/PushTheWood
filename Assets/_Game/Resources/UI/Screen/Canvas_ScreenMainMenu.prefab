@@ -4449,4 +4449,6 @@ MonoBehaviour:
   _blockPanel: {fileID: 941367108468269405}
   _bottomNavigationTabGroup: {fileID: 2915115477121344800}
   _goldValueText: {fileID: 8861748252358295296}
+  _goldIconTF: {fileID: 4013643439574557309}
   _gemValueText: {fileID: 3417165548306138449}
+  _gemIconTF: {fileID: 4398726315384317882}

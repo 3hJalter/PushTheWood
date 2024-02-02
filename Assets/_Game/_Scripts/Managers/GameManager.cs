@@ -4,6 +4,8 @@ using _Game.UIs.Screen;
 using _Game.Utilities;
 using DG.Tweening;
 using UnityEngine;
+using VinhLB;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace _Game.Managers
 {
@@ -26,7 +28,7 @@ namespace _Game.Managers
         private bool reduceScreenResolution;
 
         private GameData _gameData;
-        
+        ResourceChangeData changeData = new ResourceChangeData();
         private void Awake()
         {
             Input.multiTouchEnabled = false;
@@ -109,17 +111,26 @@ namespace _Game.Managers
 
         #region Income Data function
         
-        public void AddGold(int gold)
+        public void AddGold(int value, Vector3 fromPosition = default)
         {
-            _gameData.user.gold += gold;
-            PostEvent(EventID.OnGoldMoneyChange, _gameData.user.gold);
+            changeData.ChangedAmount = value;
+            changeData.OldValue = _gameData.user.gold;
+            changeData.NewValue = _gameData.user.gold + value;
+            changeData.FromPosition = fromPosition;
+
+            _gameData.user.gold += value;
+            PostEvent(EventID.OnGoldMoneyChange, changeData);
             Database.SaveData(_gameData);
-        }
-        
-        public void AddGem(int gem)
+        }        
+        public void AddGem(int value, Vector3 fromPosition = default)
         {
-            _gameData.user.gems += gem;
-            PostEvent(EventID.OnGemMoneyChange, _gameData.user.gems);
+            changeData.ChangedAmount = value;
+            changeData.OldValue = _gameData.user.gems;
+            changeData.NewValue = _gameData.user.gems + value;
+            changeData.FromPosition = fromPosition;
+
+            _gameData.user.gems += value;
+            PostEvent(EventID.OnGemMoneyChange, changeData);
             Database.SaveData(_gameData);
         }
         public void AddSecretMapPiece(int piece)
@@ -137,21 +148,38 @@ namespace _Game.Managers
         public bool SpendGold(int gold)
         {
             if (_gameData.user.gold < gold) return false;
+           
+            changeData.ChangedAmount = gold;
+            changeData.OldValue = _gameData.user.gold;
+            changeData.NewValue = _gameData.user.gold - gold;
+
             _gameData.user.gold -= gold;
-            PostEvent(EventID.OnGoldMoneyChange, _gameData.user.gold);
+            PostEvent(EventID.OnGoldMoneyChange, changeData);
             Database.SaveData(_gameData);
             return true;
-        }
-        
+        }       
         public bool SpendGem(int gem)
         {
             if (_gameData.user.gems < gem) return false;
+            changeData.ChangedAmount = gem;
+            changeData.OldValue = _gameData.user.gems;
+            changeData.NewValue = _gameData.user.gems - gem;
+
             _gameData.user.gems -= gem;
-            PostEvent(EventID.OnGemMoneyChange, _gameData.user.gems);
+            PostEvent(EventID.OnGemMoneyChange, changeData);
             Database.SaveData(_gameData);
             return true;
         }
-
+        public void ResetUserData()
+        {
+            SpendGold(_gameData.user.gold);
+            SpendGem(_gameData.user.gems);
+            _gameData.user.secretLevelUnlock = 0;
+            _gameData.user.secretLevelIndex = 0;
+        }
+        public int SecretLevelUnlock => _gameData.user.secretLevelUnlock;
+        public int Gold => _gameData.user.gold;
+        public int Gem => _gameData.user.gems;
         #endregion
         
         #region OnApplication

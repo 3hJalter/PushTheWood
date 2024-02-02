@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    public class WorldUI : GameUnit
+    public class UIUnit : GameUnit
     {
         // private RectTransform _rectTF;
         //

@@ -54,7 +54,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  poolType: 201
+  poolType: 202
   _heightOffset: 0.25
   _pathMovementDuration: 30
   _moveSpeed: 4
