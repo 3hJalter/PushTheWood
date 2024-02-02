@@ -8,43 +8,43 @@ namespace _Game.UIs.Screen
 {
     public class DebugMainMenuScreen : UICanvas
     {
-        [SerializeField]
-        Button addGems;
         [SerializeField] 
-        Button addGolds;
+        private Button addGoldBtn;
         [SerializeField]
-        Button addSecretMapPieceBtn;
+        private Button addGemsBtn;
         [SerializeField]
-        Button resetBtn;
+        private Button addSecretMapPieceBtn;
+        [SerializeField]
+        private Button resetBtn;
 
         private void Awake()
         {
-            addGems.onClick.AddListener(AddGems);
-            addGolds.onClick.AddListener(AddGolds);
+            addGemsBtn.onClick.AddListener(AddGems);
+            addGoldBtn.onClick.AddListener(AddGold);
             addSecretMapPieceBtn.onClick.AddListener(AddSecretMapPiece);
             resetBtn.onClick.AddListener(ResetUserData);
         }
       
         private void AddGems()
         {
-            GameManager.Ins.AddGem(10);
-            UIManager.Ins.UpdateUIs();
+            GameManager.Ins.GainGems(10, addGemsBtn.transform.position);
+            // UIManager.Ins.UpdateUIs();
         }
-        private void AddGolds()
+        private void AddGold()
         {
-            GameManager.Ins.AddGold(100);
-            UIManager.Ins.UpdateUIs();
+            GameManager.Ins.GainGold(100, addGoldBtn.transform.position);
+            // UIManager.Ins.UpdateUIs();
         }
         private void AddSecretMapPiece()
         {
-            GameManager.Ins.AddSecretMapPiece(1);
-            UIManager.Ins.UpdateUIs();
+            GameManager.Ins.GainSecretMapPiece(1);
+            // UIManager.Ins.UpdateUIs();
         }
 
         private void ResetUserData()
         {
             GameManager.Ins.ResetUserData();
-            UIManager.Ins.UpdateUIs();
+            // UIManager.Ins.UpdateUIs();
         }       
     }
 }

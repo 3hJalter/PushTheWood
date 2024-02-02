@@ -110,38 +110,25 @@ namespace _Game.Managers
 
         #region Income Data function
         
-        public void AddGold(int value, object source = null)
+        public int SecretLevelUnlock => _gameData.user.secretLevelUnlock;
+        public int Gold => _gameData.user.gold;
+        public int Gems => _gameData.user.gems;
+        public float SmoothGold { get; set; }
+        public float SmoothGem { get; set; }
+        
+        public void GainGold(int value, object source = null)
         {
-            ResourceChangeData data = new ResourceChangeData()
-            {
-                Source = source,
-                ChangedAmount = value,
-                OldValue = _gameData.user.gold,
-                NewValue = _gameData.user.gold + value,
-            };
-            
-            _gameData.user.gold += value;
-            PostEvent(EventID.OnGoldMoneyChange, data);
-            Database.SaveData(_gameData);
+            TryModifyGold(value, source);
         }
         
-        public void AddGem(int value,  object source = null)
+        public void GainGems(int value,  object source = null)
         {
-            ResourceChangeData data = new ResourceChangeData()
-            {
-                Source = source,
-                ChangedAmount = value,
-                OldValue = _gameData.user.gems,
-                NewValue = _gameData.user.gems + value,
-            };
-            
-            _gameData.user.gems += value;
-            PostEvent(EventID.OnGemMoneyChange, data);
-            Database.SaveData(_gameData);
+            TryModifyGems(value, source);
         }
-        public void AddSecretMapPiece(int piece)
+        
+        public void GainSecretMapPiece(int amount)
         {
-            _gameData.user.secretMapPieces += piece;          
+            _gameData.user.secretMapPieces += amount;          
             if(_gameData.user.secretMapPieces >= Constants.REQUIRE_SECRET_MAP_PIECES)
             {
                 _gameData.user.secretLevelUnlock += 1;
@@ -151,61 +138,80 @@ namespace _Game.Managers
             PostEvent(EventID.OnUnlockSecretMap, _gameData.user.secretLevelUnlock);
             Database.SaveData(_gameData);
         }
-        public bool SpendGold(int gold)
+        
+        public bool TrySpendGold(int amount, object source = null)
         {
-            if (_gameData.user.gold < gold) return false;
-            
-            ResourceChangeData data = new ResourceChangeData()
-            {
-                ChangedAmount = gold,
-                OldValue = _gameData.user.gold,
-                NewValue = _gameData.user.gold - gold,
-            };
-            
-            _gameData.user.gold -= gold;
-            PostEvent(EventID.OnGoldMoneyChange, data);
-            Database.SaveData(_gameData);
-            return true;
+            return TryModifyGold(-amount, source);
         }
         
-        public bool SpendGem(int gem)
+        public bool TrySpendGems(int amount, object source = null)
         {
-            if (_gameData.user.gems < gem) return false;
-            
-            ResourceChangeData data = new ResourceChangeData()
-            {
-                ChangedAmount = gem,
-                OldValue = _gameData.user.gems,
-                NewValue = _gameData.user.gems - gem,
-            };
-            
-            _gameData.user.gems -= gem;
-            PostEvent(EventID.OnGemMoneyChange, data);
-            Database.SaveData(_gameData);
-            return true;
+            return TryModifyGems(-amount, source);
         }
         
         public void ResetUserData()
         {
-            _gameData.user.gold = 0;
-            SmoothGold = 0f;
-            PostEvent(EventID.OnGoldMoneyChange, new ResourceChangeData() { NewValue = _gameData.user.gold});
+            TrySpendGold(_gameData.user.gold);
+            TrySpendGems(_gameData.user.gems);
             
-            _gameData.user.gems = 0;
-            SmoothGem = 0f;
-            PostEvent(EventID.OnGemMoneyChange, new ResourceChangeData() { NewValue = _gameData.user.gems});
-            
-            SpendGold(_gameData.user.gold);
-            SpendGem(_gameData.user.gems);
             _gameData.user.secretLevelUnlock = 0;
             _gameData.user.secretLevelIndex = 0;
-
         }
-        public int SecretLevelUnlock => _gameData.user.secretLevelUnlock;
-        public int Gold => _gameData.user.gold;
-        public int Gems => _gameData.user.gems;
-        public float SmoothGold { get; set; }
-        public float SmoothGem { get; set; }
+
+        private bool TryModifyGold(int amount, object source)
+        {
+            if (_gameData.user.gold + amount < 0)
+            {
+                return false;
+            }
+            
+            ResourceChangeData data = new ResourceChangeData()
+            {
+                ChangedAmount = amount,
+                OldValue = _gameData.user.gold,
+                NewValue = _gameData.user.gold + amount,
+                Source = source
+            };
+            
+            _gameData.user.gold += amount;
+            PostEvent(EventID.OnGoldChange, data);
+            Database.SaveData(_gameData);
+
+            if (amount < 0)
+            {
+                SmoothGold = _gameData.user.gold;
+            }
+
+            return true;
+        }
+
+        private bool TryModifyGems(int amount, object source)
+        {
+            if (_gameData.user.gems + amount < 0)
+            {
+                return false;
+            }
+            
+            ResourceChangeData data = new ResourceChangeData()
+            {
+                ChangedAmount = amount,
+                OldValue = _gameData.user.gems,
+                NewValue = _gameData.user.gems + amount,
+                Source = source
+            };
+            
+            _gameData.user.gems += amount;
+            PostEvent(EventID.OnGemsChange, data);
+            Database.SaveData(_gameData);
+            
+            if (amount < 0)
+            {
+                SmoothGem = _gameData.user.gems;
+            }
+
+            return true;
+        }
+        
         #endregion
         
         #region OnApplication

@@ -33,25 +33,19 @@ namespace _Game.UIs.Screen
 
         private void Awake()
         {
-            GameManager.Ins.RegisterListenerEvent(EventID.OnGoldMoneyChange,
+            GameManager.Ins.RegisterListenerEvent(EventID.OnGoldChange,
                 data => ChangeGoldValue((ResourceChangeData)data));
-            GameManager.Ins.RegisterListenerEvent(EventID.OnGemMoneyChange,
+            GameManager.Ins.RegisterListenerEvent(EventID.OnGemsChange,
                 data => ChangeGemValue((ResourceChangeData)data));
         }
 
         private void OnDestroy()
         {
-            GameManager.Ins.UnregisterListenerEvent(EventID.OnGoldMoneyChange,
+            GameManager.Ins.UnregisterListenerEvent(EventID.OnGoldChange,
                 data => ChangeGoldValue((ResourceChangeData)data));
-            GameManager.Ins.UnregisterListenerEvent(EventID.OnGemMoneyChange,
+            GameManager.Ins.UnregisterListenerEvent(EventID.OnGemsChange,
                 data => ChangeGemValue((ResourceChangeData)data));
         }
-
-        // public override void UpdateUI()
-        // {
-        //     ChangeGoldValue(new ResourceChangeData() { NewValue = GameManager.Ins.Gold });
-        //     ChangeGemValue(new ResourceChangeData() { NewValue = GameManager.Ins.Gems });
-        // }
 
         public override void Setup(object param = null)
         {
@@ -102,7 +96,7 @@ namespace _Game.UIs.Screen
             // If screen not open yet, just set value
             if (!gameObject.activeSelf) return;
             
-            _goldValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT);
+            // _goldValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT);
 
             // If screen is open, play tween
             // _goldChangeTween?.Kill();
@@ -114,21 +108,20 @@ namespace _Game.UIs.Screen
             //         _goldValueText.text = value.ToString("#,#");
             //     });
             
-            // if (data.ChangedAmount > 0) // Increase
-            // {
-            //     int collectingCoinAmount = Mathf.Min((int)data.ChangedAmount, 8);
-            //     Vector3 spawnPosition = data.Source != null ? (Vector3)data.Source : default;
-            //     CollectingResourceManager.Ins.SpawnCollectingCoins(collectingCoinAmount, spawnPosition, _goldIconTF,
-            //         (progress) =>
-            //         {
-            //             GameManager.Ins.SmoothGold += data.ChangedAmount / collectingCoinAmount;
-            //             _goldValueText.text = GameManager.Ins.SmoothGold.ToString(Constants.VALUE_FORMAT);
-            //         });
-            // }
-            // else // Decrease or no change
-            // {
-            //     _goldValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT);
-            // }
+            if (data.ChangedAmount > 0 && data.Source is Vector3 spawnPosition)
+            {
+                int collectingCoinAmount = Mathf.Min((int)data.ChangedAmount, 8);
+                CollectingResourceManager.Ins.SpawnCollectingCoins(collectingCoinAmount, spawnPosition, _goldIconTF,
+                    (progress) =>
+                    {
+                        GameManager.Ins.SmoothGold += data.ChangedAmount / collectingCoinAmount;
+                        _goldValueText.text = GameManager.Ins.SmoothGold.ToString(Constants.VALUE_FORMAT);
+                    });
+            }
+            else 
+            {
+                _goldValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT);
+            }
         }
 
         private void ChangeGemValue(ResourceChangeData data)
@@ -136,29 +129,27 @@ namespace _Game.UIs.Screen
             // If screen not open yet, just set value
             if (!gameObject.activeSelf) return;
             
-            _gemValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT);
-
             // If screen is open, play tween
             // _goldChangeTween?.Kill();
             // _goldChangeTween = DOTween.To(() => int.Parse(_gemValueText.text.Replace(",", "")),
             //         x => _gemValueText.text = x.ToString("#,#"), value, 0.5f)
             //     .OnKill(() => { _gemValueText.text = value.ToString("#,#"); });
 
-            // if (data.ChangedAmount > 0) // Increase
-            // {
-            //     float currentValue = data.OldValue;
-            //     int collectingGemAmount = Mathf.Min((int)data.ChangedAmount, 8);
-            //     CollectingResourceManager.Ins.SpawnCollectingGems(collectingGemAmount, (Vector3)data.Source, _gemIconTF,
-            //         (progress) =>
-            //         {
-            //             currentValue += data.ChangedAmount / collectingGemAmount;
-            //             _gemValueText.text = currentValue.ToString(Constants.VALUE_FORMAT);
-            //         });
-            // }
-            // else // Decrease or no change
-            // {
-            //     _gemValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT);
-            // }
+            if (data.ChangedAmount > 0 && data.Source is Vector3 spawnPosition)
+            {
+                float currentValue = data.OldValue;
+                int collectingGemAmount = Mathf.Min((int)data.ChangedAmount, 8);
+                CollectingResourceManager.Ins.SpawnCollectingGems(collectingGemAmount, spawnPosition, _gemIconTF,
+                    (progress) =>
+                    {
+                        currentValue += data.ChangedAmount / collectingGemAmount;
+                        _gemValueText.text = currentValue.ToString(Constants.VALUE_FORMAT);
+                    });
+            }
+            else
+            {
+                _gemValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT);
+            }
         }
     }
 }
