@@ -753,9 +753,9 @@ MonoBehaviour:
   - {fileID: 4900000, guid: b372a93e69d838f4380920d972c48ed8, type: 3}
   - {fileID: 4900000, guid: 7332427225da8d142b7dc1b8d4b973ec, type: 3}
   - {fileID: 4900000, guid: 916c60c72afac6a4c92765b2eb69306c, type: 3}
+  - {fileID: 4900000, guid: 38723237ef672ad4e802148a17ca7058, type: 3}
   - {fileID: 4900000, guid: 2a97d9049159bcb4e8e1322537cb59b5, type: 3}
   - {fileID: 4900000, guid: 1be2c13f7097e404f964fc983e27a578, type: 3}
-  - {fileID: 4900000, guid: efd5cd35e6f8c3f43a3a5fb78b710875, type: 3}
   - {fileID: 4900000, guid: 2d350151591bced44b400f5408faaefb, type: 3}
   - {fileID: 4900000, guid: c4312950a11c33c45825b66d974c86e0, type: 3}
   - {fileID: 4900000, guid: cc1374e9cb1833d4bba2cf7c7605af5c, type: 3}
@@ -769,7 +769,7 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 041d306981e681b48972564185f7c1f1, type: 3}
   - {fileID: 4900000, guid: f70af5c5793851f40afa0b5d3ed6aefd, type: 3}
   - {fileID: 4900000, guid: f866335bc477c7949b3efd4108d0d661, type: 3}
-  - {fileID: 4900000, guid: aa9f7a37a5926d04d8196047c0933bdf, type: 3}
+  - {fileID: 4900000, guid: c1d01df131a066844b1df48e08fd7f7d, type: 3}
   - {fileID: 4900000, guid: 5cb0998f32763c5449cd7d1ca86ad4f2, type: 3}
   - {fileID: 4900000, guid: 9b1a5b35bf70bdd47a824d02fb85b028, type: 3}
   - {fileID: 4900000, guid: bd6a027d9bd14094eaa9fcaa9660155c, type: 3}
@@ -789,5 +789,6 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 99aacf09c274a9d47b6bd83661ed127f, type: 3}
   dailyChallengerLevel:
   - {fileID: 4900000, guid: e0e456d6d00c25d4cb284441711aaae9, type: 3}
+  - {fileID: 4900000, guid: c845a147687ba514798e65e09d7e939d, type: 3}
   secretLevel:
   - {fileID: 4900000, guid: 7cf5425d920679442a58b11454552cbb, type: 3}

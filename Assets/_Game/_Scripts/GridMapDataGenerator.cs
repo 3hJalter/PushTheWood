@@ -21,8 +21,8 @@ public class GridMapDataGenerator : MonoBehaviour
     [SerializeField] private int offsetSurfaceWithFirstCell = 3; // Should be 3
     [Tooltip("Random rotation for rock")]
     [SerializeField] private bool isRandomRotationForRock = true;
-    [SerializeField] private bool overrideLevelType;
-    [ShowIf(nameof(overrideLevelType))]
+    [ReadOnly] // Debugging
+    // ReSharper disable once NotAccessedField.Local
     [SerializeField] private LevelType levelType;
     [SerializeField] private LevelWinCondition winCondition;
     [InlineButton("SaveLevelAsJson", "Save Level")]
@@ -162,20 +162,20 @@ public class GridMapDataGenerator : MonoBehaviour
     {
         if (_loadedLevel != null) UnLoadLevels();
         // Find the level index from name in DataManager
-        LevelType levelType = VerifyLevelName(name);
-        if (levelType == LevelType.None)
+        LevelType levelTypeTemp = VerifyLevelName(name);
+        if (levelTypeTemp == LevelType.None)
         {
             DevLog.Log(DevId.Hoang, "Name is not in the correct format");
             return;
         }
-        TextAsset textAsset = Resources.Load<TextAsset>(GetPathFromName(levelType, name));
+        TextAsset textAsset = Resources.Load<TextAsset>(GetPathFromName(levelTypeTemp, name));
         // if not found, return
-        if (!DataManager.Ins.HasGridTextData(levelType, textAsset))
+        if (!DataManager.Ins.HasGridTextData(levelTypeTemp, textAsset))
         {
             DevLog.Log(DevId.Hoang, $"Not found level {name} in GridData");
             return;
         }
-        int index = DataManager.Ins.GetGridTextDataIndex(levelType, textAsset);
+        int index = DataManager.Ins.GetGridTextDataIndex(levelTypeTemp, textAsset);
         // if index < 0, return
         if (index < 0)
         {
@@ -184,7 +184,8 @@ public class GridMapDataGenerator : MonoBehaviour
         }
         // Create a new empty object
         GameObject levelObject = new(name);
-        _loadedLevel = new Level(levelType, index, levelObject.transform);
+        _loadedLevel = new Level(levelTypeTemp, index, levelObject.transform);
+        levelType = _loadedLevel.LevelType;
         winCondition = _loadedLevel.LevelWinCondition;
         mapLevelName = name;
         // Set all GridSurface to surfaceContainer
@@ -247,8 +248,8 @@ public class GridMapDataGenerator : MonoBehaviour
                 return;
         }
 
-        LevelType levelType = VerifyLevelName(mapLevelName);
-        if (levelType == LevelType.None)
+        LevelType levelTypeTemp = VerifyLevelName(mapLevelName);
+        if (levelTypeTemp == LevelType.None)
         {
             Debug.LogError("Level name must be in the format Lvl_number or Lvl_DC_number or Lvl_S_number");
             return;
@@ -543,14 +544,11 @@ public class GridMapDataGenerator : MonoBehaviour
 
         #endregion
 
-        if (overrideLevelType && this.levelType is not LevelType.None)
-        {
-            levelType = this.levelType;
-        }
+        levelType = levelTypeTemp;
         
         RawLevelData levelData = new()
         {
-            lt = (int) levelType,
+            lt = (int) levelTypeTemp,
             wc = (int) winCondition,
             s = size,
             sfD = gridSurfaceDataList.ToArray(),
@@ -564,15 +562,20 @@ public class GridMapDataGenerator : MonoBehaviour
         // Format json
         DevLog.Log(DevId.Hoang, "Save json: " + json);
         // Save json to file
-        string path = GetLongPathFromName(levelType, mapLevelName);
+        string path = GetLongPathFromName(levelTypeTemp, mapLevelName);
         DevLog.Log(DevId.Hoang, "Save to path: " + path);
         File.WriteAllText(path, json);
         // check if gridData contain this textAsset with this name, if not, add it 
-        TextAsset textAsset = Resources.Load<TextAsset>(GetPathFromName(levelType, mapLevelName));
+        TextAsset textAsset = Resources.Load<TextAsset>(GetPathFromName(levelTypeTemp, mapLevelName));
         if (textAsset == null) return;
-        if (DataManager.Ins.HasGridTextData(levelType, textAsset)) return;
+        if (DataManager.Ins.HasGridTextData(levelTypeTemp, textAsset))
+        {
+            DevLog.Log(DevId.Hoang, "Update level to GridData");
+            return;
+        }
+        DevLog.Log(DevId.Hoang, "Add new level to GridData");
         // Add new txt file to gridData from DataManager from path 
-        DataManager.Ins.AddGridTextData(levelType, textAsset);
+        DataManager.Ins.AddGridTextData(levelTypeTemp, textAsset);
     }
 
     [ContextMenu("Test Hint Trail")]
