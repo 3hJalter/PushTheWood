@@ -84,7 +84,10 @@ namespace _Game.UIs.Popup
         private void OnClickDailyChallengeButton(int index)
         {
             DevLog.Log(DevId.Hoang, $"OnClick Daily Challenge Button with index {index}");
+            if (_currentBtnClick != null)
+                _currentBtnClick.OnUnHover();
             _currentBtnClick = dailyChallengeButtons[index];
+            _currentBtnClick.OnHover();
             OnHandleCurrentButton();
         }
 
