@@ -99,7 +99,7 @@ namespace _Game.UIs.Popup
             OnPlay();
         }
 
-        private void OnClickPayToPlayButton()
+        private void OnClickPayToPlayButton()  
         {
             DevLog.Log(DevId.Hoang, "OnClick Pay To Play Button");
             // TODO: show popup to pay to play before play
