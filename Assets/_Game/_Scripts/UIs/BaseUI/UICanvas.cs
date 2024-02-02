@@ -42,7 +42,7 @@ public class UICanvas : MonoBehaviour
 
     public virtual void Open(object param = null)
     {
-        UIUpdate();
+        UpdateUI();
         gameObject.SetActive(true);
         //anim
         if (useAnimator) OpenAnimationAnim();
@@ -58,7 +58,8 @@ public class UICanvas : MonoBehaviour
         ChangeAnim(Constants.CLOSE);
         DOVirtual.DelayedCall(time, () => onCompleteAction?.Invoke());
     }
-    public virtual void UIUpdate() {}
+    
+    public virtual void UpdateUI() {}
 
     public virtual void Close()
     {

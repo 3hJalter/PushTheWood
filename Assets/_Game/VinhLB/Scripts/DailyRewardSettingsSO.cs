@@ -29,13 +29,13 @@ namespace VinhLB
             switch (RewardType)
             {
                 case RewardType.Gold:
-                    GameManager.Ins.AddGold(Amount, fromPosition);
+                    GameManager.Ins.GainGold(Amount, fromPosition);
                     break;
                 case RewardType.Gem:
-                    GameManager.Ins.AddGem(Amount, fromPosition);
+                    GameManager.Ins.GainGems(Amount, fromPosition);
                     break;
                 case RewardType.SecretMapPiece:
-                    GameManager.Ins.AddSecretMapPiece(Amount);
+                    GameManager.Ins.GainSecretMapPiece(Amount);
                     break;
             }
         }

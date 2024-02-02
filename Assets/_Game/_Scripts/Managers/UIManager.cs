@@ -102,11 +102,11 @@ namespace _Game.Managers
             return uiCanvasPrefab[typeof(T)] as T;
         }
 
-        public void UIsUpdate()
+        public void UpdateUIs()
         {
             for(int i = 0; i < backCanvas.Count; i++)
             {
-                backCanvas[i].UIUpdate();
+                backCanvas[i].UpdateUI();
             }
         }
         #endregion

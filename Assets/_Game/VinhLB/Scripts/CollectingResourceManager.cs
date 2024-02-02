@@ -14,7 +14,7 @@ namespace VinhLB
     public class CollectingResourceManager : Singleton<CollectingResourceManager>
     {
         [System.Serializable]
-        private struct CollectingResourceConfig
+        private class CollectingResourceConfig
         {
             public PoolType PrefabPoolType;
             public Vector3 MinSpreadPosition;
@@ -79,7 +79,7 @@ namespace VinhLB
                 Vector3 targetPosition = new Vector3(
                     startPosition.x + Random.Range(config.MinSpreadPosition.x, config.MaxSpreadPosition.x),
                     startPosition.y + Random.Range(config.MinSpreadPosition.y, config.MaxSpreadPosition.y));
-                unit.Tf.DOMove(targetPosition, config.SpreadDuration).From(startPosition).SetEase(Ease.Linear);
+                unit.Tf.DOMove(targetPosition, config.SpreadDuration).From(startPosition).SetEase(Ease.OutCirc);
 
                 unitList.Add(unit);
             }
@@ -113,9 +113,9 @@ namespace VinhLB
 
     public class ResourceChangeData
     {
+        public object Source;
         public float ChangedAmount;
         public float NewValue;
         public float OldValue;
-        public Vector3 FromPosition;
     }
 }
