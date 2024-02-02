@@ -44,7 +44,7 @@ namespace VinhLB
 
         public void OnClickBuyButton()
         {
-            if (GameManager.Ins.SpendGold(_boosterConfig.GoldPerBuyTen))
+            if (GameManager.Ins.TrySpendGold(_boosterConfig.GoldPerBuyTen))
             {
                 EventGlobalManager.Ins.OnChangeBoosterAmount.Dispatch(_boosterConfig.Type, BOOSTER_AMOUNT_ON_BUY);
                 Close();   

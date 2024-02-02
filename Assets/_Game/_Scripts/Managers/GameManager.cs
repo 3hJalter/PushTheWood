@@ -5,7 +5,6 @@ using _Game.Utilities;
 using DG.Tweening;
 using UnityEngine;
 using VinhLB;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace _Game.Managers
 {
@@ -28,7 +27,7 @@ namespace _Game.Managers
         private bool reduceScreenResolution;
 
         private GameData _gameData;
-        ResourceChangeData changeData = new ResourceChangeData();
+        
         private void Awake()
         {
             Input.multiTouchEnabled = false;
@@ -111,31 +110,25 @@ namespace _Game.Managers
 
         #region Income Data function
         
-        public void AddGold(int value, Vector3 fromPosition = default)
+        public int SecretLevelUnlock => _gameData.user.secretLevelUnlock;
+        public int Gold => _gameData.user.gold;
+        public int Gems => _gameData.user.gems;
+        public float SmoothGold { get; set; }
+        public float SmoothGem { get; set; }
+        
+        public void GainGold(int value, object source = null)
         {
-            changeData.ChangedAmount = value;
-            changeData.OldValue = _gameData.user.gold;
-            changeData.NewValue = _gameData.user.gold + value;
-            changeData.FromPosition = fromPosition;
-
-            _gameData.user.gold += value;
-            PostEvent(EventID.OnGoldMoneyChange, changeData);
-            Database.SaveData(_gameData);
-        }        
-        public void AddGem(int value, Vector3 fromPosition = default)
-        {
-            changeData.ChangedAmount = value;
-            changeData.OldValue = _gameData.user.gems;
-            changeData.NewValue = _gameData.user.gems + value;
-            changeData.FromPosition = fromPosition;
-
-            _gameData.user.gems += value;
-            PostEvent(EventID.OnGemMoneyChange, changeData);
-            Database.SaveData(_gameData);
+            TryModifyGold(value, source);
         }
-        public void AddSecretMapPiece(int piece)
+        
+        public void GainGems(int value,  object source = null)
         {
-            _gameData.user.secretMapPieces += piece;          
+            TryModifyGems(value, source);
+        }
+        
+        public void GainSecretMapPiece(int amount)
+        {
+            _gameData.user.secretMapPieces += amount;          
             if(_gameData.user.secretMapPieces >= Constants.REQUIRE_SECRET_MAP_PIECES)
             {
                 _gameData.user.secretLevelUnlock += 1;
@@ -145,41 +138,80 @@ namespace _Game.Managers
             PostEvent(EventID.OnUnlockSecretMap, _gameData.user.secretLevelUnlock);
             Database.SaveData(_gameData);
         }
-        public bool SpendGold(int gold)
+        
+        public bool TrySpendGold(int amount, object source = null)
         {
-            if (_gameData.user.gold < gold) return false;
-           
-            changeData.ChangedAmount = gold;
-            changeData.OldValue = _gameData.user.gold;
-            changeData.NewValue = _gameData.user.gold - gold;
-
-            _gameData.user.gold -= gold;
-            PostEvent(EventID.OnGoldMoneyChange, changeData);
-            Database.SaveData(_gameData);
-            return true;
-        }       
-        public bool SpendGem(int gem)
-        {
-            if (_gameData.user.gems < gem) return false;
-            changeData.ChangedAmount = gem;
-            changeData.OldValue = _gameData.user.gems;
-            changeData.NewValue = _gameData.user.gems - gem;
-
-            _gameData.user.gems -= gem;
-            PostEvent(EventID.OnGemMoneyChange, changeData);
-            Database.SaveData(_gameData);
-            return true;
+            return TryModifyGold(-amount, source);
         }
+        
+        public bool TrySpendGems(int amount, object source = null)
+        {
+            return TryModifyGems(-amount, source);
+        }
+        
         public void ResetUserData()
         {
-            SpendGold(_gameData.user.gold);
-            SpendGem(_gameData.user.gems);
+            TrySpendGold(_gameData.user.gold);
+            TrySpendGems(_gameData.user.gems);
+            
             _gameData.user.secretLevelUnlock = 0;
             _gameData.user.secretLevelIndex = 0;
         }
-        public int SecretLevelUnlock => _gameData.user.secretLevelUnlock;
-        public int Gold => _gameData.user.gold;
-        public int Gem => _gameData.user.gems;
+
+        private bool TryModifyGold(int amount, object source)
+        {
+            if (_gameData.user.gold + amount < 0)
+            {
+                return false;
+            }
+            
+            ResourceChangeData data = new ResourceChangeData()
+            {
+                ChangedAmount = amount,
+                OldValue = _gameData.user.gold,
+                NewValue = _gameData.user.gold + amount,
+                Source = source
+            };
+            
+            _gameData.user.gold += amount;
+            PostEvent(EventID.OnGoldChange, data);
+            Database.SaveData(_gameData);
+
+            if (amount < 0)
+            {
+                SmoothGold = _gameData.user.gold;
+            }
+
+            return true;
+        }
+
+        private bool TryModifyGems(int amount, object source)
+        {
+            if (_gameData.user.gems + amount < 0)
+            {
+                return false;
+            }
+            
+            ResourceChangeData data = new ResourceChangeData()
+            {
+                ChangedAmount = amount,
+                OldValue = _gameData.user.gems,
+                NewValue = _gameData.user.gems + amount,
+                Source = source
+            };
+            
+            _gameData.user.gems += amount;
+            PostEvent(EventID.OnGemsChange, data);
+            Database.SaveData(_gameData);
+            
+            if (amount < 0)
+            {
+                SmoothGem = _gameData.user.gems;
+            }
+
+            return true;
+        }
+        
         #endregion
         
         #region OnApplication

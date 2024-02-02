@@ -110,6 +110,7 @@ namespace _Game.GameGrid
         {
             _isResetting = true;
             _currentLevel.ResetIslandPlayerOn();
+            
             OnLevelIslandReset?.Invoke();
             _isResetting = false;
         }
@@ -213,15 +214,17 @@ namespace _Game.GameGrid
         {
             if (!CurrentLevel.IsInit) return; // No Init -> Means No Restart
             _isRestarting = true;
+            CurrentLevel.GridMap.Reset();
+            IsConstructingLevel = true;
             player.OnDespawn();
             CurrentLevel.ResetAllIsland();
             CurrentLevel.ResetNonIslandUnit();
-            CurrentLevel.GridMap.Reset();
             // player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
             // player.OnInit(CurrentLevel.firstPlayerInitCell);
             SetCameraToPlayerIsland();
             // FxManager.Ins.ResetTrackedTrampleObjectList();
-            savingState.Reset();
+            IsConstructingLevel = false;
+            savingState.Reset();            
             OnLevelRestarted?.Invoke();
             _isRestarting = false;
         }
@@ -314,7 +317,7 @@ namespace _Game.GameGrid
                     if (objectHistorys.Count < dataHistorys.Count)
                         objectHistorys.Push(objectHistorys.Peek());
                 }
-                if (dataHistorys.Count > 0)
+                if (dataHistorys.Count > 1)
                 {
                     dataHistorys.Pop().Restore();
                     foreach (IMemento objectRevert in objectHistorys.Pop())

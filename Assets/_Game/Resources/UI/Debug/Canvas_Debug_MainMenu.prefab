@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 19891856826962754}
-  - component: {fileID: 19891856826962756}
+  - component: {fileID: -8674826021225757052}
+  - component: {fileID: 7754259821195371006}
   - component: {fileID: 3275252203116696286}
   m_Layer: 5
   m_Name: Canvas_Debug_MainMenu
@@ -39,14 +40,44 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &19891856826962756
-CanvasRenderer:
+--- !u!223 &-8674826021225757052
+Canvas:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19891856826962753}
-  m_CullTransparentMesh: 1
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_SortingLayerID: 0
+  m_SortingOrder: 100
+  m_TargetDisplay: 0
+--- !u!114 &7754259821195371006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19891856826962753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 32
 --- !u!114 &3275252203116696286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,8 +93,8 @@ MonoBehaviour:
   isDestroyOnClose: 0
   useAnimator: 0
   animator: {fileID: 0}
-  addGems: {fileID: 2412976337016557906}
-  addGolds: {fileID: 670118460580182619}
+  addGoldBtn: {fileID: 670118460580182619}
+  addGemsBtn: {fileID: 2412976337016557906}
   addSecretMapPieceBtn: {fileID: 8652479274350928926}
   resetBtn: {fileID: 8504260231180357864}
 --- !u!1 &19891857301533932
@@ -95,8 +126,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8067694204377857804}
   - {fileID: 1014462333806224483}
+  - {fileID: 8067694204377857804}
   - {fileID: 19891857397397048}
   - {fileID: 8224360961236811086}
   m_Father: {fileID: 19891856826962754}
@@ -558,7 +589,7 @@ RectTransform:
   m_Children:
   - {fileID: 6416352030540803423}
   m_Father: {fileID: 19891857301533933}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -970,7 +1001,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Add 100 Golds
+  m_text: Add 100 Gold
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1052,7 +1083,7 @@ GameObject:
   - component: {fileID: 8913113624289715511}
   - component: {fileID: 670118460580182619}
   m_Layer: 5
-  m_Name: Add Golds
+  m_Name: Add Gold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1072,7 +1103,7 @@ RectTransform:
   m_Children:
   - {fileID: 6712603525184265802}
   m_Father: {fileID: 19891857301533933}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

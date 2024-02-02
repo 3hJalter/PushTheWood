@@ -11,7 +11,7 @@ using static _Game.GameGrid.GameGridCell;
 
 namespace _Game.Utilities.Grid
 {
-    public class Grid<T, TD> : IOriginator where T : GridCell<TD>
+    public class Grid<T, TD> : IOriginator where T : GridCell<TD> where TD : IReset
     {
         protected readonly TextMeshPro[,] debugTextArray;
         protected readonly T[,] gridArray;
@@ -167,6 +167,10 @@ namespace _Game.Utilities.Grid
             isChange = false;
             cellMementos.Clear();
             cellPos.Clear();
+            foreach(GridCell<TD> cell in gridArray)
+            {
+                cell.Data.ResetData();
+            }
         }
 
 

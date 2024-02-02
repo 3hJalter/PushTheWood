@@ -8,7 +8,7 @@ namespace VinhLB
         [SerializeField]
         HButton[] levelButtons;
 
-        public override void UIUpdate()
+        public override void UpdateUI()
         {
             for(int i = 0; i < levelButtons.Length; i++) 
             { 
