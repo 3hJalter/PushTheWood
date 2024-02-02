@@ -72,7 +72,6 @@ namespace _Game.UIs.Popup
         
         public void OnClickGoMenuButton()
         {
-            GameManager.Ins.ChangeState(GameState.MainMenu);
             if (LevelManager.Ins.CurrentLevel.LevelType != LevelType.Normal)
             {
                 LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex);

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace _Game.Utilities.Grid
 {
-    public class GridCell<T> : IOriginator
+    public class GridCell<T> : IOriginator where T : IReset
     {
         protected const int MIN = 0;
         protected const int MAX = 100;

@@ -275,6 +275,11 @@ MonoBehaviour:
   btnImage: {fileID: 2800051175293043017}
   btnSprites:
   - {fileID: 21300000, guid: eda43a4479cdaa34d87043618112e2b5, type: 3}
+  - {fileID: 21300000, guid: 0b9a265f2339c3a4fb44bb57daf5fd5c, type: 3}
+  - {fileID: 21300000, guid: d67323614e0f4c14889d485095d937fa, type: 3}
+  - {fileID: 21300000, guid: dc739c85de6dc364a9b1907074902e49, type: 3}
+  btnHoverSprites:
+  - {fileID: 21300000, guid: eda43a4479cdaa34d87043618112e2b5, type: 3}
   - {fileID: 21300000, guid: 3da15efbc124fa74bb265352dde462ab, type: 3}
   - {fileID: 21300000, guid: 88b3539feb10d4544b8eb0076574636c, type: 3}
   - {fileID: 21300000, guid: b26e71ecb5aa23f458e6419840fdc5bc, type: 3}
