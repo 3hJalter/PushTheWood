@@ -247,7 +247,7 @@ namespace _Game.GameGrid
         #endregion
     }
 
-    public class GameGridCellData
+    public class GameGridCellData : IReset
     {
         public bool canMovingDirectly;
         public bool canFloating;
@@ -264,6 +264,12 @@ namespace _Game.GameGrid
             gridSurfaceType = gridSurface == null ? GridSurfaceType.Water : gridSurface.SurfaceType;
             canFloating = gridSurfaceType == GridSurfaceType.Water;
             gridUnits = new GridUnit[Enum.GetValues(typeof(HeightLevel)).Length - 1];
+        }
+
+        public void ResetData()
+        {
+            IsDanger = false;
+            IsBlockDanger = false;
         }
     }
 }
