@@ -13,6 +13,7 @@ using _Game.Utilities;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using VinhLB;
+using GridUnit = _Game.GameGrid.Unit.GridUnit;
 
 public class GridMapDataGenerator : MonoBehaviour
 {
@@ -196,6 +197,19 @@ public class GridMapDataGenerator : MonoBehaviour
         }
         // Set all GridUnit from _loadedLevel.LevelUnitData.unit to unitContainer
         foreach (GridUnit unit in _loadedLevel.UnitDataList.Select(levelUnitData => levelUnitData.unit).Where(unit => unit.Tf.parent != unitContainer))
+        {
+            unit.Tf.parent = unitContainer;
+            // Change the rotation of unit in Skin to the rotation in Tf
+            // Get child with name Skin
+            Transform skin = unit.Tf.Find("Skin");
+            if (skin == null) continue;
+            // Set the local rotation Tf to the local rotation of Skin
+            unit.Tf.localRotation = skin.localRotation;
+            // Set the local rotation of Skin to identity
+            skin.localRotation = Quaternion.identity;
+        }
+        // Set all GridUnit from _loadedLevel.CharacterDataList to unitContainer
+        foreach (GridUnit unit in _loadedLevel.CharacterDataList.Select(levelUnitData => levelUnitData.unit).Where(unit => unit.Tf.parent != unitContainer))
         {
             unit.Tf.parent = unitContainer;
             // Change the rotation of unit in Skin to the rotation in Tf
