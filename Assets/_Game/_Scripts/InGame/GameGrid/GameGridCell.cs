@@ -256,8 +256,9 @@ namespace _Game.GameGrid
         // Type of cell
         public GridSurfaceType gridSurfaceType;
         public GridUnit[] gridUnits;
-        public bool IsDanger = false;
+        public bool IsDanger => isMakeDangerIds.Count > 0;
         public bool IsBlockDanger = false;
+        private List<int> isMakeDangerIds = new List<int>();
 
         public void OnInit()
         {
@@ -268,8 +269,26 @@ namespace _Game.GameGrid
 
         public void ResetData()
         {
-            IsDanger = false;
+            isMakeDangerIds.Clear();
             IsBlockDanger = false;
+        }
+
+        public void SetDanger(bool value, int id)
+        {
+            if (value)
+            {
+                if (!isMakeDangerIds.Contains(id))
+                {
+                    isMakeDangerIds.Add(id);
+                }
+            }
+            else
+            {
+                if (isMakeDangerIds.Contains(id))
+                {
+                    isMakeDangerIds.Remove(id);
+                }
+            }
         }
     }
 }
