@@ -152,11 +152,14 @@ namespace VinhLB
         // [UnityEditor.MenuItem("Debug/Daily Reward/Reset All")]
         public static void ResetAll()
         {
-            if (!Application.isPlaying)
+            DataManager.Ins.GameData.user.startDailyRewardClaimTime = DateTime.Now.Date;
+            DataManager.Ins.GameData.user.dailyRewardClaimedCount = 0;
+            DataManager.Ins.GameData.user.lastDailyRewardClaimTime = DateTime.Now.AddHours(-24);
+            DataManager.Ins.Save();
+            
+            if (Application.isPlaying)
             {
-                DataManager.Ins.GameData.user.startDailyRewardClaimTime = DateTime.Now.Date;
-                DataManager.Ins.GameData.user.dailyRewardClaimedCount = 0;
-                DataManager.Ins.GameData.user.lastDailyRewardClaimTime = DateTime.Now.AddHours(-24);
+                Ins.OnDailyRewardParamsChanged?.Invoke();
             }
         }
 #endif
