@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
+    SerializedFormat: 0
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -57,8 +57,6 @@ MonoBehaviour:
     SerializationNodes: []
   FpsDebug: {fileID: 4291094713015642588}
   LogDebug: {fileID: 4291094713512389667}
-  DebugCanvass:
-  - {fileID: 0}
 --- !u!1001 &4291094713015475258
 PrefabInstance:
   m_ObjectHideFlags: 0
