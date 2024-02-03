@@ -1,4 +1,5 @@
 ﻿using _Game.Managers;
+using TMPro;
 using UnityEngine;
 
 namespace VinhLB
@@ -7,6 +8,8 @@ namespace VinhLB
     {
         [SerializeField]
         HButton[] levelButtons;
+        [SerializeField]
+        TMP_Text secretMapPieceTxt;
 
         public override void UpdateUI()
         {
@@ -21,6 +24,7 @@ namespace VinhLB
                     levelButtons[i].interactable = false;
                 }
             }
+            secretMapPieceTxt.text = GameManager.Ins.SecretMapPieces.ToString();
         }
     }
 }
