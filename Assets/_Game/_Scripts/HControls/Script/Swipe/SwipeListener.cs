@@ -14,11 +14,9 @@ namespace GG.Infrastructure.Utils.Swipe
     public class SwipeListener : MonoBehaviour
     {
         public UnityEvent onSwipeCancelled;
-
         public SwipeListenerEvent onSwipe;
         public UnityEvent onCancelSwipe;
         public UnityEvent onUnHold;
-        
 
         [SerializeField] private float sensitivity = 100;
 
@@ -129,7 +127,7 @@ namespace GG.Infrastructure.Utils.Swipe
                 _timer -= Time.deltaTime;
                 if (_timer > 0) return;
                 _timer = Constants.HOLD_TOUCH_TIME;
-                onSwipe?.Invoke("None");
+                onSwipe?.Invoke(Constants.NONE);
                 if (!continuousDetection) _waitForSwipe = false;
                 SampleSwipeStart();
                 _isHolding = true;
