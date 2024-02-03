@@ -114,6 +114,7 @@ namespace _Game.Managers
         #region Income Data function
         
         public int SecretLevelUnlock => _gameData.user.secretLevelUnlock;
+        public int SecretMapPieces => _gameData.user.secretMapPieces;
         public int Gold => _gameData.user.gold;
         public int Gems => _gameData.user.gems;
         public float SmoothGold { get; set; }

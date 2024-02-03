@@ -40,12 +40,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
                 if (IsPreventAttack())
                 {
                     cell.Data.IsBlockDanger = true;
-                    cell.Data.IsDanger = false;
+                    cell.Data.SetDanger(false, GetHashCode());
                     t.AttackRange.Add(cell);
                     break;
                 }
 
-                cell.Data.IsDanger = true;
+                cell.Data.SetDanger(true, GetHashCode());
                 cell.Data.IsBlockDanger = false;
                 isAttack = isAttack || IsHavePlayer();
                 t.AttackRange.Add(cell);
@@ -105,7 +105,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
         {
             foreach (GameGridCell cell in t.AttackRange)
             {
-                cell.Data.IsDanger = false;
+                cell.Data.SetDanger(false, GetHashCode());
                 cell.Data.IsBlockDanger = false;
             }
             t.AttackRange.Clear();

@@ -69,7 +69,7 @@ namespace _Game.DesignPattern
         StartGame = 2,
         WinGame = 3,
         LoseGame = 4,
-        ObjectInOutDangerCell = 5,
+        ObjectInOutDangerCell = 5, //NOTE: Event in gameplay may be in other sources
         OnGoldChange = 6,
         OnGemsChange = 7,
         OnResetToMainMenu = 8,
