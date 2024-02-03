@@ -40,7 +40,7 @@ namespace HControls
 
         private static void OnCancelSwipe()
         {
-            DevLog.Log(DevId.Hoang, "Cancel swipe");
+            //DevLog.Log(DevId.Hoang, "Cancel swipe");
             HInputManager.SetDirectionInput(Direction.None);
         }
         
@@ -52,7 +52,7 @@ namespace HControls
         
         private static void OnSwipe(string direction)
         {
-            DevLog.Log(DevId.Hoang, $"Swipe - {direction}");
+            //DevLog.Log(DevId.Hoang, $"Swipe - {direction}");
             switch (direction)
             {
                 case DirectionId.ID_LEFT:
