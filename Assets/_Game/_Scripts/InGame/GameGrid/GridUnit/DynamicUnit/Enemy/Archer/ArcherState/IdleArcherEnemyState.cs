@@ -111,7 +111,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
             t.AttackRange.Clear();
             foreach(DangerIndicator cell in t.AttackRangeVFX)
             {
-                SimplePool.Despawn(cell);
+                cell.Despawn();
             }
             t.AttackRangeVFX.Clear();
             _isChangeAnim = false;
