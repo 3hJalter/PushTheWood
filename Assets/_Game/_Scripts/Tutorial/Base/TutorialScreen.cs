@@ -17,10 +17,10 @@ namespace _Game._Scripts.Tutorial
             }
         }
 
-        public override void CloseDirectly()
+        public override void CloseDirectly(object param = null)
         {
             // Show InGameScreen
-            if (!UIManager.Ins.IsOpened<InGameScreen>()) UIManager.Ins.OpenUI<InGameScreen>();
+            if (!UIManager.Ins.IsOpened<InGameScreen>()) UIManager.Ins.OpenUI<InGameScreen>(param);
             if (GameManager.Ins.IsState(GameState.InGame)) GameplayManager.Ins.OnUnPause();
             // Close and destroy this screen
             base.CloseDirectly();

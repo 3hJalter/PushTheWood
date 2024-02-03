@@ -17,22 +17,25 @@ namespace _Game.UIs.Screen
 {
     public class InGameScreen : UICanvas
     {
-        [SerializeField]
-        private CanvasGroup canvasGroup;
-        [SerializeField]
-        private Image blockPanel;
-        [SerializeField]
-        private Button undoButton;
-        [SerializeField]
-        private Button resetIslandButton;
-        [SerializeField]
-        private TMP_Text timeText;
-        [SerializeField]
-        private TMP_Text _levelText;
-        [SerializeField]
-        private TextMeshProUGUI objectiveText;
-
         private const float UNDO_CD_TIME = 0.3f;
+
+        [SerializeField] private CanvasGroup canvasGroup;
+
+        [SerializeField] private Image blockPanel;
+
+        [SerializeField] private Button undoButton;
+
+        [SerializeField] private Button resetIslandButton;
+
+        [SerializeField] private TMP_Text timeText;
+
+        [SerializeField] private TMP_Text _levelText;
+
+        [SerializeField] private TextMeshProUGUI objectiveText;
+
+        public TextMeshProUGUI undoCountText;
+        public TextMeshProUGUI resetCountText;
+        public TextMeshProUGUI hintCountText;
         private STimer resetIslandTimer;
 
         private int time;
@@ -54,7 +57,7 @@ namespace _Game.UIs.Screen
         private void Awake()
         {
             LevelManager.Ins.OnLevelNext += LevelManager_OnLevelNext;
-            
+
             undoTimer = TimerManager.Inst.PopSTimer();
             resetIslandTimer = TimerManager.Inst.PopSTimer();
         }
@@ -62,7 +65,7 @@ namespace _Game.UIs.Screen
         private void OnDestroy()
         {
             LevelManager.Ins.OnLevelNext -= LevelManager_OnLevelNext;
-            
+
             TimerManager.Inst.PushSTimer(undoTimer);
             TimerManager.Inst.PushSTimer(resetIslandTimer);
         }
@@ -72,15 +75,13 @@ namespace _Game.UIs.Screen
         public event Action OnHint;
         public event Action OnCancelHint;
 
-        public TextMeshProUGUI undoCountText;
-        public TextMeshProUGUI resetCountText;
-        public TextMeshProUGUI hintCountText;
-        
         public override void Setup(object param = null)
         {
-            base.Setup(); ;
+            base.Setup(param);
             GameManager.Ins.ChangeState(GameState.InGame);
-            MoveInputManager.Ins.ShowContainer(true);
+            // Log param
+            if (param is null) MoveInputManager.Ins.ShowContainer(true);
+            else MoveInputManager.Ins.ShowContainer(true, (bool)param);
             if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
             CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
             canvasGroup.alpha = 0f;
@@ -91,7 +92,7 @@ namespace _Game.UIs.Screen
 
         public override void Open(object param = null)
         {
-            base.Open();
+            base.Open(param);
             DebugManager.Ins?.OpenDebugCanvas(UI_POSITION.IN_GAME);
             DOVirtual.Float(0f, 1f, 1f, value => canvasGroup.alpha = value)
                 .OnComplete(() => { blockPanel.enabled = false; });
@@ -127,33 +128,6 @@ namespace _Game.UIs.Screen
             resetIslandButton.interactable = active;
         }
 
-        #region Booster
-        public void OnClickUndo()
-        {
-            // Check number of ticket to use
-            OnUndo?.Invoke();
-            undoButton.interactable = false;
-            undoTimer.Start(UNDO_CD_TIME, () => undoButton.interactable = true);
-        }
-
-        public void OnClickResetIslandButton()
-        {
-            OnResetIsland?.Invoke();
-            resetIslandButton.interactable = false;
-            resetIslandTimer.Start(UNDO_CD_TIME, () => resetIslandButton.interactable = true);
-        }
-
-        public void OnShowHint()
-        {
-            OnHint?.Invoke();
-        }
-
-        public void OnHideHint()
-        {
-            OnCancelHint?.Invoke();
-        }
-        #endregion
-
         private void UpdateLevelText()
         {
             int levelIndex = 1;
@@ -184,11 +158,40 @@ namespace _Game.UIs.Screen
                 _ => objectiveText.text
             };
         }
-        
+
         private void LevelManager_OnLevelNext()
         {
             UpdateLevelText();
             UpdateObjectiveText();
         }
+
+        #region Booster
+
+        public void OnClickUndo()
+        {
+            // Check number of ticket to use
+            OnUndo?.Invoke();
+            undoButton.interactable = false;
+            undoTimer.Start(UNDO_CD_TIME, () => undoButton.interactable = true);
+        }
+
+        public void OnClickResetIslandButton()
+        {
+            OnResetIsland?.Invoke();
+            resetIslandButton.interactable = false;
+            resetIslandTimer.Start(UNDO_CD_TIME, () => resetIslandButton.interactable = true);
+        }
+
+        public void OnShowHint()
+        {
+            OnHint?.Invoke();
+        }
+
+        public void OnHideHint()
+        {
+            OnCancelHint?.Invoke();
+        }
+
+        #endregion
     }
 }

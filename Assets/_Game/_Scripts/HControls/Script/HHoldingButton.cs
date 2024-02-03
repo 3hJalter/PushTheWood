@@ -10,10 +10,15 @@ namespace HControls
     public class HHoldingButton : HMonoBehaviour
     {
         private bool isHolding;
+        public bool IsHolding => isHolding;
 
         private readonly List<float> timerList = new();
         private readonly List<Action> actions = new();
         private STimer timer;
+        
+        private Action onPointerDownAction;
+        private Action onPointerUpAction;
+        
         private void Awake()
         {
             timerList.Add(Constants.HOLD_TOUCH_TIME);
@@ -26,18 +31,26 @@ namespace HControls
             });
         }
 
+        public void OnInit(float time, Action pointerDownAction, Action pointerUpAction, Action holdAction)
+        {
+            timerList.Add(time);
+            actions.Add(holdAction);
+            onPointerDownAction = pointerDownAction;
+            onPointerUpAction = pointerUpAction;
+        }
+        
         public void OnButtonPointerDown()
         {
             isHolding = true;
             timer = TimerManager.Inst.WaitForTime(timerList, actions);
+            onPointerDownAction?.Invoke();
         }
 
         public void OnButtonPointerUp()
         {
             isHolding = false;
             timer.Stop();
-            if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.ZoomOutCamera))
-                CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera, Constants.ZOOM_OUT_TIME);
+            onPointerUpAction?.Invoke();
         }
     }
 }

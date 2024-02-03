@@ -17,7 +17,9 @@ namespace GG.Infrastructure.Utils.Swipe
         public SwipeListenerEvent onSwipe;
         public UnityEvent onCancelSwipe;
         public UnityEvent onUnHold;
-
+        public bool isOverlappingUI;
+        
+        
         [SerializeField] private float sensitivity = 100;
 
         [SerializeField] private bool continuousDetection;
@@ -67,24 +69,31 @@ namespace GG.Infrastructure.Utils.Swipe
             if (SwipeDetectionMode != SwipeDetectionMode.Custom)
                 SetDetectionMode(DirectionPresets.GetPresetByMode(SwipeDetectionMode));
         }
-
+        
         private void Update()
         {
-            if (_isHolding && Input.GetMouseButtonUp(0))
+            // Version 2
+            if (Input.GetMouseButtonUp(0))
             {
-                onUnHold?.Invoke();
-                _isHolding = false;
+                // Check if button Release
+                if (_isHolding)
+                {
+                    onUnHold?.Invoke();
+                    _isHolding = false;
+                }
+                if (!_waitForSwipe) OnCancelSwipe();
+            } else if (Input.GetMouseButtonDown(0))
+            {
+                // Check if button Pressed
+                if (!isOverlappingUI && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
+                InitSwipe();
+            } else if (Input.GetMouseButton(0))
+            {
+                // Check if button is being held
+                if (_waitForSwipe) CheckSwipe();
             }
-            
-            if (Input.GetMouseButtonUp(0) && !_waitForSwipe) OnCancelSwipe();
-            
-            if (Input.GetMouseButtonDown(0) && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
-            
-            if (Input.GetMouseButtonDown(0)) InitSwipe();
-
-            if (_waitForSwipe && Input.GetMouseButton(0)) CheckSwipe();
-
-            if (continuousDetection == false) CheckSwipeCancellation();
+            // Check if Swipe is continuous detection
+            if (!continuousDetection) CheckSwipeCancellation();
         }
 
         public void SetDetectionMode(List<DirectionId> directions)

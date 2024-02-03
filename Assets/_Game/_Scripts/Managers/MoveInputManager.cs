@@ -11,9 +11,9 @@ namespace _Game._Scripts.Managers
     {
         public enum MoveChoice
         {
+            Swipe,
             DPad,
             Switch,
-            Swipe,
             SwipeContinuous,
         }
 
@@ -21,13 +21,14 @@ namespace _Game._Scripts.Managers
         [SerializeField] private HSwitch hSwitch;
         [SerializeField] private HDpad dpad;
         [SerializeField] private HSwipe hSwipe;
-        
-        public HDpad Dpad => dpad;
 
+        public HSwipe HSwipe => hSwipe;
+
+        public HDpad Dpad => dpad;
         private HSwitch HSwitch => hSwitch;
         private GameObject DpadObj => dpad.gameObject;
 
-        public MoveChoice CurrentChoice { get; private set; }
+        private MoveChoice CurrentChoice { get; set; }
         
         public void OnForceResetMove()
         {
@@ -49,17 +50,17 @@ namespace _Game._Scripts.Managers
             OnForceResetMove();
         }
         
-        private void HideButton()
+        private void HideButton(bool isSetDefault = true)
         {
-            HInputManager.SetDefault();
+            if (isSetDefault) HInputManager.SetDefault();
             DpadObj.SetActive(false);
             HSwitch.gameObject.SetActive(false);
             hSwipe.gameObject.SetActive(false);
         }
 
-        public void OnChangeMoveChoice(MoveChoice moveChoice)
+        public void OnChangeMoveChoice(MoveChoice moveChoice, bool isSetDefault = true)
         {
-            HideButton();
+            HideButton(isSetDefault);
             switch (moveChoice)
             {
                 case MoveChoice.DPad:
@@ -89,10 +90,10 @@ namespace _Game._Scripts.Managers
         }
         
         private bool _isFirstOpen;
-        public void ShowContainer(bool isShow)
+        public void ShowContainer(bool isShow, bool isSetDefault = true)
         {
             container.SetActive(isShow);
-            if (!isShow) HideButton();
+            if (!isShow) HideButton(isSetDefault);
             else
             {
                 if (!_isFirstOpen)
@@ -100,7 +101,7 @@ namespace _Game._Scripts.Managers
                     _isFirstOpen = true;
                     CurrentChoice = (MoveChoice) DataManager.Ins.GameData.setting.moveChoice;
                 }
-                OnChangeMoveChoice(CurrentChoice);
+                OnChangeMoveChoice(CurrentChoice, isSetDefault);
             }
         }
     }
