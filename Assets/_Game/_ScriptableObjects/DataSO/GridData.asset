@@ -753,9 +753,9 @@ MonoBehaviour:
   - {fileID: 4900000, guid: b372a93e69d838f4380920d972c48ed8, type: 3}
   - {fileID: 4900000, guid: 7332427225da8d142b7dc1b8d4b973ec, type: 3}
   - {fileID: 4900000, guid: 916c60c72afac6a4c92765b2eb69306c, type: 3}
-  - {fileID: 4900000, guid: 38723237ef672ad4e802148a17ca7058, type: 3}
   - {fileID: 4900000, guid: 2a97d9049159bcb4e8e1322537cb59b5, type: 3}
   - {fileID: 4900000, guid: 1be2c13f7097e404f964fc983e27a578, type: 3}
+  - {fileID: 4900000, guid: efd5cd35e6f8c3f43a3a5fb78b710875, type: 3}
   - {fileID: 4900000, guid: 2d350151591bced44b400f5408faaefb, type: 3}
   - {fileID: 4900000, guid: c4312950a11c33c45825b66d974c86e0, type: 3}
   - {fileID: 4900000, guid: cc1374e9cb1833d4bba2cf7c7605af5c, type: 3}
@@ -773,21 +773,8 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 5cb0998f32763c5449cd7d1ca86ad4f2, type: 3}
   - {fileID: 4900000, guid: 9b1a5b35bf70bdd47a824d02fb85b028, type: 3}
   - {fileID: 4900000, guid: bd6a027d9bd14094eaa9fcaa9660155c, type: 3}
-  - {fileID: 4900000, guid: 4f97dfc521c303c42b0fff9505f6e1e6, type: 3}
-  - {fileID: 4900000, guid: 1ecb37694e46c42479aca826b3764d86, type: 3}
-  - {fileID: 4900000, guid: b6e0df4582718574b8c1df1644545880, type: 3}
-  - {fileID: 4900000, guid: 1dbef46b5ca1b154ea369f7d0baa3a17, type: 3}
-  - {fileID: 4900000, guid: f2c9877245a153d408790aea8be53715, type: 3}
-  - {fileID: 4900000, guid: 082e822f199ab6e4e97066bac18000f2, type: 3}
-  - {fileID: 4900000, guid: b6adb31e861f7ac408eafd0ec9d9454f, type: 3}
-  - {fileID: 4900000, guid: 5904e576d2b1f6444946d90cc1eec33d, type: 3}
-  - {fileID: 4900000, guid: 9adb46a4a30c95841a4daa2767121d04, type: 3}
-  - {fileID: 4900000, guid: 9dc00fe2f83beb24f8211e0409531988, type: 3}
-  - {fileID: 4900000, guid: 0661212bb5b993e478c77e78b72e5caa, type: 3}
-  - {fileID: 4900000, guid: 85ce2cf2ad5c1844fa681abf79fb462f, type: 3}
-  - {fileID: 4900000, guid: 7a1f38a4eb5932c4cb3fc0c731b92430, type: 3}
-  - {fileID: 4900000, guid: 99aacf09c274a9d47b6bd83661ed127f, type: 3}
   dailyChallengerLevel:
+  - {fileID: 4900000, guid: 785855e7a42c9544fa55015f0ba772ec, type: 3}
   - {fileID: 4900000, guid: e0e456d6d00c25d4cb284441711aaae9, type: 3}
   - {fileID: 4900000, guid: c845a147687ba514798e65e09d7e939d, type: 3}
   - {fileID: 4900000, guid: c223ac9cf3e773e4986dc728612c29e4, type: 3}

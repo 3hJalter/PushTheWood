@@ -11,12 +11,12 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit
 {
-    public abstract class GridUnitCharacter : GridUnitDynamic, ICharacter 
+    public abstract class GridUnitCharacter : GridUnitDynamic, ICharacter, IDamageable
     {
         [SerializeField]
         protected Animator animator;
         [HideInInspector]
-        public bool IsDead = false;
+        public bool IsDead { get; set; }
         protected string _currentAnim = Constants.INIT_ANIM;
         protected bool _isAddState;
         protected bool _isWaitAFrame;
