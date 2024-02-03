@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -101,14 +101,108 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
-    SerializedBytes: 01010c00000045006e0074006500720050006f00730044006100740061002f0000000001350000005f00470061006d0065002e00470061006d00650047007200690064002e0055006e00690074002e0045006e00740065007200430065006c006c0050006f00730044006100740061002c00200041007300730065006d0062006c0079002d0043005300680061007200700000000000030108000000660069006e0061006c0050006f0073002f01000000012b00000055006e0069007400790045006e00670069006e0065002e0056006500630074006f00720033002c00200055006e0069007400790045006e00670069006e0065002e0043006f00720065004d006f00640075006c0065002000000000200000000020000000000503010a00000069006e0069007400690061006c0050006f0073003001000000200000000020000000002000000000052b010900000069007300460061006c006c0069006e006700001d010b0000007300740061007200740048006500690067006800740000000000000000000501010b000000630065006c006c0049006e0055006e006900740073002f02000000015b000000530079007300740065006d002e0043006f006c006c0065006300740069006f006e0073002e00470065006e0065007200690063002e004c00690073007400600031005b005b005f00470061006d0065002e00470061006d00650047007200690064002e00470061006d0065004700720069006400430065006c006c002c00200041007300730065006d0062006c0079002d004300530068006100720070005d005d002c0020006d00730063006f0072006c006900620001000000060000000000000000070501010d0000006e00650069006700680062006f00720055006e006900740073002f030000000162000000530079007300740065006d002e0043006f006c006c0065006300740069006f006e0073002e00470065006e0065007200690063002e004800610073006800530065007400600031005b005b005f00470061006d0065002e00470061006d00650047007200690064002e0055006e00690074002e00470072006900640055006e00690074002c00200041007300730065006d0062006c0079002d004300530068006100720070005d005d002c002000530079007300740065006d002e0043006f007200650002000000060000000000000000070501010a0000007500700070006500720055006e00690074007300300300000003000000060000000000000000070501010a000000620065006c006f00770055006e006900740073003003000000040000000600000000000000000705
+    SerializedFormat: 2
+    SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: EnterPosData
+      Entry: 7
+      Data: 0|_Game.GameGrid.Unit.EnterCellPosData, Assembly-CSharp
+    - Name: finalPos
+      Entry: 7
+      Data: UnityEngine.Vector3, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: initialPos
+      Entry: 7
+      Data: UnityEngine.Vector3, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: isFalling
+      Entry: 5
+      Data: false
+    - Name: startHeight
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: cellInUnits
+      Entry: 7
+      Data: 1|System.Collections.Generic.List`1[[_Game.GameGrid.GameGridCell, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: neighborUnits
+      Entry: 7
+      Data: 2|System.Collections.Generic.HashSet`1[[_Game.GameGrid.Unit.GridUnit,
+        Assembly-CSharp]], System.Core
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: upperUnits
+      Entry: 7
+      Data: 3|System.Collections.Generic.HashSet`1[[_Game.GameGrid.Unit.GridUnit,
+        Assembly-CSharp]], System.Core
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: belowUnits
+      Entry: 7
+      Data: 4|System.Collections.Generic.HashSet`1[[_Game.GameGrid.Unit.GridUnit,
+        Assembly-CSharp]], System.Core
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   poolType: 4
   skin: {fileID: 3746253626358163692}
   meshRenderer: {fileID: 9113291626318848717}
@@ -119,7 +213,7 @@ MonoBehaviour:
   overrideStartHeight: 0
   floatingHeightOffset: 1
   unitTypeY: 0
-  yOffsetOnDown: 0.35
+  yOffsetOnDown: 0.4
   unitTypeXZ: -1
   skinRotationDirection: -1
   islandID: -1
@@ -252,7 +346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -390,7 +484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
