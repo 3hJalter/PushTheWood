@@ -223,6 +223,7 @@ namespace _Game.GameGrid
             SetCameraToPlayerIsland();
             // FxManager.Ins.ResetTrackedTrampleObjectList();
             IsConstructingLevel = false;
+            savingState.Reset();
             OnLevelRestarted?.Invoke();
             _isRestarting = false;
         }

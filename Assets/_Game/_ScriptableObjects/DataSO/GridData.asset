@@ -790,5 +790,10 @@ MonoBehaviour:
   dailyChallengerLevel:
   - {fileID: 4900000, guid: e0e456d6d00c25d4cb284441711aaae9, type: 3}
   - {fileID: 4900000, guid: c845a147687ba514798e65e09d7e939d, type: 3}
+  - {fileID: 4900000, guid: c223ac9cf3e773e4986dc728612c29e4, type: 3}
+  - {fileID: 4900000, guid: 8d04b209cb88b354a9f516b94ce4b6d9, type: 3}
+  - {fileID: 4900000, guid: 94edb8c391bfdbe47beef9f67a657ede, type: 3}
+  - {fileID: 4900000, guid: 6bd424cf6d4d6974dac352f42e273418, type: 3}
+  - {fileID: 4900000, guid: b0fd5ba18fdcb0c479228ae607d7059f, type: 3}
   secretLevel:
   - {fileID: 4900000, guid: 7cf5425d920679442a58b11454552cbb, type: 3}

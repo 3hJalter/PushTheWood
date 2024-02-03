@@ -5,6 +5,7 @@ using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
+using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Managers;
 using _Game.Utilities.Grid;
@@ -98,7 +99,9 @@ namespace _Game._Scripts.InGame
 
         public List<Vector3> HintLinePosList { get; } = new();
 
-        public List<LevelUnitData> UnitDataList { get; } = new();
+        public List<LevelUnitData> UnitDataList { get; } = new(); // Not include ICharacter
+        public List<LevelUnitData> CharacterDataList { get; } = new(); // Include ICharacter, but not include Player
+        
         private readonly List<LevelUnitData> nonIslandUnitLis = new();
 
         public List<GridUnit> ShadowUnitList { get; } = new();
@@ -114,6 +117,7 @@ namespace _Game._Scripts.InGame
         {
             AddIslandIdToSurface();
             for (int i = 0; i < UnitDataList.Count; i++) OnInitUnit(UnitDataList[i]);
+            for (int i = 0; i < CharacterDataList.Count; i++) OnInitUnit(CharacterDataList[i]);
             IsInit = true;
         }
 
@@ -228,6 +232,11 @@ namespace _Game._Scripts.InGame
                     LevelUnitData data = UnitDataList[i];
                     data.unit.OnDespawn();
                 }
+                for (int i = 0; i < CharacterDataList.Count; i++)
+                {
+                    LevelUnitData data = CharacterDataList[i];
+                    data.unit.OnDespawn();
+                }
             }
 
             firstPlayerInitCell = null;
@@ -239,6 +248,12 @@ namespace _Game._Scripts.InGame
             GridMap = null;
             // Clear all _unitDataList data
             UnitDataList.Clear();
+            // Clear all _characterDataList data
+            CharacterDataList.Clear();
+            // Clear all _shadowUnitList data
+            ShadowUnitList.Clear();
+            // Clear all _hintLinePosList data
+            HintLinePosList.Clear();
             IsInit = false;
         }
 
@@ -316,6 +331,13 @@ namespace _Game._Scripts.InGame
             for (int i = 0; i < UnitDataList.Count; i++)
             {
                 LevelUnitData data = UnitDataList[i];
+                data.unit.Tf.SetParent(parent);
+            }
+            
+            // set all character to parent
+            for (int i = 0; i < CharacterDataList.Count; i++)
+            {
+                LevelUnitData data = CharacterDataList[i];
                 data.unit.Tf.SetParent(parent);
             }
         }
@@ -434,7 +456,14 @@ namespace _Game._Scripts.InGame
                     unitType = type,
                     unit = unit
                 };
-                UnitDataList.Add(levelUnitData);
+                if (unit is ICharacter)
+                {
+                    if (unit is not Player) CharacterDataList.Add(levelUnitData);
+                }
+                else
+                {
+                    UnitDataList.Add(levelUnitData);
+                }
                 HasUnitInMap[x, y] = true;
                 unit.OnSetPositionAndRotation(PredictUnitPos(levelUnitData.startHeightIn), direction);
                 return unit;
@@ -483,7 +512,10 @@ namespace _Game._Scripts.InGame
 
         public void OnInitPlayerToLevel()
         {
+            LevelManager.Ins.player.ResetData();
             LevelManager.Ins.player.OnInit(firstPlayerInitCell, HeightLevel.One, true, firstPlayerDirection);
+            Islands[firstPlayerInitCell.Data.gridSurface.IslandID].AddInitUnitToIsland(
+                LevelManager.Ins.player, LevelManager.Ins.player.UnitUnitData, firstPlayerInitCell);
             Islands[firstPlayerInitCell.Data.gridSurface.IslandID].SetFirstPlayerStepCell(firstPlayerInitCell);
         }
 
@@ -496,7 +528,6 @@ namespace _Game._Scripts.InGame
                 nonIslandUnitLis.Add(data);
                 return;
             }
-
             Islands[data.mainCellIn.Data.gridSurface.IslandID]
                 .AddInitUnitToIsland(data.unit, data.unit.UnitUnitData, data.mainCellIn);
         }

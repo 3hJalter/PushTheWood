@@ -11,6 +11,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
     public class RunAboveChumpPlayerState : IState<Player>
     {
         private const float ANIM_TIME = 2f;
+        private readonly Vector3 UNIT_VECTOR = new Vector3(1, 0, 1);
         public StateEnum Id => StateEnum.RunAboveChump;
         STimer timer;
         Direction oldDirection;
@@ -24,7 +25,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             chump = t.MainCell.GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GameGridEnum.GridSurfaceType.Water] + 1);
             oldDirection = t.Direction;
             if (chump is Chump.Chump)
-                chump.skin.DOLocalRotate(Constants.DirVector3F[oldDirection] * 720f, ANIM_TIME, RotateMode.LocalAxisAdd); 
+                chump.skin.DOLocalRotate(Vector3.Cross(Constants.DirVector3F[oldDirection], UNIT_VECTOR) * 720f, ANIM_TIME, RotateMode.LocalAxisAdd); 
             else 
                 ChangeIdleState();
 
