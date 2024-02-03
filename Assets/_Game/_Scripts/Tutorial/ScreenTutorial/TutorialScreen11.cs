@@ -1,20 +1,28 @@
-﻿using _Game.Managers;
-using _Game.UIs.Screen;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using _Game._Scripts.Managers;
+using UnityEngine.Events;
 
 namespace _Game._Scripts.Tutorial.ScreenTutorial
 {
     public class TutorialScreen11 : TutorialScreen
     {
-        [SerializeField] private Image panel;
-        [SerializeField] private GameObject deco;
-        public void OpenInGameScreen()
+        private UnityAction<string> _swipeEvent;
+        public override void Setup(object param = null)
         {
-            
-            if (!UIManager.Ins.IsOpened<InGameScreen>()) UIManager.Ins.OpenUI<InGameScreen>();
-            panel.enabled = false;
-            deco.SetActive(false);
+            base.Setup(param);
+            MoveInputManager.Ins.ShowContainer(true);
+            // Add Close this screen when swipe
+            _swipeEvent = _ =>
+            {
+                CloseDirectly(false);
+            };
+            MoveInputManager.Ins.HSwipe.AddListener(_swipeEvent);
+        }
+
+        public override void CloseDirectly(object param = null)
+        {
+            // Remove Close this screen when swipe 
+            MoveInputManager.Ins.HSwipe.RemoveListener(_swipeEvent);
+            base.CloseDirectly(param);
         }
     }
 }

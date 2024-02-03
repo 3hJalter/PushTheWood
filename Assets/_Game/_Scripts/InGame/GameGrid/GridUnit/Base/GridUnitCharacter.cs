@@ -78,7 +78,7 @@ namespace _Game.GameGrid.Unit
             foreach(GameGridCell cell in AttackRange)
             {
                 cell.Data.IsBlockDanger = false;
-                cell.Data.IsDanger = false;
+                cell.Data.SetDanger(false, GetHashCode());
             }
             AttackRange.Clear();
             foreach(DangerIndicator indicator in AttackRangeVFX)

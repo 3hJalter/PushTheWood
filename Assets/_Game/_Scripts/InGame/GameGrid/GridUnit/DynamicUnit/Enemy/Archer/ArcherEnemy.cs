@@ -60,7 +60,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
                 player.CheckingStunState();
                 return;
             }
-            IsDead = true;
         }
         protected override void AddState()
         {

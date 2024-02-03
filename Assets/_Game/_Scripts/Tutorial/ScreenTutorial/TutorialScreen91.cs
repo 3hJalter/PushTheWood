@@ -4,10 +4,10 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
 {
     public class TutorialScreen91 : TutorialScreen
     {
-        public override void CloseDirectly()
+        public override void CloseDirectly(object param = null)
         {   
             LevelManager.Ins.CurrentLevel.ChangeShadowUnitAlpha(false);
-            base.CloseDirectly();
+            base.CloseDirectly(param);
         }
     }
 }

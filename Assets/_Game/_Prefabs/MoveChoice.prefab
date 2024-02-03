@@ -598,7 +598,7 @@ MonoBehaviour:
   onUnHold:
     m_PersistentCalls:
       m_Calls: []
-  sensitivity: 200
+  sensitivity: 50
   continuousDetection: 0
   swipeDetectionMode: 2
 --- !u!1 &7937655174677662599

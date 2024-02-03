@@ -21,9 +21,9 @@ namespace _Game.GameGrid.Unit.StaticUnit
         public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
         {
             if (isInteracted) return;
-            isInteracted = true;
             base.OnBePushed(direction, pushUnit);
             if (pushUnit is not Player) return;
+            isInteracted = true;
             ShowAnim(true);
             DOVirtual.DelayedCall(1f, OnOpenChestComplete);
         }

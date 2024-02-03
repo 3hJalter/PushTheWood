@@ -176,7 +176,7 @@ namespace _Game._Scripts.InGame
         public void SetFirstPlayerStepOnIsland(GameGridCell cell)
         {
             Islands[LevelManager.Ins.player.islandID].SetFirstPlayerStepCell(cell);
-            CameraManager.Ins.ChangeCameraTargetPosition(Islands[LevelManager.Ins.player.islandID].centerIslandPos);
+            CameraManager.Ins.ChangeCameraTargetPosition(Islands[LevelManager.Ins.player.islandID].centerIslandPos + LevelManager.Ins.CameraDownOffset);
         }
 
         public void ResetIslandPlayerOn()

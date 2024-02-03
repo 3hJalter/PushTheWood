@@ -196,12 +196,12 @@ Material:
     - _GlowIntensity: 1
     - _HorizonDistance: 1.5
     - _IntersectionClipping: 0.5
-    - _IntersectionFalloff: 0.533
-    - _IntersectionLength: 1.75
+    - _IntersectionFalloff: 0.5
+    - _IntersectionLength: 1.5
     - _IntersectionRippleDist: 32
     - _IntersectionRippleStrength: 1
     - _IntersectionSource: 0
-    - _IntersectionSpeed: 0.2
+    - _IntersectionSpeed: -0.2
     - _IntersectionStyle: 2
     - _IntersectionTiling: 0.3
     - _LightingOn: 1

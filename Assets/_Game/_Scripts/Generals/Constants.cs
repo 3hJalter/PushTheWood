@@ -6,7 +6,7 @@ using UnityEngine;
 public static class Constants
 {
     public const int CELL_SIZE = 2;
-
+    public const int DOWN_CAMERA_CELL_OFFSET = 1;
     // String Constants
 
     /// <summary>
@@ -105,7 +105,7 @@ public static class Constants
     public const float SLEEP_UP_ANIM_TIME = 1f;
     public const float SIT_DOWN_ANIM_TIME = 5f / 6;
     public const float SIT_UP_ANIM_TIME = 5f / 6;
-    public const float HOLD_TOUCH_TIME = 0.4f;
+    public const float HOLD_TOUCH_TIME = 0.5f;
     public const float ZOOM_OUT_TIME = 1f;
     public const float CHEST_OPEN_TIME = 1f;
     public const int REQUIRE_SECRET_MAP_PIECES = 8;

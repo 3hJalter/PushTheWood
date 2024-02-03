@@ -3,6 +3,7 @@ using _Game.Managers;
 using _Game.Utilities;
 using GG.Infrastructure.Utils.Swipe;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace HControls
 {
@@ -15,12 +16,31 @@ namespace HControls
             swipeListener.onSwipe.AddListener(OnSwipe);
             swipeListener.onCancelSwipe.AddListener(OnCancelSwipe);
             swipeListener.onUnHold.AddListener(OnUnHold);
-            
+        }
+        
+        public void AddListener(UnityAction<string> action = null)
+        {
+            if (action == null)
+            {
+                swipeListener.onSwipe.AddListener(OnSwipe);
+                return;
+            }
+            swipeListener.onSwipe.AddListener(action);
+        }
+        
+        public void RemoveListener(UnityAction<string> action = null)
+        {
+            if (action == null)
+            {
+                swipeListener.onSwipe.RemoveListener(OnSwipe);
+                return;
+            }
+            swipeListener.onSwipe.RemoveListener(action);
         }
 
         private static void OnCancelSwipe()
         {
-            DevLog.Log(DevId.Hoang, "Cancel swipe");
+            //DevLog.Log(DevId.Hoang, "Cancel swipe");
             HInputManager.SetDirectionInput(Direction.None);
         }
         
@@ -32,7 +52,7 @@ namespace HControls
         
         private static void OnSwipe(string direction)
         {
-            DevLog.Log(DevId.Hoang, $"Swipe - {direction}");
+            //DevLog.Log(DevId.Hoang, $"Swipe - {direction}");
             switch (direction)
             {
                 case DirectionId.ID_LEFT:

@@ -52,8 +52,18 @@ namespace _Game.GameGrid.Unit.StaticUnit
             // if dispatch true, button unit is entered
             return isEntered =>
             {
-                if (isEntered) numberOfButtonEntered++;
-                else numberOfButtonEntered--;
+                if (isEntered)
+                {
+                    // Not add more button if chest is unlocked or number of button entered is greater than number of button in level
+                    if (!isLocked || numberOfButtonEntered >= numberOfButtonInLevel) return;
+                    numberOfButtonEntered++;
+                }
+                else
+                {   
+                    // Not reduce more button if chest is unlocked or number of button entered is less than 0
+                    if (!isLocked || numberOfButtonEntered <= 0) return;
+                    numberOfButtonEntered--;
+                }
                 SetText();
                 if (numberOfButtonEntered == numberOfButtonInLevel && isLocked) OnUnlockChest();
             };

@@ -69,7 +69,7 @@ public class UICanvas : MonoBehaviour
         else OnClose();
     }
 
-    public virtual void CloseDirectly()
+    public virtual void CloseDirectly(object param = null)
     {
         if (UIManager.Ins.IsContain(this))
         {

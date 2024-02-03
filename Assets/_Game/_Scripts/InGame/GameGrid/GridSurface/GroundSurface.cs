@@ -54,7 +54,7 @@ namespace _Game.GameGrid.GridSurface
                     Flower flower = SimplePool.Spawn<Flower>(
                         DataManager.Ins.GetRandomEnvironmentObject(PoolType.Flower),
                         spawnPoint.position,
-                        spawnPoint.rotation);
+                        Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
                     flower.Tf.SetParent(_flowersParentTF, true);
 
                     _flowerList.Add(flower);

@@ -54,13 +54,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
                 if (IsPreventAttack(cell))
                 {
                     cell.Data.IsBlockDanger = true;
-                    cell.Data.IsDanger = false;
+                    cell.Data.SetDanger(false, GetHashCode());
                     t.AttackRange.Add(cell);
                 }
                 else
                 {
                     cell.Data.IsBlockDanger = false;
-                    cell.Data.IsDanger = true;
+                    cell.Data.SetDanger(true, GetHashCode());
                     isAttack = isAttack || IsHavePlayer(cell);
                     t.AttackRange.Add(cell);
                     t.AttackRangeVFX.Add(SimplePool.Spawn<DangerIndicator>(PoolType.DangerIndicator, cell.WorldPos + Vector3.up * 1.25f, Quaternion.identity));
@@ -121,7 +121,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
         {
             foreach (GameGridCell cell in t.AttackRange)
             {
-                cell.Data.IsDanger = false;
+                cell.Data.SetDanger(false, GetHashCode());
                 cell.Data.IsBlockDanger = false;
             }
             t.AttackRange.Clear();

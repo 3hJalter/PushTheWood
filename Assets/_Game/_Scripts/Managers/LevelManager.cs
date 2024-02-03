@@ -52,7 +52,11 @@ namespace _Game.GameGrid
 
 
         private CareTaker savingState;
-        
+        private readonly Vector3 _cameraDownOffset = new(0, 0, Constants.DOWN_CAMERA_CELL_OFFSET * Constants.CELL_SIZE);
+
+        public Vector3 CameraDownOffset => _cameraDownOffset;
+
+
         [ReadOnly]
         public Player player;
 
@@ -130,12 +134,14 @@ namespace _Game.GameGrid
         public void SetCameraToPlayerIsland()
         {
             if (player.islandID == -1) return;
+            
             SetCameraToIsland(player.islandID);
         }
 
         private void SetCameraToIsland(int index)
         {
-            CameraManager.Ins.ChangeCameraTargetPosition(CurrentLevel.GetIsland(index).centerIslandPos);
+            Vector3 position = CurrentLevel.GetIsland(index).centerIslandPos + _cameraDownOffset;
+            CameraManager.Ins.ChangeCameraTargetPosition(position);
         }
 
         private void SetCameraToPosition(Vector3 position)
