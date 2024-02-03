@@ -6,7 +6,7 @@ using UnityEngine;
 public static class Constants
 {
     public const int CELL_SIZE = 2;
-
+    public const int DOWN_CAMERA_CELL_OFFSET = 2;
     // String Constants
 
     /// <summary>
