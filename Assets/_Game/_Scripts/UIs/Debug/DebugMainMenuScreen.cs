@@ -30,11 +30,13 @@ namespace _Game.UIs.Screen
             GameManager.Ins.GainGems(10, addGemsBtn.transform.position);
             // UIManager.Ins.UpdateUIs();
         }
+        
         private void AddGold()
         {
             GameManager.Ins.GainGold(100, addGoldBtn.transform.position);
             // UIManager.Ins.UpdateUIs();
         }
+        
         private void AddSecretMapPiece()
         {
             GameManager.Ins.GainSecretMapPiece(1);

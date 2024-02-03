@@ -53,8 +53,8 @@ namespace _Game.UIs.Screen
 
             _canvasGroup.alpha = 0f;
             _blockPanel.gameObject.SetActive(true);
-            _goldValueText.text = $"{DataManager.Ins.GameData.user.gold}";
-            _gemValueText.text = $"{DataManager.Ins.GameData.user.gems}";
+            _goldValueText.text = $"{GameManager.Ins.Gold}";
+            _gemValueText.text = $"{GameManager.Ins.Gems}";
         }
 
         public override void Open(object param = null)

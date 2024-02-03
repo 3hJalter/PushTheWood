@@ -75,6 +75,9 @@ namespace _Game.Managers
             if (_gameData.user.normalLevelIndex > 0) UIManager.Ins.OpenUI<MainMenuScreen>();
             
             #endregion
+
+            SmoothGold = Gold;
+            SmoothGems = Gems;
         }
         
         #region Game State Handling
@@ -114,7 +117,7 @@ namespace _Game.Managers
         public int Gold => _gameData.user.gold;
         public int Gems => _gameData.user.gems;
         public float SmoothGold { get; set; }
-        public float SmoothGem { get; set; }
+        public float SmoothGems { get; set; }
         
         public void GainGold(int value, object source = null)
         {
@@ -206,7 +209,7 @@ namespace _Game.Managers
             
             if (amount < 0)
             {
-                SmoothGem = _gameData.user.gems;
+                SmoothGems = _gameData.user.gems;
             }
 
             return true;
