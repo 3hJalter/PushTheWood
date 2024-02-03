@@ -18,6 +18,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         float lastAngle = 0;
         Direction blockDirection;
         Tween moveTween;
+        bool damage;
 
         List<GridUnit> blockObjects = new();
 
@@ -26,6 +27,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         public void OnEnter(Chump t)
         {
             blockObjects.Clear();
+            damage = false;
             GameplayManager.Ins.IsCanUndo = false;
             OnExecute(t);
         }
@@ -57,6 +59,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     break;
                 case UnitTypeY.Down:
                     //NOTE: Blocking when chump is down
+                    damage = true;
                     GetBlockObjects(t.MainMovingData);
                     blockDirection = t.MainMovingData.inputDirection;
                     if (!IsSamePushDirection())
@@ -91,10 +94,16 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 for (int i = 0; i < blockObjects.Count; i++)
                 {
                     blockObjects[i].OnBePushed(blockDirection);
+                    //NOTE: Deal Damage
+                    if (damage)
+                    {
+                        if (blockObjects[i] is IDamageable damageable)
+                        {
+                            damageable.IsDead = true;
+                        }
+                    }                   
                     objectBlocking += $"{blockObjects[i]} ";
                 }
-                if (t.MainMovingData.blockDynamicUnits.Count > 0) t.OnPush(t.MainMovingData.inputDirection, t.MainMovingData);
-                DevLog.Log(DevId.Hung, $"{objectBlocking} || DYNAMIC - {t.MainMovingData.blockDynamicUnits.Count}");
                 //NOTE: Checking if push dynamic object does not create any change in grid -> discard the newest save.
                 if (!LevelManager.Ins.CurrentLevel.GridMap.IsChange)
                     LevelManager.Ins.DiscardSaveState();
