@@ -32,8 +32,8 @@ namespace VinhLB
             _playButton.onClick.AddListener(() =>
             {
                 UIManager.Ins.CloseAll();
-                LevelManager.Ins.InitLevel();
                 UIManager.Ins.OpenUI<InGameScreen>();
+                LevelManager.Ins.InitLevel();
             });
             _dailyChallengeButton.onClick.AddListener( () =>
             {
