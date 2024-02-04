@@ -29,10 +29,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             {
                 timer = TimerManager.Inst.PopSTimer();
             }
-            t.ChangeAnim(Constants.SIT_DOWN_ANIM);
+            t.ChangeAnim(Constants.SIT_DOWN_ANIM, true);
             oldDirection = t.Direction;
             initAnimSpeed = t.AnimSpeed;
-            isSitDown = true;
+            isSitDown = false;
             sitDistance = Constants.DirVector3F[oldDirection] * SIT_DISTANCE;
 
             oldSkinPos = t.skin.transform.localPosition;
@@ -41,6 +41,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             void PlayVFXSinging()
             {
                 musicalNotes = ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.MusicalNotes), t.VFXPositions[1].position);
+                isSitDown = true;
             }
         }
 
