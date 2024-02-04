@@ -15,6 +15,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.ButtonUnitState
         {
             if (!isFirstEnterDone)
             {
+                t.ChangeButton(false);
                 isFirstEnterDone = true;
             }
             else
@@ -24,16 +25,21 @@ namespace _Game.GameGrid.Unit.DynamicUnit.ButtonUnitState
                 float interval = _enterTime - _exitTime;
                 if (interval < HALF_BUTTON_ENTER_TIME)
                 {
-                    // Do a tween that changes the size y from current y to 50 in 0.15 - (_enterTime - _exitTime) seconds
+                    // Do a tween that changes the size y from current y to 30 in 0.15 - (_enterTime - _exitTime) seconds
                     t.animTween?.Kill();
-                    t.animTween = t.BtnModelTransform.DOScaleY(50, HALF_BUTTON_ENTER_TIME - interval).SetEase(Ease.OutBack)
+                    t.ChangeButton(true);
+                    t.animTween = t.BtnModelTransform.DOScaleY(30, HALF_BUTTON_ENTER_TIME - interval).SetEase(Ease.OutBack)
                         .OnComplete(() =>
                         {
-                            t.animTween = t.BtnModelTransform.DOScaleY(100, HALF_BUTTON_ENTER_TIME).SetEase(Ease.OutBack);
+                            t.ChangeButton(false);
+                            t.animTween = t.BtnModelTransform.DOScaleY(100, HALF_BUTTON_ENTER_TIME).SetEase(Ease.InBack);
                         });
                 }
+                else
+                {
+                    t.ChangeButton(false);
+                }
             }
-            t.ChangeButton(false);
         }
 
         public void OnExecute(ButtonUnit t)

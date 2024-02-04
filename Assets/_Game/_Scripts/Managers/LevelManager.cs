@@ -49,7 +49,8 @@ namespace _Game.GameGrid
         public int SecretLevelIndex => secretLevelIndex;
         public Level CurrentLevel => _currentLevel;
         public bool IsConstructingLevel;
-
+        
+        public bool IsFirstLevel => normalLevelIndex == 0;
 
         private CareTaker savingState;
         private readonly Vector3 _cameraDownOffset = new(0, 0, Constants.DOWN_CAMERA_CELL_OFFSET * Constants.CELL_SIZE);

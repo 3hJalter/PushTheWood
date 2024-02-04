@@ -230,7 +230,7 @@ namespace _Game._Scripts.InGame
                 for (int i = 0; i < UnitDataList.Count; i++)
                 {
                     LevelUnitData data = UnitDataList[i];
-                    data.unit.OnDespawn();
+                     data.unit.OnDespawn();
                 }
                 for (int i = 0; i < CharacterDataList.Count; i++)
                 {
