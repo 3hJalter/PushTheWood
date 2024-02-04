@@ -1,7 +1,5 @@
-﻿using System.Linq;
-using _Game.DesignPattern;
-using _Game.GameGrid.Unit.DynamicUnit.Player;
-using _Game.GameGrid.Unit.StaticUnit.Interface;
+﻿using _Game.GameGrid.Unit.DynamicUnit.Player;
+using _Game.GameGrid.Unit.StaticUnit.Chest;
 using _Game.Utilities;
 using DG.Tweening;
 using GameGridEnum;
@@ -9,13 +7,8 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.StaticUnit
 {
-    public class FloatingChest : GridUnitStatic, IChest
+    public class FloatingChest : BChest
     {
-        [SerializeField] private Animator chestAnimator;
-        [SerializeField] private GameObject chestModel;
-        
-        private bool isInteracted = false;
-
         private Vector3 originTransform;
         private Tween floatingTween;
         private const float MOVE_Y_VALUE = 0.06f;
@@ -53,15 +46,15 @@ namespace _Game.GameGrid.Unit.StaticUnit
             #endregion
         }
 
-        public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
-        {
-            if (isInteracted) return;
-            isInteracted = true;
-            base.OnBePushed(direction, pushUnit);
-            if (pushUnit is not Player) return;
-            ShowAnim(true);
-            DOVirtual.DelayedCall(Constants.CHEST_OPEN_TIME, OnOpenChestComplete);
-        }
+        // public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
+        // {
+        //     if (isInteracted) return;
+        //     if (pushUnit is not Player) return;
+        //     isInteracted = true;
+        //     base.OnBePushed(direction, pushUnit);
+        //     ShowAnim(true);
+        //     DOVirtual.DelayedCall(Constants.CHEST_OPEN_TIME, OnOpenChestComplete);
+        // }
 
         public override void OnDespawn()
         {
@@ -71,24 +64,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             base.OnDespawn();
         }
 
-        private void ShowAnim(bool isShow)
-        {
-            chestAnimator.gameObject.SetActive(isShow);
-            chestModel.SetActive(!isShow);
-            if (isShow)
-            {
-                chestAnimator.SetTrigger(Constants.OPEN_ANIM);
-                btnCanvas.gameObject.SetActive(false);
-            }
-        }
-        
-        private bool IsInWater()
-        {
-            return startHeight <= Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + FloatingHeightOffset &&
-                   cellInUnits.All(t => t.SurfaceType is GridSurfaceType.Water);
-        }
-
-        public void OnOpenChestComplete()
+        public override void OnOpenChestComplete()
         {
             DevLog.Log(DevId.Hoang, "Loot something");
         }

@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using _Game._Scripts.Managers;
-using _Game.Utilities;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -663,8 +662,8 @@ namespace _Game.GameGrid.Unit
         {
             Size = main.Size;
             UnitTypeY = main.UnitTypeY;
-            LocalSkinPos = main.skin.transform.localPosition;
-            LocalSkinRot = main.skin.transform.localRotation;
+            LocalSkinPos = main.skin.localPosition;
+            LocalSkinRot = main.skin.localRotation;
             Type = main.PoolType;
             StartHeight = main.StartHeight;
             SkinDirection = main.SkinRotationDirection;

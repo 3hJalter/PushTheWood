@@ -27,7 +27,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 Vector3 position = t.Tf.position;
                 originTransform = new Vector3(position.x,
                     (float)(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + t.FloatingHeightOffset) / 2 *
-                    Constants.CELL_SIZE - t.yOffsetOnDown + FLOATING_Y_OFFSET,
+                    Constants.CELL_SIZE - t.yOffsetOnDown - FLOATING_Y_OFFSET,
                     position.z);
                 floatingTween = DOVirtual.Float(0, MOVE_Y_TIME, MOVE_Y_TIME, SetSinWavePosition).SetLoops(-1)
                     .SetEase(Ease.Linear);

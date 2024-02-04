@@ -2,8 +2,7 @@
 using _Game._Scripts.Managers;
 using _Game.DesignPattern;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
-using _Game.GameGrid.Unit.StaticUnit.Interface;
-using _Game.Utilities;
+using _Game.GameGrid.Unit.StaticUnit.Chest;
 using DG.Tweening;
 using GameGridEnum;
 using Sirenix.OdinInspector;
@@ -16,37 +15,45 @@ namespace _Game.GameGrid.Unit.StaticUnit
      * This class is used for listen from button unit
      * The chest will be opened when all button units are entered
      */
-    public class ChestButtonUnit : GridUnitStatic, IChest
+    public class ChestButtonUnit : BChest
     {
-        private int numberOfButtonInLevel;
-        private int numberOfButtonEntered;
-
-        private bool isLocked;
-        private bool isInteracted;
+        [SerializeField] private GameObject lockedChestModel;
+        [SerializeField] private ParticleSystem chestUnlockParticle;
         
-        [Title("Canvas")]
+        [Title("Canvas")] 
         [SerializeField] private GameObject canvas;
         [SerializeField] private TextMeshProUGUI textMeshPro;
         
-        [Title("Chest")]
-        [SerializeField] private Animator chestAnimator;
-        [SerializeField] private GameObject chestModel;
-        [SerializeField] private GameObject lockedChestModel;
-        [SerializeField] private ParticleSystem chestUnlockParticle;
-        public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
+        private bool isLocked;
+        private int numberOfButtonEntered;
+        private int numberOfButtonInLevel;
+
+        public override void OnOpenChestComplete()
+        {
+            LevelManager.Ins.OnWin();
+        }
+
+        public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
+            bool isUseInitData = true,
             Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
             SetUpButtonUnit();
             OnLockChest();
         }
-        
+
         public override void OnDespawn()
         {
             DeSetUpButtonUnit();
             base.OnDespawn();
         }
-        
+
+        protected override void OnEnterTriggerNeighbor(GridUnit triggerUnit)
+        {
+            if (isLocked) return;
+            base.OnEnterTriggerNeighbor(triggerUnit);
+        }
+
         private Action<bool> OnButtonUnitEnter()
         {
             // if dispatch true, button unit is entered
@@ -59,11 +66,12 @@ namespace _Game.GameGrid.Unit.StaticUnit
                     numberOfButtonEntered++;
                 }
                 else
-                {   
+                {
                     // Not reduce more button if chest is unlocked or number of button entered is less than 0
                     if (!isLocked || numberOfButtonEntered <= 0) return;
                     numberOfButtonEntered--;
                 }
+
                 SetText();
                 if (numberOfButtonEntered == numberOfButtonInLevel && isLocked) OnUnlockChest();
             };
@@ -78,14 +86,14 @@ namespace _Game.GameGrid.Unit.StaticUnit
             canvas.SetActive(true);
             SetText();
         }
-        
+
         private void OnUnlockChest()
         {
             isLocked = false;
             chestAnimator.gameObject.SetActive(true);
             chestModel.SetActive(true);
             lockedChestModel.SetActive(false);
-            canvas.SetActive(false); 
+            canvas.SetActive(false);
             chestUnlockParticle.Play();
         }
 
@@ -93,28 +101,17 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             textMeshPro.text = $"{numberOfButtonEntered}/{numberOfButtonInLevel}";
         }
-        
-        public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
-        {
-            if (isInteracted || isLocked) return;
-            isInteracted = true;
-            base.OnBePushed(direction, pushUnit);
-            if (pushUnit is not Player) return;
-            ShowAnim(true);
-            DOVirtual.DelayedCall(Constants.CHEST_OPEN_TIME, OnOpenChestComplete);
-        }
-        
-        private void ShowAnim(bool isShow)
-        {
-            chestAnimator.gameObject.SetActive(isShow);
-            chestModel.SetActive(!isShow);
-            if (isShow)
-            {
-                chestAnimator.SetTrigger(Constants.OPEN_ANIM);
-                btnCanvas.gameObject.SetActive(false);
-            }
-        }
-        
+
+        // public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
+        // {
+        //     if (isInteracted || isLocked) return;
+        //     if (pushUnit is not Player) return;
+        //     isInteracted = true;
+        //     base.OnBePushed(direction, pushUnit);
+        //     ShowAnim(true);
+        //     DOVirtual.DelayedCall(Constants.CHEST_OPEN_TIME, OnOpenChestComplete);
+        // }
+
         private void SetUpButtonUnit()
         {
             // Get number of button in level
@@ -127,17 +124,12 @@ namespace _Game.GameGrid.Unit.StaticUnit
             // Add listener
             EventGlobalManager.Ins.OnButtonUnitEnter.AddListener(OnButtonUnitEnter(), true);
         }
-        
+
         private void DeSetUpButtonUnit()
         {
             EventGlobalManager.Ins.OnButtonUnitEnter.RemoveListener(OnButtonUnitEnter());
             numberOfButtonEntered = 0;
             numberOfButtonInLevel = 0;
-        }
-
-        public void OnOpenChestComplete()
-        {
-            LevelManager.Ins.OnWin();
         }
     }
 }
