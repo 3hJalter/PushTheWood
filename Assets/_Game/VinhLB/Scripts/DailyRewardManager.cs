@@ -64,7 +64,7 @@ namespace VinhLB
         }
 
         #region Debug
-#if UNITY_EDITOR
+// #if UNITY_EDITOR
         // [UnityEditor.MenuItem("Debug/Daily Reward/Print Parameters")]
         public static void PrintParameters()
         {
@@ -162,7 +162,7 @@ namespace VinhLB
                 Ins.OnDailyRewardParamsChanged?.Invoke();
             }
         }
-#endif
+// #endif
         #endregion
     }
 }
