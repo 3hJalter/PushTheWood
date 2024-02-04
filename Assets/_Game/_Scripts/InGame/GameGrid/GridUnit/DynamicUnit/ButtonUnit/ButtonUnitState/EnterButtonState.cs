@@ -14,10 +14,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.ButtonUnitState
             // Tween to change the size y from 100 to 20 in BUTTON_ENTER_TIME
             _isComplete = false;
             t.animTween?.Kill();
+            t.ChangeButton(true);
             t.animTween = t.BtnModelTransform.DOScaleY(20, BUTTON_ENTER_TIME).SetEase(Ease.OutBack).OnComplete(() =>
             {
                 _isComplete = true;
-                t.ChangeButton(_isComplete);
                 EventGlobalManager.Ins.OnButtonUnitEnter?.Dispatch(true);
             });
         }
@@ -29,8 +29,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.ButtonUnitState
         public void OnExit(ButtonUnit t)
         {
             t.animTween?.Kill();
+            t.ChangeButton(false);
             // Tween to change the size y from 20 to 100 in BUTTON_ENTER_TIME
-            t.animTween = t.BtnModelTransform.DOScaleY(100, BUTTON_ENTER_TIME).SetEase(Ease.OutBack);
+            t.animTween = t.BtnModelTransform.DOScaleY(100, BUTTON_ENTER_TIME).SetEase(Ease.InBack);
             // Check if complete tween
             if (!_isComplete) return;
             _isComplete = false;

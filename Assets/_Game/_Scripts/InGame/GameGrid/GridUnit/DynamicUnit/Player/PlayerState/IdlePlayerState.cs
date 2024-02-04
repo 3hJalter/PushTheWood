@@ -21,9 +21,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         {
             isFirstStop = true;
             cutTreeFrameCount = Constants.WAIT_CUT_TREE_FRAMES;
-            if(sleepTimer == null)
-                sleepTimer = TimerManager.Inst.PopSTimer();
+            if (LevelManager.Ins.IsFirstLevel) return;
+            sleepTimer ??= TimerManager.Inst.PopSTimer();
             sleepTimer.Start(Constants.SLEEP_TIME, ChangeSleepState);
+
+            return;
 
             void ChangeSleepState()
             {
@@ -165,7 +167,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         public void OnExit(Player t)
         {
             _isChangeAnim = false;
-            sleepTimer.Stop();
+            sleepTimer?.Stop();
         }
         
         
