@@ -50,7 +50,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Bomb
             if (_isWaitForExplode) StopExplode();
             StateMachine.OverrideState = StateEnum.None;
             waitExplosionObjectEffect.SetActive(false);
-            _stateMachine.ChangeState(StateEnum.Idle);
+            _stateMachine?.ChangeState(StateEnum.Idle);
             base.OnDespawn();
         }
         

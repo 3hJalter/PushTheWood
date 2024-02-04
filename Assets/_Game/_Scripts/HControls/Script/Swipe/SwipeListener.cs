@@ -146,6 +146,7 @@ namespace GG.Infrastructure.Utils.Swipe
         private void OnCancelSwipe()
         {
             _waitForSwipe = false;
+            _timer = Constants.HOLD_TOUCH_TIME;
             onCancelSwipe?.Invoke();
         }
 

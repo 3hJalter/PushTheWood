@@ -33,7 +33,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
         public override void OnDespawn()
         {
             base.OnDespawn();
-            _stateMachine.ChangeState(StateEnum.Idle);
+            _stateMachine?.ChangeState(StateEnum.Idle);
         }
 
         public override void OnPush(Direction direction, ConditionData conditionData = null)

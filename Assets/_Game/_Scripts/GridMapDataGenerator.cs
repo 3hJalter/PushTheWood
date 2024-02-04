@@ -617,7 +617,7 @@ public class GridMapDataGenerator : MonoBehaviour
         return "Level/" + type switch
         {
             LevelType.Normal => "Normal/" + levelName,
-            LevelType.DailyChallenge => "DailyChallenger/" + levelName,
+            LevelType.DailyChallenge => "DailyChallenge/" + levelName,
             LevelType.Secret => "Secret/" + levelName,
             LevelType.None => throw new ArgumentOutOfRangeException(nameof(type), type, null),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
