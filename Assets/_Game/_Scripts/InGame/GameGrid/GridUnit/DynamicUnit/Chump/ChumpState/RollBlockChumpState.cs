@@ -59,12 +59,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     break;
                 case UnitTypeY.Down:
                     //NOTE: Blocking when chump is down
-                    damage = true;
                     GetBlockObjects(t.MainMovingData);
                     blockDirection = t.MainMovingData.inputDirection;
                     if (!IsSamePushDirection())
                     {
                         Vector3 originPos = t.Tf.position;
+                        damage = true;
                         moveTween = t.Tf.DOMove(originPos + Constants.DirVector3F[blockDirection] * Constants.CELL_SIZE / 2f, Constants.MOVING_TIME * 0.5f).SetEase(Ease.InQuad)
                             .OnComplete(() => t.Tf.DOMove(originPos, Constants.MOVING_TIME * 0.5f).SetEase(Ease.OutQuad).OnComplete(ChangeToIdle));
                     }

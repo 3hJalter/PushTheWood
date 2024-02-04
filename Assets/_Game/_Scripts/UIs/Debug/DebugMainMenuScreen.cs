@@ -63,10 +63,10 @@ namespace _Game.UIs.Screen
             _addSecretMapPieceButton.onClick.AddListener(AddSecretMapPiece);
             _resetResourceButton.onClick.AddListener(ResetUserData);
             
-            _setCanCollectTodayButton.onClick.AddListener(DailyRewardManager.SetCanCollectToday);
-            _increase1DailyDay.onClick.AddListener(DailyRewardManager.Increase1DailyDay);
-            _decrease1DailyDayButton.onClick.AddListener(DailyRewardManager.Decrease1DailyDay);
-            _resetDailyRewardButton.onClick.AddListener(DailyRewardManager.ResetAll);
+            //_setCanCollectTodayButton.onClick.AddListener(DailyRewardManager.SetCanCollectToday);
+            //_increase1DailyDay.onClick.AddListener(DailyRewardManager.Increase1DailyDay);
+            //_decrease1DailyDayButton.onClick.AddListener(DailyRewardManager.Decrease1DailyDay);
+            //_resetDailyRewardButton.onClick.AddListener(DailyRewardManager.ResetAll);
         }
 
         private void OnEnable()
