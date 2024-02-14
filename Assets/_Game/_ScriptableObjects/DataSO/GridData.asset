@@ -773,6 +773,8 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 5cb0998f32763c5449cd7d1ca86ad4f2, type: 3}
   - {fileID: 4900000, guid: 9b1a5b35bf70bdd47a824d02fb85b028, type: 3}
   - {fileID: 4900000, guid: bd6a027d9bd14094eaa9fcaa9660155c, type: 3}
+  - {fileID: 4900000, guid: 6b2ed9aaead20534e9064f1c1bb8e0b3, type: 3}
+  - {fileID: 4900000, guid: 9045dfdb6cb0b9c449a6a586d4689787, type: 3}
   dailyChallengerLevel:
   - {fileID: 4900000, guid: 785855e7a42c9544fa55015f0ba772ec, type: 3}
   - {fileID: 4900000, guid: e0e456d6d00c25d4cb284441711aaae9, type: 3}
