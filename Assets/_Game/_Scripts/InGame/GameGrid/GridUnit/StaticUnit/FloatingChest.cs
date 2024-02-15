@@ -66,6 +66,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
 
         public override void OnOpenChestComplete()
         {
+            base.OnOpenChestComplete();
             DevLog.Log(DevId.Hoang, "Loot something");
         }
     }

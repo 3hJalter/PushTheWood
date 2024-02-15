@@ -10,6 +10,7 @@ namespace _Game.Managers
     public class UIManager : Singleton<UIManager>
     {
         public Transform canvasParentTf;
+        public Transform indicatorParentTf;
 
         //dict for UI active
         private readonly Dictionary<Type, UICanvas> uiCanvas = new();

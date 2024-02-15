@@ -24,6 +24,7 @@ public class FirstCutsceneHandler : MonoBehaviour
     {
         CameraManager.Ins.ChangeCamera(ECameraType.CutsceneCamera);
         CameraManager.Ins.ChangeCameraTarget(ECameraType.CutsceneCamera, player);
+        UIManager.Ins.indicatorParentTf.gameObject.SetActive(false);
         playableDirector.Play();
         yield return Timing.WaitForSeconds((float) playableDirector.duration);
         CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
@@ -32,6 +33,7 @@ public class FirstCutsceneHandler : MonoBehaviour
         TutorialManager.Ins.AddCutsceneObject(boat);
         yield return Timing.WaitForSeconds(2f); // Time change camera
         TutorialManager.Ins.TutorialList[0].OnForceShowTutorial(0);
+        UIManager.Ins.indicatorParentTf.gameObject.SetActive(true);
         Destroy(gameObject);
     }
 }

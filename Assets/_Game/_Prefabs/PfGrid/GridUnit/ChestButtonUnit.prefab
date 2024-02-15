@@ -10128,6 +10128,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2207868225529648741}
   - component: {fileID: 3831606463841547381}
+  - component: {fileID: 2845552073127281255}
   m_Layer: 0
   m_Name: ChestButtonUnit
   m_TagString: Untagged
@@ -10284,15 +10285,30 @@ MonoBehaviour:
   islandID: -1
   gridUnitStaticType: 7
   anchor: {fileID: 0}
-  hasInteractBtn: 0
-  btnCanvas: {fileID: 2207868225473455906}
-  interactBtn: {fileID: 4228621076834520699}
-  canvas: {fileID: 2207868225473455966}
-  textMeshPro: {fileID: 2207868225575490731}
   chestAnimator: {fileID: 5191408108845656512}
   chestModel: {fileID: 5550840672192403459}
+  indicatorTarget: {fileID: 2845552073127281255}
   lockedChestModel: {fileID: 3831606464012509851}
   chestUnlockParticle: {fileID: 6178493981268095029}
+  canvas: {fileID: 2207868225473455966}
+  textMeshPro: {fileID: 2207868225575490731}
+--- !u!114 &2845552073127281255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2207868225529648740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411060de4483b5e4c9847cd3cbc18554, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetColor: {r: 1, g: 0, b: 0, a: 1}
+  needBoxIndicator: 1
+  needArrowIndicator: 1
+  needDistanceText: 0
+  indicator: {fileID: 0}
 --- !u!1 &2207868225575490729
 GameObject:
   m_ObjectHideFlags: 0
@@ -11567,17 +11583,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2073520842874827295, guid: fc9cb1b8d43db7b4f86d77ceb680745b, type: 3}
   m_PrefabInstance: {fileID: 2767941699264035867}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4228621076834520699 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2073520842874827360, guid: fc9cb1b8d43db7b4f86d77ceb680745b, type: 3}
-  m_PrefabInstance: {fileID: 2767941699264035867}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14929e97a02e4c59a2516a82b7c8002b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &3831606464434083323
 PrefabInstance:
   m_ObjectHideFlags: 0

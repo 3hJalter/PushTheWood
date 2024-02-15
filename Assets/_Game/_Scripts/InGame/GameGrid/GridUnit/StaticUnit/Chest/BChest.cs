@@ -1,6 +1,7 @@
 ﻿using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.GameGrid.Unit.StaticUnit.Interface;
 using DG.Tweening;
+using GameGridEnum;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -11,11 +12,21 @@ namespace _Game.GameGrid.Unit.StaticUnit.Chest
         [Title("Chest")]
         [SerializeField] protected Animator chestAnimator;
         [SerializeField] protected GameObject chestModel;
+        [SerializeField] protected Target indicatorTarget;
         
         protected bool isInteracted;
 
+        public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
+            Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
+        {
+            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
+            if (!isInteracted) indicatorTarget.enabled = true;
+        }
+
         public virtual void OnOpenChestComplete()
-        { }
+        {
+            indicatorTarget.enabled = false;
+        }
         
         protected void ShowAnim(bool isShow)
         {

@@ -25,6 +25,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
 
         public override void OnOpenChestComplete()
         {
+            base.OnOpenChestComplete();
             LevelManager.Ins.OnWin();
         }
     }

@@ -617,6 +617,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3138856877929832974}
   - component: {fileID: 3138856877929832973}
+  - component: {fileID: 5022536453621653088}
   m_Layer: 0
   m_Name: FloatingChest
   m_TagString: Untagged
@@ -772,11 +773,26 @@ MonoBehaviour:
   islandID: -1
   gridUnitStaticType: 6
   anchor: {fileID: 0}
-  hasInteractBtn: 0
-  btnCanvas: {fileID: 3138856878007259977}
-  interactBtn: {fileID: 3138856877057850722}
   chestAnimator: {fileID: 9018194286319918507}
   chestModel: {fileID: 8657068477180030056}
+  indicatorTarget: {fileID: 5022536453621653088}
+--- !u!114 &5022536453621653088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3138856877929832975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411060de4483b5e4c9847cd3cbc18554, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetColor: {r: 0.6784314, g: 0.49411768, b: 0.83921576, a: 1}
+  needBoxIndicator: 1
+  needArrowIndicator: 1
+  needDistanceText: 0
+  indicator: {fileID: 0}
 --- !u!1 &3138856878007259957
 GameObject:
   m_ObjectHideFlags: 0
