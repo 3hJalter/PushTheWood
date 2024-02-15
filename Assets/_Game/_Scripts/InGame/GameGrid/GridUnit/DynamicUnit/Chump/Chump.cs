@@ -68,7 +68,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
             stateMachine.AddState(StateEnum.Roll, new RollChumpState());
             stateMachine.AddState(StateEnum.TurnOver, new TurnOverChumpState());
             stateMachine.AddState(StateEnum.Fall, new FallChumpState());
-            stateMachine.AddState(StateEnum.RollBlock, new RollBlockChumpState());
+            stateMachine.AddState(StateEnum.Block, new RollBlockChumpState());
             stateMachine.AddState(StateEnum.Emerge, new EmergeChumpState());
         }
 

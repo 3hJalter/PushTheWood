@@ -22,7 +22,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
         {
             if (!_isRoll)
             {
-                t.StateMachine.ChangeState(StateEnum.RollBlock);
+                t.StateMachine.ChangeState(StateEnum.Block);
             }
             else
             {

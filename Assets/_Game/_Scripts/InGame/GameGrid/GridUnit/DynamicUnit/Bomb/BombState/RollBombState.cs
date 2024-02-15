@@ -23,7 +23,7 @@ namespace a
         {
             if (!_isRoll)
             {
-                t.StateMachine.ChangeState(StateEnum.RollBlock);
+                t.StateMachine.ChangeState(StateEnum.Block);
             }
             else
             {

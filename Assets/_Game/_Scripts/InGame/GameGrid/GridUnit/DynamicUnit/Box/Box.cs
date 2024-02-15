@@ -68,6 +68,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
             _stateMachine.AddState(StateEnum.Move, new MoveBoxState());
             _stateMachine.AddState(StateEnum.Fall, new FallBoxState());
             _stateMachine.AddState(StateEnum.Emerge, new EmergeBoxState());
+            _stateMachine.AddState(StateEnum.Block, new MoveBlockBoxState());
         }
 
         public override StateEnum CurrentStateId 

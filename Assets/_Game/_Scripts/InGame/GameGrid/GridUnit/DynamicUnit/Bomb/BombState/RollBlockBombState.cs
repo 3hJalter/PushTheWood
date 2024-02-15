@@ -19,7 +19,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Bomb.BombState
 
         private readonly List<GridUnit> blockObjects = new();
 
-        public StateEnum Id => StateEnum.RollBlock;
+        public StateEnum Id => StateEnum.Block;
 
         public void OnEnter(Bomb t)
         {

@@ -87,7 +87,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Bomb
             _stateMachine.AddState(StateEnum.Fall, new FallBombState());
             _stateMachine.AddState(StateEnum.Roll, new RollBombState());
             _stateMachine.AddState(StateEnum.Explode, new ExplodeBombState());
-            _stateMachine.AddState(StateEnum.RollBlock, new RollBlockBombState());
+            _stateMachine.AddState(StateEnum.Block, new RollBlockBombState());
             
             #region Set Timer for Explode State
 

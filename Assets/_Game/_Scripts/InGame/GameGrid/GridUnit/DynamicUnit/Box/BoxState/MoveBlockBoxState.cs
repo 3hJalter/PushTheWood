@@ -15,7 +15,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box.BoxState
         Direction blockDirection;
         Tween moveTween;
 
-        public StateEnum Id => StateEnum.RollBlock;
+        public StateEnum Id => StateEnum.Block;
 
         public void OnEnter(Box t)
         {
@@ -44,11 +44,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box.BoxState
             }
             void ObjectBlocking()
             {
-                string objectBlocking = "BLOCKING - ";
                 for (int i = 0; i < blockObjects.Count; i++)
                 {
                     blockObjects[i].OnBePushed(blockDirection);
-                    objectBlocking += $"{blockObjects[i]} ";
                 }
                 //NOTE: Checking if push dynamic object does not create any change in grid -> discard the newest save.
                 if (!LevelManager.Ins.CurrentLevel.GridMap.IsChange)
