@@ -112,7 +112,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 switch (t.MovingData.Condition)
                 {
                     case CONDITION.SIT_DOWN:
-                        if(t.InputDetection.InputAction == InputAction.ButtonDown)
+                        if(t.InputDetection.InputAction == InputAction.ButtonDown && !t.IsInputCache)
                             t.StateMachine.ChangeState(StateEnum.SitDown);
                         break;
                     case CONDITION.RUN_ABOVE_CHUMP:

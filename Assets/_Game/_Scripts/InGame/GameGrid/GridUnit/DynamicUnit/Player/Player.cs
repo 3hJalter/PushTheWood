@@ -25,8 +25,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public bool IsStun = false;
         public Transform[] VFXPositions;
         #endregion
-
+        #region INPUT CACHE
         public readonly Queue<Direction> InputCache = new();
+        public bool IsInputCache { get; private set; } // DEV: Can put this in separate component
+        #endregion
         [SerializeField] private Animator animator;
         private StateMachine<Player> stateMachine;
         public StateMachine<Player> StateMachine => stateMachine;
@@ -35,7 +37,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             get => StateEnum.Idle;
             set => stateMachine.ChangeState(value);
         }
-
         private string _currentAnim = Constants.INIT_ANIM;
         private bool _isAddState;
 
@@ -61,7 +62,17 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             if (_isWaitAFrame)
             {
                 _isWaitAFrame = false;
-                Direction = InputCache.Count > 0 ? InputCache.Dequeue() : HInputManager.GetDirectionInput();
+                if(InputCache.Count > 0)
+                {
+                    Direction = InputCache.Dequeue();
+                    IsInputCache = true;
+                }
+                else
+                {
+                    Direction = HInputManager.GetDirectionInput();
+                    IsInputCache = false;
+                }
+
                 InputDetection.GetInput(Direction);
                 // TEST: Reset the Input if Direction is not none and Move is Swipe (Swipe only take one input per swipe)
                 // if (Direction != Direction.None && MoveInputManager.Ins.CurrentChoice is MoveInputManager.MoveChoice.Swipe) HInputManager.SetDefault();
