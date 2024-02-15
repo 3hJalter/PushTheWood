@@ -226,7 +226,7 @@ namespace _Game.GameGrid
 
         public struct CellMemento : IMemento
         {
-            GameGridCell main;
+            private readonly GameGridCell main;
             GridUnit[] gridUnits;
             public int Id => main.GetHashCode();
             public CellMemento(GameGridCell main, GridUnit[] unitData)
