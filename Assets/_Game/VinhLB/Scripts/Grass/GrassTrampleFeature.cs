@@ -62,11 +62,6 @@ namespace VinhLB
             _trackingTrampleObjectList.Remove(obj);
         }
 
-        public void ResetTrackedTrampleList()
-        {
-            _trackingTrampleObjectList.Clear();
-        }
-
         private class CustomRenderPass : ScriptableRenderPass
         {
             private readonly Vector4[] _tramplePositionArray;

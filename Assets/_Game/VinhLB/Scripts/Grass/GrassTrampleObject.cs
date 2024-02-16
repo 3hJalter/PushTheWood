@@ -5,9 +5,10 @@ namespace VinhLB
 {
     public class GrassTrampleObject : HMonoBehaviour
     {
-        [SerializeField] private UniversalRendererData _rendererData;
-
-        [SerializeField] private float _trampleRadius = 1f;
+        [SerializeField]
+        private UniversalRendererData _rendererData;
+        [SerializeField]
+        private float _trampleRadius = 1f;
 
         private GrassTrampleFeature _feature;
 
@@ -20,12 +21,18 @@ namespace VinhLB
 
         private void OnEnable()
         {
-            if (_feature != null) _feature.AddTrackedTrampleObject(this);
+            if (_feature != null)
+            {
+                _feature.AddTrackedTrampleObject(this);
+            }
         }
 
         private void OnDisable()
         {
-            if (_feature != null) _feature.RemoveTrackedTrampleObject(this);
+            if (_feature != null)
+            {
+                _feature.RemoveTrackedTrampleObject(this);
+            }
         }
     }
 }
