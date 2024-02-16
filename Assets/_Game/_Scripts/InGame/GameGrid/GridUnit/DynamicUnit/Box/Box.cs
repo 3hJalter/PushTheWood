@@ -54,7 +54,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
         public bool IsInWater()
         {
             return startHeight <= Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + FloatingHeightOffset &&
-                   cellInUnits.All(t => t.SurfaceType is GridSurfaceType.Water);
+                   cellInUnits.All(t => t.SurfaceType is GridSurfaceType.Water) &&
+                   isSpawn;
         }
 
         public override bool IsCurrentStateIs(StateEnum stateEnum)
