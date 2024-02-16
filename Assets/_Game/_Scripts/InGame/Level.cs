@@ -513,7 +513,7 @@ namespace _Game._Scripts.InGame
         public void OnInitPlayerToLevel()
         {
             LevelManager.Ins.player.ResetData();
-            LevelManager.Ins.player.OnInit(firstPlayerInitCell, HeightLevel.One, true, firstPlayerDirection);
+            LevelManager.Ins.player.OnInit(firstPlayerInitCell, HeightLevel.One, false, firstPlayerDirection);
             Islands[firstPlayerInitCell.Data.gridSurface.IslandID].AddInitUnitToIsland(
                 LevelManager.Ins.player, LevelManager.Ins.player.UnitUnitData, firstPlayerInitCell);
             Islands[firstPlayerInitCell.Data.gridSurface.IslandID].SetFirstPlayerStepCell(firstPlayerInitCell);
@@ -522,7 +522,7 @@ namespace _Game._Scripts.InGame
         private void OnInitUnit(LevelUnitData data)
         {
             data.unit.ResetData();
-            data.unit.OnInit(data.mainCellIn, data.startHeightIn, true, data.directionIn, true);
+            data.unit.OnInit(data.mainCellIn, data.startHeightIn, false, data.directionIn, true);
             if (data.mainCellIn.Data.gridSurface == null)
             {
                 nonIslandUnitLis.Add(data);

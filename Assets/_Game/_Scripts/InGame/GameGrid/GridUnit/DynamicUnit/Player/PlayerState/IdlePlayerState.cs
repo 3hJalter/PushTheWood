@@ -171,7 +171,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         }
         
         
-        private const int OUT_OF_ISLAND_CELL_BEFORE_TARGET_CAM_TO_PLAYER = 1;
+        private const int OUT_OF_ISLAND_CELL_BEFORE_TARGET_CAM_TO_PLAYER = 0;
         private const float OFFSET = 3f;
         private const float CAMERA_DOWN_OFFSET = Constants.CELL_SIZE * Constants.DOWN_CAMERA_CELL_OFFSET;
         private const float MOVE_TIME = 0.25f;
