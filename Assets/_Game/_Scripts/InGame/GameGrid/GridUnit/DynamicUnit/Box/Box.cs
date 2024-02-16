@@ -49,15 +49,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
             
             base.OnBePushed(direction, pushUnit);
             _stateMachine.ChangeState(StateEnum.Move);
-        }
-        
-        public bool IsInWater()
-        {
-            return startHeight <= Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + FloatingHeightOffset &&
-                   cellInUnits.All(t => t.SurfaceType is GridSurfaceType.Water) &&
-                   isSpawn;
-        }
-
+        }       
         public override bool IsCurrentStateIs(StateEnum stateEnum)
         {
             return _stateMachine.CurrentState.Id == stateEnum;
