@@ -1,9 +1,7 @@
 ﻿using System;
 using _Game._Scripts.Managers;
 using _Game.DesignPattern;
-using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.GameGrid.Unit.StaticUnit.Chest;
-using DG.Tweening;
 using GameGridEnum;
 using Sirenix.OdinInspector;
 using TMPro;
@@ -24,7 +22,8 @@ namespace _Game.GameGrid.Unit.StaticUnit
         [SerializeField] private GameObject canvas;
         [SerializeField] private TextMeshProUGUI textMeshPro;
         
-        private bool isLocked;
+        [ReadOnly]
+        [SerializeField] private bool isLocked;
         private int numberOfButtonEntered;
         private int numberOfButtonInLevel;
 

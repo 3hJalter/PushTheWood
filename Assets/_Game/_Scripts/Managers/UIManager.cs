@@ -48,6 +48,16 @@ namespace _Game.Managers
             return canvas;
         }
 
+        public void HideUI<T>() where T : UICanvas
+        {
+            if (IsOpened<T>()) GetUI<T>().gameObject.SetActive(false);
+        }
+        
+        public void ShowUI<T>() where T : UICanvas
+        {
+            if (!IsOpened<T>()) GetUI<T>().gameObject.SetActive(true);
+        }
+        
         public void CloseUI<T>() where T : UICanvas
         {
             if (IsOpened<T>()) GetUI<T>().Close();
@@ -73,7 +83,7 @@ namespace _Game.Managers
         public bool IsLoaded<T>() where T : UICanvas
         {
             Type type = typeof(T);
-            return uiCanvas.ContainsKey(type) && uiCanvas[type] != null;
+            return uiCanvas.ContainsKey(type) && uiCanvas[type] is not null;
         }
 
         public T GetUI<T>() where T : UICanvas
