@@ -21,7 +21,9 @@ public class OffScreenIndicator : MonoBehaviour
     private List<Target> targets = new List<Target>();
 
     public static Action<Target, bool> TargetStateChanged;
-
+    
+    private static Transform _centreTransform;
+    
     void Awake()
     {
         mainCamera = Camera.main;
