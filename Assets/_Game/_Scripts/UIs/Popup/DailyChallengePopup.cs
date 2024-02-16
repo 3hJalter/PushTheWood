@@ -17,9 +17,11 @@ namespace _Game.UIs.Popup
         [SerializeField] List<DailyChallengeButton> dailyChallengeButtons;
         private DailyChallengeButton _currentBtnClick;
         private int currentDay;
-        private int daysInMonth;
+        private const int DAY_IN_WEEK = 7;
+        // private int daysInMonth;
         
         // interact Btn
+        [SerializeField] private HButton tutorialBtn;
         [SerializeField] private GameObject notYetBtn;
         [SerializeField] private HButton payToPlayBtn;
         [SerializeField] private HButton playBtn;
@@ -28,11 +30,13 @@ namespace _Game.UIs.Popup
         private void Awake()
         {
             // Get number of days in month
-            daysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
-            currentDay = DateTime.Now.Day;
+            // daysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+            // currentDay = DateTime.Now.Day;
+            currentDay = (int)DateTime.Now.DayOfWeek;
             // Set panel height by adding 123f for each row, each row has 6 buttons
-            panel.sizeDelta = new Vector2(panel.sizeDelta.x, PANEL_INIT_HEIGHT + (123f * Mathf.CeilToInt(daysInMonth / 6f)));
+            panel.sizeDelta = new Vector2(panel.sizeDelta.x, PANEL_INIT_HEIGHT + (123f * Mathf.CeilToInt(DAY_IN_WEEK / 6f)));
             // Set listener for interact btn
+            tutorialBtn.onClick.AddListener(OnClickTutorialButton);
             payToPlayBtn.onClick.AddListener(OnClickPayToPlayButton);
             playBtn.onClick.AddListener(OnClickPlayButton);
             replayBtn.onClick.AddListener(OnClickReplayButton);
@@ -41,6 +45,7 @@ namespace _Game.UIs.Popup
         private void OnDestroy()
         {
             // Remove listener for interact btn
+            tutorialBtn.onClick.RemoveAllListeners();
             payToPlayBtn.onClick.RemoveAllListeners();
             playBtn.onClick.RemoveAllListeners();
             replayBtn.onClick.RemoveAllListeners();
@@ -53,7 +58,7 @@ namespace _Game.UIs.Popup
             for (int index = 0; index < dailyChallengeButtons.Count; index++)
             {
                 // if index is greater than days in month, disable button
-                if (index >= daysInMonth)
+                if (index >= DAY_IN_WEEK)
                 {
                     dailyChallengeButtons[index].gameObject.SetActive(false);
                     continue;
@@ -93,6 +98,14 @@ namespace _Game.UIs.Popup
             OnHandleCurrentButton();
         }
 
+        private static void OnClickTutorialButton()
+        {
+            DevLog.Log(DevId.Hoang, "OnClick Tutorial Button");
+            LevelManager.Ins.OnGoLevel(LevelType.DailyChallenge, 0);
+            UIManager.Ins.CloseAll();
+            UIManager.Ins.OpenUI<InGameScreen>();
+        }
+        
         private void OnClickPlayButton()
         {
             DevLog.Log(DevId.Hoang, "OnClick Play Button");
@@ -119,7 +132,7 @@ namespace _Game.UIs.Popup
 
         private void OnPlay()
         {
-            LevelManager.Ins.OnGoLevel(LevelType.DailyChallenge, _currentBtnClick.Index);
+            LevelManager.Ins.OnGoLevel(LevelType.DailyChallenge, _currentBtnClick.Index + 1);
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<InGameScreen>();
         }

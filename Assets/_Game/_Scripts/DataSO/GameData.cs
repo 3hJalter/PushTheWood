@@ -44,7 +44,7 @@ namespace _Game.Data
             public DateTime startDailyRewardClaimTime = DateTime.Now.Date;
             public DateTime lastDailyRewardClaimTime = DateTime.Now.AddHours(-24);
             public DateTime lastTimeLogOut = DateTime.Now;
-            public bool isFirstDayOfMonthCheck;
+            public bool isFirstDayOfWeekCheck;
             
             private int _keyCount;
 

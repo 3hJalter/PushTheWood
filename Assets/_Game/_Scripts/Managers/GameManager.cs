@@ -1,3 +1,4 @@
+using System;
 using _Game.Data;
 using _Game.DesignPattern;
 using _Game.UIs.Screen;
@@ -51,21 +52,25 @@ namespace _Game.Managers
             #region Handle first day of month
 
             // bool check if today is the first day of month
-            bool isFirstDayOfMonth = System.DateTime.Now.Day == 1;
-            if (isFirstDayOfMonth)
+            // bool isFirstDayOfMonth = System.DateTime.Now.Day == 1;
+            bool isFirstDayOfWeek = System.DateTime.Now.DayOfWeek == DayOfWeek.Monday;
+            if (isFirstDayOfWeek)
             {
-                if (!_gameData.user.isFirstDayOfMonthCheck)
+                if (!_gameData.user.isFirstDayOfWeekCheck)
                 {
                     // Clear daily level progress
                     _gameData.user.dailyLevelIndexComplete.Clear();
-                    _gameData.user.isFirstDayOfMonthCheck = true;
-                    DevLog.Log(DevId.Hoang, "First day of month, clear daily level progress");
+                    _gameData.user.isFirstDayOfWeekCheck = true;
+                    // DevLog.Log(DevId.Hoang, "First day of month, clear daily level progress");
+                    DevLog.Log(DevId.Hoang, "First day of week, clear daily level progress");
+
                 }
             }
             else
             {
-                DevLog.Log(DevId.Hoang, "Not first day of month");
-                _gameData.user.isFirstDayOfMonthCheck = false;
+                // DevLog.Log(DevId.Hoang, "Not first day of month");
+                DevLog.Log(DevId.Hoang, "Not first day of week");
+                _gameData.user.isFirstDayOfWeekCheck = false;
             }
 
             #endregion
