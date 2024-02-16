@@ -14,7 +14,8 @@ namespace _Game.GameGrid.Unit.StaticUnit.Chest
         [SerializeField] protected GameObject chestModel;
         [SerializeField] protected Target indicatorTarget;
         
-        protected bool isInteracted;
+        [ReadOnly]
+        [SerializeField] protected bool isInteracted;
 
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
             Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
@@ -23,12 +24,19 @@ namespace _Game.GameGrid.Unit.StaticUnit.Chest
             if (!isInteracted) indicatorTarget.enabled = true;
         }
 
+        public override void OnDespawn()
+        {
+            ShowAnim(false);
+            isInteracted = false;
+            base.OnDespawn();
+        }
+
         public virtual void OnOpenChestComplete()
         {
             indicatorTarget.enabled = false;
         }
         
-        protected void ShowAnim(bool isShow)
+        private void ShowAnim(bool isShow)
         {
             chestAnimator.gameObject.SetActive(isShow);
             chestModel.SetActive(!isShow);

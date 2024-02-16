@@ -1,5 +1,4 @@
-﻿using _Game.GameGrid.Unit.DynamicUnit.Player;
-using _Game.GameGrid.Unit.StaticUnit.Chest;
+﻿using _Game.GameGrid.Unit.StaticUnit.Chest;
 using _Game.Utilities;
 using DG.Tweening;
 using GameGridEnum;
@@ -58,8 +57,6 @@ namespace _Game.GameGrid.Unit.StaticUnit
 
         public override void OnDespawn()
         {
-            ShowAnim(false);
-            isInteracted = false;
             floatingTween?.Kill();
             base.OnDespawn();
         }

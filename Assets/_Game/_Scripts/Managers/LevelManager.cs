@@ -11,10 +11,11 @@ using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Managers;
+using _Game.UIs.Screen;
 using _Game.Utilities;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 using static _Game.Utilities.Grid.Grid<_Game.GameGrid.GameGridCell, _Game.GameGrid.GameGridCellData>;
 
 namespace _Game.GameGrid
@@ -61,7 +62,7 @@ namespace _Game.GameGrid
         [ReadOnly]
         public Player player;
 
-        [ReadOnly] public List<IEnemy> enemies = new();
+        [ReadOnly] public readonly List<IEnemy> enemies = new();
         
         // DEBUG:
         [ReadOnly]
@@ -210,10 +211,25 @@ namespace _Game.GameGrid
             {
                 TutorialManager.Ins.OnDestroyCutsceneObject();
             }
-            OnGenerateLevel(type, normalLevelIndex, needInit);
+            OnGenerateLevel(type, normalLevelIndex, false);
+            // Zoom out
+            CameraManager.Ins.ChangeCamera(ECameraType.MainMenuCamera);
+            // Hide the screen
+            UIManager.Ins.HideUI<InGameScreen>();
+            SetCameraToPosition(CurrentLevel.GetCenterPos());
+            // Delay 2.5 second for zoom out
+            DOVirtual.DelayedCall(2f, () =>
+            {
+                if (!_currentLevel.IsInit)
+                {
+                    InitLevel();
+                }
+                OnLevelNext?.Invoke();
+                CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
+                SetCameraToPlayerIsland();
+                UIManager.Ins.ShowUI<InGameScreen>();
+            });
             // OnChangeTutorialIndex();
-            
-            OnLevelNext?.Invoke();
         }
 
         public void OnRestart()

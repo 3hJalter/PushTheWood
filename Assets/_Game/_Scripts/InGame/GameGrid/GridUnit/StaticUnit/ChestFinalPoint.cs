@@ -16,13 +16,6 @@ namespace _Game.GameGrid.Unit.StaticUnit
         //     DOVirtual.DelayedCall(1f, OnOpenChestComplete);
         // }
 
-        public override void OnDespawn()
-        {
-            ShowAnim(false);
-            isInteracted = false;
-            base.OnDespawn();
-        }
-
         public override void OnOpenChestComplete()
         {
             base.OnOpenChestComplete();
