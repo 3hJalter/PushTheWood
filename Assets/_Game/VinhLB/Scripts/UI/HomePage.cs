@@ -72,7 +72,7 @@ namespace VinhLB
 
         private void UpdateStatus()
         {
-            _levelText.text = $"Level\n{LevelManager.Ins.NormalLevelIndex + 1}";
+            _levelText.text = $"Level {LevelManager.Ins.NormalLevelIndex + 1}";
             
             // UIManager.Ins.OpenUI<MaskScreen>(new MaskData()
             // {

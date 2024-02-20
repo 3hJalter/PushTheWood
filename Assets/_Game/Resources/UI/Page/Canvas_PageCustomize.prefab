@@ -166,7 +166,7 @@ GameObject:
   - component: {fileID: 7992035228324795657}
   - component: {fileID: 8587679110945357523}
   m_Layer: 5
-  m_Name: Canvas_PageInventory
+  m_Name: Canvas_PageCustomize
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

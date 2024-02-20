@@ -155,7 +155,7 @@ namespace VinhLB
                 case TabPageType.Home:
                     return UIManager.Ins.GetUI<HomePage>();
                 case TabPageType.Inventory:
-                    return UIManager.Ins.GetUI<InventoryPage>();
+                    return UIManager.Ins.GetUI<CustomizePage>();
             }
 
             return null;
