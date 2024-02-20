@@ -3,6 +3,7 @@ using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
 using _Game.Utilities.Timer;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
@@ -24,7 +25,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             if (LevelManager.Ins.IsFirstLevel) return;
             sleepTimer ??= TimerManager.Inst.PopSTimer();
             sleepTimer.Start(Constants.SLEEP_TIME, ChangeSleepState);
-
             return;
 
             void ChangeSleepState()

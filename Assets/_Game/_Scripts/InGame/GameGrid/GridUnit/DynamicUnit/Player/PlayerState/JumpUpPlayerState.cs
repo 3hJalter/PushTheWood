@@ -45,6 +45,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         public void OnExit(Player t)
         {
             _isExecuted = false;
+            t.OnCharacterChangePosition();
         }
     }
 }

@@ -65,6 +65,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         {
             moveTween.Kill();
             moveTween = null;
+            t.OnCharacterChangePosition();
         }
     }
 }

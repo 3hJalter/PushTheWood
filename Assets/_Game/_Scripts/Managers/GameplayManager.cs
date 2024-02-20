@@ -127,6 +127,7 @@ namespace _Game.Managers
             IsCanResetIsland = true;
             IsCanUndo = true;
             GameManager.Ins.ChangeState(GameState.InGame);
+            LevelManager.Ins.player.SetActiveAgent(false);
         }
 
         private void OnWinGame()
@@ -135,6 +136,7 @@ namespace _Game.Managers
             DevLog.Log(DevId.Hung, "ENDGAME - Show Win Screen");
             UIManager.Ins.OpenUI<WinScreen>();
             GameManager.Ins.ChangeState(GameState.EndGame);
+            LevelManager.Ins.player.SetActiveAgent(false);
         }
 
         private void OnLoseGame()
@@ -144,6 +146,7 @@ namespace _Game.Managers
             // Show Different Lose based on reason (Ex: Lose by Die will not show More time booster, instead show Revive) -> Check by the time remaining
             UIManager.Ins.OpenUI<LoseScreen>(time <= 0);
             GameManager.Ins.ChangeState(GameState.EndGame);
+            LevelManager.Ins.player.SetActiveAgent(false);
         }
 
         private void OnDestroy()
@@ -209,8 +212,10 @@ namespace _Game.Managers
             {
                 DataManager.Ins.GameData.user.hintCount--;
                 screen.hintCountText.text =  DataManager.Ins.GameData.user.hintCount.ToString();
-                LevelManager.Ins.CurrentLevel.ChangeShadowUnitAlpha(false);
+                LevelManager.Ins.CurrentLevel.ChangeShadowUnitAlpha(false);               
                 FXManager.Ins.TrailHint.OnPlay(LevelManager.Ins.CurrentLevel.HintLinePosList);
+                LevelManager.Ins.player.SetActiveAgent(true);
+                LevelManager.Ins.ResetLevelIsland();
             }
         }
 
@@ -218,6 +223,7 @@ namespace _Game.Managers
         {
             LevelManager.Ins.CurrentLevel.ChangeShadowUnitAlpha(true);
             FXManager.Ins.TrailHint.OnCancel();
+            LevelManager.Ins.player.SetActiveAgent(false);
         }
 
         #endregion

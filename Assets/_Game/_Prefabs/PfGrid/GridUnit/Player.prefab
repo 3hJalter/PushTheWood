@@ -63,6 +63,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2325166382673045657}
   - component: {fileID: 3780414313974276900}
+  - component: {fileID: 223310535193985912}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -202,9 +203,51 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+    - Name: OnCharacterIdle
+      Entry: 6
+      Data: 
+    - Name: AttackRange
+      Entry: 7
+      Data: 5|System.Collections.Generic.List`1[[_Game.GameGrid.GameGridCell, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: AttackRangeVFX
+      Entry: 7
+      Data: 6|System.Collections.Generic.List`1[[_Game.GameGrid.Unit.DangerIndicator,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: AttackRangePos
+      Entry: 7
+      Data: 7|System.Collections.Generic.List`1[[UnityEngine.Vector3, UnityEngine.CoreModule]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: InputCache
       Entry: 7
-      Data: 5|System.Collections.Generic.Queue`1[[Direction, Assembly-CSharp]], mscorlib
+      Data: 8|System.Collections.Generic.Queue`1[[Direction, Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
       Data: 0
@@ -230,14 +273,26 @@ MonoBehaviour:
   islandID: -1
   gridUnitDynamicType: 0
   anchor: {fileID: 1008189588372813436}
+  animator: {fileID: 1883047559819654657}
+  agent: {fileID: 223310535193985912}
   isRideVehicle: 0
-  IsDead: 0
   IsStun: 0
   VFXPositions:
   - {fileID: 5668012558808927086}
   - {fileID: 8037535745999619385}
-  animator: {fileID: 1883047559819654657}
   conditionMergeOnMoving: {fileID: 11400000, guid: d1e55f3979eecf84ab11a2f162cbba6a, type: 2}
+--- !u!114 &223310535193985912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2325166382673045656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad15dbe152dfef54190437eaf274af63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3634324265696134740
 GameObject:
   m_ObjectHideFlags: 0

@@ -245,6 +245,7 @@ namespace _Game.GameGrid
             // player.OnInit(CurrentLevel.firstPlayerInitCell);
             SetCameraToPlayerIsland();
             // FxManager.Ins.ResetTrackedTrampleObjectList();
+            player.SetActiveAgent(false);
             IsConstructingLevel = false;
             savingState.Reset();
             OnLevelRestarted?.Invoke();

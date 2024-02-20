@@ -154,7 +154,7 @@ namespace _Game.GameGrid.Unit
                 overrideSpawnSave = Save();
             else
                 overrideSpawnSave = null;
-            SaveInitData(0);
+            SaveInitData(LevelManager.Ins.CurrentLevel.Index);
             if (isUseInitData) GetInitData();
             islandID = mainCellIn.IslandID;
             SetHeight(startHeightIn);
@@ -387,6 +387,7 @@ namespace _Game.GameGrid.Unit
         {
             size = _unitInitData.Size;
             unitTypeY = _unitInitData.UnitTypeY;
+            unitTypeXZ = _unitInitData.UnitTypeXZ;
             skin.localPosition = _unitInitData.LocalSkinPos;
             skin.localRotation = _unitInitData.LocalSkinRot;
             skinRotationDirection = _unitInitData.SkinDirection;
@@ -663,6 +664,7 @@ namespace _Game.GameGrid.Unit
         {
             Size = main.Size;
             UnitTypeY = main.UnitTypeY;
+            UnitTypeXZ = main.UnitTypeXZ;
             LocalSkinPos = main.skin.localPosition;
             LocalSkinRot = main.skin.localRotation;
             Type = main.PoolType;
@@ -673,6 +675,7 @@ namespace _Game.GameGrid.Unit
         public PoolType Type { get; }
         public Vector3Int Size { get; }
         public UnitTypeY UnitTypeY { get; }
+        public UnitTypeXZ UnitTypeXZ { get; }
         public Vector3 LocalSkinPos { get; }
         public Quaternion LocalSkinRot { get; }
         public HeightLevel StartHeight { get; }

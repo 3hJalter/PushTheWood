@@ -2,67 +2,83 @@ using _Game.GameGrid.Unit;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public class AutoMoveAgent : MonoBehaviour
+
+namespace _Game.AI
 {
-    // Start is called before the first frame update
-    protected GridUnitCharacter character;
-    public event Action<Direction> OnMoveToDir;
-
-    private readonly Queue<Direction> moveDirections = new Queue<Direction>();
-    public void Init(GridUnitCharacter character)
+    public class AutoMoveAgent : MonoBehaviour
     {
-        if(character != null)
-        {
-            this.character.OnCharacterIdle -= OnAgentChoosingDirection;           
-        }
-        this.character = character;
-        this.character.OnCharacterIdle += OnAgentChoosingDirection;
-    }
+        // Start is called before the first frame update
+        protected GridUnitCharacter character;
 
-    public void LoadPath(List<Vector3> path)
-    {
-        moveDirections.Clear();
-        for (int i = 0; i < path.Count - 1; i++)
+        private readonly Queue<Direction> moveDirections = new Queue<Direction>();
+        public Direction NextDirection { get; private set; }
+        public void Init(GridUnitCharacter character)
         {
-            float forwardBack = path[i + 1].z - path[i].z;
-            float leftRight = path[i + 1].x - path[i].x;
-
-            if (Mathf.Abs(forwardBack) > Mathf.Abs(leftRight))
+            if (this.character != null)
             {
-                if (forwardBack > 0)
+                this.character._OnCharacterChangePosition -= OnCharacterChangePosition;
+            }
+            this.character = character;
+            this.character._OnCharacterChangePosition += OnCharacterChangePosition;
+        }
+
+        public void LoadPath(List<Vector3> path)
+        {
+            moveDirections.Clear();
+            for (int i = 0; i < path.Count - 1; i++)
+            {
+                float forwardBack = path[i + 1].z - path[i].z;
+                float leftRight = path[i + 1].x - path[i].x;
+
+                //NOTE: If 2 point is similar then ignore it
+                if (Mathf.Abs(forwardBack) < 0.001f && Mathf.Abs(leftRight) < 0.001f) continue;
+
+                if (Mathf.Abs(forwardBack) > Mathf.Abs(leftRight))
                 {
-                    moveDirections.Enqueue(Direction.Forward);
+                    if (forwardBack > 0)
+                    {
+                        moveDirections.Enqueue(Direction.Forward);
+                    }
+                    else
+                    {
+                        moveDirections.Enqueue(Direction.Back);
+                    }
                 }
                 else
                 {
-                    moveDirections.Enqueue(Direction.Back);
-                }
-            }
-            else
-            {
-                if (leftRight > 0)
-                {
-                    moveDirections.Enqueue(Direction.Right);
-                }
-                else
-                {
-                    moveDirections.Enqueue(Direction.Left);
+                    if (leftRight > 0)
+                    {
+                        moveDirections.Enqueue(Direction.Right);
+                    }
+                    else
+                    {
+                        moveDirections.Enqueue(Direction.Left);
+                    }
                 }
             }
         }
-    }
 
-    private void OnAgentChoosingDirection(List<GridUnit> nearUnits)
-    {
-        Direction moveDirection = moveDirections.Peek();
-        int index = (int)moveDirection - 1;
-        if (nearUnits[index] == null)
+        public void Run()
         {
-            moveDirections.Dequeue();
+            if(moveDirections.Count == 0)
+            {
+                NextDirection = Direction.None;
+                enabled = false;
+                return;
+            }
+            NextDirection = moveDirections.Dequeue();
         }
-        OnMoveToDir?.Invoke(moveDirection);
-    }
 
+        private void OnCharacterChangePosition()
+        {
+            if (moveDirections.Count == 0)
+            {
+                NextDirection = Direction.None;
+                enabled = false;
+                return;
+            }
+            NextDirection = moveDirections.Dequeue();
+        }
+    }
 }

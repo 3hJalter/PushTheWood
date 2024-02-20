@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using _Game._Scripts.InGame.GameCondition.Data;
+using _Game.AI;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Interface;
@@ -7,7 +8,6 @@ using _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState;
 using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
 using _Game.Utilities;
-using DG.Tweening;
 using GameGridEnum;
 using HControls;
 using UnityEngine;
@@ -16,6 +16,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 {
     public class Player : GridUnitCharacter, IJumpTreeRootUnit, ICharacter
     {
+        #region MODULE
+        [SerializeField]
+        AutoMoveAgent agent;
+        #endregion
         #region PROPERTYS
         [HideInInspector]
         public bool isRideVehicle;
@@ -45,23 +49,32 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 CheckingStunState();
             }
         }
+        private void Awake()
+        {           
+            agent.enabled = false;
+            agent.Init(this);
+        }
         private void FixedUpdate()
         {
             if (!GameManager.Ins.IsState(GameState.InGame)) return;
             if (_isWaitAFrame)
             {
                 _isWaitAFrame = false;
-                if(InputCache.Count > 0)
+                //NOTE: 
+                if (!agent.isActiveAndEnabled)
                 {
-                    Direction = InputCache.Dequeue();
-                    IsInputCache = true;
+                    if (InputCache.Count > 0)
+                    {
+                        Direction = InputCache.Dequeue();
+                        IsInputCache = true;
+                    }
+                    else
+                    {
+                        Direction = HInputManager.GetDirectionInput();
+                        IsInputCache = false;
+                    }
                 }
-                else
-                {
-                    Direction = HInputManager.GetDirectionInput();
-                    IsInputCache = false;
-                }
-
+                
                 InputDetection.GetInput(Direction);
                 // TEST: Reset the Input if Direction is not none and Move is Swipe (Swipe only take one input per swipe)
                 // if (Direction != Direction.None && MoveInputManager.Ins.CurrentChoice is MoveInputManager.MoveChoice.Swipe) HInputManager.SetDefault();
@@ -89,7 +102,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 stateMachine = new StateMachine<Player>(this);
                 AddState();
             }
-            stateMachine.Debug = true;
+            //stateMachine.Debug = false;          
             IsDead = false;
             IsStun = false;
             stateMachine.ChangeState(StateEnum.Idle);
@@ -98,7 +111,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public override void OnDespawn()
         {
             _vehicle = null;
-            if (_isAddState) stateMachine.OverrideState = StateEnum.None;
+            if (_isAddState) stateMachine.OverrideState = StateEnum.None;          
             base.OnDespawn();
         }
         
@@ -209,6 +222,29 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 GameManager.Ins.PostEvent(DesignPattern.EventID.ObjectInOutDangerCell, mainCell);
                 IsStun = true;
             }
+        }
+
+        public void SetActiveAgent(bool value)
+        {
+            if (value)
+            {
+                agent.enabled = true;
+                agent.LoadPath(LevelManager.Ins.CurrentLevel.HintLinePosList);
+                agent.Run();
+                Direction = agent.NextDirection;
+            }
+            else
+            {
+                agent.enabled = false;
+                Direction = Direction.None;
+                InputCache.Clear();
+            }
+        }
+
+        public void OnCharacterChangePosition()
+        {
+            _OnCharacterChangePosition?.Invoke();
+            Direction = agent.NextDirection;
         }
 
         #region Rule
