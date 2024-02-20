@@ -19,7 +19,8 @@ namespace _Game.GameGrid.Unit.StaticUnit
         private const int DEGREE = 6;
         private const float DECAY_VALUE = 0.95f;
         protected GridUnit pushedUnit;
-        
+
+        private Tween _pushTween;
         private TweenCallback _onPushedCompleteCallback;
 
         protected void Awake()
@@ -62,7 +63,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             float lastAngle = 0;
             ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.LeafExplosion),
                 Tf.position + Vector3.up * 2f);
-            DOVirtual.Float(0, DEGREE * 4 * DECAY_VALUE * DECAY_VALUE, Constants.MOVING_TIME * 1f, i =>
+            _pushTween = DOVirtual.Float(0, DEGREE * 4 * DECAY_VALUE * DECAY_VALUE, Constants.MOVING_TIME * 1f, i =>
                 {
                     float rotateAngle;
                     //NOTE: Calculate Angle
@@ -87,6 +88,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         public override void OnDespawn()
         {
             base.OnDespawn();
+            _pushTween?.Kill();
             pushedUnit = null;
         }
         

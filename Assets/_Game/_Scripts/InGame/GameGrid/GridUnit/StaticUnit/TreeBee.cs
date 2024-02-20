@@ -60,6 +60,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         // BUG: Tree also spawn with TreeBee when back the game
         protected override void OnPushedComplete()
         {
+            if (!gameObject.activeSelf) return;
             // Spawn the Base tree in this cell + Save the state
             LevelManager.Ins.SaveGameState(true);
             pushedUnit.MainCell.ValueChange();
