@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Game.Managers;
+using _Game.Utilities;
 using UnityEngine;
 
 /// <summary>
@@ -23,13 +25,18 @@ public class OffScreenIndicator : MonoBehaviour
     public static Action<Target, bool> TargetStateChanged;
     
     private static Transform _centreTransform;
-    
-    void Awake()
+
+    private float _increasePosFromRatio = 1;
+
+    private void Start()
     {
         mainCamera = Camera.main;
         screenCentre = new Vector3(Screen.width, Screen.height, 0) / 2;
         screenBounds = screenCentre * screenBoundOffset;
-        TargetStateChanged += HandleTargetStateChanged;
+        TargetStateChanged += HandleTargetStateChanged;    
+        if (GameManager.Ins.IsReduce) _increasePosFromRatio = GameManager.Ins.ReduceRatio;
+        DevLog.Log(DevId.Hoang,$"OffScreenIndicator: _increasePosFromRatio = {_increasePosFromRatio}");
+        DevLog.Log(DevId.Hoang, $"Screen size: {Screen.width} x {Screen.height}");
     }
 
     void LateUpdate()
@@ -38,7 +45,7 @@ public class OffScreenIndicator : MonoBehaviour
     }
 
     /// <summary>
-    /// Draw the indicators on the screen and set thier position and rotation and other properties.
+    /// Draw the indicators on the screen and set their position and rotation and other properties.
     /// </summary>
     void DrawIndicators()
     {
@@ -66,6 +73,7 @@ public class OffScreenIndicator : MonoBehaviour
                 indicator.SetImageColor(target.TargetColor);// Sets the image color of the indicator.
                 indicator.SetDistanceText(distanceFromCamera); //Set the distance text for the indicator.
                 indicator.transform.position = screenPosition; //Sets the position of the indicator on the screen.
+                // DevLog.Log(DevId.Hoang, $"Set position for indicator: {screenPosition}");
                 indicator.SetTextRotation(Quaternion.identity); // Sets the rotation of the distance text of the indicator.
             }
         }

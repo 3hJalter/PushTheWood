@@ -46,7 +46,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box.BoxState
             {
                 for (int i = 0; i < blockObjects.Count; i++)
                 {
-                    blockObjects[i].OnBePushed(blockDirection);
+                    blockObjects[i].OnBePushed(blockDirection, t);
                 }
                 //NOTE: Checking if push dynamic object does not create any change in grid -> discard the newest save.
                 if (!LevelManager.Ins.CurrentLevel.GridMap.IsChange)

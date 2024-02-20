@@ -26,8 +26,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             if (_isWaitAFrame)
             {
                 _isWaitAFrame = false;
-                //Direction = Direction.None;
-                // TEST: Reset the Input if Direction is not none and Move is Swipe (Swipe only take one input per swipe)
                 stateMachine?.UpdateState();
                 return;
             }

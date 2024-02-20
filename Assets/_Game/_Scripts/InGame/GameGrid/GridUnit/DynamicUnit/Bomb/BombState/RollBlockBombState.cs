@@ -87,7 +87,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Bomb.BombState
                 string objectBlocking = "BLOCKING - ";
                 for (int i = 0; i < blockObjects.Count; i++)
                 {
-                    blockObjects[i].OnBePushed(blockDirection);
+                    blockObjects[i].OnBePushed(blockDirection, t);
                     objectBlocking += $"{blockObjects[i]} ";
                 }
                 if (t.MovingData.blockDynamicUnits.Count > 0) t.OnPush(t.MovingData.inputDirection, t.MovingData);

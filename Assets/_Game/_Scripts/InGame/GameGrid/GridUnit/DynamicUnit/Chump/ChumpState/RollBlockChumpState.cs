@@ -93,7 +93,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 string objectBlocking = "BLOCKING - ";
                 for (int i = 0; i < blockObjects.Count; i++)
                 {
-                    blockObjects[i].OnBePushed(blockDirection);
+                    blockObjects[i].OnBePushed(blockDirection, t);
                     //NOTE: Deal Damage
                     if (damage)
                     {

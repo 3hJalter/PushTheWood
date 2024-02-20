@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using _Game.Utilities;
+using UnityEngine;
 
 namespace PixelPlay.OffScreenIndicator
 {
@@ -7,7 +8,7 @@ namespace PixelPlay.OffScreenIndicator
         /// <summary>
         /// Gets the position of the target mapped to screen cordinates.
         /// </summary>
-        /// <param name="mainCamera">Refrence to the main camera</param>
+        /// <param name="mainCamera">Reference to the main camera</param>
         /// <param name="targetPosition">Target position</param>
         /// <returns></returns>
         public static Vector3 GetScreenPosition(Camera mainCamera, Vector3 targetPosition)
@@ -23,7 +24,8 @@ namespace PixelPlay.OffScreenIndicator
         /// <returns></returns>
         public static bool IsTargetVisible(Vector3 screenPosition)
         {
-            bool isTargetVisible = screenPosition.z > 0 && screenPosition.x > 0 && screenPosition.x < Screen.width && screenPosition.y > 0 && screenPosition.y < Screen.height;
+            
+            bool isTargetVisible = screenPosition is { z: > 0, x: > 0, y: > 0 } && screenPosition.x < Screen.width && screenPosition.y < Screen.height;
             return isTargetVisible;
         }
 

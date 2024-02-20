@@ -116,6 +116,7 @@ namespace _Game.GameGrid
         {
             _isResetting = true;
             _currentLevel.ResetIslandPlayerOn();
+            SetCameraToPlayerIsland();
             OnLevelIslandReset?.Invoke();
             _isResetting = false;
         }
@@ -291,7 +292,7 @@ namespace _Game.GameGrid
         public bool OnUndo()
         {
             bool success = savingState.Undo();
-            SetCameraToPlayerIsland();
+            player.SetUpCamera(CurrentLevel.Islands[player.islandID], player.MainCell);
             return success;
         }
 

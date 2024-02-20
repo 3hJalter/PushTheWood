@@ -209,7 +209,7 @@ namespace _Game.GameGrid.Unit
 
         }
 
-        public virtual void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
+        public virtual void OnBePushed(Direction direction, GridUnit pushUnit)
         {
             lastPushedDirection = direction;
         }

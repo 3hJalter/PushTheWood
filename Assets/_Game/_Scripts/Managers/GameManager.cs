@@ -29,18 +29,29 @@ namespace _Game.Managers
 
         private GameData _gameData;
         
+        public float ReduceRatio { get; private set; }
+        public bool IsReduce { get; private set; }
+
         private void Awake()
         {
             Input.multiTouchEnabled = false;
             Application.targetFrameRate = 60;
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
+            // BUGS: Indicator fall when reduce resolution
             if (reduceScreenResolution)
             {
                 const int maxScreenHeight = 1280;
                 float ratio = Screen.currentResolution.width / (float)Screen.currentResolution.height;
                 if (Screen.currentResolution.height > maxScreenHeight)
-                    Screen.SetResolution(Mathf.RoundToInt(ratio * maxScreenHeight), maxScreenHeight, true);
+                {
+                    IsReduce = true;
+                    int newScreenWidth = Mathf.RoundToInt(ratio * maxScreenHeight);
+                    DevLog.Log(DevId.Hoang, $"New resolution: {newScreenWidth} x {maxScreenHeight}");
+                    ReduceRatio = Screen.currentResolution.width / (float) newScreenWidth;
+                    DevLog.Log(DevId.Hoang, $"Reduce screen resolution with ratio {ReduceRatio}");
+                    Screen.SetResolution(newScreenWidth, maxScreenHeight, true);
+                }
             }
             VerifyGameData();
         }

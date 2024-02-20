@@ -375,6 +375,8 @@ namespace _Game.DesignPattern
         RockUnderwaterSmall = 21,
         RockUnderwaterBig = 22,
         LightHouse = 23,
+        TreeBeeShort = 25,
+        TreeBeeHigh = 26,
 
 
         // Grid Unit Building Object
