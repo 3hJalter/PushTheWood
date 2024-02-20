@@ -14,13 +14,11 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player
 {
-    public class Player : GridUnitDynamic, IJumpTreeRootUnit, ICharacter
+    public class Player : GridUnitCharacter, IJumpTreeRootUnit, ICharacter
     {
         #region PROPERTYS
         [HideInInspector]
         public bool isRideVehicle;
-        [HideInInspector]
-        public bool IsDead = false;
         [HideInInspector]
         public bool IsStun = false;
         public Transform[] VFXPositions;
@@ -29,7 +27,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public readonly Queue<Direction> InputCache = new();
         public bool IsInputCache { get; private set; } // DEV: Can put this in separate component
         #endregion
-        [SerializeField] private Animator animator;
         private StateMachine<Player> stateMachine;
         public StateMachine<Player> StateMachine => stateMachine;
         public override StateEnum CurrentStateId
@@ -37,16 +34,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             get => StateEnum.Idle;
             set => stateMachine.ChangeState(value);
         }
-        private string _currentAnim = Constants.INIT_ANIM;
-        private bool _isAddState;
-
-
-        private bool _isWaitAFrame;
         private IVehicle _vehicle;
-
-        public Direction Direction { get; private set; } = Direction.None;
         public InputDetection InputDetection { get; private set; } = new InputDetection();
-        public float AnimSpeed => animator.speed;
         public override GameGridCell MainCell 
         { 
             get => mainCell; 
@@ -113,7 +102,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             base.OnDespawn();
         }
         
-        private void AddState()
+        protected override void AddState()
         {
             stateMachine.AddState(StateEnum.Idle, new IdlePlayerState());
             stateMachine.AddState(StateEnum.Move, new MovePlayerState());
@@ -162,31 +151,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public override bool IsCurrentStateIs(StateEnum stateEnum)
         {
             return stateMachine.CurrentState.Id == stateEnum;
-        }
-
-        public void ChangeAnim(string animName, bool forceAnim = false)
-        {
-            if (!forceAnim)
-                if (_currentAnim.Equals(animName))
-                    return;
-            animator.ResetTrigger(_currentAnim);
-            _currentAnim = animName;
-            animator.SetTrigger(_currentAnim);
-        }
-        public void SetAnimSpeed(float speed)
-        {
-            animator.speed = speed;
-        }
-
-        public bool IsCurrentAnimDone()
-        {
-            return animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1;
-        }
-
-        public void LookDirection(Direction directionIn)
-        {
-            if (directionIn is Direction.None) return;
-            skin.DOLookAt(Tf.position + Constants.DirVector3[directionIn], 0.2f, AxisConstraint.Y, Vector3.up);
         }
 
         public bool HasVehicle()
@@ -298,7 +262,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         }
         #endregion
 
-        public void OnCharacterDie()
+        public override void OnCharacterDie()
         {
             DevLog.Log(DevId.Hoang, "TODO: Player Die Logic");
             stateMachine.OverrideState = StateEnum.Die;

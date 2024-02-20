@@ -5,6 +5,7 @@ using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using _Game.Utilities;
 using _Game.Utilities.Grid;
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace _Game.GameGrid.Unit
 {
     public abstract class GridUnitCharacter : GridUnitDynamic, ICharacter, IDamageable
     {
+        public Action<List<GridUnit>> OnCharacterIdle;
         [SerializeField]
         protected Animator animator;
         [HideInInspector]
@@ -45,7 +47,7 @@ namespace _Game.GameGrid.Unit
             return animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1;
         }
 
-        protected void LookDirection(Direction directionIn)
+        public void LookDirection(Direction directionIn)
         {
             if (directionIn is Direction.None) return;
             skinRotationDirection = directionIn;
