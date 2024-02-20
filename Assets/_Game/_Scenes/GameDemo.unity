@@ -890,6 +890,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26f609f7b5335654696f805a84f4c189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  screenBoundOffset: 0.9
 --- !u!114 &201806026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6074,9 +6075,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 267242998479506443, guid: 089fab948f367f14ab17f9071a19159f, type: 3}
+      propertyPath: reduceScreenResolution
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 267242998479506443, guid: 089fab948f367f14ab17f9071a19159f, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 267242998479506443, guid: 089fab948f367f14ab17f9071a19159f, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 267242998479506445, guid: 089fab948f367f14ab17f9071a19159f, type: 3}
       propertyPath: m_Name
       value: GameManager

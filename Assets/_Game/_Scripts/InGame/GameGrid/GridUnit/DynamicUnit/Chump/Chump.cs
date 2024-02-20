@@ -57,6 +57,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
         public override void OnDespawn()
         {
             base.OnDespawn();
+            unitTypeY = UnitTypeY.Up;
+            unitTypeXZ = UnitTypeXZ.None;
             stateMachine.ChangeState(StateEnum.Idle);
         }
 

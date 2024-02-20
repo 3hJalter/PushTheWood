@@ -3,6 +3,7 @@ using _Game.DesignPattern;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Chump;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
+using _Game.GameGrid.Unit.Interface;
 using _Game.Managers;
 using _Game.Utilities;
 using DG.Tweening;
@@ -11,25 +12,39 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.StaticUnit
 {
-    public class Tree : GridUnitStatic
+    public class Tree : GridUnitStatic, ITree
     {
         [SerializeField]
         public Chump chumpPrefab;
         private const int DEGREE = 6;
         private const float DECAY_VALUE = 0.95f;
+        protected GridUnit pushedUnit;
+        
+        private TweenCallback _onPushedCompleteCallback;
 
-        private static Player Player => LevelManager.Ins.player;
-
-        public override void OnInteract()
+        protected void Awake()
         {
+            _onPushedCompleteCallback += OnPushedComplete;
+            OnAwakeCall();
+        }
+        
+        private void OnDestroy()
+        {
+            _onPushedCompleteCallback -= OnPushedComplete;
+            OnDestroyCall();
+        }
+
+        public virtual void OnCutTree(GridUnit cutter)
+        {
+            if (cutter is not Player player) return;
             // Change it state to cut tree
-            Player.CutTreeData.SetData(GetDirectionFromPlayer(), this);
-            Player.StateMachine.ChangeState(StateEnum.CutTree);
+            player.CutTreeData.SetData(GetDirectionFromPlayer(), this);
+            player.StateMachine.ChangeState(StateEnum.CutTree);
             return;
 
             Direction GetDirectionFromPlayer()
             {
-                Vector3 playerPos = Player.MainCell.WorldPos;
+                Vector3 playerPos = player.MainCell.WorldPos;
                 Vector3 treePos = mainCell.WorldPos;
                 if (Math.Abs(playerPos.x - treePos.x) < 0.01f)
                     return playerPos.z > treePos.z ? Direction.Back : Direction.Forward;
@@ -42,6 +57,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             //NOTE: Refactor
             //NOTE: Play Shake Animation
             DevLog.Log(DevId.Hung, "Tree Blocking");
+            pushedUnit = pushUnit;
             Vector3 axis = Vector3.Cross(Vector3.up, Constants.DirVector3[direction]);
             float lastAngle = 0;
             ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.LeafExplosion),
@@ -65,7 +81,20 @@ namespace _Game.GameGrid.Unit.StaticUnit
                     transform.RotateAround(anchor.Tf.position, axis, rotateAngle - lastAngle);
                     lastAngle = rotateAngle;
                 }).SetUpdate(UpdateType.Fixed)
-                .SetEase(Ease.OutQuad);
+                .SetEase(Ease.OutQuad).OnComplete(_onPushedCompleteCallback);
         }
+        
+        public override void OnDespawn()
+        {
+            base.OnDespawn();
+            pushedUnit = null;
+        }
+        
+        protected virtual void OnPushedComplete()
+        {
+        }
+        
+        protected virtual void OnAwakeCall(){}
+        protected virtual void OnDestroyCall(){}
     }
 }

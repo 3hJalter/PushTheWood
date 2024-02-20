@@ -121,6 +121,8 @@ namespace GameGridEnum
         ChestButtonUnit = 7,
         RockUnderwaterSmall = 8,
         RockUnderWaterBig = 9,
+        TreeBeeShort = 10,
+        TreeBeeHigh = 11,
     }
 
     public enum GridUnitDynamicType
