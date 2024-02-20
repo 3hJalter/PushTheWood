@@ -46,11 +46,11 @@ namespace VinhLB
             }
         }
 
-        public void ResetSelectedTab()
+        public void ResetSelectedTab(bool pageAnimated)
         {
             if (_tabButtonList.Count > 0)
             {
-                OnTabSelected(_tabButtonList[_activeTabIndex], false, true);
+                OnTabSelected(_tabButtonList[_activeTabIndex], false, pageAnimated);
             }
         }
         

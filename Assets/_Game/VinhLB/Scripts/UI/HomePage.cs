@@ -73,6 +73,13 @@ namespace VinhLB
         private void UpdateStatus()
         {
             _levelText.text = $"Level\n{LevelManager.Ins.NormalLevelIndex + 1}";
+            
+            // UIManager.Ins.OpenUI<MaskScreen>(new MaskData()
+            // {
+            //     Position = _playButton.transform.position,
+            //     Size = _playButton.GetComponent<RectTransform>().sizeDelta + Vector2.one * 20f,
+            //     MaskType = MaskType.Rectangle
+            // });
         }
     }
 }
