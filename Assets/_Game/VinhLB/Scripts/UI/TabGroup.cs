@@ -88,6 +88,8 @@ namespace VinhLB
         {
             if (button == _selectedTabButton)
             {
+                button.PlayIconAnim();
+                
                 return;
             }
 

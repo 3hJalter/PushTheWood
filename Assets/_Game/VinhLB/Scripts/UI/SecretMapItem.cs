@@ -6,21 +6,29 @@ namespace VinhLB
     public class SecretMapItem : HMonoBehaviour
     {
         [SerializeField]
-        private Button _playButton;
-        [SerializeField]
         private GameObject _statusGO;
+        [SerializeField]
+        private GameObject _lockGO;
+        [SerializeField]
+        private GameObject _unlockProgressGO;
+        [SerializeField]
+        private Button _playButton;
 
         public void SetButtons(bool isUnlocked)
         {
-            if (isUnlocked)
+            if (!isUnlocked)
             {
-                _playButton.gameObject.SetActive(true);
-                _statusGO.SetActive(false);
+                _statusGO.SetActive(true);
+                _lockGO.SetActive(true);
+                _unlockProgressGO.SetActive(false);
+                _playButton.gameObject.SetActive(false);
             }
             else
             {
-                _playButton.gameObject.SetActive(false);
-                _statusGO.SetActive(true);
+                _statusGO.SetActive(false);
+                _lockGO.SetActive(false);
+                _unlockProgressGO.SetActive(true);
+                _playButton.gameObject.SetActive(true);
             }
         }
     }
