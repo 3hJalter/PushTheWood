@@ -18,14 +18,6 @@ namespace _Game.Managers
         private void Awake()
         {
             audioData = DataManager.Ins.AudioData;
-            GameManager.Ins.RegisterListenerEvent(EventID.Pause, PauseSfx);
-            GameManager.Ins.RegisterListenerEvent(EventID.UnPause, UnPauseSfx);
-        }
-
-        private void OnDestroy()
-        {
-            GameManager.Ins.UnregisterListenerEvent(EventID.Pause, PauseSfx);
-            GameManager.Ins.UnregisterListenerEvent(EventID.UnPause, UnPauseSfx);
         }
 
         public AudioClip GetBgm(BgmType type)
@@ -106,16 +98,6 @@ namespace _Game.Managers
         public void UnPauseBgm()
         {
             bgm.Play();
-        }
-
-        public void PauseSfx()
-        {
-            sfx.Pause();
-        }
-
-        public void UnPauseSfx()
-        {
-            sfx.Play();
         }
 
         public void StopSfx()
