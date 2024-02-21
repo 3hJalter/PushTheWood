@@ -151,5 +151,6 @@ namespace GameGridEnum
         MageSkill1Explosion = 6,
         SleepingzZz = 7,
         MusicalNotes = 8,
+        WaterSplash_Continuous = 9,
     }
 }

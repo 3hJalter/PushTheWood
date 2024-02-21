@@ -53,7 +53,7 @@ namespace _Game.DesignPattern
         {
             if (prefab == null)
             {
-                Debug.Log(prefab.name + " is null");
+                Debug.Log("Prefab is null");
                 return null;
             }
 
@@ -118,14 +118,14 @@ namespace _Game.DesignPattern
                     Debug.Log(prefab.name + " ~ Fix To  Stop Action None");
                 }
 
-                if (prefab.main.duration > 1)
+                if (prefab.main.duration > 2)
                 {
                     ParticleSystem.MainModule main = prefab.main;
-                    main.duration = 1;
+                    main.duration = 2;
 
                     //save prefab
                     Undo.RegisterCompleteObjectUndo(prefab, "Fix To Duration By 1");
-                    Debug.Log(prefab.name + " ~ Fix To Duration By 1");
+                    Debug.Log(prefab.name + " ~ Fix To Duration By 2");
                 }
 #endif
 
