@@ -52,7 +52,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     }).SetUpdate(UpdateType.Fixed)
                     .SetEase(Ease.OutQuad)
                     .OnComplete(() => t.StateMachine.ChangeState(StateEnum.Idle));
-
+                    damage = true;
 
                     if (blockObjects.Count > 0)
                         TimerManager.Inst.WaitForTime(Constants.MOVING_TIME * 0.5f, ObjectBlocking);
