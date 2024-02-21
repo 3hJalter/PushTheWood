@@ -18,7 +18,6 @@ namespace _Game.Managers
         private void Awake()
         {
             audioData = DataManager.Ins.AudioData;
-            PlayBgm(BgmType.MainMenu);
             GameManager.Ins.RegisterListenerEvent(EventID.Pause, PauseSfx);
             GameManager.Ins.RegisterListenerEvent(EventID.UnPause, UnPauseSfx);
         }

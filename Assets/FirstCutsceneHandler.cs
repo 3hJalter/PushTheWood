@@ -4,6 +4,7 @@ using _Game.Camera;
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Screen;
+using AudioEnum;
 using MEC;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -22,6 +23,7 @@ public class FirstCutsceneHandler : MonoBehaviour
     
     private IEnumerator<float> OnPlayCutscene()
     {
+        AudioManager.Ins.PlayBgm(BgmType.Ocean);
         CameraManager.Ins.ChangeCamera(ECameraType.CutsceneCamera);
         CameraManager.Ins.ChangeCameraTarget(ECameraType.CutsceneCamera, player);
         UIManager.Ins.indicatorParentTf.gameObject.SetActive(false);
