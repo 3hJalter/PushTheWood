@@ -52,6 +52,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
         public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
         {
             LookDirection(Constants.InvDirection[direction]);
+            Direction = direction;
+
             if (pushUnit is Player.Player player)
             {
                 stateMachine.ChangeState(StateEnum.Idle);

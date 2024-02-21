@@ -9,7 +9,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 
         public void OnEnter(Player t)
         {
-            
+            t.ChangeAnim(Constants.HAPPY_ANIM);
         }
 
         public void OnExecute(Player t)

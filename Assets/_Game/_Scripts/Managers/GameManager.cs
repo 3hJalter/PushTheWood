@@ -16,7 +16,8 @@ namespace _Game.Managers
         WorldMap,
         Pause,
         Transition,
-        EndGame,
+        WinGame,
+        LoseGame,
     }
     
     [DefaultExecutionOrder(-95)]

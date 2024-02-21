@@ -44,7 +44,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             else 
                 ChangeIdleState();
 
-            t.ChangeAnim(Constants.RUN_ABOVE_CHUMP);           
+            t.ChangeAnim(Constants.RUN_ABOVE_CHUMP_ANIM);           
             timer?.Start(ANIM_TIME, ChangeIdleState);
             //isRunAboveChump = true;
 

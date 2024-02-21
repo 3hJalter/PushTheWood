@@ -54,6 +54,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         {           
             agent.enabled = false;
             agent.Init(this);
+            GameManager.Ins.RegisterListenerEvent(DesignPattern.EventID.WinGame, OnWin);
         }
         private void FixedUpdate()
         {
@@ -241,13 +242,15 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 InputCache.Clear();
             }
         }
-
         public void OnCharacterChangePosition()
         {
             _OnCharacterChangePosition?.Invoke();
             Direction = agent.NextDirection;
         }
-
+        private void OnWin()
+        {
+            StateMachine.ChangeState(StateEnum.Happy);
+        }
         #region Camera Setup for Player
 
         private const int OUT_OF_ISLAND_CELL_BEFORE_TARGET_CAM_TO_PLAYER = 0;
