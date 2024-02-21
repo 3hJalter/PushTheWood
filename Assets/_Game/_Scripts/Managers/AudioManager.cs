@@ -14,8 +14,10 @@ namespace _Game.Managers
         [SerializeField] private AudioData audioData;
         [SerializeField] private AudioSource bgm;
         [SerializeField] private AudioSource sfx;
+        [SerializeField] private AudioSource environment;
         
         private float _currentBGMVolume = 1f;
+        private float _currentEnvironmentVolume = 1f;
 
         private void Awake()
         {
@@ -30,6 +32,11 @@ namespace _Game.Managers
         public AudioClip GetSfx(SfxType type)
         {
             return GetAudio(audioData.SfxDict, type);
+        }
+        
+        public AudioClip GetEnvironment(EnvironmentType type)
+        {
+            return GetAudio(audioData.EnvironmentDict, type);
         }
 
         private static AudioClip GetAudio<T>(IReadOnlyDictionary<T, AudioClip> audioDictionary, T type)
@@ -56,6 +63,40 @@ namespace _Game.Managers
                         _currentBGMVolume = targetVolume;
                         bgm.volume = targetVolume;
                         PlayAudio(bgm, audioData.BGMDict, type);
+                    });
+            }
+        }
+        
+        public void PlayEnvironment(EnvironmentType type, float fadeFloat = 0.3f, float fadeIn = 0.5f, float targetVolume = 1f)
+        {
+            environment.loop = true;
+            if (fadeFloat == 0f || environment.mute)
+            {
+                _currentEnvironmentVolume = targetVolume;
+                environment.volume = targetVolume;
+                PlayAudio(environment, audioData.EnvironmentDict, type);
+            }
+            // FadeOut, Then Play
+            else
+            {
+                DOVirtual.Float(_currentEnvironmentVolume, 0, fadeFloat, value => VolumeDown(environment, value))
+                    .SetEase(Ease.Linear)
+                    .OnComplete(() =>
+                    {
+                        PlayAudio(environment, audioData.EnvironmentDict, type);
+                        if (fadeIn > 0)
+                        {
+                            DOVirtual.Float(0, targetVolume, fadeIn, value =>
+                            {
+                                environment.volume = value;
+                                _currentEnvironmentVolume = value;
+                            });
+                        }
+                        else
+                        {
+                            environment.volume = targetVolume;
+                            _currentEnvironmentVolume = targetVolume;
+                        }
                     });
             }
         }
@@ -87,7 +128,7 @@ namespace _Game.Managers
             audioSource.Play();
         }
 
-        public void PlayRandom(List<SfxType> sfxTypes)
+        public void PlayRandomSFX(List<SfxType> sfxTypes)
         {
             List<AudioClip> audioClips = new();
             for (int i = 0; i < sfxTypes.Count; i++)
@@ -111,6 +152,26 @@ namespace _Game.Managers
         {
             bgm.Play();
         }
+        
+        public void StopBgm()
+        {
+            bgm.Stop();
+        }
+        
+        public void PauseEnvironment()
+        {
+            environment.Pause();
+        }
+        
+        public void UnPauseEnvironment()
+        {
+            environment.Play();
+        }
+        
+        public void StopEnvironment()
+        {
+            environment.Stop();
+        }
 
         public void StopSfx()
         {
@@ -127,6 +188,16 @@ namespace _Game.Managers
             bgm.mute = false;
         }
 
+        public void MuteEnvironment()
+        {
+            environment.mute = true;
+        }
+        
+        public void UnMuteEnvironment()
+        {
+            environment.mute = false;
+        }
+        
         public void MuteSfx()
         {
             sfx.mute = true;
