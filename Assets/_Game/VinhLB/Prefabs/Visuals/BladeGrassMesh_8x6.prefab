@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 155296321085860010}
   - component: {fileID: 4904224635500104221}
   - component: {fileID: 6682112590302369424}
+  - component: {fileID: 4796541798091030165}
   m_Layer: 3
   m_Name: BladeGrassMesh_8x6
   m_TagString: Untagged
@@ -83,3 +84,14 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!210 &4796541798091030165
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5922836006275919048}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0

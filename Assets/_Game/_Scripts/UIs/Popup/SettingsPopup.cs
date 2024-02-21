@@ -3,7 +3,9 @@ using _Game.Data;
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Screen;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using VinhLB;
 
 namespace _Game.UIs.Popup
@@ -11,7 +13,9 @@ namespace _Game.UIs.Popup
     public class SettingsPopup : UICanvas
     {
         [SerializeField]
-        private HButton _mainMenuButton;
+        private TMP_Text _headerText;
+        [SerializeField]
+        private GameObject _navigationGroupGO;
         
         public override void Setup(object param = null)
         {
@@ -19,18 +23,22 @@ namespace _Game.UIs.Popup
 
             if (GameManager.Ins.IsState(GameState.InGame))
             {
-                _mainMenuButton.gameObject.SetActive(true);
                 GameManager.Ins.ChangeState(GameState.Pause);
+
+                _headerText.text = "Pause";
+                _navigationGroupGO.SetActive(true);
             }
             else
             {
-                _mainMenuButton.gameObject.SetActive(false);
+                _headerText.text = "Settings";
+                _navigationGroupGO.SetActive(false);
             }
         }
 
         public override void Open(object param = null)
         {
             base.Open(param);
+            
             MoveInputManager.Ins.ShowContainer(false);
         }
 
