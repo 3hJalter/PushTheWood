@@ -7,24 +7,23 @@ namespace VinhLB
     public class SecretMapPopup : UICanvas
     {
         [SerializeField]
-        HButton[] levelButtons;
-        [SerializeField]
-        TMP_Text secretMapPieceTxt;
+        private SecretMapItem[] _secretMapItems;
 
         public override void UpdateUI()
         {
-            for(int i = 0; i < levelButtons.Length; i++) 
-            { 
-                if(i < GameManager.Ins.SecretLevelUnlock)
+            for (int i = 0; i < _secretMapItems.Length; i++)
+            {
+                if (i < GameManager.Ins.SecretLevelUnlock)
                 {
-                    levelButtons[i].interactable = true;
+                    _secretMapItems[i].SetButtons(true);
                 }
                 else
                 {
-                    levelButtons[i].interactable = false;
+                    _secretMapItems[i].SetButtons(false);
                 }
             }
-            secretMapPieceTxt.text = GameManager.Ins.SecretMapPieces.ToString();
+            
+            // secretMapPieceTxt.text = GameManager.Ins.SecretMapPieces.ToString();
         }
     }
 }

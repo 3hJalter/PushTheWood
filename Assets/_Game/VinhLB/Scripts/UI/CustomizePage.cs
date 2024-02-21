@@ -2,7 +2,7 @@
 
 namespace VinhLB
 {
-    public class InventoryPage : TabPage
+    public class CustomizePage : TabPage
     {
         
     }
