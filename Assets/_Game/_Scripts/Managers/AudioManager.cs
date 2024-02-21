@@ -40,18 +40,24 @@ namespace _Game.Managers
         public void PlayBgm(BgmType type, float fadeFloat = 0.3f, float targetVolume = 1f)
         {
             bgm.loop = true;
-            if (fadeFloat == 0f || bgm.mute) PlayAudio(bgm, audioData.BGMDict, type);
+            if (fadeFloat == 0f || bgm.mute)
+            {
+                _currentBGMVolume = targetVolume;
+                bgm.volume = targetVolume;
+                PlayAudio(bgm, audioData.BGMDict, type);
+            }
             // FadeOut, Then Play
             else
+            {
                 DOVirtual.Float(_currentBGMVolume, 0, fadeFloat, value => VolumeDown(bgm, value))
                     .SetEase(Ease.Linear)
                     .OnComplete(() =>
                     {
+                        _currentBGMVolume = targetVolume;
+                        bgm.volume = targetVolume;
                         PlayAudio(bgm, audioData.BGMDict, type);
-                        
                     });
-            _currentBGMVolume = targetVolume;
-            bgm.volume = targetVolume;
+            }
         }
 
         public void PlaySfx(SfxType type, float targetVolume = 1f)
