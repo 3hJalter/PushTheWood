@@ -136,20 +136,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Bomb
             StateMachine.OverrideState = StateEnum.None;
         }
         
-        public override IMemento Save()
+        public override IMemento RawSave()
         {
-            IMemento save;
-            if (overrideSpawnSave != null)
-            {
-                save = overrideSpawnSave;
-                overrideSpawnSave = null;
-            }
-            else
-            {
-                save = new ExplosiveBombMemento(this, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
+            return new ExplosiveBombMemento(this, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
                     , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID, lastPushedDirection);
-            }
-            return save;
         }
 
         private class ExplosiveBombMemento : DynamicUnitMemento<Bomb>
