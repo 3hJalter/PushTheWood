@@ -29,6 +29,7 @@ namespace VinhLB
 
         private bool _active;
         private Transform _iconTransform;
+        private Tween _iconAnimTween;
 
         public void SetActiveState(bool active, bool animated)
         {
@@ -44,6 +45,7 @@ namespace VinhLB
                 _iconTransform = _icon.transform;
             }
             _iconTransform.DOKill();
+            _iconAnimTween = null;
 
             if (_active)
             {
@@ -57,12 +59,14 @@ namespace VinhLB
                 {
                     float duration = 0.2f;
                     Sequence sequence = DOTween.Sequence();
-                    sequence.Append(_iconTransform.DOLocalMove(Vector3.up * 50f, duration).SetEase(Ease.OutBack))
+                    sequence.AppendCallback(PlayIconAnim)
+                        .Join(_iconTransform.DOLocalMove(Vector3.up * 50f, duration).SetEase(Ease.OutBack))
                         .Join(_iconTransform.DOScale(1.25f, duration).SetEase(Ease.OutBack));
                 }
                 else
                 {
                     _iconTransform.localPosition = Vector3.up * 50f;
+                    _iconTransform.localRotation = Quaternion.identity;
                     _iconTransform.localScale = Vector3.one * 1.25f;
                 }
             }
@@ -75,6 +79,7 @@ namespace VinhLB
                 _nameText.gameObject.SetActive(false);
 
                 _iconTransform.localPosition = Vector3.zero;
+                _iconTransform.localRotation = Quaternion.identity;
                 _iconTransform.localScale = Vector3.one;
             }
         }
@@ -94,6 +99,17 @@ namespace VinhLB
         public void SetPreferredWidth(float value)
         {
             _layoutElement.preferredWidth = value;
+        }
+
+        public void PlayIconAnim()
+        {
+            if (_iconAnimTween != null)
+            {
+                return;
+            }
+            
+            _iconAnimTween = _iconTransform.DOPunchRotation(Vector3.one * 10f, 0.4f, 8, 1f)
+                .OnComplete(() => { _iconAnimTween = null; });
         }
 
         public void OnPointerClick(PointerEventData eventData)
