@@ -14,6 +14,8 @@ namespace _Game.Managers
         [SerializeField] private AudioData audioData;
         [SerializeField] private AudioSource bgm;
         [SerializeField] private AudioSource sfx;
+        
+        private float _currentBGMVolume = 1f;
 
         private void Awake()
         {
@@ -35,28 +37,32 @@ namespace _Game.Managers
             return audioDictionary.GetValueOrDefault(type);
         }
 
-        public void PlayBgm(BgmType type, float fadeFloat = 0.3f)
+        public void PlayBgm(BgmType type, float fadeFloat = 0.3f, float targetVolume = 1f)
         {
             bgm.loop = true;
             if (fadeFloat == 0f || bgm.mute) PlayAudio(bgm, audioData.BGMDict, type);
             // FadeOut, Then Play
             else
-                DOVirtual.Float(1, 0, fadeFloat, value => VolumeDown(bgm, value))
+                DOVirtual.Float(_currentBGMVolume, 0, fadeFloat, value => VolumeDown(bgm, value))
                     .SetEase(Ease.Linear)
                     .OnComplete(() =>
                     {
                         PlayAudio(bgm, audioData.BGMDict, type);
-                        bgm.volume = 1;
+                        
                     });
+            _currentBGMVolume = targetVolume;
+            bgm.volume = targetVolume;
         }
 
-        public void PlaySfx(SfxType type)
+        public void PlaySfx(SfxType type, float targetVolume = 1f)
         {
+            sfx.volume = targetVolume;
             PlayAudio(sfx, audioData.SfxDict, type);
         }
 
-        public void PlaySfx(AudioClip audioClip)
+        public void PlaySfx(AudioClip audioClip, float targetVolume = 1f)
         {
+            sfx.volume = targetVolume;
             sfx.clip = audioClip;
             sfx.Play();
         }
