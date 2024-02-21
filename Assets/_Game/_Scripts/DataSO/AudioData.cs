@@ -26,12 +26,25 @@ namespace AudioEnum
 {
     public enum SfxType
     {
-        None = -1
+        None = -1,
+        SplashWater = 0,
+        PushChump = 1,
+        PushChumpStand = 2,
+        PushStone = 3,
+        PushTree = 4,
+        EnemyDetectPlayer = 5,
+        EnemyShotArrow = 6,
+        Undo = 7,
+        // UI
+        Click = 100,
+        Win = 101,
+        Lose = 102,
     }
 
     public enum BgmType
     {
         None = -1,
-        MainMenu = 0
+        MainMenu = 0,
+        Ocean = 1,
     }
 }

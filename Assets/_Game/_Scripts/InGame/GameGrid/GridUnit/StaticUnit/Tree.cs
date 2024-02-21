@@ -6,6 +6,7 @@ using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.GameGrid.Unit.Interface;
 using _Game.Managers;
 using _Game.Utilities;
+using AudioEnum;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
@@ -61,6 +62,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             pushedUnit = pushUnit;
             Vector3 axis = Vector3.Cross(Vector3.up, Constants.DirVector3[direction]);
             float lastAngle = 0;
+            AudioManager.Ins.PlaySfx(SfxType.PushTree);
             ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.LeafExplosion),
                 Tf.position + Vector3.up * 2f);
             _pushTween = DOVirtual.Float(0, DEGREE * 4 * DECAY_VALUE * DECAY_VALUE, Constants.MOVING_TIME * 1f, i =>

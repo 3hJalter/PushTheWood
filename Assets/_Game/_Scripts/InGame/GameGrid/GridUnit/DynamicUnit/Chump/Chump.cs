@@ -4,7 +4,9 @@ using _Game._Scripts.InGame.GameCondition.Data;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState;
+using _Game.Managers;
 using _Game.Utilities;
+using AudioEnum;
 using GameGridEnum;
 using UnityEngine;
 
@@ -43,7 +45,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
 
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
             bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
-        {       
+        {
+            unitTypeY = UnitTypeY.Up;
+            unitTypeXZ = UnitTypeXZ.None;
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
             if (!_isAddState)
             {
@@ -93,8 +97,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
                 return;
 
             #endregion
-
             base.OnBePushed(direction, pushUnit);
+            AudioManager.Ins.PlaySfx(SfxType.PushChump);
             #region Be push when below Box and in water
 
             if (pushUnit is Box.Box && IsInWater())
