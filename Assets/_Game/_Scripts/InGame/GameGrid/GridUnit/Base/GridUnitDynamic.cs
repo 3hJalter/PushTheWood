@@ -17,22 +17,11 @@ namespace _Game.GameGrid.Unit
         }
 
         #region SAVING DATA
-        public override IMemento Save()
+        public override IMemento RawSave()
         {
-            IMemento save;
-            if (overrideSpawnSave != null)
-            {
-                save = overrideSpawnSave;
-                overrideSpawnSave = null;
-            }
-            else
-            {
-                save = new DynamicUnitMemento<GridUnitDynamic>(this, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
+            return new DynamicUnitMemento<GridUnitDynamic>(this, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
                 , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID, lastPushedDirection);
-            }
-            return save;
         }
-
         public class DynamicUnitMemento<T> : UnitMemento<T> where T : GridUnitDynamic
         {
             protected StateEnum currentState;

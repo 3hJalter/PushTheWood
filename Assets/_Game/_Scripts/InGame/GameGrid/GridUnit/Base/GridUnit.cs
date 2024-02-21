@@ -151,7 +151,7 @@ namespace _Game.GameGrid.Unit
         {
             //Saving state before spawn, when map has already init
             if (!LevelManager.Ins.IsConstructingLevel)
-                overrideSpawnSave = Save();
+                overrideSpawnSave = RawSave();
             else
                 overrideSpawnSave = null;
             SaveInitData(LevelManager.Ins.CurrentLevel.Index);
@@ -195,7 +195,7 @@ namespace _Game.GameGrid.Unit
             Tf.DOKill(true);
             //Saving state before despawn
             if (!LevelManager.Ins.IsConstructingLevel)
-                overrideDespawnSave = Save();
+                overrideDespawnSave = RawSave();
             else
                 overrideDespawnSave = null;
             OnOutCells();
@@ -501,22 +501,30 @@ namespace _Game.GameGrid.Unit
         public virtual IMemento Save()
         {
             IMemento save;
-            if(!isSpawn && overrideSpawnSave != null)
+            if(overrideSpawnSave != null)
             {
                 save = overrideSpawnSave;
                 overrideSpawnSave = null;
             }
-            else if(isSpawn && overrideDespawnSave != null)
+            else if(overrideDespawnSave != null)
             {
-                save= overrideDespawnSave;
+                save = overrideDespawnSave;
                 overrideDespawnSave = null;
             }
             else
             {
-                save = new UnitMemento<GridUnit>(this, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
-                , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID, lastPushedDirection);
+                if (isSpawn)
+                    save = RawSave();
+                else
+                    save = null;
             }
             return save;
+        }
+
+        public virtual IMemento RawSave()
+        {
+            return new UnitMemento<GridUnit>(this, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
+                , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID, lastPushedDirection);
         }
         public class UnitMemento<T> : IMemento where T : GridUnit
         {

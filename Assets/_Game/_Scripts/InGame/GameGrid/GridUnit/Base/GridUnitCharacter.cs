@@ -57,20 +57,10 @@ namespace _Game.GameGrid.Unit
        
 
         #region SAVING DATA
-        public override IMemento Save()
+        public override IMemento RawSave()
         {
-            IMemento save;
-            if (overrideSpawnSave != null)
-            {
-                save = overrideSpawnSave;
-                overrideSpawnSave = null;
-            }
-            else
-            {
-                save = new CharacterUnitMemento<GridUnitCharacter>(this, IsDead, _currentAnim, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
+            return new CharacterUnitMemento<GridUnitCharacter>(this, IsDead, _currentAnim, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
                 , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID, lastPushedDirection);
-            }
-            return save;
         }
 
         public abstract void OnCharacterDie();

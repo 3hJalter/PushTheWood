@@ -312,20 +312,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         #endregion
 
         #region SAVING DATA
-        public override IMemento Save()
+        public override IMemento RawSave()
         {
-            IMemento save;
-            if (overrideSpawnSave != null)
-            {
-                save = overrideSpawnSave;
-                overrideSpawnSave = null;
-            }
-            else
-            {
-                save = new PlayerMemento(this, Tf.parent, isRideVehicle, _vehicle, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
+            return new PlayerMemento(this, Tf.parent, isRideVehicle, _vehicle, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
                 , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID, lastPushedDirection);
-            }
-            return save;
         }
 
         public class PlayerMemento : DynamicUnitMemento<Player>

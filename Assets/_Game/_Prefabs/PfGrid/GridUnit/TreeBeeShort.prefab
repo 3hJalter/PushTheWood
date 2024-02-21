@@ -680,9 +680,12 @@ MonoBehaviour:
   unitTypeXZ: -1
   skinRotationDirection: 2
   islandID: -1
+  isSpawn: 0
+  isSpawnInMemento: 0
   gridUnitStaticType: 10
   anchor: {fileID: 4798063026613797544}
   chumpPrefab: {fileID: 8852207134085153055, guid: 7d2d8c26c208e6748835843aee7b2ae7, type: 3}
+  treePrefab: {fileID: 7475919495590875395, guid: 1ba27f3e7bc228d43a21f1ea8d0fa763, type: 3}
   hive: {fileID: 4798063026014806721}
 --- !u!1 &4798063026792033090
 GameObject:
