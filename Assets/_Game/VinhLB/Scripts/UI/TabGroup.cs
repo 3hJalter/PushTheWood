@@ -46,11 +46,11 @@ namespace VinhLB
             }
         }
 
-        public void ResetSelectedTab()
+        public void ResetSelectedTab(bool pageAnimated)
         {
             if (_tabButtonList.Count > 0)
             {
-                OnTabSelected(_tabButtonList[_activeTabIndex], false, true);
+                OnTabSelected(_tabButtonList[_activeTabIndex], false, pageAnimated);
             }
         }
         
@@ -155,7 +155,7 @@ namespace VinhLB
                 case TabPageType.Home:
                     return UIManager.Ins.GetUI<HomePage>();
                 case TabPageType.Inventory:
-                    return UIManager.Ins.GetUI<InventoryPage>();
+                    return UIManager.Ins.GetUI<CustomizePage>();
             }
 
             return null;

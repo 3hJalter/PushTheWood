@@ -51,10 +51,19 @@ namespace _Game.UIs.Screen
         {
             base.Setup(param);
 
-            _canvasGroup.alpha = 0f;
-            _blockPanel.gameObject.SetActive(true);
             _goldValueText.text = $"{GameManager.Ins.Gold}";
             _gemValueText.text = $"{GameManager.Ins.Gems}";
+            
+            if (param is true)
+            {
+                _canvasGroup.alpha = 1f;
+                _blockPanel.gameObject.SetActive(false);
+            }
+            else
+            {
+                _canvasGroup.alpha = 0f;
+                _blockPanel.gameObject.SetActive(true);
+            }
         }
 
         public override void Open(object param = null)
@@ -66,10 +75,17 @@ namespace _Game.UIs.Screen
             GameManager.Ins.ChangeState(GameState.MainMenu);
             CameraManager.Ins.ChangeCamera(ECameraType.MainMenuCamera);
 
-            DOVirtual.Float(0f, 1f, 1f, value => _canvasGroup.alpha = value)
-                .OnComplete(() => _blockPanel.gameObject.SetActive(false));
-
-            _bottomNavigationTabGroup.ResetSelectedTab();
+            if (param is true)
+            {
+                _bottomNavigationTabGroup.ResetSelectedTab(false);
+            }
+            else
+            {
+                DOVirtual.Float(0f, 1f, 1f, value => _canvasGroup.alpha = value)
+                    .OnComplete(() => _blockPanel.gameObject.SetActive(false));
+                
+                _bottomNavigationTabGroup.ResetSelectedTab(true);
+            }
         }
 
         public override void Close()
@@ -95,7 +111,7 @@ namespace _Game.UIs.Screen
         {
             // If screen not open yet, just set value
             if (!gameObject.activeSelf) return;
-            
+
             // _goldValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT);
 
             // If screen is open, play tween
@@ -107,7 +123,7 @@ namespace _Game.UIs.Screen
             //         // Complete if be kill
             //         _goldValueText.text = value.ToString("#,#");
             //     });
-            
+
             if (data.ChangedAmount > 0 && data.Source is Vector3 spawnPosition)
             {
                 int collectingCoinAmount = Mathf.Min((int)data.ChangedAmount, 8);
@@ -118,7 +134,7 @@ namespace _Game.UIs.Screen
                         _goldValueText.text = GameManager.Ins.SmoothGold.ToString(Constants.VALUE_FORMAT);
                     });
             }
-            else 
+            else
             {
                 _goldValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT);
             }
@@ -128,7 +144,7 @@ namespace _Game.UIs.Screen
         {
             // If screen not open yet, just set value
             if (!gameObject.activeSelf) return;
-            
+
             // If screen is open, play tween
             // _goldChangeTween?.Kill();
             // _goldChangeTween = DOTween.To(() => int.Parse(_gemValueText.text.Replace(",", "")),

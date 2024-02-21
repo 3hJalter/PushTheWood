@@ -5,7 +5,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class UICanvas : MonoBehaviour
+public class UICanvas : HMonoBehaviour
 {
     //public bool IsAvoidBackKey = false;
     [FormerlySerializedAs("IsDestroyOnClose")]

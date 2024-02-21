@@ -34,6 +34,7 @@ MonoBehaviour:
     - Assembly-CSharp
     - Assembly-CSharp-firstpass
     - Cinemachine
+    - Coffee.SoftMaskForUGUI
     - IngameDebugConsole.Runtime
     - KinoBloom.Runtime
     - MoreMountains.NiceVibrations
