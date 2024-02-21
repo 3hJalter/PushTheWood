@@ -81,7 +81,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 //DEV: Save state for new object
                 // Despawn the Tree
                 t.CutTreeData.tree.OnDespawn();
-                LevelManager.Ins.SaveGameState(true);
+                LevelManager.Ins.SaveGameState(true); // BUG FROM HERE
                 chump.MainCell.ValueChange();
                 // Push the Chump with the direction
                 ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.LeafExplosion),

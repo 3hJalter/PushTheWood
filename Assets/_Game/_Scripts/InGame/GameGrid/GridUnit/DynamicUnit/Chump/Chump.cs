@@ -43,7 +43,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
 
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
             bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
-        {       
+        {
+            unitTypeY = UnitTypeY.Up;
+            unitTypeXZ = UnitTypeXZ.None;
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
             if (!_isAddState)
             {

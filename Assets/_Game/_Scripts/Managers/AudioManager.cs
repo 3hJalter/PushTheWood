@@ -41,7 +41,7 @@ namespace _Game.Managers
 
         private static AudioClip GetAudio<T>(IReadOnlyDictionary<T, AudioClip> audioDictionary, T type)
         {
-            return audioDictionary.TryGetValue(type, out AudioClip audioClip) ? audioClip : null;
+            return audioDictionary.GetValueOrDefault(type);
         }
 
         public void PlayBgm(BgmType type, float fadeFloat = 0.3f)
