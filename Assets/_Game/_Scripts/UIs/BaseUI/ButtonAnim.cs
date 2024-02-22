@@ -23,14 +23,12 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private HButton _hBtn;
 
     private CoroutineHandle _coroutine;
-    private IEnumerator<float> _activeCooldownTime;
     private UnityAction _waitCooldown;
     private void Awake()
     {
         _hBtn = GetComponent<HButton>();
         _hBtn.buttonAnim = this;
         _canvasGroup = GetComponent<CanvasGroup>();
-        _activeCooldownTime = ActiveCooldownTime();
         _waitCooldown = WaitCooldown;
         _hBtn.onClick.AddListener(_waitCooldown);
     }
@@ -49,7 +47,7 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private void WaitCooldown()
     {
         _hBtn.enabled = false;
-        _coroutine = Timing.RunCoroutine(_activeCooldownTime);
+        _coroutine = Timing.RunCoroutine(ActiveCooldownTime());
     }
     
     public void SetActive(bool active)
