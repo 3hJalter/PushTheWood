@@ -11,7 +11,7 @@ public class BannerAds : MonoBehaviour
     {
         MaxSdkCallbacks.OnSdkInitializedEvent += (MaxSdkBase.SdkConfiguration sdkConfiguration) =>
         {
-            
+
             // AppLovin SDK is initialized, start loading ads
             // Banners are automatically sized to 320×50 on phones and 728×90 on tablets
             // You may call the utility method MaxSdkUtils.isTablet() to help with view sizing adjustments
@@ -33,6 +33,6 @@ public class BannerAds : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

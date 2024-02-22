@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AdsManager : Singleton<AdsManager> 
+public class AdsManager : Singleton<AdsManager>
 {
     [SerializeField]
     BannerAds Banner;
@@ -17,12 +17,13 @@ public class AdsManager : Singleton<AdsManager>
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
-        MaxSdkCallbacks.OnSdkInitializedEvent += (MaxSdkBase.SdkConfiguration sdkConfiguration) => {
+        MaxSdkCallbacks.OnSdkInitializedEvent += (MaxSdkBase.SdkConfiguration sdkConfiguration) =>
+        {
             // AppLovin SDK is initialized, start loading ads
             Reward.Load();
             Interstitial.Load();
         };
     }
 
-    
+
 }

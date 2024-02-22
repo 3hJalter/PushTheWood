@@ -41,7 +41,7 @@ public class RewardedAds : MonoBehaviour
         showImmediate = show;
     }
 
-    public void Show(List<RESOURCE_TYPE> resourceTypes = null, List<int> resourceAmount = null, 
+    public void Show(List<RESOURCE_TYPE> resourceTypes = null, List<int> resourceAmount = null,
         List<BoosterType> boosterTypes = null, List<int> boosterAmount = null)
     {
         this.resourceTypes = resourceTypes;
@@ -67,7 +67,7 @@ public class RewardedAds : MonoBehaviour
     private void OnRewardedAdLoadedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
     {
         // Rewarded ad is ready for you to show. MaxSdk.IsRewardedAdReady(adUnitId) now returns 'true'.
-        if(showImmediate)
+        if (showImmediate)
             MaxSdk.ShowRewardedAd(adUnitId);
         // Reset retry attempt
         retryAttempt = 0;
@@ -101,14 +101,14 @@ public class RewardedAds : MonoBehaviour
 
     private void OnRewardedAdReceivedRewardEvent(string adUnitId, MaxSdk.Reward reward, MaxSdkBase.AdInfo adInfo)
     {
-        if(resourceTypes != null)
+        if (resourceTypes != null)
         {
 
         }
 
-        if(boosterTypes != null)
+        if (boosterTypes != null)
         {
-            for(int i = 0; i < boosterTypes.Count; i++)
+            for (int i = 0; i < boosterTypes.Count; i++)
             {
                 EventGlobalManager.Ins.OnChangeBoosterAmount.Dispatch(boosterTypes[i], boosterAmounts[i]);
             }
