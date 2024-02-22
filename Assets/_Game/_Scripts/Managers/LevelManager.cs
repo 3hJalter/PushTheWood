@@ -394,11 +394,13 @@ namespace _Game.GameGrid
                 if (!isMerge || objectHistorys.Count == 0)
                 {
                     states = new List<IMemento>() { main.player.Save() };
+                    // TODO: (Later) Try to optimize this by not set the unit which are out of island (set unit island id to -1 before or check active...)
                     HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
                     foreach (GridUnit gridUnit in gridUnits)
                     {
-                        if (gridUnit.IsSpawn && gridUnit.MainCell != null)
-                            states.Add(gridUnit.Save());
+                        IMemento save = gridUnit.Save();
+                        if (save != null && gridUnit.MainCell != null)
+                            states.Add(save);
                     }
                     objectHistorys.Push(states);
                 }
@@ -408,8 +410,9 @@ namespace _Game.GameGrid
                     HashSet<GridUnit> gridUnits = main._currentLevel.Islands[main.player.islandID].GridUnits;
                     foreach (GridUnit gridUnit in gridUnits)
                     {
-                        if (gridUnit.IsSpawn && !states.Any(x => x.Id == gridUnit.GetHashCode()))
-                            states.Add(gridUnit.Save());
+                        IMemento save = gridUnit.Save();
+                        if (save != null && !states.Any(x => x.Id == gridUnit.GetHashCode()))
+                            states.Add(save);
                     }
                 }
             }

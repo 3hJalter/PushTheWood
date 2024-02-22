@@ -6,6 +6,7 @@ using _Game.Utilities.Timer;
 using GameGridEnum;
 using System;
 using System.Collections.Generic;
+using AudioEnum;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
@@ -81,9 +82,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 //DEV: Save state for new object
                 // Despawn the Tree
                 t.CutTreeData.tree.OnDespawn();
-                LevelManager.Ins.SaveGameState(true);
+                LevelManager.Ins.SaveGameState(true); // BUG FROM HERE
                 chump.MainCell.ValueChange();
                 // Push the Chump with the direction
+                AudioManager.Ins.PlaySfx(SfxType.PushTree);
                 ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.LeafExplosion),
                     t.CutTreeData.tree.Tf.position + Vector3.up * 2f);
             }

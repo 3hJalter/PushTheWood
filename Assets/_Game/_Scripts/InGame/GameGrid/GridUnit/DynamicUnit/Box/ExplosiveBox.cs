@@ -78,22 +78,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
             StateMachine.OverrideState = StateEnum.None;
         }
         
-        public override IMemento Save()
+        public override IMemento RawSave()
         {
-            IMemento save;
-            if (overrideSpawnSave != null)
-            {
-                save = overrideSpawnSave;
-                overrideSpawnSave = null;
-            }
-            else
-            {
-                save = new ExplosiveBoxMemento(this, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
+            return new ExplosiveBoxMemento(this, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
                     , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID, lastPushedDirection);
-            }
-            return save;
         }
-
         private class ExplosiveBoxMemento : DynamicUnitMemento<ExplosiveBox>
         {
             public ExplosiveBoxMemento(GridUnitDynamic main, StateEnum currentState, params object[] data) : base(main, currentState, data)

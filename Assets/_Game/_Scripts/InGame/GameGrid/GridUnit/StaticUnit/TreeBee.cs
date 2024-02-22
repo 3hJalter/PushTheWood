@@ -12,6 +12,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
 {
     public class TreeBee : Tree
     {
+        [SerializeField] private Tree treePrefab;
         [SerializeField] private Transform hive;
         private bool _isSetHiveLocalPos;
         private Vector3 _hiveInitLocalPos;
@@ -67,8 +68,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             mainCell.ValueChange();
             LevelManager.Ins.SaveGameState(false);
             // Spawn tree
-            Tree tree = SimplePool.Spawn<Tree>(DataManager.Ins.GetGridUnit(
-                gridUnitStaticType == GridUnitStaticType.TreeBeeShort ? PoolType.TreeShort : PoolType.TreeHigh));
+            Tree tree = SimplePool.Spawn<Tree>(treePrefab);
             tree.OnInit(mainCell, startHeight);
             LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(tree);
             // Then despawn it

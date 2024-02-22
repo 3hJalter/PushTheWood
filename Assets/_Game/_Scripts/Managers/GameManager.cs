@@ -16,7 +16,8 @@ namespace _Game.Managers
         WorldMap,
         Pause,
         Transition,
-        EndGame,
+        WinGame,
+        LoseGame,
     }
     
     [DefaultExecutionOrder(-95)]
@@ -60,7 +61,7 @@ namespace _Game.Managers
         {
             _gameData = DataManager.Ins.GameData;
 
-            #region Handle first day of month
+            #region Handle first day of week
 
             // bool check if today is the first day of month
             // bool isFirstDayOfMonth = System.DateTime.Now.Day == 1;

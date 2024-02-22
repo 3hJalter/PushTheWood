@@ -2,6 +2,7 @@
 using _Game.Data;
 using _Game.Managers;
 using _Game.Utilities;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -11,7 +12,7 @@ namespace VinhLB
 {
     public class BoosterWatchVideoPopup : UICanvas
     {
-        private const int BOOSTER_AMOUNT_ON_BUY = 10;
+        private const int BOOSTER_AMOUNT_ON_BUY = 5;
         [SerializeField]
         private Image _boosterIcon;
         [SerializeField]
@@ -58,7 +59,7 @@ namespace VinhLB
         public void OnClickClaimButton()
         {
             // Double reward
-            EventGlobalManager.Ins.OnChangeBoosterAmount.Dispatch(_boosterConfig.Type, BOOSTER_AMOUNT_ON_BUY * 2);
+            AdsManager.Ins.RewardedAds.Show(null, null, new List<BoosterType> { _boosterConfig.Type }, new List<int> { BOOSTER_AMOUNT_ON_BUY * 2 });
             Close();
         }
 

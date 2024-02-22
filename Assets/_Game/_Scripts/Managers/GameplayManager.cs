@@ -135,7 +135,7 @@ namespace _Game.Managers
             timer.Stop();
             DevLog.Log(DevId.Hung, "ENDGAME - Show Win Screen");
             UIManager.Ins.OpenUI<WinScreen>();
-            GameManager.Ins.ChangeState(GameState.EndGame);
+            GameManager.Ins.ChangeState(GameState.WinGame);
             LevelManager.Ins.player.SetActiveAgent(false);
         }
 
@@ -145,7 +145,7 @@ namespace _Game.Managers
             DevLog.Log(DevId.Hung, "ENDGAME - Show Lose Screen");
             // Show Different Lose based on reason (Ex: Lose by Die will not show More time booster, instead show Revive) -> Check by the time remaining
             UIManager.Ins.OpenUI<LoseScreen>(time <= 0);
-            GameManager.Ins.ChangeState(GameState.EndGame);
+            GameManager.Ins.ChangeState(GameState.LoseGame);
             LevelManager.Ins.player.SetActiveAgent(false);
         }
 

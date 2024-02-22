@@ -7,6 +7,7 @@ using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Popup;
 using _Game.Utilities.Timer;
+using AudioEnum;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -93,6 +94,8 @@ namespace _Game.UIs.Screen
         public override void Open(object param = null)
         {
             base.Open(param);
+            AudioManager.Ins.PlayBgm(BgmType.InGame);
+            AudioManager.Ins.PlayEnvironment(EnvironmentType.Ocean, 1f, 0.5f, 0.25f);
             DebugManager.Ins?.OpenDebugCanvas(UI_POSITION.IN_GAME);
             DOVirtual.Float(0f, 1f, 1f, value => canvasGroup.alpha = value)
                 .OnComplete(() => { blockPanel.enabled = false; });

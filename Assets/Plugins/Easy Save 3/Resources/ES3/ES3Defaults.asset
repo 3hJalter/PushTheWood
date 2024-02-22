@@ -31,16 +31,19 @@ MonoBehaviour:
     serializationDepthLimit: 64
     assemblyNames:
     - AimingRig
+    - AppsFlyer
     - Assembly-CSharp
     - Assembly-CSharp-firstpass
     - Cinemachine
     - Coffee.SoftMaskForUGUI
     - IngameDebugConsole.Runtime
     - KinoBloom.Runtime
+    - MaxSdk.Scripts
     - MoreMountains.NiceVibrations
     - MoreMountains.NiceVibrations.Haptics
     - sc.stylizedwater2.runtime
     - Tayx.Graphy
+    - Tests
     - ToonyColorsPro.Runtime
     - ToonyColorsPro2.Demo
     showAdvancedSettings: 0

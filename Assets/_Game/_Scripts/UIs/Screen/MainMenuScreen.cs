@@ -3,6 +3,7 @@ using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Popup;
+using AudioEnum;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -74,7 +75,8 @@ namespace _Game.UIs.Screen
             DebugManager.Ins?.OpenDebugCanvas(UI_POSITION.MAIN_MENU);
             GameManager.Ins.ChangeState(GameState.MainMenu);
             CameraManager.Ins.ChangeCamera(ECameraType.MainMenuCamera);
-
+            AudioManager.Ins.PlayBgm(BgmType.MainMenu);
+            AudioManager.Ins.StopEnvironment();
             if (param is true)
             {
                 _bottomNavigationTabGroup.ResetSelectedTab(false);

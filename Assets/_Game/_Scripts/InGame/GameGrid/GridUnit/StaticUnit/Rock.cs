@@ -1,4 +1,6 @@
-﻿using _Game.Utilities;
+﻿using _Game.Managers;
+using _Game.Utilities;
+using AudioEnum;
 using DG.Tweening;
 using UnityEngine;
 
@@ -17,6 +19,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             //DevLog.Log(DevId.Hung, "Rock Block");
             Vector3 axis = Vector3.Cross(Vector3.up, Constants.DirVector3[direction]);
             float lastAngle = 0;
+            AudioManager.Ins.PlaySfx(SfxType.PushStone);
             DOVirtual.Float(0, DEGREE * 4 * DECAY_VALUE * DECAY_VALUE, Constants.MOVING_TIME * 1.2f, i =>
             {
                 float rotateAngle;

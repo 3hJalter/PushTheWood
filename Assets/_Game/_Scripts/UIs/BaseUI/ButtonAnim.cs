@@ -13,7 +13,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(HButton), typeof(CanvasGroup))]
 public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler
 {
-    [SerializeField] private SfxType btnSound = SfxType.None;
+    [SerializeField] private SfxType btnSound = SfxType.Click;
     [SerializeField] private bool unscaleTime;
     private CanvasGroup _canvasGroup;
     private HButton _hcBtn;

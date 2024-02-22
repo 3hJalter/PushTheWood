@@ -54,6 +54,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         {           
             agent.enabled = false;
             agent.Init(this);
+            GameManager.Ins.RegisterListenerEvent(DesignPattern.EventID.WinGame, OnWin);
         }
         private void FixedUpdate()
         {
@@ -241,13 +242,15 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 InputCache.Clear();
             }
         }
-
         public void OnCharacterChangePosition()
         {
             _OnCharacterChangePosition?.Invoke();
             Direction = agent.NextDirection;
         }
-
+        private void OnWin()
+        {
+            StateMachine.ChangeState(StateEnum.Happy);
+        }
         #region Camera Setup for Player
 
         private const int OUT_OF_ISLAND_CELL_BEFORE_TARGET_CAM_TO_PLAYER = 0;
@@ -312,20 +315,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         #endregion
 
         #region SAVING DATA
-        public override IMemento Save()
+        public override IMemento RawSave()
         {
-            IMemento save;
-            if (overrideSpawnSave != null)
-            {
-                save = overrideSpawnSave;
-                overrideSpawnSave = null;
-            }
-            else
-            {
-                save = new PlayerMemento(this, Tf.parent, isRideVehicle, _vehicle, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
+            return new PlayerMemento(this, Tf.parent, isRideVehicle, _vehicle, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight
                 , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID, lastPushedDirection);
-            }
-            return save;
         }
 
         public class PlayerMemento : DynamicUnitMemento<Player>
