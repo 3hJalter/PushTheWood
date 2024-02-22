@@ -154,3 +154,19 @@ namespace GameGridEnum
         WaterSplash_Continuous = 9,
     }
 }
+
+namespace _Game.Resource
+{
+    public enum RESOURCE_TYPE
+    {
+        None = -1,
+        GOLD = 0,
+        GEM = 1,
+        SECRET_MAP_PIECE = 2,
+    }
+    public enum REWARD
+    {
+        BOOSTER = 0,
+        RESOURCE = 1,
+    }
+}
