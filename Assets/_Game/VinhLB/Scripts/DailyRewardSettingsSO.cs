@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace VinhLB
 {
+    using _Game.Resource;
     [CreateAssetMenu(fileName = "DailyLoginSettings", menuName = "ScriptableObjects/DailyLoginSettings")]
     public class DailyRewardSettingsSO : SerializedScriptableObject
     {
@@ -19,7 +20,7 @@ namespace VinhLB
     [System.Serializable]
     public class Reward
     {
-        public RewardType RewardType;
+        public RESOURCE_TYPE RewardType;
         public string Name;
         public Sprite IconSprite;
         public int Amount;
@@ -28,24 +29,16 @@ namespace VinhLB
         {
             switch (RewardType)
             {
-                case RewardType.Gold:
+                case RESOURCE_TYPE.GOLD:
                     GameManager.Ins.GainGold(Amount, fromPosition);
                     break;
-                case RewardType.Gem:
+                case RESOURCE_TYPE.GEM:
                     GameManager.Ins.GainGems(Amount, fromPosition);
                     break;
-                case RewardType.SecretMapPiece:
+                case RESOURCE_TYPE.SECRET_MAP_PIECE:
                     GameManager.Ins.GainSecretMapPiece(Amount);
                     break;
             }
         }
-    }
-
-    public enum RewardType
-    {
-        None = -1,
-        Gold = 0,
-        Gem = 1,
-        SecretMapPiece = 2,
-    }
+    }   
 }
