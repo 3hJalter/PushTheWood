@@ -98,7 +98,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
 
             #endregion
             base.OnBePushed(direction, pushUnit);
-            AudioManager.Ins.PlaySfx(SfxType.PushChump);
+            // Temporary fix for sound repeatedly when chump rolling (set pushUnit = this is rolling)
+            if (pushUnit != this) AudioManager.Ins.PlaySfx(SfxType.PushChump); 
             #region Be push when below Box and in water
 
             if (pushUnit is Box.Box && IsInWater())
