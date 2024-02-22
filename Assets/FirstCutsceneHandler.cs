@@ -23,7 +23,7 @@ public class FirstCutsceneHandler : MonoBehaviour
 
     private IEnumerator<float> OnPlayCutscene()
     {
-        AudioManager.Ins.PlayBgm(BgmType.InGame, 0.3f, 0.3f);
+        AudioManager.Ins.PlayBgm(BgmType.InGame, 1f, 0.3f);
         AudioManager.Ins.PlayEnvironment(EnvironmentType.Ocean, 0.3f, 0.5f, 0.25f);
         CameraManager.Ins.ChangeCamera(ECameraType.CutsceneCamera);
         CameraManager.Ins.ChangeCameraTarget(ECameraType.CutsceneCamera, player);
