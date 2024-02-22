@@ -28,7 +28,7 @@ namespace _Game._Scripts.Managers
         private HSwitch HSwitch => hSwitch;
         private GameObject DpadObj => dpad.gameObject;
 
-        private MoveChoice CurrentChoice { get; set; }
+        public MoveChoice CurrentChoice { get; set; }
         
         public void OnForceResetMove()
         {

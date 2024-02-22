@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2872232846437497106}
   - component: {fileID: 8157375374406824535}
   - component: {fileID: 1622653104301442706}
+  - component: {fileID: 2538101017078019440}
   m_Layer: 3
   m_Name: BladeGrassMesh_8x8_Corner
   m_TagString: Untagged
@@ -83,3 +84,14 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!210 &2538101017078019440
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5456314980606406366}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0

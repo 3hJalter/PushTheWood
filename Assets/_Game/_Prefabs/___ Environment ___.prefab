@@ -164,7 +164,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7030098245199338024
 Transform:
   m_ObjectHideFlags: 0
@@ -174,7 +174,7 @@ Transform:
   m_GameObject: {fileID: 7030098245199338031}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 10, y: -0.8, z: 10}
-  m_LocalScale: {x: 4, y: 1, z: 4}
+  m_LocalScale: {x: 10, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7030098245580201128}
@@ -248,7 +248,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7030098245329535406
 Transform:
   m_ObjectHideFlags: 0
@@ -258,7 +258,7 @@ Transform:
   m_GameObject: {fileID: 7030098245329535405}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 10, y: 0, z: 10}
-  m_LocalScale: {x: 80, y: 1.45, z: 80}
+  m_LocalScale: {x: 200, y: 1.3, z: 200}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7030098245580201128}
@@ -581,11 +581,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968515746695607532, guid: 6519459cc68ab254cb3cd5424c68c788, type: 3}
       propertyPath: m_LocalScale.x
-      value: 80
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7968515746695607532, guid: 6519459cc68ab254cb3cd5424c68c788, type: 3}
       propertyPath: m_LocalScale.y
-      value: 80
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7968515746695607532, guid: 6519459cc68ab254cb3cd5424c68c788, type: 3}
       propertyPath: m_LocalPosition.x
@@ -629,7 +629,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7968515746695607533, guid: 6519459cc68ab254cb3cd5424c68c788, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7968515746818899515, guid: 6519459cc68ab254cb3cd5424c68c788, type: 3}
       propertyPath: serializationData.Prefab

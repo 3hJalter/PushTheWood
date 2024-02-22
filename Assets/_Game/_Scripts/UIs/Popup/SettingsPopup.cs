@@ -3,6 +3,7 @@ using _Game.Data;
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Screen;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using VinhLB;
@@ -12,33 +13,37 @@ namespace _Game.UIs.Popup
     public class SettingsPopup : UICanvas
     {
         [SerializeField]
-        private HButton _mainMenuButton;
-        
-        [SerializeField] private GameObject bgmMuteImage;
-        [SerializeField] private GameObject sfxMuteImage;
-        [SerializeField] private GameObject envMuteImage;
+        private TMP_Text _headerText;
+        [SerializeField]
+        private GameObject _navigationGroupGO;
+
+        [SerializeField]
+        private GameObject[] _activeMoveChoices;
         
         public override void Setup(object param = null)
         {
             base.Setup(param);
+
             if (GameManager.Ins.IsState(GameState.InGame))
             {
-                _mainMenuButton.gameObject.SetActive(true);
                 GameManager.Ins.ChangeState(GameState.Pause);
+
+                _headerText.text = "Pause";
+                _navigationGroupGO.SetActive(true);
             }
             else
             {
-                _mainMenuButton.gameObject.SetActive(false);
+                _headerText.text = "Settings";
+                _navigationGroupGO.SetActive(false);
             }
 
-            bgmMuteImage.SetActive(AudioManager.Ins.IsBgmMute());
-            sfxMuteImage.SetActive(AudioManager.Ins.IsSfxMute());
-            envMuteImage.SetActive(AudioManager.Ins.IsEnvironmentMute());
+            UpdateCurrentMoveChoice();
         }
 
         public override void Open(object param = null)
         {
             base.Open(param);
+            
             MoveInputManager.Ins.ShowContainer(false);
         }
 
@@ -52,24 +57,63 @@ namespace _Game.UIs.Popup
             }
         }
 
-        public void OnToggleBgm()
+        public void OnClickChangeBgmStatusButton()
         {
-            bgmMuteImage.SetActive(AudioManager.Ins.ToggleBgmMute());
+            Debug.Log("Click change bgm button");
         }
 
-        public void OnToggleSfx()
+        public void OnClickChangeSfxStatusButton()
         {
-            sfxMuteImage.SetActive(AudioManager.Ins.ToggleSfxMute());
+            Debug.Log("Click change sfx button");
         }
 
-        public void OnToggleEnvSound()
+        public void OnClickLikeButton()
         {
-            envMuteImage.SetActive(AudioManager.Ins.ToggleEnvironmentMute());
+            Debug.Log("Click like button");
         }
 
         public void OnClickMoveOptionPopup()
         {
             UIManager.Ins.OpenUI<MoveOptionPopup>();
+        }
+        
+        public void OnClickUseDPadButton()
+        {
+            MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.MoveChoice.DPad);
+
+            UpdateCurrentMoveChoice();
+        }
+
+        public void OnClickUseSwitchButton()
+        {
+            MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.MoveChoice.Switch);
+            
+            UpdateCurrentMoveChoice();
+        }
+
+        public void OnClickUseSwipeButton()
+        {
+            MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.MoveChoice.Swipe);
+            
+            UpdateCurrentMoveChoice();
+        }
+
+        public void OnClickUseSwipeContinuousButton()
+        {
+            MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.MoveChoice.SwipeContinuous);
+            
+            UpdateCurrentMoveChoice();
+        }
+
+        public void OnClickGridToggleButton()
+        {
+            FXManager.Ins.SwitchGridActive();
+        }
+
+        public void OnClickSelectLevelButton()
+        {
+            // UIManager.Ins.CloseAll();
+            // UIManager.Ins.OpenUI<WorldLevelScreen>();
         }
         
         public void OnClickGoMenuButton()
@@ -103,6 +147,26 @@ namespace _Game.UIs.Popup
         {
             Debug.Log("Click toggle grass button");
             FXManager.Ins.ToggleGrasses();
+        }
+
+        public void OnClickTestBoosterWatchVideo()
+        {
+            UIManager.Ins.OpenUI<BoosterWatchVideoPopup>();
+        }
+
+        private void UpdateCurrentMoveChoice()
+        {
+            for (int i = 0; i < _activeMoveChoices.Length; i++)
+            {
+                if (i == (int)MoveInputManager.Ins.CurrentChoice)
+                {
+                    _activeMoveChoices[i].SetActive(true);
+                }
+                else
+                {
+                    _activeMoveChoices[i].SetActive(false);
+                }
+            }
         }
     }
 }
