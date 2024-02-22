@@ -121,7 +121,7 @@ namespace _Game.Managers
         // </summary>
         // <param name="audioDictionary">Dictionary of audio</param>
         // <param name="type">Type of audio</param>
-        // <returns>AudioC</returns>
+        // <returns>Audio</returns>
         private static Audio GetAudio<T>(IReadOnlyDictionary<T, Audio> audioDictionary, T type)
         {
             return audioDictionary.GetValueOrDefault(type);
@@ -132,11 +132,10 @@ namespace _Game.Managers
         // </summary>
         // <param name="type">Type of BGM</param>
         // <param name="fadeFloat">Fade out time</param>
-        // <param name="targetVolume">Volume of BGM</param>
-
         public void PlayBgm(BgmType type, float fadeOut = 0.3f)
         {
             Audio audioIn = GetBgmAudio(type);
+            if (audioIn is null) return;
             if (audioIn == bgm.currentAudio) return;
             bgm.SetLoop(true);
             if (fadeOut == 0f || bgm.IsMute)
@@ -155,9 +154,16 @@ namespace _Game.Managers
             }
         }
         
+        // <summary>
+        // Play an environment sound
+        // </summary>
+        // <param name="type">Type of Environment</param>
+        // <param name="fadeFloat">Fade out time</param>
+        // <param name="fadeIn">Fade in time</param>
         public void PlayEnvironment(EnvironmentType type, float fadeFloat = 0.3f, float fadeIn = 0.5f)
         {
             Audio audioIn = GetEnvironmentAudio(type);
+            if (audioIn is null) return;
             environment.SetLoop(true);
             if (fadeFloat == 0f || environment.IsMute)
             {
@@ -183,34 +189,17 @@ namespace _Game.Managers
             }
         }
         
-        public void PlaySfx(SfxType type)
-        {
-            sfx.SetAudio(GetSfxAudio(type));
-            sfx.Play();
-        }
-        
-        // <summary>
-        // Play an environment sound
-        // </summary>
-        // <param name="type">Type of Environment</param>
-        // <param name="fadeFloat">Fade out time</param>
-        // <param name="fadeIn">Fade in time</param>
-        // <param name="targetVolume">Volume of Environment</param>
-       
-        
-
         // <summary>
         // Play a sound effect
         // </summary>
         // <param name="type">Type of SFX</param>
-        // <param name="targetVolume">Volume of SFX</param>
-        
-
-        // <summary>
-        // Play a sound effect
-        // </summary>
-        // <param name="audioClip">SFX audio</param>
-        // <param name="targetVolume">Volume of SFX</param>
+        public void PlaySfx(SfxType type)
+        {
+            Audio audioIn = GetSfxAudio(type);
+            if (audioIn is null) return;
+            sfx.SetAudio(audioIn);
+            sfx.Play();
+        }
         
 
         // <summary>
