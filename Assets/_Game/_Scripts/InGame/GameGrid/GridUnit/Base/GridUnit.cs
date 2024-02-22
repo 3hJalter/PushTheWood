@@ -203,7 +203,7 @@ namespace _Game.GameGrid.Unit
             lastPushedDirection = Direction.None;
             isSpawn = false;
         }
-
+        
         public virtual void OnPush(Direction direction, ConditionData conditionData = null)
         {
 
@@ -497,6 +497,8 @@ namespace _Game.GameGrid.Unit
             cell.AddGridUnit(this);
         }
 
+        protected virtual void OnRestoreSpawn(){}
+        
         #region SAVING DATA
         public virtual IMemento Save()
         {
@@ -590,6 +592,7 @@ namespace _Game.GameGrid.Unit
                 if(isSpawn && !main.isSpawn)
                 {
                     SimplePool.SpawnDirectFromPool(main, position, Quaternion.identity);
+                    main.OnRestoreSpawn();
                     main.isSpawn = true;
                 }
                 #endregion

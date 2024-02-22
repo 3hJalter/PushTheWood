@@ -6,11 +6,13 @@ using _Game.Data;
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Popup;
+using _Game.Utilities;
 using _Game.Utilities.Timer;
 using AudioEnum;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using VinhLB;
 
@@ -27,7 +29,11 @@ namespace _Game.UIs.Screen
         [SerializeField] private Button undoButton;
 
         [SerializeField] private Button resetIslandButton;
-
+        
+        [SerializeField] private HButton growTreeButton;
+        [SerializeField] private GameObject activeGrowTreeImage;
+        [SerializeField] private GameObject growTreeAmountFrame;
+        
         [SerializeField] private TMP_Text timeText;
 
         [SerializeField] private TMP_Text _levelText;
@@ -37,6 +43,7 @@ namespace _Game.UIs.Screen
         public TextMeshProUGUI undoCountText;
         public TextMeshProUGUI resetCountText;
         public TextMeshProUGUI hintCountText;
+        public TextMeshProUGUI growTreeCountText;
         private STimer resetIslandTimer;
 
         private int time;
@@ -66,7 +73,6 @@ namespace _Game.UIs.Screen
         private void OnDestroy()
         {
             LevelManager.Ins.OnLevelNext -= LevelManager_OnLevelNext;
-
             TimerManager.Inst.PushSTimer(undoTimer);
             TimerManager.Inst.PushSTimer(resetIslandTimer);
         }
@@ -75,6 +81,7 @@ namespace _Game.UIs.Screen
         public event Action OnResetIsland;
         public event Action OnHint;
         public event Action OnCancelHint;
+        public event Action OnGrowTree;
 
         public override void Setup(object param = null)
         {
@@ -130,6 +137,19 @@ namespace _Game.UIs.Screen
             resetIslandTimer.Stop();
             resetIslandButton.interactable = active;
         }
+        
+        public void OnBoughtGrowTree(bool active)
+        {
+            DevLog.Log(DevId.Hoang, "On Bought Grow Tree: " + active);
+            activeGrowTreeImage.SetActive(active);
+            growTreeAmountFrame.SetActive(!active);
+        }
+        
+        public void SetActiveGrowTree(bool active)
+        {
+            DevLog.Log(DevId.Hoang, "Set Active Grow Tree: " + active);
+            growTreeButton.interactable = active;
+        }
 
         private void UpdateLevelText()
         {
@@ -145,7 +165,12 @@ namespace _Game.UIs.Screen
                     _levelText.text = $"Level {levelIndex}";
                     break;
                 case LevelType.DailyChallenge:
-                    levelIndex += LevelManager.Ins.DailyLevelIndex;
+                    if (LevelManager.Ins.DailyLevelIndex == 0)
+                    {
+                        _levelText.text = "Tutorial";
+                        break;
+                    }
+                    levelIndex += LevelManager.Ins.DailyLevelIndex - 1;
                     _levelText.text = $"Day {levelIndex}";
                     break;
             }
@@ -195,6 +220,11 @@ namespace _Game.UIs.Screen
             OnCancelHint?.Invoke();
         }
 
+        public void OnClickGrowTree()
+        {
+            OnGrowTree?.Invoke();
+        }
+        
         #endregion
     }
 }

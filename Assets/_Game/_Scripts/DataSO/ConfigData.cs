@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using _Game.Managers;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Game.Data
 {
@@ -15,6 +16,10 @@ namespace _Game.Data
         // Time per level
         [FoldoutGroup("In Game/Time Per Level")]
         public readonly int timePerNormalLevel = 600;
+        [FoldoutGroup("In Game/Time Per Level")]
+        public readonly int timePerDailyChallengeLevel = 900;
+        [FoldoutGroup("In Game/Time Per Level")]
+        public readonly int timePerSecretLevel = 900;
 
         #endregion
         
@@ -23,13 +28,6 @@ namespace _Game.Data
         // Ticket purchase
         [FoldoutGroup("Booster Purchase")]
         public readonly Dictionary<BoosterType, BoosterConfig> boosterConfigs = new();
-
-        #endregion
-
-        #region Gems Purchase
-
-        [FoldoutGroup("Gems Purchase")]
-        public readonly int gemToGold = 10;
 
         #endregion
 
@@ -47,6 +45,7 @@ namespace _Game.Data
         [SerializeField] private string name;
         [SerializeField] private Sprite icon;
         [SerializeField] private int goldPerBuyTen;
+        [SerializeField] private TicketPerBuyRatio ticketPerBuyRatio;
         
         public BoosterType Type => type;
 
@@ -57,5 +56,17 @@ namespace _Game.Data
         public int GoldPerBuyTen => goldPerBuyTen;
 
         // Do with goldPerBuyMore
+    }
+    
+    [Serializable]
+    public struct TicketPerBuyRatio
+    {
+        public TicketPerBuyRatio(int first, int second) {
+            ticketNeed = first;
+            itemsPerBuy = second;
+        }
+        
+        public int ticketNeed;
+        public int itemsPerBuy;
     }
 }

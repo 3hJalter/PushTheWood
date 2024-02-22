@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace _Game.Utilities
 {
-    public class ButtonCD : MonoBehaviour
+    public class ButtonCooldown : MonoBehaviour
     {
         [SerializeField]
         float cooldownTime;

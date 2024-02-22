@@ -1,5 +1,9 @@
-﻿using _Game.DesignPattern;
+﻿using _Game._Scripts.Managers;
+using _Game.DesignPattern;
+using _Game.Managers;
+using DG.Tweening;
 using GameGridEnum;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.StaticUnit
@@ -8,23 +12,92 @@ namespace _Game.GameGrid.Unit.StaticUnit
     {
         private bool _isGrown;
 
+        [ReadOnly]
+        [SerializeField] private Direction fallTreeDirection = Direction.None;
+
+        [SerializeField] private Animator animator;
+        private string _currentAnim = Constants.INIT_ANIM;
+
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
             Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
+            EventGlobalManager.Ins.OnGrowTree.AddListener(OnGrow);
             _isGrown = false;
+        }
+
+        protected override void OnRestoreSpawn()
+        {
+            EventGlobalManager.Ins.OnGrowTree.AddListener(OnGrow);
+            ChangeAnim(Constants.IDLE_ANIM);
+            _isGrown = false;
+        }
+
+        public override void OnDespawn()
+        {
+            EventGlobalManager.Ins.OnGrowTree.RemoveListener(OnGrow);
+            ChangeAnim(Constants.IDLE_ANIM);
+            base.OnDespawn();
+        }
+
+        protected override void OnEnterTriggerUpper(GridUnit triggerUnit)
+        {
+            GameplayManager.Ins.IsCanGrowTree = false;
+            fallTreeDirection = triggerUnit.LastPushedDirection;
+            // fall the skin to the direction if it not none
+            if (fallTreeDirection != Direction.None)
+            {
+                // TODO: Some animation
+            }
+        }
+
+        protected override void OnOutTriggerUpper(GridUnit triggerUnit)
+        {
+            base.OnOutTriggerUpper(triggerUnit);
+            GameplayManager.Ins.IsCanGrowTree = true;
+            // If fall direction is not none, then reset it
+            if (fallTreeDirection != Direction.None)
+            {
+                // TODO: Some animation
+            }
+            fallTreeDirection = Direction.None;
         }
 
         [ContextMenu("Grow Tree")] // TEST
         public void OnGrow()
         {
+            if (_isGrown) return;
+            // If has unit on top, return
+            if (upperUnits.Count > 0)
+                return;
             _isGrown = true;
            // TODO: Some animation
+           ChangeAnim(Constants.TREE_GROW_ANIM);
            // On Complete Animation, Spawn the tree, Despawn the seed
-           Tree tree = SimplePool.Spawn<Tree>(PoolType.TreeShort);
-           tree.OnInit(mainCell, startHeight);
-           // Despawn
-           OnDespawn();
+           DOVirtual.DelayedCall(Constants.GROW_TREE_ANIM_TIME, () =>
+           {
+               LevelManager.Ins.SaveGameState(true);
+               mainCell.ValueChange();
+               LevelManager.Ins.SaveGameState(false);
+
+               Tree tree = SimplePool.Spawn<Tree>(PoolType.TreeShort);
+               tree.OnInit(mainCell, startHeight);
+               LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(tree);
+
+               // Despawn
+               OnDespawn();
+               LevelManager.Ins.SaveGameState(true);
+           });
+        }
+        
+        private void ChangeAnim(string animName, bool forceAnim = false)
+        {
+            if (!forceAnim)
+                if (_currentAnim.Equals(animName))
+                    return;
+            animator.ResetTrigger(_currentAnim);
+            _currentAnim = animName;
+            animator.SetTrigger(_currentAnim);
         }
     }
 }

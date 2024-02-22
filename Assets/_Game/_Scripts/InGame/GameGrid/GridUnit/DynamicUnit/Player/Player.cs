@@ -76,7 +76,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                         IsInputCache = false;
                     }
                 }
-                
+                if (Direction is not Direction.None) lastPushedDirection = Direction;
                 InputDetection.GetInput(Direction);
                 // TEST: Reset the Input if Direction is not none and Move is Swipe (Swipe only take one input per swipe)
                 // if (Direction != Direction.None && MoveInputManager.Ins.CurrentChoice is MoveInputManager.MoveChoice.Swipe) HInputManager.SetDefault();

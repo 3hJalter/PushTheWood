@@ -20,18 +20,29 @@ namespace _Game.Data
             public int normalLevelIndex;
             public int secretLevelIndex;
             public int secretLevelUnlock;
+            
+            // daily challenge
+            public bool isCompleteDailyChallengerTutorial;
+            public int currentDailyChallengerDay = 1;
             public List<int> dailyLevelIndexComplete = new();
+            
+            // daily reward            
+            public int dailyRewardClaimedCount;
+            public DateTime startDailyRewardClaimTime = DateTime.Now.Date;
+            public DateTime lastDailyRewardClaimTime = DateTime.Now.AddHours(-24);
             
             // Income Progress Data
             public int gold;
-            public int gems;
+            public int gems; // REMOVE: Later
+            public int ticketAd;
+            public int keyRewards;
             public int secretMapPieces;
-            public int dailyRewardClaimedCount;
 
             // Booster Data
             public int hintCount;
             public int undoCount;
             public int resetCount;
+            public int growTreeCount;
             
             // Purchase & First rate Data
             public bool purchasedNoAds;
@@ -41,18 +52,12 @@ namespace _Game.Data
             
             //Other Data
             public int sessionPlayed;
-            public DateTime startDailyRewardClaimTime = DateTime.Now.Date;
-            public DateTime lastDailyRewardClaimTime = DateTime.Now.AddHours(-24);
+            
+            
             public DateTime lastTimeLogOut = DateTime.Now;
             public bool isFirstDayOfWeekCheck;
             
-            private int _keyCount;
-
-            public int KeyCount
-            {
-                get => _keyCount;
-                set => _keyCount = Math.Clamp(value, 0, 3);
-            }
+            
         }
 
         [Serializable]
@@ -61,8 +66,9 @@ namespace _Game.Data
             public bool enablePn;
             public bool requestedPn;
             public bool haptic = true;
-            public float soundVolume = 1;
-            public float musicVolume = 1;
+            public bool hasBgm = true;
+            public bool hasSfx = true;
+            public bool hasEnvSound = true;
             public int highPerformance = 1;
             public bool iOsTrackingRequested;
             public int moveChoice = 0;

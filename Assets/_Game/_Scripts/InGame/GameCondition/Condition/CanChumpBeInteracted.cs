@@ -15,6 +15,7 @@ namespace _Game._Scripts.InGame.GameCondition.Condition
         {
             if (dataIn is not BeInteractedData data) return false;
             if (data.pushUnit is Player) return true;
+            if (data.pushUnit == data.owner) return true;
             if (data.pushUnit is Box)
             {
                 if (data.owner is Chump chump && chump.IsInWater())

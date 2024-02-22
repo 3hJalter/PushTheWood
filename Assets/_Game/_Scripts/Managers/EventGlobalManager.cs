@@ -17,9 +17,9 @@ namespace _Game._Scripts.Managers
 
         public Relay<bool> OnButtonUnitEnter { get; private set; } // For Unit Button
         public Relay OnEnemyDie { get; private set; } // For Enemy
-
         public Relay<BoosterType, int> OnChangeBoosterAmount { get; private set; }
         
+        public Relay OnGrowTree { get; private set; } // For Tree Seed
         
         private void Awake()
         {
@@ -31,6 +31,7 @@ namespace _Game._Scripts.Managers
             OnButtonUnitEnter = new Relay<bool>();
             OnEnemyDie = new Relay();
             OnChangeBoosterAmount = new Relay<BoosterType, int>();
+            OnGrowTree = new Relay();
         }
     }
 }

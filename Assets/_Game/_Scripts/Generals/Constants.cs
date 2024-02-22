@@ -5,6 +5,8 @@ using UnityEngine;
 
 public static class Constants
 {
+    public const int DAILY_CHALLENGER_COUNT = 7;
+    
     public const int CELL_SIZE = 2;
     public const int DOWN_CAMERA_CELL_OFFSET = 1;
     // String Constants
@@ -54,8 +56,12 @@ public static class Constants
     public const string SIT_UP_ANIM = "sitUp";
     public const string RUN_ABOVE_CHUMP_ANIM = "runAboveChump";
 
+    public const string TREE_GROW_ANIM = "grow";
+    
     public const float CUT_TREE_ANIM_TIME = 0.5f;
     public const float PUSH_ANIM_TIME = 0.4f;
+    public const float GROW_TREE_ANIM_TIME = 0.4f;
+    
     public const int WAIT_CUT_TREE_FRAMES = 15;
 
     /// <summary>

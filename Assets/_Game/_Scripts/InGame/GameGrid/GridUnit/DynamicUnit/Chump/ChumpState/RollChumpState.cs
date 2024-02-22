@@ -47,7 +47,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                             t.OnEnterTrigger(t);
                             t.StateMachine.ChangeState(StateEnum.Idle);
                             if (t.gameObject.activeSelf)
-                                t.OnBePushed(t.BeInteractedData.inputDirection, t.BeInteractedData.pushUnit);
+                                t.OnBePushed(t.BeInteractedData.inputDirection, t);
                         }
                     });
             }

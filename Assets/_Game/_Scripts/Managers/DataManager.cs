@@ -45,10 +45,21 @@ namespace _Game.Managers
         #endregion
         
         #region In-Game Function
-
+        
         public int CountNormalLevel => gridData.CountNormalLevel;
         public int CountSecretLevel => gridData.CountSecretLevel;
         public int CountSurfaceMaterial => materialData.CountSurfaceMaterial;
+
+        public int GetLevelTime(LevelType type)
+        {
+            return type switch
+            {
+                LevelType.Normal => configData.timePerNormalLevel,
+                LevelType.Secret => configData.timePerSecretLevel,
+                LevelType.DailyChallenge => configData.timePerDailyChallengeLevel,
+                _ => configData.timePerNormalLevel
+            };
+        }
         
         public Material GetTransparentMaterial()
         {
