@@ -75,5 +75,6 @@ namespace _Game.DesignPattern
         OnResetToMainMenu = 8,
         OnSecretMapPieceChange = 9,
         OnUnlockSecretMap = 10,
+        MoreTimeGame = 11,
     }
 }

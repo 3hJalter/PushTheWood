@@ -20,7 +20,9 @@ namespace _Game.Managers
 
         private bool isCanUndo = true;
         private bool isCanResetIsland = true;
-
+        private bool isBoughtGrowTree = false;
+        private bool isCanGrowTree = true;
+            
         public bool IsCanUndo
         {
             get => isCanUndo;
@@ -40,13 +42,34 @@ namespace _Game.Managers
                 screen.SetActiveResetIsland(value);
             }
         }
+        
+        public bool IsBoughtGrowTree
+        {
+            get => isBoughtGrowTree;
+            set
+            {
+                isBoughtGrowTree = value;
+                screen.OnBoughtGrowTree(value);
+            }
+        }
 
+        public bool IsCanGrowTree
+        {
+            get => isCanGrowTree;
+            set
+            {
+                isCanGrowTree = value;
+                screen.SetActiveGrowTree(value);
+            }
+        }
+        
         private void Awake()
         {
             screen = UIManager.Ins.GetUI<InGameScreen>();
             screen.Close();
             timer = TimerManager.Inst.PopSTimer();
             GameManager.Ins.RegisterListenerEvent(EventID.StartGame, OnStartGame);
+            GameManager.Ins.RegisterListenerEvent(EventID.MoreTimeGame, OnMoreTimeGame);
             GameManager.Ins.RegisterListenerEvent(EventID.WinGame, OnWinGame);
             GameManager.Ins.RegisterListenerEvent(EventID.LoseGame, OnLoseGame);
             GameManager.Ins.RegisterListenerEvent(EventID.Pause, OnPauseGame);
@@ -57,9 +80,11 @@ namespace _Game.Managers
             screen.OnResetIsland += OnResetIsland;
             screen.OnHint += OnShowHint;
             screen.OnCancelHint += OnHideHint;
+            screen.OnGrowTree += OnGrowTree;
             screen.undoCountText.text = DataManager.Ins.GameData.user.undoCount.ToString();
             screen.resetCountText.text = DataManager.Ins.GameData.user.resetCount.ToString();
             screen.hintCountText.text = DataManager.Ins.GameData.user.hintCount.ToString();
+            screen.growTreeCountText.text = DataManager.Ins.GameData.user.growTreeCount.ToString();
         }
 
         private void Start()
@@ -79,6 +104,9 @@ namespace _Game.Managers
                     break;
                 case BoosterType.Hint:
                     UpdateBoosterCount(ref DataManager.Ins.GameData.user.hintCount, screen.hintCountText, amount);
+                    break;
+                case BoosterType.GrowTree:
+                    UpdateBoosterCount(ref DataManager.Ins.GameData.user.growTreeCount, screen.growTreeCountText, amount);
                     break;
             }
         }
@@ -120,12 +148,22 @@ namespace _Game.Managers
             screen.Time = time;
             timer.Start(1f, CountTime, true);
         }
+
+        private void OnMoreTimeGame()
+        {
+            OnResetTime();
+            IsCanResetIsland = true;
+            IsCanUndo = true;
+            GameManager.Ins.ChangeState(GameState.InGame);
+            LevelManager.Ins.player.SetActiveAgent(false);
+        }
         
         private void OnStartGame()
         {
             OnResetTime();
             IsCanResetIsland = true;
             IsCanUndo = true;
+            IsBoughtGrowTree = false;
             GameManager.Ins.ChangeState(GameState.InGame);
             LevelManager.Ins.player.SetActiveAgent(false);
         }
@@ -152,6 +190,7 @@ namespace _Game.Managers
         private void OnDestroy()
         {
             GameManager.Ins.UnregisterListenerEvent(EventID.StartGame, OnStartGame);
+            GameManager.Ins.UnregisterListenerEvent(EventID.MoreTimeGame, OnMoreTimeGame);
             GameManager.Ins.UnregisterListenerEvent(EventID.WinGame, OnWinGame);
             GameManager.Ins.UnregisterListenerEvent(EventID.LoseGame, OnLoseGame);
             GameManager.Ins.UnregisterListenerEvent(EventID.Pause, OnPauseGame);
@@ -161,6 +200,7 @@ namespace _Game.Managers
             screen.OnResetIsland -= OnResetIsland;
             screen.OnHint -= OnShowHint;
             screen.OnCancelHint -= OnHideHint;
+            screen.OnGrowTree -= OnGrowTree;
             TimerManager.Inst.PushSTimer(timer);         
         }
 
@@ -228,7 +268,22 @@ namespace _Game.Managers
         
         private void OnGrowTree()
         {
-            
+            if (DataManager.Ins.GameData.user.growTreeCount <= 0)
+            {
+                DevLog.Log(DevId.Hoang, "Show popup to buy grow tree");
+                UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(DataManager.Ins.ConfigData.boosterConfigs[BoosterType.GrowTree]);
+            }
+            else
+            {
+                if (EventGlobalManager.Ins.OnGrowTree.listenerCount <= 0) return;
+                if (!IsBoughtGrowTree)
+                {
+                    IsBoughtGrowTree = true;
+                    DataManager.Ins.GameData.user.growTreeCount--;
+                    screen.growTreeCountText.text = DataManager.Ins.GameData.user.growTreeCount.ToString();
+                }
+                EventGlobalManager.Ins.OnGrowTree.Dispatch();
+            }
         }
 
         #endregion
