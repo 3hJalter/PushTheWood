@@ -1,5 +1,7 @@
 ﻿using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.GameGrid.Unit.StaticUnit.Interface;
+using _Game.Managers;
+using AudioEnum;
 using DG.Tweening;
 using GameGridEnum;
 using Sirenix.OdinInspector;
@@ -41,6 +43,7 @@ namespace _Game.GameGrid.Unit.StaticUnit.Chest
             chestAnimator.gameObject.SetActive(isShow);
             chestModel.SetActive(!isShow);
             if (!isShow) return;
+            AudioManager.Ins.PlaySfx(SfxType.OpenChest);
             chestAnimator.SetTrigger(Constants.OPEN_ANIM);
         }
 

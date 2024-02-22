@@ -3,6 +3,7 @@ using _Game.DesignPattern;
 using _Game.DesignPattern.StateMachine;
 using _Game.Managers;
 using _Game.Utilities;
+using AudioEnum;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
@@ -60,6 +61,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                                     : Constants.VerticalSkinRotation);
                             t.StateMachine.ChangeState(StateEnum.Emerge);
                         });
+                    AudioManager.Ins.PlaySfx(SfxType.SplashWater);
                 }
                 else //NOTE: Water have something
                 {

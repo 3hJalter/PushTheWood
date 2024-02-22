@@ -1,4 +1,6 @@
 ﻿using _Game.DesignPattern.StateMachine;
+using _Game.Managers;
+using AudioEnum;
 using DG.Tweening;
 using UnityEngine;
 
@@ -20,6 +22,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             initAnimSpeed = t.AnimSpeed;
             direction = t.Direction;
             firstTime = true;
+            AudioManager.Ins.PlaySfx(SfxType.Walk, 1.5f);
         }
         public void OnExecute(Player t)
         {
