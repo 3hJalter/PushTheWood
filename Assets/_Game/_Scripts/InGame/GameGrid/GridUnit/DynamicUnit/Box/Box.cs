@@ -3,7 +3,9 @@ using _Game._Scripts.InGame.GameCondition.Data;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Box.BoxState;
+using _Game.Managers;
 using _Game.Utilities;
+using AudioEnum;
 using GameGridEnum;
 using UnityEngine;
 
@@ -44,6 +46,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
 
         public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
         {
+            AudioManager.Ins.PlaySfx(SfxType.PushChump);
             BeInteractedData.SetData(direction, pushUnit);
             if (!ConditionMergeOnBeInteracted.IsApplicable(BeInteractedData)) return;
             

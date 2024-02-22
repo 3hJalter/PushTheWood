@@ -14,9 +14,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
     public class SleepPlayerState : IState<Player>
     {
         private const float SLEEP_UP_TIME = 0.6f;
+        private const float SLEEP_SFX_INTERVAL = 8f;
+
         public StateEnum Id => StateEnum.Sleep;
         private bool isSleeping;
         private STimer timer;
+        private STimer sfxTimer;
         private float initAnimSpeed;
         ParticleSystem sleepingParticle;
 
@@ -25,11 +28,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             if (timer == null)
             {
                 timer = TimerManager.Inst.PopSTimer();
+                sfxTimer = TimerManager.Inst.PopSTimer();
             }
             t.ChangeAnim(Constants.SLEEP_ANIM);           
             isSleeping = true;
             initAnimSpeed = t.AnimSpeed;
             sleepingParticle = ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.SleepingzZz), t.VFXPositions[0].position);
+            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.Sleep);
+            sfxTimer.Start(SLEEP_SFX_INTERVAL, () => AudioManager.Ins.PlaySfx(AudioEnum.SfxType.Sleep), true);
         }
 
         public void OnExecute(Player t)
@@ -54,6 +60,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         public void OnExit(Player t)
         {
             timer.Stop();
+            sfxTimer.Stop();
             sleepingParticle?.Stop();
             t.SetAnimSpeed(initAnimSpeed);
         }

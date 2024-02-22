@@ -40,6 +40,9 @@ namespace AudioEnum
         EnemyDetectPlayer = 5,
         EnemyShotArrow = 6,
         Undo = 7,
+        Walk = 8,
+        OpenChest = 9,
+        Sleep = 10,
         // UI
         Click = 100,
         Win = 101,
