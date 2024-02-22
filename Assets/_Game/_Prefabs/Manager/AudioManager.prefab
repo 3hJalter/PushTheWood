@@ -185,9 +185,24 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   audioData: {fileID: 11400000, guid: f774e44247074ad4ea7897795f3fb8af, type: 2}
-  bgm: {fileID: 3287926403370997532}
-  sfx: {fileID: 1649856174731583141}
-  environment: {fileID: 7511526000083140590}
+  bgm:
+    audioSource: {fileID: 3287926403370997532}
+    currentAudio:
+      clip: {fileID: 0}
+      multiplier: 1
+    baseVolume: 0
+  sfx:
+    audioSource: {fileID: 1649856174731583141}
+    currentAudio:
+      clip: {fileID: 0}
+      multiplier: 1
+    baseVolume: 0
+  environment:
+    audioSource: {fileID: 7511526000083140590}
+    currentAudio:
+      clip: {fileID: 0}
+      multiplier: 1
+    baseVolume: 0
 --- !u!1 &4520397504004071132
 GameObject:
   m_ObjectHideFlags: 0

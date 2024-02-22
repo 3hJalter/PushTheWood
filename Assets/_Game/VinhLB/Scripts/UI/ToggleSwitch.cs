@@ -50,7 +50,7 @@ namespace VinhLB
         {
             SetupSliderComponent();
         }
-
+        
         public void OnPointerClick(PointerEventData eventData)
         {
             Toggle();
@@ -107,7 +107,7 @@ namespace VinhLB
 
         private void UpdateTexts(float value)
         {
-            if (_onTextCanvasGroup == null || _offTextCanvasGroup == null)
+            if (_onTextCanvasGroup is null || _offTextCanvasGroup is null)
             {
                 DevLog.Log(DevId.Vinh, "No on/off text canvas group found!");
                 return;

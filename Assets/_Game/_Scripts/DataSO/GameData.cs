@@ -66,9 +66,11 @@ namespace _Game.Data
             public bool enablePn;
             public bool requestedPn;
             public bool haptic = true;
-            public bool hasBgm = true;
-            public bool hasSfx = true;
-            public bool hasEnvSound = true;
+            
+            public float bgmVolume = 1;
+            public float sfxVolume = 1;
+            public float envSoundVolume = 1;
+            
             public int highPerformance = 1;
             public bool iOsTrackingRequested;
             public int moveChoice = 0;

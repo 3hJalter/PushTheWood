@@ -4,58 +4,116 @@ using _Game.Data;
 using _Game.DesignPattern;
 using AudioEnum;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace _Game.Managers
 {
+    [Serializable]
+    public struct AudioSourceData
+    {
+        public AudioSource audioSource;
+        [ReadOnly]
+        public Audio currentAudio;
+        [ReadOnly]
+        [SerializeField] private float baseVolume;
+
+        public void SetLoop(bool loop)
+        {
+            audioSource.loop = loop;
+        }
+        
+        public void SetAudio(Audio audio)
+        {
+            if (audio is null) return;
+            currentAudio = audio;
+            audioSource.clip = audio.clip;
+            Volume = audio.multiplier;
+        }
+        
+        public void Play()
+        {
+            audioSource.Play();
+        }
+        
+        public void Pause()
+        {
+            audioSource.Pause();
+        }
+        
+        public void Stop()
+        {
+            audioSource.Stop();
+        }
+        
+        public float BaseVolume
+        {
+            get => baseVolume;
+            set
+            {
+                baseVolume = value;
+                Volume = currentAudio?.multiplier ?? 1;
+            }
+        }
+
+        public float Volume
+        {
+            get => audioSource.volume;
+            set => audioSource.volume = baseVolume * value;
+        }
+
+        public bool IsMute => audioSource.volume < 0.01 || audioSource.mute;
+        
+    }
+    
     public class AudioManager : Singleton<AudioManager>
     {
         [SerializeField] private AudioData audioData;
-        [SerializeField] private AudioSource bgm;
-        [SerializeField] private AudioSource sfx;
-        [SerializeField] private AudioSource environment;
-        
-        private BgmType _currentBGM = BgmType.None;
-        private float _currentBGMVolume = 1f;
-        private float _currentEnvironmentVolume = 1f;
+        [SerializeField] private AudioSourceData bgm;
+        [SerializeField] private AudioSourceData sfx;
+        [SerializeField] private AudioSourceData environment;
 
         private void Awake()
         {
-            bgm.mute = !DataManager.Ins.GameData.setting.hasBgm;
-            sfx.mute = !DataManager.Ins.GameData.setting.hasSfx;
-            environment.mute = !DataManager.Ins.GameData.setting.hasEnvSound;
+            bgm.BaseVolume = DataManager.Ins.GameData.setting.bgmVolume;
+            sfx.BaseVolume = DataManager.Ins.GameData.setting.sfxVolume;
+            environment.BaseVolume = DataManager.Ins.GameData.setting.envSoundVolume;
+            
             audioData = DataManager.Ins.AudioData;
         }
 
+        public float BgmVolume => bgm.BaseVolume;
+        public float SfxVolume => sfx.BaseVolume;
+        
         // <summary>
         // Get a background music from AudioData
         // </summary>
         // <param name="type">Type of BGM</param>
-        // <returns>AudioClip</returns>
-        public AudioClip GetBgm(BgmType type)
+        // <returns>Audio</returns>
+        private Audio GetBgmAudio(BgmType type)
         {
-            return GetAudio(audioData.BGMDict, type);
+            return GetAudio(audioData.BgmAudioDict, type);
         }
 
         // <summary>
         // Get a sound effect from AudioData
         // </summary>
         // <param name="type">Type of SFX</param>
-        // <returns>AudioClip</returns>
-        public AudioClip GetSfx(SfxType type)
+        // <returns>Audio</returns>
+        private Audio GetSfxAudio(SfxType type)
         {
-            return GetAudio(audioData.SfxDict, type);
+            return GetAudio(audioData.SfxAudioDict, type);
         }
         
         // <summary>
         // Get an environment sound from AudioData
         // </summary>
         // <param name="type">Type of Environment</param>
-        // <returns>AudioClip</returns>
-        public AudioClip GetEnvironment(EnvironmentType type)
+        // <returns>Audio</returns>
+        private Audio GetEnvironmentAudio(EnvironmentType type)
         {
-            return GetAudio(audioData.EnvironmentDict, type);
+            return GetAudio(audioData.EnvironmentAudioDict, type);
         }
 
         // <summary>
@@ -63,8 +121,8 @@ namespace _Game.Managers
         // </summary>
         // <param name="audioDictionary">Dictionary of audio</param>
         // <param name="type">Type of audio</param>
-        // <returns>AudioClip</returns>
-        private static AudioClip GetAudio<T>(IReadOnlyDictionary<T, AudioClip> audioDictionary, T type)
+        // <returns>AudioC</returns>
+        private static Audio GetAudio<T>(IReadOnlyDictionary<T, Audio> audioDictionary, T type)
         {
             return audioDictionary.GetValueOrDefault(type);
         }
@@ -75,35 +133,60 @@ namespace _Game.Managers
         // <param name="type">Type of BGM</param>
         // <param name="fadeFloat">Fade out time</param>
         // <param name="targetVolume">Volume of BGM</param>
-        public void PlayBgm(BgmType type, float fadeFloat = 0.3f, float targetVolume = 1f)
+
+        public void PlayBgm(BgmType type, float fadeOut = 0.3f)
         {
-            if (type == _currentBGM) return;
-            bgm.loop = true;
-            if (fadeFloat == 0f || bgm.mute)
+            Audio audioIn = GetBgmAudio(type);
+            if (audioIn == bgm.currentAudio) return;
+            bgm.SetLoop(true);
+            if (fadeOut == 0f || bgm.IsMute)
             {
-                SetBGM();
-                PlayAudio(bgm, audioData.BGMDict, type);
-            }
-            // FadeOut, Then Play
-            else
+                bgm.SetAudio(audioIn);
+                bgm.Play();
+            } else
             {
-                DOVirtual.Float(_currentBGMVolume, 0, fadeFloat, value => VolumeDown(bgm, value))
+                DOVirtual.Float(bgm.currentAudio.multiplier, 0, fadeOut, value => bgm.Volume = value)
                     .SetEase(Ease.Linear)
                     .OnComplete(() =>
                     {
-                        SetBGM();
-                        PlayAudio(bgm, audioData.BGMDict, type);
+                        bgm.SetAudio(audioIn);
+                        bgm.Play();
                     });
             }
-            
-            return;
-
-            void SetBGM()
+        }
+        
+        public void PlayEnvironment(EnvironmentType type, float fadeFloat = 0.3f, float fadeIn = 0.5f)
+        {
+            Audio audioIn = GetEnvironmentAudio(type);
+            environment.SetLoop(true);
+            if (fadeFloat == 0f || environment.IsMute)
             {
-                _currentBGM = type;
-                _currentBGMVolume = targetVolume;
-                bgm.volume = targetVolume;
+                environment.SetAudio(audioIn);
+                environment.Play();
+            } else
+            {
+                DOVirtual.Float(environment.currentAudio.multiplier, 0, fadeFloat, value => environment.Volume = value)
+                    .SetEase(Ease.Linear)
+                    .OnComplete(() =>
+                    {
+                        environment.SetAudio(audioIn);
+                        environment.Play();
+                        if (fadeIn > 0)
+                        {
+                            DOVirtual.Float(0, audioIn.multiplier, fadeIn, value => environment.Volume = value);
+                        }
+                        else
+                        {
+                            environment.Volume = audioIn.multiplier;
+                        }
+                    });
             }
+        }
+        
+        public void PlaySfx(SfxType type)
+        {
+            sfx.SetAudio(GetSfxAudio(type));
+            sfx.Play();
         }
         
         // <summary>
@@ -113,87 +196,22 @@ namespace _Game.Managers
         // <param name="fadeFloat">Fade out time</param>
         // <param name="fadeIn">Fade in time</param>
         // <param name="targetVolume">Volume of Environment</param>
-        public void PlayEnvironment(EnvironmentType type, float fadeFloat = 0.3f, float fadeIn = 0.5f, float targetVolume = 1f)
-        {
-            environment.loop = true;
-            if (fadeFloat == 0f || environment.mute)
-            {
-                _currentEnvironmentVolume = targetVolume;
-                environment.volume = targetVolume;
-                PlayAudio(environment, audioData.EnvironmentDict, type);
-            }
-            // FadeOut, Then Play
-            else
-            {
-                DOVirtual.Float(_currentEnvironmentVolume, 0, fadeFloat, value => VolumeDown(environment, value))
-                    .SetEase(Ease.Linear)
-                    .OnComplete(() =>
-                    {
-                        PlayAudio(environment, audioData.EnvironmentDict, type);
-                        if (fadeIn > 0)
-                        {
-                            DOVirtual.Float(0, targetVolume, fadeIn, value =>
-                            {
-                                environment.volume = value;
-                                _currentEnvironmentVolume = value;
-                            });
-                        }
-                        else
-                        {
-                            environment.volume = targetVolume;
-                            _currentEnvironmentVolume = targetVolume;
-                        }
-                    });
-            }
-        }
+       
+        
 
         // <summary>
         // Play a sound effect
         // </summary>
         // <param name="type">Type of SFX</param>
         // <param name="targetVolume">Volume of SFX</param>
-        public void PlaySfx(SfxType type, float targetVolume = 1f)
-        {
-            sfx.volume = targetVolume;
-            PlayAudio(sfx, audioData.SfxDict, type);
-        }
+        
 
         // <summary>
         // Play a sound effect
         // </summary>
         // <param name="audioClip">SFX audio</param>
         // <param name="targetVolume">Volume of SFX</param>
-        public void PlaySfx(AudioClip audioClip, float targetVolume = 1f)
-        {
-            sfx.volume = targetVolume;
-            sfx.clip = audioClip;
-            sfx.Play();
-        }
-
-        // <summary>
-        // Turn down the volume of an audio (BGM, SFX, Environment)
-        // </summary>
-        // <param name="audioSource">AudioSource</param>
-        // <param name="value">Volume</param>
-        private static void VolumeDown(AudioSource audioSource, float value)
-        {
-            audioSource.volume = value;
-        }
-
-        // <summary>
-        // Play an audio
-        // </summary>
-        // <param name="audioSource">AudioSource (BGM, SFX, Environment)</param>
-        // <param name="audioDictionary">Dictionary of audio</param>
-        // <param name="type">Type of audio</param>
-        private static void PlayAudio<T>(AudioSource audioSource, IReadOnlyDictionary<T, AudioClip> audioDictionary,
-            T type)
-        {
-            AudioClip audioClip = GetAudio(audioDictionary, type);
-            if (audioClip == null) return;
-            audioSource.clip = audioClip;
-            audioSource.Play();
-        }
+        
 
         // <summary>
         // Play a random sound effect from a list
@@ -201,17 +219,7 @@ namespace _Game.Managers
         // <param name="sfxTypes">List of SFX</param>
         public void PlayRandomSfx(List<SfxType> sfxTypes)
         {
-            List<AudioClip> audioClips = new();
-            for (int i = 0; i < sfxTypes.Count; i++)
-            {
-                AudioClip audioClip = audioData.SfxDict.GetValueOrDefault(sfxTypes[i]);
-                if (audioClip == null) continue;
-                audioClips.Add(audioClip);
-            }
-
-            if (audioClips.Count == 0) return;
-            bgm.clip = audioClips[Random.Range(0, audioClips.Count)];
-            bgm.Play();
+            PlaySfx(sfxTypes[Random.Range(0, sfxTypes.Count)]);
         }
         
         public void PauseBgm()
@@ -251,32 +259,35 @@ namespace _Game.Managers
 
         public bool IsBgmMute()
         {
-            return bgm.mute;
+            return bgm.IsMute;
         }
 
         public bool IsEnvironmentMute()
         {
-            return environment.mute;
+            return environment.IsMute;
         }
         
         public bool IsSfxMute()
         {
-            return sfx.mute;
+            return sfx.IsMute;
         }
 
-        public bool ToggleBgmMute()
+        public void ToggleBgmVolume(float value)
         {
-            return bgm.mute = DataManager.Ins.GameData.setting.hasBgm = !bgm.mute;
+            bgm.BaseVolume = value;
+            DataManager.Ins.GameData.setting.bgmVolume = value;
         }
         
-        public bool ToggleSfxMute()
+        public void ToggleEnvironmentVolume(float value)
         {
-            return sfx.mute = DataManager.Ins.GameData.setting.hasSfx = !sfx.mute;
+            environment.BaseVolume = value;
+            DataManager.Ins.GameData.setting.envSoundVolume = value;
         }
         
-        public bool ToggleEnvironmentMute()
+        public void ToggleSfxVolume(float value)
         {
-            return environment.mute = DataManager.Ins.GameData.setting.hasEnvSound = !environment.mute;
+            sfx.BaseVolume = value;
+            DataManager.Ins.GameData.setting.sfxVolume = value;
         }
     }
 }

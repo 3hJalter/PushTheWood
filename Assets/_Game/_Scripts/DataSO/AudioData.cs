@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using AudioEnum;
 using Sirenix.OdinInspector;
@@ -9,21 +10,27 @@ namespace _Game.Data
     public class AudioData : SerializedScriptableObject
     {
         [Title("BGM")]
-        [SerializeField]
-        private readonly Dictionary<BgmType, AudioClip> _bgmDict;
+        [SerializeField] private readonly Dictionary<BgmType, Audio> _bgmAudioDict;
         
         [Title("SFX")]
-        [SerializeField]
-        private readonly Dictionary<SfxType, AudioClip> _sfxDict;
+        [SerializeField] private readonly Dictionary<SfxType, Audio> _sfxAudioDict;
         
         [Title("Environment")]
-        [SerializeField] Dictionary<EnvironmentType, AudioClip> _environmentDict;
-
-        public Dictionary<BgmType, AudioClip> BGMDict => _bgmDict;
-
-        public Dictionary<SfxType, AudioClip> SfxDict => _sfxDict;
+        [SerializeField] private readonly Dictionary<EnvironmentType, Audio> _environmentAudioDict;
         
-        public Dictionary<EnvironmentType, AudioClip> EnvironmentDict => _environmentDict;
+        public Dictionary<BgmType, Audio> BgmAudioDict => _bgmAudioDict;
+        
+        public Dictionary<SfxType, Audio> SfxAudioDict => _sfxAudioDict;
+        
+        public Dictionary<EnvironmentType, Audio> EnvironmentAudioDict => _environmentAudioDict;
+    }
+
+    [Serializable]
+    public class Audio
+    {
+        public AudioClip clip;
+        [Range(0,1)]
+        public float multiplier = 1;
     }
 }
 

@@ -1,8 +1,11 @@
-﻿using _Game._Scripts.Managers;
+﻿using System;
+using _Game._Scripts.Managers;
+using _Game._Scripts.Utilities;
 using _Game.Data;
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Screen;
+using _Game.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,10 +23,30 @@ namespace _Game.UIs.Popup
         [SerializeField]
         private GameObject[] _activeMoveChoices;
         
+        [SerializeField] private Slider bgmVolumeSlider;
+        [SerializeField] private Slider sfxVolumeSlider;
+        [SerializeField] private ToggleSwitch hapticToggleSwitch; // TODO: Set haptic toggle switch when setup
+
+        private void Awake()
+        {
+            bgmVolumeSlider.onValueChanged.AddListener(OnChangeBgmVolume);
+            sfxVolumeSlider.onValueChanged.AddListener(OnChangeSfxVolume);
+        }
+
+        private void OnDestroy()
+        {
+            bgmVolumeSlider.onValueChanged.RemoveAllListeners();
+            sfxVolumeSlider.onValueChanged.RemoveAllListeners();
+        }
+
+
         public override void Setup(object param = null)
         {
             base.Setup(param);
 
+            bgmVolumeSlider.value = AudioManager.Ins.BgmVolume;
+            sfxVolumeSlider.value = AudioManager.Ins.SfxVolume;
+            
             if (GameManager.Ins.IsState(GameState.InGame))
             {
                 GameManager.Ins.ChangeState(GameState.Pause);
@@ -56,22 +79,30 @@ namespace _Game.UIs.Popup
                 MoveInputManager.Ins.ShowContainer(true);
             }
         }
-
-        public void OnClickChangeBgmStatusButton()
+        
+        public void OnChangeBgmVolume(float value)
         {
-            Debug.Log("Click change bgm button");
+            AudioManager.Ins.ToggleBgmVolume(value);
         }
-
-        public void OnClickChangeSfxStatusButton()
+        
+        public void OnChangeSfxVolume(float value)
         {
-            Debug.Log("Click change sfx button");
+            AudioManager.Ins.ToggleSfxVolume(value);
+            AudioManager.Ins.ToggleEnvironmentVolume(value);
         }
-
-        public void OnClickLikeButton()
+        
+        public void OnHapticOff()
         {
-            Debug.Log("Click like button");
+            HVibrate.OnToggleHaptic(false);
+            DevLog.Log(DevId.Hoang, "Haptic off");
         }
-
+        
+        public void OnHapticOn()
+        {
+            HVibrate.OnToggleHaptic(true);
+            DevLog.Log(DevId.Hoang, "Haptic on");
+        }
+        
         public void OnClickMoveOptionPopup()
         {
             UIManager.Ins.OpenUI<MoveOptionPopup>();
@@ -109,12 +140,6 @@ namespace _Game.UIs.Popup
         {
             FXManager.Ins.SwitchGridActive();
         }
-
-        public void OnClickSelectLevelButton()
-        {
-            // UIManager.Ins.CloseAll();
-            // UIManager.Ins.OpenUI<WorldLevelScreen>();
-        }
         
         public void OnClickGoMenuButton()
         {
@@ -125,7 +150,30 @@ namespace _Game.UIs.Popup
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<MainMenuScreen>();
         }
+        
+        private void UpdateCurrentMoveChoice()
+        {
+            for (int i = 0; i < _activeMoveChoices.Length; i++)
+            {
+                if (i == (int)MoveInputManager.Ins.CurrentChoice)
+                {
+                    _activeMoveChoices[i].SetActive(true);
+                }
+                else
+                {
+                    _activeMoveChoices[i].SetActive(false);
+                }
+            }
+        }
+        
+        #region Old functions
 
+        public void OnClickSelectLevelButton()
+        {
+            // UIManager.Ins.CloseAll();
+            // UIManager.Ins.OpenUI<WorldLevelScreen>();
+        }
+        
         public void OnClickHowToPlayButton()
         {
             Debug.Log("Click how to play button");
@@ -154,19 +202,8 @@ namespace _Game.UIs.Popup
             UIManager.Ins.OpenUI<BoosterWatchVideoPopup>();
         }
 
-        private void UpdateCurrentMoveChoice()
-        {
-            for (int i = 0; i < _activeMoveChoices.Length; i++)
-            {
-                if (i == (int)MoveInputManager.Ins.CurrentChoice)
-                {
-                    _activeMoveChoices[i].SetActive(true);
-                }
-                else
-                {
-                    _activeMoveChoices[i].SetActive(false);
-                }
-            }
-        }
+        #endregion
+
+
     }
 }

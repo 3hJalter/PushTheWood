@@ -22,7 +22,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             initAnimSpeed = t.AnimSpeed;
             direction = t.Direction;
             firstTime = true;
-            AudioManager.Ins.PlaySfx(SfxType.Walk, 1.5f);
+            AudioManager.Ins.PlaySfx(SfxType.Walk);
         }
         public void OnExecute(Player t)
         {
