@@ -32,7 +32,11 @@ namespace _Game.Data
         public readonly int gemToGold = 10;
 
         #endregion
-        
+
+        #region Ads
+        [FoldoutGroup("Ads")]
+        public readonly int stepInterAdsCountMax = 3;
+        #endregion
         // [BoxGroup("Monetize")]
     }
 

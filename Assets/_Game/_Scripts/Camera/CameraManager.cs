@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace _Game.Managers
 {
+    [DefaultExecutionOrder(-100)]
     public class CameraManager : Singleton<CameraManager>
     {
         private const int CAMERA_PRIORITY_ACTIVE = 99;
