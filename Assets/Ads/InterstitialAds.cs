@@ -21,7 +21,7 @@ public class InterstitialAds : MonoBehaviour
         MaxSdkCallbacks.Interstitial.OnAdDisplayFailedEvent += OnInterstitialAdFailedToDisplayEvent;
 
         // Load the first interstitial
-        
+
     }
 
     public void Load(bool show = false)
@@ -29,7 +29,7 @@ public class InterstitialAds : MonoBehaviour
         MaxSdk.LoadInterstitial(adUnitId);
         showImmediate = show;
     }
-    
+
     public void Show()
     {
         if (MaxSdk.IsInterstitialReady("c8ea8f6273eef263"))
@@ -46,7 +46,7 @@ public class InterstitialAds : MonoBehaviour
     private void OnInterstitialLoadedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
     {
         // Interstitial ad is ready for you to show. MaxSdk.IsInterstitialReady(adUnitId) now returns 'true'
-        if(showImmediate)
+        if (showImmediate)
             MaxSdk.ShowInterstitial(adUnitId);
         // Reset retry attempt
         retryAttempt = 0;
@@ -76,12 +76,12 @@ public class InterstitialAds : MonoBehaviour
     private void OnInterstitialHiddenEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
     {
         // Interstitial ad is hidden. Pre-load the next ad.
-       
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
