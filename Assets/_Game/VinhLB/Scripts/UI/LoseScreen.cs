@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using _Game.Data;
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.DesignPattern;
+using _Game.UIs.Screen;
 using AudioEnum;
 using DG.Tweening;
 using UnityEngine;
@@ -34,6 +36,13 @@ namespace VinhLB
             DOVirtual.Float(0, 1, 0.25f, value => _canvasGroup.alpha = value)
                 .OnComplete(() => _blockPanel.gameObject.SetActive(false));
         }
+        
+        public void OnClickMoreTimeButton()
+        {
+            GameplayManager.Ins.OnResetTime();
+            GameManager.Ins.PostEvent(EventID.StartGame);
+            Close();
+        }
 
         public void OnClickRestartButton()
         {
@@ -41,12 +50,19 @@ namespace VinhLB
             GameManager.Ins.PostEvent(EventID.StartGame);
             Close();
         }
-
-        public void OnClickMoreTimeButton()
+        
+        public void OnClickMainMenuButton()
         {
-            GameplayManager.Ins.OnResetTime();
-            GameManager.Ins.PostEvent(EventID.StartGame);
-            Close();
+            if (LevelManager.Ins.CurrentLevel.LevelType == LevelType.Normal)
+            {
+                LevelManager.Ins.OnNextLevel(LevelType.Normal, false);
+            }
+            else
+            {
+                LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex);
+            }
+            UIManager.Ins.CloseAll();
+            UIManager.Ins.OpenUI<MainMenuScreen>();
         }
     }
 }
