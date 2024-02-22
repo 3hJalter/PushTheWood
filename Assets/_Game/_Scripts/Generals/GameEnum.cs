@@ -123,6 +123,7 @@ namespace GameGridEnum
         RockUnderWaterBig = 9,
         TreeBeeShort = 10,
         TreeBeeHigh = 11,
+        TreeSeed = 12,
     }
 
     public enum GridUnitDynamicType

@@ -61,28 +61,39 @@ namespace _Game.Managers
         {
             _gameData = DataManager.Ins.GameData;
 
-            #region Handle first day of week
+            #region Handle day online
 
-            // bool check if today is the first day of month
-            // bool isFirstDayOfMonth = System.DateTime.Now.Day == 1;
-            bool isFirstDayOfWeek = System.DateTime.Now.DayOfWeek == DayOfWeek.Monday;
-            if (isFirstDayOfWeek)
+            // If player not pass level 8, reset daily level index
+            // if (_gameData.user.normalLevelIndex < 8)
+            // {
+            //     _gameData.user.isCompleteDailyChallengerTutorial = false;
+            //     _gameData.user.currentDailyChallengerDay = 1;
+            //     _gameData.user.dailyLevelIndexComplete.Clear();
+            // }
+            // else
             {
-                if (!_gameData.user.isFirstDayOfWeekCheck)
+                // Check if pass daily challenger tutorial
+                // if (!_gameData.user.isCompleteDailyChallengerTutorial)
+                // {
+                //     _gameData.user.currentDailyChallengerDay = 1;
+                //     _gameData.user.dailyLevelIndexComplete.Clear();
+                // }
+                // else
                 {
-                    // Clear daily level progress
-                    _gameData.user.dailyLevelIndexComplete.Clear();
-                    _gameData.user.isFirstDayOfWeekCheck = true;
-                    // DevLog.Log(DevId.Hoang, "First day of month, clear daily level progress");
-                    DevLog.Log(DevId.Hoang, "First day of week, clear daily level progress");
-
+                    // Calculate day from the last time log out
+                    TimeSpan timeSpan = DateTime.Now - _gameData.user.lastTimeLogOut;
+                    int day = timeSpan.Days;
+                    if (day > 0)
+                    {
+                        _gameData.user.currentDailyChallengerDay += day;
+                    }
+                    // if the currentDailyChallengerDay is greater than the number of daily challenger, reset it
+                    if (_gameData.user.currentDailyChallengerDay > Constants.DAILY_CHALLENGER_COUNT)
+                    {
+                        _gameData.user.currentDailyChallengerDay %= 7 + 1;
+                        _gameData.user.dailyLevelIndexComplete.Clear();
+                    }
                 }
-            }
-            else
-            {
-                // DevLog.Log(DevId.Hoang, "Not first day of month");
-                DevLog.Log(DevId.Hoang, "Not first day of week");
-                _gameData.user.isFirstDayOfWeekCheck = false;
             }
 
             #endregion
@@ -254,6 +265,7 @@ namespace _Game.Managers
         private void OnApplicationQuit()
         {
             DevLog.Log(DevId.Hoang, "Application is quitting");
+            _gameData.user.lastTimeLogOut = DateTime.Now;
             DataManager.Ins.Save();
         }
         

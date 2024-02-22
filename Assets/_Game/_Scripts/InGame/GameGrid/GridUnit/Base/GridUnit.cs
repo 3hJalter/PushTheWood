@@ -203,7 +203,7 @@ namespace _Game.GameGrid.Unit
             lastPushedDirection = Direction.None;
             isSpawn = false;
         }
-
+        
         public virtual void OnPush(Direction direction, ConditionData conditionData = null)
         {
 

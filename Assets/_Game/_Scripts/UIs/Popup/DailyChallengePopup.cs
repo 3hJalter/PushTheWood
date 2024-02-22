@@ -16,9 +16,7 @@ namespace _Game.UIs.Popup
         [SerializeField] private RectTransform panel;
         [SerializeField] List<DailyChallengeButton> dailyChallengeButtons;
         private DailyChallengeButton _currentBtnClick;
-        private int currentDay;
-        private const int DAY_IN_WEEK = 7;
-        // private int daysInMonth;
+        private int _currentDay;
         
         // interact Btn
         [SerializeField] private HButton tutorialBtn;
@@ -29,12 +27,8 @@ namespace _Game.UIs.Popup
         
         private void Awake()
         {
-            // Get number of days in month
-            // daysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
-            // currentDay = DateTime.Now.Day;
-            currentDay = (int)DateTime.Now.DayOfWeek;
             // Set panel height by adding 123f for each row, each row has 6 buttons
-            panel.sizeDelta = new Vector2(panel.sizeDelta.x, PANEL_INIT_HEIGHT + (123f * Mathf.CeilToInt(DAY_IN_WEEK / 6f)));
+            panel.sizeDelta = new Vector2(panel.sizeDelta.x, PANEL_INIT_HEIGHT + (123f * Mathf.CeilToInt(Constants.DAILY_CHALLENGER_COUNT / 6f)));
             // Set listener for interact btn
             tutorialBtn.onClick.AddListener(OnClickTutorialButton);
             payToPlayBtn.onClick.AddListener(OnClickPayToPlayButton);
@@ -54,17 +48,18 @@ namespace _Game.UIs.Popup
         public override void Setup(object param = null)
         {
             base.Setup(param);
+            _currentDay = DataManager.Ins.GameData.user.currentDailyChallengerDay;
             // Set up buttons
             for (int index = 0; index < dailyChallengeButtons.Count; index++)
             {
                 // if index is greater than days in month, disable button
-                if (index >= DAY_IN_WEEK)
+                if (index >= Constants.DAILY_CHALLENGER_COUNT)
                 {
                     dailyChallengeButtons[index].gameObject.SetActive(false);
                     continue;
                 }
                 DailyChallengeButton dailyChallengeButton = dailyChallengeButtons[index];
-                dailyChallengeButton.SetIndex(index, currentDay);
+                dailyChallengeButton.SetIndex(index, _currentDay);
                 dailyChallengeButton.onClick.AddListener(delegate
                 {
                     OnClickDailyChallengeButton(
@@ -73,7 +68,7 @@ namespace _Game.UIs.Popup
                 dailyChallengeButtons[index].gameObject.SetActive(true);
             }
             // click today button
-            OnClickDailyChallengeButton(currentDay - 1);
+            OnClickDailyChallengeButton(_currentDay);
         }
         
         public override void Close()

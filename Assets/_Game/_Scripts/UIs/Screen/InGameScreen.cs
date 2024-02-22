@@ -66,7 +66,6 @@ namespace _Game.UIs.Screen
         private void OnDestroy()
         {
             LevelManager.Ins.OnLevelNext -= LevelManager_OnLevelNext;
-
             TimerManager.Inst.PushSTimer(undoTimer);
             TimerManager.Inst.PushSTimer(resetIslandTimer);
         }
@@ -145,7 +144,12 @@ namespace _Game.UIs.Screen
                     _levelText.text = $"Level {levelIndex}";
                     break;
                 case LevelType.DailyChallenge:
-                    levelIndex += LevelManager.Ins.DailyLevelIndex;
+                    if (LevelManager.Ins.DailyLevelIndex == 0)
+                    {
+                        _levelText.text = "Tutorial";
+                        break;
+                    }
+                    levelIndex += LevelManager.Ins.DailyLevelIndex - 1;
                     _levelText.text = $"Day {levelIndex}";
                     break;
             }

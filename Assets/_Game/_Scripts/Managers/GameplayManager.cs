@@ -116,7 +116,7 @@ namespace _Game.Managers
         public void OnResetTime()
         {
             time = 0;
-            time += DataManager.Ins.ConfigData.timePerNormalLevel;
+            time += DataManager.Ins.GetLevelTime(LevelManager.Ins.CurrentLevel.LevelType);
             screen.Time = time;
             timer.Start(1f, CountTime, true);
         }
@@ -225,6 +225,11 @@ namespace _Game.Managers
             FXManager.Ins.TrailHint.OnCancel();
             LevelManager.Ins.player.SetActiveAgent(false);
         }
+        
+        private void OnGrowTree()
+        {
+            
+        }
 
         #endregion
         
@@ -244,5 +249,6 @@ namespace _Game.Managers
         Undo,
         ResetIsland,
         Hint,
+        GrowTree,
     }
 }

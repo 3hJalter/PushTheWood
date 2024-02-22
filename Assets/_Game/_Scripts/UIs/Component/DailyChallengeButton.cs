@@ -38,7 +38,7 @@ namespace _Game._Scripts.UIs.Component
             if (index > currentDay - 1) // Index can be 0, but day start from 1
             {
                 State = DailyChallengeButtonState.NotYet;
-            } else if (DataManager.Ins.GameData.user.dailyLevelIndexComplete.Contains(index))
+            } else if (DataManager.Ins.GameData.user.dailyLevelIndexComplete.Contains(index + 1))
             {
                 State = DailyChallengeButtonState.Clear;
             } else if (index == currentDay - 1)

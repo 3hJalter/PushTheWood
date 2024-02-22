@@ -19,6 +19,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 8fd521d3fc1eb46fd92b0f29508e5f76, type: 3}
     - {fileID: 21300000, guid: 4b00db671a20143a8be8c3b5301d6a23, type: 3}
     - {fileID: 21300000, guid: e2531dbb210c447358dfd4dd637545c5, type: 3}
+    - {fileID: 21300000, guid: f2ae7a32e607341ddbdf9469f9169ca5, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -26,7 +27,13 @@ MonoBehaviour:
     SerializationNodes:
     - Name: timePerNormalLevel
       Entry: 3
+      Data: 300
+    - Name: timePerDailyChallengeLevel
+      Entry: 3
       Data: 600
+    - Name: timePerSecretLevel
+      Entry: 3
+      Data: 900
     - Name: boosterConfigs
       Entry: 7
       Data: 0|System.Collections.Generic.Dictionary`2[[_Game.Managers.BoosterType,
@@ -46,7 +53,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 3
+      Data: 4
     - Name: 
       Entry: 7
       Data: 
@@ -68,6 +75,18 @@ MonoBehaviour:
     - Name: goldPerBuyTen
       Entry: 3
       Data: 10
+    - Name: ticketPerBuyRatio
+      Entry: 7
+      Data: _Game.Data.TicketPerBuyRatio, Assembly-CSharp
+    - Name: ticketNeed
+      Entry: 3
+      Data: 1
+    - Name: itemsPerBuy
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -95,6 +114,18 @@ MonoBehaviour:
     - Name: goldPerBuyTen
       Entry: 3
       Data: 10
+    - Name: ticketPerBuyRatio
+      Entry: 7
+      Data: _Game.Data.TicketPerBuyRatio, Assembly-CSharp
+    - Name: ticketNeed
+      Entry: 3
+      Data: 1
+    - Name: itemsPerBuy
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -122,6 +153,57 @@ MonoBehaviour:
     - Name: goldPerBuyTen
       Entry: 3
       Data: 10
+    - Name: ticketPerBuyRatio
+      Entry: 7
+      Data: _Game.Data.TicketPerBuyRatio, Assembly-CSharp
+    - Name: ticketNeed
+      Entry: 3
+      Data: 2
+    - Name: itemsPerBuy
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 3
+    - Name: $v
+      Entry: 7
+      Data: _Game.Data.BoosterConfig, Assembly-CSharp
+    - Name: type
+      Entry: 3
+      Data: 3
+    - Name: name
+      Entry: 1
+      Data: Grow Tree
+    - Name: icon
+      Entry: 10
+      Data: 3
+    - Name: goldPerBuyTen
+      Entry: 3
+      Data: 10
+    - Name: ticketPerBuyRatio
+      Entry: 7
+      Data: _Game.Data.TicketPerBuyRatio, Assembly-CSharp
+    - Name: ticketNeed
+      Entry: 3
+      Data: 1
+    - Name: itemsPerBuy
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -134,6 +216,3 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: gemToGold
-      Entry: 3
-      Data: 10

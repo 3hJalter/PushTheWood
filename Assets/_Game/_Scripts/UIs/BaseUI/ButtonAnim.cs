@@ -1,12 +1,15 @@
 using System;
+using System.Collections.Generic;
 using _Game.Managers;
 using AudioEnum;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
+using MEC;
 using Sirenix.OdinInspector;
 using TweenTypeEnum;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -15,21 +18,54 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] private SfxType btnSound = SfxType.Click;
     [SerializeField] private bool unscaleTime;
+    [SerializeField] private float cooldownTime = 0.1f;
     private CanvasGroup _canvasGroup;
-    private HButton _hcBtn;
+    private HButton _hBtn;
 
+    private CoroutineHandle _coroutine;
+    private IEnumerator<float> _activeCooldownTime;
+    private UnityAction _waitCooldown;
     private void Awake()
     {
-        _hcBtn = GetComponent<HButton>();
-        _hcBtn.buttonAnim = this;
+        _hBtn = GetComponent<HButton>();
+        _hBtn.buttonAnim = this;
         _canvasGroup = GetComponent<CanvasGroup>();
+        _activeCooldownTime = ActiveCooldownTime();
+        _waitCooldown = WaitCooldown;
+        _hBtn.onClick.AddListener(_waitCooldown);
+    }
+
+    private void OnDestroy()
+    {
+        _hBtn.onClick.RemoveListener(_waitCooldown);
+    }
+
+    IEnumerator<float> ActiveCooldownTime()
+    {
+        yield return Timing.WaitForSeconds(cooldownTime);
+        _hBtn.enabled = true;
+    }
+    
+    private void WaitCooldown()
+    {
+        _hBtn.enabled = false;
+        _coroutine = Timing.RunCoroutine(_activeCooldownTime);
+    }
+    
+    public void SetActive(bool active)
+    {
+        if(active) 
+        {
+            Timing.KillCoroutines(_coroutine);
+            _hBtn.enabled = true;
+        }
     }
 
     private void Reset()
     {
-        _hcBtn = GetComponent<HButton>();
-        _hcBtn.transition = Selectable.Transition.None;
-        _hcBtn.buttonAnim = this;
+        _hBtn = GetComponent<HButton>();
+        _hBtn.transition = Selectable.Transition.None;
+        _hBtn.buttonAnim = this;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -39,7 +75,7 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (!_hcBtn.interactable)
+        if (!_hBtn.interactable)
             return;
 
         PointerDownAnim();
@@ -47,7 +83,7 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (!_hcBtn.interactable)
+        if (!_hBtn.interactable)
             return;
 
         PointerUpAnim();
