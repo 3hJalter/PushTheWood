@@ -38,7 +38,7 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
         _hBtn.onClick.RemoveListener(_waitCooldown);
     }
 
-    IEnumerator<float> ActiveCooldownTime()
+    private IEnumerator<float> ActiveCooldownTime()
     {
         yield return Timing.WaitForSeconds(cooldownTime);
         _hBtn.enabled = true;

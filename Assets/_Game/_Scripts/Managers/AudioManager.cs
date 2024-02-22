@@ -22,6 +22,9 @@ namespace _Game.Managers
 
         private void Awake()
         {
+            bgm.mute = !DataManager.Ins.GameData.setting.hasBgm;
+            sfx.mute = !DataManager.Ins.GameData.setting.hasSfx;
+            environment.mute = !DataManager.Ins.GameData.setting.hasEnvSound;
             audioData = DataManager.Ins.AudioData;
         }
 
@@ -246,34 +249,34 @@ namespace _Game.Managers
             sfx.Stop();
         }
 
-        public void MuteBgm()
+        public bool IsBgmMute()
         {
-            bgm.mute = true;
+            return bgm.mute;
         }
 
-        public void UnMuteBgm()
+        public bool IsEnvironmentMute()
         {
-            bgm.mute = false;
-        }
-
-        public void MuteEnvironment()
-        {
-            environment.mute = true;
+            return environment.mute;
         }
         
-        public void UnMuteEnvironment()
+        public bool IsSfxMute()
         {
-            environment.mute = false;
-        }
-        
-        public void MuteSfx()
-        {
-            sfx.mute = true;
+            return sfx.mute;
         }
 
-        public void UnMuteSfc()
+        public bool ToggleBgmMute()
         {
-            sfx.mute = false;
+            return bgm.mute = DataManager.Ins.GameData.setting.hasBgm = !bgm.mute;
+        }
+        
+        public bool ToggleSfxMute()
+        {
+            return sfx.mute = DataManager.Ins.GameData.setting.hasSfx = !sfx.mute;
+        }
+        
+        public bool ToggleEnvironmentMute()
+        {
+            return environment.mute = DataManager.Ins.GameData.setting.hasEnvSound = !environment.mute;
         }
     }
 }

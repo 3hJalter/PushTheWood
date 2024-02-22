@@ -4,6 +4,7 @@ using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Screen;
 using UnityEngine;
+using UnityEngine.UI;
 using VinhLB;
 
 namespace _Game.UIs.Popup
@@ -13,10 +14,13 @@ namespace _Game.UIs.Popup
         [SerializeField]
         private HButton _mainMenuButton;
         
+        [SerializeField] private GameObject bgmMuteImage;
+        [SerializeField] private GameObject sfxMuteImage;
+        [SerializeField] private GameObject envMuteImage;
+        
         public override void Setup(object param = null)
         {
             base.Setup(param);
-
             if (GameManager.Ins.IsState(GameState.InGame))
             {
                 _mainMenuButton.gameObject.SetActive(true);
@@ -26,6 +30,10 @@ namespace _Game.UIs.Popup
             {
                 _mainMenuButton.gameObject.SetActive(false);
             }
+
+            bgmMuteImage.SetActive(AudioManager.Ins.IsBgmMute());
+            sfxMuteImage.SetActive(AudioManager.Ins.IsSfxMute());
+            envMuteImage.SetActive(AudioManager.Ins.IsEnvironmentMute());
         }
 
         public override void Open(object param = null)
@@ -44,30 +52,24 @@ namespace _Game.UIs.Popup
             }
         }
 
-        public void OnClickChangeBgmStatusButton()
+        public void OnToggleBgm()
         {
-            Debug.Log("Click change bgm button");
+            bgmMuteImage.SetActive(AudioManager.Ins.ToggleBgmMute());
         }
 
-        public void OnClickChangeSfxStatusButton()
+        public void OnToggleSfx()
         {
-            Debug.Log("Click change sfx button");
+            sfxMuteImage.SetActive(AudioManager.Ins.ToggleSfxMute());
         }
 
-        public void OnClickLikeButton()
+        public void OnToggleEnvSound()
         {
-            Debug.Log("Click like button");
+            envMuteImage.SetActive(AudioManager.Ins.ToggleEnvironmentMute());
         }
 
         public void OnClickMoveOptionPopup()
         {
             UIManager.Ins.OpenUI<MoveOptionPopup>();
-        }
-
-        public void OnClickSelectLevelButton()
-        {
-            // UIManager.Ins.CloseAll();
-            // UIManager.Ins.OpenUI<WorldLevelScreen>();
         }
         
         public void OnClickGoMenuButton()
@@ -101,11 +103,6 @@ namespace _Game.UIs.Popup
         {
             Debug.Log("Click toggle grass button");
             FXManager.Ins.ToggleGrasses();
-        }
-
-        public void OnClickTestBoosterWatchVideo()
-        {
-            UIManager.Ins.OpenUI<BoosterWatchVideoPopup>();
         }
     }
 }
