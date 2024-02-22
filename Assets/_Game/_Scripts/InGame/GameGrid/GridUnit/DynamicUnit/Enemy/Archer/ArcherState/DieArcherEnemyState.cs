@@ -13,6 +13,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
     public class DieArcherEnemyState : IState<ArcherEnemy>
     {
         private const float DIE_TIME = 1.08f;
+        private const float THROW_TIME = 0.4f;
         private STimer timer;
         private List<float> times;
         private List<Action> actions;
@@ -23,7 +24,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
         {
             if(times == null)
             {
-                times = new List<float>() {0.4f , DIE_TIME};
+                times = new List<float>() {THROW_TIME + 0.05f , DIE_TIME};
                 actions = new List<Action>() {DropIntoWater, t.OnDespawn };
 
             }
@@ -31,7 +32,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
                 timer = TimerManager.Inst.PopSTimer();
             t.ChangeAnim(Constants.DIE_ANIM);
             behindCell = t.MainCell.GetNeighborCell(t.Direction);
-
+            t.Tf.DOMove(t.Tf.position + Constants.DirVector3F[t.Direction] * 0.4f, THROW_TIME);
             t.OnOutCells();
             timer.Start(times, actions);
 
@@ -40,7 +41,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
                 switch (behindCell.Data.gridSurfaceType)
                 {
                     case GameGridEnum.GridSurfaceType.Water:
-                        t.Tf.DOMove(new Vector3(t.Tf.position.x, 0, t.Tf.position.z) + Constants.DirVector3F[t.Direction] * 0.3f, Constants.MOVING_TIME * 3);
+                        t.Tf.DOMoveY(0, Constants.MOVING_TIME * 3);
                         break;
                 }
             }
