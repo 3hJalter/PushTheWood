@@ -80,9 +80,10 @@ namespace _Game.Managers
                 // }
                 // else
                 {
-                    // Calculate day from the last time log out
-                    TimeSpan timeSpan = DateTime.Now - _gameData.user.lastTimeLogOut;
-                    int day = timeSpan.Days;
+                    // Get now day & last login day
+                    int day = (int)(DateTime.UtcNow.Date - _gameData.user.lastTimeLogOut.ToUniversalTime().Date).TotalDays;
+                    
+                    
                     if (day > 0)
                     {
                         _gameData.user.currentDailyChallengerDay += day;

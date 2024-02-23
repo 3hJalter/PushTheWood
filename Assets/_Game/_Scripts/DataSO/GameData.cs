@@ -28,8 +28,8 @@ namespace _Game.Data
             
             // daily reward            
             public int dailyRewardClaimedCount;
-            public DateTime startDailyRewardClaimTime = DateTime.Now.Date;
-            public DateTime lastDailyRewardClaimTime = DateTime.Now.AddHours(-24);
+            public DateTime startDailyRewardClaimTime = DateTime.UtcNow.Date;
+            public DateTime lastDailyRewardClaimTime = DateTime.UtcNow.AddHours(-24);
             
             // Income Progress Data
             public int gold;
@@ -54,7 +54,7 @@ namespace _Game.Data
             public int sessionPlayed;
             
             
-            public DateTime lastTimeLogOut = DateTime.Now;
+            public DateTime lastTimeLogOut = DateTime.UtcNow;
             public bool isFirstDayOfWeekCheck;
             
             
