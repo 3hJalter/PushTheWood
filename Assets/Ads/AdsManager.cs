@@ -42,19 +42,18 @@ namespace _Game.Managers
 
             if (levelIndex < 5 || cooldownTimer.IsStart)
             {
-                OnInterAdsDone();
+                interCallBack?.Invoke();
+                interCallBack = null;
                 return;
             }
 
             if((levelIndex - 5) % 3 == 0)
             {
                 Interstitial.Show(OnInterAdsDone);
+                return;
             }
-            else
-            {
-                OnInterAdsDone();
-            }
-
+            interCallBack?.Invoke();
+            interCallBack = null;
         }
         private void OnInterAdsStepCount(object value)
         {

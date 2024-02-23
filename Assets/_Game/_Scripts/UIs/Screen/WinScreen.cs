@@ -26,7 +26,6 @@ namespace _Game.UIs.Screen
             _canvasGroup.alpha = 0f;
             // Hide the next level button if the current level is not Normal level
             _nextLevelButton.gameObject.SetActive(LevelManager.Ins.CurrentLevel.LevelType == LevelType.Normal);
-
             NextLevel = () =>
             {
                 LevelManager.Ins.OnNextLevel(LevelType.Normal);
@@ -43,7 +42,7 @@ namespace _Game.UIs.Screen
         }
         
         public void OnClickNextButton()
-        {            
+        {           
             GameManager.Ins.PostEvent(DesignPattern.EventID.OnCheckShowInterAds, NextLevel);             
         }
         
