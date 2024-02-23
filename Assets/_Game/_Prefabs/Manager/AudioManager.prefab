@@ -138,6 +138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3628804308103763954}
   - component: {fileID: 3628804308103763956}
+  - component: {fileID: 104639969376146282}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -185,24 +186,43 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   audioData: {fileID: 11400000, guid: f774e44247074ad4ea7897795f3fb8af, type: 2}
+  audioSourcePool: {fileID: 104639969376146282}
   bgm:
     audioSource: {fileID: 3287926403370997532}
+    audioSourcePool: {fileID: 0}
     currentAudio:
       clip: {fileID: 0}
       multiplier: 1
     baseVolume: 0
   sfx:
     audioSource: {fileID: 1649856174731583141}
+    audioSourcePool: {fileID: 104639969376146282}
     currentAudio:
       clip: {fileID: 0}
       multiplier: 1
     baseVolume: 0
   environment:
     audioSource: {fileID: 7511526000083140590}
+    audioSourcePool: {fileID: 0}
     currentAudio:
       clip: {fileID: 0}
       multiplier: 1
     baseVolume: 0
+--- !u!114 &104639969376146282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3628804308103763955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 597c13144a91b074283276ad813638da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MainObjects:
+  - {fileID: 704897717227554348}
+  Amounts: 05000000
 --- !u!1 &4520397504004071132
 GameObject:
   m_ObjectHideFlags: 0

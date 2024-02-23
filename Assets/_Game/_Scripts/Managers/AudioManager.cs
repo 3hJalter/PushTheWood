@@ -13,11 +13,16 @@ namespace _Game.Managers
     [Serializable]
     public struct AudioSourceData
     {
-        public AudioSource audioSource;
+        [SerializeField]
+        private AudioSource audioSource;
+        [HideInInspector]
+        public ObjectContainer audioSourcePool;
         [ReadOnly]
         public Audio currentAudio;
         [ReadOnly]
         [SerializeField] private float baseVolume;
+
+        private List<AudioSource> audioSources;
 
         public void SetLoop(bool loop)
         {
@@ -27,6 +32,12 @@ namespace _Game.Managers
         public void SetAudio(Audio audio)
         {
             if (audio is null) return;
+            if (audioSourcePool && audioSource.isPlaying)
+            {
+                audioSourcePool.Push(0, audioSource.gameObject.transform);
+                audioSource = audioSourcePool.Pop(0).AudioSource;
+            }
+
             currentAudio = audio;
             audioSource.clip = audio.clip;
             Volume = audio.multiplier;
@@ -70,17 +81,22 @@ namespace _Game.Managers
     public class AudioManager : Singleton<AudioManager>
     {
         [SerializeField] private AudioData audioData;
+        [SerializeField] ObjectContainer audioSourcePool;
+
         [SerializeField] private AudioSourceData bgm;
         [SerializeField] private AudioSourceData sfx;
         [SerializeField] private AudioSourceData environment;
 
         private void Awake()
         {
+            audioSourcePool.OnInit();
             bgm.BaseVolume = DataManager.Ins.GameData.setting.bgmVolume;
             sfx.BaseVolume = DataManager.Ins.GameData.setting.sfxVolume;
+            sfx.audioSourcePool = audioSourcePool;
             environment.BaseVolume = DataManager.Ins.GameData.setting.envSoundVolume;
             
             audioData = DataManager.Ins.AudioData;
+            
         }
 
         public float BgmVolume => bgm.BaseVolume;
