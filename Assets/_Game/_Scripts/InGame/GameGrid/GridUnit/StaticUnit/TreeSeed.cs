@@ -1,4 +1,5 @@
-﻿using _Game._Scripts.Managers;
+﻿using System.Collections.Generic;
+using _Game._Scripts.Managers;
 using _Game.DesignPattern;
 using _Game.Managers;
 using DG.Tweening;
@@ -17,7 +18,18 @@ namespace _Game.GameGrid.Unit.StaticUnit
 
         [SerializeField] private Animator animator;
         private string _currentAnim = Constants.INIT_ANIM;
-
+        private Tween _currentFallTween;
+        
+        
+        private readonly Dictionary<Direction, Vector3> _fallDirectionLocalSkinRot = new()
+        {
+            { Direction.None, Vector3.zero},
+            {Direction.Forward, new Vector3(40,0,40)},
+            {Direction.Back, new Vector3(-40,0,-40)},
+            {Direction.Left, new Vector3(0,0,50)},
+            {Direction.Right, new Vector3(0,0,-50)},
+        };
+        
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
             Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
@@ -45,10 +57,9 @@ namespace _Game.GameGrid.Unit.StaticUnit
             GameplayManager.Ins.IsCanGrowTree = false;
             fallTreeDirection = triggerUnit.LastPushedDirection;
             // fall the skin to the direction if it not none
-            if (fallTreeDirection != Direction.None)
-            {
-                // TODO: Some animation
-            }
+            if (fallTreeDirection == Direction.None) return;
+            _currentFallTween?.Kill();
+            _currentFallTween = skin.DOLocalRotate(_fallDirectionLocalSkinRot[fallTreeDirection], 0.15f);
         }
 
         protected override void OnOutTriggerUpper(GridUnit triggerUnit)
@@ -56,9 +67,17 @@ namespace _Game.GameGrid.Unit.StaticUnit
             base.OnOutTriggerUpper(triggerUnit);
             GameplayManager.Ins.IsCanGrowTree = true;
             // If fall direction is not none, then reset it
-            if (fallTreeDirection != Direction.None)
+            if (fallTreeDirection == Direction.None) return;
+            if (_currentFallTween != null && _currentFallTween.IsPlaying())
             {
-                // TODO: Some animation
+                _currentFallTween.OnComplete(() =>
+                {
+                    _currentFallTween = skin.DOLocalRotate(_fallDirectionLocalSkinRot[Direction.None], 0.15f);
+                });
+            }
+            else
+            {
+                _currentFallTween = skin.DOLocalRotate(_fallDirectionLocalSkinRot[Direction.None], 0.15f);
             }
             fallTreeDirection = Direction.None;
         }
