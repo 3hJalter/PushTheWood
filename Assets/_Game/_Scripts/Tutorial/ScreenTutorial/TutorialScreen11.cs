@@ -1,4 +1,8 @@
-﻿using _Game._Scripts.Managers;
+﻿using System;
+using System.Collections.Generic;
+using _Game._Scripts.Managers;
+using MEC;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace _Game._Scripts.Tutorial.ScreenTutorial
@@ -6,16 +10,21 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
     public class TutorialScreen11 : TutorialScreen
     {
         private UnityAction<string> _swipeEvent;
+        [SerializeField] private float delay = 2f;
+
         public override void Setup(object param = null)
         {
             base.Setup(param);
-            MoveInputManager.Ins.ShowContainer(true);
-            // Add Close this screen when swipe
-            _swipeEvent = _ =>
+            Timing.RunCoroutine(DelayAction(() =>
             {
-                CloseDirectly(false);
-            };
-            MoveInputManager.Ins.HSwipe.AddListener(_swipeEvent);
+                MoveInputManager.Ins.ShowContainer(true);
+                // Add Close this screen when swipe
+                _swipeEvent = _ =>
+                {
+                    CloseDirectly(false);
+                };
+                MoveInputManager.Ins.HSwipe.AddListener(_swipeEvent);
+            }));
         }
 
         public override void CloseDirectly(object param = null)
@@ -23,6 +32,12 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
             // Remove Close this screen when swipe 
             MoveInputManager.Ins.HSwipe.RemoveListener(_swipeEvent);
             base.CloseDirectly(param);
+        }
+        
+        private IEnumerator<float> DelayAction(Action callback)
+        {
+            yield return Timing.WaitForSeconds(delay);
+            callback?.Invoke();
         }
     }
 }

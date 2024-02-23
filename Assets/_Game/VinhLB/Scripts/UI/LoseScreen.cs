@@ -53,13 +53,9 @@ namespace VinhLB
         
         public void OnClickMainMenuButton()
         {
-            if (LevelManager.Ins.CurrentLevel.LevelType == LevelType.Normal)
+            if (LevelManager.Ins.CurrentLevel.LevelType != LevelType.Normal)
             {
-                LevelManager.Ins.OnNextLevel(LevelType.Normal, false);
-            }
-            else
-            {
-                LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex);
+                LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
             }
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<MainMenuScreen>();

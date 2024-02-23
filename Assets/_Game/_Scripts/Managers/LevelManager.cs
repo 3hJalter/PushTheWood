@@ -184,7 +184,7 @@ namespace _Game.GameGrid
             // Future: Add reward collected in-game
         }
 
-        public void OnGoLevel(LevelType type, int index)
+        public void OnGoLevel(LevelType type, int index, bool needInit = true)
         {
             // Dev: Currently make it work only for daily challenge
             switch (type)
@@ -198,7 +198,7 @@ namespace _Game.GameGrid
             IsConstructingLevel = true;
             OnRemoveWinCondition();
             _currentLevel.OnDeSpawnLevel();
-            OnGenerateLevel(type, index, true);
+            OnGenerateLevel(type, index, needInit);
         }
 
         public void OnNextLevel(LevelType type, bool needInit = true)
