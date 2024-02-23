@@ -29,7 +29,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
 
             }
             if(timer == null)
-                timer = TimerManager.Inst.PopSTimer();
+                timer = TimerManager.Ins.PopSTimer();
             t.ChangeAnim(Constants.DIE_ANIM);
             behindCell = t.MainCell.GetNeighborCell(t.Direction);
             t.Tf.DOMove(t.Tf.position + Constants.DirVector3F[t.Direction] * 0.4f, THROW_TIME);
@@ -55,7 +55,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
         public void OnExit(ArcherEnemy t)
         {
             timer.Stop();
-            TimerManager.Inst.PushSTimer(timer);
+            TimerManager.Ins.PushSTimer(timer);
         }
     }
 }

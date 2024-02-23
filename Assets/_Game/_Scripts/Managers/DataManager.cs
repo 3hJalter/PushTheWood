@@ -49,7 +49,10 @@ namespace _Game.Managers
         public int CountNormalLevel => gridData.CountNormalLevel;
         public int CountSecretLevel => gridData.CountSecretLevel;
         public int CountSurfaceMaterial => materialData.CountSurfaceMaterial;
-
+        private void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
         public int GetLevelTime(LevelType type)
         {
             return type switch

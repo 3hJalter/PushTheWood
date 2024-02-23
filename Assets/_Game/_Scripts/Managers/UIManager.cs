@@ -20,7 +20,10 @@ namespace _Game.Managers
 
         //list from resource
         private UICanvas[] uiResources;
-
+        private void Awake()
+        {
+            DontDestroyOnLoad(this);
+        }
         #region Canvas
 
         public T OpenUI<T>() where T : UICanvas

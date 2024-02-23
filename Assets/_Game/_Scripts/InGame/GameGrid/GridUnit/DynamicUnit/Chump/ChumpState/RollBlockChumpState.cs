@@ -55,7 +55,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     damage = true;
 
                     if (blockObjects.Count > 0)
-                        TimerManager.Inst.WaitForTime(Constants.MOVING_TIME * 0.5f, ObjectBlocking);
+                        TimerManager.Ins.WaitForTime(Constants.MOVING_TIME * 0.5f, ObjectBlocking);
                     break;
                 case UnitTypeY.Down:
                     //NOTE: Blocking when chump is down
@@ -75,7 +75,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                             .OnComplete(ChangeToIdle);
                     }
                     if (blockObjects.Count > 0)
-                        TimerManager.Inst.WaitForTime(Constants.MOVING_TIME * 0.5f, ObjectBlocking);
+                        TimerManager.Ins.WaitForTime(Constants.MOVING_TIME * 0.5f, ObjectBlocking);
 
                     break;
             }

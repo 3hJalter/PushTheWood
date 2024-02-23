@@ -23,7 +23,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             isFirstStop = true;
             cutTreeFrameCount = Constants.WAIT_CUT_TREE_FRAMES;
             if (LevelManager.Ins.IsFirstLevel) return;
-            sleepTimer ??= TimerManager.Inst.PopSTimer();
+            sleepTimer ??= TimerManager.Ins.PopSTimer();
             sleepTimer.Start(Constants.SLEEP_TIME, ChangeSleepState);
             return;
 

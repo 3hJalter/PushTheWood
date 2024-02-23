@@ -28,7 +28,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             t.ChangeAnim(Constants.CUT_TREE_ANIM);
             t.LookDirection(t.CutTreeData.inputDirection);
             CalculateActionAndTime();
-            TimerManager.Inst.WaitForTime(times, actions);
+            TimerManager.Ins.WaitForTime(times, actions);
 
 
             void CalculateActionAndTime()

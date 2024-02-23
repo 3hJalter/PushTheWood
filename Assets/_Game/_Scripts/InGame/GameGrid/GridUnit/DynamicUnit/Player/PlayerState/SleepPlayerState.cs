@@ -27,8 +27,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         {
             if (timer == null)
             {
-                timer = TimerManager.Inst.PopSTimer();
-                sfxTimer = TimerManager.Inst.PopSTimer();
+                timer = TimerManager.Ins.PopSTimer();
+                sfxTimer = TimerManager.Ins.PopSTimer();
             }
             t.ChangeAnim(Constants.SLEEP_ANIM);           
             isSleeping = true;

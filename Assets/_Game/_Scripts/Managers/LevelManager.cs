@@ -16,6 +16,7 @@ using _Game.Utilities;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Playables;
 using static _Game.Utilities.Grid.Grid<_Game.GameGrid.GameGridCell, _Game.GameGrid.GameGridCellData>;
 
 namespace _Game.GameGrid
@@ -78,6 +79,12 @@ namespace _Game.GameGrid
             secretLevelIndex = DataManager.Ins.GameData.user.secretLevelIndex;
             OnGenerateLevel(LevelType.Normal,normalLevelIndex, normalLevelIndex == 0);
             SetCameraToPosition(CurrentLevel.GetCenterPos());
+
+            #region Handle If user passes first level
+
+            if (DataManager.Ins.GameData.user.normalLevelIndex > 0) UIManager.Ins.OpenUI<MainMenuScreen>(true);
+
+            #endregion
         }
 
         public void OnGenerateLevel(LevelType type, int index, bool needInit)

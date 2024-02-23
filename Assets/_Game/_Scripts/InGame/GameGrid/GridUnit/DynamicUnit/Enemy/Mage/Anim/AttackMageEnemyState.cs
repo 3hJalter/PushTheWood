@@ -24,7 +24,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
             actions.Clear();
             actions.Add(Attack);
             actions.Add(ChangeToIdle);
-            TimerManager.Inst.WaitForTime(times, actions);
+            TimerManager.Ins.WaitForTime(times, actions);
 
             void Attack()
             {

@@ -42,7 +42,7 @@ namespace HControls
         public void OnButtonPointerDown()
         {
             isHolding = true;
-            timer = TimerManager.Inst.WaitForTime(timerList, actions);
+            timer = TimerManager.Ins.WaitForTime(timerList, actions);
             onPointerDownAction?.Invoke();
         }
 
