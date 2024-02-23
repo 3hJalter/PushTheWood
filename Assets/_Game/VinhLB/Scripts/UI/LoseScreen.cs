@@ -48,6 +48,7 @@ namespace VinhLB
         {
             LevelManager.Ins.OnRestart();
             GameManager.Ins.PostEvent(EventID.StartGame);
+            GameManager.Ins.PostEvent(EventID.OnInterAdsStepCount, 1);
             Close();
         }
         
@@ -59,6 +60,7 @@ namespace VinhLB
             }
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<MainMenuScreen>();
+            GameManager.Ins.PostEvent(EventID.OnInterAdsStepCount, 1);
         }
     }
 }

@@ -3,6 +3,7 @@ using _Game.GameGrid;
 using _Game.Managers;
 using AudioEnum;
 using DG.Tweening;
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -18,12 +19,19 @@ namespace _Game.UIs.Screen
         [SerializeField]
         private Button _nextLevelButton;
 
+        Action NextLevel;
         public override void Setup(object param = null)
         {
             base.Setup(param);
             _canvasGroup.alpha = 0f;
             // Hide the next level button if the current level is not Normal level
             _nextLevelButton.gameObject.SetActive(LevelManager.Ins.CurrentLevel.LevelType == LevelType.Normal);
+
+            NextLevel = () =>
+            {
+                LevelManager.Ins.OnNextLevel(LevelType.Normal);
+                Close();
+            };
         }
 
         public override void Open(object param = null)
@@ -35,9 +43,8 @@ namespace _Game.UIs.Screen
         }
         
         public void OnClickNextButton()
-        {
-            LevelManager.Ins.OnNextLevel(LevelType.Normal);
-            Close();
+        {            
+            GameManager.Ins.PostEvent(DesignPattern.EventID.OnCheckShowInterAds, NextLevel);             
         }
         
         public void OnClickMainMenuButton()
@@ -52,6 +59,7 @@ namespace _Game.UIs.Screen
             }
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<MainMenuScreen>();
+            GameManager.Ins.PostEvent(DesignPattern.EventID.OnCheckShowInterAds, null);
         }
     }
 }

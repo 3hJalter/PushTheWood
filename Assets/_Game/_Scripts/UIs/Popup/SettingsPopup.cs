@@ -151,6 +151,7 @@ namespace _Game.UIs.Popup
             {
                 LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
             }
+            GameManager.Ins.PostEvent(DesignPattern.EventID.OnInterAdsStepCount, 1);
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<MainMenuScreen>();
         }
