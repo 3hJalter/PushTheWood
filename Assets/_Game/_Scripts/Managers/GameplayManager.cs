@@ -164,6 +164,7 @@ namespace _Game.Managers
         private void OnStartGame()
         {
             OnResetTime();
+            screen.OnHideIfTutorial();
             IsCanResetIsland = true;
             IsCanUndo = true;
             IsBoughtGrowTree = false;

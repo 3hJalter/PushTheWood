@@ -92,7 +92,6 @@ namespace _Game.UIs.Screen
             // Log param
             if (param is null) MoveInputManager.Ins.ShowContainer(true);
             else MoveInputManager.Ins.ShowContainer(true, (bool)param);
-            OnHideIfTutorial();
             if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
             CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
             canvasGroup.alpha = 0f;
@@ -199,7 +198,7 @@ namespace _Game.UIs.Screen
             UpdateObjectiveText();
         }
 
-        private void OnHideIfTutorial()
+        public void OnHideIfTutorial()
         {
             bool isTutorial = LevelManager.Ins.IsTutorialLevel;
             // Hide all booster
