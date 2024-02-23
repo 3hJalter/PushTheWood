@@ -1,30 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
 using _Game._Scripts.Managers;
+using _Game.Managers;
 using MEC;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace _Game._Scripts.Tutorial.ScreenTutorial
 {
     public class TutorialScreen11 : TutorialScreen
     {
         private UnityAction<string> _swipeEvent;
-        [SerializeField] private float delay = 2f;
-
+        [SerializeField] private float moveTime = 1f;
+        [SerializeField] private RectTransform _imageRectContainer;
+        [SerializeField] private RectTransform _finalImageRectPosition;
+        [SerializeField] private Image panel;
+        
         public override void Setup(object param = null)
         {
             base.Setup(param);
-            Timing.RunCoroutine(DelayAction(() =>
+            MoveInputManager.Ins.ShowContainer(true);
+            // Add Close this screen when swipe
+            _swipeEvent = _ =>
             {
-                MoveInputManager.Ins.ShowContainer(true);
-                // Add Close this screen when swipe
-                _swipeEvent = _ =>
+                FXManager.Ins.TrailHint.OnPlay(new List<Vector3>()
                 {
-                    CloseDirectly(false);
-                };
-                MoveInputManager.Ins.HSwipe.AddListener(_swipeEvent);
-            }));
+                    new(7,3,7),
+                    new(7,3,13),
+                }, 8f, true);
+                AfterSwipe();
+            };
+            MoveInputManager.Ins.HSwipe.AddListener(_swipeEvent);
+        }
+
+        private void AfterSwipe()
+        {
+            // Set panel alpha to 0
+            panel.color = new Color(1, 1, 1, 0);
+            // Tween to move _imageRectContainer to _finalImageRectPosition
+            Timing.RunCoroutine(MoveImageRect().CancelWith(gameObject));
+        }
+
+        private IEnumerator<float> MoveImageRect()
+        {
+            float time = 0;
+            while (time < moveTime)
+            {
+                time += Time.deltaTime; 
+                _imageRectContainer.anchoredPosition = Vector2.Lerp(_imageRectContainer.anchoredPosition, _finalImageRectPosition.anchoredPosition, time / moveTime);
+                yield return Timing.WaitForOneFrame;
+            }
         }
 
         public override void CloseDirectly(object param = null)
@@ -32,12 +58,6 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
             // Remove Close this screen when swipe 
             MoveInputManager.Ins.HSwipe.RemoveListener(_swipeEvent);
             base.CloseDirectly(param);
-        }
-        
-        private IEnumerator<float> DelayAction(Action callback)
-        {
-            yield return Timing.WaitForSeconds(delay);
-            callback?.Invoke();
         }
     }
 }

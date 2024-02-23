@@ -1,4 +1,5 @@
 using _Game._Scripts.Managers;
+using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.UIs.Screen;
@@ -145,6 +146,8 @@ namespace _Game.Managers
         {
             time = 0;
             time += DataManager.Ins.GetLevelTime(LevelManager.Ins.CurrentLevel.LevelType);
+            // if first level of normal level, or daily time is MaxValue because it is tutorial level
+            if (LevelManager.Ins.IsTutorialLevel) time = int.MaxValue;
             screen.Time = time;
             timer.Start(1f, CountTime, true);
         }

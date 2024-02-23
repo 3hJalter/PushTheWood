@@ -12,8 +12,8 @@ Material:
   m_ValidKeywords:
   - _CELPRIMARYMODE_SINGLE
   - _TEXTUREBLENDINGMODE_MULTIPLY
-  m_InvalidKeywords:
-  - _UNITYSHADOWMODE_NONE
+  - _UNITYSHADOWMODE_COLOR
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -228,9 +228,9 @@ Material:
     - _TextureBlendingMode: 0
     - _TextureImpact: 1
     - _UVSec: 0
-    - _UnityShadowMode: 0
+    - _UnityShadowMode: 2
     - _UnityShadowOcclusion: 0
-    - _UnityShadowPower: 0.2
+    - _UnityShadowPower: 0
     - _UnityShadowSharpness: 1
     - _UseAlphaTest: 0
     - _UseEmission: 0
@@ -258,7 +258,7 @@ Material:
     - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorDimExtra: {r: 1, g: 1, b: 1, a: 1}
     - _ColorDimSteps: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
-    - _ColorGradient: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
+    - _ColorGradient: {r: 1, g: 1, b: 1, a: 1}
     - _CurvedWorldBendSettings: {r: 5, g: 1, b: 1, a: 0}
     - _Emission: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
@@ -274,5 +274,5 @@ Material:
     - _SketchColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _SpecularColor: {r: 0.75, g: 0.75, b: 0.75, a: 1}
-    - _UnityShadowColor: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
+    - _UnityShadowColor: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 1}
   m_BuildTextureStacks: []

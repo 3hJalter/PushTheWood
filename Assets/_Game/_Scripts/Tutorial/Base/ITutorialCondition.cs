@@ -42,7 +42,8 @@ namespace _Game._Scripts.Tutorial
         [SerializeField] protected List<TutorialScreen> tutorialScreens = new();
         protected int currentTutIndex;
 
-        protected UICanvas currentScreen;
+        [ReadOnly]
+        [SerializeField] protected UICanvas currentScreen;
         
         [ContextMenu("Reset Tutorial")]
         public void ResetTutorial()
