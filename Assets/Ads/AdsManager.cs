@@ -1,4 +1,6 @@
 using _Game.DesignPattern;
+using _Game.Utilities.Timer;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,9 +15,10 @@ namespace _Game.Managers
         RewardedAds Reward;
         [SerializeField]
         InterstitialAds Interstitial;
-        public BannerAds BannerAds => Banner;
         public RewardedAds RewardedAds => Reward;
-        public InterstitialAds InterstitialAds => Interstitial;
+
+        STimer cooldownTimer;
+        Action interCallBack;
 
         int intAdsStepCount = 0;
         private void Start()
@@ -27,14 +30,54 @@ namespace _Game.Managers
                 Reward.Load();
                 Interstitial.Load();
             };
-            //GameManager.Ins.RegisterListenerEvent(EventID.OnInterAdsStepCount, OnInterAdsStepCount);
+            GameManager.Ins.RegisterListenerEvent(EventID.OnInterAdsStepCount, OnInterAdsStepCount);
+            GameManager.Ins.RegisterListenerEvent(EventID.OnCheckShowInterAds, CheckShowInterAds);
+            cooldownTimer = new STimer();
         }
-
-
-        private void OnInterAdsStepCount()
+        
+        private void CheckShowInterAds(object callBack = null)
         {
-            intAdsStepCount++;
+            int levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
+            interCallBack = (Action)callBack;
+
+            if (levelIndex < 5 || cooldownTimer.IsStart)
+            {
+                OnInterAdsDone();
+                return;
+            }
+
+            if((levelIndex - 5) % 3 == 0)
+            {
+                Interstitial.Show(OnInterAdsDone);
+            }
+            else
+            {
+                OnInterAdsDone();
+            }
+
+        }
+        private void OnInterAdsStepCount(object value)
+        {
+            int levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
+            if (levelIndex < 5 || cooldownTimer.IsStart) return;
+
+            intAdsStepCount += (int)value;
+            if(intAdsStepCount >= DataManager.Ins.ConfigData.stepInterAdsCountMax)
+            {
+                Interstitial.Show(OnInterAdsDone);
+                intAdsStepCount -= DataManager.Ins.ConfigData.stepInterAdsCountMax;
+            }
+        }
+        void OnInterAdsDone() { 
+            cooldownTimer.Start(DataManager.Ins.ConfigData.interAdsCooldownTime);
+            interCallBack?.Invoke();
+            interCallBack = null;
         }
 
+        private void OnDestroy()
+        {
+            GameManager.Ins.UnregisterListenerEvent(EventID.OnInterAdsStepCount, OnInterAdsStepCount);
+            GameManager.Ins.UnregisterListenerEvent(EventID.OnCheckShowInterAds, CheckShowInterAds);
+        }
     }
 }

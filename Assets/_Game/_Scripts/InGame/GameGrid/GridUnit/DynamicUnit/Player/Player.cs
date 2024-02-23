@@ -352,5 +352,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             IsDead = true;
             stateMachine.ChangeState(StateEnum.Die);
         }
+
+        private void OnDestroy()
+        {
+            GameManager.Ins.UnregisterListenerEvent(DesignPattern.EventID.WinGame, OnWin);
+        }
     }
 }

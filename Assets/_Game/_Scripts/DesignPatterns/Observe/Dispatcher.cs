@@ -78,5 +78,6 @@ namespace _Game.DesignPattern
         MoreTimeGame = 11,
 
         OnInterAdsStepCount = 10000,
+        OnCheckShowInterAds = 10001,
     }
 }
