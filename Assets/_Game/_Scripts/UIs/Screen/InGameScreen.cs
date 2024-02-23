@@ -200,6 +200,7 @@ namespace _Game.UIs.Screen
             // Check number of ticket to use
             OnUndo?.Invoke();
             undoButton.interactable = false;
+            AudioManager.Ins.PlaySfx(SfxType.Undo);
             undoTimer.Start(UNDO_CD_TIME, () => undoButton.interactable = true);
         }
 
