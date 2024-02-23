@@ -34,6 +34,7 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private void OnDestroy()
     {
+        _delayedCall?.Kill(true);
         _hBtn.onClick.RemoveListener(_waitCooldown);
     }
     
