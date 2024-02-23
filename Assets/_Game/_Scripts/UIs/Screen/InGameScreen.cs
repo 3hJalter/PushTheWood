@@ -23,6 +23,8 @@ namespace _Game.UIs.Screen
         private const float UNDO_CD_TIME = 0.3f;
 
         [SerializeField] private CanvasGroup canvasGroup;
+        [SerializeField] private HButton settingButton;
+        [SerializeField] private GameObject timerContainer;
 
         [SerializeField] private Image blockPanel;
 
@@ -96,6 +98,8 @@ namespace _Game.UIs.Screen
             blockPanel.enabled = true;
             UpdateLevelText();
             UpdateObjectiveText();
+            
+            
         }
 
         public override void Open(object param = null)
@@ -153,6 +157,7 @@ namespace _Game.UIs.Screen
 
         private void UpdateLevelText()
         {
+            timerContainer.SetActive(true);
             int levelIndex = 1;
             switch (LevelManager.Ins.CurrentLevel.LevelType)
             {
@@ -193,6 +198,20 @@ namespace _Game.UIs.Screen
             UpdateObjectiveText();
         }
 
+        public void OnHideIfTutorial()
+        {
+            bool isTutorial = LevelManager.Ins.IsTutorialLevel;
+            // Hide all booster
+            undoButton.gameObject.SetActive(!isTutorial);
+            resetIslandButton.gameObject.SetActive(!isTutorial);
+            growTreeButton.gameObject.SetActive(!isTutorial);
+            // Hide time
+            timerContainer.SetActive(!isTutorial);
+            // hide setting
+            settingButton.gameObject.SetActive(!isTutorial);
+            
+        }
+        
         #region Booster
 
         public void OnClickUndo()

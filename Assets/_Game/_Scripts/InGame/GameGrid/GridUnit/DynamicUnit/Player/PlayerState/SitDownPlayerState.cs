@@ -67,6 +67,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         public void OnExit(Player t)
         {
             t.SetAnimSpeed(initAnimSpeed);
+            t.skin.DOKill();
             timer?.Stop();
             musicalNotes?.Stop();
             t.skin.transform.localPosition = oldSkinPos;
