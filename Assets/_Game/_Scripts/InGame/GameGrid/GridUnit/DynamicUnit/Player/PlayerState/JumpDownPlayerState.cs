@@ -17,6 +17,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         public void OnEnter(Player t)
         {
             t.ChangeAnim(Constants.MOVE_ANIM);
+            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.Walk);
             direction = Direction.None;
             _firstTime = true;
         }
