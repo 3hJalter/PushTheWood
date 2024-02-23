@@ -3,6 +3,7 @@ using _Game.Data;
 using _Game.Managers;
 using _Game.Utilities;
 using System.Collections.Generic;
+using _Game.Resource;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;

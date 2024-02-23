@@ -1865,7 +1865,7 @@ GameObject:
   m_Component:
   - component: {fileID: 319283064}
   m_Layer: 0
-  m_Name: CollectingGems
+  m_Name: CollectingAdTickets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3775,7 +3775,7 @@ MonoBehaviour:
     ReactPunchScale: {x: 0.25, y: 0.25, z: 0}
     ReactDuration: 0.1
     CollectingResourceParentTF: {fileID: 411215276}
-  _collectingGemConfig:
+  _collectingAdTicketConfig:
     PrefabPoolType: 401
     MinSpreadPosition: {x: -32, y: -32, z: 0}
     MaxSpreadPosition: {x: 32, y: 32, z: 0}

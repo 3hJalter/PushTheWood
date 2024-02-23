@@ -32,7 +32,7 @@ namespace _Game.UIs.Screen
         [SerializeField] 
         private Button _addGoldButton;
         [SerializeField]
-        private Button _addGemsButton;
+        private Button _addAdTicketsButton;
         [SerializeField]
         private Button _addSecretMapPieceButton;
         [SerializeField]
@@ -58,15 +58,15 @@ namespace _Game.UIs.Screen
             _resourceButton.onClick.AddListener(ResourceButton);
             _dailyRewardButton.onClick.AddListener(DailyRewardButton);
             
-            _addGemsButton.onClick.AddListener(AddGems);
+            _addAdTicketsButton.onClick.AddListener(AddAdTickets);
             _addGoldButton.onClick.AddListener(AddGold);
             _addSecretMapPieceButton.onClick.AddListener(AddSecretMapPiece);
             _resetResourceButton.onClick.AddListener(ResetUserData);
             
-            //_setCanCollectTodayButton.onClick.AddListener(DailyRewardManager.SetCanCollectToday);
-            //_increase1DailyDay.onClick.AddListener(DailyRewardManager.Increase1DailyDay);
-            //_decrease1DailyDayButton.onClick.AddListener(DailyRewardManager.Decrease1DailyDay);
-            //_resetDailyRewardButton.onClick.AddListener(DailyRewardManager.ResetAll);
+            _setCanCollectTodayButton.onClick.AddListener(DailyRewardManager.SetCanCollectToday);
+            _increase1DailyDay.onClick.AddListener(DailyRewardManager.Increase1DailyDay);
+            _decrease1DailyDayButton.onClick.AddListener(DailyRewardManager.Decrease1DailyDay);
+            _resetDailyRewardButton.onClick.AddListener(DailyRewardManager.ResetAll);
         }
 
         private void OnEnable()
@@ -101,9 +101,9 @@ namespace _Game.UIs.Screen
             _dailyRewardMenuGO.SetActive(true);
         }
 
-        private void AddGems()
+        private void AddAdTickets()
         {
-            GameManager.Ins.GainGems(10, _addGemsButton.transform.position);
+            GameManager.Ins.GainAdTickets(1, _addAdTicketsButton.transform.position);
             //UIManager.Ins.UpdateUIs();
         }
         

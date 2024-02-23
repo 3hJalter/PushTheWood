@@ -158,16 +158,27 @@ namespace GameGridEnum
 
 namespace _Game.Resource
 {
-    public enum RESOURCE_TYPE
+    public enum RewardType
     {
         None = -1,
-        GOLD = 0,
-        GEM = 1,
-        SECRET_MAP_PIECE = 2,
+        Booster = 0,
+        Resource = 1,
     }
-    public enum REWARD
+
+    public enum BoosterType
     {
-        BOOSTER = 0,
-        RESOURCE = 1,
+        None = -1,
+        Undo = 0,
+        ResetIsland = 1,
+        Hint = 2,
+        GrowTree = 3,
+    }
+    
+    public enum ResourceType
+    {
+        None = -1,
+        Gold = 0,
+        AdTicket = 1,
+        SecretMapPiece = 2,
     }
 }

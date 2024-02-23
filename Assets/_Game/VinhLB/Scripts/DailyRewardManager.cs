@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using _Game.Data;
 using _Game.DesignPattern;
 using _Game.Managers;
@@ -23,10 +24,10 @@ namespace VinhLB
             : (DataManager.Ins.GameData.user.dailyRewardClaimedCount - (IsTodayRewardObtained ? 1 : 0));
         public int CycleDay => TotalDays % _dailyRewardSettingsSO.CycleDays;
         public bool IsInFirstCycle => TotalDays / _dailyRewardSettingsSO.CycleDays == 0;
-        public Reward[] Rewards => IsInFirstCycle && _dailyRewardSettingsSO.DifferentFirstCycle
-            ? _dailyRewardSettingsSO.FirstCycleRewards
-            : _dailyRewardSettingsSO.Rewards;
-        public Reward CurrentReward => Rewards[CycleDay];
+        public List<Reward[]> Rewards => IsInFirstCycle && _dailyRewardSettingsSO.DifferentFirstCycle
+            ? _dailyRewardSettingsSO.FirstCycleRewardList
+            : _dailyRewardSettingsSO.RewardsList;
+        public Reward[] CurrentRewards => Rewards[CycleDay];
         #endregion
 
         public void ObtainTodayReward()
@@ -38,7 +39,7 @@ namespace VinhLB
             }
 
             DevLog.Log(DevId.Vinh, $"Obtain day {CycleDay + 1} reward");
-            UIManager.Ins.GetUI<RewardPopup>().Open(new Reward[] { CurrentReward });
+            UIManager.Ins.GetUI<RewardPopup>().Open(CurrentRewards);
             DataManager.Ins.GameData.user.dailyRewardClaimedCount += 1;
             DataManager.Ins.GameData.user.lastDailyRewardClaimTime = DateTime.Now.Date;
             DataManager.Ins.Save();
@@ -87,7 +88,7 @@ namespace VinhLB
         // [UnityEditor.MenuItem("Debug/Daily Reward/Set Can Collect Today")]
         public static void SetCanCollectToday()
         {
-            DataManager.Ins.GameData.user.lastDailyRewardClaimTime = DateTime.Now.AddHours(-24);
+            DataManager.Ins.GameData.user.lastDailyRewardClaimTime = DateTime.UtcNow.AddHours(-24);
             DataManager.Ins.Save();
 
             if (Application.isPlaying)
@@ -125,7 +126,7 @@ namespace VinhLB
         {
             if (Ins._dailyRewardSettingsSO.MissRewardIfNotLogin)
             {
-                if (DataManager.Ins.GameData.user.startDailyRewardClaimTime.AddDays(1) <= DateTime.Now.Date)
+                if (DataManager.Ins.GameData.user.startDailyRewardClaimTime.AddDays(1) <= DateTime.UtcNow.Date)
                 {
                     // Make sure start date is not after today
                     DataManager.Ins.GameData.user.startDailyRewardClaimTime =
@@ -152,9 +153,9 @@ namespace VinhLB
         // [UnityEditor.MenuItem("Debug/Daily Reward/Reset All")]
         public static void ResetAll()
         {
-            DataManager.Ins.GameData.user.startDailyRewardClaimTime = DateTime.Now.Date;
+            DataManager.Ins.GameData.user.startDailyRewardClaimTime = DateTime.UtcNow.Date;
             DataManager.Ins.GameData.user.dailyRewardClaimedCount = 0;
-            DataManager.Ins.GameData.user.lastDailyRewardClaimTime = DateTime.Now.AddHours(-24);
+            DataManager.Ins.GameData.user.lastDailyRewardClaimTime = DateTime.UtcNow.AddHours(-24);
             DataManager.Ins.Save();
             
             if (Application.isPlaying)

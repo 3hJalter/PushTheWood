@@ -715,6 +715,7 @@ MonoBehaviour:
     SerializationNodes: []
   btnSound: -1
   unscaleTime: 0
+  cooldownTime: 0.1
   showAnimType: 0
   showAnimTime: 0.35
   initScale: 0
@@ -1790,7 +1791,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d8dfea1100ec541b684f3101cad0d335, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1e4107dadfbe1487ebf4a991ecd58b4e, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1870,7 +1871,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6d034811652a84633bc8c63d22ce5574, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7d877a8e68df94f189dbed38255bd202, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1960,6 +1961,7 @@ MonoBehaviour:
     SerializationNodes: []
   btnSound: -1
   unscaleTime: 0
+  cooldownTime: 0.1
   showAnimType: 0
   showAnimTime: 0.35
   initScale: 0
@@ -2327,7 +2329,7 @@ GameObject:
   - component: {fileID: 5386753441637667666}
   - component: {fileID: 3026197232609466045}
   m_Layer: 5
-  m_Name: GemStats
+  m_Name: AdTicketStats
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3101,6 +3103,7 @@ MonoBehaviour:
     SerializationNodes: []
   btnSound: -1
   unscaleTime: 0
+  cooldownTime: 0.1
   showAnimType: 0
   showAnimTime: 0.35
   initScale: 0
@@ -3567,7 +3570,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4e61e7096fc78431092f4d337536ef68, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1e4107dadfbe1487ebf4a991ecd58b4e, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -3977,6 +3980,7 @@ MonoBehaviour:
     SerializationNodes: []
   btnSound: -1
   unscaleTime: 0
+  cooldownTime: 0.1
   showAnimType: 0
   showAnimTime: 0.35
   initScale: 0
@@ -4459,5 +4463,5 @@ MonoBehaviour:
   _bottomNavigationTabGroup: {fileID: 2915115477121344800}
   _goldValueText: {fileID: 8861748252358295296}
   _goldIconTF: {fileID: 4013643439574557309}
-  _gemValueText: {fileID: 3417165548306138449}
-  _gemIconTF: {fileID: 4398726315384317882}
+  _adTicketValueText: {fileID: 3417165548306138449}
+  _adTicketIconTF: {fileID: 4398726315384317882}

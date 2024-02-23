@@ -15,71 +15,692 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 21300000, guid: b8eceded76aa34c38baaa18c3f16a5ae, type: 3}
+    - {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
+    - {fileID: 21300000, guid: 8fd521d3fc1eb46fd92b0f29508e5f76, type: 3}
+    - {fileID: 21300000, guid: 4b00db671a20143a8be8c3b5301d6a23, type: 3}
+    - {fileID: 21300000, guid: 2e57f9725042d4e3aa9ec75259c6c3c0, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: FirstCycleRewardList
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[VinhLB.Reward[], Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 7
+    - Name: 
+      Entry: 7
+      Data: 1|VinhLB.Reward[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 2|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 1
+    - Name: BoosterType
+      Entry: 3
+      Data: 18446744073709551615
+    - Name: ResourceType
+      Entry: 3
+      Data: 1
+    - Name: Name
+      Entry: 1
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 0
+    - Name: Amount
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 3|VinhLB.Reward[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 4|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 1
+    - Name: BoosterType
+      Entry: 3
+      Data: 0
+    - Name: ResourceType
+      Entry: 3
+      Data: 1
+    - Name: Name
+      Entry: 1
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 0
+    - Name: Amount
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 5|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 1
+    - Name: BoosterType
+      Entry: 3
+      Data: 0
+    - Name: ResourceType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 6
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 1
+    - Name: Amount
+      Entry: 3
+      Data: 30
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 6|VinhLB.Reward[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 7|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 1
+    - Name: BoosterType
+      Entry: 3
+      Data: 0
+    - Name: ResourceType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 6
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 1
+    - Name: Amount
+      Entry: 3
+      Data: 60
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 8|VinhLB.Reward[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 9|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 0
+    - Name: BoosterType
+      Entry: 3
+      Data: 0
+    - Name: ResourceType
+      Entry: 3
+      Data: 1
+    - Name: Name
+      Entry: 1
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 2
+    - Name: Amount
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 10|VinhLB.Reward[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 11|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 1
+    - Name: BoosterType
+      Entry: 3
+      Data: 0
+    - Name: ResourceType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 6
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 1
+    - Name: Amount
+      Entry: 3
+      Data: 60
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 12|VinhLB.Reward[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 13|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 1
+    - Name: BoosterType
+      Entry: 3
+      Data: 0
+    - Name: ResourceType
+      Entry: 3
+      Data: 1
+    - Name: Name
+      Entry: 1
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 0
+    - Name: Amount
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 14|VinhLB.Reward[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 15|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 1
+    - Name: BoosterType
+      Entry: 3
+      Data: 0
+    - Name: ResourceType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 6
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 1
+    - Name: Amount
+      Entry: 3
+      Data: 30
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 16|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 0
+    - Name: BoosterType
+      Entry: 3
+      Data: 1
+    - Name: ResourceType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 6
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 3
+    - Name: Amount
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 17|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 0
+    - Name: BoosterType
+      Entry: 3
+      Data: 3
+    - Name: ResourceType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 6
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 4
+    - Name: Amount
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: RewardsList
+      Entry: 7
+      Data: 18|System.Collections.Generic.List`1[[VinhLB.Reward[], Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 7
+    - Name: 
+      Entry: 7
+      Data: 19|VinhLB.Reward[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 20|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 1
+    - Name: BoosterType
+      Entry: 3
+      Data: 18446744073709551615
+    - Name: ResourceType
+      Entry: 3
+      Data: 1
+    - Name: Name
+      Entry: 1
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 0
+    - Name: Amount
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 21|VinhLB.Reward[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 22|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 1
+    - Name: BoosterType
+      Entry: 3
+      Data: 0
+    - Name: ResourceType
+      Entry: 3
+      Data: 1
+    - Name: Name
+      Entry: 1
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 0
+    - Name: Amount
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 23|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 1
+    - Name: BoosterType
+      Entry: 3
+      Data: 0
+    - Name: ResourceType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 6
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 1
+    - Name: Amount
+      Entry: 3
+      Data: 30
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 24|VinhLB.Reward[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 25|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 1
+    - Name: BoosterType
+      Entry: 3
+      Data: 0
+    - Name: ResourceType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 6
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 1
+    - Name: Amount
+      Entry: 3
+      Data: 60
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 26|VinhLB.Reward[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 27|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 0
+    - Name: BoosterType
+      Entry: 3
+      Data: 0
+    - Name: ResourceType
+      Entry: 3
+      Data: 1
+    - Name: Name
+      Entry: 1
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 2
+    - Name: Amount
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 28|VinhLB.Reward[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 29|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 1
+    - Name: BoosterType
+      Entry: 3
+      Data: 0
+    - Name: ResourceType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 6
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 1
+    - Name: Amount
+      Entry: 3
+      Data: 60
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 30|VinhLB.Reward[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 31|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 1
+    - Name: BoosterType
+      Entry: 3
+      Data: 0
+    - Name: ResourceType
+      Entry: 3
+      Data: 1
+    - Name: Name
+      Entry: 1
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 0
+    - Name: Amount
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 32|VinhLB.Reward[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 33|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 1
+    - Name: BoosterType
+      Entry: 3
+      Data: 0
+    - Name: ResourceType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 6
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 1
+    - Name: Amount
+      Entry: 3
+      Data: 30
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 34|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 0
+    - Name: BoosterType
+      Entry: 3
+      Data: 1
+    - Name: ResourceType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 6
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 3
+    - Name: Amount
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 35|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 0
+    - Name: BoosterType
+      Entry: 3
+      Data: 3
+    - Name: ResourceType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 6
+      Data: 
+    - Name: IconSprite
+      Entry: 10
+      Data: 4
+    - Name: Amount
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   CycleDays: 7
   OneCycleOnly: 0
   DifferentFirstCycle: 1
   MissRewardIfNotLogin: 0
-  FirstCycleRewards:
-  - RewardType: 0
-    Name: Gold
-    IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
-    Amount: 50
-  - RewardType: 0
-    Name: Gold
-    IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
-    Amount: 50
-  - RewardType: 0
-    Name: Gold
-    IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
-    Amount: 50
-  - RewardType: 0
-    Name: Gold
-    IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
-    Amount: 50
-  - RewardType: 0
-    Name: Gold
-    IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
-    Amount: 50
-  - RewardType: 0
-    Name: Gold
-    IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
-    Amount: 50
-  - RewardType: 1
-    Name: Gem
-    IconSprite: {fileID: 21300000, guid: 5dfb16ae0220748c98c6d5ab5220b70a, type: 3}
-    Amount: 500
-  Rewards:
-  - RewardType: 0
-    Name: Gold
-    IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
-    Amount: 100
-  - RewardType: 0
-    Name: Gold
-    IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
-    Amount: 100
-  - RewardType: 0
-    Name: Gold
-    IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
-    Amount: 100
-  - RewardType: 0
-    Name: Gold
-    IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
-    Amount: 100
-  - RewardType: 0
-    Name: Gold
-    IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
-    Amount: 100
-  - RewardType: 0
-    Name: Gold
-    IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
-    Amount: 100
-  - RewardType: 0
-    Name: Gold
-    IconSprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
-    Amount: 1000

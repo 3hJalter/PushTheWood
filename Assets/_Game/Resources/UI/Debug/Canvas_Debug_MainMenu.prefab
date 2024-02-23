@@ -111,7 +111,7 @@ MonoBehaviour:
   _dailyRewardButton: {fileID: 2412976337016557906}
   _resourceMenuGO: {fileID: 7170912635693143613}
   _addGoldButton: {fileID: 3322018488331131948}
-  _addGemsButton: {fileID: 6639927890579248512}
+  _addAdTicketsButton: {fileID: 6639927890579248512}
   _addSecretMapPieceButton: {fileID: 2771379505520994112}
   _resetResourceButton: {fileID: 8411922132723059704}
   _dailyRewardMenuGO: {fileID: 643400806267926513}
@@ -2257,7 +2257,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Add 10 Gems
+  m_text: Add 1 Ad Ticket
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2596,7 +2596,7 @@ GameObject:
   - component: {fileID: 4609692560812524117}
   - component: {fileID: 6639927890579248512}
   m_Layer: 5
-  m_Name: AddGemsButton
+  m_Name: AddAdTicketsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

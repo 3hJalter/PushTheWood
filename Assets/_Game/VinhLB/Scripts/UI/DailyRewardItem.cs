@@ -1,5 +1,7 @@
-﻿using TMPro;
+﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace VinhLB
@@ -11,26 +13,30 @@ namespace VinhLB
         [SerializeField]
         private TMP_Text _dayText;
         [SerializeField]
-        private Image _iconImage;
+        private RewardItem _rewardItemPrefab;
         [SerializeField]
-        private TMP_Text _amountText;
+        private Transform _rewardItemParentTF;
+        [FormerlySerializedAs("_activeRectTf")]
         [SerializeField]
-        private RectTransform _activeRectTf;
+        private RectTransform _activeRectTF;
+        [FormerlySerializedAs("_inactiveRectTf")]
         [SerializeField]
-        private RectTransform _inactiveRectTf;
+        private RectTransform _inactiveRectTF;
+        [FormerlySerializedAs("_checkedRectTf")]
         [SerializeField]
-        private RectTransform _checkedRectTf;
+        private RectTransform _checkedRectTF;
 
         private int _day = -1;
-        private Reward _reward = null;
+        private Reward[] _rewards = null;
+        private List<RewardItem> _rewardItemList = new List<RewardItem>();
 
-        public Reward Reward => _reward;
+        public Reward[] Rewards => _rewards;
 
-        public void Initialize(int day, Reward reward)
+        public void Initialize(int day, Reward[] rewards)
         {
             _day = day;
-            _reward = reward;
-            
+            _rewards = rewards;
+
             _button.onClick.RemoveAllListeners();
             _button.onClick.AddListener(() =>
             {
@@ -40,43 +46,52 @@ namespace VinhLB
 
         public void UpdateVisual()
         {
-            if (_day < 0 || _reward is null)
+            if (_day < 0 || _rewards is null)
             {
                 return;
             }
-            
+
             _dayText.text = $"Day {_day + 1}";
-            
-            if (_reward.IconSprite is not null)
+
+            for (int i = 0; i < _rewards.Length; i++)
             {
-                _iconImage.sprite = _reward.IconSprite;
+                RewardItem rewardItem;
+                if (i < _rewardItemList.Count)
+                {
+                    rewardItem = _rewardItemList[i];
+                }
+                else
+                {
+                    rewardItem = Instantiate(_rewardItemPrefab, _rewardItemParentTF);
+                    _rewardItemList.Add(rewardItem);
+                }
+
+                rewardItem.Initialize(_rewards[i]);
             }
-            
-            _amountText.text = $"{_reward.Amount}";
 
             if (_day <= DailyRewardManager.Ins.CycleDay)
             {
                 if (_day == DailyRewardManager.Ins.CycleDay && !DailyRewardManager.Ins.IsTodayRewardObtained)
                 {
                     _button.interactable = true;
-                    _activeRectTf.gameObject.SetActive(true);
-                    _inactiveRectTf.gameObject.SetActive(false);
-                    _checkedRectTf.gameObject.SetActive(false);
+                    _activeRectTF.gameObject.SetActive(true);
+                    _inactiveRectTF.gameObject.SetActive(false);
+                    _checkedRectTF.gameObject.SetActive(false);
                 }
                 else
                 {
                     _button.interactable = false;
-                    _activeRectTf.gameObject.SetActive(false);
-                    _inactiveRectTf.gameObject.SetActive(false);
-                    _checkedRectTf.gameObject.SetActive(true);
+                    _activeRectTF.gameObject.SetActive(false);
+                    _inactiveRectTF.gameObject.SetActive(false);
+                    _checkedRectTF.gameObject.SetActive(true);
                 }
             }
             else
             {
                 _button.interactable = false;
-                _activeRectTf.gameObject.SetActive(false);
-                _inactiveRectTf.gameObject.SetActive(true);
-                _checkedRectTf.gameObject.SetActive(false);
+                _activeRectTF.gameObject.SetActive(false);
+                _inactiveRectTF.gameObject.SetActive(true);
+                _checkedRectTF.gameObject.SetActive(false);
             }
         }
     }

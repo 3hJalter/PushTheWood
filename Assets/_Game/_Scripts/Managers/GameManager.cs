@@ -105,8 +105,8 @@ namespace _Game.Managers
             
             #endregion
 
+            SmoothAdTickets = AdTickets;
             SmoothGold = Gold;
-            SmoothGems = Gems;
         }
         
         #region Game State Handling
@@ -145,18 +145,18 @@ namespace _Game.Managers
         public int SecretLevelUnlock => _gameData.user.secretLevelUnlock;
         public int SecretMapPieces => _gameData.user.secretMapPieces;
         public int Gold => _gameData.user.gold;
-        public int Gems => _gameData.user.gems;
+        public int AdTickets => _gameData.user.adTickets;
         public float SmoothGold { get; set; }
-        public float SmoothGems { get; set; }
+        public float SmoothAdTickets { get; set; }
         
         public void GainGold(int value, object source = null)
         {
             TryModifyGold(value, source);
         }
         
-        public void GainGems(int value,  object source = null)
+        public void GainAdTickets(int value, object source = null)
         {
-            TryModifyGems(value, source);
+            TryModifyAdTickets(value, source);
         }
         
         public void GainSecretMapPiece(int amount)
@@ -176,16 +176,16 @@ namespace _Game.Managers
         {
             return TryModifyGold(-amount, source);
         }
-        
-        public bool TrySpendGems(int amount, object source = null)
+
+        public bool TrySpendAdTickets(int amount, object source = null)
         {
-            return TryModifyGems(-amount, source);
+            return TryModifyAdTickets(-amount, source);
         }
         
         public void ResetUserData()
         {
             TrySpendGold(_gameData.user.gold);
-            TrySpendGems(_gameData.user.gems);
+            TrySpendAdTickets(_gameData.user.adTickets);
             
             _gameData.user.secretLevelUnlock = 0;
             _gameData.user.secretLevelIndex = 0;
@@ -218,9 +218,9 @@ namespace _Game.Managers
             return true;
         }
 
-        private bool TryModifyGems(int amount, object source)
+        private bool TryModifyAdTickets(int amount, object source)
         {
-            if (_gameData.user.gems + amount < 0)
+            if (_gameData.user.adTickets + amount < 0)
             {
                 return false;
             }
@@ -228,23 +228,22 @@ namespace _Game.Managers
             ResourceChangeData data = new ResourceChangeData()
             {
                 ChangedAmount = amount,
-                OldValue = _gameData.user.gems,
-                NewValue = _gameData.user.gems + amount,
+                OldValue = _gameData.user.adTickets,
+                NewValue = _gameData.user.adTickets + amount,
                 Source = source
             };
             
-            _gameData.user.gems += amount;
-            PostEvent(EventID.OnGemsChange, data);
+            _gameData.user.adTickets += amount;
+            PostEvent(EventID.OnAdTicketsChange, data);
             Database.SaveData(_gameData);
-            
+
             if (amount < 0)
             {
-                SmoothGems = _gameData.user.gems;
+                SmoothAdTickets = _gameData.user.adTickets;
             }
 
             return true;
         }
-        
         #endregion
         
         #region OnApplication
@@ -271,6 +270,5 @@ namespace _Game.Managers
         }
         
         #endregion
-        
     }
 }

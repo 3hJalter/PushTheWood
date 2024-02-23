@@ -33,8 +33,7 @@ namespace _Game.Data
             
             // Income Progress Data
             public int gold;
-            public int gems; // REMOVE: Later
-            public int ticketAd;
+            public int adTickets;
             public int keyRewards;
             public int secretMapPieces;
 
