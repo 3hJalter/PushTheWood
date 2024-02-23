@@ -15,7 +15,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             GameplayManager.Ins.IsCanUndo = false;
             GameplayManager.Ins.IsCanResetIsland = false;
             t.ChangeAnim(Constants.DIE_ANIM);
-            TimerManager.Inst.WaitForTime(DIE_TIME, OnLoseGame);
+            TimerManager.Ins.WaitForTime(DIE_TIME, OnLoseGame);
             void OnLoseGame()
             {
                 GameManager.Ins.PostEvent(DesignPattern.EventID.LoseGame);

@@ -61,9 +61,9 @@ namespace _Game.Utilities.Timer
         private bool isStartFrame = false;
         public STimer()
         {
-            TimerManager.Inst.TimerUpdate += Update;
-            TimerManager.Inst.TimerFixedUpdate += FixedUpdate;
-            TimerManager.Inst.TimerLateUpdate += LateUpdate;
+            TimerManager.Ins.TimerUpdate += Update;
+            TimerManager.Ins.TimerFixedUpdate += FixedUpdate;
+            TimerManager.Ins.TimerLateUpdate += LateUpdate;
         }
 
         public void Start(float time, int code = -1)
@@ -333,9 +333,9 @@ namespace _Game.Utilities.Timer
         }
         ~STimer()
         {
-            TimerManager.Inst.TimerUpdate -= Update;
-            TimerManager.Inst.TimerFixedUpdate -= FixedUpdate;
-            TimerManager.Inst.TimerLateUpdate -= LateUpdate;
+            TimerManager.Ins.TimerUpdate -= Update;
+            TimerManager.Ins.TimerFixedUpdate -= FixedUpdate;
+            TimerManager.Ins.TimerLateUpdate -= LateUpdate;
         }
         
     }

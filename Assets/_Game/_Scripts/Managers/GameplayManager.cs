@@ -67,7 +67,7 @@ namespace _Game.Managers
         {
             screen = UIManager.Ins.GetUI<InGameScreen>();
             screen.Close();
-            timer = TimerManager.Inst.PopSTimer();
+            timer = TimerManager.Ins.PopSTimer();
             GameManager.Ins.RegisterListenerEvent(EventID.StartGame, OnStartGame);
             GameManager.Ins.RegisterListenerEvent(EventID.MoreTimeGame, OnMoreTimeGame);
             GameManager.Ins.RegisterListenerEvent(EventID.WinGame, OnWinGame);
@@ -201,7 +201,7 @@ namespace _Game.Managers
             screen.OnHint -= OnShowHint;
             screen.OnCancelHint -= OnHideHint;
             screen.OnGrowTree -= OnGrowTree;
-            TimerManager.Inst.PushSTimer(timer);         
+            TimerManager.Ins.PushSTimer(timer);         
         }
 
         #region Booster

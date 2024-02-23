@@ -98,13 +98,7 @@ namespace _Game.Managers
             }
 
             #endregion
-
-            #region Handle If user passes first level
-
-            if (_gameData.user.normalLevelIndex > 0) UIManager.Ins.OpenUI<MainMenuScreen>(true);
-            
-            #endregion
-
+         
             SmoothGold = Gold;
             SmoothGems = Gems;
         }

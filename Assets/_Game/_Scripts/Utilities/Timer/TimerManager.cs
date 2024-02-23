@@ -3,14 +3,13 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using _Game.DesignPattern;
 
 namespace _Game.Utilities.Timer
 {
     [DefaultExecutionOrder(-100)]
-    public class TimerManager : MonoBehaviour
+    public class TimerManager : Singleton<TimerManager>
     {
-        private static TimerManager inst;
-        public static TimerManager Inst => inst;
         public enum LOOP_TYPE
         {
             UPDATE = 0,
@@ -32,13 +31,7 @@ namespace _Game.Utilities.Timer
         private List<STimerData> unScaleTimeSTimerDatas = new List<STimerData>();
         private void Awake()
         {
-            if (inst != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-            inst = this;
-            // DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);
             AddSTimerToPool();
         }
         private void Update()

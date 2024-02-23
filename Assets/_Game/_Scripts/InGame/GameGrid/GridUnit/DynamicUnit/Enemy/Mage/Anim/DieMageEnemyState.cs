@@ -13,7 +13,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
 
         public void OnEnter(MageEnemy t)
         {
-            timer = TimerManager.Inst.PopSTimer();
+            timer = TimerManager.Ins.PopSTimer();
             t.ChangeAnim(Constants.DIE_ANIM);
             timer.Start(DIE_TIME, t.OnDespawn);
         }
@@ -26,7 +26,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
         public void OnExit(MageEnemy t)
         {
             timer.Stop();
-            TimerManager.Inst.PushSTimer(timer);
+            TimerManager.Ins.PushSTimer(timer);
         }
     }
 }

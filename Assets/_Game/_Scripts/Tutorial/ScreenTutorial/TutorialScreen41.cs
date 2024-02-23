@@ -20,7 +20,7 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
             base.Setup(param);
             SetupHoldAction();
             panel.raycastTarget = false;
-            TimerManager.Inst.WaitForTime(1.5f, () =>
+            TimerManager.Ins.WaitForTime(1.5f, () =>
             {
                 if (UIManager.Ins.IsOpened<InGameScreen>())
                 {

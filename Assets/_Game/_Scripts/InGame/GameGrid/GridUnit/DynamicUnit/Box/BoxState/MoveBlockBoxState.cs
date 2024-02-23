@@ -35,7 +35,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box.BoxState
                 .OnComplete(ChangeToIdle);
 
             if (blockObjects.Count > 0)
-                TimerManager.Inst.WaitForTime(Constants.MOVING_TIME * 0.5f, ObjectBlocking);
+                TimerManager.Ins.WaitForTime(Constants.MOVING_TIME * 0.5f, ObjectBlocking);
 
             void GetBlockObjects(MovingData data)
             {

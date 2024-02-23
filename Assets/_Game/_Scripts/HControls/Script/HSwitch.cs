@@ -146,7 +146,7 @@ namespace HControls
                 _baseTransform.position = localBasePosition;
                 _stickTransform.position = localStickPosition;
                 _intermediateStickPosition = _stickTransform.anchoredPosition;
-                timer = TimerManager.Inst.WaitForTime(timerList, actions);
+                timer = TimerManager.Ins.WaitForTime(timerList, actions);
             }
             else
             {

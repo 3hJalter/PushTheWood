@@ -73,7 +73,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Bomb
         {
             if (_isWaitForExplode) return;
             _isWaitForExplode = true;
-            timer = TimerManager.Inst.WaitForTime(times, actions);
+            timer = TimerManager.Ins.WaitForTime(times, actions);
         }
         
         public override bool IsCurrentStateIs(StateEnum stateEnum)
@@ -130,7 +130,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Bomb
         public void StopExplode()
         {
             _isWaitForExplode = false;
-            TimerManager.Inst.StopTimer(ref timer);
+            TimerManager.Ins.StopTimer(ref timer);
             // Timing.KillCoroutines(EXPLODE_TAG);
             waitExplosionObjectEffect.SetActive(false);
             StateMachine.OverrideState = StateEnum.None;

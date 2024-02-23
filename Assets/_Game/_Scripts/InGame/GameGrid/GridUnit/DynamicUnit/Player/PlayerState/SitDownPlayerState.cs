@@ -27,7 +27,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         {
             if (timer == null)
             {
-                timer = TimerManager.Inst.PopSTimer();
+                timer = TimerManager.Ins.PopSTimer();
             }
             t.ChangeAnim(Constants.SIT_DOWN_ANIM, true);
             oldDirection = t.Direction;

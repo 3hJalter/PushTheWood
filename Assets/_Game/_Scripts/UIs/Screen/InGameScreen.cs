@@ -66,15 +66,15 @@ namespace _Game.UIs.Screen
         {
             LevelManager.Ins.OnLevelNext += LevelManager_OnLevelNext;
 
-            undoTimer = TimerManager.Inst.PopSTimer();
-            resetIslandTimer = TimerManager.Inst.PopSTimer();
+            undoTimer = TimerManager.Ins.PopSTimer();
+            resetIslandTimer = TimerManager.Ins.PopSTimer();
         }
 
         private void OnDestroy()
         {
             LevelManager.Ins.OnLevelNext -= LevelManager_OnLevelNext;
-            TimerManager.Inst.PushSTimer(undoTimer);
-            TimerManager.Inst.PushSTimer(resetIslandTimer);
+            TimerManager.Ins.PushSTimer(undoTimer);
+            TimerManager.Ins.PushSTimer(resetIslandTimer);
         }
 
         public event Action OnUndo;

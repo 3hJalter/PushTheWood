@@ -58,7 +58,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
             if (_isWaitForExplode) return;
             if (pushUnit is not Player.Player) return;
             _isWaitForExplode = true;
-            timer = TimerManager.Inst.WaitForTime(times, actions);
+            timer = TimerManager.Ins.WaitForTime(times, actions);
         }
 
         public override void OnDespawn()
@@ -72,7 +72,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
         public void StopExplode()
         {
             _isWaitForExplode = false;
-            TimerManager.Inst.StopTimer(ref timer);
+            TimerManager.Ins.StopTimer(ref timer);
             // Timing.KillCoroutines(EXPLODE_TAG);
             waitExplosionObjectEffect.SetActive(false);
             StateMachine.OverrideState = StateEnum.None;

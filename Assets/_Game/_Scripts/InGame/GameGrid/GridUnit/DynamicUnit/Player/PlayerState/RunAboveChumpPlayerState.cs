@@ -33,7 +33,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         public void OnEnter(Player t)
         {
             if (timer == null)
-                timer = TimerManager.Inst.PopSTimer();
+                timer = TimerManager.Ins.PopSTimer();
             chump = t.MainCell.GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water] + 1);
             oldDirection = t.Direction;
             if (chump is Chump.Chump)

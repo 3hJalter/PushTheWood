@@ -16,6 +16,7 @@ namespace _Game.GameGrid.Unit
     public abstract class GridUnitCharacter : GridUnitDynamic, ICharacter, IDamageable
     {
         public Action _OnCharacterChangePosition;
+        [SerializeField]
         protected Animator animator;
         [HideInInspector]
         public bool IsDead { get; set; }
