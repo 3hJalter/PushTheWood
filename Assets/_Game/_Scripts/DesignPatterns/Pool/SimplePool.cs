@@ -378,6 +378,7 @@ namespace _Game.DesignPattern
         TreeBeeShort = 25,
         TreeBeeHigh = 26,
         TreeSeed = 27,
+        TreeShortAfterBee = 28,
 
 
         // Grid Unit Building Object
