@@ -2586,9 +2586,9 @@ MonoBehaviour:
   - {fileID: 6714601167712291058}
   - {fileID: 1314140269627802276}
   - {fileID: 6246460017495879971}
-  bgmVolumeSlider: {fileID: 8857813598094803823}
-  sfxVolumeSlider: {fileID: 1650207725112917573}
-  hapticToggleSwitch: {fileID: 7165382224561356887}
+  _bgmVolumeSlider: {fileID: 8857813598094803823}
+  _sfxVolumeSlider: {fileID: 1650207725112917573}
+  _hapticToggleSwitch: {fileID: 7165382224561356887}
 --- !u!1 &1314140269627802276
 GameObject:
   m_ObjectHideFlags: 0
@@ -5068,9 +5068,10 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _slider: {fileID: 2827316401368637130}
+  _sliderValue: 0
   _onTextCanvasGroup: {fileID: 5115338605641068105}
   _offTextCanvasGroup: {fileID: 766086308507808878}
-  _sliderValue: 0
+  _animate: 1
   _animationDuration: 0.2
   _slideEase: 4
   _onToggleOn:
@@ -5078,7 +5079,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1267216522180438114}
         m_TargetAssemblyTypeName: _Game.UIs.Popup.SettingsPopup, Assembly-CSharp
-        m_MethodName: OnHapticOn
+        m_MethodName: OnToggleHapticOn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5093,7 +5094,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1267216522180438114}
         m_TargetAssemblyTypeName: _Game.UIs.Popup.SettingsPopup, Assembly-CSharp
-        m_MethodName: OnHapticOff
+        m_MethodName: OnToggleHapticOff
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

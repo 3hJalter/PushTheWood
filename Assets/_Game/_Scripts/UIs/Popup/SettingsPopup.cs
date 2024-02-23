@@ -23,20 +23,23 @@ namespace _Game.UIs.Popup
         [SerializeField]
         private GameObject[] _activeMoveChoices;
         
-        [SerializeField] private Slider bgmVolumeSlider;
-        [SerializeField] private Slider sfxVolumeSlider;
-        [SerializeField] private ToggleSwitch hapticToggleSwitch; // TODO: Set haptic toggle switch when setup
+        [SerializeField]
+        private Slider _bgmVolumeSlider;
+        [SerializeField]
+        private Slider _sfxVolumeSlider;
+        [SerializeField]
+        private ToggleSwitch _hapticToggleSwitch;
 
         private void Awake()
         {
-            bgmVolumeSlider.onValueChanged.AddListener(OnChangeBgmVolume);
-            sfxVolumeSlider.onValueChanged.AddListener(OnChangeSfxVolume);
+            _bgmVolumeSlider.onValueChanged.AddListener(OnChangeBgmVolume);
+            _sfxVolumeSlider.onValueChanged.AddListener(OnChangeSfxVolume);
         }
 
         private void OnDestroy()
         {
-            bgmVolumeSlider.onValueChanged.RemoveAllListeners();
-            sfxVolumeSlider.onValueChanged.RemoveAllListeners();
+            _bgmVolumeSlider.onValueChanged.RemoveAllListeners();
+            _sfxVolumeSlider.onValueChanged.RemoveAllListeners();
         }
 
 
@@ -44,9 +47,10 @@ namespace _Game.UIs.Popup
         {
             base.Setup(param);
 
-            bgmVolumeSlider.value = AudioManager.Ins.BgmVolume;
-            sfxVolumeSlider.value = AudioManager.Ins.SfxVolume;
-            
+            _bgmVolumeSlider.value = AudioManager.Ins.BgmVolume;
+            _sfxVolumeSlider.value = AudioManager.Ins.SfxVolume;
+            _hapticToggleSwitch.SetState(HVibrate.IsHapticOn, false);
+
             if (GameManager.Ins.IsState(GameState.InGame))
             {
                 GameManager.Ins.ChangeState(GameState.Pause);
@@ -66,7 +70,7 @@ namespace _Game.UIs.Popup
         public override void Open(object param = null)
         {
             base.Open(param);
-            
+
             MoveInputManager.Ins.ShowContainer(false);
         }
 
@@ -79,35 +83,35 @@ namespace _Game.UIs.Popup
                 MoveInputManager.Ins.ShowContainer(true);
             }
         }
-        
+
         public void OnChangeBgmVolume(float value)
         {
             AudioManager.Ins.ToggleBgmVolume(value);
         }
-        
+
         public void OnChangeSfxVolume(float value)
         {
             AudioManager.Ins.ToggleSfxVolume(value);
             AudioManager.Ins.ToggleEnvironmentVolume(value);
         }
-        
-        public void OnHapticOff()
+
+        public void OnToggleHapticOff()
         {
             HVibrate.OnToggleHaptic(false);
             DevLog.Log(DevId.Hoang, "Haptic off");
         }
-        
-        public void OnHapticOn()
+
+        public void OnToggleHapticOn()
         {
             HVibrate.OnToggleHaptic(true);
             DevLog.Log(DevId.Hoang, "Haptic on");
         }
-        
+
         public void OnClickMoveOptionPopup()
         {
             UIManager.Ins.OpenUI<MoveOptionPopup>();
         }
-        
+
         public void OnClickUseDPadButton()
         {
             MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.MoveChoice.DPad);
@@ -118,21 +122,21 @@ namespace _Game.UIs.Popup
         public void OnClickUseSwitchButton()
         {
             MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.MoveChoice.Switch);
-            
+
             UpdateCurrentMoveChoice();
         }
 
         public void OnClickUseSwipeButton()
         {
             MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.MoveChoice.Swipe);
-            
+
             UpdateCurrentMoveChoice();
         }
 
         public void OnClickUseSwipeContinuousButton()
         {
             MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.MoveChoice.SwipeContinuous);
-            
+
             UpdateCurrentMoveChoice();
         }
 
@@ -140,7 +144,7 @@ namespace _Game.UIs.Popup
         {
             FXManager.Ins.SwitchGridActive();
         }
-        
+
         public void OnClickGoMenuButton()
         {
             if (LevelManager.Ins.CurrentLevel.LevelType != LevelType.Normal)
@@ -150,7 +154,7 @@ namespace _Game.UIs.Popup
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<MainMenuScreen>();
         }
-        
+
         private void UpdateCurrentMoveChoice()
         {
             for (int i = 0; i < _activeMoveChoices.Length; i++)
@@ -165,15 +169,14 @@ namespace _Game.UIs.Popup
                 }
             }
         }
-        
-        #region Old functions
 
+        #region Old functions
         public void OnClickSelectLevelButton()
         {
             // UIManager.Ins.CloseAll();
             // UIManager.Ins.OpenUI<WorldLevelScreen>();
         }
-        
+
         public void OnClickHowToPlayButton()
         {
             Debug.Log("Click how to play button");
@@ -190,7 +193,7 @@ namespace _Game.UIs.Popup
             Debug.Log("Click toggle water button");
             FXManager.Ins.ToggleWater();
         }
-        
+
         public void OnClickToggleGrasses()
         {
             Debug.Log("Click toggle grass button");
@@ -201,9 +204,6 @@ namespace _Game.UIs.Popup
         {
             UIManager.Ins.OpenUI<BoosterWatchVideoPopup>();
         }
-
         #endregion
-
-
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using _Game.Utilities;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -14,16 +15,20 @@ namespace VinhLB
         [SerializeField]
         private Slider _slider;
         [SerializeField]
+        [Range(0f, 1f)]
+        private float _sliderValue;
+        [SerializeField]
         private CanvasGroup _onTextCanvasGroup;
         [SerializeField]
         private CanvasGroup _offTextCanvasGroup;
-        [SerializeField]
-        [Range(0f, 1f)]
-        private float _sliderValue;
 
         [Header("Animation")]
         [SerializeField]
+        private bool _animate = true;
+        [ShowIf(nameof(_animate), false)]
+        [SerializeField]
         private float _animationDuration = 0.5f;
+        [ShowIf(nameof(_animate), false)]
         [SerializeField]
         private Ease _slideEase = Ease.Linear;
 
@@ -53,30 +58,10 @@ namespace VinhLB
         
         public void OnPointerClick(PointerEventData eventData)
         {
-            Toggle();
+            SetState(!CurrentValue, _animate);
         }
-
-        private void SetupSliderComponent()
-        {
-            if (_slider == null)
-            {
-                DevLog.Log(DevId.Vinh, "No slider found!");
-                return;
-            }
-
-            _slider.interactable = false;
-            ColorBlock sliderColors = _slider.colors;
-            sliderColors.disabledColor = Color.white;
-            _slider.colors = sliderColors;
-            _slider.transition = Selectable.Transition.None;
-        }
-
-        private void Toggle()
-        {
-            SetStateAndStartAnimation(!CurrentValue);
-        }
-
-        private void SetStateAndStartAnimation(bool state)
+        
+        public void SetState(bool state, bool animate)
         {
             CurrentValue = state;
 
@@ -89,27 +74,50 @@ namespace VinhLB
                 _onToggleOff?.Invoke();
             }
 
-            if (_animateSliderTween != null)
+            float endValue = CurrentValue ? 1f : 0f;
+            if (animate)
             {
-                DOTween.Kill(_animateSliderTween);
+                if (_animateSliderTween != null)
+                {
+                    DOTween.Kill(_animateSliderTween);
+                }
+
+                float startValue = _slider.value;
+                _animateSliderTween = DOVirtual.Float(startValue, endValue, _animationDuration, (value) =>
+                {
+                    _slider.value = value;
+
+                    UpdateTexts(value);
+                }).SetEase(_slideEase).OnComplete(() => { _slider.value = endValue; });
+            }
+            else
+            {
+                _slider.value = endValue;
+                
+                UpdateTexts(endValue);
+            }
+        }
+        
+        private void SetupSliderComponent()
+        {
+            if (_slider == null)
+            {
+                DevLog.Log(DevId.Vinh, "No slider component found!");
+                return;
             }
 
-            float startValue = _slider.value;
-            float endValue = CurrentValue ? 1f : 0f;
-            
-            _animateSliderTween = DOVirtual.Float(startValue, endValue, _animationDuration, (value) =>
-            {
-                _slider.value = value;
-
-                UpdateTexts(value);
-            }).SetEase(_slideEase).OnComplete(() => { _slider.value = endValue; });
+            _slider.interactable = false;
+            ColorBlock sliderColors = _slider.colors;
+            sliderColors.disabledColor = Color.white;
+            _slider.colors = sliderColors;
+            _slider.transition = Selectable.Transition.None;
         }
 
         private void UpdateTexts(float value)
         {
             if (_onTextCanvasGroup is null || _offTextCanvasGroup is null)
             {
-                DevLog.Log(DevId.Vinh, "No on/off text canvas group found!");
+                DevLog.Log(DevId.Vinh, "No on/off text canvas group component found!");
                 return;
             }
             
