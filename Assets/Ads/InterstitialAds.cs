@@ -8,6 +8,7 @@ public class InterstitialAds : MonoBehaviour
     string adUnitId = "c8ea8f6273eef263";
     int retryAttempt;
     bool showImmediate = false;
+    Action onAdsClose = null;
 
     // Start is called before the first frame update
     void Start()
@@ -30,11 +31,12 @@ public class InterstitialAds : MonoBehaviour
         showImmediate = show;
     }
 
-    public void Show()
+    public void Show(Action onAdsClose = null)
     {
-        if (MaxSdk.IsInterstitialReady("c8ea8f6273eef263"))
+        if (MaxSdk.IsInterstitialReady(adUnitId))
         {
-            MaxSdk.ShowInterstitial("c8ea8f6273eef263");
+            MaxSdk.ShowInterstitial(adUnitId);
+            this.onAdsClose = onAdsClose;
         }
         else
         {
@@ -76,7 +78,7 @@ public class InterstitialAds : MonoBehaviour
     private void OnInterstitialHiddenEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
     {
         // Interstitial ad is hidden. Pre-load the next ad.
-
+        this.onAdsClose?.Invoke();
     }
 
     // Update is called once per frame

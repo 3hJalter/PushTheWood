@@ -1,4 +1,5 @@
 using _Game.DesignPattern;
+using _Game.Utilities.Timer;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,8 @@ namespace _Game.Managers
         public RewardedAds RewardedAds => Reward;
         public InterstitialAds InterstitialAds => Interstitial;
 
+        STimer cooldownTimer;
+
         int intAdsStepCount = 0;
         private void Start()
         {
@@ -27,13 +30,21 @@ namespace _Game.Managers
                 Reward.Load();
                 Interstitial.Load();
             };
-            //GameManager.Ins.RegisterListenerEvent(EventID.OnInterAdsStepCount, OnInterAdsStepCount);
+            GameManager.Ins.RegisterListenerEvent(EventID.OnInterAdsStepCount, OnInterAdsStepCount);
+            cooldownTimer = new STimer();
         }
 
 
-        private void OnInterAdsStepCount()
+        private void OnInterAdsStepCount(object value)
         {
-            intAdsStepCount++;
+            intAdsStepCount += (int)value;
+            if(intAdsStepCount >= DataManager.Ins.ConfigData.stepInterAdsCountMax && !cooldownTimer.IsStart)
+            {
+                InterstitialAds.Show(StartTimer);
+                intAdsStepCount = 0;
+            }
+
+            void StartTimer() { cooldownTimer.Start(DataManager.Ins.ConfigData.interAdsCooldownTime); }
         }
 
     }
