@@ -515,21 +515,4 @@ MonoBehaviour:
   m_GameObject: {fileID: 6630061401179279428}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcc1ef877f9d4904a795754ad458361f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  isDestroyOnClose: 1
-  useAnimator: 0
-  animator: {fileID: 0}
-  panel: {fileID: 411562655595668974}
-  holdingButton: {fileID: 1729365429548860762}
-  deco: {fileID: 4373076191954692631}
+  m_Script: {fileID: 11500000, guid: fcc1ef

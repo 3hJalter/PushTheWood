@@ -47,7 +47,7 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private void WaitCooldown()
     {
         _hBtn.enabled = false;
-        _coroutine = Timing.RunCoroutine(ActiveCooldownTime());
+        _coroutine = Timing.RunCoroutine(ActiveCooldownTime().CancelWith(gameObject));
     }
     
     public void SetActive(bool active)
