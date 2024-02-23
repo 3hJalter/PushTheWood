@@ -97,8 +97,10 @@ namespace VinhLB
                 }
                 else if (differentInSize < 0)
                 {
-                    for (int i = _rewardItemList.Count - 1; i >= _rewardItemList.Count - 1 + differentInSize; i--)
+                    int startIndex = _rewardItemList.Count - 1;
+                    for (int i = startIndex; i > startIndex + differentInSize; i--)
                     {
+                        Debug.Log(i);
                         Destroy(_rewardItemList[i].gameObject);
                         
                         _rewardItemList.RemoveAt(i);

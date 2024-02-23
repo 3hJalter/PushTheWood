@@ -2,6 +2,7 @@ using _Game._Scripts.Managers;
 using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid;
+using _Game.Resource;
 using _Game.UIs.Screen;
 using _Game.Utilities;
 using _Game.Utilities.Timer;
@@ -301,13 +302,5 @@ namespace _Game.Managers
                 OnLoseGame();
             }
         }
-    }
-    
-    public enum BoosterType
-    {
-        Undo,
-        ResetIsland,
-        Hint,
-        GrowTree,
     }
 }

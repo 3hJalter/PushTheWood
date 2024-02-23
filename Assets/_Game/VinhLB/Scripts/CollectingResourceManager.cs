@@ -32,9 +32,9 @@ namespace VinhLB
         [SerializeField]
         private CollectingResourceConfig _collectingCoinConfig;
 
-        [Title("Gems")]
+        [Title("Ad Tickets")]
         [SerializeField]
-        private CollectingResourceConfig _collectingGemConfig;
+        private CollectingResourceConfig _collectingAdTicketConfig;
 
         public void SpawnCollectingCoins(int amount, Vector3 startPosition, Transform endPoint,
             Action<float> onEachReachEnd = null)
@@ -42,10 +42,10 @@ namespace VinhLB
             SpawnCollectingResource(_collectingCoinConfig, amount, startPosition, endPoint, onEachReachEnd);
         }
 
-        public void SpawnCollectingGems(int amount, Vector3 startPosition, Transform endPoint,
+        public void SpawnCollectingAdTickets(int amount, Vector3 startPosition, Transform endPoint,
             Action<float> onEachReachEnd = null)
         {
-            SpawnCollectingResource(_collectingGemConfig, amount, startPosition, endPoint, onEachReachEnd);
+            SpawnCollectingResource(_collectingAdTicketConfig, amount, startPosition, endPoint, onEachReachEnd);
         }
 
         private async void SpawnCollectingResource(CollectingResourceConfig config, int amount,
@@ -54,14 +54,12 @@ namespace VinhLB
             if (amount <= 0)
             {
                 DevLog.Log(DevId.Vinh, $"Amount must be positive");
-
                 return;
             }
 
             if (endPoint == null)
             {
                 DevLog.Log(DevId.Vinh, $"EndPoint must be not null");
-
                 return;
             }
 

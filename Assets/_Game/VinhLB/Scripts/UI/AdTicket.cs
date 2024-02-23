@@ -2,7 +2,7 @@
 
 namespace VinhLB
 {
-    public class Gem : UIUnit
+    public class AdTicket : UIUnit
     {
         
     }

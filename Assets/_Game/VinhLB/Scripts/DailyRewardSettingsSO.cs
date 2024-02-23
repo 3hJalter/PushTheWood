@@ -1,4 +1,5 @@
-﻿using _Game.Managers;
+﻿using System.Collections.Generic;
+using _Game.Managers;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -13,31 +14,42 @@ namespace VinhLB
         public bool DifferentFirstCycle = true;
         public bool MissRewardIfNotLogin = false;
         [ShowIf(nameof(DifferentFirstCycle), false)]
-        public Reward[] FirstCycleRewards;
-        public Reward[] Rewards;
+        public List<Reward[]> FirstCycleRewardList = new List<Reward[]>(7);
+        public List<Reward[]> RewardsList = new List<Reward[]>(7);
     }
 
     [System.Serializable]
     public class Reward
     {
-        public RESOURCE_TYPE RewardType;
+        public RewardType RewardType;
+        [ShowIf(nameof(RewardType), _Game.Resource.RewardType.Booster)]
+        public BoosterType BoosterType;
+        [ShowIf(nameof(RewardType), _Game.Resource.RewardType.Resource)]
+        public ResourceType ResourceType;
         public string Name;
         public Sprite IconSprite;
         public int Amount;
 
         public void Obtain(Vector3 fromPosition = default)
         {
-            switch (RewardType)
+            if (RewardType == RewardType.Booster)
             {
-                case RESOURCE_TYPE.GOLD:
-                    GameManager.Ins.GainGold(Amount, fromPosition);
-                    break;
-                case RESOURCE_TYPE.GEM:
-                    GameManager.Ins.GainGems(Amount, fromPosition);
-                    break;
-                case RESOURCE_TYPE.SECRET_MAP_PIECE:
-                    GameManager.Ins.GainSecretMapPiece(Amount);
-                    break;
+                //TODO: Implement logic to receive booster
+            }
+            else if (RewardType == RewardType.Resource)
+            {
+                switch (ResourceType)
+                {
+                    case ResourceType.Gold:
+                        GameManager.Ins.GainGold(Amount, fromPosition);
+                        break;
+                    case ResourceType.AdTicket:
+                        GameManager.Ins.GainAdTickets(Amount, fromPosition);
+                        break;
+                    case ResourceType.SecretMapPiece:
+                        GameManager.Ins.GainSecretMapPiece(Amount);
+                        break;
+                }
             }
         }
     }   

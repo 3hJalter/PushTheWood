@@ -407,7 +407,7 @@ namespace _Game.DesignPattern
         
         // UI
         Coin = 400,
-        Gem = 401,
+        AdTicket = 401,
         
         // World UI
         FloatingWorldUI = 500,

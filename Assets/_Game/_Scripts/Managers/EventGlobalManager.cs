@@ -1,5 +1,6 @@
 ﻿using _Game.DesignPattern;
 using _Game.Managers;
+using _Game.Resource;
 using Sigtrap.Relays;
 
 namespace _Game._Scripts.Managers
