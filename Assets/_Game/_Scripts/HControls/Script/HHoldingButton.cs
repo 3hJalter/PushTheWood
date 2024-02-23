@@ -49,8 +49,11 @@ namespace HControls
         public void OnButtonPointerUp()
         {
             isHolding = false;
-            timer.Stop();
-            onPointerUpAction?.Invoke();
+            if (timer.TimeRemaining <= 0)
+            {
+                onPointerUpAction?.Invoke();
+            }
+            else timer.Stop();
         }
     }
 }

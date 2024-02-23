@@ -145,7 +145,7 @@ namespace _Game.UIs.Popup
         {
             if (LevelManager.Ins.CurrentLevel.LevelType != LevelType.Normal)
             {
-                LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex);
+                LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
             }
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<MainMenuScreen>();
