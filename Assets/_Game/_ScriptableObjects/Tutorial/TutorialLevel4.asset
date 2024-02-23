@@ -22,4 +22,5 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   tutorialScreens:
-  - {fileID: 7727380018450095427, guid: cc302e564b178f046b2cee31ade91eed, type: 3}
+  - {fileID: 8844152019779468010, guid: cc302e564b178f046b2cee31ade91eed, type: 3}
+  currentScreen: {fileID: 0}
