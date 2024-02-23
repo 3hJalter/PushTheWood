@@ -37,7 +37,6 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         Timing.KillCoroutines(_coroutine);
         _hBtn.onClick.RemoveListener(_waitCooldown);
-        _delayedCall.Kill(true);
     }
 
     private IEnumerator<float> ActiveCooldownTime()
