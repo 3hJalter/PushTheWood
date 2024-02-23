@@ -14,6 +14,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 using VinhLB;
 using _Game.Managers;
+using _Game.Content;
 
 namespace _Game.GameGrid.Unit
 {
@@ -24,6 +25,7 @@ namespace _Game.GameGrid.Unit
         [SerializeField] public Transform skin; // Model location
         // MeshRenderer of Unit
         [SerializeField] private MeshRenderer meshRenderer;
+        [SerializeField] protected SkinController skinController;
 
         [Title("Size")]
         // Size of this unit, the X and Z equal to the size of the main cell, the Y equal to height level

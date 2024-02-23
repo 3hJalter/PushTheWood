@@ -5,6 +5,7 @@ using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using _Game.Utilities;
 using _Game.Utilities.Grid;
 using DG.Tweening;
+using GameGridEnum;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,7 +16,6 @@ namespace _Game.GameGrid.Unit
     public abstract class GridUnitCharacter : GridUnitDynamic, ICharacter, IDamageable
     {
         public Action _OnCharacterChangePosition;
-        [SerializeField]
         protected Animator animator;
         [HideInInspector]
         public bool IsDead { get; set; }
