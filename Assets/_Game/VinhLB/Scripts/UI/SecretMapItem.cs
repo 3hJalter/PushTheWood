@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace VinhLB
 {
     public class SecretMapItem : HMonoBehaviour
     {
+        public event Action<int> _OnPlayButtonClick;
+        [SerializeField]
+        private int index;
         [SerializeField]
         private GameObject _statusGO;
         [SerializeField]
@@ -14,6 +18,10 @@ namespace VinhLB
         [SerializeField]
         private Button _playButton;
 
+        private void Awake()
+        {
+            _playButton.onClick.AddListener(OnPlayButtonClick);
+        }
         public void SetButtons(bool isUnlocked)
         {
             if (!isUnlocked)
@@ -30,6 +38,16 @@ namespace VinhLB
                 _unlockProgressGO.SetActive(true);
                 _playButton.gameObject.SetActive(true);
             }
+        }
+
+        private void OnPlayButtonClick()
+        {
+            _OnPlayButtonClick?.Invoke(index);
+        }
+
+        private void OnDestroy()
+        {
+            _playButton.onClick.RemoveAllListeners();
         }
     }
 }
