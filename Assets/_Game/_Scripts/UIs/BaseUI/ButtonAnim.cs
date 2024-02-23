@@ -21,8 +21,7 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField] private float cooldownTime = 0.1f;
     private CanvasGroup _canvasGroup;
     private HButton _hBtn;
-
-    private CoroutineHandle _coroutine;
+    private Tween _delayedCall;
     private UnityAction _waitCooldown;
     private void Awake()
     {
@@ -36,25 +35,20 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private void OnDestroy()
     {
         _hBtn.onClick.RemoveListener(_waitCooldown);
-    }
-
-    private IEnumerator<float> ActiveCooldownTime()
-    {
-        yield return Timing.WaitForSeconds(cooldownTime);
-        _hBtn.enabled = true;
+        _delayedCall.Kill(true);
     }
     
     private void WaitCooldown()
     {
         _hBtn.enabled = false;
-        _coroutine = Timing.RunCoroutine(ActiveCooldownTime().CancelWith(gameObject));
+        _delayedCall = DOVirtual.DelayedCall(cooldownTime, () => _hBtn.enabled = true).OnKill(() => _hBtn.enabled = true); 
     }
     
     public void SetActive(bool active)
     {
         if(active) 
         {
-            Timing.KillCoroutines(_coroutine);
+            _delayedCall?.Kill(true);
             _hBtn.enabled = true;
         }
     }

@@ -427,7 +427,7 @@ GameObject:
   - component: {fileID: 6630061401179279427}
   - component: {fileID: 6630061401179279425}
   - component: {fileID: 6630061401179279430}
-  - component: {fileID: 7921188108811731292}
+  - component: {fileID: 8844152019779468010}
   m_Layer: 5
   m_Name: Tut_4_1
   m_TagString: Untagged
@@ -506,7 +506,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &7921188108811731292
+--- !u!114 &8844152019779468010
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
