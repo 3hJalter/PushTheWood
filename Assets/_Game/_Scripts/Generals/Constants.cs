@@ -60,7 +60,7 @@ public static class Constants
     
     public const float CUT_TREE_ANIM_TIME = 0.5f;
     public const float PUSH_ANIM_TIME = 0.4f;
-    public const float GROW_TREE_ANIM_TIME = 0.4f;
+    public const float GROW_TREE_ANIM_TIME = 0.6f;
     
     public const int WAIT_CUT_TREE_FRAMES = 15;
 

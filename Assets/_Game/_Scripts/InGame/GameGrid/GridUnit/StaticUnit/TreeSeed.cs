@@ -35,6 +35,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
             EventGlobalManager.Ins.OnGrowTree.AddListener(OnGrow);
+            ChangeAnim(Constants.IDLE_ANIM);
             _isGrown = false;
         }
 
@@ -48,7 +49,6 @@ namespace _Game.GameGrid.Unit.StaticUnit
         public override void OnDespawn()
         {
             EventGlobalManager.Ins.OnGrowTree.RemoveListener(OnGrow);
-            ChangeAnim(Constants.IDLE_ANIM);
             base.OnDespawn();
         }
 
