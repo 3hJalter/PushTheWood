@@ -59,7 +59,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             // fall the skin to the direction if it not none
             if (fallTreeDirection == Direction.None) return;
             _currentFallTween?.Kill();
-            _currentFallTween = skin.DOLocalRotate(_fallDirectionLocalSkinRot[fallTreeDirection], 0.15f);
+            _currentFallTween = skin.DOLocalRotate(_fallDirectionLocalSkinRot[fallTreeDirection], 0.15f).OnKill(() => _currentFallTween = null);
         }
 
         protected override void OnOutTriggerUpper(GridUnit triggerUnit)
@@ -72,12 +72,12 @@ namespace _Game.GameGrid.Unit.StaticUnit
             {
                 _currentFallTween.OnComplete(() =>
                 {
-                    _currentFallTween = skin.DOLocalRotate(_fallDirectionLocalSkinRot[Direction.None], 0.15f);
-                });
+                    _currentFallTween = skin.DOLocalRotate(_fallDirectionLocalSkinRot[Direction.None], 0.15f).OnKill(() => _currentFallTween = null);
+                }).OnKill(() => _currentFallTween = null);
             }
             else
             {
-                _currentFallTween = skin.DOLocalRotate(_fallDirectionLocalSkinRot[Direction.None], 0.15f);
+                _currentFallTween = skin.DOLocalRotate(_fallDirectionLocalSkinRot[Direction.None], 0.15f).OnKill(() => _currentFallTween = null);
             }
             fallTreeDirection = Direction.None;
         }
