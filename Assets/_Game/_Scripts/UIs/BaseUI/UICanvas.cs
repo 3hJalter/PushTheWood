@@ -82,7 +82,7 @@ public class UICanvas : HMonoBehaviour
     private void OnClose()
     {
         gameObject.SetActive(false);
-        if (isDestroyOnClose) Destroy(gameObject);
+        if (isDestroyOnClose) DestroyImmediate(gameObject);
     }
 
     private void ChangeAnim(string animName)
