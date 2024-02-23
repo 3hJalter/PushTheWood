@@ -20,6 +20,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             t.ChangeAnim(Constants.JUMP_UP_ANIM);
             direction = Direction.None;
             _firstTime = true;
+            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.Walk);
             ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.Dust),
                 t.transform.position - Vector3.up * 0.5f);
         }
