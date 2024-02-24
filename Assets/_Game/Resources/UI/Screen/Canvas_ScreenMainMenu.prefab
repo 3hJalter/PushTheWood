@@ -4465,3 +4465,4 @@ MonoBehaviour:
   _goldIconTF: {fileID: 4013643439574557309}
   _adTicketValueText: {fileID: 3417165548306138449}
   _adTicketIconTF: {fileID: 4398726315384317882}
+  _rewardKeyText: {fileID: 0}

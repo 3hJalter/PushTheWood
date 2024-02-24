@@ -54,7 +54,7 @@ namespace _Game.UIs.Screen
 
             _goldValueText.text = $"{GameManager.Ins.Gold}";
             _adTicketValueText.text = $"{GameManager.Ins.AdTickets}";
-            
+                      
             if (param is true)
             {
                 _canvasGroup.alpha = 1f;
