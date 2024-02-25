@@ -6,6 +6,7 @@ using _Game.Managers;
 using _Game.Utilities;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -47,7 +48,24 @@ namespace VinhLB
         {
             SpawnCollectingResource(_collectingAdTicketConfig, amount, startPosition, endPoint, onEachReachEnd);
         }
+        public void SpawnCollectingRewardKey(int amount, Vector3 startPosition)
+        {
+            UIRewardKey unit = SimplePool.Spawn<UIRewardKey>(DataManager.Ins.GetUIUnit(PoolType.UIRewardKey), startPosition, Quaternion.identity);
+            unit.Text.text = $"+{amount}";
+            unit.Icon.color = new Color(unit.Icon.color.r, unit.Icon.color.g, unit.Icon.color.b, 0);
 
+            Sequence s = DOTween.Sequence();
+            s.Append(unit.CanvasGroup.DOFade(1, 0.2f))
+                .Join(unit.RectTransform.DOAnchorPosY(startPosition.y + 10, 0.2f))
+                .Append(unit.CanvasGroup.DOFade(0, 0.2f))
+                .OnComplete(() => OnDespawnUnit(unit));
+            s.Play();
+
+            void OnDespawnUnit(UIUnit uiUnit)
+            {
+                uiUnit.Despawn();
+            }
+        }
         private async void SpawnCollectingResource(CollectingResourceConfig config, int amount,
             Vector3 startPosition, Transform endPoint, Action<float> onEachReachEnd)
         {

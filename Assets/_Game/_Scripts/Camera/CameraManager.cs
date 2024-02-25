@@ -62,5 +62,10 @@ namespace _Game.Managers
             virtualCameraDic[eCameraType].Follow = target;
             virtualCameraDic[eCameraType].LookAt = target;
         }
+
+        public Vector3 WorldToScreenPoint(Vector3 position)
+        {
+            return brainCamera.WorldToScreenPoint(position);
+        }
     }
 }
