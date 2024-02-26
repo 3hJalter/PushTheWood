@@ -58,7 +58,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 t.ChangeAnim(Constants.SIT_UP_ANIM);
                 t.SetAnimSpeed(initAnimSpeed * Constants.SIT_UP_ANIM_TIME / SIT_UP_TIME);
 
-                SaveCommand(t);
                 timer.Start(SIT_UP_TIME, ChangeIdleState);
                 t.skin.transform.DOLocalMove(oldSkinPos, SIT_UP_TIME);
                 musicalNotes?.Stop();
