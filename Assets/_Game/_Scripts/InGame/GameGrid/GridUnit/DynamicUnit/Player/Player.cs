@@ -66,12 +66,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             if (!agent.isActiveAndEnabled)
             {
                 InputDirection = HInputManager.GetDirectionInput();
-                if (InputDirection is not Direction.None) lastPushedDirection = InputDirection;
-                InputDetection.GetInput(InputDirection);
             }
             // TEST: Reset the Input if Direction is not none and Move is Swipe (Swipe only take one input per swipe)
             // if (Direction != Direction.None && MoveInputManager.Ins.CurrentChoice is MoveInputManager.MoveChoice.Swipe) HInputManager.SetDefault();
             //stateMachine.Debug = true;
+            if (InputDirection is not Direction.None) lastPushedDirection = InputDirection;
+            InputDetection.GetInput(InputDirection);
             stateMachine?.UpdateState();
 
         }
@@ -222,19 +222,19 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 agent.enabled = true;
                 agent.LoadPath(LevelManager.Ins.CurrentLevel.HintLinePosList);
                 agent.Run();
-                Direction = agent.NextDirection;
+                InputDirection = agent.NextDirection;
             }
             else
             {
                 agent.enabled = false;
-                Direction = Direction.None;
+                InputDirection = Direction.None;
                 CommandCache.Clear();
             }
         }
         public void OnCharacterChangePosition()
         {
             _OnCharacterChangePosition?.Invoke();
-            Direction = agent.NextDirection;
+            InputDirection = agent.NextDirection;
         }
         private void OnWin()
         {
