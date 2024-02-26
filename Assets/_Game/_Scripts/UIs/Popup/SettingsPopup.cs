@@ -140,9 +140,14 @@ namespace _Game.UIs.Popup
             UpdateCurrentMoveChoice();
         }
 
-        public void OnClickGridToggleButton()
+        public void OnClickToggleGridButton()
         {
             FXManager.Ins.SwitchGridActive();
+        }
+
+        public void OnClickTutorialButton()
+        {
+            UIManager.Ins.OpenUI<TutorialPopup>();
         }
 
         public void OnClickGoMenuButton()
