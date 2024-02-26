@@ -11254,7 +11254,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2073520842874827360, guid: fc9cb1b8d43db7b4f86d77ceb680745b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnClickGridToggleButton
+      value: OnClickToggleGridButton
       objectReference: {fileID: 0}
     - target: {fileID: 2073520842874827360, guid: fc9cb1b8d43db7b4f86d77ceb680745b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
