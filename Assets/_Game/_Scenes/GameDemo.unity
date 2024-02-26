@@ -1942,6 +1942,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 806727943264897264, guid: a36897d6cef9303459632761b987c23d, type: 3}
     - target: {fileID: 806727943264897264, guid: a36897d6cef9303459632761b987c23d, type: 3}
+      propertyPath: _rewardKeytConfig.PrefabPoolType
+      value: 402
+      objectReference: {fileID: 0}
+    - target: {fileID: 806727943264897264, guid: a36897d6cef9303459632761b987c23d, type: 3}
       propertyPath: _rewardKeytConfig.CollectingResourceParentTF
       value: 
       objectReference: {fileID: 546648010}
