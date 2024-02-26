@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using AudioEnum;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -59,6 +60,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 
         public void OnExit(Player t)
         {
+            AudioManager.Ins.StopSfx(SfxType.Sleep);
             timer.Stop();
             sfxTimer.Stop();
             sleepingParticle?.Stop();

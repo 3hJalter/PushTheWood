@@ -18,6 +18,7 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
         public override void Setup(object param = null)
         {
             base.Setup(param);
+            HInputManager.LockInput();
             SetupHoldAction();
             panel.raycastTarget = false;
             TimerManager.Ins.WaitForTime(1.5f, () =>
@@ -31,6 +32,7 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
                 panel.raycastTarget = true;
                 panel.color = new Color(0,0,0,0.65f);
                 deco.SetActive(true);
+                HInputManager.LockInput(false);
             });
         }
 
