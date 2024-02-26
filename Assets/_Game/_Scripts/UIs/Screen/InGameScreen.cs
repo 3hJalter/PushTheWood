@@ -185,10 +185,11 @@ namespace _Game.UIs.Screen
         {
             objectiveText.text = LevelManager.Ins.CurrentLevel.LevelWinCondition switch
             {
-                LevelWinCondition.FindingChest => Constants.FIND_CHEST,
+                LevelWinCondition.FindingFruit => Constants.FIND_FRUIT,
                 LevelWinCondition.DefeatAllEnemy => Constants.DEFEAT_ENEMY,
                 LevelWinCondition.CollectAllStar => Constants.COLLECT_ALL_STARS,
-                LevelWinCondition.FindingFood => Constants.FIND_FOOD,
+                LevelWinCondition.FindingChest => Constants.FIND_CHEST,
+                LevelWinCondition.FindingChickenBbq => Constants.FIND_CHICKEN_BBQ,
                 _ => objectiveText.text
             };
         }

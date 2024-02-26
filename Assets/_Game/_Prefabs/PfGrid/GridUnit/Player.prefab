@@ -274,6 +274,7 @@ MonoBehaviour:
   islandID: -1
   gridUnitDynamicType: 0
   anchor: {fileID: 1008189588372813436}
+  animator: {fileID: 0}
   agent: {fileID: 223310535193985912}
   isRideVehicle: 0
   IsStun: 0

@@ -172,6 +172,7 @@ MonoBehaviour:
     SerializationNodes: []
   btnSound: -1
   unscaleTime: 0
+  cooldownTime: 0.1
   showAnimType: 0
   showAnimTime: 0.35
   initScale: 0
@@ -864,6 +865,7 @@ MonoBehaviour:
     SerializationNodes: []
   btnSound: -1
   unscaleTime: 0
+  cooldownTime: 0.1
   showAnimType: 0
   showAnimTime: 0.35
   initScale: 0
@@ -1181,7 +1183,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5253322786383572310}
   m_Father: {fileID: 7239107388192199634}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1690,6 +1693,7 @@ MonoBehaviour:
     SerializationNodes: []
   btnSound: -1
   unscaleTime: 0
+  cooldownTime: 0.1
   showAnimType: 0
   showAnimTime: 0.35
   initScale: 0
@@ -2168,7 +2172,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2982262866448750455}
-  - {fileID: 5253322786383572310}
   - {fileID: 4582723795239325598}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -2252,6 +2255,7 @@ MonoBehaviour:
   isDestroyOnClose: 0
   useAnimator: 0
   animator: {fileID: 0}
+  container: {fileID: 4202160276085291080}
   _canvasGroup: {fileID: 7239107388192199635}
   _blockPanel: {fileID: 6636795778640806458}
   _nextLevelButton: {fileID: 3618839642037570877}
@@ -2500,8 +2504,8 @@ RectTransform:
   - {fileID: 4115260750422136715}
   - {fileID: 2867315323705177336}
   - {fileID: 4087476233883561826}
-  m_Father: {fileID: 7239107388192199634}
-  m_RootOrder: 1
+  m_Father: {fileID: 2982262866448750455}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2577,7 +2581,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7239107388192199634}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

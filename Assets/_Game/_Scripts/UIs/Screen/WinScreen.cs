@@ -12,13 +12,13 @@ namespace _Game.UIs.Screen
 {
     public class WinScreen : UICanvas
     {
+        [SerializeField] private GameObject container;
         [SerializeField]
         private CanvasGroup _canvasGroup;
         [SerializeField]
         private Image _blockPanel;
         [SerializeField]
         private Button _nextLevelButton;
-
         Action NextLevel;
         public override void Setup(object param = null)
         {
@@ -31,14 +31,20 @@ namespace _Game.UIs.Screen
                 LevelManager.Ins.OnNextLevel(LevelType.Normal);
                 Close();
             };
+            
         }
 
         public override void Open(object param = null)
         {
             base.Open(param);
-            AudioManager.Ins.PlaySfx(SfxType.Win);
-            DOVirtual.Float(0f, 1f, 0.25f, value => _canvasGroup.alpha = value)
-                .OnComplete(() => _blockPanel.gameObject.SetActive(false));
+            container.SetActive(false);
+            DOVirtual.DelayedCall(1f, () =>
+            {
+                container.SetActive(true);
+                AudioManager.Ins.PlaySfx(SfxType.Win);
+                DOVirtual.Float(0f, 1f, 0.25f, value => _canvasGroup.alpha = value)
+                    .OnComplete(() => _blockPanel.gameObject.SetActive(false));
+            });
         }
         
         public void OnClickNextButton()

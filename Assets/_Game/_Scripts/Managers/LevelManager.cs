@@ -270,9 +270,10 @@ namespace _Game.GameGrid
                         }
                     };
                     break;
-                case LevelWinCondition.FindingChest: 
+                case LevelWinCondition.FindingFruit: 
                 case LevelWinCondition.CollectAllStar:
-                case LevelWinCondition.FindingFood:
+                case LevelWinCondition.FindingChest:
+                case LevelWinCondition.FindingChickenBbq:
                 default:
                     break;
             }
