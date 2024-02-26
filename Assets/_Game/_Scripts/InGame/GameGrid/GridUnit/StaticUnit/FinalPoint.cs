@@ -1,23 +1,15 @@
 ﻿using _Game.GameGrid.Unit.DynamicUnit.Player;
-using _Game.GameGrid.Unit.StaticUnit.Interface;
-using _Game.Managers;
-using AudioEnum;
 using DG.Tweening;
 using GameGridEnum;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace _Game.GameGrid.Unit.StaticUnit.Chest
+namespace _Game.GameGrid.Unit.StaticUnit
 {
-    public abstract class BChest : GridUnitStatic, IChest
+    public class FinalPoint : GridUnitStatic
     {
-        [Title("Chest")]
-        [SerializeField] protected Animator chestAnimator;
-        [SerializeField] protected GameObject chestModel;
         [SerializeField] protected Target indicatorTarget;
-        
-        [ReadOnly]
         [SerializeField] protected bool isInteracted;
+        [SerializeField] protected ParticleSystem winParticle;
 
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
             Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
@@ -25,35 +17,27 @@ namespace _Game.GameGrid.Unit.StaticUnit.Chest
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
             if (!isInteracted) indicatorTarget.enabled = true;
         }
-
+        
         public override void OnDespawn()
         {
-            ShowAnim(false);
             isInteracted = false;
+            winParticle.Stop();
             base.OnDespawn();
         }
-
-        public virtual void OnOpenChestComplete()
+        
+        private void OnReachPoint()
         {
             indicatorTarget.enabled = false;
+            winParticle.Play();
+            LevelManager.Ins.OnWin();
         }
         
-        private void ShowAnim(bool isShow)
-        {
-            chestAnimator.gameObject.SetActive(isShow);
-            chestModel.SetActive(!isShow);
-            if (!isShow) return;
-            AudioManager.Ins.PlaySfx(SfxType.OpenChest);
-            chestAnimator.SetTrigger(Constants.OPEN_ANIM);
-        }
-
         protected override void OnEnterTriggerNeighbor(GridUnit triggerUnit)
         {
             if (isInteracted) return;
             if (triggerUnit is not Player) return;
             isInteracted = true;
-            ShowAnim(true);
-            DOVirtual.DelayedCall(Constants.CHEST_OPEN_TIME, OnOpenChestComplete);        
+            OnReachPoint();
         }
     }
 }

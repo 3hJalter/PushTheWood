@@ -171,6 +171,8 @@ namespace _Game.Managers
             IsBoughtGrowTree = false;
             GameManager.Ins.ChangeState(GameState.InGame);
             LevelManager.Ins.player.SetActiveAgent(false);
+            // If hard level, show a notification
+            DevLog.Log(DevId.Hoang, $"Hard Level: {LevelManager.Ins.CurrentLevel.IsHardLevel}");
         }
 
         private void OnWinGame()
