@@ -23,6 +23,7 @@ namespace _Game.Managers
         private void Awake()
         {
             DontDestroyOnLoad(this);
+            GameManager.Ins.RegisterListenerEvent(EventID.OnUpdateUIs, UpdateUIs);
         }
         #region Canvas
 
@@ -116,7 +117,7 @@ namespace _Game.Managers
             return uiCanvasPrefab[typeof(T)] as T;
         }
 
-        public void UpdateUIs()
+        private void UpdateUIs()
         {
             for(int i = 0; i < backCanvas.Count; i++)
             {

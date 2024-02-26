@@ -21,9 +21,12 @@ namespace _Game.Data
         public readonly int timePerDailyChallengeLevel = 900;
         [FoldoutGroup("In Game/Time Per Level")]
         public readonly int timePerSecretLevel = 900;
-
+        [FoldoutGroup("In Game")]
+        public readonly int requireRewardKey = 3;
+        [FoldoutGroup("In Game")]
+        public readonly int requireSecretMapPiece = 8;
         #endregion
-        
+
         #region Booster Purchase
 
         // Ticket purchase

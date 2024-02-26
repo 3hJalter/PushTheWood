@@ -61,6 +61,7 @@ MonoBehaviour:
     - {fileID: 1028327251320453201, guid: c98395dbd471057468ecefbbac47f39b, type: 3}
     - {fileID: 3644550193287672870, guid: 28a4f251c4df0574a86d6ce28d83525a, type: 3}
     - {fileID: 2423863395047940138, guid: a85b1545da49038499b8abb1df62b516, type: 3}
+    - {fileID: 940959626426039063, guid: 35ee6dcb6ab39f7408e086d651522b67, type: 3}
     - {fileID: 3039115369026176717, guid: 4ade82e13c0381d43843c130e0424bd0, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
@@ -715,7 +716,7 @@ MonoBehaviour:
       Data: 8
     - Name: 
       Entry: 12
-      Data: 2
+      Data: 3
     - Name: 
       Entry: 7
       Data: 
@@ -737,6 +738,18 @@ MonoBehaviour:
     - Name: $v
       Entry: 10
       Data: 44
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 402
+    - Name: $v
+      Entry: 10
+      Data: 45
     - Name: 
       Entry: 8
       Data: 
@@ -764,7 +777,7 @@ MonoBehaviour:
       Data: 500
     - Name: $v
       Entry: 10
-      Data: 45
+      Data: 46
     - Name: 
       Entry: 8
       Data: 
@@ -804,7 +817,13 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 9b1a5b35bf70bdd47a824d02fb85b028, type: 3}
   - {fileID: 4900000, guid: bd6a027d9bd14094eaa9fcaa9660155c, type: 3}
   - {fileID: 4900000, guid: 11e989bebdaf2d14d876b6fe6f0233e0, type: 3}
-  - {fileID: 4900000, guid: 99aacf09c274a9d47b6bd83661ed127f, type: 3}
+  - {fileID: 4900000, guid: f453804852f12da47a7ac09f524d9761, type: 3}
+  - {fileID: 4900000, guid: d4f498010a383a141a6187db2846b867, type: 3}
+  - {fileID: 4900000, guid: e491c08009724d54a9d00ea1478387ed, type: 3}
+  - {fileID: 4900000, guid: a071052df6be6f94db6a4c76ffc529bc, type: 3}
+  - {fileID: 4900000, guid: d03db533425ae8347859d687baed91cc, type: 3}
+  - {fileID: 4900000, guid: d4e771a4406f4cc48a5dffb8247d8bf0, type: 3}
+  - {fileID: 4900000, guid: a8a519430065ec845a18cb1a201d8a06, type: 3}
   dailyChallengerLevel:
   - {fileID: 4900000, guid: 785855e7a42c9544fa55015f0ba772ec, type: 3}
   - {fileID: 4900000, guid: e0e456d6d00c25d4cb284441711aaae9, type: 3}

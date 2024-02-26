@@ -8,15 +8,7 @@ using UnityEngine.UI;
 namespace VinhLB
 {
     public class FloatingWorldUI : UIUnit
-    {
-        [Title("References")]
-        // [SerializeField]
-        // private Animator _animator;
-        [SerializeField]
-        private Image _icon;
-        [SerializeField]
-        private TMP_Text _text;
-
+    {     
         public void Initialize(Sprite sprite, string text)
         {
             if (sprite != null)

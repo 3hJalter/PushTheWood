@@ -6,6 +6,7 @@ using _Game.Managers;
 using _Game.Utilities;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -36,6 +37,10 @@ namespace VinhLB
         [SerializeField]
         private CollectingResourceConfig _collectingAdTicketConfig;
 
+        [Title("Reward Keys")]
+        [SerializeField]
+        private CollectingResourceConfig _rewardKeytConfig;
+
         public void SpawnCollectingCoins(int amount, Vector3 startPosition, Transform endPoint,
             Action<float> onEachReachEnd = null)
         {
@@ -47,7 +52,35 @@ namespace VinhLB
         {
             SpawnCollectingResource(_collectingAdTicketConfig, amount, startPosition, endPoint, onEachReachEnd);
         }
+        public void SpawnCollectingRewardKey(int amount, Transform objectTransform)
+        {
+            UIRewardKey unit = SimplePool.Spawn<UIRewardKey>(DataManager.Ins.GetUIUnit(PoolType.UIRewardKey));
+            Vector2 viewPortPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) - Vector3.one * 0.5f;
+            unit.Text.text = $"+{amount}";
 
+            unit.CanvasGroup.alpha = 0;
+            if (unit.Tf.parent != _rewardKeytConfig.CollectingResourceParentTF)
+            {
+                unit.Tf.SetParent(_rewardKeytConfig.CollectingResourceParentTF, false);
+            }
+            RectTransform parentRectTransform = _rewardKeytConfig.CollectingResourceParentTF as RectTransform;
+
+            Sequence s = DOTween.Sequence();
+            s.Append(unit.CanvasGroup.DOFade(1, 0.6f))
+                .Join(DOVirtual.Float(0, 40, 0.6f, y =>
+                {
+                    Vector2 viewPortPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) - Vector3.one * 0.5f;
+                    unit.RectTransform.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewPortPoint.x, parentRectTransform.rect.height * viewPortPoint.y + 60 + y);
+                }).SetEase(Ease.OutQuart))
+                .Append(unit.CanvasGroup.DOFade(0, 0.6f))    
+                .OnComplete(() => OnDespawnUnit(unit));    
+            s.Play();
+
+            void OnDespawnUnit(UIUnit uiUnit)
+            {
+                uiUnit.Despawn();
+            }
+        }
         private async void SpawnCollectingResource(CollectingResourceConfig config, int amount,
             Vector3 startPosition, Transform endPoint, Action<float> onEachReachEnd)
         {

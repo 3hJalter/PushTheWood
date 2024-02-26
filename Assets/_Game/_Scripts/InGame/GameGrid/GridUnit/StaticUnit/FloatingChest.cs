@@ -1,8 +1,10 @@
 ﻿using _Game.GameGrid.Unit.StaticUnit.Chest;
+using _Game.Managers;
 using _Game.Utilities;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
+using VinhLB;
 
 namespace _Game.GameGrid.Unit.StaticUnit
 {
@@ -64,6 +66,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         public override void OnOpenChestComplete()
         {
             base.OnOpenChestComplete();
+            CollectingResourceManager.Ins.SpawnCollectingRewardKey(1, LevelManager.Ins.player.transform);
             DevLog.Log(DevId.Hoang, "Loot something");
         }
     }
