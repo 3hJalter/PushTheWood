@@ -39,6 +39,8 @@ namespace _Game.Data
         [FoldoutGroup("Ads")]
         public readonly int stepInterAdsCountMax = 3;
         public readonly int interAdsCooldownTime = 45;
+        public readonly int startInterAdsLevel = 8;
+        public readonly int winLevelCountInterAds = 3;
         #endregion
         // [BoxGroup("Monetize")]
     }
