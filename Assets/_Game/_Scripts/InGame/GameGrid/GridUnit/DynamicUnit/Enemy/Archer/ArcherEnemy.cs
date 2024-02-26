@@ -23,14 +23,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
         private void FixedUpdate()
         {
             if (!GameManager.Ins.IsState(GameState.InGame)) return;
-            if (_isWaitAFrame)
-            {
-                _isWaitAFrame = false;
-                stateMachine?.UpdateState();
-                return;
-            }
-
-            _isWaitAFrame = true;
             stateMachine?.UpdateState();
         }
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,

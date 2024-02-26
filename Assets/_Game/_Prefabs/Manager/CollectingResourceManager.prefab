@@ -71,3 +71,12 @@ MonoBehaviour:
     ReactPunchScale: {x: 0.25, y: 0.25, z: 0}
     ReactDuration: 0.1
     CollectingResourceParentTF: {fileID: 0}
+  _rewardKeytConfig:
+    PrefabPoolType: 0
+    MinSpreadPosition: {x: 0, y: 0, z: 0}
+    MaxSpreadPosition: {x: 0, y: 0, z: 0}
+    SpreadDuration: 0
+    MoveDuration: 0.6
+    ReactPunchScale: {x: 0, y: 0, z: 0}
+    ReactDuration: 0
+    CollectingResourceParentTF: {fileID: 0}

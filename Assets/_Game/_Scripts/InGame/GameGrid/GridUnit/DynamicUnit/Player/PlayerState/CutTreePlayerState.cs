@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
-    public class CutTreePlayerState : IState<Player>
+    public class CutTreePlayerState : AbstractPlayerState
     {
         private bool _isExecuted;
         float originAnimSpeed;
@@ -19,9 +19,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         List<Action> actions = new List<Action>();
         List<float> times = new List<float>() { Constants.CUT_TREE_TIME, STATE_TIME };
 
-        public StateEnum Id => StateEnum.CutTree;
+        public override StateEnum Id => StateEnum.CutTree;
 
-        public void OnEnter(Player t)
+        public override void OnEnter(Player t)
         {
             originAnimSpeed = t.AnimSpeed;
             t.SetAnimSpeed(originAnimSpeed * Constants.CUT_TREE_ANIM_TIME / Constants.CUT_TREE_TIME);
@@ -49,11 +49,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             }
         }
 
-        public void OnExecute(Player t)
+        public override void OnExecute(Player t)
         {
+            SaveCommand(t);
         }
 
-        public void OnExit(Player t)
+        public override void OnExit(Player t)
         {
             _isExecuted = false;
             t.SetAnimSpeed(originAnimSpeed);

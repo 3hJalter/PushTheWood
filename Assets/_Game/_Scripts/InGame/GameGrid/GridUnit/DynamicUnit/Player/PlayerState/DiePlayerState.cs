@@ -5,12 +5,12 @@ using _Game.Utilities.Timer;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
-    public class DiePlayerState : IState<Player>
+    public class DiePlayerState : AbstractPlayerState
     {
         private const float DIE_TIME = 1.08f;
-        public StateEnum Id => StateEnum.Die;
+        public override StateEnum Id => StateEnum.Die;
 
-        public void OnEnter(Player t)
+        public override void OnEnter(Player t)
         {
             GameplayManager.Ins.IsCanUndo = false;
             GameplayManager.Ins.IsCanResetIsland = false;
@@ -22,12 +22,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             }
         }
 
-        public void OnExecute(Player t)
+        public override void OnExecute(Player t)
         {
             
         }
 
-        public void OnExit(Player t)
+        public override void OnExit(Player t)
         {
             
         }

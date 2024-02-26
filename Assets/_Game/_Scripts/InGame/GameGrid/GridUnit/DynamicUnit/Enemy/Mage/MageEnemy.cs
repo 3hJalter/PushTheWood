@@ -21,16 +21,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
         private void FixedUpdate()
         {
             if (!GameManager.Ins.IsState(GameState.InGame)) return;
-            if (_isWaitAFrame)
-            {
-                _isWaitAFrame = false;
-                //Direction = Direction.None;
-                // TEST: Reset the Input if Direction is not none and Move is Swipe (Swipe only take one input per swipe)
-                stateMachine?.UpdateState();
-                return;
-            }
-
-            _isWaitAFrame = true;
             stateMachine?.UpdateState();
         }
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,

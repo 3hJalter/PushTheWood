@@ -7,43 +7,41 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
-    public class JumpUpPlayerState : IState<Player>
+    public class JumpUpPlayerState : AbstractPlayerState
     {
         private bool _isExecuted;
         private bool _firstTime;
-        Direction direction;
 
-        public StateEnum Id => StateEnum.JumpUp;
+        public override StateEnum Id => StateEnum.JumpUp;
 
-        public void OnEnter(Player t)
+        public override void OnEnter(Player t)
         {
             t.ChangeAnim(Constants.JUMP_UP_ANIM);
-            direction = Direction.None;
             _firstTime = true;
             AudioManager.Ins.PlaySfx(AudioEnum.SfxType.Walk);
             ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.Dust),
                 t.transform.position - Vector3.up * 0.5f);
         }
 
-        public void OnExecute(Player t)
+        public override void OnExecute(Player t)
         {
-            if (!_firstTime && t.InputDetection.InputAction == InputAction.ButtonDown)
-            {
-                direction = t.Direction;
-            }
+            //if (!_firstTime && t.InputDetection.InputAction == InputAction.ButtonDown)
+            //{
+            //    UpdateDirection(t);
+            //}
+            SaveCommand(t);
             if (_isExecuted) return;
             _isExecuted = true;
             _firstTime = false;
             t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME)
                 .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                 {
-                    t.InputCache.Enqueue(direction);
                     t.OnEnterTrigger(t);
                     t.StateMachine.ChangeState(StateEnum.Idle);
                 });
         }
 
-        public void OnExit(Player t)
+        public override void OnExit(Player t)
         {
             _isExecuted = false;
             t.OnCharacterChangePosition();

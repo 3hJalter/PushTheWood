@@ -6,38 +6,33 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
-    public class MovePlayerState : IState<Player>
+    public class MovePlayerState : AbstractPlayerState
     {
         private bool firstTime;
-        private Direction direction;
         private float initAnimSpeed;
         private Tween moveTween;
         private float originMovingDistance;
 
-        public StateEnum Id => StateEnum.Move;
+        public override StateEnum Id => StateEnum.Move;
 
-        public void OnEnter(Player t)
+        public override void OnEnter(Player t)
         {
             t.ChangeAnim(Constants.MOVE_ANIM);
             initAnimSpeed = t.AnimSpeed;
-            direction = t.Direction;
             firstTime = true;
             AudioManager.Ins.PlaySfx(SfxType.Walk);
         }
-        public void OnExecute(Player t)
+        public override void OnExecute(Player t)
         {
             //NOTE: Cache input and speed up animation
+            SaveCommand(t);
             if (!firstTime && t.InputDetection.InputAction == InputAction.ButtonDown)
             {
                 t.SetAnimSpeed(initAnimSpeed / Constants.MOVING_TIME_FAST_RATE);
                 moveTween.Kill();
-                direction = t.Direction;
-
-
                 moveTween = t.Tf.DOMove(t.EnterPosData.finalPos, CalculateMoveRemainingTime())
                     .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
                     {
-                        t.InputCache.Enqueue(direction);
                         t.LookDirection(t.Direction);
                         t.SetAnimSpeed(initAnimSpeed);
 
@@ -64,7 +59,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                        Mathf.Sqrt(remainingDistance / originMovingDistance);
             }
         }
-        public void OnExit(Player t)
+        public override void OnExit(Player t)
         {
             moveTween.Kill();
             moveTween = null;

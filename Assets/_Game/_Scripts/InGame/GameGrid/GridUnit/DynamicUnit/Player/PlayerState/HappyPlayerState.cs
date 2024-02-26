@@ -3,21 +3,21 @@ using _Game.DesignPattern.StateMachine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
-    public class HappyPlayerState : IState<Player>
+    public class HappyPlayerState : AbstractPlayerState
     {
-        public StateEnum Id => StateEnum.Happy;
+        public override StateEnum Id => StateEnum.Happy;
 
-        public void OnEnter(Player t)
+        public override void OnEnter(Player t)
         {
             t.ChangeAnim(Constants.HAPPY_ANIM);
         }
 
-        public void OnExecute(Player t)
+        public override void OnExecute(Player t)
         {
             
         }
 
-        public void OnExit(Player t)
+        public override void OnExit(Player t)
         {
             
         }
