@@ -24,6 +24,8 @@ namespace _Game.Data
         [FoldoutGroup("In Game")]
         public readonly int requireRewardKey = 3;
         [FoldoutGroup("In Game")]
+        public readonly int requireLevelProgress = 3;
+        [FoldoutGroup("In Game")]
         public readonly int requireSecretMapPiece = 8;
         #endregion
 

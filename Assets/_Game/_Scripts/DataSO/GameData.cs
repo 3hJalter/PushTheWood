@@ -35,8 +35,11 @@ namespace _Game.Data
             public int gold;
             public int adTickets;
             public int rewardChestKeys;
+            public int levelChestProgress;
             public int currentRewardChestIndex = 0;
+            public int currentLevelChestIndex = 0;
             public int rewardChestUnlock = 0;
+            public int levelChestUnlock = 0;
             public int secretMapPieces;
 
             // Booster Data
