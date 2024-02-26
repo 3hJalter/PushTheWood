@@ -2079,9 +2079,37 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 522463765}
     m_Modifications:
+    - target: {fileID: 6469700256872215672, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
+      propertyPath: near clip plane
+      value: -20
+      objectReference: {fileID: 0}
     - target: {fileID: 6469700256872215673, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
       propertyPath: m_Cameras.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6469700256872215673, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
+      propertyPath: m_RenderPostProcessing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6469700256872215677, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6469700256872215677, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6469700256872215677, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.14425085
+      objectReference: {fileID: 0}
+    - target: {fileID: 6469700256872215677, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6469700256872215677, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6469700256872215687, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
       propertyPath: serializationData.Prefab

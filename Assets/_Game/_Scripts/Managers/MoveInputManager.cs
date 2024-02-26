@@ -11,17 +11,17 @@ namespace _Game._Scripts.Managers
     {
         public enum MoveChoice
         {
-            Swipe,
-            DPad,
-            Switch,
-            SwipeContinuous,
+            Swipe = 0,
+            DPad = 1,
+            Switch = 2,
+            SwipeContinuous = 3,
         }
 
-        [SerializeField] private GameObject container;
+        [SerializeField] private Canvas container;
         [SerializeField] private HSwitch hSwitch;
         [SerializeField] private HDpad dpad;
         [SerializeField] private HSwipe hSwipe;
-
+        
         public HSwipe HSwipe => hSwipe;
 
         public HDpad Dpad => dpad;
@@ -92,7 +92,8 @@ namespace _Game._Scripts.Managers
         private bool _isFirstOpen;
         public void ShowContainer(bool isShow, bool isSetDefault = true)
         {
-            container.SetActive(isShow);
+            container.worldCamera = CameraManager.Ins.BrainCamera;
+            container.gameObject.SetActive(isShow);
             if (!isShow) HideButton(isSetDefault);
             else
             {
@@ -104,5 +105,12 @@ namespace _Game._Scripts.Managers
                 OnChangeMoveChoice(CurrentChoice, isSetDefault);
             }
         }
+        
+        private void SaveChoice(MoveChoice moveChoice)
+        {
+            DataManager.Ins.GameData.setting.moveChoice = (int) moveChoice;
+            DataManager.Ins.Save();
+        }
+        
     }
 }

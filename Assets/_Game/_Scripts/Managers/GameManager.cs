@@ -38,7 +38,7 @@ namespace _Game.Managers
             Input.multiTouchEnabled = false;
             Application.targetFrameRate = 60;
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
-
+            DontDestroyOnLoad(gameObject);
             // BUGS: Indicator fall when reduce resolution
             if (reduceScreenResolution)
             {
