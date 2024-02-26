@@ -126,6 +126,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public override void OnPush(Direction direction, ConditionData conditionData = null)
         {
             //NOTE: Saving when push dynamic object that make grid change
+            if (LevelManager.Ins.IsSavePlayerPushStep)
+            {
+                GameplayManager.Ins.SaveHint.SaveStep(mainCell.X, mainCell.Y, (int) direction, islandID);        
+            }
             if (MovingData.blockDynamicUnits.Count > 0)
             {
                 #region Save

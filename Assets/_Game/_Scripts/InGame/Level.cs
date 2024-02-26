@@ -555,7 +555,8 @@ namespace _Game._Scripts.InGame
         public GridUnitData[] uD; // UNIT DATA
         public ShadowUnitData[] suD; // SHADOW UNIT DATA
         public HintTrailData[] htD; // HINT TRAIL DATA
-
+        public SaveHint.PlayerStep[] pS; // PLAYER STEP
+        
         [Serializable]
         public struct GridSurfaceData
         {
@@ -586,5 +587,7 @@ namespace _Game._Scripts.InGame
         {
             public Vector2 p; // POSITION XZ
         }
+        
+        
     }
 }

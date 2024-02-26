@@ -5,6 +5,8 @@ using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState;
+using _Game.Managers;
+using AudioEnum;
 using GameGridEnum;
 using UnityEngine;
 
@@ -68,6 +70,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft
                 AddState();
 
             }
+            AudioManager.Ins.PlaySfx(SfxType.SplashWater);
             stateMachine.ChangeState(StateEnum.Emerge);
         }
 

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using _Game._Scripts.InGame;
 using _Game._Scripts.Managers;
 using _Game.Data;
 using _Game.DesignPattern;
@@ -24,7 +26,9 @@ namespace _Game.Managers
         private bool isCanResetIsland = true;
         private bool isBoughtGrowTree = false;
         private bool isCanGrowTree = true;
-            
+
+        public SaveHint SaveHint { get; private set; }
+
         public bool IsCanUndo
         {
             get => isCanUndo;
@@ -164,6 +168,10 @@ namespace _Game.Managers
         
         private void OnStartGame()
         {
+            if (LevelManager.Ins.IsSavePlayerPushStep)
+            {
+                SaveHint = new SaveHint();
+            }
             OnResetTime();
             screen.OnHideIfTutorial();
             IsCanResetIsland = true;
@@ -177,6 +185,10 @@ namespace _Game.Managers
 
         private void OnWinGame()
         {
+            if (LevelManager.Ins.IsSavePlayerPushStep)
+            {
+                SaveHint.Save();
+            }
             timer.Stop();
             DevLog.Log(DevId.Hung, "ENDGAME - Show Win Screen");
             UIManager.Ins.OpenUI<WinScreen>();

@@ -64,6 +64,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         {
             if (!_isExecuted)
             {
+                if (LevelManager.Ins.IsSavePlayerPushStep)
+                {
+                    GameplayManager.Ins.SaveHint.SaveStep(t.MainCell.X, t.MainCell.Y, (int) t.CutTreeData.inputDirection, t.islandID);
+                }
                 _isExecuted = true;
                 LevelManager.Ins.SaveGameState(true);
                 // Make the tree OnBePushed with direction calculated by position of the Player and the Tree

@@ -70,6 +70,9 @@ namespace _Game.GameGrid
         // DEBUG:
         [ReadOnly]
         [SerializeField] private LevelWinCondition levelWinCondition;
+
+        [SerializeField] private bool isSavePlayerPushStep;
+        public bool IsSavePlayerPushStep => isSavePlayerPushStep;
         
         private void Start()
         {
