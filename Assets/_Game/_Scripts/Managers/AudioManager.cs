@@ -34,7 +34,7 @@ namespace _Game.Managers
             if (audio is null) return;
             if (audioSourcePool && audioSource.isPlaying)
             {
-                audioSourcePool.Push(0, audioSource.gameObject.transform);
+                audioSourcePool.Push(0, audioSource.transform);
                 audioSource = audioSourcePool.Pop(0).AudioSource;
             }
 
@@ -257,8 +257,14 @@ namespace _Game.Managers
             environment.Stop();
         }
 
-        public void StopSfx()
+        public void StopSfx(SfxType type = SfxType.None)
         {
+            if (type == SfxType.None)
+            {
+                sfx.Stop();
+                return;
+            }
+            if (sfx.currentAudio != GetSfxAudio(type)) return;
             sfx.Stop();
         }
 

@@ -408,6 +408,7 @@ namespace _Game.DesignPattern
         // UI
         Coin = 400,
         AdTicket = 401,
+        UIRewardKey = 402,
         
         // World UI
         FloatingWorldUI = 500,

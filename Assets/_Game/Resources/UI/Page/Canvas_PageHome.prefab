@@ -131,6 +131,7 @@ MonoBehaviour:
   _dailyRewardButton: {fileID: 4925511839185839447}
   _dailyMissionButton: {fileID: 8366753755632910879}
   _secretMapButton: {fileID: 3000093801028728422}
+  _rewardKeyTxt: {fileID: 5602844570135727943}
   _levelText: {fileID: 7079813424118232752}
 --- !u!1 &577699555310462009
 GameObject:
@@ -831,7 +832,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 96, y: 460}
+  m_AnchoredPosition: {x: 109, y: 460}
   m_SizeDelta: {x: 128, y: 128}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7586143724993695170

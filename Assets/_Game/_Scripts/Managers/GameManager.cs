@@ -38,7 +38,7 @@ namespace _Game.Managers
             Input.multiTouchEnabled = false;
             Application.targetFrameRate = 60;
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
-
+            DontDestroyOnLoad(gameObject);
             // BUGS: Indicator fall when reduce resolution
             if (reduceScreenResolution)
             {
@@ -140,6 +140,7 @@ namespace _Game.Managers
         public int SecretMapPieces => _gameData.user.secretMapPieces;
         public int Gold => _gameData.user.gold;
         public int AdTickets => _gameData.user.adTickets;
+        public int RewardKeys => _gameData.user.rewardChestKeys;
         public float SmoothGold { get; set; }
         public float SmoothAdTickets { get; set; }
         
@@ -156,16 +157,30 @@ namespace _Game.Managers
         public void GainSecretMapPiece(int amount)
         {
             _gameData.user.secretMapPieces += amount;          
-            if(_gameData.user.secretMapPieces >= Constants.REQUIRE_SECRET_MAP_PIECES)
+            if(_gameData.user.secretMapPieces >= DataManager.Ins.ConfigData.requireSecretMapPiece)
             {
-                _gameData.user.secretLevelUnlock += 1;
-                _gameData.user.secretMapPieces -= Constants.REQUIRE_SECRET_MAP_PIECES;
+                _gameData.user.secretLevelUnlock += _gameData.user.secretMapPieces / DataManager.Ins.ConfigData.requireSecretMapPiece;
+                _gameData.user.secretMapPieces = _gameData.user.secretMapPieces % DataManager.Ins.ConfigData.requireSecretMapPiece;
+                PostEvent(EventID.OnUnlockSecretMap, _gameData.user.secretLevelUnlock);
             }
             PostEvent(EventID.OnSecretMapPieceChange, _gameData.user.secretMapPieces);
-            PostEvent(EventID.OnUnlockSecretMap, _gameData.user.secretLevelUnlock);
+            PostEvent(EventID.OnUpdateUIs);
             Database.SaveData(_gameData);
         }
         
+        public void GainRewardKey(int amount)
+        {
+            _gameData.user.rewardChestKeys += amount;
+            if(_gameData.user.rewardChestKeys >= DataManager.Ins.ConfigData.requireRewardKey)
+            {
+                _gameData.user.rewardChestUnlock += _gameData.user.rewardChestKeys / DataManager.Ins.ConfigData.requireRewardKey;
+                _gameData.user.rewardChestKeys = _gameData.user.rewardChestKeys % DataManager.Ins.ConfigData.requireRewardKey;
+                PostEvent(EventID.OnUnlockRewardChest, _gameData.user.rewardChestUnlock);
+            }
+            PostEvent(EventID.OnRewardChestKeyChange, _gameData.user.rewardChestKeys);
+            PostEvent(EventID.OnUpdateUIs);
+            Database.SaveData(_gameData);
+        }
         public bool TrySpendGold(int amount, object source = null)
         {
             return TryModifyGold(-amount, source);

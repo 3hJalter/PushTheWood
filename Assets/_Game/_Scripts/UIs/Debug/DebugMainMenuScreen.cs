@@ -116,7 +116,6 @@ namespace _Game.UIs.Screen
         private void AddSecretMapPiece()
         {
             GameManager.Ins.GainSecretMapPiece(1);
-            UIManager.Ins.UpdateUIs();
         }
 
         private void ResetUserData()

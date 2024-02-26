@@ -188,6 +188,7 @@ namespace _Game.UIs.Screen
                 LevelWinCondition.FindingChest => Constants.FIND_CHEST,
                 LevelWinCondition.DefeatAllEnemy => Constants.DEFEAT_ENEMY,
                 LevelWinCondition.CollectAllStar => Constants.COLLECT_ALL_STARS,
+                LevelWinCondition.FindingFood => Constants.FIND_FOOD,
                 _ => objectiveText.text
             };
         }

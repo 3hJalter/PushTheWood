@@ -40,6 +40,7 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
             panel.color = new Color(1, 1, 1, 0);
             // Tween to move _imageRectContainer to _finalImageRectPosition
             Timing.RunCoroutine(MoveImageRect().CancelWith(gameObject));
+            MoveInputManager.Ins.HSwipe.RemoveListener(_swipeEvent);
         }
 
         private IEnumerator<float> MoveImageRect()

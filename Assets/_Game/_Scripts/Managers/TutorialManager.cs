@@ -43,20 +43,20 @@ namespace _Game._Scripts.Managers
             }
         }
 
-        public void AddCutsceneObject(Transform cutsceneObject)
-        {
-            cutsceneObject.SetParent(Tf);
-            _objectOnCutscene.Add(cutsceneObject);
-        }
+        // public void AddCutsceneObject(Transform cutsceneObject)
+        // {
+        //     cutsceneObject.SetParent(Tf);
+        //     _objectOnCutscene.Add(cutsceneObject);
+        // }
         
-        public void OnDestroyCutsceneObject()
-        {
-            for (int i = 0; i < _objectOnCutscene.Count; i++)
-            {
-                Destroy(_objectOnCutscene[i].gameObject);
-            }
-            _objectOnCutscene.Clear();
-        }
+        // public void OnDestroyCutsceneObject()
+        // {
+        //     for (int i = 0; i < _objectOnCutscene.Count; i++)
+        //     {
+        //         Destroy(_objectOnCutscene[i].gameObject);
+        //     }
+        //     _objectOnCutscene.Clear();
+        // }
         
         public void OnUnitGoToCell(GameGridCell cell, GridUnit triggerUnit)
         {

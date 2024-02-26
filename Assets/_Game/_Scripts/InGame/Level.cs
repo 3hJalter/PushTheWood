@@ -539,6 +539,7 @@ namespace _Game._Scripts.InGame
         FindingChest = 0,
         DefeatAllEnemy = 1,
         CollectAllStar = 2,
+        FindingFood = 3,
     }
     
     [Serializable]

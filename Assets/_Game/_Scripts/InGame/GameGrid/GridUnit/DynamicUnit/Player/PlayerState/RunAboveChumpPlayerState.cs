@@ -13,7 +13,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
     public class RunAboveChumpPlayerState : IState<Player>
     {
-        private const float ANIM_TIME = 2f;
+        private const float ANIM_TIME = 1f;
         private readonly Vector3 UNIT_VECTOR = new Vector3(1, 0, 1);
         private readonly Vector3 WATER_SPLASH_OFFSET = Vector3.up * 0.18f;
 

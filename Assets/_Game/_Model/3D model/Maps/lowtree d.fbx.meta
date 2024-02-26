@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d5a2ab123ce972147aab37b8cc15ed16
+guid: 511402c1caee2574da1e8f4407dabb97
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -13,6 +13,11 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: map_tex1
+    second: {fileID: 2100000, guid: b558f0e1c612b62418a8707d7d57850c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: map_tex2
     second: {fileID: 2100000, guid: b558f0e1c612b62418a8707d7d57850c, type: 2}
   materials:
     materialImportMode: 2

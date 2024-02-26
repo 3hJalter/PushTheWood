@@ -34,7 +34,9 @@ namespace _Game.Data
             // Income Progress Data
             public int gold;
             public int adTickets;
-            public int keyRewards;
+            public int rewardChestKeys;
+            public int currentRewardChestIndex = 0;
+            public int rewardChestUnlock = 0;
             public int secretMapPieces;
 
             // Booster Data

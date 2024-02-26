@@ -25,6 +25,8 @@ namespace VinhLB
         [SerializeField]
         private Button _secretMapButton;
         [SerializeField]
+        private TMP_Text _rewardKeyTxt;
+        [SerializeField]
         private TMP_Text _levelText;
 
         private void Awake()
@@ -65,15 +67,11 @@ namespace VinhLB
             }
         }
 
-        private void OnEnable()
-        {
-            Invoke(nameof(UpdateStatus), 0.01f);
-        }
-
-        private void UpdateStatus()
+        public override void UpdateUI()
         {
             _levelText.text = $"Level {LevelManager.Ins.NormalLevelIndex + 1}";
-            
+            _rewardKeyTxt.text = $"{GameManager.Ins.RewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
+
             // UIManager.Ins.OpenUI<MaskScreen>(new MaskData()
             // {
             //     Position = _playButton.transform.position,

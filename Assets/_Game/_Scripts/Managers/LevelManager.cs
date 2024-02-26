@@ -216,11 +216,6 @@ namespace _Game.GameGrid
             IsConstructingLevel = true;
             OnRemoveWinCondition();
             _currentLevel.OnDeSpawnLevel();
-            // TEMPORARY: Destroy object on cutscene at level 1, need other way to handle this
-            if (normalLevelIndex - 1 == 0)
-            {
-                TutorialManager.Ins.OnDestroyCutsceneObject();
-            }
             OnGenerateLevel(type, normalLevelIndex, false);
             // Zoom out
             CameraManager.Ins.ChangeCamera(ECameraType.MainMenuCamera);
@@ -277,6 +272,7 @@ namespace _Game.GameGrid
                     break;
                 case LevelWinCondition.FindingChest: 
                 case LevelWinCondition.CollectAllStar:
+                case LevelWinCondition.FindingFood:
                 default:
                     break;
             }

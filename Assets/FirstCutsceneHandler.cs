@@ -29,14 +29,20 @@ public class FirstCutsceneHandler : MonoBehaviour
         CameraManager.Ins.ChangeCameraTarget(ECameraType.CutsceneCamera, player);
         UIManager.Ins.indicatorParentTf.gameObject.SetActive(false);
         playableDirector.Play();
-        yield return Timing.WaitForSeconds((float)playableDirector.duration);
+        // Wait for 408 frame (time to player come to island) to change camera and start tutorial
+        for (int i = 0; i < 408; i++)
+        {
+            yield return Timing.WaitForOneFrame;
+        }
         CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
         LevelManager.Ins.HidePlayer(false);
         player.gameObject.SetActive(false);
-        TutorialManager.Ins.AddCutsceneObject(boat);
         yield return Timing.WaitForSeconds(2f); // Time change camera
         TutorialManager.Ins.TutorialList[0].OnForceShowTutorial(0);
         UIManager.Ins.indicatorParentTf.gameObject.SetActive(true);
+        yield return Timing.WaitForSeconds(2f);
+        // Stop cutscene
+        playableDirector.Stop();
         Destroy(gameObject);
     }
 }

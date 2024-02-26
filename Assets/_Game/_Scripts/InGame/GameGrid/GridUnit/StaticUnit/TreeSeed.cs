@@ -4,6 +4,7 @@ using _Game.DesignPattern;
 using _Game.Managers;
 using DG.Tweening;
 using GameGridEnum;
+using HControls;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -93,6 +94,9 @@ namespace _Game.GameGrid.Unit.StaticUnit
            // TODO: Some animation
            ChangeAnim(Constants.TREE_GROW_ANIM);
            // On Complete Animation, Spawn the tree, Despawn the seed
+           // Cancel player movement
+           HInputManager.LockInput();
+           
            DOVirtual.DelayedCall(Constants.GROW_TREE_ANIM_TIME, () =>
            {
                LevelManager.Ins.SaveGameState(true);
@@ -106,7 +110,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
                // Despawn
                OnDespawn();
                LevelManager.Ins.SaveGameState(true);
-           });
+           }).OnKill(() => HInputManager.LockInput(false));
         }
         
         private void ChangeAnim(string animName, bool forceAnim = false)

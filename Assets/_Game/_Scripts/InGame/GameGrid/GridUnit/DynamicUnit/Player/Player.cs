@@ -98,7 +98,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
-            animator = skinController.ChangeSkin(1);
+            animator = skinController.ChangeSkin(0);
             if (!_isAddState)
             {
                 _isAddState = true;
