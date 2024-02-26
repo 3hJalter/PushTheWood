@@ -85,6 +85,7 @@ public static class Constants
     public const string FIND_CHEST = "OBJECTIVE:\nFind the chest";
     public const string DEFEAT_ENEMY = "OBJECTIVE:\nDefeat all enemies";
     public const string COLLECT_ALL_STARS = "OBJECTIVE:\nCollect all stars";
+    public const string FIND_FOOD = "OBJECTIVE:\nFind the food";
     
     // Value Constants
     public const int UPPER_HEIGHT = 1;

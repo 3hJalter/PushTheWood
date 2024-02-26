@@ -272,6 +272,7 @@ namespace _Game.GameGrid
                     break;
                 case LevelWinCondition.FindingChest: 
                 case LevelWinCondition.CollectAllStar:
+                case LevelWinCondition.FindingFood:
                 default:
                     break;
             }
