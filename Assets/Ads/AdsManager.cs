@@ -40,14 +40,14 @@ namespace _Game.Managers
             int levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
             interCallBack = (Action)callBack;
 
-            if (levelIndex < 5 || cooldownTimer.IsStart)
+            if (levelIndex < DataManager.Ins.ConfigData.startInterAdsLevel || cooldownTimer.IsStart)
             {
                 interCallBack?.Invoke();
                 interCallBack = null;
                 return;
             }
 
-            if((levelIndex - 5) % 3 == 0)
+            if((levelIndex - DataManager.Ins.ConfigData.startInterAdsLevel) % DataManager.Ins.ConfigData.winLevelCountInterAds == 0)
             {
                 Interstitial.Show(OnInterAdsDone);
                 return;
@@ -58,7 +58,7 @@ namespace _Game.Managers
         private void OnInterAdsStepCount(object value)
         {
             int levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
-            if (levelIndex < 5 || cooldownTimer.IsStart) return;
+            if (levelIndex < DataManager.Ins.ConfigData.startInterAdsLevel || cooldownTimer.IsStart) return;
 
             intAdsStepCount += (int)value;
             if(intAdsStepCount >= DataManager.Ins.ConfigData.stepInterAdsCountMax)
