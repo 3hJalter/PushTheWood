@@ -2,7 +2,7 @@
 
 namespace VinhLB
 {
-    public class CustomizePage : TabPage
+    public class PetPage : TabPage
     {
         
     }

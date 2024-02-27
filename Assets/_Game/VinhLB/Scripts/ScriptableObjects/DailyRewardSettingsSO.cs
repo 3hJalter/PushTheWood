@@ -56,6 +56,17 @@ namespace VinhLB
             if (RewardType == RewardType.Booster)
             {
                 //TODO: Implement logic to receive booster
+                switch (BoosterType)
+                {
+                    case BoosterType.Undo:
+                        break;
+                    case BoosterType.ResetIsland:
+                        break;
+                    case BoosterType.Hint:
+                        break;
+                    case BoosterType.GrowTree:
+                        break;
+                }
             }
             else if (RewardType == RewardType.Currency)
             {
