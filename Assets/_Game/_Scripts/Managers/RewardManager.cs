@@ -14,49 +14,22 @@ namespace _Game.Managers
     public class RewardManager : Singleton<RewardManager>
     {
         [SerializeField]
-        GameData _gameData;
-        [SerializeField]
-        private List<Sprite> resourceIconList;
-        [SerializeField]
-        private List<Sprite> boosterIconList;
-        public readonly Dictionary<ResourceType, Sprite> ResourceIcons;
-        [SerializeField]
-        public readonly Dictionary<BoosterType, Sprite> BoosterIcons;
+        HomeReward homeReward;
+        public HomeReward HomeReward => homeReward;
         private void Awake()
         {
+            homeReward = new HomeReward(DataManager.Ins.GameData);
             DontDestroyOnLoad(gameObject);
-        }
-
-        [ContextMenu("Convert From List To Dict")]
-        public void ConvertListToDict()
-        {
-            for (int i = 0; i < resourceIconList.Count; i++)
-            {
-                if (ResourceIcons.ContainsKey((ResourceType)i))
-                    ResourceIcons[((ResourceType)i)] = resourceIconList[i];
-                else
-                    ResourceIcons.Add((ResourceType)i, resourceIconList[i]);
-            }
-
-            for (int i = 0; i < boosterIconList.Count; i++)
-            {
-                if (BoosterIcons.ContainsKey((BoosterType)i))
-                    BoosterIcons[((BoosterType)i)] = boosterIconList[i];
-                else
-                    BoosterIcons.Add((BoosterType)i, resourceIconList[i]);
-            }
-        }
+        }       
     }
 
     [Serializable]
     public class HomeReward
     {
         GameData gameData;
-        RewardManager rewardManager;
-        public HomeReward(GameData gameData, RewardManager rewardManager)
+        public HomeReward(GameData gameData)
         {
             this.gameData = gameData;
-            this.rewardManager = rewardManager;
         }
         public bool IsCanClaimRC => gameData.user.currentRewardChestIndex < gameData.user.rewardChestUnlock;
         public bool IsCanClaimLC => gameData.user.currentLevelChestIndex < gameData.user.levelChestUnlock;
@@ -83,17 +56,15 @@ namespace _Game.Managers
         {
             Reward[] rewards = new Reward[] { new Reward() };
             int index = HUtilities.WheelRandom(DataManager.Ins.ConfigData.RCRates);
-            ResourceType type = DataManager.Ins.ConfigData.RCRewards[index];
-            rewards[0].Name = type.ToString();
-            rewards[0].ResourceType = type;
-            rewards[0].RewardType = RewardType.Resource;
-            rewards[0].IconSprite = rewardManager.ResourceIcons[type];
+            CurrencyType type = DataManager.Ins.ConfigData.RCRewards[index];
+            rewards[0].CurrencyType = type;
+            rewards[0].RewardType = RewardType.Currency;
             switch (type)
             {
-                case ResourceType.Gold:
+                case CurrencyType.Gold:
                     rewards[0].Amount = UnityEngine.Random.Range(100, 201);
                     break;
-                case ResourceType.AdTicket:
+                case CurrencyType.AdTicket:
                     rewards[0].Amount = DataManager.Ins.ConfigData.RCQuantitys[index];
                     break;
             }
