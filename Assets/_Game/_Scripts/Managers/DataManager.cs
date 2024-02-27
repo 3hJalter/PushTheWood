@@ -2,6 +2,7 @@
 using _Game.DesignPattern;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
+using _Game.Resource;
 using UnityEngine;
 using VinhLB;
 
@@ -37,6 +38,8 @@ namespace _Game.Managers
         private MaterialData materialData;
         [SerializeField]
         private VFXData vfxData;
+        [SerializeField]
+        private ResourceDatabase _resourceDatabase;
         
         public ConfigData ConfigData => configData;
         public AudioData AudioData => audioData;
@@ -124,6 +127,16 @@ namespace _Game.Managers
             return gridData.GetWorldUIUnit(poolType);
         }
 
+        public ResourceData GetBoosterResourceData(BoosterType type)
+        {
+            return _resourceDatabase.BoosterResourceDataDict[type];
+        }
+
+        public ResourceData GetCurrencyResourceData(CurrencyType type)
+        {
+            return _resourceDatabase.CurrencyResourceDataDict[type];
+        }
+        
         #endregion
         
     }

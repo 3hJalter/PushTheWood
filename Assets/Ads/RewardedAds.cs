@@ -17,7 +17,7 @@ public class RewardedAds : MonoBehaviour
     bool showImmediate = false;
 
     List<BoosterType> boosterTypes;
-    List<ResourceType> resourceTypes;
+    List<CurrencyType> resourceTypes;
 
     List<int> boosterAmounts;
     List<int> resourceAmounts;
@@ -41,7 +41,7 @@ public class RewardedAds : MonoBehaviour
         showImmediate = show;
     }
 
-    public void Show(List<ResourceType> resourceTypes = null, List<int> resourceAmount = null,
+    public void Show(List<CurrencyType> resourceTypes = null, List<int> resourceAmount = null,
         List<BoosterType> boosterTypes = null, List<int> boosterAmount = null)
     {
         this.resourceTypes = resourceTypes;

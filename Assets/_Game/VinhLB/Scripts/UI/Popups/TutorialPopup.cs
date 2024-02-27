@@ -1,4 +1,5 @@
 ﻿using System;
+using GameGridEnum;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
