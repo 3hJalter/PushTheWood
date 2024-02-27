@@ -25,6 +25,8 @@ namespace VinhLB
         [SerializeField]
         private Button _secretMapButton;
         [SerializeField]
+        private Button _rewardChestButton;
+        [SerializeField]
         private TMP_Text _rewardKeyTxt;
         [SerializeField]
         private TMP_Text _levelProgressTxt;
@@ -58,6 +60,10 @@ namespace VinhLB
             {
                 DevLog.Log(DevId.Vinh, "Click secret map button");
                 UIManager.Ins.OpenUI<SecretMapPopup>();
+            });
+            _rewardChestButton.onClick.AddListener(() =>
+            {
+                RewardManager.Ins.HomeReward.ClaimRewardChest();
             });
         }
 
