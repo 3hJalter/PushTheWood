@@ -37,16 +37,91 @@ MonoBehaviour:
     - Name: requireRewardKey
       Entry: 3
       Data: 3
+    - Name: RCRewards
+      Entry: 7
+      Data: 0|_Game.Resource.ResourceType[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 4
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: RCQuantitys
+      Entry: 7
+      Data: 1|System.Int32[], mscorlib
+    - Name: 
+      Entry: 14
+      Data: 4
+    - Name: 
+      Entry: 3
+      Data: 160
+    - Name: 
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 3
+      Data: 3
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: RCRates
+      Entry: 7
+      Data: 2|System.Single[], mscorlib
+    - Name: 
+      Entry: 14
+      Data: 4
+    - Name: 
+      Entry: 4
+      Data: 0.75
+    - Name: 
+      Entry: 4
+      Data: 0.16
+    - Name: 
+      Entry: 4
+      Data: 0.07
+    - Name: 
+      Entry: 4
+      Data: 0.02
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: requireLevelProgress
+      Entry: 3
+      Data: 3
     - Name: requireSecretMapPiece
       Entry: 3
       Data: 8
     - Name: boosterConfigs
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[_Game.Resource.BoosterType,
+      Data: 3|System.Collections.Generic.Dictionary`2[[_Game.Resource.BoosterType,
         Assembly-CSharp],[_Game.Data.BoosterConfig, Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[_Game.Resource.BoosterType,
+      Data: 4|System.Collections.Generic.EnumEqualityComparer`1[[_Game.Resource.BoosterType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
