@@ -193,7 +193,7 @@ namespace _Game.GameGrid
                 default:
                     break;
             }
-            GameManager.Ins.GainLevelProgress(1);
+            //GameManager.Ins.GainLevelProgress(1);
             if (ReceivingKeyReward)
                 GameManager.Ins.GainRewardKey(1);
             DataManager.Ins.Save();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace _Game._Scripts.Utilities
@@ -14,32 +15,65 @@ namespace _Game._Scripts.Utilities
         {
             return new Vector3Int(x ?? org.x, y ?? org.y, z ?? org.z);
         }
-
-        public static void DoAfterFrames(ref int frames, Action action, Action onWait = null)
+        public static bool PercentRandom(float rate)
         {
-            if (frames > 0)
+            rate = Mathf.Clamp01(rate);
+            float value = UnityEngine.Random.Range(0f, 1f);
+            if (value < rate) return true;
+            else return false;
+        }
+        public static bool PercentRandom(float rate, Action action)
+        {
+            if (PercentRandom(rate))
             {
-                frames--;
-                onWait?.Invoke();
+                action?.Invoke();
+                return true;
             }
-            else
+            return false;
+        }
+        public static int WheelRandom(List<float> rates)
+        {
+            float totalRate = 0f;
+            for (int i = 0; i < rates.Count; i++)
             {
-                action();
+                if (rates[i] < 0) rates[i] = 0;
+                totalRate += rates[i];
             }
+
+            float value = UnityEngine.Random.Range(0f, 1f) * totalRate;
+            float currentAnchor = 0;
+            for (int i = 0; i < rates.Count; i++)
+            {
+                if (currentAnchor <= value && value < rates[i] + currentAnchor)
+                {
+                    return i;
+                }
+                currentAnchor += rates[i];
+            }
+            return 0;
         }
 
-        public static void DoAfterSeconds(ref float time, Action action, Action onWait = null)
+        public static int WheelRandom(float[] rates)
         {
-            if (time > 0)
+            float totalRate = 0f;
+            for (int i = 0; i < rates.Length; i++)
             {
-                time -= Time.deltaTime;
-                onWait?.Invoke();
+                if (rates[i] < 0) rates[i] = 0;
+                totalRate += rates[i];
             }
-            else
+
+            float value = UnityEngine.Random.Range(0f, 1f) * totalRate;
+            float currentAnchor = 0;
+            for (int i = 0; i < rates.Length; i++)
             {
-                action();
-                time = 0;
+                if (currentAnchor <= value && value < rates[i] + currentAnchor)
+                {
+                    return i;
+                }
+                currentAnchor += rates[i];
             }
+            return 0;
+
         }
     }
 }

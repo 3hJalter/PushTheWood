@@ -195,23 +195,7 @@ namespace _Game.Managers
             Database.SaveData(_gameData);
         }
 
-        public void ClaimRewardChest()
-        {
-            if(_gameData.user.currentRewardChestIndex < _gameData.user.rewardChestUnlock)
-            {
-                _gameData.user.currentRewardChestIndex += 1;
-                PostEvent(EventID.OnClaimRewardChest, _gameData.user.currentRewardChestIndex - 1);
-            }
-        }
-
-        public void ClaimLevelChest(int index)
-        {
-            if (_gameData.user.currentLevelChestIndex < _gameData.user.levelChestUnlock)
-            {
-                _gameData.user.currentRewardChestIndex += 1;
-                PostEvent(EventID.OnClaimRewardChest, _gameData.user.currentLevelChestIndex - 1);
-            }
-        }
+        
         public bool TrySpendGold(int amount, object source = null)
         {
             return TryModifyGold(-amount, source);

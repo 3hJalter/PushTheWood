@@ -21,11 +21,18 @@ namespace _Game.Data
         public readonly int timePerDailyChallengeLevel = 900;
         [FoldoutGroup("In Game/Time Per Level")]
         public readonly int timePerSecretLevel = 900;
-        [FoldoutGroup("In Game")]
+        [FoldoutGroup("In Game/Reward Chest")]
         public readonly int requireRewardKey = 3;
-        [FoldoutGroup("In Game")]
+        [FoldoutGroup("In Game/Reward Chest")]
+        public readonly ResourceType[] RCRewards;
+        [FoldoutGroup("In Game/Reward Chest")]
+        public readonly int[] RCQuantitys;
+        [FoldoutGroup("In Game/Reward Chest")]
+        public readonly float[] RCRates;
+
+        [FoldoutGroup("In Game/Level Chest")]
         public readonly int requireLevelProgress = 3;
-        [FoldoutGroup("In Game")]
+        [FoldoutGroup("In Game/Secret Level")]
         public readonly int requireSecretMapPiece = 8;
         #endregion
 

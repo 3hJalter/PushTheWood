@@ -7,6 +7,7 @@ using VinhLB;
 
 namespace _Game.Managers
 {
+    [DefaultExecutionOrder(-100)]
     public class DataManager : Singleton<DataManager>
     {
 
