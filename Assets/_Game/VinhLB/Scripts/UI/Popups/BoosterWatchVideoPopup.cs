@@ -4,6 +4,7 @@ using _Game.Managers;
 using _Game.Utilities;
 using System.Collections.Generic;
 using _Game.Resource;
+using _Game.UIs.Popup;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -14,6 +15,7 @@ namespace VinhLB
     public class BoosterWatchVideoPopup : UICanvas
     {
         private const int BOOSTER_AMOUNT_ON_BUY = 5;
+        
         [SerializeField]
         private Image _boosterIcon;
         [SerializeField]
@@ -54,6 +56,7 @@ namespace VinhLB
             else
             {
                 DevLog.Log(DevId.Hoang, "Show popup not enough gold");
+                UIManager.Ins.OpenUI<NotificationPopup>("You do not have enough gold!");
             }
         }
 

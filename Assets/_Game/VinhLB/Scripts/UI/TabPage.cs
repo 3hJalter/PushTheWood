@@ -11,24 +11,23 @@ namespace VinhLB
         private CanvasGroup _canvasGroup;
         [SerializeField]
         private Image _blockPanel;
-        
+
         public override void Open(object param = null)
         {
             base.Open(param);
             
-            _blockPanel.gameObject.SetActive(false);
-
-            if (param is bool animated)
+            if (param is true)
             {
-                // DevLog.Log(DevId.Vinh, $"{GetType().Name}: {animated}");
-                if (animated)
-                {
-                    _canvasGroup.alpha = 0f;
-                    _blockPanel.gameObject.SetActive(true);
-                    
-                    DOVirtual.Float(0f, 1f, 1f, value => _canvasGroup.alpha = value)
-                        .OnComplete(() => _blockPanel.gameObject.SetActive(false));
-                }
+                _canvasGroup.alpha = 1f;
+                _blockPanel.gameObject.SetActive(false);
+            }
+            else
+            {
+                _canvasGroup.alpha = 0f;
+                _blockPanel.gameObject.SetActive(true);
+                
+                DOVirtual.Float(0f, 1f, 1f, value => _canvasGroup.alpha = value)
+                    .OnComplete(() => _blockPanel.gameObject.SetActive(false));
             }
         }
     }

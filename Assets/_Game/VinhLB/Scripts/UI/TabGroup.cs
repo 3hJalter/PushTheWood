@@ -10,9 +10,9 @@ namespace VinhLB
     public class TabGroup : HMonoBehaviour
     {
         [SerializeField]
-        private List<TabButton> _tabButtonList;
+        private Dictionary<TabButton, TabPage> _tabGroupDict = new();
         [SerializeField]
-        private int _activeTabIndex;
+        private TabButton _activeTabButton;
         [SerializeField]
         private float _inactiveTabButtonWidth = 300f;
         [SerializeField]
@@ -26,37 +26,36 @@ namespace VinhLB
         [ShowIf(nameof(_useCustomSprite), false)]
         [SerializeField]
         private Sprite _tabActiveSprite;
-
-        private Dictionary<TabButton, TabPage> _tabGroupDict = new Dictionary<TabButton, TabPage>();
+        
         private TabButton _selectedTabButton;
 
         private void Awake()
         {
-            if (_tabButtonList.Count > 0)
+            if (_tabGroupDict.Keys.Count > 0)
             {
-                for (int i = 0; i < _tabButtonList.Count; i++)
+                foreach (TabButton tabButton in _tabGroupDict.Keys)
                 {
-                    _tabButtonList[i].SetPreferredWidth(_inactiveTabButtonWidth);
-                }
-                
-                if (_activeTabIndex < 0 || _activeTabIndex >= _tabButtonList.Count)
-                {
-                    _activeTabIndex = 0;
+                    tabButton.SetPreferredWidth(_inactiveTabButtonWidth);
                 }
             }
         }
 
         public void ResetSelectedTab(bool pageAnimated)
         {
-            if (_tabButtonList.Count > 0)
+            if (_tabGroupDict.Keys.Count > 0)
             {
-                OnTabSelected(_tabButtonList[_activeTabIndex], false, pageAnimated);
+                OnTabSelected(_activeTabButton, false, pageAnimated);
             }
         }
         
         public void ClearSelectedTab()
         {
-            if (_tabButtonList.Count > 0)
+            if (_selectedTabButton == null)
+            {
+                return;
+            }
+            
+            if (_tabGroupDict.Keys.Count > 0)
             {
                 OnTabSelected(null, false, false);
             }
@@ -108,19 +107,24 @@ namespace VinhLB
                     _selectedTabButton.SetBackgroundSprite(_tabActiveSprite);
                 }
                 
-                if (!_tabGroupDict.ContainsKey(_selectedTabButton))
+                if (_tabGroupDict[_selectedTabButton] == null)
                 {
-                    int index = _tabButtonList.IndexOf(_selectedTabButton);
-                    _tabGroupDict[_selectedTabButton] = GetTabPage((TabPageType)index);
+                    _tabGroupDict[_selectedTabButton] = GetTabPage(_selectedTabButton);
                 }
             }
             
             foreach (KeyValuePair<TabButton, TabPage> element in _tabGroupDict)
             {
+                if (element.Value == null)
+                {
+                    continue;
+                }
+                
                 if (element.Key == _selectedTabButton)
                 {
                     element.Value.Setup(pageAnimated);
                     element.Value.Open(pageAnimated);
+                    element.Value.Open(!pageAnimated);
                 }
                 else
                 {
@@ -129,46 +133,29 @@ namespace VinhLB
             }
         }
 
+        protected virtual TabPage GetTabPage(TabButton tabButton)
+        {
+            return null;
+        }
+
         private void ResetTabs()
         {
-            for (int i = 0; i < _tabButtonList.Count; i++)
+            foreach (TabButton tabButton in _tabGroupDict.Keys)
             {
-                if (_tabButtonList[i] == _selectedTabButton)
+                if (tabButton == _selectedTabButton)
                 {
                     continue;
                 }
 
                 if (!_useCustomSprite)
                 {
-                    _tabButtonList[i].SetActiveState(false, false);
+                    tabButton.SetActiveState(false, false);
                 }
                 else
                 {
-                    _tabButtonList[i].SetBackgroundSprite(_tabIdleSprite);
+                    tabButton.SetBackgroundSprite(_tabIdleSprite);
                 }
             }
         }
-
-        private TabPage GetTabPage(TabPageType type)
-        {
-            switch (type)
-            {
-                case TabPageType.Shop:
-                    return UIManager.Ins.GetUI<ShopPage>();
-                case TabPageType.Home:
-                    return UIManager.Ins.GetUI<HomePage>();
-                case TabPageType.Inventory:
-                    return UIManager.Ins.GetUI<CustomizePage>();
-            }
-
-            return null;
-        }
-    }
-    
-    public enum TabPageType
-    {
-        Shop = 0,
-        Home = 1,
-        Inventory = 2
     }
 }

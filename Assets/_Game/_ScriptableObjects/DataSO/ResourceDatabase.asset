@@ -80,7 +80,7 @@ MonoBehaviour:
       Data: VinhLB.ResourceData, Assembly-CSharp
     - Name: Name
       Entry: 1
-      Data: ResetIsland
+      Data: Reset Island
     - Name: IconSprite
       Entry: 10
       Data: 1
@@ -122,7 +122,7 @@ MonoBehaviour:
       Data: VinhLB.ResourceData, Assembly-CSharp
     - Name: Name
       Entry: 1
-      Data: GrowTree
+      Data: Grow Tree
     - Name: IconSprite
       Entry: 10
       Data: 3
@@ -190,7 +190,7 @@ MonoBehaviour:
       Data: VinhLB.ResourceData, Assembly-CSharp
     - Name: Name
       Entry: 1
-      Data: AdTicket
+      Data: Ad Ticket
     - Name: IconSprite
       Entry: 10
       Data: 5
@@ -211,7 +211,7 @@ MonoBehaviour:
       Data: VinhLB.ResourceData, Assembly-CSharp
     - Name: Name
       Entry: 1
-      Data: SecretMapPiece
+      Data: Secret Map Piece
     - Name: IconSprite
       Entry: 10
       Data: 6
@@ -227,12 +227,3 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  boosterIconList:
-  - {fileID: 21300000, guid: 8fd521d3fc1eb46fd92b0f29508e5f76, type: 3}
-  - {fileID: 21300000, guid: 4b00db671a20143a8be8c3b5301d6a23, type: 3}
-  - {fileID: 21300000, guid: e2531dbb210c447358dfd4dd637545c5, type: 3}
-  - {fileID: 21300000, guid: 2e57f9725042d4e3aa9ec75259c6c3c0, type: 3}
-  currencyIconList:
-  - {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
-  - {fileID: 21300000, guid: b8eceded76aa34c38baaa18c3f16a5ae, type: 3}
-  - {fileID: 21300000, guid: cd410da309cc34c70910ea21170079b9, type: 3}

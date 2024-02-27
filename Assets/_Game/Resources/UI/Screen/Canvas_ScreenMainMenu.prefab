@@ -122,7 +122,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _tabGroup: {fileID: 2915115477121344800}
+  _tabGroup: {fileID: 4237832962861450508}
   _interactable: 1
   _background: {fileID: 4679017875935522966}
   _layoutElement: {fileID: 2230065263647313023}
@@ -287,7 +287,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _tabGroup: {fileID: 2915115477121344800}
+  _tabGroup: {fileID: 4237832962861450508}
   _interactable: 1
   _background: {fileID: 4473318275510520537}
   _layoutElement: {fileID: 8159526368135347163}
@@ -2925,7 +2925,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _tabGroup: {fileID: 2915115477121344800}
+  _tabGroup: {fileID: 4237832962861450508}
   _interactable: 1
   _background: {fileID: 7373102875402315623}
   _layoutElement: {fileID: 3967665982374666677}
@@ -4202,7 +4202,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4730223165368726813}
-  - component: {fileID: 2915115477121344800}
+  - component: {fileID: 4237832962861450508}
   m_Layer: 5
   m_Name: BottomNavigation
   m_TagString: Untagged
@@ -4232,7 +4232,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2915115477121344800
+--- !u!114 &4237832962861450508
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4241,23 +4241,134 @@ MonoBehaviour:
   m_GameObject: {fileID: 8369778133639392636}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05cac8b0ed8c6a44d8f522d637803fbd, type: 3}
+  m_Script: {fileID: 11500000, guid: bb4cfa4f50fb462c9c3895502481914d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 7981391001675565098}
+    - {fileID: 7582005745431931354}
+    - {fileID: 2849646562909081610}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
-  _tabButtonList:
-  - {fileID: 7582005745431931354}
-  - {fileID: 7981391001675565098}
-  - {fileID: 2849646562909081610}
-  _activeTabIndex: 1
+    SerializationNodes:
+    - Name: _tabGroupDict
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[VinhLB.TabButton, Assembly-CSharp],[VinhLB.TabPage,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.ObjectEqualityComparer`1[[VinhLB.TabButton,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 0
+    - Name: $v
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 1
+    - Name: $v
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 2
+    - Name: $v
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _mainMenuTabGroupDict
+      Entry: 7
+      Data: 2|System.Collections.Generic.Dictionary`2[[VinhLB.TabButton, Assembly-CSharp],[VinhLB.MainMenuTabGroup+MainMenuTabPageType,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 3|System.Collections.Generic.ObjectEqualityComparer`1[[VinhLB.TabButton,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 0
+    - Name: $v
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 1
+    - Name: $v
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 2
+    - Name: $v
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  _activeTabButton: {fileID: 7981391001675565098}
   _inactiveTabButtonWidth: 300
   _useCustomSprite: 0
   _tabIdleSprite: {fileID: 0}
@@ -4460,7 +4571,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   _canvasGroup: {fileID: 8897314877290242475}
   _blockPanel: {fileID: 941367108468269405}
-  _bottomNavigationTabGroup: {fileID: 2915115477121344800}
+  _bottomNavigationTabGroup: {fileID: 4237832962861450508}
   _goldValueText: {fileID: 8861748252358295296}
   _goldIconTF: {fileID: 4013643439574557309}
   _adTicketValueText: {fileID: 3417165548306138449}
