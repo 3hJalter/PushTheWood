@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GameGridEnum;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -15,11 +16,5 @@ namespace VinhLB
     {
         public Sprite TutorialSprite;
         public string Description;
-    }
-
-    public enum TutorialType
-    {
-        None = -1,
-        Test = 0,
     }
 }

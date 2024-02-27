@@ -22,13 +22,34 @@ namespace VinhLB
     public class Reward
     {
         public RewardType RewardType;
-        [ShowIf(nameof(RewardType), _Game.Resource.RewardType.Booster)]
+        [ShowIf(nameof(RewardType), RewardType.Booster)]
         public BoosterType BoosterType;
-        [ShowIf(nameof(RewardType), _Game.Resource.RewardType.Resource)]
-        public ResourceType ResourceType;
-        public string Name;
-        public Sprite IconSprite;
+        [ShowIf(nameof(RewardType), RewardType.Currency)]
+        public CurrencyType CurrencyType;
         public int Amount;
+
+        private ResourceData _resourceData;
+
+        public ResourceData ResourceData
+        {
+            get
+            {
+                if (_resourceData.Equals(default(ResourceData)))
+                {
+                    switch (RewardType)
+                    {
+                        case RewardType.Booster:
+                            _resourceData = DataManager.Ins.GetBoosterResourceData(BoosterType);
+                            break;
+                        case RewardType.Currency:
+                            _resourceData = DataManager.Ins.GetCurrencyResourceData(CurrencyType);
+                            break;
+                    }
+                }
+
+                return _resourceData;
+            }
+        }
 
         public void Obtain(Vector3 fromPosition = default)
         {
@@ -36,17 +57,17 @@ namespace VinhLB
             {
                 //TODO: Implement logic to receive booster
             }
-            else if (RewardType == RewardType.Resource)
+            else if (RewardType == RewardType.Currency)
             {
-                switch (ResourceType)
+                switch (CurrencyType)
                 {
-                    case ResourceType.Gold:
+                    case CurrencyType.Gold:
                         GameManager.Ins.GainGold(Amount, fromPosition);
                         break;
-                    case ResourceType.AdTicket:
+                    case CurrencyType.AdTicket:
                         GameManager.Ins.GainAdTickets(Amount, fromPosition);
                         break;
-                    case ResourceType.SecretMapPiece:
+                    case CurrencyType.SecretMapPiece:
                         GameManager.Ins.GainSecretMapPiece(Amount);
                         break;
                 }

@@ -155,6 +155,12 @@ namespace GameGridEnum
         MusicalNotes = 8,
         WaterSplash_Continuous = 9,
     }
+    
+    public enum TutorialType
+    {
+        None = -1,
+        Test = 0,
+    }
 }
 
 namespace _Game.Resource
@@ -163,7 +169,7 @@ namespace _Game.Resource
     {
         None = -1,
         Booster = 0,
-        Resource = 1,
+        Currency = 1,
     }
 
     public enum BoosterType
@@ -175,7 +181,7 @@ namespace _Game.Resource
         GrowTree = 3,
     }
     
-    public enum ResourceType
+    public enum CurrencyType
     {
         None = -1,
         Gold = 0,
