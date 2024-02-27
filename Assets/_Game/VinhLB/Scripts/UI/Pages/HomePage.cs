@@ -4,6 +4,7 @@ using _Game.Managers;
 using _Game.UIs.Popup;
 using _Game.UIs.Screen;
 using _Game.Utilities;
+using _Game.Utilities.Timer;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -14,9 +15,9 @@ namespace VinhLB
 {
     public class HomePage : TabPage
     {
-        [SerializeField] 
+        [SerializeField]
         private Button _playButton;
-        [SerializeField] 
+        [SerializeField]
         private Button _dailyChallengeButton;
         [SerializeField]
         private Button _dailyRewardButton;
@@ -33,6 +34,7 @@ namespace VinhLB
         [SerializeField]
         private TMP_Text _levelText;
 
+        STimer shakeTimer;
         private void Awake()
         {
             _playButton.onClick.AddListener(() =>
@@ -41,7 +43,7 @@ namespace VinhLB
                 UIManager.Ins.OpenUI<InGameScreen>();
                 LevelManager.Ins.InitLevel();
             });
-            _dailyChallengeButton.onClick.AddListener( () =>
+            _dailyChallengeButton.onClick.AddListener(() =>
             {
                 DevLog.Log(DevId.Hoang, "Click daily challenge button");
                 UIManager.Ins.OpenUI<DailyChallengePopup>();
@@ -65,6 +67,7 @@ namespace VinhLB
             {
                 RewardManager.Ins.HomeReward.ClaimRewardChest();
             });
+            shakeTimer = TimerManager.Ins.PopSTimer();
         }
 
         private void Start()
@@ -78,7 +81,20 @@ namespace VinhLB
         public override void UpdateUI()
         {
             _levelText.text = $"Level {LevelManager.Ins.NormalLevelIndex + 1}";
-            _rewardKeyTxt.text = $"{GameManager.Ins.RewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
+            if (RewardManager.Ins.HomeReward.IsCanClaimRC)
+            {
+                if (!shakeTimer.IsStart)
+                {
+                    shakeTimer.Start(1f, () => _rewardChestButton.transform.DOShakeRotation(0.5f, 40, 10, 0, true, ShakeRandomnessMode.Harmonic), true);
+                    _rewardKeyTxt.text = $"FULL";
+                }
+            }
+            else
+            {
+                shakeTimer.Stop();
+                _rewardKeyTxt.text = $"{GameManager.Ins.RewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
+                _rewardChestButton.transform.rotation = Quaternion.identity;
+            }
             _levelProgressTxt.text = $"{GameManager.Ins.LevelProgress}/{DataManager.Ins.ConfigData.requireLevelProgress}";
 
             // UIManager.Ins.OpenUI<MaskScreen>(new MaskData()
@@ -87,6 +103,11 @@ namespace VinhLB
             //     Size = _playButton.GetComponent<RectTransform>().sizeDelta + Vector2.one * 20f,
             //     MaskType = MaskType.Rectangle
             // });
+        }
+
+        private void OnDestroy()
+        {
+            TimerManager.Ins.PushSTimer(shakeTimer);
         }
     }
 }

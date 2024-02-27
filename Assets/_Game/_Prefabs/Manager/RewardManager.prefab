@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2943475363332975772}
-  - component: {fileID: 2943475363332975771}
+  - component: {fileID: 3335093893401631921}
   m_Layer: 0
   m_Name: RewardManager
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2943475363332975771
+--- !u!114 &3335093893401631921
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -47,141 +47,9 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects:
-    - {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
-    - {fileID: 21300000, guid: b8eceded76aa34c38baaa18c3f16a5ae, type: 3}
-    - {fileID: 21300000, guid: cd410da309cc34c70910ea21170079b9, type: 3}
+    ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: ResourceIcons
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[_Game.Resource.ResourceType,
-        Assembly-CSharp],[UnityEngine.Sprite, UnityEngine.CoreModule]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[_Game.Resource.ResourceType,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 3
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 10
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 1
-    - Name: $v
-      Entry: 10
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 2
-    - Name: $v
-      Entry: 10
-      Data: 2
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: BoosterIcons
-      Entry: 7
-      Data: 2|System.Collections.Generic.Dictionary`2[[_Game.Resource.BoosterType,
-        Assembly-CSharp],[UnityEngine.Sprite, UnityEngine.CoreModule]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[_Game.Resource.BoosterType,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-  _gameData:
-    setting:
-      enablePn: 0
-      requestedPn: 0
-      haptic: 1
-      bgmVolume: 1
-      sfxVolume: 1
-      envSoundVolume: 1
-      highPerformance: 1
-      iOsTrackingRequested: 0
-      moveChoice: 0
-    user:
-      normalLevelIndex: 0
-      secretLevelIndex: 0
-      secretLevelUnlock: 0
-      isCompleteDailyChallengerTutorial: 0
-      currentDailyChallengerDay: 1
-      dailyLevelIndexComplete: 
-      dailyRewardClaimedCount: 0
-      gold: 0
-      adTickets: 0
-      rewardChestKeys: 0
-      levelChestProgress: 0
-      currentRewardChestIndex: 0
-      currentLevelChestIndex: 0
-      rewardChestUnlock: 0
-      levelChestUnlock: 0
-      secretMapPieces: 0
-      hintCount: 0
-      undoCount: 0
-      resetCount: 0
-      growTreeCount: 0
-      purchasedNoAds: 0
-      rated: 0
-      sessionPlayed: 0
-      isFirstDayOfWeekCheck: 0
-  resourceIconList:
-  - {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
-  - {fileID: 21300000, guid: b8eceded76aa34c38baaa18c3f16a5ae, type: 3}
-  - {fileID: 21300000, guid: cd410da309cc34c70910ea21170079b9, type: 3}
-  boosterIconList: []
+    SerializationNodes: []

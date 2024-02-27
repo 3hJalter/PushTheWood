@@ -119,6 +119,7 @@ namespace VinhLB
             {
                 if (element.Key == _selectedTabButton)
                 {
+                    element.Value.Setup(pageAnimated);
                     element.Value.Open(pageAnimated);
                 }
                 else

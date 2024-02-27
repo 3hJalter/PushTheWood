@@ -52,6 +52,14 @@ namespace _Game.Managers
             return canvas;
         }
 
+        public UICanvas OpenUIDirectly(UICanvas ui, object param)
+        {
+            UICanvas canvas = Instantiate(ui, canvasParentTf);
+            canvas.Setup(param);
+            canvas.Open(param);
+            return canvas;
+        }
+
         public void HideUI<T>() where T : UICanvas
         {
             if (IsOpened<T>()) GetUI<T>().gameObject.SetActive(false);

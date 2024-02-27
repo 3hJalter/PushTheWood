@@ -20,7 +20,7 @@ namespace _Game.Managers
         {
             homeReward = new HomeReward(DataManager.Ins.GameData);
             DontDestroyOnLoad(gameObject);
-        }       
+        }
     }
 
     [Serializable]
@@ -38,8 +38,10 @@ namespace _Game.Managers
             if (IsCanClaimRC)
             {
                 gameData.user.currentRewardChestIndex += 1;
-                GameManager.Ins.PostEvent(EventID.OnClaimRewardChest, gameData.user.currentRewardChestIndex - 1);
                 UIManager.Ins.OpenUI<RewardPopup>().Open(GetRCReward());
+                GameManager.Ins.PostEvent(EventID.OnClaimRewardChest, gameData.user.currentRewardChestIndex - 1);
+                GameManager.Ins.PostEvent(EventID.OnUpdateUIs);
+
             }
         }
 
