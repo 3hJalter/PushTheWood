@@ -11,22 +11,21 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
-    public class SitDownPlayerState : IState<Player>
+    public class SitDownPlayerState : AbstractPlayerState
     {
         public const float SIT_UP_TIME = 0.4f;
         public const float SIT_DOWN_TIME = 0.4f;
         public const float SIT_DISTANCE = 0.4f;
-        public StateEnum Id => StateEnum.SitDown;
+        public override StateEnum Id => StateEnum.SitDown;
         private STimer timer;
         private bool isSitDown = true;
         Direction oldDirection;
-        Direction cacheDirection;
 
         float initAnimSpeed;
         Vector3 sitDistance;
         Vector3 oldSkinPos;
         ParticleSystem musicalNotes;
-        public void OnEnter(Player t)
+        public override void OnEnter(Player t)
         {
             if (timer == null)
             {
@@ -51,16 +50,16 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             }
         }
 
-        public void OnExecute(Player t)
+        public override void OnExecute(Player t)
         {
             if (!isSitDown) return;
-            if (t.Direction != Direction.None && t.Direction != oldDirection)
+            if (t.InputDirection != Direction.None && t.InputDirection != oldDirection)
             {
                 t.ChangeAnim(Constants.SIT_UP_ANIM);
                 t.SetAnimSpeed(initAnimSpeed * Constants.SIT_UP_ANIM_TIME / SIT_UP_TIME);
+
                 timer.Start(SIT_UP_TIME, ChangeIdleState);
                 t.skin.transform.DOLocalMove(oldSkinPos, SIT_UP_TIME);
-                cacheDirection = t.Direction;
                 musicalNotes?.Stop();
                 isSitDown = false;
             }
@@ -68,11 +67,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             void ChangeIdleState()
             {
                 t.StateMachine.ChangeState(StateEnum.Idle);
-                t.InputCache.Enqueue(cacheDirection);
             }
         }
 
-        public void OnExit(Player t)
+        public override void OnExit(Player t)
         {
             t.SetAnimSpeed(initAnimSpeed);
             t.skin.DOKill();

@@ -141,6 +141,7 @@ namespace _Game.Managers
         public int Gold => _gameData.user.gold;
         public int AdTickets => _gameData.user.adTickets;
         public int RewardKeys => _gameData.user.rewardChestKeys;
+        public int LevelProgress => _gameData.user.levelChestProgress;
         public float SmoothGold { get; set; }
         public float SmoothAdTickets { get; set; }
         
@@ -161,9 +162,9 @@ namespace _Game.Managers
             {
                 _gameData.user.secretLevelUnlock += _gameData.user.secretMapPieces / DataManager.Ins.ConfigData.requireSecretMapPiece;
                 _gameData.user.secretMapPieces = _gameData.user.secretMapPieces % DataManager.Ins.ConfigData.requireSecretMapPiece;
-                PostEvent(EventID.OnUnlockSecretMap, _gameData.user.secretLevelUnlock);
+                //PostEvent(EventID.OnUnlockSecretMap, _gameData.user.secretLevelUnlock);
             }
-            PostEvent(EventID.OnSecretMapPieceChange, _gameData.user.secretMapPieces);
+            //PostEvent(EventID.OnSecretMapPieceChange, _gameData.user.secretMapPieces);
             PostEvent(EventID.OnUpdateUIs);
             Database.SaveData(_gameData);
         }
@@ -175,11 +176,41 @@ namespace _Game.Managers
             {
                 _gameData.user.rewardChestUnlock += _gameData.user.rewardChestKeys / DataManager.Ins.ConfigData.requireRewardKey;
                 _gameData.user.rewardChestKeys = _gameData.user.rewardChestKeys % DataManager.Ins.ConfigData.requireRewardKey;
-                PostEvent(EventID.OnUnlockRewardChest, _gameData.user.rewardChestUnlock);
+                //PostEvent(EventID.OnUnlockRewardChest, _gameData.user.rewardChestUnlock);
             }
-            PostEvent(EventID.OnRewardChestKeyChange, _gameData.user.rewardChestKeys);
+            //PostEvent(EventID.OnRewardChestKeyChange, _gameData.user.rewardChestKeys);
             PostEvent(EventID.OnUpdateUIs);
             Database.SaveData(_gameData);
+        }
+
+        public void GainLevelProgress(int amount)
+        {
+            _gameData.user.levelChestProgress += amount;
+            if (_gameData.user.levelChestProgress >= DataManager.Ins.ConfigData.requireLevelProgress)
+            {
+                _gameData.user.rewardChestUnlock += _gameData.user.levelChestProgress / DataManager.Ins.ConfigData.requireLevelProgress;
+                _gameData.user.levelChestProgress = _gameData.user.levelChestProgress % DataManager.Ins.ConfigData.requireLevelProgress;
+            }
+            PostEvent(EventID.OnUpdateUIs);
+            Database.SaveData(_gameData);
+        }
+
+        public void ClaimRewardChest()
+        {
+            if(_gameData.user.currentRewardChestIndex < _gameData.user.rewardChestUnlock)
+            {
+                _gameData.user.currentRewardChestIndex += 1;
+                PostEvent(EventID.OnClaimRewardChest, _gameData.user.currentRewardChestIndex - 1);
+            }
+        }
+
+        public void ClaimLevelChest(int index)
+        {
+            if (_gameData.user.currentLevelChestIndex < _gameData.user.levelChestUnlock)
+            {
+                _gameData.user.currentRewardChestIndex += 1;
+                PostEvent(EventID.OnClaimRewardChest, _gameData.user.currentLevelChestIndex - 1);
+            }
         }
         public bool TrySpendGold(int amount, object source = null)
         {

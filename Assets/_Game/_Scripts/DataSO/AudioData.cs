@@ -50,6 +50,7 @@ namespace AudioEnum
         Walk = 8,
         OpenChest = 9,
         Sleep = 10,
+        Happy = 11,
         // UI
         Click = 100,
         Win = 101,

@@ -26,6 +26,7 @@ public class GridMapDataGenerator : MonoBehaviour
     // ReSharper disable once NotAccessedField.Local
     [SerializeField] private LevelType levelType;
     [SerializeField] private LevelWinCondition winCondition;
+    [SerializeField] private bool isHardLevel;
     [InlineButton("SaveLevelAsJson", "Save Level")]
     [InfoBox("The name of the level, must be in the format Lvl_number or Lvl_DC_number or Lvl_S_number")]
     [SerializeField] private string mapLevelName = "Lvl_0";
@@ -188,6 +189,7 @@ public class GridMapDataGenerator : MonoBehaviour
         _loadedLevel = new Level(levelTypeTemp, index, levelObject.transform);
         levelType = _loadedLevel.LevelType;
         winCondition = _loadedLevel.LevelWinCondition;
+        isHardLevel = _loadedLevel.IsHardLevel;
         mapLevelName = name;
         // Set all GridSurface to surfaceContainer
         GridSurface[] gridSurfaces = FindObjectsOfType<GridSurface>();
@@ -443,7 +445,7 @@ public class GridMapDataGenerator : MonoBehaviour
             {
                 p = new Vector2Int(x, z),
                 t = (int)gridSurface.PoolType,
-                d = (int)BuildingUnitData.GetDirection(gridSurface.Tf.eulerAngles.y),
+                d = (int)GridUnitFunc.GetDirection(gridSurface.Tf.eulerAngles.y),
                 // save the ground material if it is ground surface, and if MaterialEnum is None, random it from 0 to 2
                 m = m
             };
@@ -480,7 +482,7 @@ public class GridMapDataGenerator : MonoBehaviour
                 t = (int)gridUnit.PoolType,
                 // rotationDirection = (int)gridUnit.SkinRotationDirection
                 // TEST
-                d = (int)BuildingUnitData.GetDirection(gridUnit.Tf.eulerAngles.y),
+                d = (int)GridUnitFunc.GetDirection(gridUnit.Tf.eulerAngles.y),
             };
             // Add gridUnitData to gridUnitDataList
             gridUnitDataList.Add(gridUnitData);
@@ -564,6 +566,7 @@ public class GridMapDataGenerator : MonoBehaviour
         {
             lt = (int) levelTypeTemp,
             wc = (int) winCondition,
+            h = isHardLevel,
             s = size,
             sfD = gridSurfaceDataList.ToArray(),
             uD = gridUnitDataList.ToArray(),

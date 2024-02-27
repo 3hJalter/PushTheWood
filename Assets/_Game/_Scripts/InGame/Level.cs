@@ -110,6 +110,7 @@ namespace _Game._Scripts.InGame
         
         public LevelType LevelType => (LevelType) _rawLevelData.lt;
         public LevelWinCondition LevelWinCondition => (LevelWinCondition) _rawLevelData.wc;
+        public bool IsHardLevel => _rawLevelData.h;
         #endregion
 
         #region public function
@@ -536,10 +537,11 @@ namespace _Game._Scripts.InGame
 
     public enum LevelWinCondition
     {
-        FindingChest = 0,
+        FindingFruit = 0,
         DefeatAllEnemy = 1,
         CollectAllStar = 2,
-        FindingFood = 3,
+        FindingChest = 3,
+        FindingChickenBbq = 4,
     }
     
     [Serializable]
@@ -547,12 +549,14 @@ namespace _Game._Scripts.InGame
     {
         public int lt; // LEVEL TYPE
         public int wc; // WIN CONDITION
+        public bool h; // IS HARD LEVEL 
         public Vector2Int s; // SIZE
         public GridSurfaceData[] sfD; // SURFACE DATA
         public GridUnitData[] uD; // UNIT DATA
         public ShadowUnitData[] suD; // SHADOW UNIT DATA
         public HintTrailData[] htD; // HINT TRAIL DATA
-
+        public SaveHint.PlayerStep[] pS; // PLAYER STEP
+        
         [Serializable]
         public struct GridSurfaceData
         {
@@ -583,5 +587,7 @@ namespace _Game._Scripts.InGame
         {
             public Vector2 p; // POSITION XZ
         }
+        
+        
     }
 }

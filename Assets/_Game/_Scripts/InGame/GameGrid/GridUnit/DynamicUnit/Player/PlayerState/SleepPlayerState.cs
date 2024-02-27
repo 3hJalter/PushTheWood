@@ -12,19 +12,19 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
     using _Game.Utilities.Timer;
     using GameGridEnum;
 
-    public class SleepPlayerState : IState<Player>
+    public class SleepPlayerState : AbstractPlayerState
     {
         private const float SLEEP_UP_TIME = 0.6f;
         private const float SLEEP_SFX_INTERVAL = 8f;
 
-        public StateEnum Id => StateEnum.Sleep;
+        public override StateEnum Id => StateEnum.Sleep;
         private bool isSleeping;
         private STimer timer;
         private STimer sfxTimer;
         private float initAnimSpeed;
         ParticleSystem sleepingParticle;
 
-        public void OnEnter(Player t)
+        public override void OnEnter(Player t)
         {
             if (timer == null)
             {
@@ -39,16 +39,17 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             sfxTimer.Start(SLEEP_SFX_INTERVAL, () => AudioManager.Ins.PlaySfx(AudioEnum.SfxType.Sleep), true);
         }
 
-        public void OnExecute(Player t)
+        public override void OnExecute(Player t)
         {
             if (!isSleeping) return;
 
-            if (t.Direction != Direction.None)
+            if (t.InputDirection != Direction.None)
             {
                 t.ChangeAnim(Constants.SLEEP_UP_ANIM);
                 t.SetAnimSpeed(initAnimSpeed * Constants.SLEEP_UP_ANIM_TIME / SLEEP_UP_TIME);
                 isSleeping = false;
                 sleepingParticle?.Stop();
+                SaveCommand(t);
                 timer.Start(SLEEP_UP_TIME, ChangeIdleState);
             }
 
@@ -58,7 +59,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             }
         }
 
-        public void OnExit(Player t)
+        public override void OnExit(Player t)
         {
             AudioManager.Ins.StopSfx(SfxType.Sleep);
             timer.Stop();

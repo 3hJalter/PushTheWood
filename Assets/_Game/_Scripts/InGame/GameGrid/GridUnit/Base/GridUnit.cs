@@ -175,7 +175,7 @@ namespace _Game.GameGrid.Unit
             skinRotationDirection = skinDirection;
             skin.rotation = Quaternion.Euler(0f, BuildingUnitData.GetRotationAngle(skinRotationDirection), 0f);
 
-            Vector2Int rotationOffset = BuildingUnitData.GetRotationOffset(size.x, size.z, skinRotationDirection);
+            Vector2Int rotationOffset = GridUnitFunc.GetRotationOffset(size.x, size.z, skinRotationDirection);
             Vector3 posOffset = new Vector3(rotationOffset.x, 0, rotationOffset.y) * Constants.CELL_SIZE;
             skin.position += posOffset;
         }

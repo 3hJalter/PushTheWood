@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
-    public class RunAboveChumpPlayerState : IState<Player>
+    public class RunAboveChumpPlayerState : AbstractPlayerState
     {
         private const float ANIM_TIME = 1f;
         private readonly Vector3 UNIT_VECTOR = new Vector3(1, 0, 1);
@@ -24,13 +24,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 
 
 
-        public StateEnum Id => StateEnum.RunAboveChump;
+        public override StateEnum Id => StateEnum.RunAboveChump;
         STimer timer;
         Direction oldDirection;
         //bool isRunAboveChump;
         GridUnit chump;
 
-        public void OnEnter(Player t)
+        public override void OnEnter(Player t)
         {
             if (timer == null)
                 timer = TimerManager.Ins.PopSTimer();
@@ -76,7 +76,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             }
         }
 
-        public void OnExecute(Player t)
+        public override void OnExecute(Player t)
         {
             //if (!isRunAboveChump) return;
             //if (t.Direction != Direction.None && t.Direction != oldDirection)
@@ -86,7 +86,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             //}
         }
 
-        public void OnExit(Player t)
+        public override void OnExit(Player t)
         {
             timer?.Stop();
             chump?.skin.DOKill();

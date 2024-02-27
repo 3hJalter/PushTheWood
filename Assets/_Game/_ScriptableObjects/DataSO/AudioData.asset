@@ -32,6 +32,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: da2e516830550b1478dbf050b2ecc833, type: 3}
     - {fileID: 8300000, guid: 6330ce6dcc410384e99bcc726bf35535, type: 3}
     - {fileID: 8300000, guid: 3c749aee29c51074482be7c3ef86bcf7, type: 3}
+    - {fileID: 8300000, guid: 976eae68c0665474f91be86dfa80d6a4, type: 3}
     - {fileID: 8300000, guid: 51d416904889a5d47a61f88a9228d1e7, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
@@ -125,7 +126,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 14
+      Data: 15
     - Name: 
       Entry: 7
       Data: 
@@ -350,7 +351,7 @@ MonoBehaviour:
       Data: 12
     - Name: multiplier
       Entry: 4
-      Data: 1
+      Data: 0.3
     - Name: 
       Entry: 8
       Data: 
@@ -421,6 +422,27 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 11
+    - Name: $v
+      Entry: 7
+      Data: 20|_Game.Data.Audio, Assembly-CSharp
+    - Name: clip
+      Entry: 10
+      Data: 16
+    - Name: multiplier
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
       Entry: 13
       Data: 
     - Name: 
@@ -428,11 +450,11 @@ MonoBehaviour:
       Data: 
     - Name: _environmentAudioDict
       Entry: 7
-      Data: 20|System.Collections.Generic.Dictionary`2[[AudioEnum.EnvironmentType,
+      Data: 21|System.Collections.Generic.Dictionary`2[[AudioEnum.EnvironmentType,
         Assembly-CSharp],[_Game.Data.Audio, Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 21|System.Collections.Generic.EnumEqualityComparer`1[[AudioEnum.EnvironmentType,
+      Data: 22|System.Collections.Generic.EnumEqualityComparer`1[[AudioEnum.EnvironmentType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -454,10 +476,10 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 7
-      Data: 22|_Game.Data.Audio, Assembly-CSharp
+      Data: 23|_Game.Data.Audio, Assembly-CSharp
     - Name: clip
       Entry: 10
-      Data: 16
+      Data: 17
     - Name: multiplier
       Entry: 4
       Data: 0.35

@@ -27,6 +27,8 @@ namespace VinhLB
         [SerializeField]
         private TMP_Text _rewardKeyTxt;
         [SerializeField]
+        private TMP_Text _levelProgressTxt;
+        [SerializeField]
         private TMP_Text _levelText;
 
         private void Awake()
@@ -71,6 +73,7 @@ namespace VinhLB
         {
             _levelText.text = $"Level {LevelManager.Ins.NormalLevelIndex + 1}";
             _rewardKeyTxt.text = $"{GameManager.Ins.RewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
+            _levelProgressTxt.text = $"{GameManager.Ins.LevelProgress}/{DataManager.Ins.ConfigData.requireLevelProgress}";
 
             // UIManager.Ins.OpenUI<MaskScreen>(new MaskData()
             // {

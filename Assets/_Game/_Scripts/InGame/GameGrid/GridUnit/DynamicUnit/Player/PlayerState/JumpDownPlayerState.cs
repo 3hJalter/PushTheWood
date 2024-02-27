@@ -7,27 +7,26 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
-    public class JumpDownPlayerState : IState<Player>
+    public class JumpDownPlayerState : AbstractPlayerState
     {
         private bool _isExecuted;
         private bool _firstTime;
-        private Direction direction;
-        public StateEnum Id => StateEnum.JumpDown;
+        public override StateEnum Id => StateEnum.JumpDown;
 
-        public void OnEnter(Player t)
+        public override void OnEnter(Player t)
         {
             t.ChangeAnim(Constants.MOVE_ANIM);
             AudioManager.Ins.PlaySfx(AudioEnum.SfxType.Walk);
-            direction = Direction.None;
             _firstTime = true;
         }
 
-        public void OnExecute(Player t)
+        public override void OnExecute(Player t)
         {
-            if (!_firstTime && t.InputDetection.InputAction == InputAction.ButtonDown)
-            {
-                direction = t.Direction;
-            }
+            SaveCommand(t);
+            //if (!_firstTime && t.InputDetection.InputAction == InputAction.ButtonDown)
+            //{
+            //    UpdateDirection(t);
+            //}
             if (_isExecuted) return;
             _isExecuted = true;
             _firstTime = false;
@@ -39,14 +38,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                         {
                             ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.Dust),
                                 t.transform.position - Vector3.up * 0.5f);
-                            t.InputCache.Enqueue(direction);
                             t.OnEnterTrigger(t);
                             t.StateMachine.ChangeState(StateEnum.Idle);
                         });
                 });
         }
 
-        public void OnExit(Player t)
+        public override void OnExit(Player t)
         {
             _isExecuted = false;
             t.OnCharacterChangePosition();

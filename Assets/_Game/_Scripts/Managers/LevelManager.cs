@@ -36,7 +36,7 @@ namespace _Game.GameGrid
         [SerializeField]
         [ReadOnly]
         private int normalLevelIndex;
-        [SerializeField] 
+        [SerializeField]
         [ReadOnly]
         private int dailyLevelIndex;
         [SerializeField]
@@ -46,12 +46,13 @@ namespace _Game.GameGrid
         private Level _currentLevel;
         private bool _isRestarting;
         private bool _isResetting;
+        public bool ReceivingKeyReward = false;
         public int NormalLevelIndex => normalLevelIndex;
         public int DailyLevelIndex => dailyLevelIndex;
         public int SecretLevelIndex => secretLevelIndex;
         public Level CurrentLevel => _currentLevel;
         public bool IsConstructingLevel;
-        
+
         public bool IsFirstLevel => normalLevelIndex == 0;
 
         private CareTaker savingState;
@@ -66,10 +67,13 @@ namespace _Game.GameGrid
         public Player player;
 
         [ReadOnly] public readonly List<IEnemy> enemies = new();
-        
+
         // DEBUG:
         [ReadOnly]
         [SerializeField] private LevelWinCondition levelWinCondition;
+
+        [SerializeField] private bool isSavePlayerPushStep;
+        public bool IsSavePlayerPushStep => isSavePlayerPushStep;
         
         private void Start()
         {
@@ -79,7 +83,7 @@ namespace _Game.GameGrid
             }
             normalLevelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
             secretLevelIndex = DataManager.Ins.GameData.user.secretLevelIndex;
-            OnGenerateLevel(LevelType.Normal,normalLevelIndex, normalLevelIndex == 0);
+            OnGenerateLevel(LevelType.Normal, normalLevelIndex, normalLevelIndex == 0);
             SetCameraToPosition(CurrentLevel.GetCenterPos());
 
             #region Handle If user passes first level
@@ -119,6 +123,7 @@ namespace _Game.GameGrid
             DebugManager.Ins?.DebugGridData(_currentLevel.GridMap);
             // TEMPORARY: CUTSCENE, player will be show when cutscene end
             if (normalLevelIndex == 0) HidePlayer(true);
+            ReceivingKeyReward = false;
         }
 
         public void ResetLevelIsland()
@@ -146,7 +151,7 @@ namespace _Game.GameGrid
         public void SetCameraToPlayerIsland()
         {
             if (player.islandID == -1) return;
-            
+
             SetCameraToIsland(player.islandID);
         }
 
@@ -165,29 +170,32 @@ namespace _Game.GameGrid
         {
             switch (_currentLevel.LevelType)
             {
-              case LevelType.Normal:
-                  // +1 LevelIndex and save
-                  normalLevelIndex++;
-                  // Temporary handle when out of level
-                  if (normalLevelIndex >= DataManager.Ins.CountNormalLevel) normalLevelIndex = 0;
-                  DataManager.Ins.GameData.user.normalLevelIndex = normalLevelIndex;
-                  break;
-              case LevelType.Secret:
-                  // +1 LevelIndex and save
-                  secretLevelIndex++;
-                  // Temporary handle when out of level
-                  if (secretLevelIndex >= DataManager.Ins.CountSecretLevel) secretLevelIndex = 0; 
-                  DataManager.Ins.GameData.user.secretLevelIndex = secretLevelIndex;
-                  break;
-              case LevelType.DailyChallenge:
-                  // Check if contain
-                  if (DataManager.Ins.GameData.user.dailyLevelIndexComplete.Contains(dailyLevelIndex)) break;
-                  DataManager.Ins.GameData.user.dailyLevelIndexComplete.Add(dailyLevelIndex);
-                  break;
-              case LevelType.None:
-              default:
-                  break;
+                case LevelType.Normal:
+                    // +1 LevelIndex and save
+                    normalLevelIndex++;
+                    // Temporary handle when out of level
+                    if (normalLevelIndex >= DataManager.Ins.CountNormalLevel) normalLevelIndex = 0;
+                    DataManager.Ins.GameData.user.normalLevelIndex = normalLevelIndex;
+                    break;
+                case LevelType.Secret:
+                    // +1 LevelIndex and save
+                    secretLevelIndex++;
+                    // Temporary handle when out of level
+                    if (secretLevelIndex >= DataManager.Ins.CountSecretLevel) secretLevelIndex = 0;
+                    DataManager.Ins.GameData.user.secretLevelIndex = secretLevelIndex;
+                    break;
+                case LevelType.DailyChallenge:
+                    // Check if contain
+                    if (DataManager.Ins.GameData.user.dailyLevelIndexComplete.Contains(dailyLevelIndex)) break;
+                    DataManager.Ins.GameData.user.dailyLevelIndexComplete.Add(dailyLevelIndex);
+                    break;
+                case LevelType.None:
+                default:
+                    break;
             }
+            GameManager.Ins.GainLevelProgress(1);
+            if (ReceivingKeyReward)
+                GameManager.Ins.GainRewardKey(1);
             DataManager.Ins.Save();
             GameManager.Ins.PostEvent(EventID.WinGame);
             // Future: Add reward collected in-game
@@ -201,7 +209,7 @@ namespace _Game.GameGrid
                 case LevelType.Normal: normalLevelIndex = index; break;
                 case LevelType.Secret: secretLevelIndex = index; break;
                 case LevelType.DailyChallenge: dailyLevelIndex = index; break;
-                case LevelType.None: 
+                case LevelType.None:
                 default: break;
             }
             IsConstructingLevel = true;
@@ -266,19 +274,20 @@ namespace _Game.GameGrid
                     {
                         if (enemies.Count == 0 && GameManager.Ins.IsState(GameState.InGame) && !_isRestarting && !_isResetting)
                         {
-                            OnWin();    
+                            OnWin();
                         }
                     };
                     break;
-                case LevelWinCondition.FindingChest: 
+                case LevelWinCondition.FindingFruit:
                 case LevelWinCondition.CollectAllStar:
-                case LevelWinCondition.FindingFood:
+                case LevelWinCondition.FindingChest:
+                case LevelWinCondition.FindingChickenBbq:
                 default:
                     break;
             }
             if (OnCheckWinCondition is not null) EventGlobalManager.Ins.OnEnemyDie.AddListener(OnCheckWinCondition);
         }
-        
+
         private void OnRemoveWinCondition()
         {
             // Remove all win condition
@@ -288,7 +297,7 @@ namespace _Game.GameGrid
                 OnCheckWinCondition = null;
             }
         }
-        
+
         public void ResetGameState()
         {
             savingState.Reset();

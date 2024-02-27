@@ -3,23 +3,23 @@ using _Game.DesignPattern.StateMachine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
-    public class InteractPlayerState : IState<Player>
+    public class InteractPlayerState : AbstractPlayerState
     {
-        public StateEnum Id => throw new NotImplementedException();
+        public override StateEnum Id => StateEnum.Interact;
 
-        public void OnEnter(Player t)
+        public override void OnEnter(Player t)
         {
-            throw new NotImplementedException();
+            
         }
 
-        public void OnExecute(Player t)
+        public override void OnExecute(Player t)
         {
-            throw new NotImplementedException();
+            
         }
 
-        public void OnExit(Player t)
+        public override void OnExit(Player t)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

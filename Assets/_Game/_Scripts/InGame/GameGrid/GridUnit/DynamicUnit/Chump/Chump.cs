@@ -171,8 +171,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
                         {
                             // if one of all below unit of TriggerChump is not Chump, return
                             if (belowUnit is not Chump) return;
+                            // if the trigger chump is Up or in Fall state, not consider the below unit
+                            if (chump.UnitTypeY is UnitTypeY.Up || chump.CurrentStateId is StateEnum.Fall || chump.CurrentStateId is StateEnum.TurnOver) continue;
                             // if the TriggerChump is Down and one of all below unit of TriggerChump is not same UnitTypeXZ, return
-                            if (chump.UnitTypeY is UnitTypeY.Up) continue;
                             if (chump.UnitTypeXZ != belowUnit.UnitTypeXZ) return;
                         }
                         chump.StateMachine.ChangeState(StateEnum.FormRaft);

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
-    public class IdlePlayerState : IState<Player>
+    public class IdlePlayerState : AbstractPlayerState
     {
         private bool _isChangeAnim;
         private bool isFirstStop;
@@ -16,9 +16,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         bool hasTreeRoot = false;
         STimer sleepTimer;
 
-        public StateEnum Id => StateEnum.Idle;
+        public override StateEnum Id => StateEnum.Idle;
 
-        public void OnEnter(Player t)
+        public override void OnEnter(Player t)
         {
             isFirstStop = true;
             cutTreeFrameCount = Constants.WAIT_CUT_TREE_FRAMES;
@@ -33,9 +33,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             }
         }
 
-        public void OnExecute(Player t)
+        public override void OnExecute(Player t)
         {
             //NOTE:Checking for IdleState
+            UpdateDirection(t);            
             if (t.IsStun)
             {
                 t.StateMachine.ChangeState(StateEnum.Stun);
@@ -164,7 +165,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 t.StateMachine.ChangeState(t.EnterPosData.isFalling ? StateEnum.JumpDown : StateEnum.Move);
         }
 
-        public void OnExit(Player t)
+        public override void OnExit(Player t)
         {
             _isChangeAnim = false;
             sleepTimer?.Stop();

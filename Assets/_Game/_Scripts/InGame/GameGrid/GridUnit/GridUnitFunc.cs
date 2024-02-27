@@ -24,7 +24,37 @@ namespace _Game.GameGrid.Unit
 
         #endregion
 
+        public static Vector2Int GetRotationOffset(int width, int height, Direction direction)
+        {
+            width = Mathf.Clamp(width - 1, 0, width - 1);
+            height = Mathf.Clamp(height - 1, 0, height - 1);
 
+            switch (direction)
+            {
+                case Direction.Left:
+                    return new Vector2Int(0, width);
+                case Direction.Right:
+                    return new Vector2Int(height, 0);
+                case Direction.Forward:
+                    return new Vector2Int(width, height);
+                case Direction.Back:
+                default:
+                    return Vector2Int.zero;
+            }
+        }
+        
+        public static Direction GetDirection(float rotationAngle)
+        {
+            rotationAngle = Mathf.Clamp(rotationAngle, 0, 360);
+            return rotationAngle switch
+            {
+                >= 315 or < 45 => Direction.Forward,
+                >= 45 and < 135 => Direction.Right,
+                >= 135 and < 225 => Direction.Back,
+                _ => Direction.Left
+            };
+        }
+        
         public static Direction InvertDirection(Direction direction)
         {
             switch (direction)

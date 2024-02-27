@@ -66,13 +66,13 @@ namespace VinhLB
             RectTransform parentRectTransform = _rewardKeytConfig.CollectingResourceParentTF as RectTransform;
 
             Sequence s = DOTween.Sequence();
-            s.Append(unit.CanvasGroup.DOFade(1, 0.6f))
-                .Join(DOVirtual.Float(0, 40, 0.6f, y =>
+            s.Append(unit.CanvasGroup.DOFade(1, _rewardKeytConfig.MoveDuration))
+                .Join(DOVirtual.Float(0, 50, _rewardKeytConfig.MoveDuration, y =>
                 {
                     Vector2 viewPortPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) - Vector3.one * 0.5f;
                     unit.RectTransform.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewPortPoint.x, parentRectTransform.rect.height * viewPortPoint.y + 60 + y);
                 }).SetEase(Ease.OutQuart))
-                .Append(unit.CanvasGroup.DOFade(0, 0.6f))    
+                .Append(unit.CanvasGroup.DOFade(0, _rewardKeytConfig.MoveDuration * 1.5f).SetEase(Ease.InQuint))    
                 .OnComplete(() => OnDespawnUnit(unit));    
             s.Play();
 

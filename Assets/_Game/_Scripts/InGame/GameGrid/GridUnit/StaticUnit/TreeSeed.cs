@@ -74,7 +74,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
                 _currentFallTween.OnComplete(() =>
                 {
                     _currentFallTween = skin.DOLocalRotate(_fallDirectionLocalSkinRot[Direction.None], 0.15f).OnKill(() => _currentFallTween = null);
-                }).OnKill(() => _currentFallTween = null);
+                });
             }
             else
             {

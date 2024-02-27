@@ -3,17 +3,17 @@ using _Game.Managers;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
-    public class StunPlayerState : IState<Player>
+    public class StunPlayerState : AbstractPlayerState
     {
-        public StateEnum Id => StateEnum.Stun;
+        public override StateEnum Id => StateEnum.Stun;
 
-        public void OnEnter(Player t)
+        public override void OnEnter(Player t)
         {
             GameplayManager.Ins.IsCanUndo = false;
             GameplayManager.Ins.IsCanResetIsland = false;
         }
 
-        public void OnExecute(Player t)
+        public override void OnExecute(Player t)
         {
             if (t.IsDead)
             {
@@ -22,7 +22,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             }
         }
 
-        public void OnExit(Player t)
+        public override void OnExit(Player t)
         {
             GameplayManager.Ins.IsCanUndo = true;
             GameplayManager.Ins.IsCanResetIsland = true;

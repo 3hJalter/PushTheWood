@@ -22,13 +22,12 @@ namespace _Game.GameGrid.Unit
         public bool IsDead { get; set; }
         protected string _currentAnim = Constants.INIT_ANIM;
         protected bool _isAddState;
-        protected bool _isWaitAFrame;
         [HideInInspector]
         public readonly List<GameGridCell> AttackRange = new List<GameGridCell>();
         public readonly List<DangerIndicator> AttackRangeVFX = new List<DangerIndicator>();
         public readonly List<Vector3> AttackRangePos = new List<Vector3>();
         
-        public Direction Direction { get; protected set; } = Direction.None;
+        public Direction Direction = Direction.None;
         public float AnimSpeed => animator.speed;
         public void ChangeAnim(string animName, bool forceAnim = false)
         {

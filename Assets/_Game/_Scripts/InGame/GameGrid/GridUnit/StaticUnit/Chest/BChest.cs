@@ -53,6 +53,7 @@ namespace _Game.GameGrid.Unit.StaticUnit.Chest
             if (triggerUnit is not Player) return;
             isInteracted = true;
             ShowAnim(true);
-            DOVirtual.DelayedCall(Constants.CHEST_OPEN_TIME, OnOpenChestComplete);        }
+            DOVirtual.DelayedCall(Constants.CHEST_OPEN_TIME, OnOpenChestComplete);        
+        }
     }
 }

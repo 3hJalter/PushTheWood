@@ -7,16 +7,15 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
-    public class PushPlayerState : IState<Player>
+    public class PushPlayerState : AbstractPlayerState
     {
         float originAnimSpeed;
         float _counterTime;
         private bool _isExecuted;
         private bool _firstTime;
-        private Direction direction;
-        public StateEnum Id => StateEnum.Push;
+        public override StateEnum Id => StateEnum.Push;
         
-        public void OnEnter(Player t)
+        public override void OnEnter(Player t)
         {
             originAnimSpeed = t.AnimSpeed;
             t.ChangeAnim(Constants.PUSH_ANIM, true);
@@ -24,16 +23,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             _counterTime = Constants.PUSH_TIME;
             _isExecuted = false;
             _firstTime = true;
-            direction = Direction.None;
         }
 
-        public void OnExecute(Player t)
+        public override void OnExecute(Player t)
         {
             // BUG: The time checks Idle anim instead of Push anim
-            if (!_firstTime && t.InputDetection.InputAction == InputAction.ButtonDown)
-            {
-                direction = t.Direction;
-            }
+            SaveCommand(t);
             if (_counterTime > 0)
             {
                 _counterTime -= Time.fixedDeltaTime;
@@ -54,14 +49,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 
                 void OnCompletePush()
                 {
-                    if (direction != Direction.None)
-                        t.InputCache.Enqueue(direction);
                     t.StateMachine.ChangeState(StateEnum.Idle);
                 }
             }
         }
 
-        public void OnExit(Player t)
+        public override void OnExit(Player t)
         {
             t.SetAnimSpeed(originAnimSpeed);
         }

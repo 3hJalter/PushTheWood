@@ -67,6 +67,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             base.OnOpenChestComplete();
             CollectingResourceManager.Ins.SpawnCollectingRewardKey(1, LevelManager.Ins.player.transform);
+            LevelManager.Ins.ReceivingKeyReward = true;
             DevLog.Log(DevId.Hoang, "Loot something");
         }
     }

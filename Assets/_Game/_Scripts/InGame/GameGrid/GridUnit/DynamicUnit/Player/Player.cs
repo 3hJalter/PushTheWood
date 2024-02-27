@@ -29,9 +29,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public Transform[] VFXPositions;
         #endregion
         #region INPUT CACHE
-        public readonly Queue<Direction> InputCache = new();
+        public readonly Queue<Direction> CommandCache = new();
         public bool IsInputCache { get; private set; } // DEV: Can put this in separate component
         #endregion
+
+        public Direction InputDirection;
         private StateMachine<Player> stateMachine;
         public StateMachine<Player> StateMachine => stateMachine;
         public override StateEnum CurrentStateId
@@ -41,9 +43,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         }
         private IVehicle _vehicle;
         public InputDetection InputDetection { get; private set; } = new InputDetection();
-        public override GameGridCell MainCell 
-        { 
-            get => mainCell; 
+        public override GameGridCell MainCell
+        {
+            get => mainCell;
             protected set
             {
                 mainCell = value;
@@ -51,7 +53,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             }
         }
         private void Awake()
-        {           
+        {
             agent.enabled = false;
             agent.Init(this);
             GameManager.Ins.RegisterListenerEvent(DesignPattern.EventID.WinGame, OnWin);
@@ -59,34 +61,19 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         private void FixedUpdate()
         {
             if (!GameManager.Ins.IsState(GameState.InGame)) return;
-            if (_isWaitAFrame)
+
+            //NOTE: 
+            if (!agent.isActiveAndEnabled)
             {
-                _isWaitAFrame = false;
-                //NOTE: 
-                if (!agent.isActiveAndEnabled)
-                {
-                    if (InputCache.Count > 0)
-                    {
-                        Direction = InputCache.Dequeue();
-                        IsInputCache = true;
-                    }
-                    else
-                    {
-                        Direction = HInputManager.GetDirectionInput();
-                        IsInputCache = false;
-                    }
-                }
-                if (Direction is not Direction.None) lastPushedDirection = Direction;
-                InputDetection.GetInput(Direction);
-                // TEST: Reset the Input if Direction is not none and Move is Swipe (Swipe only take one input per swipe)
-                // if (Direction != Direction.None && MoveInputManager.Ins.CurrentChoice is MoveInputManager.MoveChoice.Swipe) HInputManager.SetDefault();
-                stateMachine?.UpdateState();
-                return;
+                InputDirection = HInputManager.GetDirectionInput();
             }
-            
-            _isWaitAFrame = true;
+            // TEST: Reset the Input if Direction is not none and Move is Swipe (Swipe only take one input per swipe)
+            // if (Direction != Direction.None && MoveInputManager.Ins.CurrentChoice is MoveInputManager.MoveChoice.Swipe) HInputManager.SetDefault();
             //stateMachine.Debug = true;
+            if (InputDirection is not Direction.None) lastPushedDirection = InputDirection;
+            InputDetection.GetInput(InputDirection);
             stateMachine?.UpdateState();
+
         }
 
         public bool CanJumpOnTreeRoot(Direction direction = Direction.None)
@@ -106,6 +93,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 AddState();
             }
             //stateMachine.Debug = false;          
+            Direction = Direction.None;
             IsDead = false;
             IsStun = false;
             stateMachine.ChangeState(StateEnum.Idle);
@@ -114,10 +102,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public override void OnDespawn()
         {
             _vehicle = null;
-            if (_isAddState) stateMachine.OverrideState = StateEnum.None;          
+            if (_isAddState) stateMachine.OverrideState = StateEnum.None;
             base.OnDespawn();
         }
-        
+
         protected override void AddState()
         {
             stateMachine.AddState(StateEnum.Idle, new IdlePlayerState());
@@ -138,6 +126,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         public override void OnPush(Direction direction, ConditionData conditionData = null)
         {
             //NOTE: Saving when push dynamic object that make grid change
+            if (LevelManager.Ins.IsSavePlayerPushStep)
+            {
+                GameplayManager.Ins.SaveHint.SaveStep(mainCell.X, mainCell.Y, (int) direction, islandID);        
+            }
             if (MovingData.blockDynamicUnits.Count > 0)
             {
                 #region Save
@@ -152,8 +144,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
                 {
                     MovingData.blockDynamicUnits[i].OnBePushed(direction, this);
-                }               
-            }          
+                }
+            }
             for (int i = 0; i < MovingData.blockStaticUnits.Count; i++)
                 MovingData.blockStaticUnits[i].OnBePushed(direction, this);
         }
@@ -234,19 +226,19 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 agent.enabled = true;
                 agent.LoadPath(LevelManager.Ins.CurrentLevel.HintLinePosList);
                 agent.Run();
-                Direction = agent.NextDirection;
+                InputDirection = agent.NextDirection;
             }
             else
             {
                 agent.enabled = false;
-                Direction = Direction.None;
-                InputCache.Clear();
+                InputDirection = Direction.None;
+                CommandCache.Clear();
             }
         }
         public void OnCharacterChangePosition()
         {
             _OnCharacterChangePosition?.Invoke();
-            Direction = agent.NextDirection;
+            InputDirection = agent.NextDirection;
         }
         private void OnWin()
         {
@@ -259,20 +251,20 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         private const float CAMERA_DOWN_OFFSET = Constants.CELL_SIZE * Constants.DOWN_CAMERA_CELL_OFFSET;
         private const float MOVE_TIME = 0.25f;
         private static readonly Vector3 CameraDownOffsetVector = new(0, 0, CAMERA_DOWN_OFFSET);
-        
+
         public void SetUpCamera(Island island, GameGridCell cell)
         {
             // TRICK: Take offset = 3 to make camera not really see the edge of the island
-            
+
             float x = cell.WorldPos.x;
             // NOTE: If the island is small (Size.x < 7), the camera will not change target pos
             if (island.isSmallIsland) return;
-            
+
             // If the player is out of the island 1 cell, the camera will change target to Player
             if (island.minXIslandPos.x - x > Constants.CELL_SIZE * OUT_OF_ISLAND_CELL_BEFORE_TARGET_CAM_TO_PLAYER ||
                 x - island.maxXIslandPos.x > Constants.CELL_SIZE * OUT_OF_ISLAND_CELL_BEFORE_TARGET_CAM_TO_PLAYER)
             {
-                CameraManager.Ins.ChangeCameraTargetPosition(cell.WorldPos + CameraDownOffsetVector, MOVE_TIME);  
+                CameraManager.Ins.ChangeCameraTargetPosition(cell.WorldPos + CameraDownOffsetVector, MOVE_TIME);
                 return;
             }
             if (Mathf.Abs(x - island.minXIslandPos.x) < 0.1f) // if minX
@@ -283,12 +275,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             {
                 CameraManager.Ins.ChangeCameraTargetPosition(new Vector3(island.maxXIslandPos.x - OFFSET, 0, island.centerIslandPos.z + CAMERA_DOWN_OFFSET), MOVE_TIME);
             }
-            else 
+            else
             {
                 // Change the Camera to center if the player is come from bank and the distance is 1 Cell
                 if (Mathf.Abs(x - island.centerIslandPos.x) < Constants.CELL_SIZE)
                 {
-                    CameraManager.Ins.ChangeCameraTargetPosition(island.centerIslandPos + CameraDownOffsetVector, MOVE_TIME);  
+                    CameraManager.Ins.ChangeCameraTargetPosition(island.centerIslandPos + CameraDownOffsetVector, MOVE_TIME);
                 }
                 else
                 {
@@ -303,7 +295,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         }
 
         #endregion
-        
+
         #region Rule
 
         public ConditionMerge conditionMergeOnMoving;
@@ -339,7 +331,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 base.Restore();
                 main._vehicle = vehicle;
                 main.isRideVehicle = isRideVehicle;
-                if(main.Tf.parent != parentTf)
+                if (main.Tf.parent != parentTf)
                     main.Tf.SetParent(parentTf);
             }
         }

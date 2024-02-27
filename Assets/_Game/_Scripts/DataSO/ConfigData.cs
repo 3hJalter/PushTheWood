@@ -24,6 +24,8 @@ namespace _Game.Data
         [FoldoutGroup("In Game")]
         public readonly int requireRewardKey = 3;
         [FoldoutGroup("In Game")]
+        public readonly int requireLevelProgress = 3;
+        [FoldoutGroup("In Game")]
         public readonly int requireSecretMapPiece = 8;
         #endregion
 
@@ -39,6 +41,8 @@ namespace _Game.Data
         [FoldoutGroup("Ads")]
         public readonly int stepInterAdsCountMax = 3;
         public readonly int interAdsCooldownTime = 45;
+        public readonly int startInterAdsLevel = 8;
+        public readonly int winLevelCountInterAds = 3;
         #endregion
         // [BoxGroup("Monetize")]
     }
