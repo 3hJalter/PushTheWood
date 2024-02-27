@@ -76,8 +76,8 @@ namespace _Game.DesignPattern
         OnSecretMapPieceChange = 9,
         OnUnlockSecretMap = 10,
         MoreTimeGame = 11,
-        OnRewardChestKeyChange = 12,
-        OnUnlockRewardChest = 13,
+        OnClaimLevelChest = 12,
+        OnClaimRewardChest = 13,
         OnUpdateUIs = 14,
 
         OnInterAdsStepCount = 10000,
