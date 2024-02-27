@@ -27,20 +27,26 @@ MonoBehaviour:
     SerializationNodes:
     - Name: timePerNormalLevel
       Entry: 3
-      Data: 300
+      Data: 180
     - Name: timePerDailyChallengeLevel
       Entry: 3
-      Data: 600
+      Data: 180
     - Name: timePerSecretLevel
       Entry: 3
-      Data: 900
+      Data: 360
+    - Name: requireRewardKey
+      Entry: 3
+      Data: 3
+    - Name: requireSecretMapPiece
+      Entry: 3
+      Data: 8
     - Name: boosterConfigs
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[_Game.Managers.BoosterType,
+      Data: 0|System.Collections.Generic.Dictionary`2[[_Game.Resource.BoosterType,
         Assembly-CSharp],[_Game.Data.BoosterConfig, Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[_Game.Managers.BoosterType,
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[_Game.Resource.BoosterType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -216,3 +222,15 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+    - Name: stepInterAdsCountMax
+      Entry: 3
+      Data: 3
+    - Name: interAdsCooldownTime
+      Entry: 3
+      Data: 45
+    - Name: startInterAdsLevel
+      Entry: 3
+      Data: 8
+    - Name: winLevelCountInterAds
+      Entry: 3
+      Data: 3

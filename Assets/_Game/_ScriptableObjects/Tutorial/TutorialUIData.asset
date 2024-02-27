@@ -53,7 +53,7 @@ MonoBehaviour:
       Data: 2|VinhLB.TutorialUI[], Assembly-CSharp
     - Name: 
       Entry: 12
-      Data: 1
+      Data: 3
     - Name: 
       Entry: 7
       Data: 3|VinhLB.TutorialUI, Assembly-CSharp
@@ -63,6 +63,30 @@ MonoBehaviour:
     - Name: Description
       Entry: 1
       Data: Test text
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 4|VinhLB.TutorialUI, Assembly-CSharp
+    - Name: TutorialSprite
+      Entry: 10
+      Data: 0
+    - Name: Description
+      Entry: 1
+      Data: Test text 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 5|VinhLB.TutorialUI, Assembly-CSharp
+    - Name: TutorialSprite
+      Entry: 10
+      Data: 0
+    - Name: Description
+      Entry: 1
+      Data: Test text 2
     - Name: 
       Entry: 8
       Data: 
