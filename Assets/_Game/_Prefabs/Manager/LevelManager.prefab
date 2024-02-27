@@ -67,7 +67,10 @@ MonoBehaviour:
       Entry: 8
       Data: 
   normalLevelIndex: 0
+  dailyLevelIndex: 0
   secretLevelIndex: 0
+  ReceivingKeyReward: 0
   IsConstructingLevel: 0
   player: {fileID: 0}
   levelWinCondition: 0
+  isSavePlayerPushStep: 0
