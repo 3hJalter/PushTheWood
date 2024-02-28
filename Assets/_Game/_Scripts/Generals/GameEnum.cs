@@ -172,6 +172,7 @@ namespace _Game.Resource
         None = -1,
         Booster = 0,
         Currency = 1,
+        Character = 2,
     }
 
     public enum BoosterType
@@ -190,5 +191,15 @@ namespace _Game.Resource
         Gold = 0,
         AdTicket = 1,
         SecretMapPiece = 2,
+    }
+
+    public enum CharacterType
+    {
+        Beeny = 0,
+        Weeny = 1,
+        Fuzzy = 2,
+        Millie = 3,
+        Gus = 4,
+        Ollie = 5,
     }
 }

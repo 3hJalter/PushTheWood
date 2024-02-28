@@ -18,6 +18,11 @@ namespace VinhLB
         private List<Sprite> _currencyIconList;
         public Dictionary<CurrencyType, ResourceData> CurrencyResourceDataDict = new();
 
+        [Title("Character Resource Data")]
+        [SerializeField]
+        private List<Sprite> _characterIconList;
+        public Dictionary<CharacterType, ResourceData> CharacterResourceDataDict = new();
+
         [ContextMenu("Convert From List To Dict")]
         public void ConvertListToDict()
         {
