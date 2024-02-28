@@ -12,6 +12,7 @@ using _Game.Managers;
 using _Game.Utilities;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VinhLB;
 using GridUnit = _Game.GameGrid.Unit.GridUnit;
 
@@ -26,7 +27,7 @@ public class GridMapDataGenerator : MonoBehaviour
     // ReSharper disable once NotAccessedField.Local
     [SerializeField] private LevelType levelType;
     [SerializeField] private LevelWinCondition winCondition;
-    [SerializeField] private bool isHardLevel;
+    [SerializeField] private LevelNormalType levelNormalType = LevelNormalType.None;
     [InlineButton("SaveLevelAsJson", "Save Level")]
     [InfoBox("The name of the level, must be in the format Lvl_number or Lvl_DC_number or Lvl_S_number")]
     [SerializeField] private string mapLevelName = "Lvl_0";
@@ -189,7 +190,7 @@ public class GridMapDataGenerator : MonoBehaviour
         _loadedLevel = new Level(levelTypeTemp, index, levelObject.transform);
         levelType = _loadedLevel.LevelType;
         winCondition = _loadedLevel.LevelWinCondition;
-        isHardLevel = _loadedLevel.IsHardLevel;
+        levelNormalType = _loadedLevel.LevelNormalType;
         mapLevelName = name;
         // Set all GridSurface to surfaceContainer
         GridSurface[] gridSurfaces = FindObjectsOfType<GridSurface>();
@@ -566,7 +567,7 @@ public class GridMapDataGenerator : MonoBehaviour
         {
             lt = (int) levelTypeTemp,
             wc = (int) winCondition,
-            h = isHardLevel,
+            lnt = (int) levelNormalType,
             s = size,
             sfD = gridSurfaceDataList.ToArray(),
             uD = gridUnitDataList.ToArray(),

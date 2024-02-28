@@ -27,8 +27,79 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes:
     - Name: timePerNormalLevel
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[_Game.Data.LevelNormalType,
+        Assembly-CSharp],[System.Int32, mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[_Game.Data.LevelNormalType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 4
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
       Entry: 3
-      Data: 180
+      Data: 18446744073709551615
+    - Name: $v
+      Entry: 3
+      Data: 300
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 3
+      Data: 400
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 3
+      Data: 500
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 3
+      Data: 600
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: timePerDailyChallengeLevel
       Entry: 3
       Data: 180
@@ -40,7 +111,7 @@ MonoBehaviour:
       Data: 3
     - Name: RCRewards
       Entry: 7
-      Data: 0|_Game.Resource.CurrencyType[], Assembly-CSharp
+      Data: 2|_Game.Resource.CurrencyType[], Assembly-CSharp
     - Name: 
       Entry: 12
       Data: 4
@@ -64,7 +135,7 @@ MonoBehaviour:
       Data: 
     - Name: RCQuantitys
       Entry: 7
-      Data: 1|System.Int32[], mscorlib
+      Data: 3|System.Int32[], mscorlib
     - Name: 
       Entry: 14
       Data: 4
@@ -88,7 +159,7 @@ MonoBehaviour:
       Data: 
     - Name: RCRates
       Entry: 7
-      Data: 2|System.Single[], mscorlib
+      Data: 4|System.Single[], mscorlib
     - Name: 
       Entry: 14
       Data: 4
@@ -118,11 +189,11 @@ MonoBehaviour:
       Data: 8
     - Name: boosterConfigs
       Entry: 7
-      Data: 3|System.Collections.Generic.Dictionary`2[[_Game.Resource.BoosterType,
+      Data: 5|System.Collections.Generic.Dictionary`2[[_Game.Resource.BoosterType,
         Assembly-CSharp],[_Game.Data.BoosterConfig, Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 4|System.Collections.Generic.EnumEqualityComparer`1[[_Game.Resource.BoosterType,
+      Data: 6|System.Collections.Generic.EnumEqualityComparer`1[[_Game.Resource.BoosterType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12

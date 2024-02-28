@@ -250,6 +250,7 @@ namespace _Game.GameGrid
             // Delay 2.5 second for zoom out
             DOVirtual.DelayedCall(2f, () =>
             {
+                UIManager.Ins.ShowUI<InGameScreen>();
                 if (!_currentLevel.IsInit)
                 {
                     InitLevel();
@@ -257,7 +258,6 @@ namespace _Game.GameGrid
                 OnLevelNext?.Invoke();
                 CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
                 SetCameraToPlayerIsland();
-                UIManager.Ins.ShowUI<InGameScreen>();
             });
             // OnChangeTutorialIndex();
         }

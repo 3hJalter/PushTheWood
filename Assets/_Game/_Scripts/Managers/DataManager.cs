@@ -57,14 +57,16 @@ namespace _Game.Managers
         {
             DontDestroyOnLoad(gameObject);
         }
-        public int GetLevelTime(LevelType type)
+        public int GetLevelTime(LevelType type, LevelNormalType normalType = LevelNormalType.None)
         {
             return type switch
             {
-                LevelType.Normal => configData.timePerNormalLevel,
+                LevelType.Normal => normalType is LevelNormalType.None
+                    ? configData.timePerNormalLevel[LevelNormalType.Medium]
+                    : configData.timePerNormalLevel[normalType],
                 LevelType.Secret => configData.timePerSecretLevel,
                 LevelType.DailyChallenge => configData.timePerDailyChallengeLevel,
-                _ => configData.timePerNormalLevel
+                _ => configData.timePerNormalLevel[LevelNormalType.Medium]
             };
         }
         

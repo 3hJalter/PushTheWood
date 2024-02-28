@@ -150,6 +150,14 @@ namespace _Game.Data
         }
     }
 
+    public enum LevelNormalType
+    {
+        None = -1,
+        Easy = 0,
+        Medium = 1,
+        Hard = 2,
+    }
+    
     public enum LevelType
     {
         None = -1,
