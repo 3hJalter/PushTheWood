@@ -50,6 +50,7 @@ namespace _Game.Managers
         private GrassTrampleFeature _feature;
 
         public HintLineTrail TrailHint => trailHint;
+        public bool IsGridOn => _gridGO.activeInHierarchy;
 
         private void Awake()
         {
