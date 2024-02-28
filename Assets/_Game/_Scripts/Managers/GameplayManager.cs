@@ -17,22 +17,22 @@ namespace _Game.Managers
     [DefaultExecutionOrder(-90)]
     public class GameplayManager : Singleton<GameplayManager>
     {
-        private int time;
-        STimer timer;
+        [SerializeField] private PushHintObject pushHintObject;
 
-        InGameScreen screen;
-
-        private bool isCanUndo = true;
-        private bool isCanResetIsland = true;
-        private bool isBoughtGrowTree = false;
-        private bool isCanGrowTree = true;
-        
         private readonly Dictionary<int, bool> isBoughtPushHintInIsland = new();
         private PushHint _pushHint;
-        [SerializeField] private PushHintObject pushHintObject;
-        
+        private bool isBoughtGrowTree;
+        private bool isCanGrowTree = true;
+        private bool isCanResetIsland = true;
+
+        private bool isCanUndo = true;
+
+        private InGameScreen screen;
+        private int time;
+        private STimer timer;
+
         public PushHintObject PushHintObject => pushHintObject;
-        
+
         public SavePushHint SavePushHint { get; private set; }
 
         public bool IsCanUndo
@@ -54,7 +54,7 @@ namespace _Game.Managers
                 screen.SetActiveResetIsland(value);
             }
         }
-        
+
         public bool IsBoughtGrowTree
         {
             get => isBoughtGrowTree;
@@ -74,18 +74,7 @@ namespace _Game.Managers
                 screen.SetActiveGrowTree(value);
             }
         }
-        
-        private bool IsBoughtPushHintInIsland(int islandID)
-        {
-            return isBoughtPushHintInIsland[islandID];
-        }
-        
-        private void SetBoughtPushHintInIsland(int islandID, bool value)
-        {
-            isBoughtPushHintInIsland[islandID] = value;
-            screen.OnBoughtPushHintOnIsland(islandID, value);
-        }
-        
+
         private void Awake()
         {
             screen = UIManager.Ins.GetUI<InGameScreen>();
@@ -118,6 +107,37 @@ namespace _Game.Managers
             EventGlobalManager.Ins.OnPlayerChangeIsland.AddListener(OnPlayerChangeIsland);
         }
 
+        private void OnDestroy()
+        {
+            GameManager.Ins.UnregisterListenerEvent(EventID.StartGame, OnStartGame);
+            GameManager.Ins.UnregisterListenerEvent(EventID.MoreTimeGame, OnMoreTimeGame);
+            GameManager.Ins.UnregisterListenerEvent(EventID.WinGame, OnWinGame);
+            GameManager.Ins.UnregisterListenerEvent(EventID.LoseGame, OnLoseGame);
+            GameManager.Ins.UnregisterListenerEvent(EventID.Pause, OnPauseGame);
+            GameManager.Ins.UnregisterListenerEvent(EventID.UnPause, OnUnPauseGame);
+            EventGlobalManager.Ins.OnChangeBoosterAmount?.RemoveListener(OnChangeBoosterAmount);
+            screen.OnUndo -= OnUndo;
+            screen.OnResetIsland -= OnResetIsland;
+            screen.OnHint -= OnShowHint;
+            screen.OnCancelHint -= OnHideHint;
+            screen.OnGrowTree -= OnGrowTree;
+            screen.OnUsePushHint -= OnPushHint;
+            _pushHint?.OnStopHint();
+            EventGlobalManager.Ins.OnPlayerChangeIsland?.RemoveListener(OnPlayerChangeIsland);
+            TimerManager.Ins.PushSTimer(timer);
+        }
+
+        private bool IsBoughtPushHintInIsland(int islandID)
+        {
+            return isBoughtPushHintInIsland[islandID];
+        }
+
+        private void SetBoughtPushHintInIsland(int islandID, bool value)
+        {
+            isBoughtPushHintInIsland[islandID] = value;
+            screen.OnBoughtPushHintOnIsland(islandID, value);
+        }
+
         private void OnChangeBoosterAmount(BoosterType boosterType, int amount)
         {
             switch (boosterType)
@@ -132,27 +152,29 @@ namespace _Game.Managers
                     UpdateBoosterCount(ref DataManager.Ins.GameData.user.hintCount, screen.hintCountText, amount);
                     break;
                 case BoosterType.GrowTree:
-                    UpdateBoosterCount(ref DataManager.Ins.GameData.user.growTreeCount, screen.growTreeCountText, amount);
+                    UpdateBoosterCount(ref DataManager.Ins.GameData.user.growTreeCount, screen.growTreeCountText,
+                        amount);
                     break;
                 case BoosterType.PushHint:
-                    UpdateBoosterCount(ref DataManager.Ins.GameData.user.pushHintCount, screen.pushHintCountText, amount);
+                    UpdateBoosterCount(ref DataManager.Ins.GameData.user.pushHintCount, screen.pushHintCountText,
+                        amount);
                     break;
             }
         }
-        
+
         private void UpdateBoosterCount(ref int boosterCount, TMP_Text text, int amount)
         {
             boosterCount += amount;
             text.text = boosterCount.ToString();
         }
-        
+
         private void OnToMainMenu()
         {
             _pushHint?.OnStopHint();
             timer.Stop();
             LevelManager.Ins.OnRestart();
         }
-        
+
         public void OnPauseGame()
         {
             timer.Stop();
@@ -162,19 +184,21 @@ namespace _Game.Managers
         {
             timer.Start(1f, CountTime, true);
         }
-        
+
         private void OnUnPauseGame(object o)
         {
             // Cast o to GameState
-            GameState nextState = (GameState) o;
+            GameState nextState = (GameState)o;
             // More check for some level that not need timer
             if (nextState is GameState.InGame) timer.Start(1f, CountTime, true);
         }
-        
+
         public void OnResetTime()
         {
-            time = 0;
-            time += DataManager.Ins.GetLevelTime(LevelManager.Ins.CurrentLevel.LevelType);
+            LevelType levelType = LevelManager.Ins.CurrentLevel.LevelType;
+            time = levelType is LevelType.Normal
+                ? DataManager.Ins.GetLevelTime(levelType, LevelManager.Ins.CurrentLevel.LevelNormalType)
+                : DataManager.Ins.GetLevelTime(LevelManager.Ins.CurrentLevel.LevelType);
             // if first level of normal level, or daily time is MaxValue because it is tutorial level
             if (LevelManager.Ins.IsTutorialLevel) time = int.MaxValue;
             screen.Time = time;
@@ -189,13 +213,10 @@ namespace _Game.Managers
             GameManager.Ins.ChangeState(GameState.InGame);
             LevelManager.Ins.player.SetActiveAgent(false);
         }
-        
+
         private void OnStartGame()
         {
-            if (LevelManager.Ins.IsSavePlayerPushStep)
-            {
-                SavePushHint = new SavePushHint();
-            }
+            if (LevelManager.Ins.IsSavePlayerPushStep) SavePushHint = new SavePushHint();
             PushHintObject.SetActive(false);
             OnResetTime();
             screen.OnHideIfTutorial();
@@ -212,10 +233,7 @@ namespace _Game.Managers
 
         private void OnWinGame()
         {
-            if (LevelManager.Ins.IsSavePlayerPushStep)
-            {
-                SavePushHint.Save();
-            }
+            if (LevelManager.Ins.IsSavePlayerPushStep) SavePushHint.Save();
             _pushHint.OnStopHint();
             timer.Stop();
             DevLog.Log(DevId.Hung, "ENDGAME - Show Win Screen");
@@ -235,24 +253,12 @@ namespace _Game.Managers
             LevelManager.Ins.player.SetActiveAgent(false);
         }
 
-        private void OnDestroy()
+        private void CountTime()
         {
-            GameManager.Ins.UnregisterListenerEvent(EventID.StartGame, OnStartGame);
-            GameManager.Ins.UnregisterListenerEvent(EventID.MoreTimeGame, OnMoreTimeGame);
-            GameManager.Ins.UnregisterListenerEvent(EventID.WinGame, OnWinGame);
-            GameManager.Ins.UnregisterListenerEvent(EventID.LoseGame, OnLoseGame);
-            GameManager.Ins.UnregisterListenerEvent(EventID.Pause, OnPauseGame);
-            GameManager.Ins.UnregisterListenerEvent(EventID.UnPause, OnUnPauseGame);
-            EventGlobalManager.Ins.OnChangeBoosterAmount?.RemoveListener(OnChangeBoosterAmount);
-            screen.OnUndo -= OnUndo;
-            screen.OnResetIsland -= OnResetIsland;
-            screen.OnHint -= OnShowHint;
-            screen.OnCancelHint -= OnHideHint;
-            screen.OnGrowTree -= OnGrowTree;
-            screen.OnUsePushHint -= OnPushHint;
-            _pushHint?.OnStopHint();
-            EventGlobalManager.Ins.OnPlayerChangeIsland?.RemoveListener(OnPlayerChangeIsland);
-            TimerManager.Ins.PushSTimer(timer);         
+            if (time < 0) return;
+            time -= 1;
+            screen.Time = time;
+            if (time <= 0) OnLoseGame();
         }
 
         #region Booster
@@ -275,7 +281,7 @@ namespace _Game.Managers
                 // TEMPORARY
                 if (_pushHint.IsStartHint) _pushHint.OnStopHint();
             }
-            
+
         }
 
         private void OnResetIsland()
@@ -310,8 +316,8 @@ namespace _Game.Managers
             else
             {
                 DataManager.Ins.GameData.user.hintCount--;
-                screen.hintCountText.text =  DataManager.Ins.GameData.user.hintCount.ToString();
-                LevelManager.Ins.CurrentLevel.ChangeShadowUnitAlpha(false);               
+                screen.hintCountText.text = DataManager.Ins.GameData.user.hintCount.ToString();
+                LevelManager.Ins.CurrentLevel.ChangeShadowUnitAlpha(false);
                 FXManager.Ins.TrailHint.OnPlay(LevelManager.Ins.CurrentLevel.HintLinePosList);
                 LevelManager.Ins.player.SetActiveAgent(true);
                 LevelManager.Ins.ResetLevelIsland();
@@ -324,7 +330,7 @@ namespace _Game.Managers
             FXManager.Ins.TrailHint.OnCancel();
             LevelManager.Ins.player.SetActiveAgent(false);
         }
-        
+
         private void OnGrowTree()
         {
             if (DataManager.Ins.GameData.user.growTreeCount <= 0)
@@ -343,11 +349,13 @@ namespace _Game.Managers
                     DataManager.Ins.GameData.user.growTreeCount--;
                     screen.growTreeCountText.text = DataManager.Ins.GameData.user.growTreeCount.ToString();
                 }
+
                 EventGlobalManager.Ins.OnGrowTree.Dispatch();
             }
         }
 
         # region PUSH HINT
+
         private void OnPushHint()
         {
             if (DataManager.Ins.GameData.user.pushHintCount <= 0)
@@ -366,49 +374,37 @@ namespace _Game.Managers
                     DataManager.Ins.GameData.user.pushHintCount--;
                     screen.pushHintCountText.text = DataManager.Ins.GameData.user.pushHintCount.ToString();
                 }
+
                 OnStartHintOnPlayerIsland(playerIslandID);
             }
         }
 
         private void OnStartHintOnPlayerIsland(int islandID)
         {
-                LevelManager.Ins.ResetLevelIsland();
-                _pushHint.OnStartHint(islandID);
-                DevLog.Log(DevId.Hoang, $"Show hint in {islandID}");
+            LevelManager.Ins.ResetLevelIsland();
+            _pushHint.OnStartHint(islandID);
+            DevLog.Log(DevId.Hoang, $"Show hint in {islandID}");
 
         }
-        
+
         private void OnPlayerChangeIsland()
         {
             int islandId = LevelManager.Ins.player.islandID;
             screen.ActivePushHintIsland(_pushHint.ContainIsland(islandId));
             // Check if contain
-            if (!isBoughtPushHintInIsland.ContainsKey(islandId))
-            {
-                SetBoughtPushHintInIsland(islandId, false);
-            };
+            if (!isBoughtPushHintInIsland.ContainsKey(islandId)) SetBoughtPushHintInIsland(islandId, false);
+            ;
             bool isBoughtPushHint = IsBoughtPushHintInIsland(islandId);
             screen.OnBoughtPushHintOnIsland(islandId, isBoughtPushHint);
         }
-        
+
         public void OnShowTryHintAgain(bool show)
         {
             screen.OnShowTryHintAgain(show);
         }
-        
+
         #endregion
 
         #endregion
-        
-        private void CountTime()
-        {
-            if (time < 0) return;
-            time -= 1;
-            screen.Time = time;
-            if(time <= 0)
-            {
-                OnLoseGame();
-            }
-        }
     }
 }

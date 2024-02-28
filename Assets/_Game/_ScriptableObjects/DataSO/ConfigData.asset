@@ -49,7 +49,7 @@ MonoBehaviour:
       Data: 18446744073709551615
     - Name: $v
       Entry: 3
-      Data: 300
+      Data: 999
     - Name: 
       Entry: 8
       Data: 
@@ -61,7 +61,7 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 3
-      Data: 400
+      Data: 90
     - Name: 
       Entry: 8
       Data: 
@@ -73,7 +73,7 @@ MonoBehaviour:
       Data: 1
     - Name: $v
       Entry: 3
-      Data: 500
+      Data: 150
     - Name: 
       Entry: 8
       Data: 
@@ -85,7 +85,7 @@ MonoBehaviour:
       Data: 2
     - Name: $v
       Entry: 3
-      Data: 600
+      Data: 210
     - Name: 
       Entry: 8
       Data: 
@@ -97,7 +97,7 @@ MonoBehaviour:
       Data: 
     - Name: timePerDailyChallengeLevel
       Entry: 3
-      Data: 180
+      Data: 150
     - Name: timePerSecretLevel
       Entry: 3
       Data: 720
