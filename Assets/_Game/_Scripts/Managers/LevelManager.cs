@@ -32,6 +32,7 @@ namespace _Game.GameGrid
         public event Action OnLevelIslandReset;
         public event Action OnCheckWinCondition;
         public event Action OnLevelNext;
+        public event Action OnObjectiveChange;
 
         [SerializeField]
         [ReadOnly]
@@ -67,7 +68,20 @@ namespace _Game.GameGrid
         public Player player;
 
         [ReadOnly] public readonly List<IEnemy> enemies = new();
+        [ReadOnly] public int numsOfCollectingObjectInLevel;
+        [ReadOnly] public int objectiveCounter;
 
+        public int ObjectiveCounterLeft()
+        {
+            LevelWinCondition condition = _currentLevel.LevelWinCondition;
+            if (condition is LevelWinCondition.DefeatAllEnemy)
+            {
+                return objectiveCounter - enemies.Count;
+            }
+            return objectiveCounter - numsOfCollectingObjectInLevel;
+        }
+        
+        
         // DEBUG:
         [ReadOnly]
         [SerializeField] private LevelWinCondition levelWinCondition;
@@ -99,6 +113,8 @@ namespace _Game.GameGrid
             IsConstructingLevel = true;
             _currentLevel = new Level(type, index);
             enemies.Clear();
+            numsOfCollectingObjectInLevel = 0;
+            objectiveCounter = 0;
             if (needInit && !_currentLevel.IsInit)
             {
                 InitLevel();
@@ -119,6 +135,7 @@ namespace _Game.GameGrid
             IsConstructingLevel = false;
             savingState = new CareTaker(this);
             SetCameraToPlayerIsland();
+            OnObjectiveChange?.Invoke();
             //NOTE: Test
             DebugManager.Ins?.DebugGridData(_currentLevel.GridMap);
             // TEMPORARY: CUTSCENE, player will be show when cutscene end
@@ -272,20 +289,34 @@ namespace _Game.GameGrid
                 case LevelWinCondition.DefeatAllEnemy:
                     OnCheckWinCondition += () =>
                     {
+                        OnObjectiveChange?.Invoke();
                         if (enemies.Count == 0 && GameManager.Ins.IsState(GameState.InGame) && !_isRestarting && !_isResetting)
                         {
                             OnWin();
                         }
                     };
                     break;
+                case LevelWinCondition.CollectAllChest: 
                 case LevelWinCondition.FindingFruit:
-                case LevelWinCondition.CollectAllStar:
                 case LevelWinCondition.FindingChest:
                 case LevelWinCondition.FindingChickenBbq:
-                default:
+                    OnCheckWinCondition += () =>
+                    {
+                        OnObjectiveChange?.Invoke();
+                        if (numsOfCollectingObjectInLevel == 0 && GameManager.Ins.IsState(GameState.InGame) && !_isRestarting && !_isResetting)
+                        {
+                            OnWin();
+                        }
+                    };
                     break;
             }
-            if (OnCheckWinCondition is not null) EventGlobalManager.Ins.OnEnemyDie.AddListener(OnCheckWinCondition);
+
+            if (OnCheckWinCondition is not null)
+            {
+                EventGlobalManager.Ins.OnEnemyDie.AddListener(OnCheckWinCondition);
+                EventGlobalManager.Ins.OnChangeLevelCollectingObjectNumber.AddListener(OnCheckWinCondition);
+            }
+            
         }
 
         private void OnRemoveWinCondition()
@@ -294,6 +325,7 @@ namespace _Game.GameGrid
             if (OnCheckWinCondition is not null)
             {
                 EventGlobalManager.Ins.OnEnemyDie.RemoveListener(OnCheckWinCondition);
+                EventGlobalManager.Ins.OnChangeLevelCollectingObjectNumber.RemoveListener(OnCheckWinCondition);
                 OnCheckWinCondition = null;
             }
         }

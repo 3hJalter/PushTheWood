@@ -75,7 +75,7 @@ namespace _Game.UIs.Screen
         private void Awake()
         {
             LevelManager.Ins.OnLevelNext += LevelManager_OnLevelNext;
-
+            LevelManager.Ins.OnObjectiveChange += UpdateObjectiveText;
             undoTimer = TimerManager.Ins.PopSTimer();
             resetIslandTimer = TimerManager.Ins.PopSTimer();
         }
@@ -213,15 +213,17 @@ namespace _Game.UIs.Screen
 
         private void UpdateObjectiveText()
         {
-            objectiveText.text = LevelManager.Ins.CurrentLevel.LevelWinCondition switch
+            string constant = LevelManager.Ins.CurrentLevel.LevelWinCondition switch
             {
                 LevelWinCondition.FindingFruit => Constants.FIND_FRUIT,
                 LevelWinCondition.DefeatAllEnemy => Constants.DEFEAT_ENEMY,
-                LevelWinCondition.CollectAllStar => Constants.COLLECT_ALL_STARS,
+                LevelWinCondition.CollectAllChest => Constants.COLLECT_ALL_CHEST,
                 LevelWinCondition.FindingChest => Constants.FIND_CHEST,
                 LevelWinCondition.FindingChickenBbq => Constants.FIND_CHICKEN_BBQ,
                 _ => objectiveText.text
             };
+            DevLog.Log(DevId.Hoang, "Update Objective Counter: " + LevelManager.Ins.ObjectiveCounterLeft() + "/" + LevelManager.Ins.objectiveCounter);
+            objectiveText.text = $"{constant}: {LevelManager.Ins.ObjectiveCounterLeft()}/{LevelManager.Ins.objectiveCounter}";
         }
 
         private void LevelManager_OnLevelNext()

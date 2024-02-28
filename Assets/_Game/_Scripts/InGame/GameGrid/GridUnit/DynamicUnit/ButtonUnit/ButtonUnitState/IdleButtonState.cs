@@ -18,7 +18,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.ButtonUnitState
                 t.ChangeButton(false);
                 isFirstEnterDone = true;
             }
-            else
+            else  if (t.StateMachine.PreviousState is StateEnum.Enter)
             {
                 _enterTime = Time.time;
                 // Check if the time between the last exit and the current enter is less than 0.4f

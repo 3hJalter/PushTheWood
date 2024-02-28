@@ -560,7 +560,7 @@ namespace _Game._Scripts.InGame
     {
         FindingFruit = 0,
         DefeatAllEnemy = 1,
-        CollectAllStar = 2,
+        CollectAllChest = 2,
         FindingChest = 3,
         FindingChickenBbq = 4,
     }

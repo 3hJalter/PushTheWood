@@ -2,6 +2,7 @@
 using _Game._Scripts.Managers;
 using _Game.DesignPattern;
 using _Game.GameGrid.Unit.StaticUnit.Chest;
+using _Game.Utilities;
 using GameGridEnum;
 using Sirenix.OdinInspector;
 using TMPro;
@@ -30,7 +31,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         public override void OnOpenChestComplete()
         {
             base.OnOpenChestComplete();
-            LevelManager.Ins.OnWin();
+            OnRemoveFromLevelManager();
         }
 
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
@@ -40,6 +41,8 @@ namespace _Game.GameGrid.Unit.StaticUnit
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
             SetUpButtonUnit();
             OnLockChest();
+            OnAddToLevelManager();
+
         }
 
         public override void OnDespawn()
@@ -95,6 +98,10 @@ namespace _Game.GameGrid.Unit.StaticUnit
             lockedChestModel.SetActive(false);
             canvas.SetActive(false);
             chestUnlockParticle.Play();
+            if (neighborUnits.Contains(LevelManager.Ins.player))
+            {
+                OnEnterTriggerNeighbor(LevelManager.Ins.player);
+            }
         }
 
         private void SetText()
@@ -130,6 +137,19 @@ namespace _Game.GameGrid.Unit.StaticUnit
             EventGlobalManager.Ins.OnButtonUnitEnter.RemoveListener(OnButtonUnitEnter());
             numberOfButtonEntered = 0;
             numberOfButtonInLevel = 0;
+        }
+        
+        private static void OnAddToLevelManager()
+        {
+            LevelManager.Ins.numsOfCollectingObjectInLevel++;
+            DevLog.Log(DevId.Hoang, "Add to level manager");
+            LevelManager.Ins.objectiveCounter++;
+        }
+        
+        private static void OnRemoveFromLevelManager()
+        {
+            LevelManager.Ins.numsOfCollectingObjectInLevel--;
+            EventGlobalManager.Ins.OnChangeLevelCollectingObjectNumber.Dispatch();
         }
     }
 }

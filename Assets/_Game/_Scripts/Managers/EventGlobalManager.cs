@@ -17,12 +17,11 @@ namespace _Game._Scripts.Managers
         
         // In-game events
 
+        public Relay OnChangeLevelCollectingObjectNumber { get; private set; } // For calculate how many objects need to collect to win the game
         public Relay<bool> OnButtonUnitEnter { get; private set; } // For Unit Button
         public Relay OnEnemyDie { get; private set; } // For Enemy
         public Relay<BoosterType, int> OnChangeBoosterAmount { get; private set; }
-        
         public Relay OnGrowTree { get; private set; } // For Tree Seed
-        
         public Relay OnPlayerChangeIsland { get; private set; } // For When Player go to the other Island
         public Relay<PlayerStep>  OnPlayerPushStep { get; private set; } // For Push Hint
         
@@ -33,6 +32,7 @@ namespace _Game._Scripts.Managers
             // OnUpdateSetting = new Relay();
             // OnGameInit = new Relay();
             // OnPurchaseNoAds = new Relay();
+            OnChangeLevelCollectingObjectNumber = new Relay();
             OnButtonUnitEnter = new Relay<bool>();
             OnEnemyDie = new Relay();
             OnChangeBoosterAmount = new Relay<BoosterType, int>();
