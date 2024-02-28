@@ -6,7 +6,6 @@ using _Game.Managers;
 using _Game.Utilities;
 using DG.Tweening;
 using Sirenix.OdinInspector;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -39,7 +38,7 @@ namespace VinhLB
 
         [Title("Reward Keys")]
         [SerializeField]
-        private CollectingResourceConfig _rewardKeytConfig;
+        private CollectingResourceConfig _rewardKeyConfig;
 
         public void SpawnCollectingCoins(int amount, Vector3 startPosition, Transform endPoint,
             Action<float> onEachReachEnd = null)
@@ -59,20 +58,20 @@ namespace VinhLB
             unit.Text.text = $"+{amount}";
 
             unit.CanvasGroup.alpha = 0;
-            if (unit.Tf.parent != _rewardKeytConfig.CollectingResourceParentTF)
+            if (unit.Tf.parent != _rewardKeyConfig.CollectingResourceParentTF)
             {
-                unit.Tf.SetParent(_rewardKeytConfig.CollectingResourceParentTF, false);
+                unit.Tf.SetParent(_rewardKeyConfig.CollectingResourceParentTF, false);
             }
-            RectTransform parentRectTransform = _rewardKeytConfig.CollectingResourceParentTF as RectTransform;
+            RectTransform parentRectTransform = _rewardKeyConfig.CollectingResourceParentTF as RectTransform;
 
             Sequence s = DOTween.Sequence();
-            s.Append(unit.CanvasGroup.DOFade(1, _rewardKeytConfig.MoveDuration))
-                .Join(DOVirtual.Float(0, 50, _rewardKeytConfig.MoveDuration, y =>
+            s.Append(unit.CanvasGroup.DOFade(1, _rewardKeyConfig.MoveDuration))
+                .Join(DOVirtual.Float(0, 50, _rewardKeyConfig.MoveDuration, y =>
                 {
                     Vector2 viewPortPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) - Vector3.one * 0.5f;
                     unit.RectTransform.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewPortPoint.x, parentRectTransform.rect.height * viewPortPoint.y + 60 + y);
                 }).SetEase(Ease.OutQuart))
-                .Append(unit.CanvasGroup.DOFade(0, _rewardKeytConfig.MoveDuration * 1.5f).SetEase(Ease.InQuint))    
+                .Append(unit.CanvasGroup.DOFade(0, _rewardKeyConfig.MoveDuration * 1.5f).SetEase(Ease.InQuint))    
                 .OnComplete(() => OnDespawnUnit(unit));    
             s.Play();
 

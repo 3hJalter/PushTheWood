@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using _Game.Managers;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace VinhLB
 {
@@ -10,37 +8,35 @@ namespace VinhLB
     [CreateAssetMenu(fileName = "ResourceDatabase", menuName = "ScriptableObjects/ResourceDatabase")]
     public class ResourceDatabase : SerializedScriptableObject
     {
-        
-        
-        [Title("Booster Resource Data Dictionary")]
+        [Title("Booster Resource Data")]
         [SerializeField]
-        private List<Sprite> boosterIconList;
+        private List<Sprite> _boosterIconList;
         public Dictionary<BoosterType, ResourceData> BoosterResourceDataDict = new();
         
-        [Title("Currency Resource Data Dictionary")]
+        [Title("Currency Resource Data")]
         [SerializeField]
-        private List<Sprite> currencyIconList;
+        private List<Sprite> _currencyIconList;
         public Dictionary<CurrencyType, ResourceData> CurrencyResourceDataDict = new();
 
         [ContextMenu("Convert From List To Dict")]
         public void ConvertListToDict()
         {
-            for (int i = 0; i < currencyIconList.Count; i++)
+            for (int i = 0; i < _currencyIconList.Count; i++)
             {
                 CurrencyType type = (CurrencyType)i;
                 if (CurrencyResourceDataDict.ContainsKey(type))
-                    CurrencyResourceDataDict[type] = new ResourceData(type.ToString(), currencyIconList[i]);
+                    CurrencyResourceDataDict[type] = new ResourceData(type.ToString(), _currencyIconList[i]);
                 else
-                    CurrencyResourceDataDict.Add(type, new ResourceData(type.ToString(), currencyIconList[i]));
+                    CurrencyResourceDataDict.Add(type, new ResourceData(type.ToString(), _currencyIconList[i]));
             }
 
-            for (int i = 0; i < boosterIconList.Count; i++)
+            for (int i = 0; i < _boosterIconList.Count; i++)
             {
                 BoosterType type = (BoosterType)i;
                 if (BoosterResourceDataDict.ContainsKey(type))
-                    BoosterResourceDataDict[type] = new ResourceData(type.ToString(), boosterIconList[i]);
+                    BoosterResourceDataDict[type] = new ResourceData(type.ToString(), _boosterIconList[i]);
                 else
-                    BoosterResourceDataDict.Add(type, new ResourceData(type.ToString(), boosterIconList[i]));
+                    BoosterResourceDataDict.Add(type, new ResourceData(type.ToString(), _boosterIconList[i]));
             }
 #if UNITY_EDITOR
             if (!Application.isPlaying)
@@ -58,10 +54,10 @@ namespace VinhLB
         public string Name;
         public Sprite IconSprite;
 
-        public ResourceData(string Name, Sprite IconSprite)
+        public ResourceData(string name, Sprite iconSprite)
         {
-            this.Name = Name;
-            this.IconSprite = IconSprite;
+            this.Name = name;
+            this.IconSprite = iconSprite;
         }
     }   
 }

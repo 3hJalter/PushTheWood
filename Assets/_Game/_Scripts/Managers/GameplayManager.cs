@@ -263,7 +263,9 @@ namespace _Game.Managers
             if (DataManager.Ins.GameData.user.undoCount <= 0)
             {
                 DevLog.Log(DevId.Hoang, "Show popup to buy undo");
-                UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(DataManager.Ins.ConfigData.boosterConfigs[BoosterType.Undo]);
+                BoosterConfig boosterConfig = DataManager.Ins.ConfigData.boosterConfigs[BoosterType.Undo];
+                boosterConfig.ResourceData = DataManager.Ins.GetBoosterResourceData(boosterConfig.Type);
+                UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(boosterConfig);
             }
             else
             {
@@ -282,7 +284,9 @@ namespace _Game.Managers
             if (DataManager.Ins.GameData.user.resetCount <= 0)
             {
                 DevLog.Log(DevId.Hoang, "Show popup to buy reset");
-                UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(DataManager.Ins.ConfigData.boosterConfigs[BoosterType.ResetIsland]);
+                BoosterConfig boosterConfig = DataManager.Ins.ConfigData.boosterConfigs[BoosterType.ResetIsland];
+                boosterConfig.ResourceData = DataManager.Ins.GetBoosterResourceData(boosterConfig.Type);
+                UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(boosterConfig);
             }
             else
             {
@@ -299,7 +303,9 @@ namespace _Game.Managers
             if (DataManager.Ins.GameData.user.hintCount <= 0)
             {
                 DevLog.Log(DevId.Hoang, "Show popup to buy hint");
-                UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(DataManager.Ins.ConfigData.boosterConfigs[BoosterType.Hint]);
+                BoosterConfig boosterConfig = DataManager.Ins.ConfigData.boosterConfigs[BoosterType.Hint];
+                boosterConfig.ResourceData = DataManager.Ins.GetBoosterResourceData(boosterConfig.Type);
+                UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(boosterConfig);
             }
             else
             {
@@ -324,7 +330,9 @@ namespace _Game.Managers
             if (DataManager.Ins.GameData.user.growTreeCount <= 0)
             {
                 DevLog.Log(DevId.Hoang, "Show popup to buy grow tree");
-                UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(DataManager.Ins.ConfigData.boosterConfigs[BoosterType.GrowTree]);
+                BoosterConfig boosterConfig = DataManager.Ins.ConfigData.boosterConfigs[BoosterType.GrowTree];
+                boosterConfig.ResourceData = DataManager.Ins.GetBoosterResourceData(boosterConfig.Type);
+                UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(boosterConfig);
             }
             else
             {
