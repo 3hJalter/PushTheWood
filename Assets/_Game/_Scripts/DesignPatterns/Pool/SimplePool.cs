@@ -381,6 +381,7 @@ namespace _Game.DesignPattern
         TreeShortAfterBee = 28,
         FinalPointChickenBbq = 29,
         BonusChestGround = 30,
+        ChestCompass = 31,
 
         // Grid Unit Building Object
         HouseMain = 50,
