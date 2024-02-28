@@ -16,8 +16,14 @@ namespace _Game.Data
 
         [FoldoutGroup("In Game")]
         // Time per level
-        [FoldoutGroup("In Game/Time Per Level")]
-        public readonly int timePerNormalLevel = 600;
+        [FoldoutGroup("In Game/Time Per Level/Normal")]
+        public readonly Dictionary<LevelNormalType, int> timePerNormalLevel = new()
+        {
+            { LevelNormalType.None , 300},
+            {LevelNormalType.Easy, 300},
+            {LevelNormalType.Medium, 600},
+            {LevelNormalType.Hard, 900},
+        };
         [FoldoutGroup("In Game/Time Per Level")]
         public readonly int timePerDailyChallengeLevel = 900;
         [FoldoutGroup("In Game/Time Per Level")]
@@ -73,6 +79,13 @@ namespace _Game.Data
         public int GoldPerBuyTen => goldPerBuyTen;
 
         // Do with goldPerBuyMore
+    }
+    
+    [Serializable] 
+    public record TimePerNormalLevel
+    {
+       LevelNormalType levelNormalType;
+       int time;
     }
     
     [Serializable]

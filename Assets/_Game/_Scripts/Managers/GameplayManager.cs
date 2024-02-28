@@ -206,8 +206,8 @@ namespace _Game.Managers
             _pushHint = new PushHint(LevelManager.Ins.CurrentLevel.GetPushHint());
             GameManager.Ins.ChangeState(GameState.InGame);
             LevelManager.Ins.player.SetActiveAgent(false);
-            // If hard level, show a notification
-            DevLog.Log(DevId.Hoang, $"Hard Level: {LevelManager.Ins.CurrentLevel.IsHardLevel}");
+            // If hard level, show a notification -> If it None -> not show
+            DevLog.Log(DevId.Hoang, $"LEVEL NORMAL TYPE: {LevelManager.Ins.CurrentLevel.LevelNormalType}");
         }
 
         private void OnWinGame()
@@ -243,7 +243,7 @@ namespace _Game.Managers
             GameManager.Ins.UnregisterListenerEvent(EventID.LoseGame, OnLoseGame);
             GameManager.Ins.UnregisterListenerEvent(EventID.Pause, OnPauseGame);
             GameManager.Ins.UnregisterListenerEvent(EventID.UnPause, OnUnPauseGame);
-            EventGlobalManager.Ins.OnChangeBoosterAmount.RemoveListener(OnChangeBoosterAmount);
+            EventGlobalManager.Ins.OnChangeBoosterAmount?.RemoveListener(OnChangeBoosterAmount);
             screen.OnUndo -= OnUndo;
             screen.OnResetIsland -= OnResetIsland;
             screen.OnHint -= OnShowHint;
@@ -251,7 +251,7 @@ namespace _Game.Managers
             screen.OnGrowTree -= OnGrowTree;
             screen.OnUsePushHint -= OnPushHint;
             _pushHint?.OnStopHint();
-            EventGlobalManager.Ins.OnPlayerChangeIsland.RemoveListener(OnPlayerChangeIsland);
+            EventGlobalManager.Ins.OnPlayerChangeIsland?.RemoveListener(OnPlayerChangeIsland);
             TimerManager.Ins.PushSTimer(timer);         
         }
 

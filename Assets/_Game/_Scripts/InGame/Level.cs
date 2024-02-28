@@ -131,7 +131,7 @@ namespace _Game._Scripts.InGame
         
         public LevelType LevelType => (LevelType) _rawLevelData.lt;
         public LevelWinCondition LevelWinCondition => (LevelWinCondition) _rawLevelData.wc;
-        public bool IsHardLevel => _rawLevelData.h;
+        public LevelNormalType LevelNormalType => (LevelNormalType) _rawLevelData.lnt;
         #endregion
 
         #region public function
@@ -570,7 +570,7 @@ namespace _Game._Scripts.InGame
     {
         public int lt; // LEVEL TYPE
         public int wc; // WIN CONDITION
-        public bool h; // IS HARD LEVEL 
+        public int lnt; // LEVEL NORMAL TYPE 
         public Vector2Int s; // SIZE
         public GridSurfaceData[] sfD; // SURFACE DATA
         public GridUnitData[] uD; // UNIT DATA

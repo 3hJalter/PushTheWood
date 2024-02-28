@@ -3,9 +3,11 @@ using _Game.DesignPattern;
 using _Game.Managers;
 using _Game.Resource;
 using Sigtrap.Relays;
+using UnityEngine;
 
 namespace _Game._Scripts.Managers
 {
+    [DefaultExecutionOrder(-1)]
     public class EventGlobalManager : Singleton<EventGlobalManager>
     {
         // Global events
