@@ -222,6 +222,7 @@ namespace _Game.UIs.Screen
                 LevelWinCondition.FindingChickenBbq => Constants.FIND_CHICKEN_BBQ,
                 _ => objectiveText.text
             };
+            DevLog.Log(DevId.Hoang, "Update Objective Counter: " + LevelManager.Ins.ObjectiveCounterLeft() + "/" + LevelManager.Ins.objectiveCounter);
             objectiveText.text = $"{constant}: {LevelManager.Ins.ObjectiveCounterLeft()}/{LevelManager.Ins.objectiveCounter}";
         }
 

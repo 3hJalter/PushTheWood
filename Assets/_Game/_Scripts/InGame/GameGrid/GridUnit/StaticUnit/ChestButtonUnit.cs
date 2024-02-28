@@ -2,6 +2,7 @@
 using _Game._Scripts.Managers;
 using _Game.DesignPattern;
 using _Game.GameGrid.Unit.StaticUnit.Chest;
+using _Game.Utilities;
 using GameGridEnum;
 using Sirenix.OdinInspector;
 using TMPro;
@@ -97,6 +98,10 @@ namespace _Game.GameGrid.Unit.StaticUnit
             lockedChestModel.SetActive(false);
             canvas.SetActive(false);
             chestUnlockParticle.Play();
+            if (neighborUnits.Contains(LevelManager.Ins.player))
+            {
+                OnEnterTriggerNeighbor(LevelManager.Ins.player);
+            }
         }
 
         private void SetText()
@@ -137,6 +142,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         private static void OnAddToLevelManager()
         {
             LevelManager.Ins.numsOfCollectingObjectInLevel++;
+            DevLog.Log(DevId.Hoang, "Add to level manager");
             LevelManager.Ins.objectiveCounter++;
         }
         

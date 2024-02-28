@@ -11,6 +11,7 @@ namespace _Game.DesignPattern.StateMachine
         public StateEnum CurrentStateId => CurrentState?.Id ?? StateEnum.None;
         private readonly T main;
         public StateEnum OverrideState;
+        public StateEnum PreviousState = StateEnum.None;
         public bool Debug = false;
         public StateMachine(T main)
         {
@@ -49,6 +50,7 @@ namespace _Game.DesignPattern.StateMachine
             {
                 DevLog.Log(DevId.Hung, $"{CurrentState?.Id} -> {id}");
             }
+            PreviousState = CurrentStateId;
             CurrentState?.OnExit(main);
             CurrentState = states[id];
             CurrentState.OnEnter(main);

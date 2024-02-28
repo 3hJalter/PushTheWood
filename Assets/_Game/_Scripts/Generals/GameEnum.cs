@@ -126,6 +126,7 @@ namespace GameGridEnum
         TreeSeed = 12,
         TreeShortAfterBee = 13,
         FinalPointChickenBbq = 16,
+        ChestCompass = 17,
     }
 
     public enum GridUnitDynamicType

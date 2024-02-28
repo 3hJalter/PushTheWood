@@ -10,7 +10,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit
 {
     public class ButtonUnit : GridUnitDynamic
     {
-        private StateMachine<ButtonUnit> StateMachine { get; set; }
+        public StateMachine<ButtonUnit> StateMachine { get; private set; }
         [SerializeField] private Transform btnModelTransform;
 
         public Transform BtnModelTransform => btnModelTransform;
@@ -55,14 +55,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit
         {
             if (CurrentStateId == StateEnum.Enter) return;
             StateMachine.ChangeState(StateEnum.Enter);
-            DevLog.Log(DevId.Hoang, "Enter Button at time: " + Time.time);
         }
         
         protected override void OnOutTriggerUpper(GridUnit triggerUnit)
         {
             if (CurrentStateId == StateEnum.Idle) return;
             StateMachine.ChangeState(StateEnum.Idle);
-            DevLog.Log(DevId.Hoang, "Exit Button at time: " + Time.time);
         }
 
         public override StateEnum CurrentStateId 
