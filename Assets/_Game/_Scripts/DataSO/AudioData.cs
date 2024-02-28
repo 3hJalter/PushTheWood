@@ -51,10 +51,13 @@ namespace AudioEnum
         OpenChest = 9,
         Sleep = 10,
         Happy = 11,
+        Whistling = 12,
         // UI
         Click = 100,
         Win = 101,
         Lose = 102,
+        BuyItem = 103,
+        CollectReward = 104,
     }
 
     public enum BgmType
