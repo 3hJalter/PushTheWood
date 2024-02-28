@@ -217,7 +217,7 @@ namespace _Game.UIs.Screen
             {
                 LevelWinCondition.FindingFruit => Constants.FIND_FRUIT,
                 LevelWinCondition.DefeatAllEnemy => Constants.DEFEAT_ENEMY,
-                LevelWinCondition.CollectAllChest => Constants.COLLECT_ALL_STARS,
+                LevelWinCondition.CollectAllChest => Constants.COLLECT_ALL_CHEST,
                 LevelWinCondition.FindingChest => Constants.FIND_CHEST,
                 LevelWinCondition.FindingChickenBbq => Constants.FIND_CHICKEN_BBQ,
                 _ => objectiveText.text
