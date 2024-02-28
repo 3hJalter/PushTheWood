@@ -15,12 +15,7 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects:
-    - {fileID: 21300000, guid: 8fd521d3fc1eb46fd92b0f29508e5f76, type: 3}
-    - {fileID: 21300000, guid: 4b00db671a20143a8be8c3b5301d6a23, type: 3}
-    - {fileID: 21300000, guid: e2531dbb210c447358dfd4dd637545c5, type: 3}
-    - {fileID: 21300000, guid: f2ae7a32e607341ddbdf9469f9169ca5, type: 3}
-    - {fileID: 21300000, guid: e0d205e33f577419cb357631ec486da0, type: 3}
+    ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -219,12 +214,6 @@ MonoBehaviour:
     - Name: type
       Entry: 3
       Data: 0
-    - Name: name
-      Entry: 1
-      Data: Undo
-    - Name: icon
-      Entry: 10
-      Data: 0
     - Name: goldPerBuyTen
       Entry: 3
       Data: 10
@@ -237,6 +226,18 @@ MonoBehaviour:
     - Name: itemsPerBuy
       Entry: 3
       Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ResourceData
+      Entry: 7
+      Data: VinhLB.ResourceData, Assembly-CSharp
+    - Name: Name
+      Entry: 6
+      Data: 
+    - Name: IconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -258,12 +259,6 @@ MonoBehaviour:
     - Name: type
       Entry: 3
       Data: 1
-    - Name: name
-      Entry: 1
-      Data: Reset Island
-    - Name: icon
-      Entry: 10
-      Data: 1
     - Name: goldPerBuyTen
       Entry: 3
       Data: 10
@@ -276,6 +271,18 @@ MonoBehaviour:
     - Name: itemsPerBuy
       Entry: 3
       Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ResourceData
+      Entry: 7
+      Data: VinhLB.ResourceData, Assembly-CSharp
+    - Name: Name
+      Entry: 6
+      Data: 
+    - Name: IconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -297,12 +304,6 @@ MonoBehaviour:
     - Name: type
       Entry: 3
       Data: 2
-    - Name: name
-      Entry: 1
-      Data: Show Hint
-    - Name: icon
-      Entry: 10
-      Data: 2
     - Name: goldPerBuyTen
       Entry: 3
       Data: 10
@@ -315,6 +316,18 @@ MonoBehaviour:
     - Name: itemsPerBuy
       Entry: 3
       Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ResourceData
+      Entry: 7
+      Data: VinhLB.ResourceData, Assembly-CSharp
+    - Name: Name
+      Entry: 6
+      Data: 
+    - Name: IconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -336,12 +349,6 @@ MonoBehaviour:
     - Name: type
       Entry: 3
       Data: 3
-    - Name: name
-      Entry: 1
-      Data: Grow Tree
-    - Name: icon
-      Entry: 10
-      Data: 3
     - Name: goldPerBuyTen
       Entry: 3
       Data: 10
@@ -354,6 +361,18 @@ MonoBehaviour:
     - Name: itemsPerBuy
       Entry: 3
       Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ResourceData
+      Entry: 7
+      Data: VinhLB.ResourceData, Assembly-CSharp
+    - Name: Name
+      Entry: 6
+      Data: 
+    - Name: IconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -375,12 +394,6 @@ MonoBehaviour:
     - Name: type
       Entry: 3
       Data: 4
-    - Name: name
-      Entry: 1
-      Data: Hint
-    - Name: icon
-      Entry: 10
-      Data: 4
     - Name: goldPerBuyTen
       Entry: 3
       Data: 10
@@ -393,6 +406,18 @@ MonoBehaviour:
     - Name: itemsPerBuy
       Entry: 3
       Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ResourceData
+      Entry: 7
+      Data: VinhLB.ResourceData, Assembly-CSharp
+    - Name: Name
+      Entry: 6
+      Data: 
+    - Name: IconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -419,4 +444,4 @@ MonoBehaviour:
       Data: 8
     - Name: winLevelCountInterAds
       Entry: 3
-      Data: 3
+      Data: 4

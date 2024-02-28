@@ -15,7 +15,7 @@ namespace VinhLB
     public class BoosterWatchVideoPopup : UICanvas
     {
         private const int BOOSTER_AMOUNT_ON_BUY = 5;
-        
+
         [SerializeField]
         private Image _boosterIcon;
         [SerializeField]
@@ -28,14 +28,14 @@ namespace VinhLB
         private ContentSizeFitter _currencyAmountTextContentSizeFitter;
 
         private BoosterConfig _boosterConfig;
-        
+
         public override void Setup(object param = null)
         {
             base.Setup(param);
             // Cast param to BoosterConfig
             if (param != null)
             {
-                _boosterConfig = (BoosterConfig) param;
+                _boosterConfig = (BoosterConfig)param;
                 // Change the _boosterIcon to boosterConfig.icon & _boosterText to boosterConfig.name
                 _boosterIcon.sprite = _boosterConfig.Icon;
                 _boosterText.text = _boosterConfig.Name;
@@ -51,7 +51,7 @@ namespace VinhLB
             if (GameManager.Ins.TrySpendGold(_boosterConfig.GoldPerBuyTen))
             {
                 EventGlobalManager.Ins.OnChangeBoosterAmount.Dispatch(_boosterConfig.Type, BOOSTER_AMOUNT_ON_BUY);
-                Close();   
+                Close();
             }
             else
             {
@@ -63,7 +63,8 @@ namespace VinhLB
         public void OnClickClaimButton()
         {
             // Double reward
-            AdsManager.Ins.RewardedAds.Show(null, null, new List<BoosterType> { _boosterConfig.Type }, new List<int> { BOOSTER_AMOUNT_ON_BUY * 2 });
+            AdsManager.Ins.RewardedAds.Show(null, null, new List<BoosterType> { _boosterConfig.Type },
+                new List<int> { BOOSTER_AMOUNT_ON_BUY * 2 });
             Close();
         }
 

@@ -1900,9 +1900,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 806727943264897264, guid: a36897d6cef9303459632761b987c23d, type: 3}
     - target: {fileID: 806727943264897264, guid: a36897d6cef9303459632761b987c23d, type: 3}
+      propertyPath: _rewardKeyConfig.MoveDuration
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 806727943264897264, guid: a36897d6cef9303459632761b987c23d, type: 3}
       propertyPath: _rewardKeytConfig.PrefabPoolType
       value: 402
       objectReference: {fileID: 0}
+    - target: {fileID: 806727943264897264, guid: a36897d6cef9303459632761b987c23d, type: 3}
+      propertyPath: _rewardKeyConfig.CollectingResourceParentTF
+      value: 
+      objectReference: {fileID: 546648010}
     - target: {fileID: 806727943264897264, guid: a36897d6cef9303459632761b987c23d, type: 3}
       propertyPath: _rewardKeytConfig.CollectingResourceParentTF
       value: 

@@ -5,6 +5,7 @@ using _Game.Resource;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
+using VinhLB;
 
 namespace _Game.Data
 {
@@ -53,8 +54,11 @@ namespace _Game.Data
         #region Ads
         [FoldoutGroup("Ads")]
         public readonly int stepInterAdsCountMax = 3;
+        [FoldoutGroup("Ads")]
         public readonly int interAdsCooldownTime = 45;
+        [FoldoutGroup("Ads")]
         public readonly int startInterAdsLevel = 8;
+        [FoldoutGroup("Ads")]
         public readonly int winLevelCountInterAds = 3;
         #endregion
         // [BoxGroup("Monetize")]
@@ -64,17 +68,14 @@ namespace _Game.Data
     public struct BoosterConfig
     {
         [SerializeField] private BoosterType type;
-        [SerializeField] private string name;
-        [SerializeField] private Sprite icon;
         [SerializeField] private int goldPerBuyTen;
         [SerializeField] private TicketPerBuyRatio ticketPerBuyRatio;
+
+        public ResourceData ResourceData;
         
         public BoosterType Type => type;
-
-        public string Name => name;
-
-        public Sprite Icon => icon;
-
+        public string Name => ResourceData.Name;
+        public Sprite Icon => ResourceData.IconSprite;
         public int GoldPerBuyTen => goldPerBuyTen;
 
         // Do with goldPerBuyMore
