@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using VinhLB;
+using _Game.GameGrid;
+using TMPro;
 
 namespace _Game.UIs.Screen
 {
@@ -37,6 +39,10 @@ namespace _Game.UIs.Screen
         private Button _addSecretMapPieceButton;
         [SerializeField]
         private Button _resetResourceButton;
+        [SerializeField]
+        private Button _changePlayerSkinButton;
+        [SerializeField]
+        private TMP_InputField _playerSkinInputField;
         
         [Header("Daily Reward Menu")]
         [SerializeField]
@@ -62,11 +68,14 @@ namespace _Game.UIs.Screen
             _addGoldButton.onClick.AddListener(AddGold);
             _addSecretMapPieceButton.onClick.AddListener(AddSecretMapPiece);
             _resetResourceButton.onClick.AddListener(ResetUserData);
+            _changePlayerSkinButton.onClick.AddListener(ChangePlayerSkin);
             
             _setCanCollectTodayButton.onClick.AddListener(DailyRewardManager.SetCanCollectToday);
             _increase1DailyDay.onClick.AddListener(DailyRewardManager.Increase1DailyDay);
             _decrease1DailyDayButton.onClick.AddListener(DailyRewardManager.Decrease1DailyDay);
             _resetDailyRewardButton.onClick.AddListener(DailyRewardManager.ResetAll);
+
+            _playerSkinInputField.text = DataManager.Ins.GameData.user.currentPlayerSkinIndex.ToString();
         }
 
         private void OnEnable()
@@ -113,6 +122,12 @@ namespace _Game.UIs.Screen
             //UIManager.Ins.UpdateUIs();
         }
         
+        private void ChangePlayerSkin()
+        {
+            int index = int.Parse(_playerSkinInputField.text);
+            DataManager.Ins.GameData.user.currentPlayerSkinIndex = index;
+            LevelManager.Ins.player?.ChangeSkin(index);
+        }
         private void AddSecretMapPiece()
         {
             GameManager.Ins.GainSecretMapPiece(1);

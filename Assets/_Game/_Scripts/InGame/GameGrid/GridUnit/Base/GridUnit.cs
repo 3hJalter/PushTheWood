@@ -655,6 +655,11 @@ namespace _Game.GameGrid.Unit
                    cellInUnits.All(t => t.SurfaceType is GridSurfaceType.Water) &&
                    isSpawn;
         }
+
+        public virtual void ChangeSkin(int index)
+        {
+            skinController.ChangeSkin(index);
+        }
     }
 
     public enum UnitTypeY
