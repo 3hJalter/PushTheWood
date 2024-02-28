@@ -117,7 +117,7 @@ namespace GameGridEnum
         TreeShort = 3,
         TreeHigh = 4,
         FinalPointFruit = 5,
-        FloatingChest = 6, 
+        BonusChest = 6, 
         ChestButtonUnit = 7,
         RockUnderwaterSmall = 8,
         RockUnderWaterBig = 9,
