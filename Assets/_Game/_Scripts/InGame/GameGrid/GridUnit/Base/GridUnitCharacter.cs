@@ -54,8 +54,26 @@ namespace _Game.GameGrid.Unit
             skin.DOLookAt(Tf.position + Constants.DirVector3[directionIn], 0.2f, AxisConstraint.Y, Vector3.up);
         }
         protected abstract void AddState();
-       
-
+        public abstract void OnCharacterDie();
+        public override void OnDespawn()
+        {
+            base.OnDespawn();
+            foreach (GameGridCell cell in AttackRange)
+            {
+                cell.Data.IsBlockDanger = false;
+                cell.Data.SetDanger(false, GetHashCode());
+            }
+            AttackRange.Clear();
+            foreach (DangerIndicator indicator in AttackRangeVFX)
+            {
+                indicator.Despawn();
+            }
+            AttackRangeVFX.Clear();
+        }
+        public override void ChangeSkin(int index)
+        {
+            animator = skinController.ChangeSkin(index);
+        }
         #region SAVING DATA
         public override IMemento RawSave()
         {
@@ -63,22 +81,7 @@ namespace _Game.GameGrid.Unit
                 , unitTypeY, unitTypeXZ, belowUnits, neighborUnits, upperUnits, mainCell, cellInUnits, islandID, lastPushedDirection);
         }
 
-        public abstract void OnCharacterDie();
-        public override void OnDespawn()
-        {
-            base.OnDespawn();
-            foreach(GameGridCell cell in AttackRange)
-            {
-                cell.Data.IsBlockDanger = false;
-                cell.Data.SetDanger(false, GetHashCode());
-            }
-            AttackRange.Clear();
-            foreach(DangerIndicator indicator in AttackRangeVFX)
-            {
-                indicator.Despawn();
-            }
-            AttackRangeVFX.Clear();
-        }
+        
 
         public class CharacterUnitMemento<T> : DynamicUnitMemento<T> where T : GridUnitCharacter
         {

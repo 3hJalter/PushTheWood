@@ -39,6 +39,7 @@ namespace _Game._Scripts.Managers
             OnGrowTree = new Relay();
             OnPlayerChangeIsland = new Relay();
             OnPlayerPushStep = new Relay<PlayerStep>();
+            DontDestroyOnLoad(gameObject);
         }
     }
 }

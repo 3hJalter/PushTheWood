@@ -16,6 +16,7 @@ namespace _Game.Data
         [Serializable]
         public class UserData
         {
+            public const int PLAYER_SKIN_COUNT = 6;
             // Level Progress Data
             public int normalLevelIndex;
             public int secretLevelIndex;
@@ -54,6 +55,8 @@ namespace _Game.Data
             public bool rated;
 
             // TODO: Shop data
+            public int currentPlayerSkinIndex = 0;
+            public int[] playerSkinState = new int[PLAYER_SKIN_COUNT];
             
             //Other Data
             public int sessionPlayed;
