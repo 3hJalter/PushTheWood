@@ -41,6 +41,8 @@ namespace _Game.Data
         public readonly int requireLevelProgress = 3;
         [FoldoutGroup("In Game/Secret Level")]
         public readonly int requireSecretMapPiece = 8;
+        [FoldoutGroup("In Game/Characters")]
+        public readonly int[] CharacterCosts;
         #endregion
 
         #region Booster Purchase

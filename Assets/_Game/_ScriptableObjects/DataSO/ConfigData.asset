@@ -182,13 +182,43 @@ MonoBehaviour:
     - Name: requireSecretMapPiece
       Entry: 3
       Data: 8
+    - Name: CharacterCosts
+      Entry: 7
+      Data: 5|System.Int32[], mscorlib
+    - Name: 
+      Entry: 14
+      Data: 6
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 5000
+    - Name: 
+      Entry: 3
+      Data: 7000
+    - Name: 
+      Entry: 3
+      Data: 8000
+    - Name: 
+      Entry: 3
+      Data: 9000
+    - Name: 
+      Entry: 3
+      Data: 7000
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: boosterConfigs
       Entry: 7
-      Data: 5|System.Collections.Generic.Dictionary`2[[_Game.Resource.BoosterType,
+      Data: 6|System.Collections.Generic.Dictionary`2[[_Game.Resource.BoosterType,
         Assembly-CSharp],[_Game.Data.BoosterConfig, Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 6|System.Collections.Generic.EnumEqualityComparer`1[[_Game.Resource.BoosterType,
+      Data: 7|System.Collections.Generic.EnumEqualityComparer`1[[_Game.Resource.BoosterType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
