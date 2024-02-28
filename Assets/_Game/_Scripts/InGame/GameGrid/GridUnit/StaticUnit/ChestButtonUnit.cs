@@ -30,7 +30,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         public override void OnOpenChestComplete()
         {
             base.OnOpenChestComplete();
-            LevelManager.Ins.OnWin();
+            OnRemoveFromLevelManager();
         }
 
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
@@ -40,6 +40,8 @@ namespace _Game.GameGrid.Unit.StaticUnit
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
             SetUpButtonUnit();
             OnLockChest();
+            OnAddToLevelManager();
+
         }
 
         public override void OnDespawn()
@@ -130,6 +132,18 @@ namespace _Game.GameGrid.Unit.StaticUnit
             EventGlobalManager.Ins.OnButtonUnitEnter.RemoveListener(OnButtonUnitEnter());
             numberOfButtonEntered = 0;
             numberOfButtonInLevel = 0;
+        }
+        
+        private static void OnAddToLevelManager()
+        {
+            LevelManager.Ins.numsOfCollectingObjectInLevel++;
+            LevelManager.Ins.objectiveCounter++;
+        }
+        
+        private static void OnRemoveFromLevelManager()
+        {
+            LevelManager.Ins.numsOfCollectingObjectInLevel--;
+            EventGlobalManager.Ins.OnChangeLevelCollectingObjectNumber.Dispatch();
         }
     }
 }
