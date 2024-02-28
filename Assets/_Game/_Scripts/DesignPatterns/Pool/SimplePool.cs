@@ -370,7 +370,7 @@ namespace _Game.DesignPattern
         TreeShort = 10,
         TreeHigh = 11,
         FinalPointFruit = 13,
-        FloatingChest = 18,
+        BonusChestWater = 18,
         ChestButtonUnit = 20,
         RockUnderwaterSmall = 21,
         RockUnderwaterBig = 22,
@@ -380,6 +380,7 @@ namespace _Game.DesignPattern
         TreeSeed = 27,
         TreeShortAfterBee = 28,
         FinalPointChickenBbq = 29,
+        BonusChestGround = 30,
 
         // Grid Unit Building Object
         HouseMain = 50,

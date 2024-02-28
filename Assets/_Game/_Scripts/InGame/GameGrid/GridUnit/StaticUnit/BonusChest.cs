@@ -1,4 +1,6 @@
-﻿using _Game.GameGrid.Unit.StaticUnit.Chest;
+﻿using _Game._Scripts.Managers;
+using _Game.Data;
+using _Game.GameGrid.Unit.StaticUnit.Chest;
 using _Game.Managers;
 using _Game.Utilities;
 using DG.Tweening;
@@ -8,7 +10,7 @@ using VinhLB;
 
 namespace _Game.GameGrid.Unit.StaticUnit
 {
-    public class FloatingChest : BChest
+    public class BonusChest : BChest
     {
         private Vector3 originTransform;
         private Tween floatingTween;
@@ -19,7 +21,11 @@ namespace _Game.GameGrid.Unit.StaticUnit
             Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
-            SetFloatingTween();
+            if (IsOnWater() || IsInWater()) SetFloatingTween();
+            if (LevelManager.Ins.CurrentLevel.LevelType == LevelType.Secret)
+            {
+                OnAddToLevelManager();
+            }
         }
 
         private void SetFloatingTween()
@@ -69,6 +75,22 @@ namespace _Game.GameGrid.Unit.StaticUnit
             CollectingResourceManager.Ins.SpawnCollectingRewardKey(1, LevelManager.Ins.player.transform);
             LevelManager.Ins.ReceivingKeyReward = true;
             DevLog.Log(DevId.Hoang, "Loot something");
+            if (LevelManager.Ins.CurrentLevel.LevelType == LevelType.Secret)
+            {
+                OnRemoveFromLevelManager();
+            }
+        }
+        
+        private static void OnAddToLevelManager()
+        {
+            LevelManager.Ins.numsOfCollectingObjectInLevel++;
+            LevelManager.Ins.objectiveCounter++;
+        }
+        
+        private static void OnRemoveFromLevelManager()
+        {
+            LevelManager.Ins.numsOfCollectingObjectInLevel--;
+            EventGlobalManager.Ins.OnChangeLevelCollectingObjectNumber.Dispatch();
         }
     }
 }

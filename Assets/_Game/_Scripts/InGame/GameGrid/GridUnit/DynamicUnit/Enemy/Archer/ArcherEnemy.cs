@@ -75,6 +75,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
         public void AddToLevelManager()
         {
             LevelManager.Ins.enemies.Add(this);
+            LevelManager.Ins.objectiveCounter++;
         }
 
         public void RemoveFromLevelManager()

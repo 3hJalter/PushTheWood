@@ -172,6 +172,7 @@ MonoBehaviour:
     SerializationNodes: []
   btnSound: -1
   unscaleTime: 0
+  cooldownTime: 0.1
   showAnimType: 0
   showAnimTime: 0.35
   initScale: 0
@@ -564,7 +565,7 @@ GameObject:
   - component: {fileID: 3138856877929832973}
   - component: {fileID: 7548886116919270023}
   m_Layer: 0
-  m_Name: FloatingChest
+  m_Name: BonusChestWater
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -705,6 +706,7 @@ MonoBehaviour:
   poolType: 18
   skin: {fileID: 3138856879025384562}
   meshRenderer: {fileID: 0}
+  skinController: {fileID: 0}
   size: {x: 1, y: 1, z: 1}
   isMinusHalfSizeY: 0
   startHeight: 1
@@ -721,6 +723,7 @@ MonoBehaviour:
   chestAnimator: {fileID: 9018194286319918507}
   chestModel: {fileID: 8657068477180030056}
   indicatorTarget: {fileID: 7548886116919270023}
+  isInteracted: 0
 --- !u!114 &7548886116919270023
 MonoBehaviour:
   m_ObjectHideFlags: 0

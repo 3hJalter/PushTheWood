@@ -1,4 +1,5 @@
-﻿using _Game.GameGrid.Unit.DynamicUnit.Player;
+﻿using _Game._Scripts.Managers;
+using _Game.GameGrid.Unit.DynamicUnit.Player;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
@@ -16,6 +17,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
             if (!isInteracted) indicatorTarget.enabled = true;
+            OnAddToLevelManager();
         }
         
         public override void OnDespawn()
@@ -29,7 +31,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             indicatorTarget.enabled = false;
             winParticle.Play();
-            LevelManager.Ins.OnWin();
+            OnRemoveFromLevelManager();
         }
         
         protected override void OnEnterTriggerNeighbor(GridUnit triggerUnit)
@@ -38,6 +40,18 @@ namespace _Game.GameGrid.Unit.StaticUnit
             if (triggerUnit is not Player) return;
             isInteracted = true;
             OnReachPoint();
+        }
+
+        private static void OnAddToLevelManager()
+        {
+            LevelManager.Ins.numsOfCollectingObjectInLevel++;
+            LevelManager.Ins.objectiveCounter++;
+        }
+        
+        private static void OnRemoveFromLevelManager()
+        {
+            LevelManager.Ins.numsOfCollectingObjectInLevel--;
+            EventGlobalManager.Ins.OnChangeLevelCollectingObjectNumber.Dispatch();
         }
     }
 }
