@@ -26,7 +26,7 @@ namespace _Game._Scripts.InGame.GameCondition.Condition
                     {
                         case 0:
                             return true;
-                        case 1 when movingData.blockStaticUnits[0] is TreeRoot
+                        case 1 when movingData.blockStaticUnits[0] is TreeRoot t && t.upperUnits.Count == 0
                         && movingData.owner is IJumpTreeRootUnit jumpTreeRootUnit && jumpTreeRootUnit.CanJumpOnTreeRoot(movingData.inputDirection):
                             data.Condition = CONDITION.BE_BLOCKED_BY_TREE_ROOT;
                             return true;

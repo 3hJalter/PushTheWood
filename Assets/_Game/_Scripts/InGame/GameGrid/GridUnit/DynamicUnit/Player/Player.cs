@@ -127,24 +127,22 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         public override void OnPush(Direction direction, ConditionData conditionData = null)
         {
+            // Only push the highest unit, which is last index of the list
             if (MovingData.blockDynamicUnits.Count > 0)
             {
                 #region Save
                 LevelManager.Ins.SaveGameState(true);
                 mainCell.ValueChange();
-                for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
-                {
-                    MovingData.blockDynamicUnits[i].MainCell.ValueChange();
-                }
+                MovingData.blockDynamicUnits[^1].MainCell.ValueChange();
                 LevelManager.Ins.SaveGameState(false);
                 #endregion
-                for (int i = 0; i < MovingData.blockDynamicUnits.Count; i++)
-                {
-                    MovingData.blockDynamicUnits[i].OnBePushed(direction, this);
-                }
+                MovingData.blockDynamicUnits[^1].OnBePushed(direction, this);
+                return;
             }
-            for (int i = 0; i < MovingData.blockStaticUnits.Count; i++)
-                MovingData.blockStaticUnits[i].OnBePushed(direction, this);
+            if (MovingData.blockStaticUnits.Count > 0)
+            {
+                MovingData.blockStaticUnits[^1].OnBePushed(direction, this);
+            }
         }
 
         protected override void OnOutTriggerBelow(GridUnit triggerUnit)
