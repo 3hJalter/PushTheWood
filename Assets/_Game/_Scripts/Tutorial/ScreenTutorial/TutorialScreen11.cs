@@ -59,7 +59,7 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
         public override void CloseDirectly(object param = null)
         {
             // Remove Close this screen when swipe 
-            MoveInputManager.Ins.HSwipe.RemoveListener(_swipeEvent);
+            // MoveInputManager.Ins.HSwipe.RemoveListener(_swipeEvent);
             base.CloseDirectly(param);
         }
     }

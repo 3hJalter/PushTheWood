@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace _Game._Scripts.Managers
 {
-    [DefaultExecutionOrder(-1)]
+    [DefaultExecutionOrder(-10)]
     public class EventGlobalManager : Singleton<EventGlobalManager>
     {
         // Global events
