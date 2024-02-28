@@ -562,7 +562,10 @@ public class GridMapDataGenerator : MonoBehaviour
         #endregion
 
         levelType = levelTypeTemp;
-        
+        if (levelType is not LevelType.Normal)
+        {
+            levelNormalType = LevelNormalType.None;
+        }
         RawLevelData levelData = new()
         {
             lt = (int) levelTypeTemp,
