@@ -180,6 +180,7 @@ namespace _Game.Resource
         ResetIsland = 1,
         Hint = 2,
         GrowTree = 3,
+        PushHint = 4,
     }
     
     public enum CurrencyType

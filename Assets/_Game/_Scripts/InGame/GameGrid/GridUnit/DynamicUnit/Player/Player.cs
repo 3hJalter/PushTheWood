@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using _Game._Scripts.InGame;
 using _Game._Scripts.InGame.GameCondition.Data;
+using _Game._Scripts.Managers;
 using _Game.AI;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
@@ -97,6 +98,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             IsDead = false;
             IsStun = false;
             stateMachine.ChangeState(StateEnum.Idle);
+            EventGlobalManager.Ins.OnPlayerChangeIsland?.Dispatch();
         }
 
         public override void OnDespawn()
@@ -125,11 +127,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         public override void OnPush(Direction direction, ConditionData conditionData = null)
         {
-            //NOTE: Saving when push dynamic object that make grid change
-            if (LevelManager.Ins.IsSavePlayerPushStep)
-            {
-                GameplayManager.Ins.SaveHint.SaveStep(mainCell.X, mainCell.Y, (int) direction, islandID);        
-            }
             if (MovingData.blockDynamicUnits.Count > 0)
             {
                 #region Save
@@ -172,6 +169,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             if (islandID == nextMainCell.IslandID || nextMainCell.IslandID == -1) return;
             islandID = nextMainCell.IslandID;
             isChangeIsland = true;
+            EventGlobalManager.Ins.OnPlayerChangeIsland?.Dispatch();
             LevelManager.Ins.CurrentLevel.SetFirstPlayerStepOnIsland(nextMainCell);
         }
 
@@ -308,6 +306,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         #endregion
 
         #region SAVING DATA
+
+        protected override void OnMementoRestoreData()
+        {
+            EventGlobalManager.Ins.OnPlayerChangeIsland?.Dispatch();
+        }
+
         public override IMemento RawSave()
         {
             return new PlayerMemento(this, Tf.parent, isRideVehicle, _vehicle, CurrentStateId, isSpawn, Tf.position, skin.rotation, startHeight, endHeight

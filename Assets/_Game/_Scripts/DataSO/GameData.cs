@@ -47,6 +47,7 @@ namespace _Game.Data
             public int undoCount;
             public int resetCount;
             public int growTreeCount;
+            public int pushHintCount;
             
             // Purchase & First rate Data
             public bool purchasedNoAds;

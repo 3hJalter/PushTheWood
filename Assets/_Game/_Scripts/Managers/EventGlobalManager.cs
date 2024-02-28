@@ -1,4 +1,5 @@
-﻿using _Game.DesignPattern;
+﻿using _Game._Scripts.InGame;
+using _Game.DesignPattern;
 using _Game.Managers;
 using _Game.Resource;
 using Sigtrap.Relays;
@@ -22,6 +23,9 @@ namespace _Game._Scripts.Managers
         
         public Relay OnGrowTree { get; private set; } // For Tree Seed
         
+        public Relay OnPlayerChangeIsland { get; private set; } // For When Player go to the other Island
+        public Relay<PlayerStep>  OnPlayerPushStep { get; private set; } // For Push Hint
+        
         private void Awake()
         {
             // OnStartLoadScene = new Relay();
@@ -33,6 +37,8 @@ namespace _Game._Scripts.Managers
             OnEnemyDie = new Relay();
             OnChangeBoosterAmount = new Relay<BoosterType, int>();
             OnGrowTree = new Relay();
+            OnPlayerChangeIsland = new Relay();
+            OnPlayerPushStep = new Relay<PlayerStep>();
         }
     }
 }

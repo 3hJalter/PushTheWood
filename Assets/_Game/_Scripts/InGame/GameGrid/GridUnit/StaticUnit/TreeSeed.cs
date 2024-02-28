@@ -40,7 +40,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             _isGrown = false;
         }
 
-        protected override void OnRestoreSpawn()
+        protected override void OnMementoRestoreSpawn()
         {
             EventGlobalManager.Ins.OnGrowTree.AddListener(OnGrow);
             ChangeAnim(Constants.IDLE_ANIM);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using _Game._Scripts.Managers;
 using _Game.Managers;
+using _Game.UIs.Screen;
 using MEC;
 using UnityEngine;
 using UnityEngine.Events;
@@ -39,6 +40,7 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
             // Set panel alpha to 0
             panel.color = new Color(1, 1, 1, 0);
             // Tween to move _imageRectContainer to _finalImageRectPosition
+            UIManager.Ins.OpenUI<InGameScreen>();
             Timing.RunCoroutine(MoveImageRect().CancelWith(gameObject));
             MoveInputManager.Ins.HSwipe.RemoveListener(_swipeEvent);
         }

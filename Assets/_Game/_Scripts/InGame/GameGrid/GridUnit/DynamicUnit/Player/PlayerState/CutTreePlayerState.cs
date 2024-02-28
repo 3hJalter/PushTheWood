@@ -6,6 +6,8 @@ using _Game.Utilities.Timer;
 using GameGridEnum;
 using System;
 using System.Collections.Generic;
+using _Game._Scripts.InGame;
+using _Game._Scripts.Managers;
 using AudioEnum;
 using UnityEngine;
 
@@ -64,10 +66,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         {
             if (!_isExecuted)
             {
-                if (LevelManager.Ins.IsSavePlayerPushStep)
-                {
-                    GameplayManager.Ins.SaveHint.SaveStep(t.MainCell.X, t.MainCell.Y, (int) t.CutTreeData.inputDirection, t.islandID);
-                }
                 _isExecuted = true;
                 LevelManager.Ins.SaveGameState(true);
                 // Make the tree OnBePushed with direction calculated by position of the Player and the Tree

@@ -1,4 +1,7 @@
-﻿using _Game.DesignPattern.StateMachine;
+﻿using _Game._Scripts.InGame;
+using _Game._Scripts.Managers;
+using _Game.DesignPattern.StateMachine;
+using _Game.Managers;
 using DG.Tweening;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Box.BoxState
@@ -24,6 +27,19 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box.BoxState
             }
             else
             {
+                #region Push Hint Step Handler
+
+                if (t.BeInteractedData.pushUnit is Player.Player p)
+                {
+                    //NOTE: Saving when push dynamic object that make grid change
+                    if (LevelManager.Ins.IsSavePlayerPushStep)
+                    {
+                        GameplayManager.Ins.SavePushHint.SaveStep(p.MainCell.X, p.MainCell.Y, (int) p.LastPushedDirection, p.islandID);        
+                    }
+                    EventGlobalManager.Ins.OnPlayerPushStep?.Dispatch(new PlayerStep{x = p.MainCell.X, y = p.MainCell.Y, d = (int) p.LastPushedDirection, i = p.islandID});
+                }
+
+                #endregion
                 t.SetEnterCellData(t.MovingData.inputDirection, t.MovingData.enterMainCell, t.UnitTypeY, false,
                     t.MovingData.enterCells);
                 t.OnOutCells();

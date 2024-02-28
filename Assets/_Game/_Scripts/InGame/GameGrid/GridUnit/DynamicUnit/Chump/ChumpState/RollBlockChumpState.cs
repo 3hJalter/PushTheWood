@@ -4,7 +4,9 @@ using _Game.Utilities.Timer;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using _Game._Scripts.InGame;
 using _Game._Scripts.InGame.GameCondition.Data;
+using _Game._Scripts.Managers;
 using UnityEngine;
 using _Game.Utilities;
 using _Game.Managers;
@@ -106,7 +108,25 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 }
                 //NOTE: Checking if push dynamic object does not create any change in grid -> discard the newest save.
                 if (!LevelManager.Ins.CurrentLevel.GridMap.IsChange)
+                {
                     LevelManager.Ins.DiscardSaveState();
+                }
+                else
+                {
+                    #region Push Hint Step Handler
+
+                    if (t.BeInteractedData.pushUnit is Player.Player p)
+                    {
+                        //NOTE: Saving when push dynamic object that make grid change
+                        if (LevelManager.Ins.IsSavePlayerPushStep)
+                        {
+                            GameplayManager.Ins.SavePushHint.SaveStep(p.MainCell.X, p.MainCell.Y, (int) p.LastPushedDirection, p.islandID);        
+                        }
+                        EventGlobalManager.Ins.OnPlayerPushStep?.Dispatch(new PlayerStep{x = p.MainCell.X, y = p.MainCell.Y, d = (int) p.LastPushedDirection, i = p.islandID});
+                    }
+
+                    #endregion
+                }
             }
 
             bool IsSamePushDirection()

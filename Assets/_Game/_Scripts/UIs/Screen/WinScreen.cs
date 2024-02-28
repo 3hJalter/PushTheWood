@@ -54,7 +54,7 @@ namespace _Game.UIs.Screen
         
         public void OnClickMainMenuButton()
         {
-            LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex);
+            LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<MainMenuScreen>();
             GameManager.Ins.PostEvent(DesignPattern.EventID.OnCheckShowInterAds, null);

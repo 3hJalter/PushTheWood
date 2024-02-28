@@ -1,5 +1,8 @@
-﻿using _Game.DesignPattern.StateMachine;
+﻿using _Game._Scripts.InGame;
+using _Game._Scripts.Managers;
+using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Bomb;
+using _Game.GameGrid.Unit.DynamicUnit.Player;
 using DG.Tweening;
 using UnityEngine;
 
@@ -27,7 +30,10 @@ namespace a
             }
             else
             {
-
+                if (t.BeInteractedData.pushUnit is Player p)
+                {
+                    EventGlobalManager.Ins.OnPlayerPushStep?.Dispatch(new PlayerStep{x = p.MainCell.X, y = p.MainCell.Y, d = (int) p.LastPushedDirection, i = p.islandID});
+                }
                 t.SetEnterCellData(t.MovingData.inputDirection, t.MovingData.enterMainCell, t.UnitTypeY, false,
                     t.MovingData.enterCells);
                 t.OnOutCells();

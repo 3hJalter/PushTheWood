@@ -26,8 +26,14 @@ namespace _Game.Managers
         private bool isCanResetIsland = true;
         private bool isBoughtGrowTree = false;
         private bool isCanGrowTree = true;
-
-        public SaveHint SaveHint { get; private set; }
+        
+        private readonly Dictionary<int, bool> isBoughtPushHintInIsland = new();
+        private PushHint _pushHint;
+        [SerializeField] private PushHintObject pushHintObject;
+        
+        public PushHintObject PushHintObject => pushHintObject;
+        
+        public SavePushHint SavePushHint { get; private set; }
 
         public bool IsCanUndo
         {
@@ -69,6 +75,17 @@ namespace _Game.Managers
             }
         }
         
+        private bool IsBoughtPushHintInIsland(int islandID)
+        {
+            return isBoughtPushHintInIsland[islandID];
+        }
+        
+        private void SetBoughtPushHintInIsland(int islandID, bool value)
+        {
+            isBoughtPushHintInIsland[islandID] = value;
+            screen.OnBoughtPushHintOnIsland(islandID, value);
+        }
+        
         private void Awake()
         {
             screen = UIManager.Ins.GetUI<InGameScreen>();
@@ -80,22 +97,25 @@ namespace _Game.Managers
             GameManager.Ins.RegisterListenerEvent(EventID.LoseGame, OnLoseGame);
             GameManager.Ins.RegisterListenerEvent(EventID.Pause, OnPauseGame);
             GameManager.Ins.RegisterListenerEvent(EventID.UnPause, OnUnPauseGame);
-            GameManager.Ins.RegisterListenerEvent(EventID.OnResetToMainMenu, OnToMainMenu);
+            // GameManager.Ins.RegisterListenerEvent(EventID.OnResetToMainMenu, OnToMainMenu);
             // TODO: Refactor Booster later to avoid duplicate code
             screen.OnUndo += OnUndo;
             screen.OnResetIsland += OnResetIsland;
             screen.OnHint += OnShowHint;
             screen.OnCancelHint += OnHideHint;
             screen.OnGrowTree += OnGrowTree;
+            screen.OnUsePushHint += OnPushHint;
             screen.undoCountText.text = DataManager.Ins.GameData.user.undoCount.ToString();
             screen.resetCountText.text = DataManager.Ins.GameData.user.resetCount.ToString();
             screen.hintCountText.text = DataManager.Ins.GameData.user.hintCount.ToString();
             screen.growTreeCountText.text = DataManager.Ins.GameData.user.growTreeCount.ToString();
+            screen.pushHintCountText.text = DataManager.Ins.GameData.user.pushHintCount.ToString();
         }
 
         private void Start()
         {
             EventGlobalManager.Ins.OnChangeBoosterAmount.AddListener(OnChangeBoosterAmount);
+            EventGlobalManager.Ins.OnPlayerChangeIsland.AddListener(OnPlayerChangeIsland);
         }
 
         private void OnChangeBoosterAmount(BoosterType boosterType, int amount)
@@ -114,6 +134,9 @@ namespace _Game.Managers
                 case BoosterType.GrowTree:
                     UpdateBoosterCount(ref DataManager.Ins.GameData.user.growTreeCount, screen.growTreeCountText, amount);
                     break;
+                case BoosterType.PushHint:
+                    UpdateBoosterCount(ref DataManager.Ins.GameData.user.pushHintCount, screen.pushHintCountText, amount);
+                    break;
             }
         }
         
@@ -125,6 +148,7 @@ namespace _Game.Managers
         
         private void OnToMainMenu()
         {
+            _pushHint?.OnStopHint();
             timer.Stop();
             LevelManager.Ins.OnRestart();
         }
@@ -170,13 +194,16 @@ namespace _Game.Managers
         {
             if (LevelManager.Ins.IsSavePlayerPushStep)
             {
-                SaveHint = new SaveHint();
+                SavePushHint = new SavePushHint();
             }
+            PushHintObject.SetActive(false);
             OnResetTime();
             screen.OnHideIfTutorial();
             IsCanResetIsland = true;
             IsCanUndo = true;
             IsBoughtGrowTree = false;
+            isBoughtPushHintInIsland.Clear();
+            _pushHint = new PushHint(LevelManager.Ins.CurrentLevel.GetPushHint());
             GameManager.Ins.ChangeState(GameState.InGame);
             LevelManager.Ins.player.SetActiveAgent(false);
             // If hard level, show a notification
@@ -187,8 +214,9 @@ namespace _Game.Managers
         {
             if (LevelManager.Ins.IsSavePlayerPushStep)
             {
-                SaveHint.Save();
+                SavePushHint.Save();
             }
+            _pushHint.OnStopHint();
             timer.Stop();
             DevLog.Log(DevId.Hung, "ENDGAME - Show Win Screen");
             UIManager.Ins.OpenUI<WinScreen>();
@@ -198,6 +226,7 @@ namespace _Game.Managers
 
         private void OnLoseGame()
         {
+            _pushHint.OnStopHint();
             timer.Stop();
             DevLog.Log(DevId.Hung, "ENDGAME - Show Lose Screen");
             // Show Different Lose based on reason (Ex: Lose by Die will not show More time booster, instead show Revive) -> Check by the time remaining
@@ -220,6 +249,9 @@ namespace _Game.Managers
             screen.OnHint -= OnShowHint;
             screen.OnCancelHint -= OnHideHint;
             screen.OnGrowTree -= OnGrowTree;
+            screen.OnUsePushHint -= OnPushHint;
+            _pushHint?.OnStopHint();
+            EventGlobalManager.Ins.OnPlayerChangeIsland.RemoveListener(OnPlayerChangeIsland);
             TimerManager.Ins.PushSTimer(timer);         
         }
 
@@ -238,6 +270,8 @@ namespace _Game.Managers
                 if (!LevelManager.Ins.OnUndo()) return;
                 DataManager.Ins.GameData.user.undoCount--;
                 screen.undoCountText.text = DataManager.Ins.GameData.user.undoCount.ToString();
+                // TEMPORARY
+                if (_pushHint.IsStartHint) _pushHint.OnStopHint();
             }
             
         }
@@ -247,7 +281,6 @@ namespace _Game.Managers
             if (!isCanResetIsland) return;
             if (DataManager.Ins.GameData.user.resetCount <= 0)
             {
-                // TODO: Show popup to buy reset
                 DevLog.Log(DevId.Hoang, "Show popup to buy reset");
                 UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(DataManager.Ins.ConfigData.boosterConfigs[BoosterType.ResetIsland]);
             }
@@ -256,6 +289,8 @@ namespace _Game.Managers
                 DataManager.Ins.GameData.user.resetCount--;
                 screen.resetCountText.text = DataManager.Ins.GameData.user.resetCount.ToString();
                 LevelManager.Ins.ResetLevelIsland();
+                // TEMPORARY
+                if (_pushHint.IsStartHint) _pushHint.OnStopHint();
             }
         }
 
@@ -263,7 +298,6 @@ namespace _Game.Managers
         {
             if (DataManager.Ins.GameData.user.hintCount <= 0)
             {
-                // TODO: Show popup to buy hint
                 DevLog.Log(DevId.Hoang, "Show popup to buy hint");
                 UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(DataManager.Ins.ConfigData.boosterConfigs[BoosterType.Hint]);
             }
@@ -305,10 +339,62 @@ namespace _Game.Managers
             }
         }
 
+        # region PUSH HINT
+        private void OnPushHint()
+        {
+            if (DataManager.Ins.GameData.user.pushHintCount <= 0)
+            {
+                UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(
+                    DataManager.Ins.ConfigData.boosterConfigs[BoosterType.PushHint]);
+            }
+            else
+            {
+                int playerIslandID = LevelManager.Ins.player.islandID;
+                if (!isBoughtPushHintInIsland.ContainsKey(playerIslandID)) return;
+                // If this is first player step cell in this island, return
+                if (!IsBoughtPushHintInIsland(playerIslandID))
+                {
+                    SetBoughtPushHintInIsland(playerIslandID, true);
+                    DataManager.Ins.GameData.user.pushHintCount--;
+                    screen.pushHintCountText.text = DataManager.Ins.GameData.user.pushHintCount.ToString();
+                }
+                OnStartHintOnPlayerIsland(playerIslandID);
+            }
+        }
+
+        private void OnStartHintOnPlayerIsland(int islandID)
+        {
+                LevelManager.Ins.ResetLevelIsland();
+                _pushHint.OnStartHint(islandID);
+                DevLog.Log(DevId.Hoang, $"Show hint in {islandID}");
+
+        }
+        
+        private void OnPlayerChangeIsland()
+        {
+            int islandId = LevelManager.Ins.player.islandID;
+            screen.ActivePushHintIsland(_pushHint.ContainIsland(islandId));
+            // Check if contain
+            if (!isBoughtPushHintInIsland.ContainsKey(islandId))
+            {
+                SetBoughtPushHintInIsland(islandId, false);
+            };
+            bool isBoughtPushHint = IsBoughtPushHintInIsland(islandId);
+            screen.OnBoughtPushHintOnIsland(islandId, isBoughtPushHint);
+        }
+        
+        public void OnShowTryHintAgain(bool show)
+        {
+            screen.OnShowTryHintAgain(show);
+        }
+        
+        #endregion
+
         #endregion
         
         private void CountTime()
         {
+            if (time < 0) return;
             time -= 1;
             screen.Time = time;
             if(time <= 0)

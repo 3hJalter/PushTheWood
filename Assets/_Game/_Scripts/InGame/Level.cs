@@ -45,6 +45,27 @@ namespace _Game._Scripts.InGame
         }
         #endregion
 
+        public IEnumerable<PlayerStep> GetPushHint()
+        {
+            if (_rawLevelData.pS is null)
+            {
+                return null;
+            }
+            // Convert the RawLevelData.pS to PlayerStep
+            PlayerStep[] playerSteps = new PlayerStep[_rawLevelData.pS.Length];
+            for (int i = 0; i < _rawLevelData.pS.Length; i++)
+            {
+                playerSteps[i] = new PlayerStep
+                {
+                    x = _rawLevelData.pS[i].x,
+                    y = _rawLevelData.pS[i].y,
+                    d = _rawLevelData.pS[i].d,
+                    i = _rawLevelData.pS[i].i
+                };
+            }
+            return playerSteps;
+        }
+        
         public void ResetNonIslandUnit()
         {
             for (int i = 0; i < nonIslandUnitLis.Count; i++)
@@ -555,7 +576,7 @@ namespace _Game._Scripts.InGame
         public GridUnitData[] uD; // UNIT DATA
         public ShadowUnitData[] suD; // SHADOW UNIT DATA
         public HintTrailData[] htD; // HINT TRAIL DATA
-        public SaveHint.PlayerStep[] pS; // PLAYER STEP
+        public PlayerStep[] pS; // PLAYER STEP
         
         [Serializable]
         public struct GridSurfaceData

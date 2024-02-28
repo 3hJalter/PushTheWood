@@ -27,17 +27,24 @@ namespace _Game.UIs.Screen
         [SerializeField] private GameObject timerContainer;
 
         [SerializeField] private Image blockPanel;
-
-        [SerializeField] private Button undoButton;
-
-        [SerializeField] private Button resetIslandButton;
         
+        // UNDO
+        [SerializeField] private Button undoButton;
+        // RESET ISLAND
+        [SerializeField] private Button resetIslandButton;
+        // GROW TREE
         [SerializeField] private HButton growTreeButton;
         [SerializeField] private GameObject activeGrowTreeImage;
         [SerializeField] private GameObject growTreeAmountFrame;
+        // PUSH HINT
+        [SerializeField] private HButton pushHintButton;
+        [SerializeField] private GameObject activePushHintImage;
+        [SerializeField] private GameObject inActivePushHintImage;
+        [SerializeField] private GameObject pushHintAmountFrame;
+        [SerializeField] private Transform tryAgainPushHintImage;
         
+        // Time & Level Text 
         [SerializeField] private TMP_Text timeText;
-
         [SerializeField] private TMP_Text _levelText;
 
         [SerializeField] private TextMeshProUGUI objectiveText;
@@ -46,6 +53,7 @@ namespace _Game.UIs.Screen
         public TextMeshProUGUI resetCountText;
         public TextMeshProUGUI hintCountText;
         public TextMeshProUGUI growTreeCountText;
+        public TextMeshProUGUI pushHintCountText;
         private STimer resetIslandTimer;
 
         private int time;
@@ -84,11 +92,13 @@ namespace _Game.UIs.Screen
         public event Action OnHint;
         public event Action OnCancelHint;
         public event Action OnGrowTree;
+        public event Action OnUsePushHint;
 
         public override void Setup(object param = null)
         {
             base.Setup(param);
             GameManager.Ins.ChangeState(GameState.InGame);
+            OnShowTryHintAgain(false);
             // Log param
             if (param is null) MoveInputManager.Ins.ShowContainer(true);
             else MoveInputManager.Ins.ShowContainer(true, (bool)param);
@@ -98,7 +108,6 @@ namespace _Game.UIs.Screen
             blockPanel.enabled = true;
             UpdateLevelText();
             UpdateObjectiveText();
-            
             
         }
 
@@ -114,6 +123,7 @@ namespace _Game.UIs.Screen
 
         public override void Close()
         {
+            OnShowTryHintAgain(false);
             MoveInputManager.Ins.ShowContainer(false);
             base.Close();
         }
@@ -155,6 +165,26 @@ namespace _Game.UIs.Screen
             growTreeButton.interactable = active;
         }
 
+        public  void OnBoughtPushHint(bool active)
+        {
+            activePushHintImage.SetActive(active);
+            pushHintAmountFrame.SetActive(!active);
+        }
+        
+        public void ActivePushHintIsland(bool active)
+        {
+            inActivePushHintImage.gameObject.SetActive(!active);
+            pushHintButton.interactable = active;
+        }
+        
+        public void OnBoughtPushHintOnIsland(int islandID, bool active)
+        {
+            // Check if the current island is the island that the player is on
+            if (LevelManager.Ins.player.islandID != islandID) return;
+            activePushHintImage.SetActive(active);
+            pushHintAmountFrame.SetActive(!active);
+        }
+        
         private void UpdateLevelText()
         {
             timerContainer.SetActive(true);
@@ -207,6 +237,7 @@ namespace _Game.UIs.Screen
             undoButton.gameObject.SetActive(!isTutorial);
             resetIslandButton.gameObject.SetActive(!isTutorial);
             growTreeButton.gameObject.SetActive(!isTutorial);
+            pushHintButton.gameObject.SetActive(!isTutorial);
             // Hide time
             timerContainer.SetActive(!isTutorial);
             // hide setting
@@ -247,6 +278,25 @@ namespace _Game.UIs.Screen
             OnGrowTree?.Invoke();
         }
         
+        public void OnClickPushHint()
+        {
+            OnUsePushHint?.Invoke();
+        }
+        
         #endregion
+
+        
+        private Tween _tryAgainImageTween;
+        public void OnShowTryHintAgain(bool show)
+        {
+           // Tween local position from 0 160 0 to 0 130 0 in a yo-yo loop
+           tryAgainPushHintImage.gameObject.SetActive(show);
+           _tryAgainImageTween?.Kill();
+           tryAgainPushHintImage.localPosition = new Vector3(0, 160, 0);
+           if (show)
+           {
+               _tryAgainImageTween = tryAgainPushHintImage.DOLocalMoveY(130, 0.5f).SetLoops(-1, LoopType.Yoyo);
+           }
+        }
     }
 }

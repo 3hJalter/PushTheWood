@@ -54,10 +54,7 @@ namespace VinhLB
         
         public void OnClickMainMenuButton()
         {
-            if (LevelManager.Ins.CurrentLevel.LevelType != LevelType.Normal)
-            {
-                LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
-            }
+            LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<MainMenuScreen>();
             GameManager.Ins.PostEvent(EventID.OnInterAdsStepCount, 1);

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using _Game._Scripts.InGame;
+using _Game._Scripts.Managers;
 using UnityEngine;
 namespace _Game.GameGrid.Unit.DynamicUnit.Box.BoxState
 {
@@ -28,8 +30,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box.BoxState
         {
             GetBlockObjects(t.MovingData);
             blockDirection = t.MovingData.inputDirection;
-
-
+            
             Vector3 originPos = t.Tf.position;
             moveTween = t.Tf.DOShakePosition(Constants.MOVING_TIME * 0.8f, 0.1f, 60, 0, false, true, ShakeRandomnessMode.Harmonic).SetEase(Ease.InQuad)
                 .OnComplete(ChangeToIdle);
@@ -50,7 +51,25 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box.BoxState
                 }
                 //NOTE: Checking if push dynamic object does not create any change in grid -> discard the newest save.
                 if (!LevelManager.Ins.CurrentLevel.GridMap.IsChange)
+                {
                     LevelManager.Ins.DiscardSaveState();
+                }
+                else
+                {
+                    #region Push Hint Step Handler
+
+                    if (t.BeInteractedData.pushUnit is Player.Player p)
+                    {
+                        //NOTE: Saving when push dynamic object that make grid change
+                        if (LevelManager.Ins.IsSavePlayerPushStep)
+                        {
+                            GameplayManager.Ins.SavePushHint.SaveStep(p.MainCell.X, p.MainCell.Y, (int) p.LastPushedDirection, p.islandID);        
+                        }
+                        EventGlobalManager.Ins.OnPlayerPushStep?.Dispatch(new PlayerStep{x = p.MainCell.X, y = p.MainCell.Y, d = (int) p.LastPushedDirection, i = p.islandID});
+                    }
+
+                    #endregion
+                }
             }
 
             void ChangeToIdle()

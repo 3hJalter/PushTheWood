@@ -499,7 +499,9 @@ namespace _Game.GameGrid.Unit
             cell.AddGridUnit(this);
         }
 
-        protected virtual void OnRestoreSpawn(){}
+        protected virtual void OnMementoRestoreSpawn(){}
+        
+        protected virtual void OnMementoRestoreData(){}
         
         #region SAVING DATA
         public virtual IMemento Save()
@@ -594,7 +596,7 @@ namespace _Game.GameGrid.Unit
                 if(isSpawn && !main.isSpawn)
                 {
                     SimplePool.SpawnDirectFromPool(main, position, Quaternion.identity);
-                    main.OnRestoreSpawn();
+                    main.OnMementoRestoreSpawn();
                     main.isSpawn = true;
                 }
                 #endregion
@@ -605,31 +607,25 @@ namespace _Game.GameGrid.Unit
                 main.endHeight = endHeight;
                 main.unitTypeY = unitTypeY;
                 main.unitTypeXZ = unitTypeXZ;
-
-
+                
                 main.belowUnits.Clear();
                 foreach (GridUnit unit in belowsUnits)
                 {
                     main.belowUnits.Add(unit);
                 }
-
-
-
+                
                 main.neighborUnits.Clear();
                 foreach (GridUnit unit in neighborUnits)
                 {
                     main.neighborUnits.Add(unit);
                 }
-
-
-
+                
                 main.upperUnits.Clear();
                 foreach (GridUnit unit in upperUnits)
                 {
                     main.upperUnits.Add(unit);
                 }
-
-
+                
                 main.MainCell = mainCell;
                 main.cellInUnits.Clear();
                 foreach (GameGridCell cell in cellInUnits)
@@ -638,7 +634,11 @@ namespace _Game.GameGrid.Unit
                 }
                 main.lastPushedDirection = lastPushDirection;
                 main.islandID = islandID;
+
+                main.OnMementoRestoreData();
+
                 #endregion
+
             }
         }
         #endregion

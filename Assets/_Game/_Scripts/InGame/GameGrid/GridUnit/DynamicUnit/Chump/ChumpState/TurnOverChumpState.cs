@@ -1,4 +1,6 @@
-﻿using _Game.DesignPattern.StateMachine;
+﻿using _Game._Scripts.InGame;
+using _Game._Scripts.Managers;
+using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
 using _Game.Utilities;
@@ -35,6 +37,20 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
             }
             else
             {
+                #region Push Hint Step Handler
+
+                if (t.BeInteractedData.pushUnit is Player.Player p)
+                {
+                    //NOTE: Saving when push dynamic object that make grid change
+                    if (LevelManager.Ins.IsSavePlayerPushStep)
+                    {
+                        GameplayManager.Ins.SavePushHint.SaveStep(p.MainCell.X, p.MainCell.Y, (int) p.LastPushedDirection, p.islandID);        
+                    }
+                    EventGlobalManager.Ins.OnPlayerPushStep?.Dispatch(new PlayerStep{x = p.MainCell.X, y = p.MainCell.Y, d = (int) p.LastPushedDirection, i = p.islandID});
+                }
+
+                #endregion
+                
                 #region Specific Conditions
                 switch (t.TurnOverData.Condition)
                 {

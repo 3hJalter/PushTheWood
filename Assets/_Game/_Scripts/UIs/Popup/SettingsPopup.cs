@@ -152,10 +152,7 @@ namespace _Game.UIs.Popup
 
         public void OnClickGoMenuButton()
         {
-            if (LevelManager.Ins.CurrentLevel.LevelType != LevelType.Normal)
-            {
-                LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
-            }
+            LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
             GameManager.Ins.PostEvent(DesignPattern.EventID.OnInterAdsStepCount, 1);
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<MainMenuScreen>();

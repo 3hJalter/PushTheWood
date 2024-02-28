@@ -195,9 +195,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3165521879742693490, guid: 507d71d2db8f31b40bb388bf389d0137, type: 3}
+      propertyPath: pushHintObject
+      value: 
+      objectReference: {fileID: 924445649}
+    - target: {fileID: 3165521879742693490, guid: 507d71d2db8f31b40bb388bf389d0137, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 3165521879742693490, guid: 507d71d2db8f31b40bb388bf389d0137, type: 3}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 507d71d2db8f31b40bb388bf389d0137, type: 3}
 --- !u!4 &169489993 stripped
@@ -804,6 +808,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &924445649 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7030098244278345250, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+  m_PrefabInstance: {fileID: 7030098244278345276}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a107051f44c4423a80eebf9a0a036b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1060345616 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1915671661371006087, guid: 293a8c7352bbcbd4faba9fa9295f5828, type: 3}
@@ -2055,14 +2070,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 771433374}
     m_Modifications:
     - target: {fileID: 1915671661371006086, guid: 293a8c7352bbcbd4faba9fa9295f5828, type: 3}
-      propertyPath: _fishSpawner
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1915671661371006086, guid: 293a8c7352bbcbd4faba9fa9295f5828, type: 3}
-      propertyPath: _cloudSpawner
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1915671661371006086, guid: 293a8c7352bbcbd4faba9fa9295f5828, type: 3}
       propertyPath: isSavePlayerPushStep
       value: 0
       objectReference: {fileID: 0}
@@ -2348,6 +2355,14 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 698761956, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+    - target: {fileID: 5485926010309425722, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030098244278345250, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 7030098244278345250, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
     - target: {fileID: 7030098245580201128, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
       propertyPath: m_RootOrder
       value: 3
