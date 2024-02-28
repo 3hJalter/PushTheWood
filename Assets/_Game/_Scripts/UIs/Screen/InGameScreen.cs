@@ -124,6 +124,7 @@ namespace _Game.UIs.Screen
         public override void Close()
         {
             OnShowTryHintAgain(false);
+            SetActiveGrowTree(true);
             MoveInputManager.Ins.ShowContainer(false);
             base.Close();
         }
@@ -161,7 +162,6 @@ namespace _Game.UIs.Screen
         
         public void SetActiveGrowTree(bool active)
         {
-            DevLog.Log(DevId.Hoang, "Set Active Grow Tree: " + active);
             growTreeButton.interactable = active;
         }
 
