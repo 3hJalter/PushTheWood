@@ -64,6 +64,9 @@ namespace _Game.Data
             
             public DateTime lastTimeLogOut = DateTime.UtcNow;
             public bool isFirstDayOfWeekCheck;
+
+            //Ads Data
+            public int hintAdsCount;
             
             
         }
