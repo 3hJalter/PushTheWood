@@ -16,7 +16,6 @@ namespace _Game.Managers
         [SerializeField] private CinemachineVirtualCameraBase currentVirtualCamera;
 
         [SerializeField] private UnityEngine.Camera brainCamera;
-        [SerializeField] private UnityEngine.Camera overlayCamera;
         [SerializeField] private Transform cameraTarget;
 
         [SerializeField] private float cameraMoveTime = 1f;
@@ -27,8 +26,6 @@ namespace _Game.Managers
         private readonly Dictionary<ECameraType, CinemachineVirtualCameraBase> virtualCameraDic = new();
 
         public UnityEngine.Camera BrainCamera => brainCamera;
-        public UnityEngine.Camera OverlayCamera => overlayCamera;
-
         public CinemachineVirtualCameraBase CurrentVirtualCamera => currentVirtualCamera;
 
         private void Awake()
