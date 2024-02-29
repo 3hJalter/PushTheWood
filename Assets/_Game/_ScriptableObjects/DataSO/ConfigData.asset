@@ -179,12 +179,84 @@ MonoBehaviour:
     - Name: requireLevelProgress
       Entry: 3
       Data: 3
+    - Name: LCRewards
+      Entry: 7
+      Data: 5|_Game.Resource.CurrencyType[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 4
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: LCQuantitys
+      Entry: 7
+      Data: 6|System.Int32[], mscorlib
+    - Name: 
+      Entry: 14
+      Data: 4
+    - Name: 
+      Entry: 3
+      Data: 160
+    - Name: 
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 3
+      Data: 3
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: LCRates
+      Entry: 7
+      Data: 7|System.Single[], mscorlib
+    - Name: 
+      Entry: 14
+      Data: 4
+    - Name: 
+      Entry: 4
+      Data: 0.75
+    - Name: 
+      Entry: 4
+      Data: 0.16
+    - Name: 
+      Entry: 4
+      Data: 0.07
+    - Name: 
+      Entry: 4
+      Data: 0.02
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: requireSecretMapPiece
       Entry: 3
       Data: 8
     - Name: CharacterCosts
       Entry: 7
-      Data: 5|System.Int32[], mscorlib
+      Data: 8|System.Int32[], mscorlib
     - Name: 
       Entry: 14
       Data: 6
@@ -214,11 +286,11 @@ MonoBehaviour:
       Data: 
     - Name: boosterConfigs
       Entry: 7
-      Data: 6|System.Collections.Generic.Dictionary`2[[_Game.Resource.BoosterType,
+      Data: 9|System.Collections.Generic.Dictionary`2[[_Game.Resource.BoosterType,
         Assembly-CSharp],[_Game.Data.BoosterConfig, Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 7|System.Collections.Generic.EnumEqualityComparer`1[[_Game.Resource.BoosterType,
+      Data: 10|System.Collections.Generic.EnumEqualityComparer`1[[_Game.Resource.BoosterType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12

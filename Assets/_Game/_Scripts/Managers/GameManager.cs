@@ -188,7 +188,7 @@ namespace _Game.Managers
             _gameData.user.levelChestProgress += amount;
             if (_gameData.user.levelChestProgress >= DataManager.Ins.ConfigData.requireLevelProgress)
             {
-                _gameData.user.rewardChestUnlock += _gameData.user.levelChestProgress / DataManager.Ins.ConfigData.requireLevelProgress;
+                _gameData.user.levelChestUnlock += _gameData.user.levelChestProgress / DataManager.Ins.ConfigData.requireLevelProgress;
                 _gameData.user.levelChestProgress = _gameData.user.levelChestProgress % DataManager.Ins.ConfigData.requireLevelProgress;
             }
             PostEvent(EventID.OnUpdateUIs);

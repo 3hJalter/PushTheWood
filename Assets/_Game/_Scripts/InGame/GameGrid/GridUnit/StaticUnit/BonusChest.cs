@@ -62,7 +62,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             base.OnOpenChestComplete();
             CollectingResourceManager.Ins.SpawnCollectingRewardKey(1, LevelManager.Ins.player.transform);
-            LevelManager.Ins.ReceivingKeyReward = true;
+            LevelManager.Ins.KeyRewardCount += 1;
             DevLog.Log(DevId.Hoang, "Loot something");
             if (LevelManager.Ins.CurrentLevel.LevelType == LevelType.Secret)
             {

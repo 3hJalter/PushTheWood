@@ -45,12 +45,14 @@ namespace _Game.Managers
             }
         }
 
-        public void ClaimLevelChest(int index)
+        public void ClaimLevelChest()
         {
             if (IsCanClaimLC)
             {
-                gameData.user.currentRewardChestIndex += 1;
-                GameManager.Ins.PostEvent(EventID.OnClaimRewardChest, gameData.user.currentLevelChestIndex - 1);
+                gameData.user.currentLevelChestIndex += 1;
+                UIManager.Ins.OpenUI<RewardPopup>().Open(GetLCReward());
+                GameManager.Ins.PostEvent(EventID.OnClaimLevelChest, gameData.user.currentLevelChestIndex - 1);
+                GameManager.Ins.PostEvent(EventID.OnUpdateUIs);
             }
         }
 
@@ -68,6 +70,25 @@ namespace _Game.Managers
                     break;
                 case CurrencyType.AdTicket:
                     rewards[0].Amount = DataManager.Ins.ConfigData.RCQuantitys[index];
+                    break;
+            }
+            return rewards;
+        }
+
+        private Reward[] GetLCReward()
+        {
+            Reward[] rewards = new Reward[] { new Reward() };
+            int index = HUtilities.WheelRandom(DataManager.Ins.ConfigData.LCRates);
+            CurrencyType type = DataManager.Ins.ConfigData.LCRewards[index];
+            rewards[0].CurrencyType = type;
+            rewards[0].RewardType = RewardType.Currency;
+            switch (type)
+            {
+                case CurrencyType.Gold:
+                    rewards[0].Amount = UnityEngine.Random.Range(100, 201);
+                    break;
+                case CurrencyType.AdTicket:
+                    rewards[0].Amount = DataManager.Ins.ConfigData.LCQuantitys[index];
                     break;
             }
             return rewards;

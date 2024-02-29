@@ -39,6 +39,12 @@ namespace _Game.Data
 
         [FoldoutGroup("In Game/Level Chest")]
         public readonly int requireLevelProgress = 3;
+        [FoldoutGroup("In Game/Level Chest")]
+        public readonly CurrencyType[] LCRewards;
+        [FoldoutGroup("In Game/Level Chest")]
+        public readonly int[] LCQuantitys;
+        [FoldoutGroup("In Game/Level Chest")]
+        public readonly float[] LCRates;
         [FoldoutGroup("In Game/Secret Level")]
         public readonly int requireSecretMapPiece = 8;
         [FoldoutGroup("In Game/Characters")]

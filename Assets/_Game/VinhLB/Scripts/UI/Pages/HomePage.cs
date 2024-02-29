@@ -30,11 +30,14 @@ namespace VinhLB
         [SerializeField]
         private TMP_Text _rewardKeyTxt;
         [SerializeField]
+        private Button _levelChestButton;
+        [SerializeField]
         private TMP_Text _levelProgressTxt;
         [SerializeField]
         private TMP_Text _levelText;
 
-        STimer shakeTimer;
+        STimer shakeRewardTimer;
+        STimer shakeLevelTimer;
         private void Awake()
         {
             _playButton.onClick.AddListener(() =>
@@ -67,7 +70,12 @@ namespace VinhLB
             {
                 RewardManager.Ins.HomeReward.ClaimRewardChest();
             });
-            shakeTimer = TimerManager.Ins.PopSTimer();
+            _levelChestButton.onClick.AddListener(() =>
+            {
+                RewardManager.Ins.HomeReward.ClaimLevelChest();
+            });
+            shakeRewardTimer = TimerManager.Ins.PopSTimer();
+            shakeLevelTimer = TimerManager.Ins.PopSTimer();
         }
 
         private void Start()
@@ -83,19 +91,33 @@ namespace VinhLB
             _levelText.text = $"Level {LevelManager.Ins.NormalLevelIndex + 1}";
             if (RewardManager.Ins.HomeReward.IsCanClaimRC)
             {
-                if (!shakeTimer.IsStart)
+                if (!shakeRewardTimer.IsStart)
                 {
-                    shakeTimer.Start(1f, () => _rewardChestButton.transform.DOShakeRotation(0.5f, 40, 10, 0, true, ShakeRandomnessMode.Harmonic), true);
+                    shakeRewardTimer.Start(1f, () => _rewardChestButton.transform.DOShakeRotation(0.5f, 40, 10, 0, true, ShakeRandomnessMode.Harmonic), true);
                     _rewardKeyTxt.text = $"FULL";
                 }
             }
             else
             {
-                shakeTimer.Stop();
+                shakeRewardTimer.Stop();
                 _rewardKeyTxt.text = $"{GameManager.Ins.RewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
                 _rewardChestButton.transform.rotation = Quaternion.identity;
             }
-            _levelProgressTxt.text = $"{GameManager.Ins.LevelProgress}/{DataManager.Ins.ConfigData.requireLevelProgress}";
+
+            if (RewardManager.Ins.HomeReward.IsCanClaimLC)
+            {
+                if (!shakeLevelTimer.IsStart)
+                {
+                    shakeLevelTimer.Start(1f, () => _levelChestButton.transform.DOShakeRotation(0.5f, 40, 10, 0, true, ShakeRandomnessMode.Harmonic), true);
+                    _levelProgressTxt.text = $"FULL";
+                }
+            }
+            else
+            {
+                shakeLevelTimer.Stop();
+                _levelProgressTxt.text = $"{GameManager.Ins.LevelProgress}/{DataManager.Ins.ConfigData.requireLevelProgress}";
+                _levelChestButton.transform.rotation = Quaternion.identity;
+            }
 
             // UIManager.Ins.OpenUI<MaskScreen>(new MaskData()
             // {
@@ -107,7 +129,7 @@ namespace VinhLB
 
         private void OnDestroy()
         {
-            TimerManager.Ins.PushSTimer(shakeTimer);
+            TimerManager.Ins.PushSTimer(shakeRewardTimer);
         }
     }
 }

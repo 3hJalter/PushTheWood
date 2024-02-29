@@ -47,7 +47,8 @@ namespace _Game.GameGrid
         private Level _currentLevel;
         private bool _isRestarting;
         private bool _isResetting;
-        public bool ReceivingKeyReward = false;
+        public int KeyRewardCount = 0;
+        public int SecretMapPieceCount = 0;
         public int NormalLevelIndex => normalLevelIndex;
         public int DailyLevelIndex => dailyLevelIndex;
         public int SecretLevelIndex => secretLevelIndex;
@@ -140,7 +141,8 @@ namespace _Game.GameGrid
             DebugManager.Ins?.DebugGridData(_currentLevel.GridMap);
             // TEMPORARY: CUTSCENE, player will be show when cutscene end
             if (normalLevelIndex == 0) HidePlayer(true);
-            ReceivingKeyReward = false;
+            KeyRewardCount = 0;
+            SecretMapPieceCount = 0;
         }
 
         public void ResetLevelIsland()
@@ -210,9 +212,10 @@ namespace _Game.GameGrid
                 default:
                     break;
             }
-            //GameManager.Ins.GainLevelProgress(1);
-            if (ReceivingKeyReward)
-                GameManager.Ins.GainRewardKey(1);
+            GameManager.Ins.GainRewardKey(KeyRewardCount);
+            GameManager.Ins.GainSecretMapPiece(SecretMapPieceCount);
+            if(CurrentLevel.LevelType == LevelType.Normal)
+                GameManager.Ins.GainLevelProgress(1);
             DataManager.Ins.Save();
             GameManager.Ins.PostEvent(EventID.WinGame);
             // Future: Add reward collected in-game

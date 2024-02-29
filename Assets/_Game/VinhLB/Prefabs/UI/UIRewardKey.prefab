@@ -98,9 +98,9 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   poolType: 402
+  _rectTF: {fileID: 629073014984530617}
   _icon: {fileID: 5819347377706336863}
   _text: {fileID: 559893011140333915}
-  _rectTransform: {fileID: 629073014984530617}
   _canvasGroup: {fileID: 4324348233402338224}
 --- !u!225 &4324348233402338224
 CanvasGroup:

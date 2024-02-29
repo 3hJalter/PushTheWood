@@ -135,6 +135,7 @@ MonoBehaviour:
   _secretMapButton: {fileID: 3000093801028728422}
   _rewardChestButton: {fileID: 4037604563390843894}
   _rewardKeyTxt: {fileID: 5602844570135727943}
+  _levelChestButton: {fileID: 7750667334302017885}
   _levelProgressTxt: {fileID: 8732338535298898885}
   _levelText: {fileID: 7079813424118232752}
 --- !u!1 &577699555310462009

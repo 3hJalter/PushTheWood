@@ -40,6 +40,9 @@ namespace VinhLB
         [SerializeField]
         private CollectingResourceConfig _rewardKeyConfig;
 
+        private const float HEIGHT_OFFSET = 60;
+        private const float HEIGHT_INCREASE = 50;
+
         public void SpawnCollectingCoins(int amount, Vector3 startPosition, Transform endPoint,
             Action<float> onEachReachEnd = null)
         {
@@ -66,12 +69,17 @@ namespace VinhLB
 
             Sequence s = DOTween.Sequence();
             s.Append(unit.CanvasGroup.DOFade(1, _rewardKeyConfig.MoveDuration))
-                .Join(DOVirtual.Float(0, 50, _rewardKeyConfig.MoveDuration, y =>
+                .Join(DOVirtual.Float(0, HEIGHT_INCREASE, _rewardKeyConfig.MoveDuration, y =>
                 {
                     Vector2 viewPortPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) - Vector3.one * 0.5f;
                     unit.RectTf.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewPortPoint.x, parentRectTransform.rect.height * viewPortPoint.y + 60 + y);
                 }).SetEase(Ease.OutQuart))
-                .Append(unit.CanvasGroup.DOFade(0, _rewardKeyConfig.MoveDuration * 1.5f).SetEase(Ease.InQuint))    
+                .Append(unit.CanvasGroup.DOFade(0, _rewardKeyConfig.MoveDuration * 1.5f).SetEase(Ease.InQuint))
+                .Join(DOVirtual.Float(0, HEIGHT_INCREASE, _rewardKeyConfig.MoveDuration * 1.5f, y =>
+                {
+                    Vector2 viewPortPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) - Vector3.one * 0.5f;
+                    unit.RectTf.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewPortPoint.x, parentRectTransform.rect.height * viewPortPoint.y + HEIGHT_OFFSET + HEIGHT_INCREASE);
+                }).SetEase(Ease.OutQuart))
                 .OnComplete(() => OnDespawnUnit(unit));    
             s.Play();
 
