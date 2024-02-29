@@ -198,6 +198,7 @@ namespace _Game.UIs.Popup
         public void OnClickHowToPlayButton()
         {
             Debug.Log("Click how to play button");
+            UIManager.Ins.OpenUI<TutorialPopup>();
         }
 
         public void OnClickTogglePostProcessing()
