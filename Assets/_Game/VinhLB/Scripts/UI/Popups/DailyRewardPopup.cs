@@ -28,6 +28,7 @@ namespace VinhLB
                 else
                 {
                     DailyRewardManager.Ins.ObtainTodayReward();
+                    Close();
                 }
             });
 

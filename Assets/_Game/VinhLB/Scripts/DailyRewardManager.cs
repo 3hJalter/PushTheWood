@@ -32,14 +32,9 @@ namespace VinhLB
 
         public void ObtainTodayReward()
         {
-            if (IsTodayRewardObtained)
-            {
-                DevLog.Log(DevId.Vinh, $"Day {CycleDay + 1} reward is obtained");
-                return;
-            }
-
             DevLog.Log(DevId.Vinh, $"Obtain day {CycleDay + 1} reward");
             UIManager.Ins.GetUI<RewardPopup>().Open(CurrentRewards);
+            
             DataManager.Ins.GameData.user.dailyRewardClaimedCount += 1;
             DataManager.Ins.GameData.user.lastDailyRewardClaimTime = DateTime.Now.Date;
             DataManager.Ins.Save();
