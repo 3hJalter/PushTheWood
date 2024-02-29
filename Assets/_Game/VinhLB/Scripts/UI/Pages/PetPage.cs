@@ -13,6 +13,7 @@ namespace VinhLB
         private Transform _collectionItemParentTF;
 
         private List<CollectionItem> _collectionItemList;
+        private int currentPetIndex = 0;
 
         public override void Setup(object param = null)
         {
@@ -26,10 +27,26 @@ namespace VinhLB
                          in DataManager.Ins.UIResourceDatabase.CharacterResourceConfigDict)
                 {
                     CollectionItem item = Instantiate(_collectionItemPrefab, _collectionItemParentTF);
-                    item.Initialize(element.Value.Name, element.Value.IconSprite, 0);
-                    
+                    item.Initialize( _collectionItemList.Count, element.Value.Name, element.Value.IconSprite, DataManager.Ins.ConfigData.CharacterCosts[(int)element.Key]);
+                    item._OnClick += OnItemClick;
                     _collectionItemList.Add(item);
                 }
+            }
+            _collectionItemList[currentPetIndex].SetSelected(true);
+        }
+
+        private void OnItemClick(int id)
+        {
+            _collectionItemList[currentPetIndex].SetSelected(false);
+            currentPetIndex = id;
+            _collectionItemList[currentPetIndex].SetSelected(true);
+        }
+
+        private void OnDestroy()
+        {
+            for(int i = 0; i <  _collectionItemList.Count; i++)
+            {
+                _collectionItemList[i]._OnClick -= OnItemClick;
             }
         }
     }
