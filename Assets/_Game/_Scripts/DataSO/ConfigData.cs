@@ -68,6 +68,8 @@ namespace _Game.Data
         public readonly int startInterAdsLevel = 8;
         [FoldoutGroup("Ads")]
         public readonly int winLevelCountInterAds = 3;
+        [FoldoutGroup("Ads/Booster")]
+        public readonly int requireAdsForHintBooster = 2;
         #endregion
         // [BoxGroup("Monetize")]
     }
