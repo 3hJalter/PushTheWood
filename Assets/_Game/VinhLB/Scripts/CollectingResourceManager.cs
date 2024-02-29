@@ -69,7 +69,7 @@ namespace VinhLB
                 .Join(DOVirtual.Float(0, 50, _rewardKeyConfig.MoveDuration, y =>
                 {
                     Vector2 viewPortPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) - Vector3.one * 0.5f;
-                    unit.RectTransform.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewPortPoint.x, parentRectTransform.rect.height * viewPortPoint.y + 60 + y);
+                    unit.RectTf.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewPortPoint.x, parentRectTransform.rect.height * viewPortPoint.y + 60 + y);
                 }).SetEase(Ease.OutQuart))
                 .Append(unit.CanvasGroup.DOFade(0, _rewardKeyConfig.MoveDuration * 1.5f).SetEase(Ease.InQuint))    
                 .OnComplete(() => OnDespawnUnit(unit));    

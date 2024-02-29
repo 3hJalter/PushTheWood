@@ -5591,7 +5591,7 @@ MonoBehaviour:
   _onTextCanvasGroup: {fileID: 5115338605641068105}
   _offTextCanvasGroup: {fileID: 766086308507808878}
   _animate: 1
-  _animationDuration: 0.2
+  _animationDuration: 0.15
   _slideEase: 4
   _onToggleOn:
     m_PersistentCalls:
@@ -5895,7 +5895,7 @@ MonoBehaviour:
   _onTextCanvasGroup: {fileID: 2852312521381946098}
   _offTextCanvasGroup: {fileID: 7032928020881214858}
   _animate: 1
-  _animationDuration: 0.2
+  _animationDuration: 0.15
   _slideEase: 4
   _onToggleOn:
     m_PersistentCalls:
