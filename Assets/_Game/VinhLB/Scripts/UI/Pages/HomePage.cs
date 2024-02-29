@@ -8,7 +8,6 @@ using _Game.Utilities.Timer;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace VinhLB
@@ -28,6 +27,10 @@ namespace VinhLB
         [SerializeField]
         private Button _rewardChestButton;
         [SerializeField]
+        private RectTransform _rewardChestIconRectTF;
+        [SerializeField]
+        private GameObject _rewardChestCurrencyIconGO;
+        [SerializeField]
         private TMP_Text _rewardKeyTxt;
         [SerializeField]
         private TMP_Text _levelProgressTxt;
@@ -35,6 +38,7 @@ namespace VinhLB
         private TMP_Text _levelText;
 
         STimer shakeTimer;
+
         private void Awake()
         {
             _playButton.onClick.AddListener(() =>
@@ -63,10 +67,7 @@ namespace VinhLB
                 DevLog.Log(DevId.Vinh, "Click secret map button");
                 UIManager.Ins.OpenUI<SecretMapPopup>();
             });
-            _rewardChestButton.onClick.AddListener(() =>
-            {
-                RewardManager.Ins.HomeReward.ClaimRewardChest();
-            });
+            _rewardChestButton.onClick.AddListener(() => { RewardManager.Ins.HomeReward.ClaimRewardChest(); });
             shakeTimer = TimerManager.Ins.PopSTimer();
         }
 
@@ -85,17 +86,24 @@ namespace VinhLB
             {
                 if (!shakeTimer.IsStart)
                 {
-                    shakeTimer.Start(1f, () => _rewardChestButton.transform.DOShakeRotation(0.5f, 40, 10, 0, true, ShakeRandomnessMode.Harmonic), true);
+                    shakeTimer.Start(1f,
+                        () => _rewardChestIconRectTF.DOShakeRotation(0.5f, 40, 10, 0, true,
+                            ShakeRandomnessMode.Harmonic), true);
                     _rewardKeyTxt.text = $"FULL";
+                    _rewardKeyTxt.color = Color.green;
+                    _rewardChestCurrencyIconGO.SetActive(false);
                 }
             }
             else
             {
                 shakeTimer.Stop();
                 _rewardKeyTxt.text = $"{GameManager.Ins.RewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
-                _rewardChestButton.transform.rotation = Quaternion.identity;
+                _rewardKeyTxt.color = Color.white;
+                _rewardChestCurrencyIconGO.SetActive(true);
+                _rewardChestIconRectTF.rotation = Quaternion.identity;
             }
-            _levelProgressTxt.text = $"{GameManager.Ins.LevelProgress}/{DataManager.Ins.ConfigData.requireLevelProgress}";
+            _levelProgressTxt.text =
+                $"{GameManager.Ins.LevelProgress}/{DataManager.Ins.ConfigData.requireLevelProgress}";
 
             // UIManager.Ins.OpenUI<MaskScreen>(new MaskData()
             // {

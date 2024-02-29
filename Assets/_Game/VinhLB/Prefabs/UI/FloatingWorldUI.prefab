@@ -85,7 +85,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &6507450704114549745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,6 +147,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   poolType: 500
+  _rectTF: {fileID: 0}
   _icon: {fileID: 3039115369390093615}
   _text: {fileID: 3039115370218405019}
 --- !u!1 &3039115369390093617
