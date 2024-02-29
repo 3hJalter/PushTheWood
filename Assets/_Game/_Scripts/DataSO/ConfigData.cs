@@ -17,12 +17,12 @@ namespace _Game.Data
         [FoldoutGroup("In Game")]
         // Time per level
         [FoldoutGroup("In Game/Time Per Level/Normal")]
-        public readonly Dictionary<LevelNormalType, int> timePerNormalLevel = new()
+        [InfoBox("Do not change the order of the list: Easy -> Medium -> Hard")]
+        public List<TimePerNormalLevel> timePerNormalLevel = new()
         {
-            { LevelNormalType.None , 300},
-            {LevelNormalType.Easy, 300},
-            {LevelNormalType.Medium, 600},
-            {LevelNormalType.Hard, 900},
+            new TimePerNormalLevel() {levelNormalType = LevelNormalType.Easy, time = 300},
+            new TimePerNormalLevel() {levelNormalType = LevelNormalType.Medium, time = 600},
+            new TimePerNormalLevel() {levelNormalType = LevelNormalType.Hard, time = 900},
         };
         [FoldoutGroup("In Game/Time Per Level")]
         public readonly int timePerDailyChallengeLevel = 900;
@@ -55,8 +55,8 @@ namespace _Game.Data
 
         // Ticket purchase
         [FoldoutGroup("Booster Purchase")]
-        public readonly Dictionary<BoosterType, BoosterConfig> boosterConfigs = new();
-
+        [InfoBox("Do not change the order of the list, check order in BoosterType enum")]
+        public List<BoosterConfig> boosterConfigList = new();
         #endregion
 
         #region Ads
@@ -78,6 +78,7 @@ namespace _Game.Data
     public struct BoosterConfig
     {
         [SerializeField] private BoosterType type;
+        [SerializeField] private int unlockAtLevel;
         [SerializeField] private int goldPerBuyTen;
         [SerializeField] private TicketPerBuyRatio ticketPerBuyRatio;
 
@@ -86,6 +87,7 @@ namespace _Game.Data
         public UIResourceConfig UIResourceConfig;
         
         public BoosterType Type => type;
+        public int UnlockAtLevel => unlockAtLevel;
         public string Name => UIResourceConfig.Name;
         public Sprite Icon => UIResourceConfig.IconSprite;
         public int GoldPerBuyTen => goldPerBuyTen;
@@ -96,8 +98,8 @@ namespace _Game.Data
     [Serializable] 
     public record TimePerNormalLevel
     {
-       LevelNormalType levelNormalType;
-       int time;
+       public LevelNormalType levelNormalType;
+       public int time;
     }
     
     [Serializable]

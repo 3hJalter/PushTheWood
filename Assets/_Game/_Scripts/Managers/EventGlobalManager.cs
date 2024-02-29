@@ -24,7 +24,7 @@ namespace _Game._Scripts.Managers
         public Relay OnEnemyDie { get; private set; } // For Enemy
         public Relay<BoosterType, int> OnChangeBoosterAmount { get; private set; }
         public Relay OnGrowTree { get; private set; } // For Tree Seed
-        public Relay OnPlayerChangeIsland { get; private set; } // For When Player go to the other Island
+        public Relay<bool> OnPlayerChangeIsland { get; private set; } // For When Player go to the other Island
         public Relay<PlayerStep>  OnPlayerPushStep { get; private set; } // For Push Hint
         
         private void Awake()
@@ -39,7 +39,7 @@ namespace _Game._Scripts.Managers
             OnEnemyDie = new Relay();
             OnChangeBoosterAmount = new Relay<BoosterType, int>();
             OnGrowTree = new Relay();
-            OnPlayerChangeIsland = new Relay();
+            OnPlayerChangeIsland = new Relay<bool>();
             OnPlayerPushStep = new Relay<PlayerStep>();
             DontDestroyOnLoad(gameObject);
         }

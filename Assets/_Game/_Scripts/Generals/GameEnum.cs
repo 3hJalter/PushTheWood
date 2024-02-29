@@ -180,10 +180,8 @@ namespace _Game.Resource
     {
         None = -1,
         Undo = 0,
-        ResetIsland = 1,
-        Hint = 2,
-        GrowTree = 3,
-        PushHint = 4,
+        PushHint = 1,
+        GrowTree = 2,
     }
     
     public enum CurrencyType

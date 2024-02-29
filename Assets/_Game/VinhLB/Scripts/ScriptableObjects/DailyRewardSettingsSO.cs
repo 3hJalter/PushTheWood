@@ -60,9 +60,7 @@ namespace VinhLB
                 {
                     case BoosterType.Undo:
                         break;
-                    case BoosterType.ResetIsland:
-                        break;
-                    case BoosterType.Hint:
+                    case BoosterType.PushHint:
                         break;
                     case BoosterType.GrowTree:
                         break;

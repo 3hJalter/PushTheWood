@@ -40,7 +40,7 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
             // Set panel alpha to 0
             panel.color = new Color(1, 1, 1, 0);
             // Tween to move _imageRectContainer to _finalImageRectPosition
-            UIManager.Ins.OpenUI<InGameScreen>();
+            UIManager.Ins.OpenUI<InGameScreen>(false);
             Timing.RunCoroutine(MoveImageRect().CancelWith(gameObject));
             MoveInputManager.Ins.HSwipe.RemoveListener(_swipeEvent);
         }

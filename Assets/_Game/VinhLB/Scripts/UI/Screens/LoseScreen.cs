@@ -46,8 +46,8 @@ namespace VinhLB
 
         public void OnClickRestartButton()
         {
-            LevelManager.Ins.OnRestart();
             GameManager.Ins.PostEvent(EventID.StartGame);
+            LevelManager.Ins.OnRestart();
             GameManager.Ins.PostEvent(EventID.OnInterAdsStepCount, 1);
             Close();
         }
