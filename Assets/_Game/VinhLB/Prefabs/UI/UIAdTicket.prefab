@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2282518125657146496}
   - component: {fileID: 2423863395047940138}
   m_Layer: 0
-  m_Name: AdTicket
+  m_Name: UIAdTicket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7d877a8e68df94f189dbed38255bd202, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9b4334fb615ffc342bc30fb0578613b0, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -99,5 +99,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   poolType: 401
+  _rectTF: {fileID: 2282518125657146499}
   _icon: {fileID: 2282518125657146496}
   _text: {fileID: 0}

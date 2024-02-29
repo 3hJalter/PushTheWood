@@ -408,8 +408,8 @@ namespace _Game.DesignPattern
         Shark = 202,
         
         // UI
-        Coin = 400,
-        AdTicket = 401,
+        UICoin = 400,
+        UIAdTicket = 401,
         UIRewardKey = 402,
         
         // World UI

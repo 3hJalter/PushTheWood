@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2282518125657146496}
   - component: {fileID: 3644550193287672870}
   m_Layer: 0
-  m_Name: Coin
+  m_Name: UICoin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3fb23bf6552b44aafb168ed0584e1641, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b1b394c37db59524da383922d5f80a81, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -99,5 +99,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   poolType: 400
+  _rectTF: {fileID: 2282518125657146499}
   _icon: {fileID: 2282518125657146496}
   _text: {fileID: 0}
