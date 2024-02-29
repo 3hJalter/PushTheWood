@@ -295,6 +295,7 @@ MonoBehaviour:
     SerializationNodes: []
   btnSound: -1
   unscaleTime: 0
+  cooldownTime: 0.1
   showAnimType: 0
   showAnimTime: 0.35
   initScale: 0
@@ -802,6 +803,7 @@ MonoBehaviour:
     SerializationNodes: []
   btnSound: -1
   unscaleTime: 0
+  cooldownTime: 0.1
   showAnimType: 0
   showAnimTime: 0.35
   initScale: 0
@@ -2206,6 +2208,7 @@ MonoBehaviour:
     SerializationNodes: []
   btnSound: -1
   unscaleTime: 0
+  cooldownTime: 0.1
   showAnimType: 0
   showAnimTime: 0.35
   initScale: 0
@@ -2578,6 +2581,7 @@ MonoBehaviour:
     SerializationNodes: []
   btnSound: -1
   unscaleTime: 0
+  cooldownTime: 0.1
   showAnimType: 0
   showAnimTime: 0.35
   initScale: 0
@@ -2950,6 +2954,7 @@ MonoBehaviour:
     SerializationNodes: []
   btnSound: -1
   unscaleTime: 0
+  cooldownTime: 0.1
   showAnimType: 0
   showAnimTime: 0.35
   initScale: 0

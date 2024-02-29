@@ -180,15 +180,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f80be162c7898f94cba75085b4892f23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
   isDestroyOnClose: 0
   useAnimator: 0
   animator: {fileID: 0}
@@ -652,6 +643,7 @@ MonoBehaviour:
     SerializationNodes: []
   btnSound: -1
   unscaleTime: 0
+  cooldownTime: 0.1
   showAnimType: 0
   showAnimTime: 0.35
   initScale: 0
@@ -1451,6 +1443,7 @@ MonoBehaviour:
     SerializationNodes: []
   btnSound: -1
   unscaleTime: 0
+  cooldownTime: 0.1
   showAnimType: 0
   showAnimTime: 0.35
   initScale: 0
