@@ -111,7 +111,6 @@ namespace _Game.Managers
             screen.OnUndo -= OnUndo;
             screen.OnGrowTree -= OnGrowTree;
             screen.OnUsePushHint -= OnPushHint;
-            _pushHint?.OnStopHint();
             EventGlobalManager.Ins.OnPlayerChangeIsland?.RemoveListener(OnPlayerChangeIsland);
             TimerManager.Ins.PushSTimer(timer);
         }

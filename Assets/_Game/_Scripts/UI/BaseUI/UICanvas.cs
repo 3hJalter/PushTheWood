@@ -5,7 +5,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class UICanvas : HMonoBehaviour
+public class UICanvas : MonoBehaviour
 {
     //public bool IsAvoidBackKey = false;
     [FormerlySerializedAs("IsDestroyOnClose")]
@@ -82,7 +82,7 @@ public class UICanvas : HMonoBehaviour
     private void OnClose()
     {
         gameObject.SetActive(false);
-        if (isDestroyOnClose) DestroyImmediate(gameObject);
+        if (isDestroyOnClose) Destroy(gameObject);
     }
 
     private void ChangeAnim(string animName)

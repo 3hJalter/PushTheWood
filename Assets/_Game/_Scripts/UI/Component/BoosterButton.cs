@@ -58,7 +58,7 @@ namespace _Game._Scripts.UIs.Component
             set
             {
                 _isFocus = value;
-                 focusImage.SetActive(value);
+                 if (focusImage != null) focusImage.SetActive(value);
             }
         }
         
