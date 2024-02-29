@@ -565,7 +565,7 @@ GameObject:
   - component: {fileID: 7548886116919270023}
   - component: {fileID: 5115725121265293228}
   m_Layer: 0
-  m_Name: CompassChest
+  m_Name: CompassChestWater
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -720,22 +720,22 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  poolType: 31
+  poolType: 32
   skin: {fileID: 3138856879025384562}
   meshRenderer: {fileID: 0}
   skinController: {fileID: 0}
   size: {x: 1, y: 1, z: 1}
   isMinusHalfSizeY: 0
-  startHeight: 2
-  endHeight: 3
-  overrideStartHeight: 0
+  startHeight: 1
+  endHeight: 2
+  overrideStartHeight: 1
   floatingHeightOffset: 0
   unitTypeY: 0
   yOffsetOnDown: 0.5
   unitTypeXZ: 2
   skinRotationDirection: -1
   islandID: -1
-  gridUnitStaticType: 17
+  gridUnitStaticType: 18
   anchor: {fileID: 0}
   chestAnimator: {fileID: 423897038229777616}
   chestModel: {fileID: 6151768929379951273}
