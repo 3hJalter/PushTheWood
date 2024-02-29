@@ -73,11 +73,13 @@ namespace _Game.Data
         [SerializeField] private int goldPerBuyTen;
         [SerializeField] private TicketPerBuyRatio ticketPerBuyRatio;
 
-        public ResourceData ResourceData;
+        [FormerlySerializedAs("UIResourceData")]
+        [FormerlySerializedAs("ResourceData")]
+        public UIResourceConfig UIResourceConfig;
         
         public BoosterType Type => type;
-        public string Name => ResourceData.Name;
-        public Sprite Icon => ResourceData.IconSprite;
+        public string Name => UIResourceConfig.Name;
+        public Sprite Icon => UIResourceConfig.IconSprite;
         public int GoldPerBuyTen => goldPerBuyTen;
 
         // Do with goldPerBuyMore

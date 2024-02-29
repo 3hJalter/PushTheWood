@@ -1,4 +1,8 @@
-﻿using DG.Tweening;
+﻿using System;
+using System.Collections.Generic;
+using _Game.Managers;
+using _Game.Resource;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -12,7 +16,7 @@ namespace VinhLB
         public override void Open(object param = null)
         {
             base.Open(param);
-            
+
             if (param is true)
             {
                 _topNavigationTabGroup.ResetSelectedTab(false);
@@ -26,7 +30,7 @@ namespace VinhLB
         public override void Close()
         {
             base.Close();
-            
+
             _topNavigationTabGroup.ClearSelectedTab();
         }
     }
