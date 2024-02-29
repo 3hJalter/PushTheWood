@@ -31,6 +31,10 @@ namespace _Game.Managers
 
         public CinemachineVirtualCameraBase CurrentVirtualCamera => currentVirtualCamera;
 
+        private void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
         public bool IsCurrentCameraIs(ECameraType eCameraType)
         {
             return currentVirtualCamera == virtualCameraDic[eCameraType];
