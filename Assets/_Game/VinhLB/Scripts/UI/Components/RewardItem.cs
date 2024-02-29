@@ -27,8 +27,8 @@ namespace VinhLB
                 return;
             }
 
-            _nameText.text = _reward.ResourceData.Name;
-            _iconImage.sprite = _reward.ResourceData.IconSprite;
+            _nameText.text = _reward.UIResourceConfig.Name;
+            _iconImage.sprite = _reward.UIResourceConfig.IconSprite;
             _amountText.text = _reward.Amount.ToString();
         }
     }

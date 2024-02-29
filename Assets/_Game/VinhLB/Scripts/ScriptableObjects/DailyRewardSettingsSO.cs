@@ -28,26 +28,26 @@ namespace VinhLB
         public CurrencyType CurrencyType;
         public int Amount;
 
-        private ResourceData _resourceData;
+        private UIResourceConfig _uiResourceConfig;
 
-        public ResourceData ResourceData
+        public UIResourceConfig UIResourceConfig
         {
             get
             {
-                if (_resourceData.Equals(default(ResourceData)))
+                if (_uiResourceConfig.Equals(default(UIResourceConfig)))
                 {
                     switch (RewardType)
                     {
                         case RewardType.Booster:
-                            _resourceData = DataManager.Ins.GetBoosterResourceData(BoosterType);
+                            _uiResourceConfig = DataManager.Ins.GetBoosterUIResourceConfig(BoosterType);
                             break;
                         case RewardType.Currency:
-                            _resourceData = DataManager.Ins.GetCurrencyResourceData(CurrencyType);
+                            _uiResourceConfig = DataManager.Ins.GetCurrencyUIResourceConfig(CurrencyType);
                             break;
                     }
                 }
 
-                return _resourceData;
+                return _uiResourceConfig;
             }
         }
 

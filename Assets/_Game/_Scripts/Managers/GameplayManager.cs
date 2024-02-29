@@ -270,7 +270,7 @@ namespace _Game.Managers
             {
                 DevLog.Log(DevId.Hoang, "Show popup to buy undo");
                 BoosterConfig boosterConfig = DataManager.Ins.ConfigData.boosterConfigs[BoosterType.Undo];
-                boosterConfig.ResourceData = DataManager.Ins.GetBoosterResourceData(boosterConfig.Type);
+                boosterConfig.UIResourceConfig = DataManager.Ins.GetBoosterUIResourceConfig(boosterConfig.Type);
                 UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(boosterConfig);
             }
             else
@@ -291,7 +291,7 @@ namespace _Game.Managers
             {
                 DevLog.Log(DevId.Hoang, "Show popup to buy reset");
                 BoosterConfig boosterConfig = DataManager.Ins.ConfigData.boosterConfigs[BoosterType.ResetIsland];
-                boosterConfig.ResourceData = DataManager.Ins.GetBoosterResourceData(boosterConfig.Type);
+                boosterConfig.UIResourceConfig = DataManager.Ins.GetBoosterUIResourceConfig(boosterConfig.Type);
                 UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(boosterConfig);
             }
             else
@@ -310,7 +310,7 @@ namespace _Game.Managers
             {
                 DevLog.Log(DevId.Hoang, "Show popup to buy hint");
                 BoosterConfig boosterConfig = DataManager.Ins.ConfigData.boosterConfigs[BoosterType.Hint];
-                boosterConfig.ResourceData = DataManager.Ins.GetBoosterResourceData(boosterConfig.Type);
+                boosterConfig.UIResourceConfig = DataManager.Ins.GetBoosterUIResourceConfig(boosterConfig.Type);
                 UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(boosterConfig);
             }
             else
@@ -337,7 +337,7 @@ namespace _Game.Managers
             {
                 DevLog.Log(DevId.Hoang, "Show popup to buy grow tree");
                 BoosterConfig boosterConfig = DataManager.Ins.ConfigData.boosterConfigs[BoosterType.GrowTree];
-                boosterConfig.ResourceData = DataManager.Ins.GetBoosterResourceData(boosterConfig.Type);
+                boosterConfig.UIResourceConfig = DataManager.Ins.GetBoosterUIResourceConfig(boosterConfig.Type);
                 UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(boosterConfig);
             }
             else

@@ -195,6 +195,7 @@ namespace _Game.Resource
 
     public enum CharacterType
     {
+        None = -1,
         Beeny = 0,
         Weeny = 1,
         Fuzzy = 2,

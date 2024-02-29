@@ -4,6 +4,7 @@ using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
 using _Game.Resource;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VinhLB;
 
 namespace _Game.Managers
@@ -40,11 +41,12 @@ namespace _Game.Managers
         [SerializeField]
         private VFXData vfxData;
         [SerializeField]
-        private ResourceDatabase _resourceDatabase;
+        private UIResourceDatabase _uiResourceDatabase;
         
         public ConfigData ConfigData => configData;
         public AudioData AudioData => audioData;
         public VFXData VFXData => vfxData;
+        public UIResourceDatabase UIResourceDatabase => _uiResourceDatabase;
         
         #endregion
         
@@ -53,6 +55,7 @@ namespace _Game.Managers
         public int CountNormalLevel => gridData.CountNormalLevel;
         public int CountSecretLevel => gridData.CountSecretLevel;
         public int CountSurfaceMaterial => materialData.CountSurfaceMaterial;
+        
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
@@ -130,17 +133,21 @@ namespace _Game.Managers
             return gridData.GetWorldUIUnit(poolType);
         }
 
-        public ResourceData GetBoosterResourceData(BoosterType type)
+        public UIResourceConfig GetBoosterUIResourceConfig(BoosterType type)
         {
-            return _resourceDatabase.BoosterResourceDataDict[type];
+            return _uiResourceDatabase.BoosterResourceConfigDict[type];
         }
 
-        public ResourceData GetCurrencyResourceData(CurrencyType type)
+        public UIResourceConfig GetCurrencyUIResourceConfig(CurrencyType type)
         {
-            return _resourceDatabase.CurrencyResourceDataDict[type];
+            return _uiResourceDatabase.CurrencyResourceConfigDict[type];
+        }
+        
+        public UIResourceConfig GetCharacterUIResourceConfig(CharacterType type)
+        {
+            return _uiResourceDatabase.CharacterResourceConfigDict[type];
         }
         
         #endregion
-        
     }
 }
