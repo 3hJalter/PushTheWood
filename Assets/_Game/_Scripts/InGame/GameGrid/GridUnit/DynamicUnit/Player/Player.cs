@@ -98,7 +98,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             IsDead = false;
             IsStun = false;
             stateMachine.ChangeState(StateEnum.Idle);
-            EventGlobalManager.Ins.OnPlayerChangeIsland?.Dispatch();
+            EventGlobalManager.Ins.OnPlayerChangeIsland?.Dispatch(true);
         }
 
         public override void OnDespawn()
@@ -167,7 +167,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             if (islandID == nextMainCell.IslandID || nextMainCell.IslandID == -1) return;
             islandID = nextMainCell.IslandID;
             isChangeIsland = true;
-            EventGlobalManager.Ins.OnPlayerChangeIsland?.Dispatch();
+            EventGlobalManager.Ins.OnPlayerChangeIsland?.Dispatch(false);
             LevelManager.Ins.CurrentLevel.SetFirstPlayerStepOnIsland(nextMainCell);
         }
 
@@ -307,7 +307,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         protected override void OnMementoRestoreData()
         {
-            EventGlobalManager.Ins.OnPlayerChangeIsland?.Dispatch();
+            EventGlobalManager.Ins.OnPlayerChangeIsland?.Dispatch(false);
         }
 
         public override IMemento RawSave()

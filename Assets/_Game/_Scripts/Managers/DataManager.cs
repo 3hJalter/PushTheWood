@@ -65,11 +65,11 @@ namespace _Game.Managers
             return type switch
             {
                 LevelType.Normal => normalType is LevelNormalType.None
-                    ? configData.timePerNormalLevel[LevelNormalType.Medium]
-                    : configData.timePerNormalLevel[normalType],
+                    ? configData.timePerNormalLevel[(int) LevelNormalType.Medium].time
+                    : configData.timePerNormalLevel[(int) normalType].time,
                 LevelType.Secret => configData.timePerSecretLevel,
                 LevelType.DailyChallenge => configData.timePerDailyChallengeLevel,
-                _ => configData.timePerNormalLevel[LevelNormalType.Medium]
+                _ => configData.timePerNormalLevel[(int)LevelNormalType.Medium].time
             };
         }
         
