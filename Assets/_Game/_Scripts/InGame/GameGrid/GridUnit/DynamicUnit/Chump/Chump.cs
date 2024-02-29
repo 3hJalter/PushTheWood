@@ -162,7 +162,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
             switch (triggerUnit)
             {
                 case Box.Box box:
-                    OnBePushed(lastPushedDirection, box);
+                    OnBePushed(box.LastPushedDirection, box);
                     break;
                 case Chump chump:
                     if (!chump.IsCurrentStateIs(StateEnum.FormRaft) && chump.IsOnWater())

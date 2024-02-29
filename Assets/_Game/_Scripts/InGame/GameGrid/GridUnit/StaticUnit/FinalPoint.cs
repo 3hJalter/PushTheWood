@@ -24,6 +24,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             isInteracted = false;
             winParticle.Stop();
+            LevelManager.Ins.objectiveCounter--;
             base.OnDespawn();
         }
         
@@ -50,6 +51,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         
         private static void OnRemoveFromLevelManager()
         {
+            if (LevelManager.Ins.numsOfCollectingObjectInLevel <= 0) return;
             LevelManager.Ins.numsOfCollectingObjectInLevel--;
             EventGlobalManager.Ins.OnChangeLevelCollectingObjectNumber.Dispatch();
         }
