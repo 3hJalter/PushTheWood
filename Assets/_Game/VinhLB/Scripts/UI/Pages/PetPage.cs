@@ -11,6 +11,8 @@ namespace VinhLB
         private CollectionItem _collectionItemPrefab;
         [SerializeField]
         private Transform _collectionItemParentTF;
+        [SerializeField]
+        GameObject[] playerSkins;
 
         private List<CollectionItem> _collectionItemList;
         private int currentPetIndex = 0;
@@ -33,12 +35,15 @@ namespace VinhLB
                 }
             }
             _collectionItemList[currentPetIndex].SetSelected(true);
+            playerSkins[currentPetIndex].gameObject.SetActive(true);
         }
 
         private void OnItemClick(int id)
         {
             _collectionItemList[currentPetIndex].SetSelected(false);
+            playerSkins[currentPetIndex].gameObject.SetActive(false);
             currentPetIndex = id;
+            playerSkins[currentPetIndex].gameObject.SetActive(true);
             _collectionItemList[currentPetIndex].SetSelected(true);
         }
 

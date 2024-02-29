@@ -1221,23 +1221,23 @@ PrefabInstance:
       objectReference: {fileID: 2754231247714136429, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
     - target: {fileID: 2766130066356008451, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2766130066356008451, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2766130066356008451, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 1020
       objectReference: {fileID: 0}
     - target: {fileID: 2766130066356008451, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 540
       objectReference: {fileID: 0}
     - target: {fileID: 2766130066356008451, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -170
       objectReference: {fileID: 0}
     - target: {fileID: 2782781669929651471, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: serializationData.Prefab
@@ -1717,19 +1717,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3870867614952739911, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3870867614952739911, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3870867614952739911, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 1020
       objectReference: {fileID: 0}
     - target: {fileID: 3870867614952739911, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 510
       objectReference: {fileID: 0}
     - target: {fileID: 3882681519150560428, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: serializationData.Prefab
@@ -2091,6 +2091,10 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 4957463594655304465, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+    - target: {fileID: 4960956336423267962, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5003747567318533432, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: serializationData.Prefab
       value: 
