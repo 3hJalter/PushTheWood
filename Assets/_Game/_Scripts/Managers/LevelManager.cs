@@ -129,6 +129,9 @@ namespace _Game.GameGrid
             OnAddWinCondition(CurrentLevel.LevelWinCondition);
             GameManager.Ins.PostEvent(EventID.StartGame);
             if (_currentLevel.IsInit) return;
+            enemies.Clear();
+            numsOfCollectingObjectInLevel = 0;
+            objectiveCounter = 0;
             _currentLevel.OnInitLevelSurfaceAndUnit();
             _currentLevel.OnInitPlayerToLevel();
             savingState = new CareTaker(this);
@@ -269,6 +272,9 @@ namespace _Game.GameGrid
         {
             if (!CurrentLevel.IsInit) return; // No Init -> Means No Restart
             _isRestarting = true;
+            objectiveCounter = 0;
+            enemies.Clear();
+            numsOfCollectingObjectInLevel = 0;
             CurrentLevel.GridMap.Reset();
             IsConstructingLevel = true;
             player.OnDespawn();
@@ -282,6 +288,7 @@ namespace _Game.GameGrid
             IsConstructingLevel = false;
             savingState.Reset();
             OnLevelRestarted?.Invoke();
+            OnObjectiveChange?.Invoke();
             _isRestarting = false;
         }
 
@@ -386,6 +393,7 @@ namespace _Game.GameGrid
             {
                 if (main.CurrentLevel.GridMap.IsChange)
                 {
+                    // TEMPORARY
                     SavingState(true);
                     if (objectHistorys.Count < dataHistorys.Count)
                         objectHistorys.Push(objectHistorys.Peek());
