@@ -238,7 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
+    SerializedFormat: 0
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -1690,7 +1690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
+    SerializedFormat: 0
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -2028,7 +2028,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 84a2364ac74ab8b47897df2eb8b10a7d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6c3c52c160625974ab16ce5a183d272b, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -2296,7 +2296,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 84a2364ac74ab8b47897df2eb8b10a7d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6c3c52c160625974ab16ce5a183d272b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2467,7 +2467,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
+    SerializedFormat: 0
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -2820,7 +2820,8 @@ MonoBehaviour:
   m_text: 999
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}
-  m_sharedMaterial: {fileID: 6655746723336473214, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}
+  m_sharedMaterial: {fileID: 6655746723336473214, guid: 3f5cf7f9d5db847479b1165e141ff34c,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3199,7 +3200,8 @@ MonoBehaviour:
   m_text: 00:00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}
-  m_sharedMaterial: {fileID: 6655746723336473214, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}
+  m_sharedMaterial: {fileID: 6655746723336473214, guid: 3f5cf7f9d5db847479b1165e141ff34c,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3693,7 +3695,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
+    SerializedFormat: 0
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -4202,7 +4204,8 @@ MonoBehaviour:
   m_text: 999
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}
-  m_sharedMaterial: {fileID: 6655746723336473214, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}
+  m_sharedMaterial: {fileID: 6655746723336473214, guid: 3f5cf7f9d5db847479b1165e141ff34c,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5120,7 +5123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
+    SerializedFormat: 0
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -5552,7 +5555,8 @@ MonoBehaviour:
   m_text: 999
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}
-  m_sharedMaterial: {fileID: 6655746723336473214, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}
+  m_sharedMaterial: {fileID: 6655746723336473214, guid: 3f5cf7f9d5db847479b1165e141ff34c,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5689,7 +5693,8 @@ MonoBehaviour:
     Find the Chest'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}
-  m_sharedMaterial: {fileID: 6655746723336473214, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}
+  m_sharedMaterial: {fileID: 6655746723336473214, guid: 3f5cf7f9d5db847479b1165e141ff34c,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5973,7 +5978,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 84a2364ac74ab8b47897df2eb8b10a7d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6c3c52c160625974ab16ce5a183d272b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6145,7 +6150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
+    SerializedFormat: 0
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -7053,7 +7058,8 @@ MonoBehaviour:
   m_text: Level 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}
-  m_sharedMaterial: {fileID: 6655746723336473214, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}
+  m_sharedMaterial: {fileID: 6655746723336473214, guid: 3f5cf7f9d5db847479b1165e141ff34c,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7280,7 +7286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
+    SerializedFormat: 0
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -8296,7 +8302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
+    SerializedFormat: 0
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 

@@ -160,7 +160,7 @@ namespace _Game.UIs.Screen
                 pushHintButton.HasAlternativeImage = false;
                 pushHintButton.IsFocus = false;
             }
-            pushHintButton.IsShowAmount = !active;
+            pushHintButton.SetAmount(DataManager.Ins.GameData.user.pushHintCount);
         }
         
         private void UpdateLevelText()
@@ -225,6 +225,9 @@ namespace _Game.UIs.Screen
 
         public void OnShowBooster()
         {
+            undoButton.SetAmount(DataManager.Ins.GameData.user.undoCount);
+            pushHintButton.SetAmount(DataManager.Ins.GameData.user.pushHintCount);
+            growTreeButton.SetAmount(DataManager.Ins.GameData.user.growTreeCount);
             // Get the unlock level of the booster
             LevelType type = LevelManager.Ins.CurrentLevel.LevelType;
             if (type is LevelType.Normal)

@@ -24,7 +24,6 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             isInteracted = false;
             winParticle.Stop();
-            LevelManager.Ins.objectiveCounter--;
             base.OnDespawn();
         }
         

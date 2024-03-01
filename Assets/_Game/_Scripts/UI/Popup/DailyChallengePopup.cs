@@ -68,7 +68,7 @@ namespace _Game.UIs.Popup
                 dailyChallengeButtons[index].gameObject.SetActive(true);
             }
             // click today button
-            OnClickDailyChallengeButton(_currentDay);
+            // OnClickDailyChallengeButton(_currentDay);
         }
         
         public override void Close()
