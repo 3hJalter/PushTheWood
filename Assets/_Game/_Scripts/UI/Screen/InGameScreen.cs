@@ -304,6 +304,8 @@ namespace _Game.UIs.Screen
             // Handle Showing time & Setting button
             timerContainer.SetActive(!isTutorial);
             settingButton.gameObject.SetActive(!isTutorial);
+            unlimitedUndoButton.gameObject.SetActive(false);
+            unlimitedResetIslandButton.gameObject.SetActive(false);
             // Hide Showing Booster
             if (isTutorial && type is LevelType.Normal) {
                 undoButton.gameObject.SetActive(false);
