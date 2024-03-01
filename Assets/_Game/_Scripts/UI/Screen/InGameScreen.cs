@@ -321,7 +321,8 @@ namespace _Game.UIs.Screen
                 resetIslandButton.gameObject.SetActive(true);
             }
             // Other handle for specific level
-
+            unlimitedUndoButton.gameObject.SetActive(false);
+            unlimitedResetIslandButton.gameObject.SetActive(false);
             #region Level 3 (index 2)
 
             if (currentLevel == 2 && type is LevelType.Normal)
