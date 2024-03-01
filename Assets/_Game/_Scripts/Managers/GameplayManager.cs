@@ -314,12 +314,12 @@ namespace _Game.Managers
             }
         }
 
-        public void OnFreeResetIsland()
+        public void OnFreeResetIsland(bool isShowHint = true)
         {
             LevelManager.Ins.ResetLevelIsland();
             if (!_pushHint.IsStartHint) return;
             _pushHint.OnStopHint();
-            _pushHint.OnStartHint(LevelManager.Ins.player.islandID);
+            _pushHint.OnStartHint(LevelManager.Ins.player.islandID, isShowHint);
         }
         
         private void OnResetIsland()

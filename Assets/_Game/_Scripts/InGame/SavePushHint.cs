@@ -83,10 +83,6 @@ namespace _Game._Scripts.InGame
             _isPlayerMakeHintWrong = false;
             PlayerStep playerStep = _currentPlayerSteps.Peek();
             OnShowHint(playerStep, _isShowHint);
-            if (GameplayManager.Ins.PushHintObject != null)
-            {
-                GameplayManager.Ins.PushHintObject.SetActive(true);
-            }
         }
         
         public void OnStopHint(bool isRemoveListener = true)
