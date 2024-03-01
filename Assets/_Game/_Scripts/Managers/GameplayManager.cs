@@ -360,8 +360,8 @@ namespace _Game.Managers
                     DataManager.Ins.GameData.user.growTreeCount--;
                     screen.growTreeButton.SetAmount(DataManager.Ins.GameData.user.growTreeCount);
                 }
-
                 EventGlobalManager.Ins.OnGrowTree.Dispatch();
+                if (_pushHint.IsStartHint) _pushHint.OnStopHint();
             }
         }
 
