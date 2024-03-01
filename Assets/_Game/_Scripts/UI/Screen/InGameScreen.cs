@@ -218,21 +218,7 @@ namespace _Game.UIs.Screen
             UpdateLevelText();
             UpdateObjectiveText();
         }
-
-        public void OnHideIfFirstTutorial()
-        {
-            bool isTutorial = LevelManager.Ins.IsTutorialLevel;
-            // Hide all booster
-            undoButton.gameObject.SetActive(!isTutorial);
-            growTreeButton.gameObject.SetActive(!isTutorial);
-            pushHintButton.gameObject.SetActive(!isTutorial);
-            resetIslandButton.gameObject.SetActive(!isTutorial);
-            // Hide time
-            timerContainer.SetActive(!isTutorial);
-            // hide setting
-            settingButton.gameObject.SetActive(!isTutorial);
-        }
-
+        
         public void OnCheckBoosterLock()
         {
             LevelType type = LevelManager.Ins.CurrentLevel.LevelType;
@@ -268,7 +254,7 @@ namespace _Game.UIs.Screen
         
         #region Booster
 
-        public void OnClickUndo()
+        private void OnClickUndo()
         {
             // Check number of ticket to use
             OnUndo?.Invoke();
@@ -276,28 +262,28 @@ namespace _Game.UIs.Screen
             AudioManager.Ins.PlaySfx(SfxType.Undo);
             undoTimer.Start(UNDO_CD_TIME, () => undoButton.IsInteractable = true);
             if (undoButton.IsFocus) undoButton.IsFocus = false;
-            if (pushHintButton.IsFocus) pushHintButton.IsFocus = false;
+            if (resetIslandButton.IsFocus) resetIslandButton.IsFocus = false;
         }
 
-        public void OnClickGrowTree()
+        private void OnClickGrowTree()
         {
             OnGrowTree?.Invoke();
             if (undoButton.IsFocus) undoButton.IsFocus = false;
-            if (pushHintButton.IsFocus) pushHintButton.IsFocus = false;
+            if (resetIslandButton.IsFocus) resetIslandButton.IsFocus = false;
         }
 
-        public void OnClickResetIsland()
+        private void OnClickResetIsland()
         {
             OnResetIsland?.Invoke();
             if (undoButton.IsFocus) undoButton.IsFocus = false;
-            if (pushHintButton.IsFocus) pushHintButton.IsFocus = false;
+            if (resetIslandButton.IsFocus) resetIslandButton.IsFocus = false;
         }
         
-        public void OnClickPushHint()
+        private void OnClickPushHint()
         {
             OnUsePushHint?.Invoke();
             if (undoButton.IsFocus) undoButton.IsFocus = false;
-            if (pushHintButton.IsFocus) pushHintButton.IsFocus = false;
+            if (resetIslandButton.IsFocus) resetIslandButton.IsFocus = false;
         }
         
         #endregion
@@ -307,8 +293,65 @@ namespace _Game.UIs.Screen
         public void OnShowTryHintAgain(bool show)
         { 
             undoButton.IsFocus = show;
-           pushHintButton.IsFocus = show;
-           pushHintButton.HasAlternativeImage = show;
+           resetIslandButton.IsFocus = show;
         }
+        
+        public void OnHandleTutorial()
+        {
+            bool isTutorial = LevelManager.Ins.IsFirstTutorialLevel;
+            int currentLevel = LevelManager.Ins.CurrentLevel.Index;
+            LevelType type = LevelManager.Ins.CurrentLevel.LevelType;
+            // Handle Showing time & Setting button
+            timerContainer.SetActive(!isTutorial);
+            settingButton.gameObject.SetActive(!isTutorial);
+            // Hide Showing Booster
+            if (isTutorial && type is LevelType.Normal) {
+                undoButton.gameObject.SetActive(false);
+                growTreeButton.gameObject.SetActive(false);
+                pushHintButton.gameObject.SetActive(false);
+                resetIslandButton.gameObject.SetActive(false);
+            }
+            else
+            {
+                undoButton.gameObject.SetActive(true);
+                growTreeButton.gameObject.SetActive(true);
+                pushHintButton.gameObject.SetActive(true);
+                resetIslandButton.gameObject.SetActive(true);
+            }
+            // Other handle for specific level
+
+            #region Level 3 (index 2)
+
+            if (currentLevel == 2 && type is LevelType.Normal)
+            {
+                undoButton.gameObject.SetActive(false);
+                resetIslandButton.gameObject.SetActive(false);
+                unlimitedUndoButton.gameObject.SetActive(true);
+                unlimitedResetIslandButton.gameObject.SetActive(true);
+                return;
+            }
+            
+            
+            #endregion
+        }
+
+        #region Unlimited Booster
+
+        public void OnClickUnlimitedUndo()
+        {
+            GameplayManager.Ins.OnFreeUndo();
+        }
+        
+        public void OnClickUnlimitedResetIsland()
+        {
+            GameplayManager.Ins.OnFreeResetIsland();
+        }
+        
+        public HButton unlimitedUndoButton;
+        public HButton unlimitedResetIslandButton;
+
+        #endregion
+        
+        
     }
 }

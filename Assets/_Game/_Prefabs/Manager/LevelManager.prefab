@@ -69,8 +69,11 @@ MonoBehaviour:
   normalLevelIndex: 0
   dailyLevelIndex: 0
   secretLevelIndex: 0
-  ReceivingKeyReward: 0
+  KeyRewardCount: 0
+  SecretMapPieceCount: 0
   IsConstructingLevel: 0
   player: {fileID: 0}
+  numsOfCollectingObjectInLevel: 0
+  objectiveCounter: 0
   levelWinCondition: 0
   isSavePlayerPushStep: 0

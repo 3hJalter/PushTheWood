@@ -53,18 +53,20 @@ namespace _Game._Scripts.InGame
         {
             return _playerStepsOnIsland.ContainsKey(islandID);
         }
-        
-        public void OnStartHint(int islandID)
+
+        private bool _isShowHint;
+        public void OnStartHint(int islandID, bool isShowHint = true)
         {   
             if (_currentPlayerSteps is not null) OnStopHint();
             // make a copy of the stack
+            _isShowHint = isShowHint;
             _currentPlayerSteps = new Stack<PlayerStep>(_playerStepsOnIsland[islandID]);
             _pops = new Stack<PlayerStep>();
             RemoveListener();
             EventGlobalManager.Ins.OnPlayerPushStep.AddListener(OnTrackingPlayerPush);
             _isStartHint = true;
             _isPlayerMakeHintWrong = false;
-            OnShowHint(_currentPlayerSteps.Peek());
+            OnShowHint(_currentPlayerSteps.Peek(), _isShowHint);
             GameplayManager.Ins.OnShowTryHintAgain(false);
         }
 
@@ -80,7 +82,7 @@ namespace _Game._Scripts.InGame
         {
             _isPlayerMakeHintWrong = false;
             PlayerStep playerStep = _currentPlayerSteps.Peek();
-            OnShowHint(playerStep);
+            OnShowHint(playerStep, _isShowHint);
             if (GameplayManager.Ins.PushHintObject != null)
             {
                 GameplayManager.Ins.PushHintObject.SetActive(true);
@@ -116,7 +118,7 @@ namespace _Game._Scripts.InGame
                 return;
             }
             _currentPlayerSteps.Push(playerStep);
-            OnShowHint(playerStep);
+            OnShowHint(playerStep, _isShowHint);
         }
 
         private void RemoveListener()
@@ -147,7 +149,7 @@ namespace _Game._Scripts.InGame
                  }
                  else
                  {
-                     OnShowHint(_currentPlayerSteps.Peek());
+                     OnShowHint(_currentPlayerSteps.Peek(), _isShowHint);
                  }
              }
              else
@@ -159,9 +161,9 @@ namespace _Game._Scripts.InGame
              }
         }
 
-        private static void OnShowHint(PlayerStep playerStep)
+        private static void OnShowHint(PlayerStep playerStep, bool isShowHint = true)
         {
-            GameplayManager.Ins.PushHintObject.MoveTo(playerStep.x, playerStep.y, playerStep.d);
+            GameplayManager.Ins.PushHintObject.MoveTo(playerStep.x, playerStep.y, playerStep.d, isShowHint);
         }
     }
     

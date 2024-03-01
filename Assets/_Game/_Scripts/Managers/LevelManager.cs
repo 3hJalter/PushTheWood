@@ -62,7 +62,7 @@ namespace _Game.GameGrid
 
         public Vector3 CameraDownOffset => _cameraDownOffset;
 
-        public bool IsTutorialLevel => (CurrentLevel.LevelType == LevelType.Normal && NormalLevelIndex == 0)
+        public bool IsFirstTutorialLevel => (CurrentLevel.LevelType == LevelType.Normal && NormalLevelIndex == 0)
                                        || (CurrentLevel.LevelType == LevelType.DailyChallenge && DailyLevelIndex == 0);
 
         [ReadOnly]

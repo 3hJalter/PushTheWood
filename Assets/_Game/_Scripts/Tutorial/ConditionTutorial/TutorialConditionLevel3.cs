@@ -7,8 +7,8 @@ using UnityEngine;
 
 namespace _Game._Scripts.Tutorial.ConditionTutorial
 {
-    [CreateAssetMenu(fileName = "TutorialLevel2", menuName = "ScriptableObjects/TutorialData/Lvl2", order = 1)]
-    public class TutorialConditionLevel2 : BaseTutorialData, ITutorialCondition
+    [CreateAssetMenu(fileName = "TutorialLevel3", menuName = "ScriptableObjects/TutorialData/Lvl3", order = 1)]
+    public class TutorialConditionLevel3 : BaseTutorialData, ITutorialCondition
     {
         public void HandleShowTutorial(GameGridCell cell, GridUnit triggerUnit)
         {
@@ -16,7 +16,7 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
             {
                 if (triggerUnit is not Player) return;
                 // if player at cell 13,7
-                if (!(Math.Abs(cell.WorldX - 13) < Constants.TOLERANCE) ||
+                if (!(Math.Abs(cell.WorldX - 7) < Constants.TOLERANCE) ||
                     !(Math.Abs(cell.WorldY - 7) < Constants.TOLERANCE)) return;
                 GameplayManager.Ins.OnFreePushHint(false, true);
                 currentTutIndex++;
