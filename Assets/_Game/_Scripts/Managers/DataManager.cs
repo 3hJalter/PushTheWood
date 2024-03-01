@@ -64,7 +64,7 @@ namespace _Game.Managers
         }
         public bool IsAdsHintEnough()
         {
-            return GameData.user.hintAdsCount >= ConfigData.requireAdsForHintBooster;
+            return GameData.user.hintAdsCount >= ConfigData.GetBoosterConfig(BoosterType.PushHint).TicketPerBuyRatio.ticketNeed;
         }
         public bool IsCharacterSkinUnlock(int index)
         {

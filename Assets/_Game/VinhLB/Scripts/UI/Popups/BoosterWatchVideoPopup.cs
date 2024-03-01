@@ -21,6 +21,8 @@ namespace VinhLB
         [SerializeField]
         private TMP_Text _boosterText;
         [SerializeField]
+        private TMP_Text _boosterAmountText;
+        [SerializeField]
         private Image _currencyIcon;
         [SerializeField]
         private TMP_Text _currencyAmountText;
@@ -36,21 +38,31 @@ namespace VinhLB
             if (param != null)
             {
                 _boosterConfig = (BoosterConfig)param;
-                // Change the _boosterIcon to boosterConfig.icon & _boosterText to boosterConfig.name
-                _boosterIcon.sprite = _boosterConfig.Icon;
-                _boosterText.text = _boosterConfig.Name;
-                _currencyAmountText.text = _boosterConfig.GoldPerBuyTen.ToString(("#,#"));
-                switch (_boosterConfig.Type)
-                {
-                    case BoosterType.PushHint:
-                        _videoAmountText.text = $"CLAIM({DataManager.Ins.HintAdsCount}/{DataManager.Ins.ConfigData.requireAdsForHintBooster})";
-                        break;
-                }
+                
                 // _currencyAmountTextContentSizeFitter.enabled = false;
             }
             GameManager.Ins.ChangeState(GameState.Pause);
         }
 
+        public override void UpdateUI()
+        {
+            base.UpdateUI();
+            // Change the _boosterIcon to boosterConfig.icon & _boosterText to boosterConfig.name
+            _boosterIcon.sprite = _boosterConfig.Icon;
+            _boosterText.text = _boosterConfig.Name;
+            _boosterAmountText.text = $"x{_boosterConfig.TicketPerBuyRatio.itemsPerBuy}";
+            _currencyAmountText.text = _boosterConfig.GoldPerBuyTen.ToString(("#,#"));
+
+            switch (_boosterConfig.Type)
+            {
+                case BoosterType.PushHint:
+                    _videoAmountText.text = $"CLAIM({DataManager.Ins.HintAdsCount}/{_boosterConfig.TicketPerBuyRatio.ticketNeed})";
+                    break;
+                default:
+                    _videoAmountText.text = "CLAIM";
+                    break;
+            }
+        }
         public void OnClickBuyButton()
         {
             if (GameManager.Ins.TrySpendGold(_boosterConfig.GoldPerBuyTen))
@@ -67,10 +79,17 @@ namespace VinhLB
 
         public void OnClickClaimButton()
         {
-            // Double reward
             AdsManager.Ins.RewardedAds.Show(null, null, new List<BoosterType> { _boosterConfig.Type },
-                new List<int> { BOOSTER_AMOUNT_ON_BUY * 2 });
-            Close();
+                new List<int> { _boosterConfig.TicketPerBuyRatio.itemsPerBuy});
+            if(_boosterConfig.Type == BoosterType.PushHint)
+            {
+                if(DataManager.Ins.HintAdsCount >= (_boosterConfig.TicketPerBuyRatio.ticketNeed - 1)) //NOTE: If enough ads for hint 
+                    Close();
+            }
+            else
+            {
+                Close();
+            }
         }
 
         public override void Close()

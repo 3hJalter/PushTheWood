@@ -206,6 +206,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   _boosterIcon: {fileID: 6433487993425546356}
   _boosterText: {fileID: 6433487992674253764}
+  _boosterAmountText: {fileID: 5715261919077910359}
   _currencyIcon: {fileID: 6433487992345404739}
   _currencyAmountText: {fileID: 6433487992383899446}
   _videoAmountText: {fileID: 6193862020173282331}
@@ -497,8 +498,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: x10
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
-  m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}
+  m_sharedMaterial: {fileID: 6655746723336473214, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

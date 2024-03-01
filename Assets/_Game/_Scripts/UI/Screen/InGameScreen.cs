@@ -304,8 +304,8 @@ namespace _Game.UIs.Screen
             // Handle Showing time & Setting button
             timerContainer.SetActive(!isTutorial);
             settingButton.gameObject.SetActive(!isTutorial);
-            unlimitedUndoButton.gameObject.SetActive(false);
-            unlimitedResetIslandButton.gameObject.SetActive(false);
+            unlimitedUndoButton?.gameObject.SetActive(false);
+            unlimitedResetIslandButton?.gameObject.SetActive(false);
             // Hide Showing Booster
             if (isTutorial && type is LevelType.Normal) {
                 undoButton.gameObject.SetActive(false);
@@ -321,16 +321,16 @@ namespace _Game.UIs.Screen
                 resetIslandButton.gameObject.SetActive(true);
             }
             // Other handle for specific level
-            unlimitedUndoButton.gameObject.SetActive(false);
-            unlimitedResetIslandButton.gameObject.SetActive(false);
+            unlimitedUndoButton?.gameObject.SetActive(false);
+            unlimitedResetIslandButton?.gameObject.SetActive(false);
             #region Level 3 (index 2)
 
             if (currentLevel == 2 && type is LevelType.Normal)
             {
                 undoButton.gameObject.SetActive(false);
                 resetIslandButton.gameObject.SetActive(false);
-                unlimitedUndoButton.gameObject.SetActive(true);
-                unlimitedResetIslandButton.gameObject.SetActive(true);
+                unlimitedUndoButton?.gameObject.SetActive(true);
+                unlimitedResetIslandButton?.gameObject.SetActive(true);
                 return;
             }
             

@@ -43,8 +43,10 @@ namespace VinhLB
         [SerializeField]
         private TMP_Text _levelText;
 
-        private STimer shakeRewardTimer;
-        private STimer shakeLevelTimer;
+        private STimer _shakeRewardTimer;
+        private STimer _shakeLevelTimer;
+        private Quaternion _startRewardChestIconQuaternion;
+        private Quaternion _startLevelChestIconQuaternion;
 
         private void Awake()
         {
@@ -74,10 +76,19 @@ namespace VinhLB
                 DevLog.Log(DevId.Vinh, "Click secret map button");
                 UIManager.Ins.OpenUI<SecretMapPopup>();
             });
-            _rewardChestButton.onClick.AddListener(() => { RewardManager.Ins.HomeReward.ClaimRewardChest(); });
-            _levelChestButton.onClick.AddListener(() => { RewardManager.Ins.HomeReward.ClaimLevelChest(); });
-            shakeRewardTimer = TimerManager.Ins.PopSTimer();
-            shakeLevelTimer = TimerManager.Ins.PopSTimer();
+            _rewardChestButton.onClick.AddListener(() =>
+            {
+                RewardManager.Ins.HomeReward.ClaimRewardChest();
+            });
+            _levelChestButton.onClick.AddListener(() =>
+            {
+                RewardManager.Ins.HomeReward.ClaimLevelChest();
+            });
+            
+            _shakeRewardTimer = TimerManager.Ins.PopSTimer();
+            _shakeLevelTimer = TimerManager.Ins.PopSTimer();
+            _startRewardChestIconQuaternion = _rewardChestIconRectTF.localRotation;
+            _startLevelChestIconQuaternion = _levelChestIconRectTF.localRotation;
         }
 
         private void Start()
@@ -86,6 +97,15 @@ namespace VinhLB
             {
                 UIManager.Ins.OpenUI<DailyRewardPopup>();
             }
+            
+            // UIManager.Ins.OpenUI<MaskScreen>(new MaskData()
+            // {
+            //     Position = _playButton.transform.position,
+            //     Size = _playButton.GetComponent<RectTransform>().sizeDelta + Vector2.one * 20f,
+            //     MaskType = MaskType.Rectangle
+            // });
+
+            // UIManager.Ins.OpenUI<MaskScreen>();
         }
 
         public override void UpdateUI()
@@ -93,9 +113,9 @@ namespace VinhLB
             _levelText.text = $"Level {LevelManager.Ins.NormalLevelIndex + 1}";
             if (RewardManager.Ins.HomeReward.IsCanClaimRC)
             {
-                if (!shakeRewardTimer.IsStart)
+                if (!_shakeRewardTimer.IsStart)
                 {
-                    shakeRewardTimer.Start(1f,
+                    _shakeRewardTimer.Start(1f,
                         () => _rewardChestIconRectTF.DOShakeRotation(0.5f, 40, 10, 0, true,
                             ShakeRandomnessMode.Harmonic), true);
                     _rewardKeyTxt.text = $"FULL";
@@ -105,18 +125,18 @@ namespace VinhLB
             }
             else
             {
-                shakeRewardTimer.Stop();
+                _shakeRewardTimer.Stop();
                 _rewardKeyTxt.text = $"{GameManager.Ins.RewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
                 _rewardKeyTxt.color = Color.white;
                 _rewardChestCurrencyIconGO.SetActive(true);
-                _rewardChestIconRectTF.localRotation = Quaternion.identity;
+                _rewardChestIconRectTF.localRotation = _startRewardChestIconQuaternion;
             }
 
             if (RewardManager.Ins.HomeReward.IsCanClaimLC)
             {
-                if (!shakeLevelTimer.IsStart)
+                if (!_shakeLevelTimer.IsStart)
                 {
-                    shakeLevelTimer.Start(1f,
+                    _shakeLevelTimer.Start(1f,
                         () => _levelChestIconRectTF.DOShakeRotation(0.5f, 40, 10, 0, true,
                             ShakeRandomnessMode.Harmonic), true);
                     _levelProgressTxt.text = $"FULL";
@@ -126,25 +146,18 @@ namespace VinhLB
             }
             else
             {
-                shakeLevelTimer.Stop();
+                _shakeLevelTimer.Stop();
                 _levelProgressTxt.text =
                     $"{GameManager.Ins.LevelProgress}/{DataManager.Ins.ConfigData.requireLevelProgress}";
                 _levelProgressTxt.color = Color.white;
                 _levelChestCurrencyIconGO.SetActive(true);
-                _levelChestIconRectTF.localRotation = Quaternion.identity;
+                _levelChestIconRectTF.localRotation = _startLevelChestIconQuaternion;
             }
-
-            // UIManager.Ins.OpenUI<MaskScreen>(new MaskData()
-            // {
-            //     Position = _playButton.transform.position,
-            //     Size = _playButton.GetComponent<RectTransform>().sizeDelta + Vector2.one * 20f,
-            //     MaskType = MaskType.Rectangle
-            // });
         }
 
         private void OnDestroy()
         {
-            TimerManager.Ins.PushSTimer(shakeRewardTimer);
+            TimerManager.Ins.PushSTimer(_shakeRewardTimer);
         }
     }
 }

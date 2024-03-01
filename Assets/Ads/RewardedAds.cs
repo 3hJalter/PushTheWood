@@ -125,6 +125,7 @@ public class RewardedAds : MonoBehaviour
                         break;
                 }
             }
+            GameManager.Ins.PostEvent(_Game.DesignPattern.EventID.OnUpdateUIs);
         }
     }
 

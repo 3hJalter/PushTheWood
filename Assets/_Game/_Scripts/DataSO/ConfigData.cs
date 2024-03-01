@@ -68,16 +68,13 @@ namespace _Game.Data
         public readonly int startInterAdsLevel = 8;
         [FoldoutGroup("Ads")]
         public readonly int winLevelCountInterAds = 3;
-        [FoldoutGroup("Ads/Booster")]
-        public readonly int requireAdsForHintBooster = 2;
-        public int[] boosterAmountReceiveFromAds; //Along With Booster Type value
         #endregion
-
-        public int GetBoosterAmountFromAds(BoosterType boosterType) 
-        {
-            return boosterAmountReceiveFromAds[(int)boosterType];
-        }
         // [BoxGroup("Monetize")]
+
+        public BoosterConfig GetBoosterConfig(BoosterType boosterType)
+        {
+            return boosterConfigList.Find(x => x.Type == boosterType);
+        }
     }
 
     [Serializable]
@@ -97,7 +94,7 @@ namespace _Game.Data
         public string Name => UIResourceConfig.Name;
         public Sprite Icon => UIResourceConfig.IconSprite;
         public int GoldPerBuyTen => goldPerBuyTen;
-
+        public TicketPerBuyRatio TicketPerBuyRatio => ticketPerBuyRatio;
         // Do with goldPerBuyMore
     }
     
