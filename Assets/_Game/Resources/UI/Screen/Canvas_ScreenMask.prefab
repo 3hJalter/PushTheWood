@@ -266,6 +266,7 @@ MonoBehaviour:
   _uiMaskPrefab: {fileID: 8872990674510339409, guid: cfff8854b0de00e4bb7725d667533854, type: 3}
   _maskParentTF: {fileID: 7435135209263527577}
   _simpleMaskableTF: {fileID: 623545393100659712}
+  _maskDatabase: {fileID: 11400000, guid: be2e4fc39446e924ea01692b75af8231, type: 2}
 --- !u!1 &7435135209263527576
 GameObject:
   m_ObjectHideFlags: 0

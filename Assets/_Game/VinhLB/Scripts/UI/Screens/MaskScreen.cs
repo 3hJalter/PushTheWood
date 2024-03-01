@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace VinhLB
@@ -13,7 +15,7 @@ namespace VinhLB
         [SerializeField]
         private Transform _simpleMaskableTF;
         [SerializeField]
-        private Dictionary<MaskType, Sprite> _maskSpriteDict;
+        private MaskDatabase _maskDatabase;
 
         private List<UIMask> _createdUIMaskList = new List<UIMask>();
         private Stack<UIMask> _availableUIMaskList = new Stack<UIMask>();
@@ -32,7 +34,7 @@ namespace VinhLB
             _availableUIMaskList.Clear();
             for (int i = 0; i < _createdUIMaskList.Count; i++)
             {
-                _createdUIMaskList[i].gameObject.SetActive(false);
+                _createdUIMaskList[i].Close();
                 _availableUIMaskList.Push(_createdUIMaskList[i]);
             }
         }
@@ -73,7 +75,7 @@ namespace VinhLB
             if (_availableUIMaskList.Count > 0)
             {
                 mask = _availableUIMaskList.Pop();
-                mask.gameObject.SetActive(true);
+                mask.Open();
             }
             else
             {
@@ -81,7 +83,7 @@ namespace VinhLB
                 _createdUIMaskList.Add(mask);
             }
             
-            mask.Initialize(data.Position, data.Size, _maskSpriteDict[data.MaskType]);
+            mask.Initialize(data.Position, data.Size, _maskDatabase.MaskSpriteDict[data.MaskType], data.Button, Close);
         }
     }
 
@@ -90,6 +92,7 @@ namespace VinhLB
         public Vector3 Position;
         public Vector2 Size;
         public MaskType MaskType;
+        public Button Button;
     }
 
     public enum MaskType
