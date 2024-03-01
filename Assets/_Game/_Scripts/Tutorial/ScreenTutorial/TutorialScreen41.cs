@@ -30,7 +30,7 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
                     if (GameManager.Ins.IsState(GameState.InGame)) GameplayManager.Ins.OnPauseGame();
                 }
                 panel.raycastTarget = true;
-                panel.color = new Color(0,0,0,0.65f);
+                panel.color = new Color(0,0,0,0.75f);
                 deco.SetActive(true);
                 HInputManager.LockInput(false);
             });

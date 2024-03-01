@@ -66,6 +66,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         {
             if (!_isExecuted)
             {
+                TutorialManager.Ins.OnUnitActWithOther(t, t.CutTreeData.tree);
                 _isExecuted = true;
                 LevelManager.Ins.SaveGameState(true);
                 // Make the tree OnBePushed with direction calculated by position of the Player and the Tree

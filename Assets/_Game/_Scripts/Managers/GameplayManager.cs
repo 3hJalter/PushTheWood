@@ -316,11 +316,10 @@ namespace _Game.Managers
 
         public void OnFreeResetIsland()
         {
-            if (!LevelManager.Ins.CurrentLevel.GridMap.IsChange) return;
             LevelManager.Ins.ResetLevelIsland();
             if (!_pushHint.IsStartHint) return;
             _pushHint.OnStopHint();
-            if (screen.resetIslandButton.IsFocus) _pushHint.OnStartHint(LevelManager.Ins.player.islandID);
+            _pushHint.OnStartHint(LevelManager.Ins.player.islandID);
         }
         
         private void OnResetIsland()
@@ -334,13 +333,12 @@ namespace _Game.Managers
             }
             else
             {
-                if (!LevelManager.Ins.CurrentLevel.GridMap.IsChange) return;
                 DataManager.Ins.GameData.user.resetIslandCount--;
                 screen.resetIslandButton.SetAmount(DataManager.Ins.GameData.user.resetIslandCount);
                 LevelManager.Ins.ResetLevelIsland();
                 if (!_pushHint.IsStartHint) return;
                 _pushHint.OnStopHint();
-                if (screen.resetIslandButton.IsFocus) _pushHint.OnStartHint(LevelManager.Ins.player.islandID);
+                if (screen.resetIslandButton.IsFocus || !_pushHint.IsPlayerMakeHintWrong) _pushHint.OnStartHint(LevelManager.Ins.player.islandID);
             }
         }
 
