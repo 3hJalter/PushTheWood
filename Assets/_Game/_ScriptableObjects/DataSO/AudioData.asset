@@ -30,7 +30,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: a68acd99368b42846aebdc2c739a0284, type: 3}
     - {fileID: 8300000, guid: 023bfa0afc01b5b4995554f79f051722, type: 3}
     - {fileID: 8300000, guid: da2e516830550b1478dbf050b2ecc833, type: 3}
-    - {fileID: 8300000, guid: 6330ce6dcc410384e99bcc726bf35535, type: 3}
+    - {fileID: 8300000, guid: 264a8ba21eee8a641a0f633510abbbc7, type: 3}
     - {fileID: 8300000, guid: 3c749aee29c51074482be7c3ef86bcf7, type: 3}
     - {fileID: 8300000, guid: 976eae68c0665474f91be86dfa80d6a4, type: 3}
     - {fileID: 8300000, guid: c030d40f5b3b9b0429b5d4e1e19cef03, type: 3}
@@ -165,7 +165,7 @@ MonoBehaviour:
       Data: 3
     - Name: multiplier
       Entry: 4
-      Data: 1
+      Data: 0.8
     - Name: 
       Entry: 8
       Data: 
@@ -186,7 +186,7 @@ MonoBehaviour:
       Data: 4
     - Name: multiplier
       Entry: 4
-      Data: 1
+      Data: 0.8
     - Name: 
       Entry: 8
       Data: 
@@ -207,7 +207,7 @@ MonoBehaviour:
       Data: 5
     - Name: multiplier
       Entry: 4
-      Data: 1
+      Data: 0.9
     - Name: 
       Entry: 8
       Data: 
@@ -228,7 +228,7 @@ MonoBehaviour:
       Data: 6
     - Name: multiplier
       Entry: 4
-      Data: 1
+      Data: 0.8
     - Name: 
       Entry: 8
       Data: 
@@ -438,7 +438,7 @@ MonoBehaviour:
       Data: 16
     - Name: multiplier
       Entry: 4
-      Data: 1
+      Data: 0.6
     - Name: 
       Entry: 8
       Data: 
