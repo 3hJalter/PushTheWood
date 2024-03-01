@@ -55,10 +55,24 @@ namespace _Game.Managers
         public int CountNormalLevel => gridData.CountNormalLevel;
         public int CountSecretLevel => gridData.CountSecretLevel;
         public int CountSurfaceMaterial => materialData.CountSurfaceMaterial;
+        public int CurrentPlayerSkinIndex => GameData.user.currentPlayerSkinIndex;
         
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
+        }
+        public bool IsCharacterSkinUnlock(int index)
+        {
+            return GameData.user.playerSkinState[index] != 0;
+        }
+        public void SetUnlockCharacterSkin(int index, bool value)
+        {
+            GameData.user.playerSkinState[index] = value ? 1 : 0;
+        }
+
+        public void SetCharacterSkinIndex(int index)
+        {
+            GameData.user.currentPlayerSkinIndex = index;
         }
         public int GetLevelTime(LevelType type, LevelNormalType normalType = LevelNormalType.None)
         {

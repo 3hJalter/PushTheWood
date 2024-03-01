@@ -24,22 +24,36 @@ namespace VinhLB
             if (_collectionItemList == null)
             {
                 _collectionItemList = new List<CollectionItem>();
-                
-                foreach (KeyValuePair<CharacterType, UIResourceConfig> element 
+
+                foreach (KeyValuePair<CharacterType, UIResourceConfig> element
                          in DataManager.Ins.UIResourceDatabase.CharacterResourceConfigDict)
                 {
                     CollectionItem item = Instantiate(_collectionItemPrefab, _collectionItemParentTF);
-                    item.Initialize( _collectionItemList.Count, element.Value.Name, element.Value.IconSprite, DataManager.Ins.ConfigData.CharacterCosts[(int)element.Key]);
+                    item.Initialize(_collectionItemList.Count, (int)element.Key, element.Value.Name, element.Value.IconSprite, DataManager.Ins.ConfigData.CharacterCosts[(int)element.Key]);
                     item._OnClick += OnItemClick;
+                    if (DataManager.Ins.IsCharacterSkinUnlock((int)element.Key))
+                        item.SetOwned();
+                    if ((int)element.Key == DataManager.Ins.CurrentPlayerSkinIndex)
+                        item.SetChoosing(true);
                     _collectionItemList.Add(item);
                 }
             }
             _collectionItemList[currentPetIndex].SetSelected(true);
             playerSkins[currentPetIndex].gameObject.SetActive(true);
+
         }
 
-        private void OnItemClick(int id)
+        private void OnItemClick(int id, int data)
         {
+            if (id == currentPetIndex) return;
+
+            if (DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[currentPetIndex].Data) && DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[id].Data))
+            {
+                _collectionItemList[currentPetIndex].SetChoosing(false);
+                _collectionItemList[id].SetChoosing(true);
+                DataManager.Ins.SetCharacterSkinIndex(_collectionItemList[id].Data);
+            }
+                
             _collectionItemList[currentPetIndex].SetSelected(false);
             playerSkins[currentPetIndex].gameObject.SetActive(false);
             currentPetIndex = id;
@@ -49,7 +63,7 @@ namespace VinhLB
 
         private void OnDestroy()
         {
-            for(int i = 0; i <  _collectionItemList.Count; i++)
+            for (int i = 0; i < _collectionItemList.Count; i++)
             {
                 _collectionItemList[i]._OnClick -= OnItemClick;
             }

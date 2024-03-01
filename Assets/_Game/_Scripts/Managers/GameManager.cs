@@ -60,7 +60,11 @@ namespace _Game.Managers
         private void VerifyGameData()
         {
             _gameData = DataManager.Ins.GameData;
-
+            if(_gameData.user.normalLevelIndex == 0) //NOTE: First time run game
+            {
+                DataManager.Ins.SetUnlockCharacterSkin(0, true);
+                DataManager.Ins.SetCharacterSkinIndex(0);
+            }
             #region Handle day online
 
             // If player not pass level 8, reset daily level index

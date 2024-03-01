@@ -929,12 +929,12 @@ GameObject:
   - component: {fileID: 8487751333727194683}
   - component: {fileID: 5561522172120906307}
   m_Layer: 5
-  m_Name: Icon
+  m_Name: Tick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4165242074038953763
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1418,3 +1418,4 @@ MonoBehaviour:
   _priceText: {fileID: 8822940065113355166}
   _priceGO: {fileID: 5390388013092271709}
   _activeGO: {fileID: 6435479598833972123}
+  _selectedGO: {fileID: 8228178987021273701}
