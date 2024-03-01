@@ -137,11 +137,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 LevelManager.Ins.SaveGameState(false);
                 #endregion
                 MovingData.blockDynamicUnits[^1].OnBePushed(direction, this);
+                TutorialManager.Ins.OnUnitActWithOther(this, MovingData.blockDynamicUnits[^1]);
                 return;
             }
             if (MovingData.blockStaticUnits.Count > 0)
             {
                 MovingData.blockStaticUnits[^1].OnBePushed(direction, this);
+                TutorialManager.Ins.OnUnitActWithOther(this, MovingData.blockStaticUnits[^1]);
             }
         }
 

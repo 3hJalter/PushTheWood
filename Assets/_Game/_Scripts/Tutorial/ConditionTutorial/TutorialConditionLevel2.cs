@@ -26,8 +26,10 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
 
         public void OnForceShowTutorial(int index, bool isIncrement = true)
         { }
-        
+
         public void HandleShowTutorial(GridUnit triggerUnit, GridUnit targetUnit)
-        { }
+        {
+            
+        }
     }
 }
