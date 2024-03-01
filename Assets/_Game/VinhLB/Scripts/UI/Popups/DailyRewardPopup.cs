@@ -39,7 +39,7 @@ namespace VinhLB
 
         private void SetupDailyRewards()
         {
-            for (int i = 0; i < DailyRewardManager.Ins.DailyRewardSettingsSO.CycleDays; i++)
+            for (int i = 0; i < DailyRewardManager.Ins.DailyRewardSettings.CycleDays; i++)
             {
                 if (_dailyRewardItemList[i].Rewards != DailyRewardManager.Ins.Rewards[i])
                 {

@@ -5,6 +5,7 @@ using _Game.DesignPattern;
 using _Game.Managers;
 using _Game.Utilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace VinhLB
 {
@@ -12,21 +13,22 @@ namespace VinhLB
     {
         public event Action OnDailyRewardParamsChanged;
 
+        [FormerlySerializedAs("_dailyRewardSettingsSO")]
         [SerializeField]
-        private DailyRewardSettingsSO _dailyRewardSettingsSO;
+        private DailyRewardSettings _dailyRewardSettings;
 
         #region Properties
-        public DailyRewardSettingsSO DailyRewardSettingsSO => _dailyRewardSettingsSO;
+        public DailyRewardSettings DailyRewardSettings => _dailyRewardSettings;
         public bool IsTodayRewardObtained =>
             DateTime.Now.Date <= DataManager.Ins.GameData.user.lastDailyRewardClaimTime;
-        public int TotalDays => _dailyRewardSettingsSO.MissRewardIfNotLogin
+        public int TotalDays => _dailyRewardSettings.MissRewardIfNotLogin
             ? (DateTime.Now.Date - DataManager.Ins.GameData.user.startDailyRewardClaimTime.Date).Days
             : (DataManager.Ins.GameData.user.dailyRewardClaimedCount - (IsTodayRewardObtained ? 1 : 0));
-        public int CycleDay => TotalDays % _dailyRewardSettingsSO.CycleDays;
-        public bool IsInFirstCycle => TotalDays / _dailyRewardSettingsSO.CycleDays == 0;
-        public List<Reward[]> Rewards => IsInFirstCycle && _dailyRewardSettingsSO.DifferentFirstCycle
-            ? _dailyRewardSettingsSO.FirstCycleRewardList
-            : _dailyRewardSettingsSO.RewardsList;
+        public int CycleDay => TotalDays % _dailyRewardSettings.CycleDays;
+        public bool IsInFirstCycle => TotalDays / _dailyRewardSettings.CycleDays == 0;
+        public List<Reward[]> Rewards => IsInFirstCycle && _dailyRewardSettings.DifferentFirstCycle
+            ? _dailyRewardSettings.FirstCycleRewardList
+            : _dailyRewardSettings.RewardsList;
         public Reward[] CurrentRewards => Rewards[CycleDay];
         #endregion
 
@@ -95,7 +97,7 @@ namespace VinhLB
         // [UnityEditor.MenuItem("Debug/Daily Reward/Increase 1 Daily Day")]
         public static void Increase1DailyDay()
         {
-            if (Ins._dailyRewardSettingsSO.MissRewardIfNotLogin)
+            if (Ins._dailyRewardSettings.MissRewardIfNotLogin)
             {
                 DataManager.Ins.GameData.user.startDailyRewardClaimTime =
                     DataManager.Ins.GameData.user.startDailyRewardClaimTime.AddDays(-1);
@@ -119,7 +121,7 @@ namespace VinhLB
         // [UnityEditor.MenuItem("Debug/Daily Reward/Decrease 1 Daily Day")]
         public static void Decrease1DailyDay()
         {
-            if (Ins._dailyRewardSettingsSO.MissRewardIfNotLogin)
+            if (Ins._dailyRewardSettings.MissRewardIfNotLogin)
             {
                 if (DataManager.Ins.GameData.user.startDailyRewardClaimTime.AddDays(1) <= DateTime.UtcNow.Date)
                 {

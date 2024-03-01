@@ -98,14 +98,12 @@ namespace VinhLB
                 UIManager.Ins.OpenUI<DailyRewardPopup>();
             }
             
-            // UIManager.Ins.OpenUI<MaskScreen>(new MaskData()
-            // {
-            //     Position = _playButton.transform.position,
-            //     Size = _playButton.GetComponent<RectTransform>().sizeDelta + Vector2.one * 20f,
-            //     MaskType = MaskType.Rectangle
-            // });
-
-            // UIManager.Ins.OpenUI<MaskScreen>();
+            // Invoke(nameof(OpenMask), 1f);
+        }
+        
+        private void OnDestroy()
+        {
+            TimerManager.Ins.PushSTimer(_shakeRewardTimer);
         }
 
         public override void UpdateUI()
@@ -155,9 +153,15 @@ namespace VinhLB
             }
         }
 
-        private void OnDestroy()
+        private void OpenMask()
         {
-            TimerManager.Ins.PushSTimer(_shakeRewardTimer);
+            UIManager.Ins.OpenUI<MaskScreen>(new MaskData()
+            {
+                Position = _dailyChallengeButton.transform.position,
+                Size = _dailyChallengeButton.GetComponent<RectTransform>().sizeDelta + Vector2.one * 20f,
+                MaskType = MaskType.Rectangle,
+                Button = _dailyChallengeButton
+            });
         }
     }
 }

@@ -7,7 +7,7 @@ namespace VinhLB
 {
     using _Game.Resource;
     [CreateAssetMenu(fileName = "DailyLoginSettings", menuName = "ScriptableObjects/DailyLoginSettings")]
-    public class DailyRewardSettingsSO : SerializedScriptableObject
+    public class DailyRewardSettings : SerializedScriptableObject
     {
         public int CycleDays = 7;
         public bool OneCycleOnly = false;

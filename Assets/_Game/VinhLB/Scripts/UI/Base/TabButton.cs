@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 namespace VinhLB
 {
-    public class TabButton : HMonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public class TabButton : HButton
     {
         [System.Serializable]
         private enum AnimType
@@ -156,8 +156,10 @@ namespace VinhLB
                 .OnComplete(() => { _activeIconAnimTween = null; });
         }
 
-        public void OnPointerClick(PointerEventData eventData)
+        public override void OnPointerClick(PointerEventData eventData)
         {
+            base.OnPointerClick(eventData);
+            
             if (_interactable)
             {
                 _tabGroup.OnTabSelected(this, true, false);
@@ -170,8 +172,10 @@ namespace VinhLB
             }
         }
 
-        public void OnPointerEnter(PointerEventData eventData)
+        public override void OnPointerEnter(PointerEventData eventData)
         {
+            base.OnPointerEnter(eventData);
+            
             if (_interactable)
             {
                 _tabGroup.OnTabEnter(this);
@@ -181,8 +185,10 @@ namespace VinhLB
             }
         }
 
-        public void OnPointerExit(PointerEventData eventData)
+        public override void OnPointerExit(PointerEventData eventData)
         {
+            base.OnPointerExit(eventData);
+            
             if (_interactable)
             {
                 _tabGroup.OnTabExit(this);
