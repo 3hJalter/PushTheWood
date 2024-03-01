@@ -9,33 +9,20 @@ using UnityEngine;
 
 namespace _Game._Scripts.Tutorial.ConditionTutorial
 {
-    [CreateAssetMenu(fileName = "TutorialLevel4", menuName = "ScriptableObjects/TutorialData/Lvl4", order = 1)]
-    public class TutorialConditionLevel4 : BaseTutorialData, ITutorialCondition
+    [CreateAssetMenu(fileName = "TutorialLevel8", menuName = "ScriptableObjects/TutorialData/Lvl8", order = 1)]
+    public class TutorialConditionLevel8 : BaseTutorialData, ITutorialCondition
     {
         public void HandleShowTutorial(GameGridCell cell, GridUnit triggerUnit)
         {
             if (currentTutIndex == 0)
             {
                 if (triggerUnit is not Player) return;
-                // if Player at cell 7, 9
+                // if Player at cell 7, 9 -> Change to Cell that Player init in level 8
                 if (!(Math.Abs(cell.WorldX - 7) < Constants.TOLERANCE) ||
                     !(Math.Abs(cell.WorldY - 9) < Constants.TOLERANCE)) return;
-                DevLog.Log(DevId.Hoang, "TutorialConditionLevel4, HandleShowTutorial, show tutorial 1");
-                // Open TutorialScreen
-                UIManager.Ins.OpenUIDirectly(tutorialScreens[currentTutIndex]);
                 GameplayManager.Ins.OnFreePushHint(false, true);
                 currentTutIndex++;
                 return;
-            }
-            if (currentTutIndex == 1)
-            {
-                if (triggerUnit is not Player) return;
-                // if Player at cell 7,9 return
-                if (Math.Abs(cell.WorldX - 7) < Constants.TOLERANCE &&
-                    Math.Abs(cell.WorldY - 9) < Constants.TOLERANCE) return;
-                DevLog.Log(DevId.Hoang, "TutorialConditionLevel4, HandleShowTutorial, exit tutorial 1");
-                // LevelManager.Ins.CurrentLevel.ChangeShadowUnitAlpha(true, 1);
-                currentTutIndex++;
             }
         }
 
