@@ -26,9 +26,9 @@ namespace _Game._Scripts.InGame
             gameObject.SetActive(active);
         }
         
-        public void MoveTo(int x, int y, int direction)
+        public void MoveTo(int x, int y, int direction, bool isShow = true)
         {
-            if (!gameObject.activeSelf) SetActive(true);
+            SetActive(isShow);
             _arrowTween?.Kill();
             // Get cell with x, y
             GameGridCell cell = LevelManager.Ins.CurrentLevel.GetCell(new Vector2Int(x, y));
