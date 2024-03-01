@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace VinhLB
 {
@@ -9,6 +10,8 @@ namespace VinhLB
         private UIMask _uiMaskPrefab;
         [SerializeField]
         private Transform _maskParentTF;
+        [SerializeField]
+        private Transform _simpleMaskableTF;
         [SerializeField]
         private Dictionary<MaskType, Sprite> _maskSpriteDict;
 
@@ -38,8 +41,14 @@ namespace VinhLB
         {
             if (param == null)
             {
+                _maskParentTF.gameObject.SetActive(false);
+                _simpleMaskableTF.gameObject.SetActive(true);
+                
                 return;
             }
+            
+            _simpleMaskableTF.gameObject.SetActive(false);
+            _maskParentTF.gameObject.SetActive(true);
             
             if (param is MaskData)
             {
