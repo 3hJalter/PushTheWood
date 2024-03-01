@@ -125,8 +125,12 @@ MonoBehaviour:
   _dailyMissionButton: {fileID: 8366753755632910879}
   _secretMapButton: {fileID: 3000093801028728422}
   _rewardChestButton: {fileID: 4037604563390843894}
+  _rewardChestIconRectTF: {fileID: 8161059690963566111}
+  _rewardChestCurrencyIconGO: {fileID: 3900397935114966825}
   _rewardKeyTxt: {fileID: 5602844570135727943}
   _levelChestButton: {fileID: 7750667334302017885}
+  _levelChestIconRectTF: {fileID: 1607527461635998663}
+  _levelChestCurrencyIconGO: {fileID: 4486223261060013793}
   _levelProgressTxt: {fileID: 275239771091821694}
   _levelText: {fileID: 7079813424118232752}
 --- !u!1 &577699555310462009
