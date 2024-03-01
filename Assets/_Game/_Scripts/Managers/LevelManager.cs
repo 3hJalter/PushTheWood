@@ -393,6 +393,7 @@ namespace _Game.GameGrid
             {
                 if (main.CurrentLevel.GridMap.IsChange)
                 {
+                    // TEMPORARY
                     SavingState(true);
                     if (objectHistorys.Count < dataHistorys.Count)
                         objectHistorys.Push(objectHistorys.Peek());

@@ -45,6 +45,7 @@ namespace _Game._Scripts.UIs.Component
             get => _isInteractable;
             set
             {
+                if (_isLock) value = false;
                 _isInteractable = value;
                 button.interactable = value;
                 if (!_isInteractable) adsRequireImage.gameObject.SetActive(false);

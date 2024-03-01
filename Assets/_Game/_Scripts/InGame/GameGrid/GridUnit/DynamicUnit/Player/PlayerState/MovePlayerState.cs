@@ -28,6 +28,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             SaveCommand(t);
             if (!firstTime && t.InputDetection.InputAction == InputAction.ButtonDown)
             {
+                // TEMPORARY:
                 t.SetAnimSpeed(initAnimSpeed / Constants.MOVING_TIME_FAST_RATE);
                 moveTween.Kill();
                 moveTween = t.Tf.DOMove(t.EnterPosData.finalPos, CalculateMoveRemainingTime())

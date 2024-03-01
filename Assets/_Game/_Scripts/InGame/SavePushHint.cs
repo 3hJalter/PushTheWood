@@ -27,9 +27,12 @@ namespace _Game._Scripts.InGame
     {
         private readonly Dictionary<int, Stack<PlayerStep>> _playerStepsOnIsland;
         private Stack<PlayerStep> _currentPlayerSteps;
+        private Stack<PlayerStep> _pops;
         private bool _isStartHint;
         private bool _isPlayerMakeHintWrong;
-        
+
+        public bool IsPlayerMakeHintWrong => _isPlayerMakeHintWrong;
+
         public bool IsStartHint => _isStartHint;
 
         public PushHint(IEnumerable<PlayerStep> steps)
@@ -56,6 +59,7 @@ namespace _Game._Scripts.InGame
             if (_currentPlayerSteps is not null) OnStopHint();
             // make a copy of the stack
             _currentPlayerSteps = new Stack<PlayerStep>(_playerStepsOnIsland[islandID]);
+            _pops = new Stack<PlayerStep>();
             RemoveListener();
             EventGlobalManager.Ins.OnPlayerPushStep.AddListener(OnTrackingPlayerPush);
             _isStartHint = true;
@@ -64,6 +68,25 @@ namespace _Game._Scripts.InGame
             GameplayManager.Ins.OnShowTryHintAgain(false);
         }
 
+        private void OnPauseHint()
+        {
+            if (GameplayManager.Ins.PushHintObject != null)
+            {
+                GameplayManager.Ins.PushHintObject.SetActive(false);
+            }
+        }
+        
+        public void OnContinueHint()
+        {
+            _isPlayerMakeHintWrong = false;
+            PlayerStep playerStep = _currentPlayerSteps.Peek();
+            OnShowHint(playerStep);
+            if (GameplayManager.Ins.PushHintObject != null)
+            {
+                GameplayManager.Ins.PushHintObject.SetActive(true);
+            }
+        }
+        
         public void OnStopHint(bool isRemoveListener = true)
         {
             // check if the event contains the listener
@@ -72,12 +95,28 @@ namespace _Game._Scripts.InGame
                 RemoveListener();
             }
             _currentPlayerSteps = null;
+            _pops = null;
             _isStartHint = false;
             _isPlayerMakeHintWrong = false;
             if (GameplayManager.Ins.PushHintObject != null)
             {
                 GameplayManager.Ins.PushHintObject.SetActive(false);
             }
+        }
+        
+        public void OnRevertHint()
+        {
+            // Revert the last step
+            if (_pops.Count == 0) return;
+            PlayerStep playerStep = _pops.Pop();
+            // If the player Island now is not the same with the last step, StopHint
+            if (playerStep.i != LevelManager.Ins.player.islandID)
+            {
+                OnStopHint();
+                return;
+            }
+            _currentPlayerSteps.Push(playerStep);
+            OnShowHint(playerStep);
         }
 
         private void RemoveListener()
@@ -92,7 +131,7 @@ namespace _Game._Scripts.InGame
             {
                 GameplayManager.Ins.OnShowTryHintAgain(false);
                 _isPlayerMakeHintWrong = false;
-                RemoveListener();
+                OnStopHint();
             }
             if (!_isStartHint) return;
              // Check if same step with the top of the stack
@@ -100,6 +139,7 @@ namespace _Game._Scripts.InGame
              {
                  DevLog.Log(DevId.Hoang, "Correct step, move to next");
                  _currentPlayerSteps.Pop();
+                 _pops.Push(playerPushStep);
                  if (_currentPlayerSteps.Count == 0)
                  {
                      DevLog.Log(DevId.Hoang, "Finish hint");
@@ -113,7 +153,7 @@ namespace _Game._Scripts.InGame
              else
              {
                  DevLog.Log(DevId.Hoang, "Wrong step, must reset");
-                 OnStopHint(false);
+                 OnPauseHint();
                  _isPlayerMakeHintWrong = true;
                  GameplayManager.Ins.OnShowTryHintAgain(true);
              }

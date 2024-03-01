@@ -44,9 +44,8 @@ namespace _Game.Data
             public int secretMapPieces;
 
             // Booster Data
-            public int hintCount;
             public int undoCount;
-            public int resetCount;
+            public int resetIslandCount;
             public int growTreeCount;
             public int pushHintCount;
             

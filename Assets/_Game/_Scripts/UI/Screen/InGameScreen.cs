@@ -32,6 +32,7 @@ namespace _Game.UIs.Screen
         public BoosterButton undoButton;
         public BoosterButton pushHintButton;
         public BoosterButton growTreeButton;
+        public BoosterButton resetIslandButton;
         // Time & Level Text 
         [SerializeField] private TMP_Text timeText;
         [SerializeField] private TMP_Text _levelText;
@@ -65,6 +66,7 @@ namespace _Game.UIs.Screen
             undoButton.AddEvent(OnClickUndo);
             pushHintButton.AddEvent(OnClickPushHint);
             growTreeButton.AddEvent(OnClickGrowTree);
+            resetIslandButton.AddEvent(OnClickResetIsland);
         }
 
         private void OnDestroy()
@@ -75,11 +77,13 @@ namespace _Game.UIs.Screen
             undoButton.RemoveEvent(OnClickUndo);
             pushHintButton.RemoveEvent(OnClickPushHint);
             growTreeButton.RemoveEvent(OnClickGrowTree);
+            resetIslandButton.RemoveEvent(OnClickResetIsland);
         }
 
         public event Action OnUndo;
         public event Action OnGrowTree;
         public event Action OnUsePushHint;
+        public event Action OnResetIsland;
 
         public override void Setup(object param = null)
         {
@@ -111,7 +115,6 @@ namespace _Game.UIs.Screen
         public override void Close()
         {
             OnShowTryHintAgain(false);
-            SetActiveGrowTree(true);
             MoveInputManager.Ins.ShowContainer(false);
             base.Close();
         }
@@ -132,6 +135,12 @@ namespace _Game.UIs.Screen
         {
             undoTimer.Stop();
             undoButton.IsInteractable = active;
+        }
+        
+        public void SetActiveResetIsland(bool active)
+        {
+            resetIslandTimer.Stop();
+            resetIslandButton.IsInteractable = active;
         }
         
         public void OnBoughtGrowTree(bool active)
@@ -217,34 +226,44 @@ namespace _Game.UIs.Screen
             undoButton.gameObject.SetActive(!isTutorial);
             growTreeButton.gameObject.SetActive(!isTutorial);
             pushHintButton.gameObject.SetActive(!isTutorial);
+            resetIslandButton.gameObject.SetActive(!isTutorial);
             // Hide time
             timerContainer.SetActive(!isTutorial);
             // hide setting
             settingButton.gameObject.SetActive(!isTutorial);
         }
 
-        public void OnShowBooster()
+        public void OnCheckBoosterLock()
         {
-            undoButton.SetAmount(DataManager.Ins.GameData.user.undoCount);
-            pushHintButton.SetAmount(DataManager.Ins.GameData.user.pushHintCount);
-            growTreeButton.SetAmount(DataManager.Ins.GameData.user.growTreeCount);
-            // Get the unlock level of the booster
             LevelType type = LevelManager.Ins.CurrentLevel.LevelType;
             if (type is LevelType.Normal)
             {
-                    int currentLevel = LevelManager.Ins.CurrentLevel.Index;
-                    bool isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)undoButton.Type].UnlockAtLevel;
-                    undoButton.IsLock = isLock;
-                    isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)pushHintButton.Type].UnlockAtLevel;
-                    pushHintButton.IsLock = isLock;
-                    isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)growTreeButton.Type].UnlockAtLevel;
-                    growTreeButton.IsLock = isLock;
+                int currentLevel = LevelManager.Ins.CurrentLevel.Index;
+                bool isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)undoButton.Type].UnlockAtLevel;
+                undoButton.IsLock = isLock;
+                isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)pushHintButton.Type].UnlockAtLevel;
+                pushHintButton.IsLock = isLock;
+                isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)growTreeButton.Type].UnlockAtLevel;
+                growTreeButton.IsLock = isLock;
+                isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)resetIslandButton.Type].UnlockAtLevel;
+                resetIslandButton.IsLock = isLock;
             } else
             {
                 undoButton.IsLock = false;
                 pushHintButton.IsLock = false;
                 growTreeButton.IsLock = false;
+                resetIslandButton.IsLock = false;
             }
+        }
+        
+        public void OnSetBoosterAmount()
+        {
+            undoButton.SetAmount(DataManager.Ins.GameData.user.undoCount);
+            pushHintButton.SetAmount(DataManager.Ins.GameData.user.pushHintCount);
+            growTreeButton.SetAmount(DataManager.Ins.GameData.user.growTreeCount);
+            resetIslandButton.SetAmount(DataManager.Ins.GameData.user.resetIslandCount);
+            // Get the unlock level of the booster
+            
         }
         
         #region Booster
@@ -254,20 +273,31 @@ namespace _Game.UIs.Screen
             // Check number of ticket to use
             OnUndo?.Invoke();
             undoButton.IsInteractable = false;
-            pushHintButton.IsFocus = false;
             AudioManager.Ins.PlaySfx(SfxType.Undo);
             undoTimer.Start(UNDO_CD_TIME, () => undoButton.IsInteractable = true);
+            if (undoButton.IsFocus) undoButton.IsFocus = false;
+            if (pushHintButton.IsFocus) pushHintButton.IsFocus = false;
         }
 
         public void OnClickGrowTree()
         {
             OnGrowTree?.Invoke();
-            pushHintButton.IsFocus = false;
+            if (undoButton.IsFocus) undoButton.IsFocus = false;
+            if (pushHintButton.IsFocus) pushHintButton.IsFocus = false;
+        }
+
+        public void OnClickResetIsland()
+        {
+            OnResetIsland?.Invoke();
+            if (undoButton.IsFocus) undoButton.IsFocus = false;
+            if (pushHintButton.IsFocus) pushHintButton.IsFocus = false;
         }
         
         public void OnClickPushHint()
         {
             OnUsePushHint?.Invoke();
+            if (undoButton.IsFocus) undoButton.IsFocus = false;
+            if (pushHintButton.IsFocus) pushHintButton.IsFocus = false;
         }
         
         #endregion
@@ -275,7 +305,8 @@ namespace _Game.UIs.Screen
         
         private Tween _tryAgainImageTween;
         public void OnShowTryHintAgain(bool show)
-        {
+        { 
+            undoButton.IsFocus = show;
            pushHintButton.IsFocus = show;
            pushHintButton.HasAlternativeImage = show;
         }
