@@ -90,7 +90,7 @@ namespace VinhLB
 
         public override void UpdateUI()
         {
-            _levelText.text = $"Level {LevelManager.Ins.NormalLevelIndex + 1}";
+            _levelText.text = $"Day {LevelManager.Ins.NormalLevelIndex + 1}";
             if (RewardManager.Ins.HomeReward.IsCanClaimRC)
             {
                 if (!shakeRewardTimer.IsStart)
