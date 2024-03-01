@@ -208,7 +208,7 @@ MonoBehaviour:
   _boosterText: {fileID: 6433487992674253764}
   _currencyIcon: {fileID: 6433487992345404739}
   _currencyAmountText: {fileID: 6433487992383899446}
-  _currencyAmountTextContentSizeFitter: {fileID: 0}
+  _videoAmountText: {fileID: 6193862020173282331}
 --- !u!1 &1262681387894939503
 GameObject:
   m_ObjectHideFlags: 0
@@ -783,7 +783,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Claim (2)
+  m_text: Claim (1/2)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 20970759222107f48be51a20be1cafff, type: 2}
@@ -1418,7 +1418,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: -190, y: 140}
-  m_SizeDelta: {x: 320, y: 130}
+  m_SizeDelta: {x: 340, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6433487993196033528
 CanvasRenderer:
@@ -2017,7 +2017,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 190, y: 140}
-  m_SizeDelta: {x: 320, y: 130.5}
+  m_SizeDelta: {x: 340, y: 130.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6433487993437328202
 CanvasRenderer:

@@ -70,7 +70,13 @@ namespace _Game.Data
         public readonly int winLevelCountInterAds = 3;
         [FoldoutGroup("Ads/Booster")]
         public readonly int requireAdsForHintBooster = 2;
+        public int[] boosterAmountReceiveFromAds; //Along With Booster Type value
         #endregion
+
+        public int GetBoosterAmountFromAds(BoosterType boosterType) 
+        {
+            return boosterAmountReceiveFromAds[(int)boosterType];
+        }
         // [BoxGroup("Monetize")]
     }
 

@@ -25,7 +25,7 @@ namespace VinhLB
         [SerializeField]
         private TMP_Text _currencyAmountText;
         [SerializeField]
-        private ContentSizeFitter _currencyAmountTextContentSizeFitter;
+        private TMP_Text _videoAmountText;
 
         private BoosterConfig _boosterConfig;
 
@@ -40,7 +40,12 @@ namespace VinhLB
                 _boosterIcon.sprite = _boosterConfig.Icon;
                 _boosterText.text = _boosterConfig.Name;
                 _currencyAmountText.text = _boosterConfig.GoldPerBuyTen.ToString(("#,#"));
-
+                switch (_boosterConfig.Type)
+                {
+                    case BoosterType.PushHint:
+                        _videoAmountText.text = $"CLAIM({DataManager.Ins.HintAdsCount}/{DataManager.Ins.ConfigData.requireAdsForHintBooster})";
+                        break;
+                }
                 // _currencyAmountTextContentSizeFitter.enabled = false;
             }
             GameManager.Ins.ChangeState(GameState.Pause);

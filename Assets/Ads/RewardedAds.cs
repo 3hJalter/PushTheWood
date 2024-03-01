@@ -110,7 +110,20 @@ public class RewardedAds : MonoBehaviour
         {
             for (int i = 0; i < boosterTypes.Count; i++)
             {
-                EventGlobalManager.Ins.OnChangeBoosterAmount.Dispatch(boosterTypes[i], boosterAmounts[i]);
+                switch (boosterTypes[i])
+                {
+                    case BoosterType.PushHint:
+                        DataManager.Ins.GameData.user.hintAdsCount++;
+                        if (DataManager.Ins.IsAdsHintEnough())
+                        {
+                            DataManager.Ins.GameData.user.hintAdsCount = 0;
+                            EventGlobalManager.Ins.OnChangeBoosterAmount.Dispatch(boosterTypes[i], boosterAmounts[i]);
+                        }
+                        break;
+                    default:
+                        EventGlobalManager.Ins.OnChangeBoosterAmount.Dispatch(boosterTypes[i], boosterAmounts[i]);
+                        break;
+                }
             }
         }
     }

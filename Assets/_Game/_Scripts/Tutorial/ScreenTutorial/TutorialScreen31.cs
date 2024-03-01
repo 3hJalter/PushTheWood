@@ -22,7 +22,7 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
 
         public void OnClickReset()
         {
-            GameplayManager.Ins.OnFreeResetIsland();
+            GameplayManager.Ins.OnFreeResetIsland(false);
             CloseDirectly();
         }
         

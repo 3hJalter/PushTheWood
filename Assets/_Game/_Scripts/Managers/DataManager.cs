@@ -56,10 +56,15 @@ namespace _Game.Managers
         public int CountSecretLevel => gridData.CountSecretLevel;
         public int CountSurfaceMaterial => materialData.CountSurfaceMaterial;
         public int CurrentPlayerSkinIndex => GameData.user.currentPlayerSkinIndex;
+        public int HintAdsCount => GameData.user.hintAdsCount;
         
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
+        }
+        public bool IsAdsHintEnough()
+        {
+            return GameData.user.hintAdsCount >= ConfigData.requireAdsForHintBooster;
         }
         public bool IsCharacterSkinUnlock(int index)
         {
