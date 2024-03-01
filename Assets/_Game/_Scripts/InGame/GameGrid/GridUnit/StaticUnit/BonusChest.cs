@@ -55,6 +55,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         public override void OnDespawn()
         {
             floatingTween?.Kill();
+            OnRemoveFromLevelManager();
             base.OnDespawn();
         }
 
@@ -78,6 +79,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         
         private static void OnRemoveFromLevelManager()
         {
+            if (LevelManager.Ins.numsOfCollectingObjectInLevel <= 0) return;
             LevelManager.Ins.numsOfCollectingObjectInLevel--;
             EventGlobalManager.Ins.OnChangeLevelCollectingObjectNumber.Dispatch();
         }

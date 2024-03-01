@@ -55,12 +55,5 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
                 yield return Timing.WaitForOneFrame;
             }
         }
-
-        public override void CloseDirectly(object param = null)
-        {
-            // Remove Close this screen when swipe 
-            // MoveInputManager.Ins.HSwipe.RemoveListener(_swipeEvent);
-            base.CloseDirectly(param);
-        }
     }
 }

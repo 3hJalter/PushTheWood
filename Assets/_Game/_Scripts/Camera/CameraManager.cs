@@ -26,9 +26,12 @@ namespace _Game.Managers
         private readonly Dictionary<ECameraType, CinemachineVirtualCameraBase> virtualCameraDic = new();
 
         public UnityEngine.Camera BrainCamera => brainCamera;
-
         public CinemachineVirtualCameraBase CurrentVirtualCamera => currentVirtualCamera;
 
+        private void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
         public bool IsCurrentCameraIs(ECameraType eCameraType)
         {
             return currentVirtualCamera == virtualCameraDic[eCameraType];
@@ -67,5 +70,6 @@ namespace _Game.Managers
         {
             return brainCamera.WorldToViewportPoint(position);
         }
+
     }
 }
