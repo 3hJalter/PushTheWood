@@ -25,7 +25,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
             if(times == null)
             {
                 times = new List<float>() {THROW_TIME + 0.05f , DIE_TIME};
-                actions = new List<Action>() {DropIntoWater, t.OnDespawn };
+                actions = new List<Action>() {DropIntoWater, () =>
+                    {
+                        t.RemoveFromLevelManager();
+                        t.OnDespawn();
+                    }
+                };
 
             }
             if(timer == null)

@@ -1,5 +1,6 @@
 ﻿using _Game._Scripts.Managers;
 using _Game.Data;
+using _Game.GameGrid.Unit.Interface;
 using _Game.GameGrid.Unit.StaticUnit.Chest;
 using _Game.Utilities;
 using DG.Tweening;
@@ -9,7 +10,7 @@ using VinhLB;
 
 namespace _Game.GameGrid.Unit.StaticUnit
 {
-    public class BonusChest : BChest
+    public class BonusChest : BChest, IFinalPoint
     {
         private Vector3 originTransform;
         private Tween floatingTween;
@@ -55,33 +56,32 @@ namespace _Game.GameGrid.Unit.StaticUnit
         public override void OnDespawn()
         {
             floatingTween?.Kill();
-            OnRemoveFromLevelManager();
+            OnRemoveFromLevelManager(false);
             base.OnDespawn();
         }
 
         public override void OnOpenChestComplete()
         {
             base.OnOpenChestComplete();
-            CollectingResourceManager.Ins.SpawnCollectingRewardKey(1, LevelManager.Ins.player.transform);
-            LevelManager.Ins.KeyRewardCount += 1;
-            DevLog.Log(DevId.Hoang, "Loot something");
+            if (LevelManager.Ins.CollectedChests.Add(this))
+            {
+                CollectingResourceManager.Ins.SpawnCollectingRewardKey(1, LevelManager.Ins.player.transform);
+                LevelManager.Ins.KeyRewardCount += 1;
+            }
             if (LevelManager.Ins.CurrentLevel.LevelType == LevelType.Secret)
             {
                 OnRemoveFromLevelManager();
             }
         }
         
-        private static void OnAddToLevelManager()
+        private void OnAddToLevelManager()
         {
-            LevelManager.Ins.numsOfCollectingObjectInLevel++;
-            LevelManager.Ins.objectiveCounter++;
+            LevelManager.Ins.OnAddFinalPoint(this);
         }
         
-        private static void OnRemoveFromLevelManager()
+        private void OnRemoveFromLevelManager(bool checkWin = true)
         {
-            if (LevelManager.Ins.numsOfCollectingObjectInLevel <= 0) return;
-            LevelManager.Ins.numsOfCollectingObjectInLevel--;
-            EventGlobalManager.Ins.OnChangeLevelCollectingObjectNumber.Dispatch();
+            LevelManager.Ins.OnRemoveFinalPoint(this, checkWin);
         }
     }
 }

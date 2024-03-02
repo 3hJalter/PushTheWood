@@ -174,7 +174,6 @@ namespace _Game.UIs.Screen
         
         private void UpdateLevelText()
         {
-            timerContainer.SetActive(true);
             int levelIndex = 1;
             switch (LevelManager.Ins.CurrentLevel.LevelType)
             {
@@ -209,8 +208,8 @@ namespace _Game.UIs.Screen
                 LevelWinCondition.FindingChickenBbq => Constants.FIND_CHICKEN_BBQ,
                 _ => objectiveText.text
             };
-            DevLog.Log(DevId.Hoang, "Update Objective Counter: " + LevelManager.Ins.ObjectiveCounterLeft() + "/" + LevelManager.Ins.objectiveCounter);
-            objectiveText.text = $"{constant}: {LevelManager.Ins.ObjectiveCounterLeft()}/{LevelManager.Ins.objectiveCounter}";
+            DevLog.Log(DevId.Hoang, "Update Objective Counter: " + LevelManager.Ins.ObjectiveCounterLeft() + "/" + LevelManager.Ins.ObjectiveTotal);
+            objectiveText.text = $"{constant}: {LevelManager.Ins.ObjectiveCounterLeft()}/{LevelManager.Ins.ObjectiveTotal}";
         }
 
         private void LevelManager_OnLevelNext()
@@ -258,9 +257,9 @@ namespace _Game.UIs.Screen
         {
             // Check number of ticket to use
             OnUndo?.Invoke();
-            undoButton.IsInteractable = false;
+            undoButton.Button.interactable = false;
             AudioManager.Ins.PlaySfx(SfxType.Undo);
-            undoTimer.Start(UNDO_CD_TIME, () => undoButton.IsInteractable = true);
+            undoTimer.Start(UNDO_CD_TIME, () => undoButton.Button.interactable = true);
             if (undoButton.IsFocus) undoButton.IsFocus = false;
             if (resetIslandButton.IsFocus) resetIslandButton.IsFocus = false;
         }
@@ -304,8 +303,6 @@ namespace _Game.UIs.Screen
             // Handle Showing time & Setting button
             timerContainer.SetActive(!isTutorial);
             settingButton.gameObject.SetActive(!isTutorial);
-            unlimitedUndoButton?.gameObject.SetActive(false);
-            unlimitedResetIslandButton?.gameObject.SetActive(false);
             // Hide Showing Booster
             if (isTutorial && type is LevelType.Normal) {
                 undoButton.gameObject.SetActive(false);
@@ -321,16 +318,16 @@ namespace _Game.UIs.Screen
                 resetIslandButton.gameObject.SetActive(true);
             }
             // Other handle for specific level
-            unlimitedUndoButton?.gameObject.SetActive(false);
-            unlimitedResetIslandButton?.gameObject.SetActive(false);
+            unlimitedUndoButton.gameObject.SetActive(false);
+            unlimitedResetIslandButton.gameObject.SetActive(false);
             #region Level 3 (index 2)
 
             if (currentLevel == 2 && type is LevelType.Normal)
             {
                 undoButton.gameObject.SetActive(false);
                 resetIslandButton.gameObject.SetActive(false);
-                unlimitedUndoButton?.gameObject.SetActive(true);
-                unlimitedResetIslandButton?.gameObject.SetActive(true);
+                unlimitedUndoButton.gameObject.SetActive(true);
+                unlimitedResetIslandButton.gameObject.SetActive(true);
                 return;
             }
             

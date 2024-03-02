@@ -1,6 +1,7 @@
 ﻿using System;
 using _Game._Scripts.Managers;
 using _Game.DesignPattern;
+using _Game.GameGrid.Unit.Interface;
 using _Game.GameGrid.Unit.StaticUnit.Chest;
 using _Game.Utilities;
 using GameGridEnum;
@@ -14,7 +15,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
      * This class is used for listen from button unit
      * The chest will be opened when all button units are entered
      */
-    public class ChestButtonUnit : BChest
+    public class ChestButtonUnit : BChest, IFinalPoint
     {
         [SerializeField] private GameObject lockedChestModel;
         [SerializeField] private ParticleSystem chestUnlockParticle;
@@ -48,6 +49,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         public override void OnDespawn()
         {
             DeSetUpButtonUnit();
+            OnRemoveFromLevelManager(false);
             base.OnDespawn();
         }
 
@@ -139,17 +141,14 @@ namespace _Game.GameGrid.Unit.StaticUnit
             numberOfButtonInLevel = 0;
         }
         
-        private static void OnAddToLevelManager()
+        private void OnAddToLevelManager()
         {
-            LevelManager.Ins.numsOfCollectingObjectInLevel++;
-            DevLog.Log(DevId.Hoang, "Add to level manager");
-            LevelManager.Ins.objectiveCounter++;
+            LevelManager.Ins.OnAddFinalPoint(this);
         }
         
-        private static void OnRemoveFromLevelManager()
+        private void OnRemoveFromLevelManager(bool checkWin = true)
         {
-            LevelManager.Ins.numsOfCollectingObjectInLevel--;
-            EventGlobalManager.Ins.OnChangeLevelCollectingObjectNumber.Dispatch();
+            LevelManager.Ins.OnRemoveFinalPoint(this, checkWin);
         }
     }
 }

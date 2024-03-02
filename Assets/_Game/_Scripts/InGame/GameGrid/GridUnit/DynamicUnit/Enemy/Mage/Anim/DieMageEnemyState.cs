@@ -15,7 +15,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
         {
             timer = TimerManager.Ins.PopSTimer();
             t.ChangeAnim(Constants.DIE_ANIM);
-            timer.Start(DIE_TIME, t.OnDespawn);
+            timer.Start(DIE_TIME, () =>
+            {
+                t.RemoveFromLevelManager();
+                t.OnDespawn();
+            });
         }
 
         public void OnExecute(MageEnemy t)

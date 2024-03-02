@@ -1,12 +1,13 @@
 ﻿using _Game._Scripts.Managers;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
+using _Game.GameGrid.Unit.Interface;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.StaticUnit
 {
-    public class FinalPoint : GridUnitStatic
+    public class FinalPoint : GridUnitStatic, IFinalPoint
     {
         [SerializeField] protected Target indicatorTarget;
         [SerializeField] protected bool isInteracted;
@@ -24,6 +25,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             isInteracted = false;
             winParticle.Stop();
+            OnRemoveFromLevelManager(false);
             base.OnDespawn();
         }
         
@@ -42,17 +44,14 @@ namespace _Game.GameGrid.Unit.StaticUnit
             OnReachPoint();
         }
 
-        private static void OnAddToLevelManager()
+        private void OnAddToLevelManager()
         {
-            LevelManager.Ins.numsOfCollectingObjectInLevel++;
-            LevelManager.Ins.objectiveCounter++;
+            LevelManager.Ins.OnAddFinalPoint(this);
         }
         
-        private static void OnRemoveFromLevelManager()
+        private void OnRemoveFromLevelManager(bool checkWin = true)
         {
-            if (LevelManager.Ins.numsOfCollectingObjectInLevel <= 0) return;
-            LevelManager.Ins.numsOfCollectingObjectInLevel--;
-            EventGlobalManager.Ins.OnChangeLevelCollectingObjectNumber.Dispatch();
+            LevelManager.Ins.OnRemoveFinalPoint(this, checkWin);
         }
     }
 }

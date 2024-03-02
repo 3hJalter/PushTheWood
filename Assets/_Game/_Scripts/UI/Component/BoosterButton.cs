@@ -101,6 +101,8 @@ namespace _Game._Scripts.UIs.Component
         
         [SerializeField] private HButton button;
         
+        public HButton Button => button;
+        
         [Title("Focus")]
         [SerializeField] private GameObject focusImage;
 
