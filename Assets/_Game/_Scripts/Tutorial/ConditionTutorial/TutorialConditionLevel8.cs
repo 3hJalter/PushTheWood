@@ -17,9 +17,8 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
             if (currentTutIndex == 0)
             {
                 if (triggerUnit is not Player) return;
-                // if Player at cell 7, 9 -> Change to Cell that Player init in level 8
-                if (!(Math.Abs(cell.WorldX - 7) < Constants.TOLERANCE) ||
-                    !(Math.Abs(cell.WorldY - 9) < Constants.TOLERANCE)) return;
+                if (!(Math.Abs(cell.WorldX - 9) < Constants.TOLERANCE) ||
+                    !(Math.Abs(cell.WorldY - 7) < Constants.TOLERANCE)) return;
                 GameplayManager.Ins.OnFreePushHint(false, true);
                 currentTutIndex++;
                 return;

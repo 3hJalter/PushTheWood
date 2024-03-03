@@ -61,7 +61,12 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
                         UIManager.Ins.OpenUIDirectly(tutorialScreens[0]);
                         currentTutIndex ++; // To avoid the next condition
                     }
-                }   
+                }
+                else if (targetUnit is Tree)
+                {
+                    UIManager.Ins.OpenUIDirectly(tutorialScreens[0]);
+                    currentTutIndex ++; // To avoid the next condition
+                }
             }
         }
     }

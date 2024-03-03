@@ -21,6 +21,15 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: unlockBonusChestAtLevelIndex
+      Entry: 3
+      Data: 5
+    - Name: unlockDailyChallengeAtLevelIndex
+      Entry: 3
+      Data: 9
+    - Name: unlockSecretLevelAtLevelIndex
+      Entry: 3
+      Data: 19
     - Name: timePerDailyChallengeLevel
       Entry: 3
       Data: 150

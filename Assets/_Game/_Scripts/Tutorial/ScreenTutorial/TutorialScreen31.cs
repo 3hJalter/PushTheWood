@@ -1,11 +1,5 @@
-﻿using System;
-using _Game.Camera;
-using _Game.Managers;
-using _Game.UIs.Screen;
-using _Game.Utilities.Timer;
-using HControls;
+﻿using _Game.Managers;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace _Game._Scripts.Tutorial.ScreenTutorial
 {

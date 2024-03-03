@@ -270,6 +270,8 @@ namespace _Game.Managers
 
         #region Booster
 
+        #region Undo
+
         public void OnFreeUndo()
         {
             if (!isCanUndo) return;
@@ -319,6 +321,10 @@ namespace _Game.Managers
             }
         }
 
+        #endregion
+        
+        #region Reset Island
+
         public void OnFreeResetIsland(bool isShowHint = true)
         {
             LevelManager.Ins.ResetLevelIsland();
@@ -347,6 +353,16 @@ namespace _Game.Managers
             }
         }
 
+        #endregion
+        
+        #region Grow Tree
+
+        public void OnFreeGrowTree()
+        {
+            IsBoughtGrowTree = true;
+            EventGlobalManager.Ins.OnGrowTree.Dispatch();
+        }
+        
         private void OnGrowTree()
         {
             if (IsBoughtGrowTree)
@@ -376,6 +392,8 @@ namespace _Game.Managers
                 if (_pushHint.IsStartHint) _pushHint.OnStopHint();
             }
         }
+
+        #endregion
 
         # region PUSH HINT
 

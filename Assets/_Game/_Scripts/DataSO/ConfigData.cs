@@ -12,6 +12,17 @@ namespace _Game.Data
     [CreateAssetMenu(fileName = "ConfigData", menuName = "ScriptableObjects/ConfigData", order = 1)]
     public class ConfigData : SerializedScriptableObject
     {
+        #region Feature Unlock
+
+        [FoldoutGroup("Feature Unlock")]
+        public readonly int unlockBonusChestAtLevelIndex = 5;
+        [FoldoutGroup("Feature Unlock")]
+        public readonly int unlockDailyChallengeAtLevelIndex = 9;
+        [FoldoutGroup("Feature Unlock")]
+        public readonly int unlockSecretLevelAtLevelIndex = 19;
+
+        #endregion
+        
         #region In Game
 
         [FoldoutGroup("In Game")]
