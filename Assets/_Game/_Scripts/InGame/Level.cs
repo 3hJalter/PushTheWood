@@ -103,6 +103,9 @@ namespace _Game._Scripts.InGame
 
         // Island (Each island has some surfaces and units)
         public Dictionary<int, Island> Islands { get; } = new();
+        
+        // For handling when reset Island
+        public HashSet<int> OnResetIslandSet { get; } = new();
 
         // Some other data
         private GameGridCell firstPlayerInitCell;

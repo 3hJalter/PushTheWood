@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _Game.Managers;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -55,16 +56,7 @@ namespace VinhLB
         {
             if (RewardType == RewardType.Booster)
             {
-                //TODO: Implement logic to receive booster
-                switch (BoosterType)
-                {
-                    case BoosterType.Undo:
-                        break;
-                    case BoosterType.PushHint:
-                        break;
-                    case BoosterType.GrowTree:
-                        break;
-                }
+                GainBooster(BoosterType, Amount);
             }
             else if (RewardType == RewardType.Currency)
             {
@@ -78,6 +70,36 @@ namespace VinhLB
                         break;
                     case CurrencyType.SecretMapPiece:
                         GameManager.Ins.GainSecretMapPiece(Amount);
+                        break;
+                    case CurrencyType.RandomBooster:
+                        GainBooster(BoosterType, Amount);
+                        break;
+                    case CurrencyType.None:
+                    default:
+                        break;
+                }
+            }
+            
+            return;
+
+            void GainBooster(BoosterType type, int amount)
+            {
+                switch (type)
+                {
+                    case BoosterType.Undo:
+                        DataManager.Ins.GameData.user.undoCount += amount;
+                        break;
+                    case BoosterType.PushHint:
+                        DataManager.Ins.GameData.user.pushHintCount += amount;
+                        break;
+                    case BoosterType.GrowTree:
+                        DataManager.Ins.GameData.user.growTreeCount += amount;
+                        break;
+                    case BoosterType.ResetIsland:
+                        DataManager.Ins.GameData.user.resetIslandCount += amount;
+                        break;
+                    case BoosterType.None:
+                    default:
                         break;
                 }
             }

@@ -85,8 +85,9 @@ namespace _Game._Scripts.InGame
             _gridUnits.Add(unit);
         }
 
-        public void ClearIsland()
+        public void ClearIsland(bool clearIslandSet = false)
         {
+            if (clearIslandSet) _thisLevel.OnResetIslandSet.Clear();
             HashSet<int> islandIDSet = new();
             for (int i = 0; i < GridCells.Count; i++)
             {
@@ -103,16 +104,16 @@ namespace _Game._Scripts.InGame
             _gridUnits.Clear();
 
             if (islandIDSet.Count <= 0) return;
-            foreach (int id in islandIDSet)
+            foreach (int id in islandIDSet.Where(id => _thisLevel.OnResetIslandSet.Add(id)))
             {
-                _thisLevel.Islands[id].ResetIsland();
+                _thisLevel.Islands[id].ResetIsland(false);
             }
         }
 
-        public void ResetIsland()
+        public void ResetIsland(bool clearIslandSet = true)
         {
             DOTween.KillAll();
-            ClearIsland();
+            ClearIsland(clearIslandSet);
             foreach (KeyValuePair<GameGridCell, UnitInitData> pair in _initGridUnitDic)
             {
                 if (pair.Value.Type == PoolType.Player) continue;
