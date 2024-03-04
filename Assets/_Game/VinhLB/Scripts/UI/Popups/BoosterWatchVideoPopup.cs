@@ -51,7 +51,7 @@ namespace VinhLB
             _boosterIcon.sprite = _boosterConfig.Icon;
             _boosterText.text = _boosterConfig.Name;
             _boosterAmountText.text = $"x{_boosterConfig.TicketPerBuyRatio.itemsPerBuy}";
-            _currencyAmountText.text = _boosterConfig.GoldPerBuyTen.ToString(("#,#"));
+            _currencyAmountText.text = _boosterConfig.TicketPerBuyRatio.ticketNeed.ToString(("#,#"));
 
             switch (_boosterConfig.Type)
             {
@@ -65,15 +65,14 @@ namespace VinhLB
         }
         public void OnClickBuyButton()
         {
-            if (GameManager.Ins.TrySpendGold(_boosterConfig.GoldPerBuyTen))
+            if (GameManager.Ins.TrySpendAdTickets(_boosterConfig.TicketPerBuyRatio.ticketNeed))
             {
-                EventGlobalManager.Ins.OnChangeBoosterAmount.Dispatch(_boosterConfig.Type, BOOSTER_AMOUNT_ON_BUY);
+                EventGlobalManager.Ins.OnChangeBoosterAmount.Dispatch(_boosterConfig.Type, _boosterConfig.TicketPerBuyRatio.itemsPerBuy);
                 Close();
             }
             else
             {
-                DevLog.Log(DevId.Hoang, "Show popup not enough gold");
-                UIManager.Ins.OpenUI<NotificationPopup>("You do not have enough gold!");
+                UIManager.Ins.OpenUI<NotificationPopup>("You do not have enough Ticket Ads!");
             }
         }
 

@@ -238,13 +238,34 @@ MonoBehaviour:
     time: 150
   - levelNormalType: 2
     time: 210
+  dailyChallengeRewardMilestones:
+  - clearLevelNeed: 1
+    rewards:
+    - currencyType: 1
+      quantity: 1
+  - clearLevelNeed: 2
+    rewards:
+    - currencyType: 0
+      quantity: 60
+  - clearLevelNeed: 4
+    rewards:
+    - currencyType: 1
+      quantity: 1
+  - clearLevelNeed: 7
+    rewards:
+    - currencyType: 0
+      quantity: 120
+    - currencyType: 1
+      quantity: 1
+    - currencyType: 3
+      quantity: 1
   boosterConfigList:
   - type: 0
     unlockAtLevel: 2
     goldPerBuyTen: 10
     ticketPerBuyRatio:
       ticketNeed: 1
-      itemsPerBuy: 2
+      itemsPerBuy: 3
     UIResourceConfig:
       Name: Undo
       IconSprite: {fileID: 21300000, guid: fcc83227a2a4b534597cc89516aadc77, type: 3}
