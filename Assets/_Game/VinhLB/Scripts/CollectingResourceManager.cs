@@ -138,13 +138,15 @@ namespace VinhLB
                 if (unit.transform.parent != config.CollectingResourceParentTF)
                 {
                     unit.transform.SetParent(config.CollectingResourceParentTF, false);
+                    unit.transform.position = startPosition;
                 }
                 
                 Vector3 targetPosition = new Vector3(
                     startPosition.x + Random.Range(config.MinSpreadPosition.x, config.MaxSpreadPosition.x),
                     startPosition.y + Random.Range(config.MinSpreadPosition.y, config.MaxSpreadPosition.y),
                     startPosition.z);
-                unit.Tf.DOMove(targetPosition, config.SpreadDuration).From(startPosition).SetEase(Ease.OutCirc);
+                // unit.Tf.DOMove(targetPosition, config.SpreadDuration).SetEase(Ease.OutCirc);
+                unit.Tf.DOJump(targetPosition, 1f, 1, config.SpreadDuration).SetEase(Ease.OutCirc);
 
                 unitList.Add(unit);
             }

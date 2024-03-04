@@ -15,17 +15,17 @@ namespace VinhLB
     public class HomePage : TabPage
     {
         [SerializeField]
-        private Button _playButton;
+        private HButton _playButton;
         [SerializeField]
-        private Button _dailyChallengeButton;
+        private HButton _dailyChallengeButton;
         [SerializeField]
-        private Button _dailyRewardButton;
+        private HButton _dailyRewardButton;
         [SerializeField]
-        private Button _dailyMissionButton;
+        private HButton _dailyMissionButton;
         [SerializeField]
-        private Button _secretMapButton;
+        private HButton _secretMapButton;
         [SerializeField]
-        private Button _rewardChestButton;
+        private HButton _rewardChestButton;
         [SerializeField]
         private RectTransform _rewardChestIconRectTF;
         [SerializeField]
@@ -33,7 +33,7 @@ namespace VinhLB
         [SerializeField]
         private TMP_Text _rewardKeyTxt;
         [SerializeField]
-        private Button _levelChestButton;
+        private HButton _levelChestButton;
         [SerializeField]
         private RectTransform _levelChestIconRectTF;
         [SerializeField]
@@ -76,15 +76,9 @@ namespace VinhLB
                 DevLog.Log(DevId.Vinh, "Click secret map button");
                 UIManager.Ins.OpenUI<SecretMapPopup>();
             });
-            _rewardChestButton.onClick.AddListener(() =>
-            {
-                RewardManager.Ins.HomeReward.ClaimRewardChest();
-            });
-            _levelChestButton.onClick.AddListener(() =>
-            {
-                RewardManager.Ins.HomeReward.ClaimLevelChest();
-            });
-            
+            _rewardChestButton.onClick.AddListener(() => { RewardManager.Ins.HomeReward.ClaimRewardChest(); });
+            _levelChestButton.onClick.AddListener(() => { RewardManager.Ins.HomeReward.ClaimLevelChest(); });
+
             _shakeRewardTimer = TimerManager.Ins.PopSTimer();
             _shakeLevelTimer = TimerManager.Ins.PopSTimer();
             _startRewardChestIconQuaternion = _rewardChestIconRectTF.localRotation;
@@ -97,10 +91,10 @@ namespace VinhLB
             {
                 UIManager.Ins.OpenUI<DailyRewardPopup>();
             }
-            
+
             // Invoke(nameof(OpenMask), 1f);
         }
-        
+
         private void OnDestroy()
         {
             TimerManager.Ins.PushSTimer(_shakeRewardTimer);
@@ -113,9 +107,11 @@ namespace VinhLB
             {
                 if (!_shakeRewardTimer.IsStart)
                 {
-                    _shakeRewardTimer.Start(1f,
-                        () => _rewardChestIconRectTF.DOShakeRotation(0.5f, 40, 10, 0, true,
-                            ShakeRandomnessMode.Harmonic), true);
+                    _shakeRewardTimer.Start(1f, () =>
+                    {
+                        _rewardChestIconRectTF.DOShakeRotation(0.5f, Vector3.forward * 10f, 10, 45f, true,
+                            ShakeRandomnessMode.Harmonic);
+                    }, true);
                     _rewardKeyTxt.text = $"FULL";
                     _rewardKeyTxt.color = Color.green;
                     _rewardChestCurrencyIconGO.SetActive(false);
@@ -134,9 +130,11 @@ namespace VinhLB
             {
                 if (!_shakeLevelTimer.IsStart)
                 {
-                    _shakeLevelTimer.Start(1f,
-                        () => _levelChestIconRectTF.DOShakeRotation(0.5f, 40, 10, 0, true,
-                            ShakeRandomnessMode.Harmonic), true);
+                    _shakeLevelTimer.Start(1f, () =>
+                    {
+                        _levelChestIconRectTF.DOShakeRotation(0.5f, Vector3.forward * 10f, 10, 45f, true,
+                            ShakeRandomnessMode.Harmonic);
+                    }, true);
                     _levelProgressTxt.text = $"FULL";
                     _levelProgressTxt.color = Color.green;
                     _levelChestCurrencyIconGO.SetActive(false);
@@ -160,7 +158,7 @@ namespace VinhLB
                 Position = _dailyChallengeButton.transform.position,
                 Size = _dailyChallengeButton.GetComponent<RectTransform>().sizeDelta + Vector2.one * 20f,
                 MaskType = MaskType.Rectangle,
-                Button = _dailyChallengeButton
+                ClickableItem = _dailyChallengeButton
             });
         }
     }

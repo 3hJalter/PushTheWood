@@ -1,9 +1,21 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using VinhLB;
 
-public class HButton : Button
+public class HButton : Button, IClickable
 {
+    public event Action OnClickedCallback;
+
     public ButtonAnim buttonAnim;
+
+    public override void OnPointerClick(PointerEventData eventData)
+    {
+        base.OnPointerClick(eventData);
+        
+        OnClickedCallback?.Invoke();
+    }
 
     public void Show(bool instant = false)
     {

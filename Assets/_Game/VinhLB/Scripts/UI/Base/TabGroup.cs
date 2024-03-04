@@ -107,10 +107,7 @@ namespace VinhLB
                     _selectedTabButton.SetBackgroundSprite(_tabActiveSprite);
                 }
                 
-                if (_tabGroupDict[_selectedTabButton] == null)
-                {
-                    _tabGroupDict[_selectedTabButton] = GetTabPage(_selectedTabButton);
-                }
+                _tabGroupDict[_selectedTabButton] = GetTabPage(_selectedTabButton);
             }
             
             foreach (KeyValuePair<TabButton, TabPage> element in _tabGroupDict)
@@ -134,7 +131,7 @@ namespace VinhLB
 
         protected virtual TabPage GetTabPage(TabButton tabButton)
         {
-            return null;
+            return _tabGroupDict[tabButton];
         }
 
         private void ResetTabs()

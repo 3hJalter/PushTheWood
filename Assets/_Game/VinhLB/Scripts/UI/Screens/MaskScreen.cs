@@ -83,7 +83,7 @@ namespace VinhLB
                 _createdUIMaskList.Add(mask);
             }
             
-            mask.Initialize(data.Position, data.Size, _maskDatabase.MaskSpriteDict[data.MaskType], data.Button, Close);
+            mask.Initialize(data.Position, data.Size, _maskDatabase.MaskSpriteDict[data.MaskType], data.ClickableItem, Close);
         }
     }
 
@@ -92,7 +92,7 @@ namespace VinhLB
         public Vector3 Position;
         public Vector2 Size;
         public MaskType MaskType;
-        public Button Button;
+        public IClickable ClickableItem;
     }
 
     public enum MaskType

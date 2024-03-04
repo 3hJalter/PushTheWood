@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using _Game.Managers;
 using _Game.UIs.Popup;
+using AudioEnum;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using TMPro;
@@ -11,21 +13,26 @@ using UnityEngine.UI;
 
 namespace VinhLB
 {
-    public class TabButton : HButton
+    public class TabButton : HMonoBehaviour, IClickable, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
-        [System.Serializable]
+        [Serializable]
         private enum AnimType
         {
             GoUp = 0,
             Enlarge = 1
         }
 
-        public event System.Action OnButtonClicked;
+        public event Action OnClickedCallback;
 
+        [Header("General")]
         [SerializeField]
         private TabGroup _tabGroup;
         [SerializeField]
         private bool _interactable = true;
+        [SerializeField]
+        private SfxType _buttonSound = SfxType.Click;
+        
+        [Header("Animation")]
         [SerializeField]
         private Image _background;
         [SerializeField]
@@ -156,26 +163,24 @@ namespace VinhLB
                 .OnComplete(() => { _activeIconAnimTween = null; });
         }
 
-        public override void OnPointerClick(PointerEventData eventData)
+        public void OnPointerClick(PointerEventData eventData)
         {
-            base.OnPointerClick(eventData);
-            
             if (_interactable)
             {
                 _tabGroup.OnTabSelected(this, true, false);
 
-                OnButtonClicked?.Invoke();
+                OnClickedCallback?.Invoke();
             }
             else
             {
                 UIManager.Ins.OpenUI<NotificationPopup>(Constants.FEATURE_COMING_SOON);
             }
+            
+            AudioManager.Ins.PlaySfx(_buttonSound);
         }
 
-        public override void OnPointerEnter(PointerEventData eventData)
+        public void OnPointerEnter(PointerEventData eventData)
         {
-            base.OnPointerEnter(eventData);
-            
             if (_interactable)
             {
                 _tabGroup.OnTabEnter(this);
@@ -185,10 +190,8 @@ namespace VinhLB
             }
         }
 
-        public override void OnPointerExit(PointerEventData eventData)
+        public void OnPointerExit(PointerEventData eventData)
         {
-            base.OnPointerExit(eventData);
-            
             if (_interactable)
             {
                 _tabGroup.OnTabExit(this);
