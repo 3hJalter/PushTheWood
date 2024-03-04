@@ -10,13 +10,14 @@ using _Game.DesignPattern;
 using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
+using _Game.GameGrid.Unit.Interface;
+using _Game.GameGrid.Unit.StaticUnit.Chest;
 using _Game.Managers;
 using _Game.UIs.Screen;
 using _Game.Utilities;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Playables;
 using static _Game.Utilities.Grid.Grid<_Game.GameGrid.GameGridCell, _Game.GameGrid.GameGridCellData>;
 
 namespace _Game.GameGrid
@@ -68,21 +69,70 @@ namespace _Game.GameGrid
         [ReadOnly]
         public Player player;
 
-        [ReadOnly] public readonly List<IEnemy> enemies = new();
-        [ReadOnly] public int numsOfCollectingObjectInLevel;
-        [ReadOnly] public int objectiveCounter;
+        #region Objective Win Condition Number
 
+        [ReadOnly] [SerializeField] private int objectiveTotal;
+        [ReadOnly]  private readonly HashSet<IEnemy> enemies = new();
+        [ReadOnly]  private readonly HashSet<IFinalPoint> finalPoints = new();
+        public int ObjectiveTotal => objectiveTotal;
+        private int EnemyNums => enemies.Count;
+        private int FinalPointNums => finalPoints.Count;
+        
+        public void OnAddEnemy(IEnemy enemy)
+        {
+            bool isAdded = enemies.Add(enemy);
+            if (isAdded && CurrentLevel.LevelWinCondition is LevelWinCondition.DefeatAllEnemy)
+            {
+                if (enemies.Count > objectiveTotal) objectiveTotal = enemies.Count;
+                OnObjectiveChange?.Invoke();
+            }
+        }
+
+        public void OnRemoveEnemy(IEnemy enemy)
+        {
+            bool isRemoved = enemies.Remove(enemy);
+            if (isRemoved && CurrentLevel.LevelWinCondition is LevelWinCondition.DefeatAllEnemy)
+            {
+                OnObjectiveChange?.Invoke();
+                EventGlobalManager.Ins.OnChangeLevelCollectingObjectNumber.Dispatch();
+            }
+        }
+        
+       public void OnAddFinalPoint(IFinalPoint finalPoint)
+        {
+            bool isAdded = finalPoints.Add(finalPoint);
+            if (isAdded && CurrentLevel.LevelWinCondition is not LevelWinCondition.DefeatAllEnemy)
+            {
+                if (finalPoints.Count > objectiveTotal) objectiveTotal = finalPoints.Count;
+                OnObjectiveChange?.Invoke();
+            }
+        }
+       
+       public void OnRemoveFinalPoint(IFinalPoint finalPoint, bool checkWin = true)
+        {
+            bool isRemoved = finalPoints.Remove(finalPoint);
+            if (isRemoved && CurrentLevel.LevelWinCondition is not LevelWinCondition.DefeatAllEnemy)
+            {
+                OnObjectiveChange?.Invoke();
+                if (checkWin) EventGlobalManager.Ins.OnChangeLevelCollectingObjectNumber.Dispatch();
+                else objectiveTotal--; // No check win  -> The FinalPoint is DeSpawn by undo or reset the level -> decrease the objectiveTotal to add them again later
+            }
+        }
+       
         public int ObjectiveCounterLeft()
         {
             LevelWinCondition condition = _currentLevel.LevelWinCondition;
             if (condition is LevelWinCondition.DefeatAllEnemy)
             {
-                return objectiveCounter - enemies.Count;
+                return objectiveTotal - EnemyNums;
             }
-            return objectiveCounter - numsOfCollectingObjectInLevel;
+            return objectiveTotal - FinalPointNums;
         }
         
-        
+        #endregion
+
+        public HashSet<BChest> CollectedChests { get; } = new();
+
         // DEBUG:
         [ReadOnly]
         [SerializeField] private LevelWinCondition levelWinCondition;
@@ -113,9 +163,6 @@ namespace _Game.GameGrid
             if (type == LevelType.Normal) OnCheckTutorial();
             IsConstructingLevel = true;
             _currentLevel = new Level(type, index);
-            enemies.Clear();
-            numsOfCollectingObjectInLevel = 0;
-            objectiveCounter = 0;
             if (needInit && !_currentLevel.IsInit)
             {
                 InitLevel();
@@ -130,8 +177,9 @@ namespace _Game.GameGrid
             GameManager.Ins.PostEvent(EventID.StartGame);
             if (_currentLevel.IsInit) return;
             enemies.Clear();
-            numsOfCollectingObjectInLevel = 0;
-            objectiveCounter = 0;
+            finalPoints.Clear();
+            CollectedChests.Clear();
+            objectiveTotal = 0;
             _currentLevel.OnInitLevelSurfaceAndUnit();
             _currentLevel.OnInitPlayerToLevel();
             savingState = new CareTaker(this);
@@ -272,9 +320,10 @@ namespace _Game.GameGrid
         {
             if (!CurrentLevel.IsInit) return; // No Init -> Means No Restart
             _isRestarting = true;
-            objectiveCounter = 0;
+            objectiveTotal = 0;
             enemies.Clear();
-            numsOfCollectingObjectInLevel = 0;
+            finalPoints.Clear();
+            CollectedChests.Clear();
             CurrentLevel.GridMap.Reset();
             IsConstructingLevel = true;
             player.OnDespawn();
@@ -299,8 +348,7 @@ namespace _Game.GameGrid
                 case LevelWinCondition.DefeatAllEnemy:
                     OnCheckWinCondition += () =>
                     {
-                        OnObjectiveChange?.Invoke();
-                        if (enemies.Count == 0 && GameManager.Ins.IsState(GameState.InGame) && !_isRestarting && !_isResetting)
+                        if (EnemyNums == 0 && GameManager.Ins.IsState(GameState.InGame) && !_isRestarting && !_isResetting)
                         {
                             OnWin();
                         }
@@ -312,8 +360,7 @@ namespace _Game.GameGrid
                 case LevelWinCondition.FindingChickenBbq:
                     OnCheckWinCondition += () =>
                     {
-                        OnObjectiveChange?.Invoke();
-                        if (numsOfCollectingObjectInLevel == 0 && GameManager.Ins.IsState(GameState.InGame) && !_isRestarting && !_isResetting)
+                        if (FinalPointNums == 0 && GameManager.Ins.IsState(GameState.InGame) && !_isRestarting && !_isResetting)
                         {
                             OnWin();
                         }

@@ -17,6 +17,7 @@ namespace _Game._Scripts.Managers
         private Relay _onGrowTree; // For Tree Seed
         private Relay<bool> _onPlayerChangeIsland; // For When Player go to the other Island
         private Relay<PlayerStep> _onPlayerPushStep; // For Push Hint
+        private Relay<int> _onGrowTreeOnIsland; // For Grow Tree on Island
         
         public Relay OnChangeLevelCollectingObjectNumber => _onChangeLevelCollectingObjectNumber ??= new Relay();
         public Relay<bool> OnButtonUnitEnter => _onButtonUnitEnter ??= new Relay<bool>();
@@ -24,6 +25,8 @@ namespace _Game._Scripts.Managers
         public Relay<BoosterType, int> OnChangeBoosterAmount => _onChangeBoosterAmount ??= new Relay<BoosterType, int>();
         public Relay<bool> OnPlayerChangeIsland => _onPlayerChangeIsland ??= new Relay<bool>();
         public Relay OnGrowTree => _onGrowTree ??= new Relay();
+        
+        public Relay<int> OnGrowTreeOnIsland => _onGrowTreeOnIsland ??= new Relay<int>();
         
         public Relay<PlayerStep> OnPlayerPushStep => _onPlayerPushStep ??= new Relay<PlayerStep>();
         
@@ -36,6 +39,7 @@ namespace _Game._Scripts.Managers
             _onGrowTree = new Relay();
             _onPlayerChangeIsland = new Relay<bool>();
             _onPlayerPushStep = new Relay<PlayerStep>();
+            _onGrowTreeOnIsland = new Relay<int>();
             DontDestroyOnLoad(gameObject);
         }
     }

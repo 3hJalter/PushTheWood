@@ -4,6 +4,7 @@ using _Game.Managers;
 using AudioEnum;
 using DG.Tweening;
 using System;
+using _Game._Scripts.InGame;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -25,7 +26,24 @@ namespace _Game.UIs.Screen
             base.Setup(param);
             _canvasGroup.alpha = 0f;
             // Hide the next level button if the current level is not Normal level
-            _nextLevelButton.gameObject.SetActive(LevelManager.Ins.CurrentLevel.LevelType == LevelType.Normal);
+            Level level = LevelManager.Ins.CurrentLevel;
+            if (level.LevelType != LevelType.Normal)
+            {
+                _nextLevelButton.gameObject.SetActive(false);
+            }
+            else
+            {
+                if (level.Index == DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex 
+                    || level.Index == DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex
+                    || level.Index == DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex)
+                {
+                    _nextLevelButton.gameObject.SetActive(false);
+                }
+                else
+                {
+                    _nextLevelButton.gameObject.SetActive(true);
+                }
+            }
             NextLevel = () =>
             {
                 LevelManager.Ins.OnNextLevel(LevelType.Normal);

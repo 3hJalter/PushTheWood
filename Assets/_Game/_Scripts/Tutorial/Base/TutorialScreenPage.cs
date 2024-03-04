@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using _Game.Utilities.Timer;
+using HControls;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -23,6 +24,7 @@ namespace _Game._Scripts.Tutorial
             base.Setup(param);
             panel.color = new Color(0,0,0,0);
             _currentPageIndex = 0;
+            HInputManager.LockInput();
             pages.ForEach(page => page.SetActive(false));
             nextButton.gameObject.SetActive(false);
             prevButton.gameObject.SetActive(false);
@@ -46,6 +48,7 @@ namespace _Game._Scripts.Tutorial
             nextButton.onClick.RemoveListener(NextPage);
             prevButton.onClick.RemoveListener(PrevPage);
             closeButton.onClick.RemoveListener(() => CloseDirectly());
+            HInputManager.LockInput(false);
             base.CloseDirectly(param);
         }
 

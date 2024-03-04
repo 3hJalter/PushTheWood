@@ -45,6 +45,10 @@ namespace _Game.Managers
             {
                 isCanUndo = value;
                 screen.SetActiveUndo(value);
+                if (isCanUndo)
+                {
+                    screen.undoButton.SetAmount(DataManager.Ins.GameData.user.undoCount);
+                }
             }
         }
 
@@ -75,6 +79,7 @@ namespace _Game.Managers
             {
                 isCanGrowTree = value;
                 screen.SetActiveGrowTree(value);
+                if (isCanGrowTree && !isBoughtGrowTree) screen.growTreeButton.SetAmount(DataManager.Ins.GameData.user.growTreeCount);
             }
         }
 
@@ -223,7 +228,7 @@ namespace _Game.Managers
             IsCanResetIsland = true;
             IsCanUndo = true;
             IsBoughtGrowTree = false;
-            IsCanGrowTree = false;
+            IsCanGrowTree = true;
             isBoughtPushHintInIsland.Clear();
             _pushHint = new PushHint(LevelManager.Ins.CurrentLevel.GetPushHint());
             screen.OnSetBoosterAmount();
@@ -264,6 +269,8 @@ namespace _Game.Managers
         }
 
         #region Booster
+
+        #region Undo
 
         public void OnFreeUndo()
         {
@@ -314,6 +321,10 @@ namespace _Game.Managers
             }
         }
 
+        #endregion
+        
+        #region Reset Island
+
         public void OnFreeResetIsland(bool isShowHint = true)
         {
             LevelManager.Ins.ResetLevelIsland();
@@ -342,8 +353,25 @@ namespace _Game.Managers
             }
         }
 
+        #endregion
+        
+        #region Grow Tree
+
+        public void OnFreeGrowTree()
+        {
+            IsBoughtGrowTree = true;
+            EventGlobalManager.Ins.OnGrowTree.Dispatch();
+        }
+        
         private void OnGrowTree()
         {
+            if (IsBoughtGrowTree)
+            {
+                if (EventGlobalManager.Ins.OnGrowTree.listenerCount <= 0) return;
+                EventGlobalManager.Ins.OnGrowTree.Dispatch();
+                if (_pushHint.IsStartHint) _pushHint.OnStopHint();
+                return;
+            }
             if (DataManager.Ins.GameData.user.growTreeCount <= 0)
             {
                 DevLog.Log(DevId.Hoang, "Show popup to buy grow tree");
@@ -364,6 +392,8 @@ namespace _Game.Managers
                 if (_pushHint.IsStartHint) _pushHint.OnStopHint();
             }
         }
+
+        #endregion
 
         # region PUSH HINT
 

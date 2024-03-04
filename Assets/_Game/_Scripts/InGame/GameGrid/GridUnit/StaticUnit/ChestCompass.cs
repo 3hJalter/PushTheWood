@@ -56,10 +56,12 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             base.OnOpenChestComplete();
             // TODO: Change to collect compass
-            CollectingResourceManager.Ins.SpawnCollectingRewardKey(1, LevelManager.Ins.player.transform);
-            LevelManager.Ins.SecretMapPieceCount += 1;
-            // 
-            DevLog.Log(DevId.Hoang, "Loot something");
+            if (LevelManager.Ins.CollectedChests.Add(this))
+            {
+                CollectingResourceManager.Ins.SpawnCollectingRewardKey(1, LevelManager.Ins.player.transform);
+                LevelManager.Ins.SecretMapPieceCount += 1;
+                DevLog.Log(DevId.Hoang, "Loot something");
+            }
         }
     }
 }

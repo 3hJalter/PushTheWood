@@ -66,22 +66,19 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             stateMachine.ChangeState(StateEnum.Die);
         }
 
-        public override void OnDespawn()
-        {
-            RemoveFromLevelManager();
-            base.OnDespawn();
-        }
-
         public void AddToLevelManager()
         {
-            LevelManager.Ins.enemies.Add(this);
-            LevelManager.Ins.objectiveCounter++;
+            LevelManager.Ins.OnAddEnemy(this);
         }
 
         public void RemoveFromLevelManager()
         {
-            LevelManager.Ins.enemies.Remove(this);
-            EventGlobalManager.Ins.OnEnemyDie.Dispatch();
+            LevelManager.Ins.OnRemoveEnemy(this);
         }
+
+        // protected override void OnMementoRestoreData()
+        // {
+        //     AddToLevelManager();
+        // }
     }
 }
