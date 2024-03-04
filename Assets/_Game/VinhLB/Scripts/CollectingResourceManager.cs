@@ -54,7 +54,7 @@ namespace VinhLB
                 _collectingCoinConfig.CollectingResourceParentTF =
                     UIManager.Ins.OpenUI<OverlayScreen>().UICoinParentRectTF;
             }
-            
+
             SpawnCollectingResource(_collectingCoinConfig, amount, startPosition, endPoint, onEachReachEnd);
         }
 
@@ -66,7 +66,7 @@ namespace VinhLB
                 _collectingAdTicketConfig.CollectingResourceParentTF =
                     UIManager.Ins.OpenUI<OverlayScreen>().UIAdTicketParentRectTF;
             }
-            
+
             SpawnCollectingResource(_collectingAdTicketConfig, amount, startPosition, endPoint, onEachReachEnd);
         }
 
@@ -77,7 +77,7 @@ namespace VinhLB
                 CameraManager.Ins.WorldToViewportPoint(objectTransform.position) - Vector3.one * 0.5f;
             unit.Text.text = $"+{amount}";
             unit.CanvasGroup.alpha = 0;
-            
+
             if (_collectingRewardKeyConfig.CollectingResourceParentTF == null)
             {
                 _collectingRewardKeyConfig.CollectingResourceParentTF =
@@ -98,7 +98,8 @@ namespace VinhLB
                     unit.RectTf.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewPortPoint.x,
                         parentRectTransform.rect.height * viewPortPoint.y + 60 + y);
                 }).SetEase(Ease.OutQuart))
-                .Append(unit.CanvasGroup.DOFade(0, _collectingRewardKeyConfig.MoveDuration * 1.5f).SetEase(Ease.InQuint))
+                .Append(
+                    unit.CanvasGroup.DOFade(0, _collectingRewardKeyConfig.MoveDuration * 1.5f).SetEase(Ease.InQuint))
                 .Join(DOVirtual.Float(0, HEIGHT_INCREASE, _collectingRewardKeyConfig.MoveDuration * 1.5f, y =>
                 {
                     Vector2 viewPortPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) -
@@ -137,16 +138,17 @@ namespace VinhLB
                 UIUnit unit = SimplePool.Spawn<UIUnit>(DataManager.Ins.GetUIUnit(config.PrefabPoolType));
                 if (unit.transform.parent != config.CollectingResourceParentTF)
                 {
-                    unit.transform.SetParent(config.CollectingResourceParentTF, false);
-                    unit.transform.position = startPosition;
+                    unit.Tf.SetParent(config.CollectingResourceParentTF, false);
                 }
-                
+
+                unit.Tf.position = startPosition;
                 Vector3 targetPosition = new Vector3(
                     startPosition.x + Random.Range(config.MinSpreadPosition.x, config.MaxSpreadPosition.x),
                     startPosition.y + Random.Range(config.MinSpreadPosition.y, config.MaxSpreadPosition.y),
                     startPosition.z);
                 // unit.Tf.DOMove(targetPosition, config.SpreadDuration).SetEase(Ease.OutCirc);
-                unit.Tf.DOJump(targetPosition, 1f, 1, config.SpreadDuration).SetEase(Ease.OutCirc);
+                float jumpPower = Random.Range(0.5f, 2f);
+                unit.Tf.DOJump(targetPosition, jumpPower, 1, config.SpreadDuration);
 
                 unitList.Add(unit);
             }
