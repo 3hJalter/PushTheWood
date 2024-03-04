@@ -21,6 +21,7 @@ namespace _Game.UIs.Screen
     public class InGameScreen : UICanvas
     {
         private const float UNDO_CD_TIME = 0.3f;
+        private const float TIME_TXT_SCALE_UP = 1.1f;
 
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private HButton settingButton;
@@ -34,11 +35,13 @@ namespace _Game.UIs.Screen
         public BoosterButton growTreeButton;
         public BoosterButton resetIslandButton;
         // Time & Level Text 
+        [SerializeField] private Image timeImage;
         [SerializeField] private TMP_Text timeText;
         [SerializeField] private TMP_Text _levelText;
+        [SerializeField] private Color dangerTimeColor;
 
         [SerializeField] private TextMeshProUGUI objectiveText;
-        
+        bool isTimeNormal = false;
         private STimer resetIslandTimer;
 
         private int time;
@@ -53,6 +56,28 @@ namespace _Game.UIs.Screen
                 time = value;
                 int second = time % 60;
                 int minute = time / 60;
+                #region TIME ANIM
+                if (time <= DataManager.Ins.ConfigData.DangerTime)
+                {
+                    timeImage.color = dangerTimeColor;
+                    timeText.color = dangerTimeColor;
+                    timeImage.transform.DOShakePosition(0.3f, 6f, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
+                    timeText.transform.DOScale(TIME_TXT_SCALE_UP, 0.15f).SetLoops(2, LoopType.Yoyo);
+                    isTimeNormal = false;
+                }
+                else
+                {
+                    if (!isTimeNormal)
+                    {
+                        timeText.transform.DOKill();
+                        timeImage.color = Color.white;
+                        timeText.transform.localScale = Vector3.one;
+                        timeText.color = Color.white;
+                        isTimeNormal = true;
+                    }
+                    
+                }
+                #endregion
                 timeText.text = $"{minute:00}:{second:00}";
             }
         }
@@ -99,7 +124,7 @@ namespace _Game.UIs.Screen
             blockPanel.enabled = true;
             UpdateLevelText();
             UpdateObjectiveText();
-            
+            isTimeNormal = false;
         }
 
         public override void Open(object param = null)

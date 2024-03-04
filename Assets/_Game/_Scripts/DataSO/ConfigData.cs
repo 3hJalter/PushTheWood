@@ -61,6 +61,8 @@ namespace _Game.Data
         public readonly int requireSecretMapPiece = 8;
         [FoldoutGroup("In Game/Characters")]
         public readonly int[] CharacterCosts;
+        [FoldoutGroup("In Game/Time")]
+        public readonly int DangerTime = 30;
         #endregion
 
         #region Daily Challenge Reward
