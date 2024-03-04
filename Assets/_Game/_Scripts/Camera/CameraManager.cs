@@ -49,6 +49,18 @@ namespace _Game.Managers
             currentVirtualCamera.Priority = CAMERA_PRIORITY_ACTIVE;
             currentVirtualCamera.enabled = true;
             brain.m_DefaultBlend.m_Time = blendTime;
+
+            switch (eCameraType)
+            {
+                case ECameraType.PerspectiveCamera:
+                    perspectiveCamera.gameObject.SetActive(true);
+                    brainCamera.gameObject.SetActive(false);
+                    break;
+                default:
+                    perspectiveCamera.gameObject.SetActive(false);
+                    brainCamera.gameObject.SetActive(true);
+                    break;
+            }
         }
 
         public void ChangeCameraTargetPosition(Vector3 position, float moveTime = -1f)

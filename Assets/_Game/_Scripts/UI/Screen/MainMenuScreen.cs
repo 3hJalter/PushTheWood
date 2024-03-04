@@ -2,6 +2,7 @@
 using _Game.Camera;
 using _Game.DesignPattern;
 using _Game.GameGrid;
+using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Managers;
 using _Game.UIs.Popup;
 using AudioEnum;
@@ -75,7 +76,8 @@ namespace _Game.UIs.Screen
             // FxManager.Ins.PlayTweenFog();
             DebugManager.Ins?.OpenDebugCanvas(UI_POSITION.MAIN_MENU);
             GameManager.Ins.ChangeState(GameState.MainMenu);
-            CameraManager.Ins.ChangeCamera(ECameraType.MainMenuCamera);
+            CameraManager.Ins.ChangeCamera(ECameraType.PerspectiveCamera);
+            CameraManager.Ins.ChangeCameraTargetPosition(LevelManager.Ins.player.transform.position);
             AudioManager.Ins.PlayBgm(BgmType.MainMenu, 1f);
             AudioManager.Ins.StopEnvironment();
             if (param is true)
