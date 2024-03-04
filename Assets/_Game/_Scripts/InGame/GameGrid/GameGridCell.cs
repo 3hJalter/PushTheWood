@@ -54,6 +54,18 @@ namespace _Game.GameGrid
                 data.gridUnits[i] = null;
         }
 
+        public void ClearGridUnit(int islandId, ref HashSet<int> otherIslandId)
+        {
+            ValueChange();
+            for (int i = (int)Constants.DirFirstHeightOfSurface[data.gridSurfaceType]; i < data.gridUnits.Length; i++)
+            {
+                // Add if not null && islandID != islandId && != -1
+                if (data.gridUnits[i] is not null && data.gridUnits[i].islandID != islandId && data.gridUnits[i].islandID != -1)
+                    otherIslandId.Add(data.gridUnits[i].islandID);
+                data.gridUnits[i] = null;
+            }
+        }
+
         public void RemoveGridUnit(GridUnit removeUnit)
         {
             ValueChange();

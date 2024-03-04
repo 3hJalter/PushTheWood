@@ -12,14 +12,15 @@ namespace _Game._Scripts.InGame
 {
     public class Island
     {
+        private Level _thisLevel;
         private readonly HashSet<GridUnit> _gridUnits = new();
-
         private readonly Dictionary<GameGridCell, UnitInitData> _initGridUnitDic = new();
         private readonly int _islandID;
         public HashSet<GridUnit> GridUnits => _gridUnits;
 
-        public Island(int islandID)
+        public Island(int islandID, Level level)
         {
+            _thisLevel = level;
             _islandID = islandID;
         }
 
@@ -86,10 +87,11 @@ namespace _Game._Scripts.InGame
 
         public void ClearIsland()
         {
+            HashSet<int> islandIDSet = new();
             for (int i = 0; i < GridCells.Count; i++)
             {
                 GameGridCell cell = GridCells[i];
-                cell.ClearGridUnit();
+                cell.ClearGridUnit(_islandID, ref islandIDSet);
             }
 
             foreach (GridUnit unit in _gridUnits.Where(unit => unit.gameObject.activeSelf))
@@ -99,6 +101,12 @@ namespace _Game._Scripts.InGame
             }
 
             _gridUnits.Clear();
+
+            if (islandIDSet.Count <= 0) return;
+            foreach (int id in islandIDSet)
+            {
+                _thisLevel.Islands[id].ResetIsland();
+            }
         }
 
         public void ResetIsland()
@@ -107,6 +115,7 @@ namespace _Game._Scripts.InGame
             ClearIsland();
             foreach (KeyValuePair<GameGridCell, UnitInitData> pair in _initGridUnitDic)
             {
+                if (pair.Value.Type == PoolType.Player) continue;
                 GridUnit unit =
                     SimplePool.Spawn<GridUnit>(DataManager.Ins.GetGridUnit(pair.Value.Type));
                 unit.ResetData();

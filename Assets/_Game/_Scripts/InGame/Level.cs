@@ -414,7 +414,7 @@ namespace _Game._Scripts.InGame
             void FloodFillIslandID(GridSurface gridSurface, int x, int y, int islandID)
             {
                 gridSurface.IslandID = islandID;
-                Islands.TryAdd(islandID, new Island(islandID));
+                Islands.TryAdd(islandID, new Island(islandID, this));
                 Islands[islandID].AddGridCell(GridMap.GetGridCell(x, y));
                 if (IsGridSurfaceHadIsland(x - 1, y, out GridSurface leftGridSurface))
                     FloodFillIslandID(leftGridSurface, x - 1, y, islandID);
