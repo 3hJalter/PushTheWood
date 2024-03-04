@@ -298,7 +298,7 @@ namespace _Game.GameGrid
             _currentLevel.OnDeSpawnLevel();
             OnGenerateLevel(type, normalLevelIndex, false);
             // Zoom out
-            CameraManager.Ins.ChangeCamera(ECameraType.PerspectiveCamera);
+            CameraManager.Ins.ChangeCamera(ECameraType.MainMenuCamera);
             CameraManager.Ins.ChangeCameraTargetPosition(player.transform.position);
             // Hide the screen
             UIManager.Ins.HideUI<InGameScreen>();
