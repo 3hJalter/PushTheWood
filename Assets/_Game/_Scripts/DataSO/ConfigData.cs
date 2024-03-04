@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using _Game.Managers;
 using _Game.Resource;
+using _Game.Utilities;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -62,6 +63,65 @@ namespace _Game.Data
         public readonly int[] CharacterCosts;
         #endregion
 
+        #region Daily Challenge Reward
+
+        [FoldoutGroup("Daily Challenge Reward")]
+        // Note: Add a theme resource when have, and make player take it the first time player clear full 7 days
+        public List<DailyChallengeRewardMilestone> dailyChallengeRewardMilestones = new()
+        {
+            new DailyChallengeRewardMilestone() {
+                clearLevelNeed = 1,
+                rewards = new List<DailyChallengeReward>()
+                {
+                    new()
+                    {
+                        currencyType = CurrencyType.AdTicket,
+                        quantity = 1
+                    }
+                }
+            },
+            new DailyChallengeRewardMilestone() {
+                clearLevelNeed = 2,
+                rewards = new List<DailyChallengeReward>() {
+                    new()
+                    {
+                        currencyType = CurrencyType.Gold,
+                        quantity = 60
+                    }
+                }
+            },
+            new DailyChallengeRewardMilestone() {
+                clearLevelNeed = 4,
+                rewards = new List<DailyChallengeReward>() {
+                    new()
+                    {
+                        currencyType = CurrencyType.AdTicket,
+                        quantity = 1
+                    }
+                }
+            },
+            new DailyChallengeRewardMilestone() {
+                clearLevelNeed = 7,
+                rewards = new List<DailyChallengeReward>() {
+                    new()
+                    {
+                        currencyType = CurrencyType.Gold,
+                        quantity = 120
+                    }, new()
+                    {
+                        currencyType = CurrencyType.AdTicket,
+                        quantity = 1
+                    }, new()
+                    {
+                        currencyType = CurrencyType.RandomBooster,
+                        quantity = 1,
+                    }
+                }
+            },
+        };
+        
+        #endregion
+        
         #region Booster Purchase
 
         // Ticket purchase
@@ -87,7 +147,41 @@ namespace _Game.Data
             return boosterConfigList.Find(x => x.Type == boosterType);
         }
     }
+   
+    [Serializable]
+    public struct DailyChallengeRewardMilestone
+    {
+        public int clearLevelNeed;
+        public List<DailyChallengeReward> rewards;
+    }
+    
+    [Serializable]
+    public struct DailyChallengeReward
+    {
+        public CurrencyType currencyType;
+        public int quantity;
 
+        public void GetReward(object param)
+        {
+            switch (currencyType)
+            {
+                case CurrencyType.Gold:
+                    GameManager.Ins.GainGold(quantity, param);
+                    break;
+                case CurrencyType.AdTicket:
+                    GameManager.Ins.GainAdTickets(quantity, param);
+                    break;
+                case CurrencyType.RandomBooster:
+                    DevLog.Log(DevId.Hoang, "Get random booster");
+                    break;
+                case CurrencyType.None:
+                case CurrencyType.SecretMapPiece:
+                default:
+                    break;
+            }
+        }
+    }
+    
     [Serializable]
     public struct BoosterConfig
     {

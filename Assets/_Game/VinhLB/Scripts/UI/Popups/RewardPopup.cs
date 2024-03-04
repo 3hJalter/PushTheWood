@@ -24,9 +24,10 @@ namespace VinhLB
         private Button _collectButton;
         [SerializeField]
         private Button _claimX2Button;
-
         private List<RewardItem> _rewardItemList = new List<RewardItem>();
 
+        public Action OnClickCallback;
+        
         private void Awake()
         {
             _canvas.overrideSorting = true;
@@ -39,14 +40,17 @@ namespace VinhLB
                 {
                     _rewardItemList[i].Reward.Obtain(_rewardItemList[i].IconImagePosition);
                 }
-                
+                OnClickCallback?.Invoke();
+                OnClickCallback = null;
                 Close();
             });
+            
             _claimX2Button.onClick.AddListener(() =>
             {
                 DevLog.Log(DevId.Vinh, "Claim X2 rewards");
             });
-            
+            OnClickCallback?.Invoke();
+            OnClickCallback = null;
             _rewardScrollRect.onValueChanged.AddListener(OnRewardScrollRectValueChanged);
         }
 

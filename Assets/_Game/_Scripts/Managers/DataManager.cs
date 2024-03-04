@@ -1,4 +1,5 @@
-﻿using _Game.Data;
+﻿using System.Linq;
+using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid.GridSurface;
 using _Game.GameGrid.Unit;
@@ -6,6 +7,7 @@ using _Game.Resource;
 using UnityEngine;
 using UnityEngine.Serialization;
 using VinhLB;
+using Random = System.Random;
 
 namespace _Game.Managers
 {
@@ -159,6 +161,10 @@ namespace _Game.Managers
 
         public UIResourceConfig GetCurrencyUIResourceConfig(CurrencyType type)
         {
+            if (type is CurrencyType.RandomBooster)
+            {
+                return _uiResourceDatabase.BoosterResourceConfigDict.ElementAt(new Random().Next(0, _uiResourceDatabase.BoosterResourceConfigDict.Count)).Value;
+            }
             return _uiResourceDatabase.CurrencyResourceConfigDict[type];
         }
         
