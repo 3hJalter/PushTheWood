@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using _Game.Managers;
 using _Game.Resource;
 using _Game.Utilities;
@@ -14,17 +15,22 @@ namespace VinhLB
         [SerializeField]
         private Transform _collectionItemParentTF;
         [SerializeField]
-        GameObject[] playerSkins;
+        private Transform _playerSkinParentTF;
         [SerializeField]
-        HButton buyBtn;
+        private GameObject[] _playerSkins;
         [SerializeField]
-        TMP_Text costBuyBtnTxt;
+        private HButton _buyButton;
+        [SerializeField]
+        private TMP_Text _costText;
 
         private List<CollectionItem> _collectionItemList;
-        private int currentPetIndex = 0;
+        private int _currentPetIndex = 0;
+
         public override void Setup(object param = null)
         {
             base.Setup(param);
+
+            _currentPetIndex = DataManager.Ins.CurrentPlayerSkinIndex;
 
             if (_collectionItemList == null)
             {
@@ -34,82 +40,117 @@ namespace VinhLB
                          in DataManager.Ins.UIResourceDatabase.CharacterResourceConfigDict)
                 {
                     CollectionItem item = Instantiate(_collectionItemPrefab, _collectionItemParentTF);
-                    item.Initialize(_collectionItemList.Count, (int)element.Key, element.Value.Name, element.Value.IconSprite, DataManager.Ins.ConfigData.CharacterCosts[(int)element.Key]);
+                    item.Initialize((int)element.Key, (int)element.Key, element.Value.Name,
+                        element.Value.IconSprite, DataManager.Ins.ConfigData.CharacterCosts[(int)element.Key]);
                     item._OnClick += OnItemClick;
-                    if (DataManager.Ins.IsCharacterSkinUnlock((int)element.Key))
-                        item.SetOwned();
-                    if ((int)element.Key == DataManager.Ins.CurrentPlayerSkinIndex)
-                        item.SetChoosing(true);
+
                     _collectionItemList.Add(item);
                 }
-                buyBtn.onClick.AddListener(OnBuy);
+                _buyButton.onClick.AddListener(OnBuy);
             }
-            
-            _collectionItemList[currentPetIndex].SetSelected(true);
-            playerSkins[currentPetIndex].gameObject.SetActive(true);
 
+            for (int i = 0; i < _collectionItemList.Count; i++)
+            {
+                if (DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[i].Id))
+                {
+                    _collectionItemList[i].SetOwned();
+                }
+
+                if (i == _currentPetIndex)
+                {
+                    _collectionItemList[i].SetSelected(true);
+                    _collectionItemList[i].SetChosen(true);
+                    _playerSkins[i].gameObject.SetActive(true);
+                }
+                else
+                {
+                    _collectionItemList[i].SetSelected(false);
+                    _collectionItemList[i].SetChosen(false);
+                    _playerSkins[i].gameObject.SetActive(false);
+                }
+            }
+        }
+
+        public override void Open(object param = null)
+        {
+            base.Open(param);
+
+            _playerSkinParentTF.gameObject.SetActive(true);
+        }
+
+        public override void Close()
+        {
+            base.Close();
+
+            _playerSkinParentTF.gameObject.SetActive(false);
         }
 
         private void OnItemClick(int id, int data)
         {
-            if (id == currentPetIndex) return;
+            if (id == _currentPetIndex) return;
 
-            
-            else if (!DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[id].Data))
+            if (!DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[id].Data))
             {
-                buyBtn.gameObject.SetActive(true);
-                costBuyBtnTxt.text = DataManager.Ins.ConfigData.CharacterCosts[_collectionItemList[id].Data].ToString();
+                _buyButton.gameObject.SetActive(true);
+                _costText.text = DataManager.Ins.ConfigData.CharacterCosts[_collectionItemList[id].Data]
+                    .ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
             }
             else
             {
-                buyBtn.gameObject.SetActive(false);
-                if (DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[currentPetIndex].Data))
+                _buyButton.gameObject.SetActive(false);
+                if (DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[_currentPetIndex].Data))
                 {
-                    _collectionItemList[currentPetIndex].SetChoosing(false);
-                    _collectionItemList[id].SetChoosing(true);
+                    _collectionItemList[_currentPetIndex].SetChosen(false);
+                    _collectionItemList[id].SetChosen(true);
                     DataManager.Ins.SetCharacterSkinIndex(_collectionItemList[id].Data);
                 }
+                _collectionItemList[_currentPetIndex].SetChosen(false);
+                _collectionItemList[id].SetChosen(true);
+                DataManager.Ins.SetCharacterSkinIndex(_collectionItemList[id].Data);
             }
-                
-            _collectionItemList[currentPetIndex].SetSelected(false);
-            playerSkins[currentPetIndex].gameObject.SetActive(false);
-            currentPetIndex = id;
-            playerSkins[currentPetIndex].gameObject.SetActive(true);
-            _collectionItemList[currentPetIndex].SetSelected(true);
+
+            _collectionItemList[_currentPetIndex].SetSelected(false);
+            _playerSkins[_currentPetIndex].gameObject.SetActive(false);
+            _currentPetIndex = id;
+            _playerSkins[_currentPetIndex].gameObject.SetActive(true);
+            _collectionItemList[_currentPetIndex].SetSelected(true);
         }
 
         public override void UpdateUI()
         {
             base.UpdateUI();
-            for(int i = 0; i < _collectionItemList.Count; i++)
+
+            for (int i = 0; i < _collectionItemList.Count; i++)
             {
                 if (DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[i].Data))
                     _collectionItemList[i].SetOwned();
             }
 
-            if (DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[currentPetIndex].Data))
+            if (DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[_currentPetIndex].Data))
             {
-                buyBtn.gameObject.SetActive(false);
+                _buyButton.gameObject.SetActive(false);
             }
             else
             {
-                buyBtn.gameObject.SetActive(true);
-                costBuyBtnTxt.text = DataManager.Ins.ConfigData.CharacterCosts[_collectionItemList[currentPetIndex].Data].ToString();
+                _buyButton.gameObject.SetActive(true);
+                _costText.text = DataManager.Ins.ConfigData.CharacterCosts[_collectionItemList[_currentPetIndex].Data]
+                    .ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
             }
         }
+
         private void OnDestroy()
         {
             for (int i = 0; i < _collectionItemList.Count; i++)
             {
                 _collectionItemList[i]._OnClick -= OnItemClick;
             }
-            buyBtn.onClick.RemoveAllListeners();
+            _buyButton.onClick.RemoveAllListeners();
         }
 
         private void OnBuy()
         {
-            int buyCost = DataManager.Ins.ConfigData.CharacterCosts[_collectionItemList[currentPetIndex].Data];
-            int character = _collectionItemList[currentPetIndex].Data;
+            int buyCost = DataManager.Ins.ConfigData.CharacterCosts[_collectionItemList[_currentPetIndex].Data];
+            int character = _collectionItemList[_currentPetIndex].Data;
 
             if (GameManager.Ins.TrySpendGold(buyCost))
             {
@@ -121,7 +162,6 @@ namespace VinhLB
                 //NOTE: Notice not enough money
                 DevLog.Log(DevId.Hung, "Not Enough Money To Buy Characters");
             }
-            
         }
     }
 }

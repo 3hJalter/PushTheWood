@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,11 +9,9 @@ namespace VinhLB
     public class CollectionItem : HMonoBehaviour
     {
         public event Action<int, int> _OnClick;
+        
         [SerializeField]
-        int id;
-        int data;
-        [SerializeField]
-        private Button _button;
+        private HButton _button;
         [SerializeField]
         private TMP_Text _nameText;
         [SerializeField]
@@ -22,39 +21,48 @@ namespace VinhLB
         [SerializeField]
         private GameObject _priceGO;
         [SerializeField]
-        private GameObject _activeGO;
-        [SerializeField]
         private GameObject _selectedGO;
-        public int Data => data;
+        [SerializeField]
+        private GameObject _choosenGO;
+        
+        private int _id;
+        private int _data;
+        
+        public int Id => _id;
+        public int Data => _data;
 
         private void Awake()
         {
             _button.onClick.AddListener(OnClick);
         }
-        public void Initialize(int id, int data,string text, Sprite sprite, int price)
+
+        public void Initialize(int id, int data, string text, Sprite sprite, int price)
         {
-            this.id = id;
-            this.data = data;
+            _id = id;
+            _data = data;
             _nameText.text = text;
             _contentImage.sprite = sprite;
-            _priceText.text = price.ToString(Constants.VALUE_FORMAT);
+            _priceText.text = price.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
         }
 
         private void OnClick()
         {
-            _OnClick?.Invoke(id, data);
+            _OnClick?.Invoke(_id, _data);
         }
+
         public void SetSelected(bool value)
         {
-            _activeGO.SetActive(value);
+            _selectedGO.SetActive(value);
         }
+
         public void SetOwned()
         {
             _priceGO.SetActive(false);
         }
-        public void SetChoosing(bool value)
+
+        public void SetChosen(bool value)
         {
-            _selectedGO.SetActive(value);
+            _choosenGO.SetActive(value);
         }
     }
 }

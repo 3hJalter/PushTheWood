@@ -16,6 +16,7 @@ namespace _Game.Managers
         [SerializeField] private CinemachineVirtualCameraBase currentVirtualCamera;
 
         [SerializeField] private UnityEngine.Camera brainCamera;
+        [SerializeField] private UnityEngine.Camera perspectiveCamera;
         [SerializeField] private Transform cameraTarget;
 
         [SerializeField] private float cameraMoveTime = 1f;

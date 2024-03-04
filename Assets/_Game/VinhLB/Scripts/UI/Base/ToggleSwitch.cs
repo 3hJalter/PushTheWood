@@ -18,7 +18,11 @@ namespace VinhLB
         [Range(0f, 1f)]
         private float _sliderValue;
         [SerializeField]
+        private bool _showTexts = true;
+        [ShowIf(nameof(_showTexts), false)]
+        [SerializeField]
         private CanvasGroup _onTextCanvasGroup;
+        [ShowIf(nameof(_showTexts), false)]
         [SerializeField]
         private CanvasGroup _offTextCanvasGroup;
 
@@ -39,7 +43,7 @@ namespace VinhLB
         private UnityEvent _onToggleOff;
 
         private Tween _animateSliderTween;
-        
+
         public bool CurrentValue { get; private set; }
 
         private void OnValidate()
@@ -47,20 +51,31 @@ namespace VinhLB
             SetupSliderComponent();
 
             _slider.value = _sliderValue;
-            
-            UpdateTexts(_sliderValue);
+
+            if (_showTexts)
+            {
+                _onTextCanvasGroup.gameObject.SetActive(true);
+                _offTextCanvasGroup.gameObject.SetActive(true);
+
+                UpdateTexts(_sliderValue);
+            }
+            else
+            {
+                _onTextCanvasGroup.gameObject.SetActive(false);
+                _offTextCanvasGroup.gameObject.SetActive(false);
+            }
         }
-        
+
         private void Awake()
         {
             SetupSliderComponent();
         }
-        
+
         public void OnPointerClick(PointerEventData eventData)
         {
             SetState(!CurrentValue, _animate);
         }
-        
+
         public void SetState(bool state, bool animate)
         {
             CurrentValue = state;
@@ -87,17 +102,23 @@ namespace VinhLB
                 {
                     _slider.value = value;
 
-                    UpdateTexts(value);
+                    if (_showTexts)
+                    {
+                        UpdateTexts(value);
+                    }
                 }).SetEase(_slideEase).OnComplete(() => { _slider.value = endValue; });
             }
             else
             {
                 _slider.value = endValue;
-                
-                UpdateTexts(endValue);
+
+                if (_showTexts)
+                {
+                    UpdateTexts(endValue);
+                }
             }
         }
-        
+
         private void SetupSliderComponent()
         {
             if (_slider == null)
@@ -120,7 +141,7 @@ namespace VinhLB
                 DevLog.Log(DevId.Vinh, "No on/off text canvas group component found!");
                 return;
             }
-            
+
             float normalizedValue = (value - 0.5f) * 2f;
             if (normalizedValue > 0f)
             {
@@ -129,7 +150,7 @@ namespace VinhLB
             }
             else
             {
-                _onTextCanvasGroup.alpha = 0f;   
+                _onTextCanvasGroup.alpha = 0f;
                 _offTextCanvasGroup.alpha = -normalizedValue;
             }
         }

@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.Events;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace VinhLB
@@ -11,20 +11,21 @@ namespace VinhLB
         [SerializeField]
         private Image _image;
 
-        private Button _button;
-        private UnityAction _onClickButton;
+        private IClickable _clickableItem;
+        private Action _onClickedCallback;
 
-        public void Initialize(Vector3 position, Vector2 size, Sprite sprite, Button button, UnityAction onClickButton)
+        public void Initialize(Vector3 position, Vector2 size, Sprite sprite, IClickable clickableItem,
+            Action onClickedCallback)
         {
             _rectTF.position = position;
             _rectTF.sizeDelta = size;
             _image.sprite = sprite;
-            _button = button;
-            _onClickButton = onClickButton;
+            _clickableItem = clickableItem;
+            _onClickedCallback = onClickedCallback;
 
-            if (_button != null)
+            if (_clickableItem != null)
             {
-                _button.onClick.AddListener(_onClickButton);
+                _clickableItem.OnClickedCallback += _onClickedCallback;
             }
         }
 
@@ -35,11 +36,11 @@ namespace VinhLB
 
         public void Close()
         {
-            if (_button != null)
+            if (_clickableItem != null)
             {
-                _button.onClick.RemoveListener(_onClickButton);
+                _clickableItem.OnClickedCallback -= _onClickedCallback;
             }
-            
+
             gameObject.SetActive(false);
         }
     }

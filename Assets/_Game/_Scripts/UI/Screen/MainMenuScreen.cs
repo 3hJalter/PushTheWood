@@ -1,4 +1,5 @@
-﻿using _Game.Camera;
+﻿using System.Globalization;
+using _Game.Camera;
 using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.Managers;
@@ -54,7 +55,7 @@ namespace _Game.UIs.Screen
 
             _goldValueText.text = $"{GameManager.Ins.Gold}";
             _adTicketValueText.text = $"{GameManager.Ins.AdTickets}";
-                      
+
             if (param is true)
             {
                 _canvasGroup.alpha = 1f;
@@ -85,7 +86,7 @@ namespace _Game.UIs.Screen
             {
                 DOVirtual.Float(0f, 1f, 1f, value => _canvasGroup.alpha = value)
                     .OnComplete(() => _blockPanel.gameObject.SetActive(false));
-                
+
                 _bottomNavigationTabGroup.ResetSelectedTab(true);
             }
         }
@@ -136,12 +137,13 @@ namespace _Game.UIs.Screen
                     (progress) =>
                     {
                         GameManager.Ins.SmoothGold += data.ChangedAmount / collectingCoinAmount;
-                        _goldValueText.text = GameManager.Ins.SmoothGold.ToString(Constants.VALUE_FORMAT);
+                        _goldValueText.text =
+                            GameManager.Ins.SmoothGold.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
                     });
             }
             else
             {
-                _goldValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT);
+                _goldValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
             }
         }
 
@@ -163,16 +165,18 @@ namespace _Game.UIs.Screen
             {
                 float currentValue = data.OldValue;
                 int collectingAdTicketAmount = Mathf.Min((int)data.ChangedAmount, 8);
-                CollectingResourceManager.Ins.SpawnCollectingAdTickets(collectingAdTicketAmount, spawnPosition, _adTicketIconTF,
+                CollectingResourceManager.Ins.SpawnCollectingAdTickets(collectingAdTicketAmount, spawnPosition,
+                    _adTicketIconTF,
                     (progress) =>
                     {
                         currentValue += data.ChangedAmount / collectingAdTicketAmount;
-                        _adTicketValueText.text = currentValue.ToString(Constants.VALUE_FORMAT);
+                        _adTicketValueText.text =
+                            currentValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
                     });
             }
             else
             {
-                _adTicketValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT);
+                _adTicketValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
             }
         }
     }
