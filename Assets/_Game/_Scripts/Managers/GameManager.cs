@@ -68,11 +68,12 @@ namespace _Game.Managers
             #region Handle day online
 
             // If player not pass level 8, reset daily level index
-            // if (_gameData.user.normalLevelIndex < 8)
+            // if (_gameData.user.normalLevelIndex < DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex)
             // {
             //     _gameData.user.isCompleteDailyChallengerTutorial = false;
             //     _gameData.user.currentDailyChallengerDay = 1;
             //     _gameData.user.dailyLevelIndexComplete.Clear();
+            //     _gameData.user.dailyChallengeRewardCollected.Clear();
             // }
             // else
             {
@@ -81,6 +82,7 @@ namespace _Game.Managers
                 // {
                 //     _gameData.user.currentDailyChallengerDay = 1;
                 //     _gameData.user.dailyLevelIndexComplete.Clear();
+                //     _gameData.user.dailyChallengeRewardCollected.Clear();
                 // }
                 // else
                 {
@@ -97,6 +99,7 @@ namespace _Game.Managers
                     {
                         _gameData.user.currentDailyChallengerDay %= 7 + 1;
                         _gameData.user.dailyLevelIndexComplete.Clear();
+                        _gameData.user.dailyChallengeRewardCollected.Clear();
                     }
                 }
             }

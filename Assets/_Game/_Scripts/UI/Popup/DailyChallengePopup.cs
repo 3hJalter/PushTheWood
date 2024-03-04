@@ -7,6 +7,7 @@ using _Game.Managers;
 using _Game.UIs.Screen;
 using _Game.Utilities;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _Game.UIs.Popup
 {
@@ -14,6 +15,8 @@ namespace _Game.UIs.Popup
     {
         private const float PANEL_INIT_HEIGHT = 662f;
         [SerializeField] private RectTransform panel;
+        [SerializeField] private Slider dailyChallengeSliderProgress;
+        [SerializeField] private List<DailyChallengeRewardButton> dailyChallengeRewardButtons;
         [SerializeField] List<DailyChallengeButton> dailyChallengeButtons;
         private DailyChallengeButton _currentBtnClick;
         private int _currentDay;
@@ -45,6 +48,12 @@ namespace _Game.UIs.Popup
             replayBtn.onClick.RemoveAllListeners();
         }
 
+        private void OnUpdateProgress()
+        {
+            float progress = (float) DataManager.Ins.GameData.user.dailyLevelIndexComplete.Count / Constants.DAILY_CHALLENGER_COUNT;
+            dailyChallengeSliderProgress.value = progress;
+        }
+
         public override void Setup(object param = null)
         {
             base.Setup(param);
@@ -67,6 +76,12 @@ namespace _Game.UIs.Popup
                 });
                 dailyChallengeButtons[index].gameObject.SetActive(true);
             }
+            for (int index = 0; index < dailyChallengeRewardButtons.Count; index++)
+            {
+                dailyChallengeRewardButtons[index].OnInit(this, DataManager.Ins.ConfigData.dailyChallengeRewardMilestones[index]);
+            }
+            
+            OnUpdateProgress();
             // click today button
             // OnClickDailyChallengeButton(_currentDay);
         }

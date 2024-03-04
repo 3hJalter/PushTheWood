@@ -26,6 +26,7 @@ namespace _Game.Data
             public bool isCompleteDailyChallengerTutorial;
             public int currentDailyChallengerDay = 1;
             public List<int> dailyLevelIndexComplete = new();
+            public List<int> dailyChallengeRewardCollected = new(); 
             
             // daily reward            
             public int dailyRewardClaimedCount;

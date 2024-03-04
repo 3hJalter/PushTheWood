@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using _Game._Scripts.Tutorial;
 using _Game._Scripts.Tutorial.ObjectTutorial;
+using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.GameGrid.Unit;
@@ -60,7 +61,8 @@ namespace _Game._Scripts.Managers
         
         public void OnUnitGoToCell(GameGridCell cell, GridUnit triggerUnit)
         {
-            // Try Get tutorial data == LevelManager.CurrentLevel.Index
+            // TEMPORARY: CANCEL IF NOT NORMAL LEVEL
+            if (LevelManager.Ins.CurrentLevel.LevelType != LevelType.Normal) return;
             if (!tutorialList.TryGetValue(LevelManager.Ins.CurrentLevel.Index, out ITutorialCondition tutorialData)) return;
             // Show tutorial data
             tutorialData.HandleShowTutorial(cell, triggerUnit);
@@ -68,6 +70,8 @@ namespace _Game._Scripts.Managers
         
         public void OnUnitActWithOther(GridUnit triggerUnit, GridUnit targetUnit)
         {
+            // TEMPORARY: CANCEL IF NOT NORMAL LEVEL
+            if (LevelManager.Ins.CurrentLevel.LevelType != LevelType.Normal) return;
             // Try Get tutorial data == LevelManager.CurrentLevel.Index
             if (!tutorialList.TryGetValue(LevelManager.Ins.CurrentLevel.Index, out ITutorialCondition tutorialData)) return;
             // Show tutorial data

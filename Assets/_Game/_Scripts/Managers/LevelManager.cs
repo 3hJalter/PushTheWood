@@ -256,6 +256,7 @@ namespace _Game.GameGrid
                     break;
                 case LevelType.DailyChallenge:
                     // Check if contain
+                    if (dailyLevelIndex == 0) break; // No store the tutorial level (index 0)
                     if (DataManager.Ins.GameData.user.dailyLevelIndexComplete.Contains(dailyLevelIndex)) break;
                     DataManager.Ins.GameData.user.dailyLevelIndexComplete.Add(dailyLevelIndex);
                     break;
