@@ -1686,7 +1686,7 @@ PrefabInstance:
     - target: {fileID: 8295795833765866558, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 1071626562}
+      objectReference: {fileID: 1071626559}
     - target: {fileID: 8295795833954666156, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -2690,7 +2690,7 @@ PrefabInstance:
       objectReference: {fileID: 1071626564}
     - target: {fileID: 6469700256872215673, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
       propertyPath: m_Cameras.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6469700257093512040, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
       propertyPath: m_Name
@@ -2742,9 +2742,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
---- !u!20 &1071626562 stripped
+--- !u!20 &1071626559 stripped
 Camera:
-  m_CorrespondingSourceObject: {fileID: 6469700256872215672, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2065497183, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
   m_PrefabInstance: {fileID: 1071626558}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1071626564 stripped
