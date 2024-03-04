@@ -408,13 +408,6 @@ namespace _Game.GameGrid
         {
             savingState.PopSave();
         }
-
-        private void SetCameraToPlayer()
-        {
-            // CameraFollow.Ins.SetTarget(Player.Tf);`
-            CameraManager.Ins.ChangeCameraTarget(ECameraType.InGameCamera, player.Tf);
-        }
-
         public class CareTaker
         {
             LevelManager main;
