@@ -90,10 +90,11 @@ namespace _Game.Managers
         private void Awake()
         {
             audioSourcePool.OnInit();
-            bgm.BaseVolume = DataManager.Ins.GameData.setting.bgmVolume;
-            sfx.BaseVolume = DataManager.Ins.GameData.setting.sfxVolume;
             sfx.audioSourcePool = audioSourcePool;
-            environment.BaseVolume = DataManager.Ins.GameData.setting.envSoundVolume;
+            
+            bgm.BaseVolume = DataManager.Ins.GameData.setting.isBgmMute ? 0 : 1;
+            sfx.BaseVolume = DataManager.Ins.GameData.setting.isSfxMute ? 0 : 1;
+            environment.BaseVolume = DataManager.Ins.GameData.setting.isEnvSoundMute ? 0 : 1;
             
             audioData = DataManager.Ins.AudioData;
             
@@ -283,22 +284,22 @@ namespace _Game.Managers
             return sfx.IsMute;
         }
 
-        public void ToggleBgmVolume(float value)
+        public void ToggleBgmVolume(bool isMute)
         {
-            bgm.BaseVolume = value;
-            DataManager.Ins.GameData.setting.bgmVolume = value;
+            bgm.BaseVolume = isMute ? 0 : 1;
+            DataManager.Ins.GameData.setting.isBgmMute = isMute;
+        }
+   
+        public void ToggleEnvironmentVolume(bool isMute)
+        {
+            environment.BaseVolume = isMute ? 0 : 1;
+            DataManager.Ins.GameData.setting.isEnvSoundMute = isMute;
         }
         
-        public void ToggleEnvironmentVolume(float value)
+        public void ToggleSfxVolume(bool isMute)
         {
-            environment.BaseVolume = value;
-            DataManager.Ins.GameData.setting.envSoundVolume = value;
-        }
-        
-        public void ToggleSfxVolume(float value)
-        {
-            sfx.BaseVolume = value;
-            DataManager.Ins.GameData.setting.sfxVolume = value;
+            sfx.BaseVolume = isMute ? 0 : 1;
+            DataManager.Ins.GameData.setting.isSfxMute = isMute;
         }
     }
 }

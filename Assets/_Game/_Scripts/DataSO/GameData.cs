@@ -78,9 +78,9 @@ namespace _Game.Data
             public bool requestedPn;
             public bool haptic = true;
             
-            public float bgmVolume = 1;
-            public float sfxVolume = 1;
-            public float envSoundVolume = 1;
+            public bool isBgmMute;
+            public bool isSfxMute;
+            public bool isEnvSoundMute;
             
             public int highPerformance = 1;
             public bool iOsTrackingRequested;

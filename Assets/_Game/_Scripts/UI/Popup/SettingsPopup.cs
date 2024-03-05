@@ -24,33 +24,23 @@ namespace _Game.UIs.Popup
         private GameObject[] _activeMoveChoices;
         
         [SerializeField]
-        private Slider _bgmVolumeSlider;
+        private ToggleSwitch bgmToggleSwitch;
         [SerializeField]
-        private Slider _sfxVolumeSlider;
+        private ToggleSwitch sfxToggleSwitch;
+        [SerializeField]
+        private ToggleSwitch environmentToggleSwitch;
         [SerializeField]
         private ToggleSwitch _hapticToggleSwitch;
         [SerializeField]
         private ToggleSwitch _gridToggleSwitch;
-
-        private void Awake()
-        {
-            _bgmVolumeSlider.onValueChanged.AddListener(OnChangeBgmVolume);
-            _sfxVolumeSlider.onValueChanged.AddListener(OnChangeSfxVolume);
-        }
-
-        private void OnDestroy()
-        {
-            _bgmVolumeSlider.onValueChanged.RemoveAllListeners();
-            _sfxVolumeSlider.onValueChanged.RemoveAllListeners();
-        }
-
-
+        
         public override void Setup(object param = null)
         {
             base.Setup(param);
-
-            _bgmVolumeSlider.value = AudioManager.Ins.BgmVolume;
-            _sfxVolumeSlider.value = AudioManager.Ins.SfxVolume;
+            
+            bgmToggleSwitch.SetState(!AudioManager.Ins.IsBgmMute(), false);
+            sfxToggleSwitch.SetState(!AudioManager.Ins.IsSfxMute(), false);
+            environmentToggleSwitch.SetState(!AudioManager.Ins.IsEnvironmentMute(), false);
             _hapticToggleSwitch.SetState(HVibrate.IsHapticOn, false);
             _gridToggleSwitch.SetState(FXManager.Ins.IsGridOn, false);
 
@@ -87,17 +77,21 @@ namespace _Game.UIs.Popup
             }
         }
 
-        public void OnChangeBgmVolume(float value)
+        public void OnChangeBgmVolume(bool value)
         {
             AudioManager.Ins.ToggleBgmVolume(value);
         }
 
-        public void OnChangeSfxVolume(float value)
+        public void OnChangeSfxVolume(bool value)
         {
             AudioManager.Ins.ToggleSfxVolume(value);
-            AudioManager.Ins.ToggleEnvironmentVolume(value);
         }
 
+        public void OnChangeEnvironmentVolume(bool value)
+        {
+            AudioManager.Ins.ToggleEnvironmentVolume(value);
+        }
+        
         public void OnToggleHapticOff()
         {
             HVibrate.OnToggleHaptic(false);
