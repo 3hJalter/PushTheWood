@@ -107,6 +107,7 @@ namespace _Game.UIs.Screen
             _debugMenuGO.SetActive(true);
             _resourceMenuGO.SetActive(false);
             _dailyRewardMenuGO.SetActive(false);
+            _dailyChallengeMenuGO.SetActive(false);
         }
 
         private void ResourceButton()
