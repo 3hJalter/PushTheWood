@@ -331,8 +331,8 @@ namespace _Game.GameGrid
             player.OnDespawn();
             CurrentLevel.ResetAllIsland();
             CurrentLevel.ResetNonIslandUnit();
-            // player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
-            // player.OnInit(CurrentLevel.firstPlayerInitCell);
+            player = SimplePool.Spawn<Player>(DataManager.Ins.GetGridUnit(PoolType.Player));
+            player.OnInit(CurrentLevel.FirstPlayerInitCell);
             SetCameraToPlayerIsland();
             // FxManager.Ins.ResetTrackedTrampleObjectList();
             player.SetActiveAgent(false);
