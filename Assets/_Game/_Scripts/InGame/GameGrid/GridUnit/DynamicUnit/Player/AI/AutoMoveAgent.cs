@@ -1,4 +1,6 @@
+using _Game.GameGrid;
 using _Game.GameGrid.Unit;
+using GameGridEnum;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,10 +11,27 @@ namespace _Game.AI
     public class AutoMoveAgent : MonoBehaviour
     {
         // Start is called before the first frame update
+        protected const int SCAN_DISTANCE = 3;
         protected GridUnitCharacter character;
 
         private readonly Queue<Direction> moveDirections = new Queue<Direction>();
-        public Direction NextDirection { get; private set; }
+        private Direction nextDirection;
+        public Direction NextDirection {
+            get
+            {
+                if (moveDirections.Count == 0)
+                {
+                    nextDirection = Direction.None;
+                    enabled = false;
+                }
+                else
+                {
+                    nextDirection = moveDirections.Dequeue();
+                }
+                return nextDirection;
+            }
+            private set => nextDirection = value;
+        }
         public void Init(GridUnitCharacter character)
         {
             if (this.character != null)
@@ -59,15 +78,45 @@ namespace _Game.AI
             }
         }
 
-        public void Run()
+        public (GameGridCell, GameGridCell) GetPathToSitDown()
         {
-            if(moveDirections.Count == 0)
+            moveDirections.Clear();
+            GameGridCell waterCell = null;
+            GameGridCell playerCell = null;
+            bool isFindWater = false;
+            for(int i = 0; i <= 3; i++)
             {
-                NextDirection = Direction.None;
-                enabled = false;
-                return;
+                if (isFindWater) break;
+                for (int j = 1; j <= SCAN_DISTANCE; j++)
+                {
+                    playerCell = character.MainCell.GetNeighborCell((Direction)i, j - 1);
+                    waterCell = character.MainCell.GetNeighborCell((Direction)i, j);
+                    moveDirections.Enqueue((Direction)i);
+                    if (waterCell.Data.gridSurfaceType == GridSurfaceType.Water)
+                    {
+                        isFindWater = true;
+                        //NOTE: Checking if the direction between camera and player has objects
+                        for (int k = 1; k <= SCAN_DISTANCE; k++)
+                        {
+                            GameGridCell checkingCell = waterCell.GetNeighborCell((Direction)i, j + k);
+                            if (checkingCell != null && checkingCell.GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]))
+                            {
+                                isFindWater = false;
+                                break;
+                            }
+                        }
+                        if(isFindWater)
+                            break;
+                    }
+                }
+                if (!isFindWater)
+                {
+                    moveDirections.Clear();
+                    waterCell = null;
+                    playerCell = null;
+                }
             }
-            NextDirection = moveDirections.Dequeue();
+            return (waterCell, playerCell);
         }
 
         private void OnCharacterChangePosition()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using _Game.Camera;
 using _Game.DesignPattern;
@@ -25,6 +26,7 @@ namespace _Game.Managers
         // ReSharper disable once CollectionNeverUpdated.Local
         [SerializeField]
         private readonly Dictionary<ECameraType, CinemachineVirtualCameraBase> virtualCameraDic = new();
+        private readonly Dictionary<ECameraType, CinemachineComponentBase> cameraComponentDic = new();
 
         public UnityEngine.Camera BrainCamera => brainCamera;
         public CinemachineVirtualCameraBase CurrentVirtualCamera => currentVirtualCamera;
@@ -61,6 +63,14 @@ namespace _Game.Managers
                     brainCamera.gameObject.SetActive(true);
                     break;
             }
+        }
+        public T GetCameraCinemachineComponent<T>(ECameraType eCameraType) where T : CinemachineComponentBase
+        {
+            if (!cameraComponentDic.ContainsKey(eCameraType))
+            {
+                cameraComponentDic.Add(eCameraType, virtualCameraDic[ECameraType.PerspectiveCamera].GetComponentInChildren<T>());
+            }
+            return cameraComponentDic[ECameraType.PerspectiveCamera] as T;
         }
 
         public void ChangeCameraTargetPosition(Vector3 position, float moveTime = -1f)

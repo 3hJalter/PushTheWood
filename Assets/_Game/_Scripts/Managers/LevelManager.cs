@@ -171,21 +171,10 @@ namespace _Game.GameGrid
         }
 
         public void InitLevel()
-        {
-            levelWinCondition = CurrentLevel.LevelWinCondition;
-            OnAddWinCondition(CurrentLevel.LevelWinCondition);
-            GameManager.Ins.PostEvent(EventID.StartGame);
-            if (_currentLevel.IsInit) return;
-            enemies.Clear();
-            finalPoints.Clear();
-            CollectedChests.Clear();
+        {   
+            GameManager.Ins.PostEvent(EventID.StartGame);           
             objectiveTotal = 0;
-            _currentLevel.OnInitLevelSurfaceAndUnit();
-            _currentLevel.OnInitPlayerToLevel();
-            savingState = new CareTaker(this);
-            _currentLevel.GridMap.CompleteObjectInit();
-            IsConstructingLevel = false;
-            savingState = new CareTaker(this);
+            ConstructingLevel();
             SetCameraToPlayerIsland();
             OnObjectiveChange?.Invoke();
             //NOTE: Test
@@ -194,6 +183,21 @@ namespace _Game.GameGrid
             if (normalLevelIndex == 0) HidePlayer(true);
             KeyRewardCount = 0;
             SecretMapPieceCount = 0;
+        }
+
+        public void ConstructingLevel()
+        {
+            if (_currentLevel.IsInit) return;
+            levelWinCondition = CurrentLevel.LevelWinCondition;
+            OnAddWinCondition(CurrentLevel.LevelWinCondition);
+            enemies.Clear();
+            finalPoints.Clear();
+            CollectedChests.Clear();
+            _currentLevel.OnInitLevelSurfaceAndUnit();
+            _currentLevel.OnInitPlayerToLevel();
+            _currentLevel.GridMap.CompleteObjectInit();
+            IsConstructingLevel = false;
+            savingState = new CareTaker(this);
         }
 
         public void ResetLevelIsland()
@@ -335,7 +339,6 @@ namespace _Game.GameGrid
             player.OnInit(CurrentLevel.FirstPlayerInitCell);
             SetCameraToPlayerIsland();
             // FxManager.Ins.ResetTrackedTrampleObjectList();
-            player.SetActiveAgent(false);
             IsConstructingLevel = false;
             savingState.Reset();
             OnLevelRestarted?.Invoke();

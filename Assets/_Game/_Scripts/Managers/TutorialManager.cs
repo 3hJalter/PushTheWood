@@ -61,10 +61,12 @@ namespace _Game._Scripts.Managers
         
         public void OnUnitGoToCell(GameGridCell cell, GridUnit triggerUnit)
         {
+            // NOTE: If not in game state
+            if (!GameManager.Ins.IsState(GameState.InGame)) return;
             // TEMPORARY: CANCEL IF NOT NORMAL LEVEL
             if (LevelManager.Ins.CurrentLevel.LevelType != LevelType.Normal) return;
             if (!tutorialList.TryGetValue(LevelManager.Ins.CurrentLevel.Index, out ITutorialCondition tutorialData)) return;
-            // Show tutorial data
+            // NOTE: Show tutorial data
             tutorialData.HandleShowTutorial(cell, triggerUnit);
         }
         

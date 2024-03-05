@@ -141,9 +141,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             t.SetIslandId(t.MovingData.enterMainCell, out bool isChangeIsland);
             
             // NOTE: Checking if player reach to the bank of the island (MinX or MaxX)
+            // If gameplay is running
             // If reach, Change Camera target pos to the Pos (MinX or MaxX, 0, CenterPos.z) of the island
             // If not, Change Camera target pos to the center of the island
-            if (!isChangeIsland)
+            if (!isChangeIsland && GameManager.Ins.IsState(GameState.InGame))
             {
                 if (t.MovingData.enterMainCell.IslandID != -1)
                 {
