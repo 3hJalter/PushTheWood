@@ -1,3 +1,4 @@
+using _Game.GameGrid;
 using _Game.GameGrid.Unit;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace _Game.AI
     public class AutoMoveAgent : MonoBehaviour
     {
         // Start is called before the first frame update
+        protected const int SCAN_DISTANCE = 3;
         protected GridUnitCharacter character;
 
         private readonly Queue<Direction> moveDirections = new Queue<Direction>();
@@ -57,6 +59,33 @@ namespace _Game.AI
                     }
                 }
             }
+        }
+
+        public GameGridCell GetPathToSitDown()
+        {
+            moveDirections.Clear();
+            GameGridCell cell = null;
+            bool isFindWater = false;
+            for(int i = 1; i <= 3; i++)
+            {
+                if (isFindWater) break;
+                for (int j = 0; j <= SCAN_DISTANCE; j++)
+                {
+                    cell = character.MainCell.GetNeighborCell((Direction)i, j);
+                    moveDirections.Enqueue((Direction)i);
+                    if (cell.Data.gridSurfaceType == GameGridEnum.GridSurfaceType.Water)
+                    {
+                        isFindWater = true;
+                        break;
+                    }
+                }
+                if (!isFindWater)
+                {
+                    moveDirections.Clear();
+                    cell = null;
+                }
+            }
+            return cell;
         }
 
         public void Run()

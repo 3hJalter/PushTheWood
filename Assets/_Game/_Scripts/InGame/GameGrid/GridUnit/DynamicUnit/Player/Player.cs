@@ -64,7 +64,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             if (!GameManager.Ins.IsState(GameState.InGame)) return;
 
             //NOTE: 
-            if (!agent.isActiveAndEnabled)
+            if (!agent.enabled)
             {
                 InputDirection = HInputManager.GetDirectionInput();
             }
@@ -222,7 +222,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             if (value)
             {
                 agent.enabled = true;
-                agent.LoadPath(LevelManager.Ins.CurrentLevel.HintLinePosList);
+                agent.GetPathToSitDown();
                 agent.Run();
                 InputDirection = agent.NextDirection;
             }
