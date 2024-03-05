@@ -61,7 +61,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         }
         private void FixedUpdate()
         {
-            if (!(GameManager.Ins.IsState(GameState.InGame) || agent.isActiveAndEnabled)) return;
+            //if (!(GameManager.Ins.IsState(GameState.InGame) || agent.isActiveAndEnabled)) return;
 
             //NOTE: 
             if (!agent.isActiveAndEnabled)
@@ -218,12 +218,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             }
         }
 
-        public void SetActiveAgent(bool value)
+        public (GameGridCell, GameGridCell) SetActiveAgent(bool value)
         {
+            GameGridCell waterCell = null, playerCell = null;
             if (value)
             {
                 agent.enabled = true;
-                agent.GetPathToSitDown();
+                (waterCell, playerCell) = agent.GetPathToSitDown();
                 InputDirection = agent.NextDirection;
             }
             else
@@ -232,6 +233,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 InputDirection = Direction.None;
                 CommandCache.Clear();
             }
+            return (waterCell, playerCell);
         }
         public void OnCharacterChangePosition()
         {

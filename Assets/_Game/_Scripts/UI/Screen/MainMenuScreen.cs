@@ -77,7 +77,6 @@ namespace _Game.UIs.Screen
             DebugManager.Ins?.OpenDebugCanvas(UI_POSITION.MAIN_MENU);
             GameManager.Ins.ChangeState(GameState.MainMenu);
             CameraManager.Ins.ChangeCamera(ECameraType.PerspectiveCamera);
-            CameraManager.Ins.ChangeCameraTargetPosition(LevelManager.Ins.player.transform.position);
             AudioManager.Ins.PlayBgm(BgmType.MainMenu, 1f);
             AudioManager.Ins.StopEnvironment();
             if (param is true)

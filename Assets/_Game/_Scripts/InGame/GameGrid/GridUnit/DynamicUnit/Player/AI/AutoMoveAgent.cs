@@ -1,5 +1,6 @@
 using _Game.GameGrid;
 using _Game.GameGrid.Unit;
+using GameGridEnum;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -77,31 +78,45 @@ namespace _Game.AI
             }
         }
 
-        public GameGridCell GetPathToSitDown()
+        public (GameGridCell, GameGridCell) GetPathToSitDown()
         {
             moveDirections.Clear();
-            GameGridCell cell = null;
+            GameGridCell waterCell = null;
+            GameGridCell playerCell = null;
             bool isFindWater = false;
-            for(int i = 1; i <= 3; i++)
+            for(int i = 0; i <= 3; i++)
             {
                 if (isFindWater) break;
-                for (int j = 0; j <= SCAN_DISTANCE; j++)
+                for (int j = 1; j <= SCAN_DISTANCE; j++)
                 {
-                    cell = character.MainCell.GetNeighborCell((Direction)i, j);
+                    playerCell = character.MainCell.GetNeighborCell((Direction)i, j - 1);
+                    waterCell = character.MainCell.GetNeighborCell((Direction)i, j);
                     moveDirections.Enqueue((Direction)i);
-                    if (cell.Data.gridSurfaceType == GameGridEnum.GridSurfaceType.Water)
+                    if (waterCell.Data.gridSurfaceType == GridSurfaceType.Water)
                     {
                         isFindWater = true;
-                        break;
+                        //NOTE: Checking if the direction between camera and player has objects
+                        for (int k = 1; k <= SCAN_DISTANCE; k++)
+                        {
+                            GameGridCell checkingCell = waterCell.GetNeighborCell((Direction)i, j + k);
+                            if (checkingCell != null && checkingCell.GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]))
+                            {
+                                isFindWater = false;
+                                break;
+                            }
+                        }
+                        if(isFindWater)
+                            break;
                     }
                 }
                 if (!isFindWater)
                 {
                     moveDirections.Clear();
-                    cell = null;
+                    waterCell = null;
+                    playerCell = null;
                 }
             }
-            return cell;
+            return (waterCell, playerCell);
         }
 
         private void OnCharacterChangePosition()

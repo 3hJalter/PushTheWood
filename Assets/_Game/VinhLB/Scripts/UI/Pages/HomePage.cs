@@ -5,6 +5,7 @@ using _Game.UIs.Popup;
 using _Game.UIs.Screen;
 using _Game.Utilities;
 using _Game.Utilities.Timer;
+using Cinemachine;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -102,8 +103,7 @@ namespace VinhLB
         public override void Open(object param = null)
         {
             base.Open(param);
-            LevelManager.Ins.ConstructingLevel();
-            LevelManager.Ins.player.SetActiveAgent(true);
+            SetupHomeCamera();
         }
         public override void UpdateUI()
         {
@@ -155,7 +155,17 @@ namespace VinhLB
                 _levelChestIconRectTF.localRotation = _startLevelChestIconQuaternion;
             }
         }
-
+        private void SetupHomeCamera()
+        {
+            LevelManager.Ins.ConstructingLevel();
+            GameGridCell waterCell, playerCell;
+            (waterCell, playerCell) = LevelManager.Ins.player.SetActiveAgent(true);
+            Vector3 offset = waterCell.WorldPos - playerCell.WorldPos;
+            offset.Set(offset.x + Mathf.Sign(offset.x) * Constants.CELL_SIZE * 5, 1.5f, offset.z + Mathf.Sign(offset.z) * Constants.CELL_SIZE);
+            CinemachineFramingTransposer transposerCam = CameraManager.Ins.GetCameraCinemachineComponent<CinemachineFramingTransposer>(_Game.Camera.ECameraType.PerspectiveCamera);
+            CameraManager.Ins.ChangeCameraTargetPosition(playerCell.WorldPos + Vector3.up * 2);
+            transposerCam.m_TrackedObjectOffset = offset;
+        }
         private void OpenMask()
         {
             UIManager.Ins.OpenUI<MaskScreen>(new MaskData()
