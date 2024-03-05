@@ -15,6 +15,7 @@ using _Game.GameGrid.Unit.StaticUnit.Chest;
 using _Game.Managers;
 using _Game.UIs.Screen;
 using _Game.Utilities;
+using _Game.Utilities.Timer;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -298,24 +299,25 @@ namespace _Game.GameGrid
             _currentLevel.OnDeSpawnLevel();
             OnGenerateLevel(type, normalLevelIndex, false);
             // Zoom out
-            CameraManager.Ins.ChangeCamera(ECameraType.MainMenuCamera);
-            CameraManager.Ins.ChangeCameraTargetPosition(player.transform.position);
+            CameraManager.Ins.ChangeCamera(ECameraType.MainMenuCamera, 0f);
             // Hide the screen
             UIManager.Ins.HideUI<InGameScreen>();
-            SetCameraToPosition(CurrentLevel.GetCenterPos());
-            // Delay 2.5 second for zoom out
-            DOVirtual.DelayedCall(2f, () =>
+            // SetCameraToPosition(CurrentLevel.GetCenterPos());
+            if (!_currentLevel.IsInit)
             {
-                UIManager.Ins.ShowUI<InGameScreen>();
-                if (!_currentLevel.IsInit)
-                {
-                    InitLevel();
-                }
+                InitLevel();
+            }
+            SetCameraToPlayerIsland();
+            // Delay 2.5 second for zoom out
+            TimerManager.Ins.WaitForTime(0.25f, () =>
+            {
                 OnLevelNext?.Invoke();
                 CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
-                SetCameraToPlayerIsland();
+                TimerManager.Ins.WaitForTime(0.5f, () =>
+                {
+                    UIManager.Ins.ShowUI<InGameScreen>();
+                });
             });
-            // OnChangeTutorialIndex();
         }
 
         public void OnRestart()
