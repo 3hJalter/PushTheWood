@@ -9,6 +9,7 @@ namespace _Game._Scripts.UIs.Component
     public class DailyChallengeButton : HButton
     {
         [SerializeField] private Image btnImage;
+        [SerializeField] private Image iconComplete;
         public DailyChallengeButtonState State { get; private set; }
         public int Index { get; private set; }
 
@@ -55,6 +56,7 @@ namespace _Game._Scripts.UIs.Component
         {
             // Change button sprite
             btnImage.sprite = btnSprites[(int) State];
+            iconComplete.enabled = State == DailyChallengeButtonState.Clear;
         }
     }
     

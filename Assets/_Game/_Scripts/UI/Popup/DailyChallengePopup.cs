@@ -83,7 +83,7 @@ namespace _Game.UIs.Popup
             
             OnUpdateProgress();
             // click today button
-            // OnClickDailyChallengeButton(_currentDay);
+            OnClickDailyChallengeButton(_currentDay - 1);
         }
         
         public override void Close()
