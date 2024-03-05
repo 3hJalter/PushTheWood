@@ -20,11 +20,24 @@ namespace _Game.UIs.Screen
         private Image _blockPanel;
         [SerializeField]
         private Button _nextLevelButton;
-        Action NextLevel;
+        
+        private Action _nextLevel;
+        
         public override void Setup(object param = null)
         {
             base.Setup(param);
-            _canvasGroup.alpha = 0f;
+            
+            if (param is true)
+            {
+                _canvasGroup.alpha = 1f;
+                _blockPanel.gameObject.SetActive(false);
+            }
+            else
+            {
+                _canvasGroup.alpha = 0f;
+                _blockPanel.gameObject.SetActive(true);
+            }
+            
             // Hide the next level button if the current level is not Normal level
             Level level = LevelManager.Ins.CurrentLevel;
             if (level.LevelType != LevelType.Normal)
@@ -44,7 +57,7 @@ namespace _Game.UIs.Screen
                     _nextLevelButton.gameObject.SetActive(true);
                 }
             }
-            NextLevel = () =>
+            _nextLevel = () =>
             {
                 LevelManager.Ins.OnNextLevel(LevelType.Normal);
                 Close();
@@ -60,14 +73,18 @@ namespace _Game.UIs.Screen
             {
                 container.SetActive(true);
                 AudioManager.Ins.PlaySfx(SfxType.Win);
-                DOVirtual.Float(0f, 1f, 0.25f, value => _canvasGroup.alpha = value)
-                    .OnComplete(() => _blockPanel.gameObject.SetActive(false));
+                
+                if (param is not true)
+                {
+                    DOVirtual.Float(0f, 1f, 1f, value => _canvasGroup.alpha = value)
+                        .OnComplete(() => _blockPanel.gameObject.SetActive(false));
+                }
             });
         }
         
         public void OnClickNextButton()
         {           
-            GameManager.Ins.PostEvent(DesignPattern.EventID.OnCheckShowInterAds, NextLevel);             
+            GameManager.Ins.PostEvent(DesignPattern.EventID.OnCheckShowInterAds, _nextLevel);             
         }
         
         public void OnClickMainMenuButton()

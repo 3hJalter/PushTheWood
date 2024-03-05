@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using _Game.Resource;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,7 +30,17 @@ namespace VinhLB
 
             _nameText.text = _reward.UIResourceConfig.Name;
             _iconImage.sprite = _reward.UIResourceConfig.IconSprite;
-            _amountText.text = _reward.Amount.ToString();
+
+            string amountText;
+            if (_reward.RewardType == RewardType.Currency && _reward.CurrencyType == CurrencyType.Gold)
+            {
+                amountText = $"{_reward.Amount}";
+            }
+            else
+            {
+                amountText = $"x{_reward.Amount}";
+            }
+            _amountText.text = amountText;
         }
     }
 }
