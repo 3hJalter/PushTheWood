@@ -41,6 +41,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 
             oldSkinPos = t.skin.transform.localPosition;
             t.skin.transform.DOLocalMove(oldSkinPos + sitDistance, SIT_DOWN_TIME).OnComplete(PlayVFXSinging);
+            t.OnCharacterChangePosition();
 
             void PlayVFXSinging()
             {

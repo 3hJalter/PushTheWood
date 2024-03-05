@@ -175,17 +175,11 @@ namespace _Game.GameGrid
             levelWinCondition = CurrentLevel.LevelWinCondition;
             OnAddWinCondition(CurrentLevel.LevelWinCondition);
             GameManager.Ins.PostEvent(EventID.StartGame);
-            if (_currentLevel.IsInit) return;
             enemies.Clear();
             finalPoints.Clear();
             CollectedChests.Clear();
             objectiveTotal = 0;
-            _currentLevel.OnInitLevelSurfaceAndUnit();
-            _currentLevel.OnInitPlayerToLevel();
-            savingState = new CareTaker(this);
-            _currentLevel.GridMap.CompleteObjectInit();
-            IsConstructingLevel = false;
-            savingState = new CareTaker(this);
+            ConstructingLevel();
             SetCameraToPlayerIsland();
             OnObjectiveChange?.Invoke();
             //NOTE: Test
@@ -194,6 +188,16 @@ namespace _Game.GameGrid
             if (normalLevelIndex == 0) HidePlayer(true);
             KeyRewardCount = 0;
             SecretMapPieceCount = 0;
+        }
+
+        public void ConstructingLevel()
+        {
+            if (_currentLevel.IsInit) return;
+            _currentLevel.OnInitLevelSurfaceAndUnit();
+            _currentLevel.OnInitPlayerToLevel();
+            _currentLevel.GridMap.CompleteObjectInit();
+            IsConstructingLevel = false;
+            savingState = new CareTaker(this);
         }
 
         public void ResetLevelIsland()

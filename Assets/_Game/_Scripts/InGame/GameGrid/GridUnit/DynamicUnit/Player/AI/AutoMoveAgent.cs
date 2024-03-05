@@ -14,7 +14,23 @@ namespace _Game.AI
         protected GridUnitCharacter character;
 
         private readonly Queue<Direction> moveDirections = new Queue<Direction>();
-        public Direction NextDirection { get; private set; }
+        private Direction nextDirection;
+        public Direction NextDirection {
+            get
+            {
+                if (moveDirections.Count == 0)
+                {
+                    nextDirection = Direction.None;
+                    enabled = false;
+                }
+                else
+                {
+                    nextDirection = moveDirections.Dequeue();
+                }
+                return nextDirection;
+            }
+            private set => nextDirection = value;
+        }
         public void Init(GridUnitCharacter character)
         {
             if (this.character != null)
@@ -86,17 +102,6 @@ namespace _Game.AI
                 }
             }
             return cell;
-        }
-
-        public void Run()
-        {
-            if(moveDirections.Count == 0)
-            {
-                NextDirection = Direction.None;
-                enabled = false;
-                return;
-            }
-            NextDirection = moveDirections.Dequeue();
         }
 
         private void OnCharacterChangePosition()

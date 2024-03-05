@@ -99,7 +99,12 @@ namespace VinhLB
         {
             TimerManager.Ins.PushSTimer(_shakeRewardTimer);
         }
-
+        public override void Open(object param = null)
+        {
+            base.Open(param);
+            LevelManager.Ins.ConstructingLevel();
+            LevelManager.Ins.player.SetActiveAgent(true);
+        }
         public override void UpdateUI()
         {
             _levelText.text = $"Day {LevelManager.Ins.NormalLevelIndex + 1}";
