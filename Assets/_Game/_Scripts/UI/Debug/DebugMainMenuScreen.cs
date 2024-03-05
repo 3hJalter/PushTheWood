@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using VinhLB;
 using _Game.GameGrid;
+using _Game.UIs.Popup;
 using TMPro;
 
 namespace _Game.UIs.Screen
@@ -27,6 +28,8 @@ namespace _Game.UIs.Screen
         private Button _resourceButton;
         [SerializeField]
         private Button _dailyRewardButton;
+        [SerializeField]
+        private Button _dailyChallengeButton;
 
         [Header("Resource Menu")]
         [SerializeField]
@@ -56,6 +59,13 @@ namespace _Game.UIs.Screen
         [SerializeField]
         private Button _resetDailyRewardButton;
 
+        [Header("Daily Challenge menu")]
+        [SerializeField]
+        private GameObject _dailyChallengeMenuGO;
+
+        [SerializeField]
+        private Button _increase1ChallengeDay;
+        
         private void Awake()
         {
             _debugMenusToggle.onValueChanged.AddListener(ToggleDebugMenu);
@@ -63,6 +73,7 @@ namespace _Game.UIs.Screen
             
             _resourceButton.onClick.AddListener(ResourceButton);
             _dailyRewardButton.onClick.AddListener(DailyRewardButton);
+            _dailyChallengeButton.onClick.AddListener(DailyChallengeButton);
             
             _addAdTicketsButton.onClick.AddListener(AddAdTickets);
             _addGoldButton.onClick.AddListener(AddGold);
@@ -74,6 +85,8 @@ namespace _Game.UIs.Screen
             _increase1DailyDay.onClick.AddListener(DailyRewardManager.Increase1DailyDay);
             _decrease1DailyDayButton.onClick.AddListener(DailyRewardManager.Decrease1DailyDay);
             _resetDailyRewardButton.onClick.AddListener(DailyRewardManager.ResetAll);
+            
+            _increase1ChallengeDay.onClick.AddListener(AddOneDailyChallengeDay);
 
             _playerSkinInputField.text = DataManager.Ins.GameData.user.currentPlayerSkinIndex.ToString();
         }
@@ -109,6 +122,13 @@ namespace _Game.UIs.Screen
             _debugMenuGO.SetActive(false);
             _dailyRewardMenuGO.SetActive(true);
         }
+        
+        private void DailyChallengeButton()
+        {
+            _backButton.gameObject.SetActive(true);
+            _debugMenuGO.SetActive(false);
+            _dailyChallengeMenuGO.SetActive(true);
+        }
 
         private void AddAdTickets()
         {
@@ -138,5 +158,19 @@ namespace _Game.UIs.Screen
             GameManager.Ins.ResetUserData();
             //UIManager.Ins.UpdateUIs();
         }       
+        
+        private void AddOneDailyChallengeDay()
+        {
+            DataManager.Ins.GameData.user.currentDailyChallengerDay++;
+            if (DataManager.Ins.GameData.user.currentDailyChallengerDay > Constants.DAILY_CHALLENGER_COUNT)
+            {
+                DataManager.Ins.GameData.user.currentDailyChallengerDay = 1;
+                DataManager.Ins.GameData.user.dailyLevelIndexComplete.Clear();
+                DataManager.Ins.GameData.user.dailyChallengeRewardCollected.Clear();
+            }
+            if (!UIManager.Ins.IsOpened<DailyChallengePopup>()) return;
+            DailyChallengePopup popup = UIManager.Ins.GetUI<DailyChallengePopup>();
+            popup.Setup();
+        }
     }
 }

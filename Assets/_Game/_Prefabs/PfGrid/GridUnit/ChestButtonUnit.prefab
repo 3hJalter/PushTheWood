@@ -9973,7 +9973,7 @@ GameObject:
   - component: {fileID: 2207868225473455906}
   - component: {fileID: 2207868225473455905}
   - component: {fileID: 2207868225473455904}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10217,6 +10217,7 @@ MonoBehaviour:
   poolType: 20
   skin: {fileID: 2207868226631948313}
   meshRenderer: {fileID: 0}
+  skinController: {fileID: 0}
   size: {x: 1, y: 1, z: 1}
   isMinusHalfSizeY: 0
   startHeight: 2
@@ -10233,10 +10234,12 @@ MonoBehaviour:
   chestAnimator: {fileID: 5191408108845656512}
   chestModel: {fileID: 5550840672192403459}
   indicatorTarget: {fileID: 7894029951727662823}
+  isInteracted: 0
   lockedChestModel: {fileID: 3831606464012509851}
   chestUnlockParticle: {fileID: 6178493981268095029}
   canvas: {fileID: 2207868225473455966}
   textMeshPro: {fileID: 2207868225575490731}
+  isLocked: 0
 --- !u!114 &7894029951727662823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10265,7 +10268,7 @@ GameObject:
   - component: {fileID: 2207868225575490730}
   - component: {fileID: 2207868225575490732}
   - component: {fileID: 2207868225575490731}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10799,7 +10802,7 @@ GameObject:
   - component: {fileID: 3831606465059038306}
   - component: {fileID: 3831606465059038316}
   - component: {fileID: 3831606465059038307}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10875,7 +10878,7 @@ GameObject:
   - component: {fileID: 3831606465091507554}
   - component: {fileID: 3831606465091507564}
   - component: {fileID: 3831606465091507555}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11440,12 +11443,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 2207868225473455967}
     m_Modifications:
     - target: {fileID: 2073520841091623018, guid: fc9cb1b8d43db7b4f86d77ceb680745b, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073520841091623018, guid: fc9cb1b8d43db7b4f86d77ceb680745b, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2073520842874827292, guid: fc9cb1b8d43db7b4f86d77ceb680745b, type: 3}
       propertyPath: m_Name
       value: HButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073520842874827292, guid: fc9cb1b8d43db7b4f86d77ceb680745b, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2073520842874827292, guid: fc9cb1b8d43db7b4f86d77ceb680745b, type: 3}
       propertyPath: m_IsActive

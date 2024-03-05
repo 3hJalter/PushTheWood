@@ -2681,7 +2681,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Ambient: 0.5
+    - _Ambient: 0.461
     - _Bevel: 0.5
     - _BevelClamp: 0
     - _BevelOffset: 0
@@ -2714,7 +2714,7 @@ Material:
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
-    - _SpecularPower: 2
+    - _SpecularPower: 1.96
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
@@ -2739,7 +2739,7 @@ Material:
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecularColor: {r: 0.17117068, g: 0.5566038, b: 0.107645065, a: 1}
     - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5882353}
   m_BuildTextureStacks: []
 --- !u!28 &9053683461368357624

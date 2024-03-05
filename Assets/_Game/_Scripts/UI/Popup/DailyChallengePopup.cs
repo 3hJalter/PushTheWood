@@ -25,16 +25,18 @@ namespace _Game.UIs.Popup
         [SerializeField] private HButton tutorialBtn;
         [SerializeField] private GameObject notYetBtn;
         [SerializeField] private HButton payToPlayBtn;
+        [SerializeField] private HButton adsToPlayBtn;
         [SerializeField] private HButton playBtn;
         [SerializeField] private HButton replayBtn;
         
         private void Awake()
         {
-            // Set panel height by adding 123f for each row, each row has 6 buttons
-            panel.sizeDelta = new Vector2(panel.sizeDelta.x, PANEL_INIT_HEIGHT + (123f * Mathf.CeilToInt(Constants.DAILY_CHALLENGER_COUNT / 6f)));
+            // Set panel height by adding 123f for each row, each row has 7 buttons
+            panel.sizeDelta = new Vector2(panel.sizeDelta.x, PANEL_INIT_HEIGHT + (123f * Mathf.CeilToInt(Constants.DAILY_CHALLENGER_COUNT / 7f)));
             // Set listener for interact btn
             tutorialBtn.onClick.AddListener(OnClickTutorialButton);
             payToPlayBtn.onClick.AddListener(OnClickPayToPlayButton);
+            adsToPlayBtn.onClick.AddListener(OnClickAdToPlayButton);
             playBtn.onClick.AddListener(OnClickPlayButton);
             replayBtn.onClick.AddListener(OnClickReplayButton);
         }
@@ -44,6 +46,7 @@ namespace _Game.UIs.Popup
             // Remove listener for interact btn
             tutorialBtn.onClick.RemoveAllListeners();
             payToPlayBtn.onClick.RemoveAllListeners();
+            adsToPlayBtn.onClick.RemoveAllListeners();
             playBtn.onClick.RemoveAllListeners();
             replayBtn.onClick.RemoveAllListeners();
         }
@@ -122,13 +125,23 @@ namespace _Game.UIs.Popup
             OnPlay();
         }
 
-        private void OnClickPayToPlayButton()  
+        private void OnClickAdToPlayButton()
         {
-            DevLog.Log(DevId.Hoang, "OnClick Pay To Play Button");
-            // TODO: show popup to pay to play before play
-            // Temporary solution: just play
-            DevLog.Log(DevId.Hoang, "Temporary solution: just play");
+            DevLog.Log(DevId.Hoang, "OnClick Ad To Play Button");
+            AdsManager.Ins.RewardedAds.Show();
             OnPlay();
+        }
+        
+        private void OnClickPayToPlayButton()
+        {
+            if (GameManager.Ins.TrySpendAdTickets(1))
+            {
+                DevLog.Log(DevId.Hoang, "OnClick Pay To Play Button");
+                // TODO: show popup to pay to play before play
+                // Temporary solution: just play
+                DevLog.Log(DevId.Hoang, "Temporary solution: just play");
+                OnPlay();
+            };
         }
 
         private void OnClickReplayButton()
@@ -154,6 +167,7 @@ namespace _Game.UIs.Popup
             payToPlayBtn.gameObject.SetActive(false);
             playBtn.gameObject.SetActive(false);
             replayBtn.gameObject.SetActive(false);
+            adsToPlayBtn.gameObject.SetActive(false);
             switch (_currentBtnClick.State)
             {
                 // if current button is not yet, show not yet btn
@@ -162,11 +176,19 @@ namespace _Game.UIs.Popup
                     break;
                 // if current button is un clear, show pay to play btn
                 case DailyChallengeButtonState.UnClear:
-                    payToPlayBtn.gameObject.SetActive(true);
+                    if (DataManager.Ins.GameData.user.adTickets > 0)
+                    {
+                        payToPlayBtn.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        adsToPlayBtn.gameObject.SetActive(true);
+                    }
                     break;
                 // if current button is clear, show replay btn
                 case DailyChallengeButtonState.Clear:
-                    replayBtn.gameObject.SetActive(true);
+                    // replayBtn.gameObject.SetActive(true); // TEMPORARY REMOVE
+                    notYetBtn.SetActive(true);
                     break;
                 // if current button is today, show play btn
                 case DailyChallengeButtonState.Today:
