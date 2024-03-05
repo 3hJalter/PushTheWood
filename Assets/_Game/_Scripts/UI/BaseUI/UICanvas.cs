@@ -14,7 +14,7 @@ public class UICanvas : MonoBehaviour
     [SerializeField] private bool useAnimator;
 
     [ShowIf("useAnimator")] [SerializeField]
-    private Animator animator;
+    protected Animator animator;
 
     private string _currentAnim = " ";
 

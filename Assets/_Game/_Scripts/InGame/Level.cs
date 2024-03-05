@@ -108,7 +108,8 @@ namespace _Game._Scripts.InGame
         public HashSet<int> OnResetIslandSet { get; } = new();
 
         // Some other data
-        private GameGridCell firstPlayerInitCell;
+        public GameGridCell FirstPlayerInitCell { get; private set; }
+
         private Direction firstPlayerDirection;
 
         // Get Data
@@ -264,7 +265,7 @@ namespace _Game._Scripts.InGame
                 }
             }
 
-            firstPlayerInitCell = null;
+            FirstPlayerInitCell = null;
             // Clear all _islandDic data
             Islands.Clear();
             // Clear all _gridSurfaceMap data
@@ -456,7 +457,7 @@ namespace _Game._Scripts.InGame
                 if ((PoolType)unitData.t is PoolType.Player)
                 {
                     if (LevelManager.Ins.player != null) LevelManager.Ins.player.OnDespawn();
-                    firstPlayerInitCell = GridMap.GetGridCell(unitData.c.x, unitData.c.y);
+                    FirstPlayerInitCell = GridMap.GetGridCell(unitData.c.x, unitData.c.y);
                     firstPlayerDirection = (Direction)unitData.d;
                     LevelManager.Ins.player = (Player)SpawnUnit(unitData.c.x, unitData.c.y, (PoolType)unitData.t,
                         (Direction)unitData.d);
@@ -538,10 +539,10 @@ namespace _Game._Scripts.InGame
         public void OnInitPlayerToLevel()
         {
             LevelManager.Ins.player.ResetData();
-            LevelManager.Ins.player.OnInit(firstPlayerInitCell, HeightLevel.One, false, firstPlayerDirection);
-            Islands[firstPlayerInitCell.Data.gridSurface.IslandID].AddInitUnitToIsland(
-                LevelManager.Ins.player, LevelManager.Ins.player.UnitUnitData, firstPlayerInitCell);
-            Islands[firstPlayerInitCell.Data.gridSurface.IslandID].SetFirstPlayerStepCell(firstPlayerInitCell);
+            LevelManager.Ins.player.OnInit(FirstPlayerInitCell, HeightLevel.One, false, firstPlayerDirection);
+            Islands[FirstPlayerInitCell.Data.gridSurface.IslandID].AddInitUnitToIsland(
+                LevelManager.Ins.player, LevelManager.Ins.player.UnitUnitData, FirstPlayerInitCell);
+            Islands[FirstPlayerInitCell.Data.gridSurface.IslandID].SetFirstPlayerStepCell(FirstPlayerInitCell);
         }
 
         private void OnInitUnit(LevelUnitData data)
