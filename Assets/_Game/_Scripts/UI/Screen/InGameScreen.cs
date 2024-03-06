@@ -197,13 +197,13 @@ namespace _Game.UIs.Screen
         {
             // Check if the current island is the island that the player is on
             if (LevelManager.Ins.player.islandID != islandID) return;
-            if (active) pushHintButton.IsShowAds = false;
             if (isInit)
             {
                 pushHintButton.HasAlternativeImage = false;
                 pushHintButton.IsFocus = false;
             }
             pushHintButton.SetAmount(DataManager.Ins.GameData.user.pushHintCount);
+            if (active) pushHintButton.IsShowAds = false;
         }
         
         public void OnBoughtGrowTreeOnIsland(int islandID, bool active)

@@ -224,6 +224,7 @@ namespace _Game.Managers
         private void OnStartGame()
         {
             if (LevelManager.Ins.IsSavePlayerPushStep) SavePushHint = new SavePushHint();
+            _lastPlayerIslandId = -1;
             PushHintObject.SetActive(false);
             OnResetTime();
             screen.OnHandleTutorial();
@@ -355,9 +356,9 @@ namespace _Game.Managers
                 DataManager.Ins.GameData.user.resetIslandCount--;
                 screen.resetIslandButton.SetAmount(DataManager.Ins.GameData.user.resetIslandCount);
                 LevelManager.Ins.ResetLevelIsland();
-                if (!_pushHint.IsStartHint) return;
-                _pushHint.OnStopHint();
-                if (screen.resetIslandButton.IsFocus || !_pushHint.IsPlayerMakeHintWrong) _pushHint.OnStartHint(LevelManager.Ins.player.islandID);
+                int pIslandID = LevelManager.Ins.player.islandID;
+                if (!isBoughtPushHintInIsland.TryGetValue(pIslandID, out bool value)) return;
+                if (value) _pushHint.OnStartHint(pIslandID);
             }
         }
 
@@ -420,10 +421,9 @@ namespace _Game.Managers
         {
             int playerIslandID = LevelManager.Ins.player.islandID;
             if (!isBoughtPushHintInIsland.ContainsKey(playerIslandID)) return;
-            if (DataManager.Ins.GameData.user.pushHintCount <= 0)
+            if (DataManager.Ins.GameData.user.pushHintCount <= 0 && !IsBoughtPushHintInIsland(playerIslandID))
             {
-                if (!IsBoughtPushHintInIsland(playerIslandID)) UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(DataManager.Ins.ConfigData.boosterConfigList[(int)BoosterType.PushHint]);
-                else if (!_pushHint.IsStartHint) OnStartHintOnPlayerIsland(playerIslandID);
+               UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(DataManager.Ins.ConfigData.boosterConfigList[(int)BoosterType.PushHint]);
             }
             else
             {
@@ -442,14 +442,19 @@ namespace _Game.Managers
 
         private void OnStartHintOnPlayerIsland(int islandID, bool isShowHint = true)
         {
+            screen.ActivePushHintIsland(false);
             _pushHint.OnStartHint(islandID, isShowHint);
             DevLog.Log(DevId.Hoang, $"Show hint in {islandID}");
         }
 
+        private int _lastPlayerIslandId = -1;
+        
         private void OnPlayerChangeIsland(bool isInit)
         {
             int islandId = LevelManager.Ins.player.islandID;
-            screen.ActivePushHintIsland(_pushHint.ContainIsland(islandId));
+            if (_lastPlayerIslandId == islandId) return;
+            _lastPlayerIslandId = islandId;
+            screen.ActivePushHintIsland(_pushHint.ContainIsland(islandId) && !_pushHint.IsCompleted(islandId) && !_pushHint.isHintActiveOnIsland(islandId));
             screen.ActiveGrowTreeIsland(isBoughtGrowTreeInIsland.ContainsKey(islandId));
             // Check if contain
             if (!isBoughtPushHintInIsland.ContainsKey(islandId))

@@ -129,7 +129,7 @@ namespace _Game.Managers
                 PostEvent(EventID.UnPause);
                 PostEvent(EventID.UnPause, gameStateI);
             } 
-            UIManager.Ins.indicatorParentTf.gameObject.SetActive(gameStateI == GameState.InGame); // TEST
+            PostEvent(EventID.OnChangeGameState, gameStateI);
             gameState = gameStateI;
         }
 

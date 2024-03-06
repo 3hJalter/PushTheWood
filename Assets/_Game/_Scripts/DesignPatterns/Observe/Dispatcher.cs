@@ -79,6 +79,7 @@ namespace _Game.DesignPattern
         OnClaimLevelChest = 12,
         OnClaimRewardChest = 13,
         OnUpdateUIs = 14,
+        OnChangeGameState = 15,
         OnInterAdsStepCount = 10000,
         OnCheckShowInterAds = 10001,
     }

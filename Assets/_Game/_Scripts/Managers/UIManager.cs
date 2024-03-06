@@ -24,7 +24,9 @@ namespace _Game.Managers
         {
             DontDestroyOnLoad(this);
             GameManager.Ins.RegisterListenerEvent(EventID.OnUpdateUIs, UpdateUIs);
+            GameManager.Ins.RegisterListenerEvent(EventID.OnChangeGameState, OnShowIndicator);
         }
+        
         #region Canvas
 
         public T OpenUI<T>() where T : UICanvas
@@ -130,6 +132,14 @@ namespace _Game.Managers
             for(int i = 0; i < backCanvas.Count; i++)
             {
                 backCanvas[i].UpdateUI();
+            }
+        }
+        
+        private void OnShowIndicator(object param)
+        {
+            if (param is GameState gameState)
+            {
+                indicatorParentTf.gameObject.SetActive(gameState == GameState.InGame);
             }
         }
         #endregion
