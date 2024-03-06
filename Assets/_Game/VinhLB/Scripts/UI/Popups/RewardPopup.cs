@@ -6,10 +6,10 @@ using UnityEngine.UI;
 
 namespace VinhLB
 {
-    public class RewardPopup : UICanvas
+    public class RewardPopup : UICanvas, IClickable
     {
-        [SerializeField]
-        private Canvas _canvas;
+        public event Action OnClickedCallback;
+        
         [SerializeField]
         private RewardItem _rewardItemPrefab;
         [SerializeField]
@@ -20,40 +20,11 @@ namespace VinhLB
         private GameObject _leftArrowGO;
         [SerializeField]
         private GameObject _rightArrowGO;
-        [SerializeField]
-        private HButton _collectButton;
-        [SerializeField]
-        private HButton _claimX2Button;
         
         private List<RewardItem> _rewardItemList = new List<RewardItem>();
-
-        public Action OnClickCallback;
         
         private void Awake()
         {
-            _canvas.overrideSorting = true;
-            _canvas.sortingOrder = 10;
-            
-            _collectButton.onClick.AddListener(() =>
-            {
-                DevLog.Log(DevId.Vinh, "Collect rewards");
-                for (int i = 0; i < _rewardItemList.Count; i++)
-                {
-                    _rewardItemList[i].Reward.Obtain(_rewardItemList[i].IconImagePosition);
-                }
-                
-                OnClickCallback?.Invoke();
-                OnClickCallback = null;
-                
-                Close();
-            });
-            _claimX2Button.onClick.AddListener(() =>
-            {
-                DevLog.Log(DevId.Vinh, "Claim X2 rewards");
-                
-                OnClickCallback?.Invoke();
-                OnClickCallback = null;
-            });
             _rewardScrollRect.onValueChanged.AddListener(OnRewardScrollRectValueChanged);
         }
 
@@ -105,7 +76,6 @@ namespace VinhLB
                     int startIndex = _rewardItemList.Count - 1;
                     for (int i = startIndex; i > startIndex + differentInSize; i--)
                     {
-                        Debug.Log(i);
                         Destroy(_rewardItemList[i].gameObject);
                         
                         _rewardItemList.RemoveAt(i);
@@ -119,7 +89,21 @@ namespace VinhLB
                 }
             }
         }
-        
+
+        public override void Close()
+        {
+            base.Close();
+            
+            DevLog.Log(DevId.Vinh, "Collect rewards");
+            for (int i = 0; i < _rewardItemList.Count; i++)
+            {
+                _rewardItemList[i].Reward.Obtain(_rewardItemList[i].IconImagePosition);
+            }
+                
+            OnClickedCallback?.Invoke();
+            OnClickedCallback = null;
+        }
+
         private void OnRewardScrollRectValueChanged(Vector2 value)
         {
             Debug.Log(value);

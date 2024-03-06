@@ -37,6 +37,13 @@ namespace VinhLB
             DailyRewardManager.Ins.OnDailyRewardParamsChanged += DailyRewardManager_OnOnDailyRewardParamsChanged;
         }
 
+        public override void Setup(object param = null)
+        {
+            base.Setup(param);
+
+            _claimButton.gameObject.SetActive(!DailyRewardManager.Ins.IsTodayRewardObtained);
+        }
+
         private void SetupDailyRewards()
         {
             for (int i = 0; i < DailyRewardManager.Ins.DailyRewardSettings.CycleDays; i++)
@@ -53,6 +60,8 @@ namespace VinhLB
         private void DailyRewardManager_OnOnDailyRewardParamsChanged()
         {
             SetupDailyRewards();
+            
+            _claimButton.gameObject.SetActive(!DailyRewardManager.Ins.IsTodayRewardObtained);
         }
     }
 }

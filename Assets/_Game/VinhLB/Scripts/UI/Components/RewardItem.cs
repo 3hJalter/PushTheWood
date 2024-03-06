@@ -13,7 +13,7 @@ namespace VinhLB
         private Image _iconImage;
         [SerializeField]
         private TMP_Text _amountText;
-        
+
         private Reward _reward = null;
 
         public Vector3 IconImagePosition => _iconImage.transform.position;
@@ -28,7 +28,11 @@ namespace VinhLB
                 return;
             }
 
-            _nameText.text = _reward.UIResourceConfig.Name;
+            if (_nameText != null)
+            {
+                _nameText.text = _reward.UIResourceConfig.Name;
+            }
+
             _iconImage.sprite = _reward.UIResourceConfig.IconSprite;
 
             string amountText;

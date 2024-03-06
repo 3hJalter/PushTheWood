@@ -26,19 +26,22 @@ namespace _Game.Managers
     [Serializable]
     public class HomeReward
     {
-        GameData gameData;
+        private GameData gameData;
+        
         public HomeReward(GameData gameData)
         {
             this.gameData = gameData;
         }
+        
         public bool IsCanClaimRC => gameData.user.currentRewardChestIndex < gameData.user.rewardChestUnlock;
         public bool IsCanClaimLC => gameData.user.currentLevelChestIndex < gameData.user.levelChestUnlock;
+        
         public void ClaimRewardChest()
         {
             if (IsCanClaimRC)
             {
                 gameData.user.currentRewardChestIndex += 1;
-                UIManager.Ins.OpenUI<RewardPopup>().Open(GetRCReward());
+                UIManager.Ins.OpenUI<RewardPopup>(GetRCReward());
                 GameManager.Ins.PostEvent(EventID.OnClaimRewardChest, gameData.user.currentRewardChestIndex - 1);
                 GameManager.Ins.PostEvent(EventID.OnUpdateUIs);
 
@@ -50,7 +53,7 @@ namespace _Game.Managers
             if (IsCanClaimLC)
             {
                 gameData.user.currentLevelChestIndex += 1;
-                UIManager.Ins.OpenUI<RewardPopup>().Open(GetLCReward());
+                UIManager.Ins.OpenUI<RewardPopup>(GetLCReward());
                 GameManager.Ins.PostEvent(EventID.OnClaimLevelChest, gameData.user.currentLevelChestIndex - 1);
                 GameManager.Ins.PostEvent(EventID.OnUpdateUIs);
             }

@@ -82,11 +82,11 @@ public static class Constants
     /// <summary>
     /// Objective
     /// </summary>
-    public const string FIND_CHEST = "OBJECTIVE:\nFind the chest";
-    public const string DEFEAT_ENEMY = "OBJECTIVE:\nDefeat all enemies";
-    public const string COLLECT_ALL_CHEST = "OBJECTIVE:\nCollect all chests";
-    public const string FIND_FRUIT = "OBJECTIVE:\nFind the food";
-    public const string FIND_CHICKEN_BBQ = "OBJECTIVE:\nFind the chicken BBQ";
+    public const string FIND_CHEST = "TARGET:\nFind the chest";
+    public const string DEFEAT_ENEMY = "TARGET:\nDefeat all enemies";
+    public const string COLLECT_ALL_CHEST = "TARGET:\nCollect all chests";
+    public const string FIND_FRUIT = "TARGET:\nFind the food";
+    public const string FIND_CHICKEN_BBQ = "TARGET:\nFind the chicken BBQ";
     
     // Value Constants
     public const int UPPER_HEIGHT = 1;
