@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using _Game.Camera;
 using _Game.DesignPattern;
+using _Game.Utilities;
 using Cinemachine;
 using DG.Tweening;
 using UnityEngine;
@@ -28,12 +29,15 @@ namespace _Game.Managers
         private readonly Dictionary<ECameraType, CinemachineVirtualCameraBase> virtualCameraDic = new();
         private readonly Dictionary<ECameraType, CinemachineComponentBase> cameraComponentDic = new();
 
+        private UnityEngine.Camera mainCamera;
+        private ECameraType mainTypeCamera;
         public UnityEngine.Camera BrainCamera => brainCamera;
         public CinemachineVirtualCameraBase CurrentVirtualCamera => currentVirtualCamera;
 
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
+            mainCamera = brainCamera;
         }
         public bool IsCurrentCameraIs(ECameraType eCameraType)
         {
@@ -51,16 +55,19 @@ namespace _Game.Managers
             currentVirtualCamera.Priority = CAMERA_PRIORITY_ACTIVE;
             currentVirtualCamera.enabled = true;
             brain.m_DefaultBlend.m_Time = blendTime;
+            mainTypeCamera = eCameraType;
 
             switch (eCameraType)
             {
                 case ECameraType.PerspectiveCamera:
                     perspectiveCamera.gameObject.SetActive(true);
                     brainCamera.gameObject.SetActive(false);
+                    mainCamera = perspectiveCamera;
                     break;
                 default:
                     perspectiveCamera.gameObject.SetActive(false);
                     brainCamera.gameObject.SetActive(true);
+                    mainCamera = brainCamera;
                     break;
             }
         }
@@ -81,14 +88,24 @@ namespace _Game.Managers
             if (moveTime < 0f) moveTime = cameraMoveTime;
             cameraTarget.DOKill();
             cameraTarget.DOMove(position, moveTime).SetEase(Ease.Linear);
+        }   
+        public void ChangeCameraTargetPositionInstant(Vector3 position)
+        {
+            cameraTarget.DOKill();
+            cameraTarget.position = position;
         }
-        
+        public void ChangeCameraPosition(Vector3 position)
+        {
+            virtualCameraDic[mainTypeCamera].enabled = false;
+            mainCamera.transform.position = position;
+            DevLog.Log(DevId.Hung, $"Main Camera Position: {mainCamera.transform.position}");
+            virtualCameraDic[mainTypeCamera].enabled = true;
+        }
         public void ChangeCameraTarget(ECameraType eCameraType, Transform target)
         {
             virtualCameraDic[eCameraType].Follow = target;
             virtualCameraDic[eCameraType].LookAt = target;
         }
-
         public Vector3 WorldToViewportPoint(Vector3 position)
         {
             return brainCamera.WorldToViewportPoint(position);

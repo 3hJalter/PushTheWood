@@ -161,10 +161,12 @@ namespace VinhLB
             GameGridCell waterCell, playerCell;
             (waterCell, playerCell) = LevelManager.Ins.player.SetActiveAgent(true);
             Vector3 offset = waterCell.WorldPos - playerCell.WorldPos;
-            offset.Set(Mathf.Abs(offset.x) < 0.001f ? Constants.CELL_SIZE * 2 : offset.x * 8, 1.5f, Mathf.Abs(offset.z) < 0.001f ? Constants.CELL_SIZE * 2 : offset.z * 8);
+            offset.Set(Mathf.Abs(offset.x) < 0.001f ? Constants.CELL_SIZE : offset.x * 12, 3.5f, Mathf.Abs(offset.z) < 0.001f ? Constants.CELL_SIZE : offset.z * 16);
+
             CinemachineFramingTransposer transposerCam = CameraManager.Ins.GetCameraCinemachineComponent<CinemachineFramingTransposer>(_Game.Camera.ECameraType.PerspectiveCamera);
-            CameraManager.Ins.ChangeCameraTargetPosition(playerCell.WorldPos + Vector3.up * 2);
             transposerCam.m_TrackedObjectOffset = offset;
+            CameraManager.Ins.ChangeCameraTargetPositionInstant(playerCell.WorldPos + Vector3.up * 2);
+            CameraManager.Ins.ChangeCameraPosition(playerCell.WorldPos + offset);
         }
         private void OpenMask()
         {

@@ -113,7 +113,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5537220399447289996}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalPosition: {x: 0, y: -0.6, z: 0}
   m_LocalScale: {x: 19, y: 26, z: 19}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -321,6 +321,7 @@ MonoBehaviour:
   poolType: 8
   skin: {fileID: 659011302188247317}
   meshRenderer: {fileID: 0}
+  skinController: {fileID: 0}
   size: {x: 1, y: 2, z: 1}
   isMinusHalfSizeY: 1
   startHeight: 2
@@ -361,7 +362,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3509126901770722673, guid: 0d36b22183b1134489b61a711c1b84c4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.5
+      value: -0.6
       objectReference: {fileID: 0}
     - target: {fileID: 3509126901770722673, guid: 0d36b22183b1134489b61a711c1b84c4, type: 3}
       propertyPath: m_LocalPosition.z
