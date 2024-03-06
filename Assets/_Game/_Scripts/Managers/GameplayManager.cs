@@ -230,6 +230,7 @@ namespace _Game.Managers
             screen.OnCheckBoosterLock();
             IsCanResetIsland = true;
             IsCanUndo = true;
+            isBoughtPushHintInIsland.Clear();
             _pushHint?.OnStopHint(); // Clear old hint
             _pushHint = new PushHint(LevelManager.Ins.CurrentLevel.GetPushHint());
             screen.OnSetBoosterAmount();
@@ -240,7 +241,6 @@ namespace _Game.Managers
             }
             else
             {
-                isBoughtPushHintInIsland.Clear();
                 isBoughtGrowTreeInIsland.Clear();
                 isCanGrowTreeInIsland.Clear();
             }
@@ -423,7 +423,7 @@ namespace _Game.Managers
             if (DataManager.Ins.GameData.user.pushHintCount <= 0)
             {
                 if (!IsBoughtPushHintInIsland(playerIslandID)) UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(DataManager.Ins.ConfigData.boosterConfigList[(int)BoosterType.PushHint]);
-                else OnStartHintOnPlayerIsland(playerIslandID);
+                else if (!_pushHint.IsStartHint) OnStartHintOnPlayerIsland(playerIslandID);
             }
             else
             {
