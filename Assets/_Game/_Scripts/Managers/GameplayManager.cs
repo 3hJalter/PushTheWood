@@ -230,14 +230,20 @@ namespace _Game.Managers
             screen.OnCheckBoosterLock();
             IsCanResetIsland = true;
             IsCanUndo = true;
-            isBoughtPushHintInIsland.Clear();
-            isBoughtGrowTreeInIsland.Clear();
-            isCanGrowTreeInIsland.Clear();
             _pushHint?.OnStopHint(); // Clear old hint
             _pushHint = new PushHint(LevelManager.Ins.CurrentLevel.GetPushHint());
             screen.OnSetBoosterAmount();
             GameManager.Ins.ChangeState(GameState.InGame);
-            if (LevelManager.Ins.CurrentLevel.IsInit) OnPlayerChangeIsland(true);
+            if (LevelManager.Ins.CurrentLevel.IsInit)
+            {
+                OnPlayerChangeIsland(true);
+            }
+            else
+            {
+                isBoughtPushHintInIsland.Clear();
+                isBoughtGrowTreeInIsland.Clear();
+                isCanGrowTreeInIsland.Clear();
+            }
             // If hard level, show a notification -> If it None -> not show
             DevLog.Log(DevId.Hoang, $"LEVEL NORMAL TYPE: {LevelManager.Ins.CurrentLevel.LevelNormalType}");
         }
