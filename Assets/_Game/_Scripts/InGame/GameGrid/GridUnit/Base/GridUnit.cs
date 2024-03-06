@@ -258,7 +258,7 @@ namespace _Game.GameGrid.Unit
             SetHeight(EnterPosData.startHeight);
             InitCellsToUnit(enterMainCell, enterNextCells);
             SetNeighbor(LevelManager.Ins.CurrentLevel.GridMap);
-            TutorialManager.Ins.OnUnitGoToCell(enterMainCell, this);
+            TutorialManager.Ins.OnUnitMoveToCell(enterMainCell, this);
             return;
 
             void InitCellsToUnit(GameGridCell enterMainCellIn, List<GameGridCell> enterCells = null)
