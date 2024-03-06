@@ -75,10 +75,7 @@ public class Target : MonoBehaviour
     /// </summary>
     private void OnEnable()
     {
-        if(OffScreenIndicator.TargetStateChanged != null)
-        {
-            OffScreenIndicator.TargetStateChanged.Invoke(this, true);
-        }
+        OffScreenIndicator.TargetStateChanged.Invoke(this, true);
     }
 
     /// <summary>
@@ -86,10 +83,7 @@ public class Target : MonoBehaviour
     /// </summary>
     private void OnDisable()
     {
-        if(OffScreenIndicator.TargetStateChanged != null)
-        {
-            OffScreenIndicator.TargetStateChanged.Invoke(this, false);
-        }
+        OffScreenIndicator.TargetStateChanged.Invoke(this, false);
     }
 
     /// <summary>

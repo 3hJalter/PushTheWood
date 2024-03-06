@@ -56,19 +56,15 @@ namespace HControls
             switch (direction)
             {
                 case DirectionId.ID_LEFT:
-                    DevLog.Log(DevId.Hoang, "SetDirectionInput: " + direction);
                     HInputManager.SetDirectionInput(Direction.Left);
                     break;
                 case DirectionId.ID_RIGHT:
-                    DevLog.Log(DevId.Hoang, "SetDirectionInput: " + direction);
                     HInputManager.SetDirectionInput(Direction.Right);
                     break;
                 case DirectionId.ID_UP:
-                    DevLog.Log(DevId.Hoang, "SetDirectionInput: " + direction);
                     HInputManager.SetDirectionInput(Direction.Forward);
                     break;
                 case DirectionId.ID_DOWN:
-                    DevLog.Log(DevId.Hoang, "SetDirectionInput: " + direction);
                     HInputManager.SetDirectionInput(Direction.Back);
                     break;
                 case Constants.NONE:

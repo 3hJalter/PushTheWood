@@ -21,9 +21,11 @@ public class OffScreenIndicator : MonoBehaviour
     private Vector3 screenCentre;
     private Vector3 screenBounds;
 
-    private List<Target> targets = new List<Target>();
+    private static readonly List<Target> Targets = new();
 
-    public static Action<Target, bool> TargetStateChanged;
+    private static Action<Target, bool> _targetStateChanged;
+    
+    public static Action<Target, bool> TargetStateChanged => _targetStateChanged ??= HandleTargetStateChanged;
     
     private static Transform _centreTransform;
 
@@ -34,7 +36,6 @@ public class OffScreenIndicator : MonoBehaviour
         mainCamera = Camera.main;
         screenCentre = new Vector3(Screen.width, Screen.height, 0) / 2;
         screenBounds = screenCentre * screenBoundOffset;
-        TargetStateChanged += HandleTargetStateChanged;    
         if (GameManager.Ins.IsReduce) _increasePosFromRatio = GameManager.Ins.ReduceRatio;
         DevLog.Log(DevId.Hoang,$"OffScreenIndicator: _increasePosFromRatio = {_increasePosFromRatio}");
         DevLog.Log(DevId.Hoang, $"Screen size: {Screen.width} x {Screen.height}");
@@ -50,7 +51,7 @@ public class OffScreenIndicator : MonoBehaviour
     /// </summary>
     void DrawIndicators()
     {
-        foreach(Target target in targets)
+        foreach(Target target in Targets)
         {
             Vector3 screenPosition = OffScreenIndicatorCore.GetScreenPosition(mainCamera, target.transform.position);
             bool isTargetVisible = OffScreenIndicatorCore.IsTargetVisible(screenPosition);
@@ -90,17 +91,17 @@ public class OffScreenIndicator : MonoBehaviour
     /// </summary>
     /// <param name="target"></param>
     /// <param name="active"></param>
-    private void HandleTargetStateChanged(Target target, bool active)
+    private static void HandleTargetStateChanged(Target target, bool active)
     {
         if(active)
         {
-            targets.Add(target);
+            Targets.Add(target);
         }
         else
         {
             target.indicator?.Activate(false);
             target.indicator = null;
-            targets.Remove(target);
+            Targets.Remove(target);
         }
     }
 
@@ -137,6 +138,6 @@ public class OffScreenIndicator : MonoBehaviour
 
     private void OnDestroy()
     {
-        TargetStateChanged -= HandleTargetStateChanged;
+        _targetStateChanged = null;
     }
 }
