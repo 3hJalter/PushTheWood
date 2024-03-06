@@ -184,6 +184,11 @@ namespace _Game.UIs.Screen
             pushHintButton.IsInteractable = active;
         }
         
+        public void ActiveGrowTreeIsland(bool active)
+        {
+            growTreeButton.IsInteractable = active;
+        }
+        
         public void OnBoughtPushHintOnIsland(int islandID, bool active, bool isInit)
         {
             // Check if the current island is the island that the player is on
@@ -195,6 +200,14 @@ namespace _Game.UIs.Screen
                 pushHintButton.IsFocus = false;
             }
             pushHintButton.SetAmount(DataManager.Ins.GameData.user.pushHintCount);
+        }
+        
+        public void OnBoughtGrowTreeOnIsland(int islandID, bool active)
+        {
+            // Check if the current island is the island that the player is on
+            if (LevelManager.Ins.player.islandID != islandID) return;
+            growTreeButton.SetAmount(DataManager.Ins.GameData.user.growTreeCount);
+            if (active) growTreeButton.IsShowAds = false;
         }
         
         private void UpdateLevelText()

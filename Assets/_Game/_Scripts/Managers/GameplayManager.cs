@@ -21,9 +21,40 @@ namespace _Game.Managers
         [SerializeField] private PushHintObject pushHintObject;
 
         private readonly Dictionary<int, bool> isBoughtPushHintInIsland = new();
+        private readonly Dictionary<int, bool> isBoughtGrowTreeInIsland = new();
+        private readonly Dictionary<int, bool> isCanGrowTreeInIsland = new();
+
+        public bool IsBoughtGrowTreeInIsland(int islandID)
+        {
+            return isBoughtGrowTreeInIsland.ContainsKey(islandID) && isBoughtGrowTreeInIsland[islandID];
+        }
+        
+        public bool IsCanGrowTreeInIsland(int islandID)
+        {
+            return isCanGrowTreeInIsland.ContainsKey(islandID) && isCanGrowTreeInIsland[islandID];
+        }
+        
+        public void SetBoughtTreeInIsland(int islandID, bool value)
+        {
+            isBoughtGrowTreeInIsland.TryAdd(islandID, false);
+            isBoughtGrowTreeInIsland[islandID] = value;
+            screen.OnBoughtGrowTree(value);
+        }
+        
+        public void SetGrowTreeInIsland(int islandID, bool value)
+        {
+            isCanGrowTreeInIsland.TryAdd(islandID, false);
+            isCanGrowTreeInIsland[islandID] = value;
+            screen.SetActiveGrowTree(value);
+            isBoughtGrowTreeInIsland.TryAdd(islandID, false);
+            if (isCanGrowTreeInIsland[islandID] && isBoughtGrowTreeInIsland[islandID])
+            {
+                screen.growTreeButton.SetAmount(DataManager.Ins.GameData.user.growTreeCount);
+                screen.growTreeButton.IsShowAds = false;
+            }
+        }
+        
         private PushHint _pushHint;
-        private bool isBoughtGrowTree;
-        private bool isCanGrowTree = true;
         private bool isCanResetIsland = true;
         private bool isCanUndo = true;
 
@@ -60,27 +91,6 @@ namespace _Game.Managers
                 isCanResetIsland = value;
                 screen.SetActiveResetIsland(value);
             } 
-        }
-
-        public bool IsBoughtGrowTree
-        {
-            get => isBoughtGrowTree;
-            set
-            {
-                isBoughtGrowTree = value;
-                screen.OnBoughtGrowTree(value);
-            }
-        }
-
-        public bool IsCanGrowTree
-        {
-            get => isCanGrowTree;
-            set
-            {
-                isCanGrowTree = value;
-                screen.SetActiveGrowTree(value);
-                if (isCanGrowTree && !isBoughtGrowTree) screen.growTreeButton.SetAmount(DataManager.Ins.GameData.user.growTreeCount);
-            }
         }
 
         private void Awake()
@@ -220,9 +230,9 @@ namespace _Game.Managers
             screen.OnCheckBoosterLock();
             IsCanResetIsland = true;
             IsCanUndo = true;
-            IsBoughtGrowTree = false;
-            IsCanGrowTree = true;
             isBoughtPushHintInIsland.Clear();
+            isBoughtGrowTreeInIsland.Clear();
+            isCanGrowTreeInIsland.Clear();
             _pushHint?.OnStopHint(); // Clear old hint
             _pushHint = new PushHint(LevelManager.Ins.CurrentLevel.GetPushHint());
             screen.OnSetBoosterAmount();
@@ -350,16 +360,18 @@ namespace _Game.Managers
 
         public void OnFreeGrowTree()
         {
-            IsBoughtGrowTree = true;
-            EventGlobalManager.Ins.OnGrowTree.Dispatch();
+            int pIslandID = LevelManager.Ins.player.islandID;
+            SetBoughtTreeInIsland(pIslandID, true);
+            EventGlobalManager.Ins.OnGrowTree.Dispatch(pIslandID);
         }
         
         private void OnGrowTree()
         {
-            if (IsBoughtGrowTree)
+            int pIslandID = LevelManager.Ins.player.islandID;
+            if (IsBoughtGrowTreeInIsland(pIslandID))
             {
                 if (EventGlobalManager.Ins.OnGrowTree.listenerCount <= 0) return;
-                EventGlobalManager.Ins.OnGrowTree.Dispatch();
+                EventGlobalManager.Ins.OnGrowTree.Dispatch(pIslandID);
                 if (_pushHint.IsStartHint) _pushHint.OnStopHint();
                 return;
             }
@@ -373,13 +385,14 @@ namespace _Game.Managers
             else
             {
                 if (EventGlobalManager.Ins.OnGrowTree.listenerCount <= 0) return;
-                if (!IsBoughtGrowTree)
+                if (!IsBoughtGrowTreeInIsland(pIslandID))
                 {
-                    IsBoughtGrowTree = true;
+                    SetBoughtTreeInIsland(pIslandID, true);
                     DataManager.Ins.GameData.user.growTreeCount--;
                     screen.growTreeButton.SetAmount(DataManager.Ins.GameData.user.growTreeCount);
+                    screen.growTreeButton.IsShowAds = false; // TEMPORARY
                 }
-                EventGlobalManager.Ins.OnGrowTree.Dispatch();
+                EventGlobalManager.Ins.OnGrowTree.Dispatch(pIslandID);
                 if (_pushHint.IsStartHint) _pushHint.OnStopHint();
             }
         }
@@ -430,6 +443,7 @@ namespace _Game.Managers
         {
             int islandId = LevelManager.Ins.player.islandID;
             screen.ActivePushHintIsland(_pushHint.ContainIsland(islandId));
+            screen.ActiveGrowTreeIsland(isBoughtGrowTreeInIsland.ContainsKey(islandId));
             // Check if contain
             if (!isBoughtPushHintInIsland.ContainsKey(islandId))
             {
@@ -437,6 +451,15 @@ namespace _Game.Managers
             }
             bool isBoughtPushHint = IsBoughtPushHintInIsland(islandId);
             screen.OnBoughtPushHintOnIsland(islandId, isBoughtPushHint, isInit);
+            
+            // Tree seed
+            if (isBoughtGrowTreeInIsland.ContainsKey(islandId))
+            {
+                bool isCanGrowTree = IsCanGrowTreeInIsland(islandId);
+                screen.ActiveGrowTreeIsland(isCanGrowTree);
+                bool isBoughtTree = IsBoughtGrowTreeInIsland(islandId);
+                screen.OnBoughtGrowTreeOnIsland(islandId, isBoughtTree);
+            }
         }
 
         public void OnShowTryHintAgain(bool show)

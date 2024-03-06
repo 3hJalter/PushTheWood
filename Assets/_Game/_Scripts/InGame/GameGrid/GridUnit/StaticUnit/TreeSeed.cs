@@ -37,14 +37,14 @@ namespace _Game.GameGrid.Unit.StaticUnit
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
             EventGlobalManager.Ins.OnGrowTree.AddListener(OnGrow);
             ChangeAnim(Constants.IDLE_ANIM);
-            GameplayManager.Ins.IsCanGrowTree = upperUnits.Count == 0;
+            GameplayManager.Ins.SetGrowTreeInIsland(islandID, upperUnits.Count == 0);
             _isGrown = false;
         }
 
         protected override void OnMementoRestoreSpawn()
         {
             EventGlobalManager.Ins.OnGrowTree.AddListener(OnGrow);
-            GameplayManager.Ins.IsCanGrowTree = upperUnits.Count == 0;
+            GameplayManager.Ins.SetGrowTreeInIsland(islandID, upperUnits.Count == 0);
             ChangeAnim(Constants.IDLE_ANIM);
             _isGrown = false;
         }
@@ -52,13 +52,13 @@ namespace _Game.GameGrid.Unit.StaticUnit
         public override void OnDespawn()
         {
             EventGlobalManager.Ins.OnGrowTree.RemoveListener(OnGrow);
-            GameplayManager.Ins.IsCanGrowTree = false;
+            GameplayManager.Ins.SetGrowTreeInIsland(islandID, false);
             base.OnDespawn();
         }
 
         protected override void OnEnterTriggerUpper(GridUnit triggerUnit)
         {
-            GameplayManager.Ins.IsCanGrowTree = false;
+            GameplayManager.Ins.SetGrowTreeInIsland(islandID, false);
             fallTreeDirection = triggerUnit.LastPushedDirection;
             // fall the skin to the direction if it not none
             if (fallTreeDirection == Direction.None) return;
@@ -69,7 +69,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         protected override void OnOutTriggerUpper(GridUnit triggerUnit)
         {
             base.OnOutTriggerUpper(triggerUnit);
-            GameplayManager.Ins.IsCanGrowTree = true;
+            GameplayManager.Ins.SetGrowTreeInIsland(islandID, true);
             // If fall direction is not none, then reset it
             if (fallTreeDirection == Direction.None) return;
             if (_currentFallTween != null && _currentFallTween.IsPlaying())
@@ -87,8 +87,9 @@ namespace _Game.GameGrid.Unit.StaticUnit
         }
 
         [ContextMenu("Grow Tree")] // TEST
-        public void OnGrow()
+        public void OnGrow(int inputIslandID)
         {
+            if (inputIslandID != islandID) return;
             if (_isGrown) return;
             // If has unit on top, return
             if (upperUnits.Count > 0)

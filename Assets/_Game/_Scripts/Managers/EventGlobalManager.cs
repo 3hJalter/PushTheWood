@@ -14,7 +14,7 @@ namespace _Game._Scripts.Managers
         private Relay<bool> _onButtonUnitEnter; // For Unit Button
         private Relay _onEnemyDie; // For Enemy
         private Relay<BoosterType, int> _onChangeBoosterAmount;
-        private Relay _onGrowTree; // For Tree Seed
+        private Relay<int> _onGrowTree; // For Tree Seed
         private Relay<bool> _onPlayerChangeIsland; // For When Player go to the other Island
         private Relay<PlayerStep> _onPlayerPushStep; // For Push Hint
         private Relay<int> _onGrowTreeOnIsland; // For Grow Tree on Island
@@ -24,7 +24,7 @@ namespace _Game._Scripts.Managers
         public Relay OnEnemyDie => _onEnemyDie ??= new Relay();
         public Relay<BoosterType, int> OnChangeBoosterAmount => _onChangeBoosterAmount ??= new Relay<BoosterType, int>();
         public Relay<bool> OnPlayerChangeIsland => _onPlayerChangeIsland ??= new Relay<bool>();
-        public Relay OnGrowTree => _onGrowTree ??= new Relay();
+        public Relay<int> OnGrowTree => _onGrowTree ??= new Relay<int>();
         
         public Relay<int> OnGrowTreeOnIsland => _onGrowTreeOnIsland ??= new Relay<int>();
         
@@ -32,14 +32,6 @@ namespace _Game._Scripts.Managers
         
         private void Awake()
         {
-            _onChangeLevelCollectingObjectNumber = new Relay();
-            _onButtonUnitEnter = new Relay<bool>();
-            _onEnemyDie = new Relay();
-            _onChangeBoosterAmount = new Relay<BoosterType, int>();
-            _onGrowTree = new Relay();
-            _onPlayerChangeIsland = new Relay<bool>();
-            _onPlayerPushStep = new Relay<PlayerStep>();
-            _onGrowTreeOnIsland = new Relay<int>();
             DontDestroyOnLoad(gameObject);
         }
     }

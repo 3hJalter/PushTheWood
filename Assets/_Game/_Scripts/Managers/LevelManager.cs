@@ -230,6 +230,7 @@ namespace _Game.GameGrid
             SetCameraToIsland(player.islandID);
         }
 
+        
         private void SetCameraToIsland(int index)
         {
             Vector3 position = CurrentLevel.GetIsland(index).centerIslandPos + _cameraDownOffset;

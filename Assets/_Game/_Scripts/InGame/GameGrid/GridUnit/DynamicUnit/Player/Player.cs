@@ -312,6 +312,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         protected override void OnMementoRestoreData()
         {
+            LevelManager.Ins.SetCameraToPlayerIsland();
             EventGlobalManager.Ins.OnPlayerChangeIsland?.Dispatch(false);
         }
 
