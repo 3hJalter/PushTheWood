@@ -173,7 +173,8 @@ namespace _Game.GameGrid
 
         public void InitLevel()
         {   
-            GameManager.Ins.PostEvent(EventID.StartGame);           
+            GameManager.Ins.PostEvent(EventID.StartGame);          
+            player.SetActiveAgent(false);
             objectiveTotal = 0;
             ConstructingLevel();
             SetCameraToPlayerIsland();
