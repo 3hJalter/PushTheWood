@@ -19,6 +19,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         {
             t.ChangeAnim(Constants.MOVE_ANIM);
             initAnimSpeed = t.AnimSpeed;
+            t.SetAnimSpeed(initAnimSpeed * (Constants.MOVING_ANIM_TIME / Constants.MOVING_TIME));
             firstTime = true;
             AudioManager.Ins.PlaySfx(SfxType.Walk);
         }
@@ -29,7 +30,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             if (!firstTime && t.InputDetection.InputAction == InputAction.ButtonDown)
             {
                 // TEMPORARY:
-                t.SetAnimSpeed(initAnimSpeed / Constants.MOVING_TIME_FAST_RATE);
+                t.SetAnimSpeed(initAnimSpeed / Constants.MOVING_TIME_FAST_RATE * (Constants.MOVING_ANIM_TIME / Constants.MOVING_TIME));
                 moveTween.Kill();
                 moveTween = t.Tf.DOMove(t.EnterPosData.finalPos, CalculateMoveRemainingTime())
                     .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>
@@ -65,6 +66,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             moveTween.Kill();
             moveTween = null;
             t.OnCharacterChangePosition();
+            t.SetAnimSpeed(initAnimSpeed);
         }
     }
 }
