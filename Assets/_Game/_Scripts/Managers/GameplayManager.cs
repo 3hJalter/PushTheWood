@@ -237,6 +237,7 @@ namespace _Game.Managers
             _pushHint = new PushHint(LevelManager.Ins.CurrentLevel.GetPushHint());
             screen.OnSetBoosterAmount();
             GameManager.Ins.ChangeState(GameState.InGame);
+            if (LevelManager.Ins.CurrentLevel.IsInit) OnPlayerChangeIsland(true);
             // If hard level, show a notification -> If it None -> not show
             DevLog.Log(DevId.Hoang, $"LEVEL NORMAL TYPE: {LevelManager.Ins.CurrentLevel.LevelNormalType}");
         }
