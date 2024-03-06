@@ -83,15 +83,15 @@ namespace _Game.AI
             moveDirections.Clear();
             GameGridCell waterCell = null;
             GameGridCell playerCell = null;
+            Direction diretion = Direction.None;
             bool isFindWater = false;
-            for(int i = 0; i <= 3; i++)
-            {
-                if (isFindWater) break;
-                for (int j = 1; j <= SCAN_DISTANCE; j++)
+            for(int j = 1; j <= SCAN_DISTANCE; j++)
+            {               
+                for (int i = 0; i <= 3; i++)
                 {
-                    playerCell = character.MainCell.GetNeighborCell((Direction)i, j - 1);
-                    waterCell = character.MainCell.GetNeighborCell((Direction)i, j);
-                    moveDirections.Enqueue((Direction)i);
+                    diretion = (Direction)i;
+                    playerCell = character.MainCell.GetNeighborCell(diretion, j - 1);
+                    waterCell = character.MainCell.GetNeighborCell(diretion, j);
                     if (waterCell.Data.gridSurfaceType == GridSurfaceType.Water)
                     {
                         isFindWater = true;
@@ -99,21 +99,28 @@ namespace _Game.AI
                         for (int k = 1; k <= SCAN_DISTANCE; k++)
                         {
                             GameGridCell checkingCell = waterCell.GetNeighborCell((Direction)i, j + k);
-                            if (checkingCell != null && checkingCell.GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water]))
+                            if (checkingCell != null 
+                                && (checkingCell.GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water])
+                                || checkingCell.GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Ground])))
                             {
                                 isFindWater = false;
                                 break;
                             }
                         }
-                        if(isFindWater)
+
+                        if (isFindWater)
+                        {
+                            for (int k = 0; k < j; k++)
+                            {
+                                moveDirections.Enqueue(diretion);
+                            }
+                            return (waterCell, playerCell);
+                        }
+                        else
+                        {
                             break;
+                        }
                     }
-                }
-                if (!isFindWater)
-                {
-                    moveDirections.Clear();
-                    waterCell = null;
-                    playerCell = null;
                 }
             }
             return (waterCell, playerCell);

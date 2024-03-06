@@ -161,7 +161,7 @@ namespace VinhLB
             GameGridCell waterCell, playerCell;
             (waterCell, playerCell) = LevelManager.Ins.player.SetActiveAgent(true);
             Vector3 offset = waterCell.WorldPos - playerCell.WorldPos;
-            offset.Set(offset.x + Mathf.Sign(offset.x) * Constants.CELL_SIZE * 5, 1.5f, offset.z + Mathf.Sign(offset.z) * Constants.CELL_SIZE);
+            offset.Set(Mathf.Abs(offset.x) < 0.001f ? Constants.CELL_SIZE * 2 : offset.x * 8, 1.5f, Mathf.Abs(offset.z) < 0.001f ? Constants.CELL_SIZE * 2 : offset.z * 8);
             CinemachineFramingTransposer transposerCam = CameraManager.Ins.GetCameraCinemachineComponent<CinemachineFramingTransposer>(_Game.Camera.ECameraType.PerspectiveCamera);
             CameraManager.Ins.ChangeCameraTargetPosition(playerCell.WorldPos + Vector3.up * 2);
             transposerCam.m_TrackedObjectOffset = offset;
