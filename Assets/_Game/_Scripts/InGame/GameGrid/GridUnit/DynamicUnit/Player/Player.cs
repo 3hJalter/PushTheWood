@@ -242,6 +242,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         }
         private void OnWin()
         {
+            StateMachine.OverrideState = StateEnum.Happy;
             StateMachine.ChangeState(StateEnum.Happy);
         }
         #region Camera Setup for Player
