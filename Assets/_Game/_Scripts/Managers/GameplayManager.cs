@@ -166,12 +166,6 @@ namespace _Game.Managers
             button.SetAmount(boosterCount);
         }
         
-        private void UpdateBoosterCount(ref int boosterCount, TMP_Text text, int amount)
-        {
-            boosterCount += amount;
-            text.text = boosterCount.ToString();
-        }
-
         private void OnToMainMenu()
         {
             _pushHint?.OnStopHint();
@@ -229,6 +223,7 @@ namespace _Game.Managers
             IsBoughtGrowTree = false;
             IsCanGrowTree = true;
             isBoughtPushHintInIsland.Clear();
+            _pushHint?.OnStopHint(); // Clear old hint
             _pushHint = new PushHint(LevelManager.Ins.CurrentLevel.GetPushHint());
             screen.OnSetBoosterAmount();
             GameManager.Ins.ChangeState(GameState.InGame);
