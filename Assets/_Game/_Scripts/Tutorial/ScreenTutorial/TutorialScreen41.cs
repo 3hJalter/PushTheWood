@@ -21,7 +21,7 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
             HInputManager.LockInput();
             SetupHoldAction();
             panel.raycastTarget = false;
-            TimerManager.Ins.WaitForTime(1.5f, () =>
+            TimerManager.Ins.WaitForTime(1f, () =>
             {
                 if (UIManager.Ins.IsOpened<InGameScreen>())
                 {

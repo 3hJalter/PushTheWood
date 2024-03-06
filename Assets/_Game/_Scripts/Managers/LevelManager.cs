@@ -150,7 +150,6 @@ namespace _Game.GameGrid
             normalLevelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
             secretLevelIndex = DataManager.Ins.GameData.user.secretLevelIndex;
             OnGenerateLevel(LevelType.Normal, normalLevelIndex, normalLevelIndex == 0);
-            SetCameraToPosition(CurrentLevel.GetCenterPos());
 
             #region Handle If user passes first level
 
@@ -176,7 +175,7 @@ namespace _Game.GameGrid
             GameManager.Ins.PostEvent(EventID.StartGame);          
             player.SetActiveAgent(false);
             ConstructingLevel();
-            SetCameraToPlayerIsland();
+            SetCameraToPlayerIsland(0f);
             OnObjectiveChange?.Invoke();
             //NOTE: Test
             DebugManager.Ins?.DebugGridData(_currentLevel.GridMap);
@@ -223,18 +222,18 @@ namespace _Game.GameGrid
             player.gameObject.SetActive(!isHide);
         }
 
-        public void SetCameraToPlayerIsland()
+        public void SetCameraToPlayerIsland(float moveTime = 1f)
         {
             if (player.islandID == -1) return;
 
-            SetCameraToIsland(player.islandID);
+            SetCameraToIsland(player.islandID, moveTime);
         }
 
         
-        private void SetCameraToIsland(int index)
+        private void SetCameraToIsland(int index, float moveTime = 1f)
         {
             Vector3 position = CurrentLevel.GetIsland(index).centerIslandPos + _cameraDownOffset;
-            CameraManager.Ins.ChangeCameraTargetPosition(position);
+            CameraManager.Ins.ChangeCameraTargetPosition(position, moveTime);
         }
 
         private void SetCameraToPosition(Vector3 position)
@@ -303,8 +302,6 @@ namespace _Game.GameGrid
             OnRemoveWinCondition();
             _currentLevel.OnDeSpawnLevel();
             OnGenerateLevel(type, normalLevelIndex, false);
-            // Zoom out
-            CameraManager.Ins.ChangeCamera(ECameraType.MainMenuCamera, 0f);
             // Hide the screen
             UIManager.Ins.HideUI<InGameScreen>();
             // SetCameraToPosition(CurrentLevel.GetCenterPos());
@@ -312,12 +309,13 @@ namespace _Game.GameGrid
             {
                 InitLevel();
             }
-            SetCameraToPlayerIsland();
-            // Delay 2.5 second for zoom out
-            TimerManager.Ins.WaitForTime(0.25f, () =>
+            SetCameraToPlayerIsland(0f);
+            // Zoom out
+            CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera, 0f);
+            TimerManager.Ins.WaitForTime(0.1f, () =>
             {
                 OnLevelNext?.Invoke();
-                CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
+                CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera, 1f);
                 TimerManager.Ins.WaitForTime(0.5f, () =>
                 {
                     UIManager.Ins.ShowUI<InGameScreen>();

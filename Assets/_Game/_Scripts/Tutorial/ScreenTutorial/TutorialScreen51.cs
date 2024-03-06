@@ -15,7 +15,7 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
             base.Setup(param);
             HInputManager.LockInput();
             panelContainer.SetActive(false);
-            TimerManager.Ins.WaitForTime(1.5f, () =>
+            TimerManager.Ins.WaitForTime(1f, () =>
             {
                 if (UIManager.Ins.IsOpened<InGameScreen>())
                 {

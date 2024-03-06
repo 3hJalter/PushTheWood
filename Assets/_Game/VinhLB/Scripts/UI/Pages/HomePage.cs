@@ -54,8 +54,8 @@ namespace VinhLB
             _playButton.onClick.AddListener(() =>
             {
                 UIManager.Ins.CloseAll();
-                UIManager.Ins.OpenUI<InGameScreen>();
                 LevelManager.Ins.InitLevel();
+                UIManager.Ins.OpenUI<InGameScreen>();
             });
             _dailyChallengeButton.onClick.AddListener(() =>
             {
@@ -163,7 +163,7 @@ namespace VinhLB
             Vector3 offset = waterCell.WorldPos - playerCell.WorldPos;
             offset.Set(Mathf.Abs(offset.x) < 0.001f ? Constants.CELL_SIZE * 2 : offset.x * 8, 1.5f, Mathf.Abs(offset.z) < 0.001f ? Constants.CELL_SIZE * 2 : offset.z * 8);
             CinemachineFramingTransposer transposerCam = CameraManager.Ins.GetCameraCinemachineComponent<CinemachineFramingTransposer>(_Game.Camera.ECameraType.PerspectiveCamera);
-            CameraManager.Ins.ChangeCameraTargetPosition(playerCell.WorldPos + Vector3.up * 2);
+            CameraManager.Ins.ChangeCameraTargetPosition(playerCell.WorldPos + Vector3.up * 2, 0f);
             transposerCam.m_TrackedObjectOffset = offset;
         }
         private void OpenMask()

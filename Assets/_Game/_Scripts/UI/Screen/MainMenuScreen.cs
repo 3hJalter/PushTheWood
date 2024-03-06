@@ -46,7 +46,7 @@ namespace _Game.UIs.Screen
             // FxManager.Ins.PlayTweenFog();
             DebugManager.Ins?.OpenDebugCanvas(UI_POSITION.MAIN_MENU);
             GameManager.Ins.ChangeState(GameState.MainMenu);
-            CameraManager.Ins.ChangeCamera(ECameraType.PerspectiveCamera);
+            CameraManager.Ins.ChangeCamera(ECameraType.PerspectiveCamera, 0f);
             AudioManager.Ins.PlayBgm(BgmType.MainMenu, 1f);
             AudioManager.Ins.StopEnvironment();
             UIManager.Ins.OpenUI<StatusBarScreen>(param);
