@@ -96,6 +96,7 @@ namespace _Game.UIs.Popup
             {
                 dailyChallengeButtons[index].onClick.RemoveAllListeners();
             }
+            _currentBtnClick.OnUnHover();
             _currentBtnClick = null;
             base.Close();
         }

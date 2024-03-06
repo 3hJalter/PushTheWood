@@ -16,20 +16,20 @@ namespace _Game._Scripts.UIs.Component
         private TextMeshProUGUI _dayText;
         
         public List<Sprite> btnSprites;
-        public List<Sprite> btnHoverSprites;
+        public Image hoverImg;
 
         private TextMeshProUGUI DayText => _dayText? _dayText : _dayText = GetComponentInChildren<TextMeshProUGUI>();
 
         public void OnHover()
         {
             // Change button sprite
-            btnImage.sprite = btnHoverSprites[(int) State];
+            hoverImg.enabled = true;
         }
         
         public void OnUnHover()
         {
             // Change button sprite
-            btnImage.sprite = btnSprites[(int) State];
+            hoverImg.enabled = false;
         }
         
         public void SetIndex(int index, int currentDay)
