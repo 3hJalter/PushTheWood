@@ -77,8 +77,14 @@ namespace VinhLB
                 DevLog.Log(DevId.Vinh, "Click secret map button");
                 UIManager.Ins.OpenUI<SecretMapPopup>();
             });
-            _rewardChestButton.onClick.AddListener(() => { RewardManager.Ins.HomeReward.ClaimRewardChest(); });
-            _levelChestButton.onClick.AddListener(() => { RewardManager.Ins.HomeReward.ClaimLevelChest(); });
+            _rewardChestButton.onClick.AddListener(() =>
+            {
+                RewardManager.Ins.HomeReward.ClaimRewardChest();
+            });
+            _levelChestButton.onClick.AddListener(() =>
+            {
+                RewardManager.Ins.HomeReward.ClaimLevelChest();
+            });
 
             _shakeRewardTimer = TimerManager.Ins.PopSTimer();
             _shakeLevelTimer = TimerManager.Ins.PopSTimer();
