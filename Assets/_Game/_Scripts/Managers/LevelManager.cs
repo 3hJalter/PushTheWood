@@ -175,7 +175,6 @@ namespace _Game.GameGrid
         {   
             GameManager.Ins.PostEvent(EventID.StartGame);          
             player.SetActiveAgent(false);
-            objectiveTotal = 0;
             ConstructingLevel();
             SetCameraToPlayerIsland();
             OnObjectiveChange?.Invoke();
