@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Game.GameGrid;
 using _Game.Managers;
 using _Game.Utilities;
 using UnityEngine;
@@ -53,7 +54,7 @@ public class OffScreenIndicator : MonoBehaviour
         {
             Vector3 screenPosition = OffScreenIndicatorCore.GetScreenPosition(mainCamera, target.transform.position);
             bool isTargetVisible = OffScreenIndicatorCore.IsTargetVisible(screenPosition);
-            float distanceFromCamera = target.NeedDistanceText ? target.GetDistanceFromCamera(mainCamera.transform.position) : float.MinValue;// Gets the target distance from the camera.
+            // float distanceFromCamera = target.NeedDistanceText ? target.GetDistanceFromCamera(mainCamera.transform.position) : float.MinValue;// Gets the target distance from the camera.
             Indicator indicator = null;
 
             if(target.NeedBoxIndicator && isTargetVisible)
@@ -71,7 +72,10 @@ public class OffScreenIndicator : MonoBehaviour
             if(indicator)
             {
                 indicator.SetImageColor(target.TargetColor);// Sets the image color of the indicator.
-                indicator.SetDistanceText(distanceFromCamera); //Set the distance text for the indicator.
+                if (!isTargetVisible && target.NeedDistanceText)
+                {
+                    indicator.SetDistanceText(target.GetDistanceFromUnit(LevelManager.Ins.player));   //Set the distance text for the indicator.
+                }
                 indicator.transform.position = screenPosition; //Sets the position of the indicator on the screen.
                 // DevLog.Log(DevId.Hoang, $"Set position for indicator: {screenPosition}");
                 indicator.SetTextRotation(Quaternion.identity); // Sets the rotation of the distance text of the indicator.

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 22229124}
   - component: {fileID: 11434702}
   - component: {fileID: 114629346974849376}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: BoxIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 224144073109357840}
   - component: {fileID: 222696732796654534}
   - component: {fileID: 114225423569729942}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}

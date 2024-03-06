@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using _Game.GameGrid.Unit;
+using UnityEngine;
 
 /// <summary>
 /// Attach this script to all the target game objects in the scene.
@@ -100,5 +101,18 @@ public class Target : MonoBehaviour
     {
         float distanceFromCamera = Vector3.Distance(cameraPosition, transform.position);
         return distanceFromCamera;
+    }
+
+    #region Additional
+
+    [SerializeField] private GridUnit thisUnit;
+
+    #endregion
+    
+    public float GetDistanceFromUnit(GridUnit unit)
+    {
+        Vector2 thisUnitPos = new(thisUnit.MainCell.X, thisUnit.MainCell.Y);
+        Vector2 unitPos = new(unit.MainCell.X, unit.MainCell.Y);
+        return Vector2.Distance(thisUnitPos, unitPos);
     }
 }

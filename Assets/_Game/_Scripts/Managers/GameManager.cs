@@ -123,14 +123,13 @@ namespace _Game.Managers
             {
                 PostEvent(EventID.OnResetToMainMenu);
             }
-            
             if (gameState == GameState.Pause && gameStateI != GameState.Pause)
             {
                 DOTween.PlayAll();
                 PostEvent(EventID.UnPause);
                 PostEvent(EventID.UnPause, gameStateI);
             } 
-            
+            UIManager.Ins.indicatorParentTf.gameObject.SetActive(gameStateI == GameState.InGame); // TEST
             gameState = gameStateI;
         }
 
