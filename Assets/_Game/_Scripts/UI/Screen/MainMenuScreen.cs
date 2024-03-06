@@ -22,40 +22,10 @@ namespace _Game.UIs.Screen
         private Image _blockPanel;
         [SerializeField]
         private TabGroup _bottomNavigationTabGroup;
-        [SerializeField]
-        private TMP_Text _goldValueText;
-        [SerializeField]
-        private Transform _goldIconTF;
-        [SerializeField]
-        private TMP_Text _adTicketValueText;
-        [SerializeField]
-        private Transform _adTicketIconTF;
-
-        private bool _isFirstOpen;
-        private Tween _goldChangeTween;
-
-        private void Awake()
-        {
-            GameManager.Ins.RegisterListenerEvent(EventID.OnGoldChange,
-                data => ChangeGoldValue((ResourceChangeData)data));
-            GameManager.Ins.RegisterListenerEvent(EventID.OnAdTicketsChange,
-                data => ChangeAdTicketValue((ResourceChangeData)data));
-        }
-
-        private void OnDestroy()
-        {
-            GameManager.Ins.UnregisterListenerEvent(EventID.OnGoldChange,
-                data => ChangeGoldValue((ResourceChangeData)data));
-            GameManager.Ins.UnregisterListenerEvent(EventID.OnAdTicketsChange,
-                data => ChangeAdTicketValue((ResourceChangeData)data));
-        }
 
         public override void Setup(object param = null)
         {
             base.Setup(param);
-
-            _goldValueText.text = $"{GameManager.Ins.Gold}";
-            _adTicketValueText.text = $"{GameManager.Ins.AdTickets}";
 
             if (param is true)
             {
@@ -77,9 +47,9 @@ namespace _Game.UIs.Screen
             DebugManager.Ins?.OpenDebugCanvas(UI_POSITION.MAIN_MENU);
             GameManager.Ins.ChangeState(GameState.MainMenu);
             CameraManager.Ins.ChangeCamera(ECameraType.PerspectiveCamera);
-            CameraManager.Ins.ChangeCameraTargetPosition(LevelManager.Ins.player.transform.position);
             AudioManager.Ins.PlayBgm(BgmType.MainMenu, 1f);
             AudioManager.Ins.StopEnvironment();
+            UIManager.Ins.OpenUI<StatusBarScreen>(param);
             if (param is true)
             {
                 _bottomNavigationTabGroup.ResetSelectedTab(false);
@@ -110,76 +80,6 @@ namespace _Game.UIs.Screen
         public void OnClickSettingButton()
         {
             UIManager.Ins.OpenUI<SettingsPopup>();
-        }
-
-        private void ChangeGoldValue(ResourceChangeData data)
-        {
-            // If screen not open yet, just set value
-            if (!gameObject.activeSelf)
-            {
-                return;
-            }
-
-            // _goldValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT);
-
-            // If screen is open, play tween
-            // _goldChangeTween?.Kill();
-            // _goldChangeTween = DOTween.To(() => int.Parse(_goldValueText.text.Replace(",", "")),
-            //         x => _goldValueText.text = x.ToString("#,#"), value, 0.5f)
-            //     .OnKill(() =>
-            //     {
-            //         // Complete if be kill
-            //         _goldValueText.text = value.ToString("#,#");
-            //     });
-
-            if (data.ChangedAmount > 0 && data.Source is Vector3 spawnPosition)
-            {
-                int collectingCoinAmount = Mathf.Min((int)data.ChangedAmount, 8);
-                CollectingResourceManager.Ins.SpawnCollectingCoins(collectingCoinAmount, spawnPosition, _goldIconTF,
-                    (progress) =>
-                    {
-                        GameManager.Ins.SmoothGold += data.ChangedAmount / collectingCoinAmount;
-                        _goldValueText.text =
-                            GameManager.Ins.SmoothGold.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
-                    });
-            }
-            else
-            {
-                _goldValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
-            }
-        }
-
-        private void ChangeAdTicketValue(ResourceChangeData data)
-        {
-            // If screen not open yet, just set value
-            if (!gameObject.activeSelf)
-            {
-                return;
-            }
-
-            // If screen is open, play tween
-            // _goldChangeTween?.Kill();
-            // _goldChangeTween = DOTween.To(() => int.Parse(_gemValueText.text.Replace(",", "")),
-            //         x => _gemValueText.text = x.ToString("#,#"), value, 0.5f)
-            //     .OnKill(() => { _gemValueText.text = value.ToString("#,#"); });
-
-            if (data.ChangedAmount > 0 && data.Source is Vector3 spawnPosition)
-            {
-                float currentValue = data.OldValue;
-                int collectingAdTicketAmount = Mathf.Min((int)data.ChangedAmount, 8);
-                CollectingResourceManager.Ins.SpawnCollectingAdTickets(collectingAdTicketAmount, spawnPosition,
-                    _adTicketIconTF,
-                    (progress) =>
-                    {
-                        currentValue += data.ChangedAmount / collectingAdTicketAmount;
-                        _adTicketValueText.text =
-                            currentValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
-                    });
-            }
-            else
-            {
-                _adTicketValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
-            }
         }
     }
 }

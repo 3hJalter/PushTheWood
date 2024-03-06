@@ -26,7 +26,7 @@ namespace VinhLB
         [ShowIf(nameof(_useCustomSprite), false)]
         [SerializeField]
         private Sprite _tabActiveSprite;
-        
+
         private TabButton _selectedTabButton;
 
         private void Awake()
@@ -47,14 +47,14 @@ namespace VinhLB
                 OnTabSelected(_activeTabButton, false, pageAnimated);
             }
         }
-        
+
         public void ClearSelectedTab()
         {
             if (_selectedTabButton == null)
             {
                 return;
             }
-            
+
             if (_tabGroupDict.Keys.Count > 0)
             {
                 OnTabSelected(null, false, false);
@@ -88,7 +88,7 @@ namespace VinhLB
             if (button == _selectedTabButton)
             {
                 button.PlayIconAnim();
-                
+
                 return;
             }
 
@@ -106,17 +106,17 @@ namespace VinhLB
                 {
                     _selectedTabButton.SetBackgroundSprite(_tabActiveSprite);
                 }
-                
+
                 _tabGroupDict[_selectedTabButton] = GetTabPage(_selectedTabButton);
             }
-            
+
             foreach (KeyValuePair<TabButton, TabPage> element in _tabGroupDict)
             {
                 if (element.Value == null)
                 {
                     continue;
                 }
-                
+
                 if (element.Key == _selectedTabButton)
                 {
                     element.Value.Setup(!pageAnimated);
@@ -145,7 +145,10 @@ namespace VinhLB
 
                 if (!_useCustomSprite)
                 {
-                    tabButton.SetActiveState(false, false);
+                    if (tabButton.Interactable)
+                    {
+                        tabButton.SetActiveState(false, false);
+                    }
                 }
                 else
                 {

@@ -215,7 +215,6 @@ namespace _Game.Managers
             IsCanResetIsland = true;
             IsCanUndo = true;
             GameManager.Ins.ChangeState(GameState.InGame);
-            LevelManager.Ins.player.SetActiveAgent(false);
         }
 
         private void OnStartGame()
@@ -233,7 +232,6 @@ namespace _Game.Managers
             _pushHint = new PushHint(LevelManager.Ins.CurrentLevel.GetPushHint());
             screen.OnSetBoosterAmount();
             GameManager.Ins.ChangeState(GameState.InGame);
-            LevelManager.Ins.player.SetActiveAgent(false);
             // If hard level, show a notification -> If it None -> not show
             DevLog.Log(DevId.Hoang, $"LEVEL NORMAL TYPE: {LevelManager.Ins.CurrentLevel.LevelNormalType}");
         }
@@ -246,7 +244,6 @@ namespace _Game.Managers
             DevLog.Log(DevId.Hung, "ENDGAME - Show Win Screen");
             UIManager.Ins.OpenUI<WinScreen>();
             GameManager.Ins.ChangeState(GameState.WinGame);
-            LevelManager.Ins.player.SetActiveAgent(false);
         }
 
         private void OnLoseGame()
@@ -257,7 +254,6 @@ namespace _Game.Managers
             // Show Different Lose based on reason (Ex: Lose by Die will not show More time booster, instead show Revive) -> Check by the time remaining
             UIManager.Ins.OpenUI<LoseScreen>(time <= 0);
             GameManager.Ins.ChangeState(GameState.LoseGame);
-            LevelManager.Ins.player.SetActiveAgent(false);
         }
 
         private void CountTime()

@@ -254,8 +254,8 @@ GameObject:
   - component: {fileID: 8897314877290242478}
   - component: {fileID: 8897314877290242476}
   - component: {fileID: 8897314877290242475}
-  - component: {fileID: 7099563422924809517}
   - component: {fileID: 2289144875353773103}
+  - component: {fileID: 7099563422924809517}
   m_Layer: 5
   m_Name: Canvas_ScreenTransition
   m_TagString: Untagged
@@ -334,21 +334,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &7099563422924809517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8897314877290242473}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65c076d1e81112e41ab13edaca3a13d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDestroyOnClose: 0
-  useAnimator: 1
-  animator: {fileID: 2289144875353773103}
 --- !u!95 &2289144875353773103
 Animator:
   serializedVersion: 5
@@ -369,6 +354,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &7099563422924809517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8897314877290242473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65c076d1e81112e41ab13edaca3a13d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDestroyOnClose: 0
+  useAnimator: 1
+  animator: {fileID: 2289144875353773103}
 --- !u!1 &8897314878687925539
 GameObject:
   m_ObjectHideFlags: 0

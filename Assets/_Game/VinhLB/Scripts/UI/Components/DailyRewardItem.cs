@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace VinhLB
@@ -16,13 +15,10 @@ namespace VinhLB
         private RewardItem _rewardItemPrefab;
         [SerializeField]
         private Transform _rewardItemParentTF;
-        [FormerlySerializedAs("_activeRectTf")]
         [SerializeField]
         private RectTransform _activeRectTF;
-        [FormerlySerializedAs("_inactiveRectTf")]
         [SerializeField]
         private RectTransform _inactiveRectTF;
-        [FormerlySerializedAs("_checkedRectTf")]
         [SerializeField]
         private RectTransform _checkedRectTF;
 

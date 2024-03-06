@@ -61,7 +61,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         }
         private void FixedUpdate()
         {
-            if (!GameManager.Ins.IsState(GameState.InGame)) return;
+            //if (!(GameManager.Ins.IsState(GameState.InGame) || agent.isActiveAndEnabled)) return;
 
             //NOTE: 
             if (!agent.isActiveAndEnabled)
@@ -98,7 +98,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             IsDead = false;
             IsStun = false;
             stateMachine.ChangeState(StateEnum.Idle);
-            EventGlobalManager.Ins.OnPlayerChangeIsland?.Dispatch(true);
+            if(GameManager.Ins.IsState(GameState.InGame))
+                EventGlobalManager.Ins.OnPlayerChangeIsland?.Dispatch(true);
         }
 
         public override void OnDespawn()
@@ -217,13 +218,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             }
         }
 
-        public void SetActiveAgent(bool value)
+        public (GameGridCell, GameGridCell) SetActiveAgent(bool value)
         {
+            GameGridCell waterCell = null, playerCell = null;
             if (value)
             {
                 agent.enabled = true;
-                agent.LoadPath(LevelManager.Ins.CurrentLevel.HintLinePosList);
-                agent.Run();
+                (waterCell, playerCell) = agent.GetPathToSitDown();
                 InputDirection = agent.NextDirection;
             }
             else
@@ -232,6 +233,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 InputDirection = Direction.None;
                 CommandCache.Clear();
             }
+            return (waterCell, playerCell);
         }
         public void OnCharacterChangePosition()
         {

@@ -36,7 +36,9 @@ namespace VinhLB
         [SerializeField]
         private Image _background;
         [SerializeField]
-        private GameObject _activeGO;
+        private RectTransform _activeRectTF;
+        [SerializeField]
+        private Image _lockedIcon;
         [SerializeField]
         private Image _inactiveIcon;
         [SerializeField]
@@ -58,60 +60,96 @@ namespace VinhLB
         private Transform _activeIconTransform;
         private Tween _activeIconAnimTween;
 
-        public void SetActiveState(bool active, bool animated)
-        {
-            // if (active == _active)
-            // {
-            //     return;
-            // }
+        public bool Interactable => _interactable;
 
-            _active = active;
+        private void Start()
+        {
+            SetInteractable(_interactable);
+        }
+
+        public void SetInteractable(bool value)
+        {
+            _interactable = value;
+
+            if (_lockedIcon == null)
+            {
+                return;
+            }
+
+            if (_interactable)
+            {
+                _inactiveIcon.gameObject.SetActive(true);
+                _lockedIcon.gameObject.SetActive(false);
+                
+                SetActiveState(_active, false);
+            }
+            else
+            {
+                SetActiveState(false, false);
+                
+                _lockedIcon.gameObject.SetActive(true);
+                _inactiveIcon.gameObject.SetActive(false);
+            }
+        }
+
+        public void SetActiveState(bool value, bool animated)
+        {
+            _active = value;
 
             if (_activeIconTransform is null)
             {
                 _activeIconTransform = _activeIcon.transform;
             }
+            _activeRectTF.DOKill();
             _activeIconTransform.DOKill();
             _activeIconAnimTween = null;
 
             if (_active)
             {
-                _activeGO.SetActive(true);
+                _activeRectTF.gameObject.SetActive(true);
 
                 _inactiveIcon.gameObject.SetActive(false);
                 _activeIcon.gameObject.SetActive(true);
                 
+                float sizeIncrease = 1.25f;
                 if (_animType == AnimType.GoUp)
                 {
                     _nameText.gameObject.SetActive(true);
 
                     _layoutElement.flexibleWidth = 1f;
 
+                    float moveDistance = 60f;
                     if (animated)
                     {
                         float duration = 0.2f;
-                        Sequence sequence = DOTween.Sequence();
-                        sequence.AppendCallback(PlayIconAnim)
-                            .Join(_activeIconTransform.DOLocalMove(Vector3.up * 40f, duration).SetEase(Ease.OutBack))
-                            .Join(_activeIconTransform.DOScale(1.25f, duration).SetEase(Ease.OutBack));
+
+                        DOVirtual.Float(0f, -60f, duration, (floatValue) =>
+                        {
+                            _activeRectTF.SetPaddingTop(floatValue);
+                        }).SetEase(Ease.OutExpo);
+                        
+                        Sequence iconSequence = DOTween.Sequence();
+                        iconSequence.AppendCallback(PlayIconAnim)
+                            .Join(_activeIconTransform.DOLocalMove(Vector3.up * moveDistance, duration).SetEase(Ease.OutExpo))
+                            .Join(_activeIconTransform.DOScale(1.25f, duration).SetEase(Ease.OutExpo));
                     }
                     else
                     {
-                        _activeIconTransform.localPosition = Vector3.up * 40f;
+                        _activeIconTransform.localPosition = Vector3.up * moveDistance;
                         _activeIconTransform.localRotation = Quaternion.identity;
-                        _activeIconTransform.localScale = Vector3.one * 1.25f;
+                        _activeIconTransform.localScale = Vector3.one * sizeIncrease;
                     }
                 }
                 else if (_animType == AnimType.Enlarge)
                 {
                     _nameText.color = Color.white;
                     
-                    _contentTF.localScale = Vector3.one * 1.25f;
+                    _contentTF.localScale = Vector3.one * sizeIncrease;
                 }
             }
             else
             {
-                _activeGO.SetActive(false);
+                _activeRectTF.gameObject.SetActive(false);
 
                 _activeIcon.gameObject.SetActive(false);
                 _inactiveIcon.gameObject.SetActive(true);
