@@ -7526,8 +7526,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1267216522180438114}
         m_TargetAssemblyTypeName: _Game.UIs.Popup.SettingsPopup, Assembly-CSharp
-        m_MethodName: OnToggleHapticOn
-        m_Mode: 1
+        m_MethodName: OnChangeSfxVolume
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -7541,15 +7541,15 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1267216522180438114}
         m_TargetAssemblyTypeName: _Game.UIs.Popup.SettingsPopup, Assembly-CSharp
-        m_MethodName: OnToggleHapticOff
-        m_Mode: 1
+        m_MethodName: OnChangeSfxVolume
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!1 &3271994551963691138
 GameObject:
@@ -10875,8 +10875,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1267216522180438114}
         m_TargetAssemblyTypeName: _Game.UIs.Popup.SettingsPopup, Assembly-CSharp
-        m_MethodName: OnToggleHapticOn
-        m_Mode: 1
+        m_MethodName: OnChangeEnvironmentVolume
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -10890,15 +10890,15 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1267216522180438114}
         m_TargetAssemblyTypeName: _Game.UIs.Popup.SettingsPopup, Assembly-CSharp
-        m_MethodName: OnToggleHapticOff
-        m_Mode: 1
+        m_MethodName: OnChangeEnvironmentVolume
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!1 &5892760507446630088
 GameObject:
@@ -12351,8 +12351,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1267216522180438114}
         m_TargetAssemblyTypeName: _Game.UIs.Popup.SettingsPopup, Assembly-CSharp
-        m_MethodName: OnToggleHapticOn
-        m_Mode: 1
+        m_MethodName: OnChangeBgmVolume
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -12366,15 +12366,15 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1267216522180438114}
         m_TargetAssemblyTypeName: _Game.UIs.Popup.SettingsPopup, Assembly-CSharp
-        m_MethodName: OnToggleHapticOff
-        m_Mode: 1
+        m_MethodName: OnChangeBgmVolume
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!1 &6691574600091694230
 GameObject:
