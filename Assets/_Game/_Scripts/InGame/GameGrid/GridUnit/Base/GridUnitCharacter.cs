@@ -73,6 +73,7 @@ namespace _Game.GameGrid.Unit
         public override void ChangeSkin(int index)
         {
             animator = skinController.ChangeSkin(index);
+            ChangeAnim(_currentAnim, true);
         }
         #region SAVING DATA
         public override IMemento RawSave()

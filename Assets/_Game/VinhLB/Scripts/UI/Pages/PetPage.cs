@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using _Game.GameGrid;
 using _Game.Managers;
 using _Game.Resource;
 using _Game.Utilities;
@@ -16,8 +17,6 @@ namespace VinhLB
         private Transform _collectionItemParentTF;
         [SerializeField]
         private Transform _playerSkinParentTF;
-        [SerializeField]
-        private GameObject[] _playerSkins;
         [SerializeField]
         private HButton _buyButton;
         [SerializeField]
@@ -60,13 +59,11 @@ namespace VinhLB
                 {
                     _collectionItemList[i].SetSelected(true);
                     _collectionItemList[i].SetChosen(true);
-                    _playerSkins[i].gameObject.SetActive(true);
                 }
                 else
                 {
                     _collectionItemList[i].SetSelected(false);
                     _collectionItemList[i].SetChosen(false);
-                    _playerSkins[i].gameObject.SetActive(false);
                 }
             }
         }
@@ -83,6 +80,7 @@ namespace VinhLB
             base.Close();
 
             _playerSkinParentTF.gameObject.SetActive(false);
+            LevelManager.Ins.player.ChangeSkin(DataManager.Ins.CurrentPlayerSkinIndex);
         }
 
         private void OnItemClick(int id, int data)
@@ -110,9 +108,8 @@ namespace VinhLB
             }
 
             _collectionItemList[_currentPetIndex].SetSelected(false);
-            _playerSkins[_currentPetIndex].gameObject.SetActive(false);
             _currentPetIndex = id;
-            _playerSkins[_currentPetIndex].gameObject.SetActive(true);
+            LevelManager.Ins.player.ChangeSkin(data);
             _collectionItemList[_currentPetIndex].SetSelected(true);
         }
 

@@ -31,6 +31,7 @@ namespace _Game.Managers
 
         private UnityEngine.Camera mainCamera;
         private ECameraType mainTypeCamera;
+        public Vector3 CameraTargetPosition => cameraTarget.position;
         public UnityEngine.Camera BrainCamera => brainCamera;
         public CinemachineVirtualCameraBase CurrentVirtualCamera => currentVirtualCamera;
 
@@ -80,14 +81,14 @@ namespace _Game.Managers
             return cameraComponentDic[ECameraType.PerspectiveCamera] as T;
         }
 
-        public void ChangeCameraTargetPosition(Vector3 position, float moveTime = -1f)
+        public void ChangeCameraTargetPosition(Vector3 position, float moveTime = -1f, Ease ease = Ease.Linear)
         {
             // if the same position, do nothing
             if ((cameraTarget.position - position).sqrMagnitude < 0.01f) return;
             
             if (moveTime < 0f) moveTime = cameraMoveTime;
             cameraTarget.DOKill();
-            cameraTarget.DOMove(position, moveTime).SetEase(Ease.Linear);
+            cameraTarget.DOMove(position, moveTime).SetEase(ease);
         }   
         public void ChangeCameraTargetPositionInstant(Vector3 position)
         {

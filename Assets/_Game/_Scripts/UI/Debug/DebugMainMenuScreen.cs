@@ -139,7 +139,7 @@ namespace _Game.UIs.Screen
         
         private void AddGold()
         {
-            GameManager.Ins.GainGold(100, _addGoldButton.transform.position);
+            GameManager.Ins.GainGold(1000, _addGoldButton.transform.position);
             //UIManager.Ins.UpdateUIs();
         }
         
