@@ -285,7 +285,7 @@ MonoBehaviour:
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.5
-  m_CameraDistance: 1
+  m_CameraDistance: 0.01
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_DeadZoneDepth: 0
@@ -1025,7 +1025,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7959138817237010950, guid: 643723ad3d6660042bd843a9d6a3fdae, type: 3}
       propertyPath: m_Lens.OrthographicSize
-      value: 20
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 8036708539411644792, guid: 643723ad3d6660042bd843a9d6a3fdae, type: 3}
       propertyPath: m_LocalPosition.y

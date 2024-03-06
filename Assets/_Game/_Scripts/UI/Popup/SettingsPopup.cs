@@ -95,24 +95,20 @@ namespace _Game.UIs.Popup
         public void OnToggleHapticOff()
         {
             HVibrate.OnToggleHaptic(false);
-            DevLog.Log(DevId.Hoang, "Haptic off");
         }
 
         public void OnToggleHapticOn()
         {
             HVibrate.OnToggleHaptic(true);
-            DevLog.Log(DevId.Hoang, "Haptic on");
         }
 
         public void OnToggleGridOff()
         {
-            DevLog.Log(DevId.Vinh, "Grid off");
             FXManager.Ins.SwitchGridActive(true, false);
         }
         
         public void OnToggleGridOn()
         {
-            DevLog.Log(DevId.Vinh, "Grid on");
             FXManager.Ins.SwitchGridActive(true, true);
         }
 

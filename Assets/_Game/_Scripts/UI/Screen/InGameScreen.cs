@@ -119,12 +119,16 @@ namespace _Game.UIs.Screen
             if (param is null) MoveInputManager.Ins.ShowContainer(true);
             else MoveInputManager.Ins.ShowContainer(true, (bool)param);
             if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
-            CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera);
             canvasGroup.alpha = 0f;
             blockPanel.enabled = true;
             UpdateLevelText();
             UpdateObjectiveText();
             isTimeNormal = false;
+            CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera);
+            TimerManager.Ins.WaitForTime(0.1f, () =>
+            {
+                CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera, 1f);
+            });
         }
 
         public override void Open(object param = null)
