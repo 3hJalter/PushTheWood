@@ -45,7 +45,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         public override void OnExecute(Player t)
         {
             if (!isSleeping) return;
-
+            if (!GameManager.Ins.IsState(GameState.InGame)) return;
             if (t.InputDirection != Direction.None)
             {
                 t.ChangeAnim(Constants.SLEEP_UP_ANIM);

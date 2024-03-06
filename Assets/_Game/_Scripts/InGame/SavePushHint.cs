@@ -57,6 +57,7 @@ namespace _Game._Scripts.InGame
         private bool _isShowHint;
         public void OnStartHint(int islandID, bool isShowHint = true)
         {   
+            if (_playerStepsOnIsland.Count == 0) return;
             if (_currentPlayerSteps is not null) OnStopHint();
             // make a copy of the stack
             _isShowHint = isShowHint;
