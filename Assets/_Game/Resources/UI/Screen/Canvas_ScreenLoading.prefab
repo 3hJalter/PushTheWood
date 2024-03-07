@@ -186,7 +186,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   _progressSlider: {fileID: 6753236952471573904}
   _progressText: {fileID: 6766634591824115617}
-  _loadingText: {fileID: 0}
+  _loadingText: {fileID: 5776670801417363536}
 --- !u!1 &1509764293477702006
 GameObject:
   m_ObjectHideFlags: 0
