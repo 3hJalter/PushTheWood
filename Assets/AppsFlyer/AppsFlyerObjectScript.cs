@@ -34,6 +34,8 @@ public class AppsFlyerObjectScript : MonoBehaviour , IAppsFlyerConversionData
         //******************************/
  
         AppsFlyer.startSDK();
+        AppsFlyerAdRevenue.start();
+        AppsFlyerAdRevenue.setIsDebug(isDebug);
     }
 
 

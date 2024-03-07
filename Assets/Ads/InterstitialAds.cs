@@ -1,3 +1,4 @@
+using _Game.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,6 +37,7 @@ public class InterstitialAds : MonoBehaviour
         if (MaxSdk.IsInterstitialReady(adUnitId))
         {
             MaxSdk.ShowInterstitial(adUnitId);
+            AnalysticManager.Ins.InterAdsShow(_Game.Ads.Placement.In_Game);
             this.onAdsClose = onAdsClose;
         }
         else
@@ -48,6 +50,7 @@ public class InterstitialAds : MonoBehaviour
     private void OnInterstitialLoadedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
     {
         // Interstitial ad is ready for you to show. MaxSdk.IsInterstitialReady(adUnitId) now returns 'true'
+        AnalysticManager.Ins.AppsFlyerTrackEvent("af_inters_successfullyloaded");
         if (showImmediate)
             MaxSdk.ShowInterstitial(adUnitId);
         // Reset retry attempt
@@ -65,7 +68,10 @@ public class InterstitialAds : MonoBehaviour
         Invoke("LoadInterstitial", (float)retryDelay);
     }
 
-    private void OnInterstitialDisplayedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo) { }
+    private void OnInterstitialDisplayedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo) 
+    {
+        AnalysticManager.Ins.AppsFlyerTrackEvent("af_inters_displayed");
+    }
 
     private void OnInterstitialAdFailedToDisplayEvent(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)
     {

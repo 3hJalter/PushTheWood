@@ -1,14 +1,11 @@
 using _Game._Scripts.Managers;
-using _Game.Data;
 using _Game.Managers;
 using _Game.Resource;
-using Newtonsoft.Json.Bson;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using VinhLB;
+using _Game.Ads;
 
 public class RewardedAds : MonoBehaviour
 {
@@ -21,6 +18,7 @@ public class RewardedAds : MonoBehaviour
 
     List<int> boosterAmounts;
     List<int> resourceAmounts;
+    _Game.Ads.Placement placement;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +28,6 @@ public class RewardedAds : MonoBehaviour
         MaxSdkCallbacks.Rewarded.OnAdLoadFailedEvent += OnRewardedAdLoadFailedEvent;
         MaxSdkCallbacks.Rewarded.OnAdDisplayedEvent += OnRewardedAdDisplayedEvent;
         MaxSdkCallbacks.Rewarded.OnAdClickedEvent += OnRewardedAdClickedEvent;
-        MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent += OnRewardedAdRevenuePaidEvent;
         MaxSdkCallbacks.Rewarded.OnAdHiddenEvent += OnRewardedAdHiddenEvent;
         MaxSdkCallbacks.Rewarded.OnAdDisplayFailedEvent += OnRewardedAdFailedToDisplayEvent;
         MaxSdkCallbacks.Rewarded.OnAdReceivedRewardEvent += OnRewardedAdReceivedRewardEvent;
@@ -42,17 +39,19 @@ public class RewardedAds : MonoBehaviour
     }
 
     public void Show(List<CurrencyType> resourceTypes = null, List<int> resourceAmount = null,
-        List<BoosterType> boosterTypes = null, List<int> boosterAmount = null)
+        List<BoosterType> boosterTypes = null, List<int> boosterAmount = null, _Game.Ads.Placement placement = _Game.Ads.Placement.None)
     {
         this.resourceTypes = resourceTypes;
         this.resourceAmounts = resourceAmount;
         this.boosterTypes = boosterTypes;
         this.boosterAmounts = boosterAmount;
+        this.placement = placement;
         Show();
     }
 
     private void Show()
     {
+        AnalysticManager.Ins.AppsFlyerTrackEvent("af_rewarded_logicgame");
         if (MaxSdk.IsRewardedAdReady(adUnitId))
         {
             MaxSdk.ShowRewardedAd(adUnitId);
@@ -66,7 +65,9 @@ public class RewardedAds : MonoBehaviour
 
     private void OnRewardedAdLoadedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
     {
-        // Rewarded ad is ready for you to show. MaxSdk.IsRewardedAdReady(adUnitId) now returns 'true'.
+        // Rewarded ad is ready for you to show. MaxSdk.IsRewardedAdReady(adUnitId) now returns 'true'.\
+        AnalysticManager.Ins.AppsFlyerTrackEvent("af_rewarded_successfullyloaded");
+
         if (showImmediate)
             MaxSdk.ShowRewardedAd(adUnitId);
         // Reset retry attempt
@@ -84,7 +85,10 @@ public class RewardedAds : MonoBehaviour
         Invoke("LoadRewardedAd", (float)retryDelay);
     }
 
-    private void OnRewardedAdDisplayedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo) { }
+    private void OnRewardedAdDisplayedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo) 
+    {
+        AnalysticManager.Ins.AppsFlyerTrackEvent("af_rewarded_displayed");
+    }
 
     private void OnRewardedAdFailedToDisplayEvent(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)
     {
@@ -125,15 +129,11 @@ public class RewardedAds : MonoBehaviour
                         break;
                 }
             }
+            AnalysticManager.Ins.RewardAdsComplete(placement);
             GameManager.Ins.PostEvent(_Game.DesignPattern.EventID.OnUpdateUIs);
         }
     }
-
-    private void OnRewardedAdRevenuePaidEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
-    {
-        // Ad revenue paid. Use this callback to track user revenue.
-    }
-
+  
     // Update is called once per frame
     void Update()
     {
