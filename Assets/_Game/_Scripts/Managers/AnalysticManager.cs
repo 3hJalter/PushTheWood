@@ -8,6 +8,7 @@ using _Game.Resource;
 using _Game.Ads;
 using _Game.Utilities.Timer;
 using System;
+using _Game._Scripts.InGame;
 
 namespace _Game.Managers
 {
@@ -70,7 +71,7 @@ namespace _Game.Managers
             FirebaseAnalytics.LogEvent("level_complete", param);
         }
 
-        public void LevelFail(LevelType type)
+        public void LevelFail(LevelType type, LevelLoseCondition loseCondition)
         {
             Parameter[] param = new Parameter[3];
             switch (type)
@@ -78,17 +79,17 @@ namespace _Game.Managers
                 case LevelType.Normal:
                     param[0] = new Parameter("level", DataManager.Ins.GameData.user.normalLevelIndex);
                     param[1] = new Parameter("duration", GameplayManager.Ins.GameDuration);
-                    param[2] = new Parameter("reason", 0);
+                    param[2] = new Parameter("reason", loseCondition.ToString());
                     break;
                 case LevelType.DailyChallenge:
                     param[0] = new Parameter("level_dailyChallenge", DataManager.Ins.GameData.user.currentDailyChallengerDay);
                     param[1] = new Parameter("duration", GameplayManager.Ins.GameDuration);
-                    param[2] = new Parameter("reason", 0);
+                    param[2] = new Parameter("reason", loseCondition.ToString());
                     break;
                 case LevelType.Secret:
                     param[0] = new Parameter("level_expedition", DataManager.Ins.GameData.user.secretLevelIndex);
                     param[1] = new Parameter("duration", GameplayManager.Ins.GameDuration);
-                    param[2] = new Parameter("reason", 0);
+                    param[2] = new Parameter("reason", loseCondition.ToString());
                     break;
             }
 

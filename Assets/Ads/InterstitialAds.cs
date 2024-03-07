@@ -1,3 +1,4 @@
+using _Game.Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,6 +37,7 @@ public class InterstitialAds : MonoBehaviour
         if (MaxSdk.IsInterstitialReady(adUnitId))
         {
             MaxSdk.ShowInterstitial(adUnitId);
+            AnalysticManager.Ins.InterAdsShow(_Game.Ads.Placement.In_Game);
             this.onAdsClose = onAdsClose;
         }
         else

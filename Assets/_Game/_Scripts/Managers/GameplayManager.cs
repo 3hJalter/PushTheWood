@@ -253,6 +253,9 @@ namespace _Game.Managers
             //AdsManager.Ins.ShowBannerAds();
             //GameManager.Ins.PostEvent(EventID.OnChangeLayoutForBanner, true);
             #endregion
+            #region ANALYSTIC
+            AnalysticManager.Ins.LevelStart(LevelManager.Ins.CurrentLevel.LevelType);
+            #endregion
             DevLog.Log(DevId.Hoang, $"LEVEL NORMAL TYPE: {LevelManager.Ins.CurrentLevel.LevelNormalType}");
         }
 
@@ -264,6 +267,17 @@ namespace _Game.Managers
             DevLog.Log(DevId.Hung, "ENDGAME - Show Win Screen");
             UIManager.Ins.OpenUI<WinScreen>(OnWinGameReward());
             GameManager.Ins.ChangeState(GameState.WinGame);
+         
+            #region ANALYSTIC
+            AnalysticManager.Ins.LevelComplete(LevelManager.Ins.CurrentLevel.LevelType);
+            switch (LevelManager.Ins.CurrentLevel.LevelType)
+            {
+                case LevelType.Normal:
+                    DataManager.Ins.GameData.user.retryTime = 0;
+                    break;
+            }
+            #endregion
+
         }
 
         private Reward[] OnWinGameReward()
@@ -325,6 +339,16 @@ namespace _Game.Managers
             // Show Different Lose based on reason (Ex: Lose by Die will not show More time booster, instead show Revive) -> Check by the time remaining
             UIManager.Ins.OpenUI<LoseScreen>(o);
             GameManager.Ins.ChangeState(GameState.LoseGame);
+
+            #region ANALYSTIC
+            AnalysticManager.Ins.LevelFail(LevelManager.Ins.CurrentLevel.LevelType, (LevelLoseCondition)o);
+            switch (LevelManager.Ins.CurrentLevel.LevelType)
+            {
+                case LevelType.Normal:
+                    DataManager.Ins.GameData.user.retryTime += 1;
+                    break;
+            }
+            #endregion
         }
 
         private void CountTime()

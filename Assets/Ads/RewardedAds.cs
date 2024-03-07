@@ -1,14 +1,11 @@
 using _Game._Scripts.Managers;
-using _Game.Data;
 using _Game.Managers;
 using _Game.Resource;
-using Newtonsoft.Json.Bson;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using VinhLB;
+using _Game.Ads;
 
 public class RewardedAds : MonoBehaviour
 {
@@ -21,6 +18,7 @@ public class RewardedAds : MonoBehaviour
 
     List<int> boosterAmounts;
     List<int> resourceAmounts;
+    _Game.Ads.Placement placement;
 
     // Start is called before the first frame update
     void Start()
@@ -42,12 +40,13 @@ public class RewardedAds : MonoBehaviour
     }
 
     public void Show(List<CurrencyType> resourceTypes = null, List<int> resourceAmount = null,
-        List<BoosterType> boosterTypes = null, List<int> boosterAmount = null)
+        List<BoosterType> boosterTypes = null, List<int> boosterAmount = null, _Game.Ads.Placement placement = _Game.Ads.Placement.None)
     {
         this.resourceTypes = resourceTypes;
         this.resourceAmounts = resourceAmount;
         this.boosterTypes = boosterTypes;
         this.boosterAmounts = boosterAmount;
+        this.placement = placement;
         Show();
     }
 
@@ -125,6 +124,7 @@ public class RewardedAds : MonoBehaviour
                         break;
                 }
             }
+            AnalysticManager.Ins.RewardAdsComplete(placement);
             GameManager.Ins.PostEvent(_Game.DesignPattern.EventID.OnUpdateUIs);
         }
     }
