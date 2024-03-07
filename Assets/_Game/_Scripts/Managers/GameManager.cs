@@ -94,7 +94,9 @@ namespace _Game.Managers
                     
                     if (day > 0)
                     {
+                        _gameData.user.playedDay += 1;
                         _gameData.user.currentDailyChallengerDay += day;
+                        AnalysticManager.Ins.Day();
                     }
                     // if the currentDailyChallengerDay is greater than the number of daily challenger, reset it
                     if (_gameData.user.currentDailyChallengerDay > Constants.DAILY_CHALLENGER_COUNT)
