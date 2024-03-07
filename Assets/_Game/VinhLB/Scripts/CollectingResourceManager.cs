@@ -31,67 +31,95 @@ namespace VinhLB
             public Tween ReactionTween;
         }
 
-        [Title("Gold")]
-        [SerializeField]
-        private CollectingResourceConfig _collectingCoinConfig;
-
-        [Title("Ad Tickets")]
-        [SerializeField]
-        private CollectingResourceConfig _collectingAdTicketConfig;
-
-        [Title("Reward Keys")]
-        [SerializeField]
-        private CollectingResourceConfig _collectingRewardKeyConfig;
-
         private const float HEIGHT_OFFSET = 60;
         private const float HEIGHT_INCREASE = 50;
 
-        public void SpawnCollectingCoins(int amount, Vector3 startPosition, Transform endPoint,
+        [FormerlySerializedAs("_collectingCoinConfig")]
+        [Title("UI Gold")]
+        [SerializeField]
+        private CollectingResourceConfig _collectingUICoinConfig;
+
+        [FormerlySerializedAs("_collectingAdTicketConfig")]
+        [Title("UI Ad Tickets")]
+        [SerializeField]
+        private CollectingResourceConfig _collectingUIAdTicketConfig;
+
+        [Title("UI Reward Keys")]
+        [SerializeField]
+        private CollectingResourceConfig _collectingUIRewardKeyConfig;
+
+        [FormerlySerializedAs("_collectingRewardKeyConfig")]
+        [Title("In-game Reward Keys")]
+        [SerializeField]
+        private CollectingResourceConfig _collectingInGameRewardKeyConfig;
+
+        private OverlayScreen _overlayScreen;
+
+        public void SpawnCollectingUICoins(int amount, Vector3 startPosition, Transform endPoint,
             Action<float> onEachReachEnd = null)
         {
-            if (_collectingCoinConfig.CollectingResourceParentTF == null)
+            UpdateComponents();
+
+            if (_collectingUICoinConfig.CollectingResourceParentTF == null)
             {
-                _collectingCoinConfig.CollectingResourceParentTF =
-                    UIManager.Ins.OpenUI<OverlayScreen>().UICoinParentRectTF;
+                _collectingUICoinConfig.CollectingResourceParentTF = _overlayScreen.UICoinParentRectTF;
             }
 
-            SpawnCollectingResource(_collectingCoinConfig, amount, startPosition, endPoint, onEachReachEnd);
+            SpawnCollectingUIResource(_collectingUICoinConfig, amount, startPosition, endPoint, onEachReachEnd);
         }
 
-        public void SpawnCollectingAdTickets(int amount, Vector3 startPosition, Transform endPoint,
+        public void SpawnCollectingUIAdTickets(int amount, Vector3 startPosition, Transform endPoint,
             Action<float> onEachReachEnd = null)
         {
-            if (_collectingAdTicketConfig.CollectingResourceParentTF == null)
+            UpdateComponents();
+
+            if (_collectingUIAdTicketConfig.CollectingResourceParentTF == null)
             {
-                _collectingAdTicketConfig.CollectingResourceParentTF =
-                    UIManager.Ins.OpenUI<OverlayScreen>().UIAdTicketParentRectTF;
+                _collectingUIAdTicketConfig.CollectingResourceParentTF = _overlayScreen.UIAdTicketParentRectTF;
             }
 
-            SpawnCollectingResource(_collectingAdTicketConfig, amount, startPosition, endPoint, onEachReachEnd);
+            SpawnCollectingUIResource(_collectingUIAdTicketConfig, amount, startPosition, endPoint, onEachReachEnd);
+        }
+
+        public void SpawnCollectingLevelProgress(int amount, Vector3 startPosition, Transform endPoint,
+            Action<float> onEachReachEnd = null)
+        {
+            UpdateComponents();
+
+            if (_collectingUIAdTicketConfig.CollectingResourceParentTF == null)
+            {
+                _collectingUIAdTicketConfig.CollectingResourceParentTF = _overlayScreen.UIAdTicketParentRectTF;
+            }
+
+            SpawnCollectingUIResource(_collectingUIAdTicketConfig, amount, startPosition, endPoint, onEachReachEnd);
         }
 
         public void SpawnCollectingRewardKey(int amount, Transform objectTransform)
         {
-            UIRewardKey unit = SimplePool.Spawn<UIRewardKey>(DataManager.Ins.GetUIUnit(PoolType.UIRewardKey));
+            UpdateComponents();
+
+            UIRewardKey unit =
+                SimplePool.Spawn<UIRewardKey>(
+                    DataManager.Ins.GetUIUnit(_collectingInGameRewardKeyConfig.PrefabPoolType));
             Vector2 viewPortPoint =
                 CameraManager.Ins.WorldToViewportPoint(objectTransform.position) - Vector3.one * 0.5f;
             unit.Text.text = $"+{amount}";
             unit.CanvasGroup.alpha = 0;
 
-            if (_collectingRewardKeyConfig.CollectingResourceParentTF == null)
+            if (_collectingInGameRewardKeyConfig.CollectingResourceParentTF == null)
             {
-                _collectingRewardKeyConfig.CollectingResourceParentTF =
-                    UIManager.Ins.OpenUI<OverlayScreen>().UIRewardKeyRectTF;
+                _collectingInGameRewardKeyConfig.CollectingResourceParentTF = _overlayScreen.UIRewardKeyRectTF;
             }
-            if (unit.Tf.parent != _collectingRewardKeyConfig.CollectingResourceParentTF)
+            if (unit.Tf.parent != _collectingInGameRewardKeyConfig.CollectingResourceParentTF)
             {
-                unit.Tf.SetParent(_collectingRewardKeyConfig.CollectingResourceParentTF, false);
+                unit.Tf.SetParent(_collectingInGameRewardKeyConfig.CollectingResourceParentTF, false);
             }
-            RectTransform parentRectTransform = _collectingRewardKeyConfig.CollectingResourceParentTF as RectTransform;
+            RectTransform parentRectTransform =
+                _collectingInGameRewardKeyConfig.CollectingResourceParentTF as RectTransform;
 
             Sequence s = DOTween.Sequence();
-            s.Append(unit.CanvasGroup.DOFade(1, _collectingRewardKeyConfig.MoveDuration))
-                .Join(DOVirtual.Float(0, HEIGHT_INCREASE, _collectingRewardKeyConfig.MoveDuration, y =>
+            s.Append(unit.CanvasGroup.DOFade(1, _collectingInGameRewardKeyConfig.MoveDuration))
+                .Join(DOVirtual.Float(0, HEIGHT_INCREASE, _collectingInGameRewardKeyConfig.MoveDuration, y =>
                 {
                     Vector2 viewPortPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) -
                                             Vector3.one * 0.5f;
@@ -99,8 +127,9 @@ namespace VinhLB
                         parentRectTransform.rect.height * viewPortPoint.y + 60 + y);
                 }).SetEase(Ease.OutQuart))
                 .Append(
-                    unit.CanvasGroup.DOFade(0, _collectingRewardKeyConfig.MoveDuration * 1.5f).SetEase(Ease.InQuint))
-                .Join(DOVirtual.Float(0, HEIGHT_INCREASE, _collectingRewardKeyConfig.MoveDuration * 1.5f, y =>
+                    unit.CanvasGroup.DOFade(0, _collectingInGameRewardKeyConfig.MoveDuration * 1.5f)
+                        .SetEase(Ease.InQuint))
+                .Join(DOVirtual.Float(0, HEIGHT_INCREASE, _collectingInGameRewardKeyConfig.MoveDuration * 1.5f, y =>
                 {
                     Vector2 viewPortPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) -
                                             Vector3.one * 0.5f;
@@ -116,7 +145,21 @@ namespace VinhLB
             }
         }
 
-        private async void SpawnCollectingResource(CollectingResourceConfig config, int amount,
+        private void UpdateComponents()
+        {
+            if (_overlayScreen == null)
+            {
+                _overlayScreen = UIManager.Ins.OpenUI<OverlayScreen>();
+            }
+
+            if (_overlayScreen != null && !_overlayScreen.gameObject.activeInHierarchy)
+            {
+                _overlayScreen.Setup();
+                _overlayScreen.Open();
+            }
+        }
+
+        private async void SpawnCollectingUIResource(CollectingResourceConfig config, int amount,
             Vector3 startPosition, Transform endPoint, Action<float> onEachReachEnd)
         {
             if (amount <= 0)

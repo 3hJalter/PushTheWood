@@ -126,15 +126,22 @@ MonoBehaviour:
   _tabGroup: {fileID: 4237832962861450508}
   _interactable: 1
   _buttonSound: 100
+  _changeSizeWhenActive: 1
+  _layoutElement: {fileID: 2230065263647313023}
   _background: {fileID: 4679017875935522966}
   _activeRectTF: {fileID: 1993824499348443661}
   _lockedIcon: {fileID: 0}
-  _inactiveIcon: {fileID: 3575292238188418122}
+  _showIcon: 1
   _activeIcon: {fileID: 8958775138078501678}
+  _inactiveIcon: {fileID: 3575292238188418122}
   _nameText: {fileID: 3964478603659621673}
+  _hideNameTextWhenInactive: 1
+  _changeNameTextColor: 0
+  _activeNameTextColor: {r: 1, g: 1, b: 1, a: 1}
+  _inactiveNameTextColor: {r: 1, g: 1, b: 1, a: 1}
   _animType: 0
-  _layoutElement: {fileID: 2230065263647313023}
-  _contentTF: {fileID: 0}
+  _goUpOffset: 60
+  _contentRectTF: {fileID: 0}
 --- !u!1 &362723999315466739
 GameObject:
   m_ObjectHideFlags: 0
@@ -298,15 +305,22 @@ MonoBehaviour:
   _tabGroup: {fileID: 4237832962861450508}
   _interactable: 0
   _buttonSound: 100
+  _changeSizeWhenActive: 1
+  _layoutElement: {fileID: 8159526368135347163}
   _background: {fileID: 4473318275510520537}
   _activeRectTF: {fileID: 4125198182631377045}
   _lockedIcon: {fileID: 6006687901797957403}
-  _inactiveIcon: {fileID: 8743935461805920794}
+  _showIcon: 1
   _activeIcon: {fileID: 7869567547886858448}
+  _inactiveIcon: {fileID: 8743935461805920794}
   _nameText: {fileID: 6373261135646925344}
+  _hideNameTextWhenInactive: 1
+  _changeNameTextColor: 0
+  _activeNameTextColor: {r: 1, g: 1, b: 1, a: 1}
+  _inactiveNameTextColor: {r: 1, g: 1, b: 1, a: 1}
   _animType: 0
-  _layoutElement: {fileID: 8159526368135347163}
-  _contentTF: {fileID: 0}
+  _goUpOffset: 60
+  _contentRectTF: {fileID: 0}
 --- !u!1 &1012664403829864165
 GameObject:
   m_ObjectHideFlags: 0
@@ -2216,15 +2230,22 @@ MonoBehaviour:
   _tabGroup: {fileID: 4237832962861450508}
   _interactable: 1
   _buttonSound: 100
+  _changeSizeWhenActive: 1
+  _layoutElement: {fileID: 3967665982374666677}
   _background: {fileID: 7373102875402315623}
   _activeRectTF: {fileID: 4179340939403042133}
   _lockedIcon: {fileID: 0}
-  _inactiveIcon: {fileID: 3675958542612833676}
+  _showIcon: 1
   _activeIcon: {fileID: 6021871383323093070}
+  _inactiveIcon: {fileID: 3675958542612833676}
   _nameText: {fileID: 8830761444682609956}
+  _hideNameTextWhenInactive: 1
+  _changeNameTextColor: 0
+  _activeNameTextColor: {r: 1, g: 1, b: 1, a: 1}
+  _inactiveNameTextColor: {r: 1, g: 1, b: 1, a: 1}
   _animType: 0
-  _layoutElement: {fileID: 3967665982374666677}
-  _contentTF: {fileID: 0}
+  _goUpOffset: 60
+  _contentRectTF: {fileID: 0}
 --- !u!1 &6676244588500944741
 GameObject:
   m_ObjectHideFlags: 0

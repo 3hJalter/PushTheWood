@@ -31,8 +31,13 @@ namespace VinhLB
         private bool _interactable = true;
         [SerializeField]
         private SfxType _buttonSound = SfxType.Click;
-        
+
         [Header("Animation")]
+        [SerializeField]
+        private bool _changeSizeWhenActive = true;
+        [ShowIf(nameof(_changeSizeWhenActive), false)]
+        [SerializeField]
+        private LayoutElement _layoutElement;
         [SerializeField]
         private Image _background;
         [SerializeField]
@@ -40,24 +45,43 @@ namespace VinhLB
         [SerializeField]
         private Image _lockedIcon;
         [SerializeField]
-        private Image _inactiveIcon;
+        private bool _showIcon = true;
+        [ShowIf(nameof(_showIcon), false)]
         [SerializeField]
         private Image _activeIcon;
+        [ShowIf(nameof(_showIcon), false)]
+        [SerializeField]
+        private Image _inactiveIcon;
         [SerializeField]
         private TMP_Text _nameText;
+        [ShowIf("@this._nameText != null", false)]
+        [SerializeField]
+        private bool _hideNameTextWhenInactive = true;
+        [ShowIf("@this._nameText != null", false)]
+        [SerializeField]
+        private bool _changeNameTextColor = false;
+        [ShowIf("@this._nameText != null && _changeNameTextColor", false)]
+        [SerializeField]
+        private Color _activeNameTextColor = Color.white;
+        [ShowIf("@this._nameText != null && _changeNameTextColor", false)]
+        [SerializeField]
+        private Color _inactiveNameTextColor = Color.white;
         [SerializeField]
         private AnimType _animType;
-        // 'GoUp' anim type
         [ShowIf(nameof(_animType), AnimType.GoUp, false)]
         [SerializeField]
-        private LayoutElement _layoutElement;
-        // 'Enlarge' anim type
+        private float _goUpDuration = 0.2f;
+        [ShowIf(nameof(_animType), AnimType.GoUp, false)]
+        [SerializeField]
+        private float _goUpOffset = 10f;
         [ShowIf(nameof(_animType), AnimType.Enlarge, false)]
         [SerializeField]
-        private Transform _contentTF;
+        private Transform _contentRectTF;
+        [ShowIf("@this._animType == AnimType.GoUp || this._animType == AnimType.Enlarge", false)]
+        [SerializeField]
+        private float _sizeIncrease = 1.25f;
 
         private bool _active;
-        private Transform _activeIconTransform;
         private Tween _activeIconAnimTween;
 
         public bool Interactable => _interactable;
@@ -80,13 +104,13 @@ namespace VinhLB
             {
                 _inactiveIcon.gameObject.SetActive(true);
                 _lockedIcon.gameObject.SetActive(false);
-                
+
                 SetActiveState(_active, false);
             }
             else
             {
                 SetActiveState(false, false);
-                
+
                 _lockedIcon.gameObject.SetActive(true);
                 _inactiveIcon.gameObject.SetActive(false);
             }
@@ -96,79 +120,107 @@ namespace VinhLB
         {
             _active = value;
 
-            if (_activeIconTransform is null)
-            {
-                _activeIconTransform = _activeIcon.transform;
-            }
             _activeRectTF.DOKill();
-            _activeIconTransform.DOKill();
+            _activeIcon.rectTransform.DOKill();
             _activeIconAnimTween = null;
 
             if (_active)
             {
+                if (_changeSizeWhenActive)
+                {
+                    _layoutElement.flexibleWidth = 1f;
+                }
+
                 _activeRectTF.gameObject.SetActive(true);
 
-                _inactiveIcon.gameObject.SetActive(false);
-                _activeIcon.gameObject.SetActive(true);
-                
-                float sizeIncrease = 1.25f;
-                if (_animType == AnimType.GoUp)
+                if (_showIcon)
+                {
+                    _inactiveIcon.gameObject.SetActive(false);
+                    _activeIcon.gameObject.SetActive(true);
+                }
+
+                if (_hideNameTextWhenInactive)
                 {
                     _nameText.gameObject.SetActive(true);
+                }
+                else
+                {
+                    if (_changeNameTextColor)
+                    {
+                        _nameText.color = _activeNameTextColor;
+                    }
+                }
 
-                    _layoutElement.flexibleWidth = 1f;
-
-                    float moveDistance = 60f;
+                if (_animType == AnimType.GoUp)
+                {
                     if (animated)
                     {
-                        float duration = 0.2f;
+                        DOVirtual.Float(0f, -_goUpOffset, _goUpDuration,
+                            (floatValue) => { _activeRectTF.SetPaddingTop(floatValue); }).SetEase(Ease.OutExpo);
 
-                        DOVirtual.Float(0f, -60f, duration, (floatValue) =>
+                        if (_showIcon)
                         {
-                            _activeRectTF.SetPaddingTop(floatValue);
-                        }).SetEase(Ease.OutExpo);
-                        
-                        Sequence iconSequence = DOTween.Sequence();
-                        iconSequence.AppendCallback(PlayIconAnim)
-                            .Join(_activeIconTransform.DOLocalMove(Vector3.up * moveDistance, duration).SetEase(Ease.OutExpo))
-                            .Join(_activeIconTransform.DOScale(1.25f, duration).SetEase(Ease.OutExpo));
+                            Sequence iconSequence = DOTween.Sequence();
+                            iconSequence.AppendCallback(PlayIconAnim)
+                                .Join(_activeIcon.rectTransform.DOLocalMove(Vector3.up * _goUpOffset, _goUpDuration)
+                                    .SetEase(Ease.OutExpo))
+                                .Join(_activeIcon.rectTransform.DOScale(1.25f, _goUpDuration).SetEase(Ease.OutExpo));
+                        }
                     }
                     else
                     {
-                        _activeIconTransform.localPosition = Vector3.up * moveDistance;
-                        _activeIconTransform.localRotation = Quaternion.identity;
-                        _activeIconTransform.localScale = Vector3.one * sizeIncrease;
+                        if (_showIcon)
+                        {
+                            _activeIcon.rectTransform.localPosition = Vector3.up * _goUpOffset;
+                            _activeIcon.rectTransform.localRotation = Quaternion.identity;
+                            _activeIcon.rectTransform.localScale = Vector3.one * _sizeIncrease;
+                        }
                     }
                 }
                 else if (_animType == AnimType.Enlarge)
                 {
-                    _nameText.color = Color.white;
-                    
-                    _contentTF.localScale = Vector3.one * sizeIncrease;
+                    _contentRectTF.localScale = Vector3.one * _sizeIncrease;
                 }
             }
             else
             {
+                if (_changeSizeWhenActive)
+                {
+                    _layoutElement.flexibleWidth = 0f;
+                }
+
                 _activeRectTF.gameObject.SetActive(false);
 
-                _activeIcon.gameObject.SetActive(false);
-                _inactiveIcon.gameObject.SetActive(true);
-                
-                if (_animType == AnimType.GoUp)
+                if (_showIcon)
+                {
+                    _activeIcon.gameObject.SetActive(false);
+                    _inactiveIcon.gameObject.SetActive(true);
+                }
+
+                if (_hideNameTextWhenInactive)
                 {
                     _nameText.gameObject.SetActive(false);
+                }
+                else
+                {
+                    if (_changeNameTextColor)
+                    {
+                        _nameText.color = _inactiveNameTextColor;
+                    }
+                }
 
-                    _layoutElement.flexibleWidth = 0f;
-
-                    _activeIconTransform.localPosition = Vector3.zero;
-                    _activeIconTransform.localRotation = Quaternion.identity;
-                    _activeIconTransform.localScale = Vector3.one;
+                if (_animType == AnimType.GoUp)
+                {
+                    if (_showIcon)
+                    {
+                        _activeIcon.rectTransform.localPosition = Vector3.zero;
+                        _activeIcon.rectTransform.localRotation = Quaternion.identity;
+                        _activeIcon.rectTransform.localScale = Vector3.one;
+                    }
                 }
                 else if (_animType == AnimType.Enlarge)
                 {
-                    _nameText.color = Color.gray;
-                    
-                    _contentTF.localScale = Vector3.one;
+                    _contentRectTF.localScale = Vector3.one;
                 }
             }
         }
@@ -192,12 +244,17 @@ namespace VinhLB
 
         public void PlayIconAnim()
         {
+            if (!_showIcon)
+            {
+                return;
+            }
+            
             if (_activeIconAnimTween != null)
             {
                 return;
             }
-
-            _activeIconAnimTween = _activeIconTransform.DOPunchRotation(Vector3.one * 10f, 0.4f, 8, 1f)
+            
+            _activeIconAnimTween = _activeIcon.rectTransform.DOPunchRotation(Vector3.one * 10f, 0.4f, 8, 1f)
                 .OnComplete(() => { _activeIconAnimTween = null; });
         }
 
@@ -213,7 +270,7 @@ namespace VinhLB
             {
                 UIManager.Ins.OpenUI<NotificationPopup>(Constants.FEATURE_COMING_SOON);
             }
-            
+
             AudioManager.Ins.PlaySfx(_buttonSound);
         }
 

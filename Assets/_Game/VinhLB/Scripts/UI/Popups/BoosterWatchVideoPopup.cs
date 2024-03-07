@@ -28,6 +28,8 @@ namespace VinhLB
         private TMP_Text _currencyAmountText;
         [SerializeField]
         private TMP_Text _videoAmountText;
+        [SerializeField]
+        private HButton _buyButton;
 
         private BoosterConfig _boosterConfig;
 
@@ -42,6 +44,8 @@ namespace VinhLB
                 // _currencyAmountTextContentSizeFitter.enabled = false;
             }
             GameManager.Ins.ChangeState(GameState.Pause);
+            
+            _buyButton.gameObject.SetActive(GameManager.Ins.AdTickets < _boosterConfig.TicketPerBuyRatio.ticketNeed);
         }
 
         public override void UpdateUI()
@@ -63,6 +67,7 @@ namespace VinhLB
                     break;
             }
         }
+        
         public void OnClickBuyButton()
         {
             if (GameManager.Ins.TrySpendAdTickets(_boosterConfig.TicketPerBuyRatio.ticketNeed))

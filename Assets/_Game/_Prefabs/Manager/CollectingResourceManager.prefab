@@ -53,7 +53,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _collectingCoinConfig:
+  _collectingUICoinConfig:
     PrefabPoolType: 400
     MinSpreadPosition: {x: -2, y: -2, z: 0}
     MaxSpreadPosition: {x: 2, y: 2, z: 0}
@@ -62,7 +62,7 @@ MonoBehaviour:
     ReactPunchScale: {x: 0.25, y: 0.25, z: 0}
     ReactDuration: 0.1
     CollectingResourceParentTF: {fileID: 0}
-  _collectingAdTicketConfig:
+  _collectingUIAdTicketConfig:
     PrefabPoolType: 401
     MinSpreadPosition: {x: -2, y: -2, z: 0}
     MaxSpreadPosition: {x: 2, y: 2, z: 0}
@@ -71,8 +71,17 @@ MonoBehaviour:
     ReactPunchScale: {x: 0.25, y: 0.25, z: 0}
     ReactDuration: 0.1
     CollectingResourceParentTF: {fileID: 0}
-  _collectingRewardKeyConfig:
+  _collectingUIRewardKeyConfig:
     PrefabPoolType: 402
+    MinSpreadPosition: {x: -2, y: -2, z: 0}
+    MaxSpreadPosition: {x: 2, y: 2, z: 0}
+    SpreadDuration: 0.2
+    MoveDuration: 1
+    ReactPunchScale: {x: 0.25, y: 0.25, z: 0}
+    ReactDuration: 0.1
+    CollectingResourceParentTF: {fileID: 0}
+  _collectingInGameRewardKeyConfig:
+    PrefabPoolType: 500
     MinSpreadPosition: {x: 0, y: 0, z: 0}
     MaxSpreadPosition: {x: 0, y: 0, z: 0}
     SpreadDuration: 0

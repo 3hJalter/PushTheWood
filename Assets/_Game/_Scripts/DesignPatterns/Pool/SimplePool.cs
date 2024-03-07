@@ -414,7 +414,7 @@ namespace _Game.DesignPattern
         UIRewardKey = 402,
         
         // World UI
-        FloatingWorldUI = 500,
+        FloatingRewardKey = 500,
 
         // VFX
         DangerIndicator = 1000,

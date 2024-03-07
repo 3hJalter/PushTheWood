@@ -1,27 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using _Game.Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using VinhLB;
 
 public class LoadStart : MonoBehaviour
 {
-    // Start is called before the first frame update
-    [SerializeField]
-    Slider slider;
-    void Start()
+    private void Start()
     {
+        UIManager.Ins.OpenUI<LoadingScreen>();
+        
         SceneGameManager.Ins.LoadingSceneAsync(2);
-        SceneGameManager.Ins._OnLoadingScene += Loading;
-    }
-
-    void Loading(int id, float progress)
-    {
-        slider.value = progress;
-    }
-
-    private void OnDestroy()
-    {
-        SceneGameManager.Ins._OnLoadingScene -= Loading;
     }
 }

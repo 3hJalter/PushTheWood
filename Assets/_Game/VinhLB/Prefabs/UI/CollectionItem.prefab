@@ -1488,7 +1488,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  id: 0
   _button: {fileID: 8272238755045128905}
   _nameText: {fileID: 7465880231190147754}
   _contentImage: {fileID: 4395046313741312537}
