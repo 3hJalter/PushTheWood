@@ -31,6 +31,8 @@ namespace _Game.UIs.Screen
         private RewardItem _rewardItemPrefab;
         [SerializeField]
         private Button _nextLevelButton;
+
+        [SerializeField] private GameObject mainMenuButton;
         
         private Action _nextLevel;
         private List<RewardItem> _rewardItemList = new List<RewardItem>();
@@ -98,6 +100,7 @@ namespace _Game.UIs.Screen
             if (level.LevelType != LevelType.Normal)
             {
                 _nextLevelButton.gameObject.SetActive(false);
+                mainMenuButton.SetActive(true);
             }
             else
             {
@@ -117,7 +120,7 @@ namespace _Game.UIs.Screen
                 LevelManager.Ins.OnNextLevel(LevelType.Normal);
                 Close();
             };
-            
+            mainMenuButton.SetActive(level.Index >= DataManager.Ins.ConfigData.unlockGoMainMenuOnLoseAtLevelIndex);
         }
 
         public override void Open(object param = null)

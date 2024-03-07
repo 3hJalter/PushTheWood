@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using _Game.Data;
 using _Game.DesignPattern;
+using _Game.Resource;
 using _Game.UIs.Screen;
 using _Game.Utilities;
 using DG.Tweening;
@@ -171,6 +173,27 @@ namespace _Game.Managers
                 //PostEvent(EventID.OnUnlockSecretMap, _gameData.user.secretLevelUnlock);
             }
             //PostEvent(EventID.OnSecretMapPieceChange, _gameData.user.secretMapPieces);
+            PostEvent(EventID.OnUpdateUIs);
+            Database.SaveData(_gameData);
+        }
+        
+        public void GainBooster(BoosterType type, int amount)
+        {
+            switch (type)
+            {
+                case BoosterType.Undo:
+                    _gameData.user.undoCount += amount;
+                    break;
+                case BoosterType.PushHint:
+                    _gameData.user.pushHintCount += amount;
+                    break;
+                case BoosterType.GrowTree:
+                    _gameData.user.growTreeCount += amount;
+                    break;
+                case BoosterType.ResetIsland:
+                    _gameData.user.resetIslandCount += amount;
+                    break;
+            }
             PostEvent(EventID.OnUpdateUIs);
             Database.SaveData(_gameData);
         }

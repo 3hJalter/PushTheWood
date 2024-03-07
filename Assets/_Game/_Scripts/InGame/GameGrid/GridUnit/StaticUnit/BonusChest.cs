@@ -67,6 +67,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             {
                 CollectingResourceManager.Ins.SpawnCollectingRewardKey(1, LevelManager.Ins.player.transform);
                 LevelManager.Ins.KeyRewardCount += 1;
+                LevelManager.Ins.goldCount += 40;
             }
             if (LevelManager.Ins.CurrentLevel.LevelType == LevelType.Secret)
             {

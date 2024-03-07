@@ -257,10 +257,61 @@ namespace _Game.Managers
             _pushHint.OnStopHint();
             timer.Stop();
             DevLog.Log(DevId.Hung, "ENDGAME - Show Win Screen");
-            UIManager.Ins.OpenUI<WinScreen>();
+            UIManager.Ins.OpenUI<WinScreen>(OnWinGameReward());
             GameManager.Ins.ChangeState(GameState.WinGame);
         }
 
+        private Reward[] OnWinGameReward()
+        {
+            int goldAmount = LevelManager.Ins.goldCount;
+            int keyAmount = LevelManager.Ins.KeyRewardCount;
+            int secretMapPieceAmount = LevelManager.Ins.SecretMapPieceCount;
+            List<Reward> rewards = new();
+            if (goldAmount > 0)
+            {
+                Reward goldReward = new()
+                {
+                    RewardType = RewardType.Currency,
+                    CurrencyType = CurrencyType.Gold,
+                    Amount = goldAmount
+                };
+                rewards.Add(goldReward);
+            }
+
+            if (keyAmount > 0)
+            {
+                Reward keyReward = new()
+                {
+                    RewardType = RewardType.Currency,
+                    CurrencyType = CurrencyType.Key,
+                    Amount = keyAmount
+                };
+                rewards.Add(keyReward);
+            }
+            if (secretMapPieceAmount > 0)
+            {
+                Reward secretMapPieceReward = new()
+                {
+                    RewardType = RewardType.Currency,
+                    CurrencyType = CurrencyType.SecretMapPiece,
+                    Amount = secretMapPieceAmount
+                };
+                rewards.Add(secretMapPieceReward);
+            }
+            foreach (KeyValuePair<BoosterType, int> boosterReward in LevelManager.Ins.boosterRewardCount)
+            {
+                if (boosterReward.Value <= 0) continue;
+                Reward booster = new()
+                {
+                    RewardType = RewardType.Booster,
+                    BoosterType = boosterReward.Key,
+                    Amount = boosterReward.Value
+                };
+                rewards.Add(booster);
+            }
+            return rewards.ToArray();
+        }
+        
         private void OnLoseGame(object o)
         {
             _pushHint.OnStopHint();

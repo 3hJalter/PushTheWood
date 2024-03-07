@@ -14,7 +14,9 @@ namespace _Game.Data
     public class ConfigData : SerializedScriptableObject
     {
         #region Feature Unlock
-
+        
+        [FoldoutGroup("Feature Unlock")]
+        public readonly int unlockGoMainMenuOnLoseAtLevelIndex = 5;
         [FoldoutGroup("Feature Unlock")]
         public readonly int unlockBonusChestAtLevelIndex = 5;
         [FoldoutGroup("Feature Unlock")]

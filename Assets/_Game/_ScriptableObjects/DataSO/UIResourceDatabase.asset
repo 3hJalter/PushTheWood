@@ -23,6 +23,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 239e6d44770ea2840add230e3cdc4936, type: 3}
     - {fileID: 21300000, guid: 3f0f861da080eae42b3f72238afd861c, type: 3}
     - {fileID: 21300000, guid: cd410da309cc34c70910ea21170079b9, type: 3}
+    - {fileID: 21300000, guid: 53a5f9376ba7ea74cb52863fb47c7456, type: 3}
     - {fileID: 21300000, guid: 20411c0de6aeb5345b58b0ecc4ebe324, type: 3}
     - {fileID: 21300000, guid: 82352d1ee9196944f9d06389f1c05393, type: 3}
     - {fileID: 21300000, guid: 9b09b47f7533d954bba51c6c138d27b6, type: 3}
@@ -30,7 +31,6 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 38280725855775c4ca261c28b7a10cb2, type: 3}
     - {fileID: 21300000, guid: 5f44be1b2dffb014fadbcb0baa42ef91, type: 3}
     - {fileID: 21300000, guid: 0d6adbc4c9d1caa49950a52686e1d5eb, type: 3}
-    - {fileID: 21300000, guid: 32458510b5ac5cf42b34fb70ac2a694a, type: 3}
     - {fileID: 21300000, guid: 32458510b5ac5cf42b34fb70ac2a694a, type: 3}
     - {fileID: 21300000, guid: 9ce060ae21487bf49bd8925d9550b467, type: 3}
     - {fileID: 21300000, guid: d9ecf0f7023828d4f9d2496a9be752da, type: 3}
@@ -169,7 +169,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 3
+      Data: 4
     - Name: 
       Entry: 7
       Data: 
@@ -234,6 +234,27 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 4
+    - Name: $v
+      Entry: 7
+      Data: VinhLB.UIResourceConfig, Assembly-CSharp
+    - Name: Name
+      Entry: 1
+      Data: Key
+    - Name: IconSprite
+      Entry: 10
+      Data: 7
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
       Entry: 13
       Data: 
     - Name: 
@@ -273,7 +294,7 @@ MonoBehaviour:
       Data: Beeny
     - Name: IconSprite
       Entry: 10
-      Data: 7
+      Data: 8
     - Name: 
       Entry: 8
       Data: 
@@ -294,7 +315,7 @@ MonoBehaviour:
       Data: Weeny
     - Name: IconSprite
       Entry: 10
-      Data: 8
+      Data: 9
     - Name: 
       Entry: 8
       Data: 
@@ -315,7 +336,7 @@ MonoBehaviour:
       Data: Fuzzy
     - Name: IconSprite
       Entry: 10
-      Data: 9
+      Data: 10
     - Name: 
       Entry: 8
       Data: 
@@ -336,7 +357,7 @@ MonoBehaviour:
       Data: Millie
     - Name: IconSprite
       Entry: 10
-      Data: 10
+      Data: 11
     - Name: 
       Entry: 8
       Data: 
@@ -357,7 +378,7 @@ MonoBehaviour:
       Data: Gus
     - Name: IconSprite
       Entry: 10
-      Data: 11
+      Data: 12
     - Name: 
       Entry: 8
       Data: 
@@ -378,7 +399,7 @@ MonoBehaviour:
       Data: Ollie
     - Name: IconSprite
       Entry: 10
-      Data: 12
+      Data: 13
     - Name: 
       Entry: 8
       Data: 
@@ -425,7 +446,7 @@ MonoBehaviour:
       Data: Om nom nom
     - Name: IconSprite
       Entry: 10
-      Data: 13
+      Data: 14
     - Name: 
       Entry: 8
       Data: 
@@ -446,7 +467,7 @@ MonoBehaviour:
       Data: Om nom nom
     - Name: IconSprite
       Entry: 10
-      Data: 13
+      Data: 14
     - Name: 
       Entry: 8
       Data: 
@@ -467,7 +488,7 @@ MonoBehaviour:
       Data: I'm so strong
     - Name: IconSprite
       Entry: 10
-      Data: 14
+      Data: 15
     - Name: 
       Entry: 8
       Data: 
@@ -509,7 +530,7 @@ MonoBehaviour:
       Data: Lucky day
     - Name: IconSprite
       Entry: 10
-      Data: 14
+      Data: 15
     - Name: 
       Entry: 8
       Data: 

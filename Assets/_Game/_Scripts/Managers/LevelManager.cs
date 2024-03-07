@@ -13,6 +13,7 @@ using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.GameGrid.Unit.Interface;
 using _Game.GameGrid.Unit.StaticUnit.Chest;
 using _Game.Managers;
+using _Game.Resource;
 using _Game.UIs.Screen;
 using _Game.Utilities;
 using _Game.Utilities.Timer;
@@ -51,6 +52,8 @@ namespace _Game.GameGrid
         private bool _isResetting;
         public int KeyRewardCount = 0;
         public int SecretMapPieceCount = 0;
+        public int goldCount;
+        public Dictionary<BoosterType, int> boosterRewardCount = new();
         public int NormalLevelIndex => normalLevelIndex;
         public int DailyLevelIndex => dailyLevelIndex;
         public int SecretLevelIndex => secretLevelIndex;
@@ -182,6 +185,8 @@ namespace _Game.GameGrid
             // TEMPORARY: CUTSCENE, player will be show when cutscene end
             if (normalLevelIndex == 0) HidePlayer(true);
             KeyRewardCount = 0;
+            goldCount = 0;
+            boosterRewardCount.Clear();
             SecretMapPieceCount = 0;
         }
 
@@ -269,8 +274,13 @@ namespace _Game.GameGrid
                 default:
                     break;
             }
+            GameManager.Ins.GainGold(goldCount);
             GameManager.Ins.GainRewardKey(KeyRewardCount);
             GameManager.Ins.GainSecretMapPiece(SecretMapPieceCount);
+            foreach (KeyValuePair<BoosterType, int> booster in boosterRewardCount)
+            {
+                GameManager.Ins.GainBooster(booster.Key, booster.Value);
+            }
             if(CurrentLevel.LevelType == LevelType.Normal)
                 GameManager.Ins.GainLevelProgress(1);
             DataManager.Ins.Save();

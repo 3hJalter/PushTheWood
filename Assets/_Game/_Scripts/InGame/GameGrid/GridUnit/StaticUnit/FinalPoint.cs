@@ -1,9 +1,13 @@
 ﻿using _Game._Scripts.Managers;
+using _Game.Data;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.GameGrid.Unit.Interface;
+using _Game.Managers;
+using _Game.Resource;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
+using VinhLB;
 
 namespace _Game.GameGrid.Unit.StaticUnit
 {
@@ -33,6 +37,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             indicatorTarget.enabled = false;
             winParticle.Play();
+            OnGetResource(); // TEMPORARY
             OnRemoveFromLevelManager();
         }
         
@@ -52,6 +57,42 @@ namespace _Game.GameGrid.Unit.StaticUnit
         private void OnRemoveFromLevelManager(bool checkWin = true)
         {
             LevelManager.Ins.OnRemoveFinalPoint(this, checkWin);
+        }
+
+        private void OnGetResource()
+        {
+            #region Get Resource
+            
+            LevelManager.Ins.goldCount += 20;
+            if (LevelManager.Ins.CurrentLevel.LevelType == LevelType.Normal)
+            {
+                int levelIndex = LevelManager.Ins.CurrentLevel.Index;
+
+                if (levelIndex == 2)
+                {
+                    LevelManager.Ins.boosterRewardCount.Add(BoosterType.Undo, 2);
+                    LevelManager.Ins.boosterRewardCount.Add(BoosterType.ResetIsland, 2);
+                } else if (levelIndex == 4)
+                {
+                    LevelManager.Ins.boosterRewardCount.Add(BoosterType.GrowTree, 1);
+                    LevelManager.Ins.boosterRewardCount.Add(BoosterType.PushHint, 1);
+                } else if (levelIndex == 5)
+                {
+                    CollectingResourceManager.Ins.SpawnCollectingRewardKey(3, LevelManager.Ins.player.transform);
+                    LevelManager.Ins.KeyRewardCount += 3;
+                }
+                else if (levelIndex >= DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex)
+                {
+                    int getCompass = levelIndex -
+                                     DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex;
+                    if (getCompass > 0 && getCompass % 4 == 0)
+                    {
+                        CollectingResourceManager.Ins.SpawnCollectingRewardKey(1, LevelManager.Ins.player.transform);
+                        LevelManager.Ins.SecretMapPieceCount += 1;
+                    }
+                }
+            }
+            #endregion
         }
     }
 }

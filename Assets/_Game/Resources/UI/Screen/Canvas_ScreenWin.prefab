@@ -581,8 +581,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 380.00003, y: -812.4999}
-  m_SizeDelta: {x: 380, y: 130.5}
+  m_AnchoredPosition: {x: 250, y: -400}
+  m_SizeDelta: {x: 380, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7473668886444278365
 CanvasRenderer:
@@ -3714,6 +3714,7 @@ MonoBehaviour:
   _rewardParentRectTF: {fileID: 2867315323705177336}
   _rewardItemPrefab: {fileID: 2188298886722322113, guid: c7935d45b3f2f3f44b13ff462761a3c6, type: 3}
   _nextLevelButton: {fileID: 3618839642037570877}
+  mainMenuButton: {fileID: 5463976590999205356}
 --- !u!1 &7594196619270654811
 GameObject:
   m_ObjectHideFlags: 0
