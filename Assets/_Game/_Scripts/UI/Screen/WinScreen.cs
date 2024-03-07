@@ -37,7 +37,7 @@ namespace _Game.UIs.Screen
         private void Awake()
         {
             GameManager.Ins.RegisterListenerEvent(DesignPattern.EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
-            ChangeLayoutForBanner(AdsManager.Ins.BannerAds.IsBannerOpen);
+            ChangeLayoutForBanner(AdsManager.Ins.IsBannerOpen);
         }
 
         private void OnDestroy()

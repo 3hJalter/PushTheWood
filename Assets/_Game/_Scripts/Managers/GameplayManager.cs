@@ -287,8 +287,10 @@ namespace _Game.Managers
             screen.OnSetBoosterAmount();
             GameManager.Ins.ChangeState(GameState.InGame);
             // If hard level, show a notification -> If it None -> not show
-            AdsManager.Ins.BannerAds.Show();
-            GameManager.Ins.PostEvent(EventID.OnChangeLayoutForBanner, true);
+            #region BANNER
+            //AdsManager.Ins.ShowBannerAds();
+            //GameManager.Ins.PostEvent(EventID.OnChangeLayoutForBanner, true);
+            #endregion
             DevLog.Log(DevId.Hoang, $"LEVEL NORMAL TYPE: {LevelManager.Ins.CurrentLevel.LevelNormalType}");
         }
 

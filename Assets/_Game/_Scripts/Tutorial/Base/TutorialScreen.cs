@@ -11,7 +11,7 @@ namespace _Game._Scripts.Tutorial
         private void Awake()
         {
             GameManager.Ins.RegisterListenerEvent(EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
-            ChangeLayoutForBanner(AdsManager.Ins.BannerAds.IsBannerOpen);
+            ChangeLayoutForBanner(AdsManager.Ins.IsBannerOpen);
         }
 
         private void OnDestroy()
