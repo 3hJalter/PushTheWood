@@ -237,10 +237,46 @@ namespace _Game.Managers
             isBoughtPushHintInIsland.Clear();
             _pushHint?.OnStopHint(); // Clear old hint
             _pushHint = new PushHint(LevelManager.Ins.CurrentLevel.GetPushHint());
-            screen.OnSetBoosterAmount();
-            GameManager.Ins.ChangeState(GameState.InGame);
             if (LevelManager.Ins.CurrentLevel.IsInit)
             {
+                #region Handling Tree seed when level is play again without init
+
+                List<int> keysToModify = new();
+
+                foreach (KeyValuePair<int, bool> isBought in isBoughtGrowTreeInIsland)
+                {
+                    if (isBought.Value)
+                    {
+                        keysToModify.Add(isBought.Key);
+                    }
+                }
+                
+                foreach (int key in keysToModify)
+                {
+                    isBoughtGrowTreeInIsland[key] = false;
+                    if (key == LevelManager.Ins.player.islandID)
+                    {
+                        screen.OnBoughtGrowTree(false);
+                    }
+                }
+                
+                keysToModify.Clear();
+                
+                foreach (KeyValuePair<int, bool> canGrow in isCanGrowTreeInIsland)
+                {
+                    if (!canGrow.Value)
+                    {
+                        keysToModify.Add(canGrow.Key);
+                    }
+                }
+                
+                foreach (int key in keysToModify)
+                {
+                    isCanGrowTreeInIsland[key] = true;
+                }
+
+                #endregion
+                
                 OnPlayerChangeIsland(true);
             }
             else
@@ -248,6 +284,8 @@ namespace _Game.Managers
                 isBoughtGrowTreeInIsland.Clear();
                 isCanGrowTreeInIsland.Clear();
             }
+            screen.OnSetBoosterAmount();
+            GameManager.Ins.ChangeState(GameState.InGame);
             // If hard level, show a notification -> If it None -> not show
             AdsManager.Ins.BannerAds.Show();
             GameManager.Ins.PostEvent(EventID.OnChangeLayoutForBanner, true);
