@@ -219,7 +219,7 @@ namespace _Game.UIs.Screen
         }
         private void ChangeLayoutForBanner(object isBannerActive)
         {
-            int sizeAnchor = (bool)isBannerActive ? 50 : 0;
+            int sizeAnchor = (bool)isBannerActive ? DataManager.Ins.ConfigData.bannerHeight : 0;
             rectTransform.offsetMin = new Vector2(rectTransform.offsetMin.x, sizeAnchor);
         }
         private void UpdateLevelText()

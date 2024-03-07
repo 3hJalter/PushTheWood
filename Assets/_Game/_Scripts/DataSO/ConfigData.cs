@@ -141,6 +141,8 @@ namespace _Game.Data
         public readonly int startInterAdsLevel = 8;
         [FoldoutGroup("Ads")]
         public readonly int winLevelCountInterAds = 3;
+        [FoldoutGroup("Ads")]
+        public readonly int bannerHeight = 100;
         #endregion
         // [BoxGroup("Monetize")]
 
