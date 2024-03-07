@@ -388,11 +388,11 @@
                         float4 positionCS; // Homogeneous clip space position
                         float4 positionNDC;// Homogeneous normalized device coordinates
                     */
-                    VertexPositionInputs vertexInput = (VertexPositionInputs)0;
+                    /*VertexPositionInputs vertexInput = (VertexPositionInputs)0;
                     vertexInput.positionWS = i.positionWS.xyz;
                     float4 shadowCoord = GetShadowCoord(vertexInput);
                     half shadowAttenutation = MainLightRealtimeShadow(shadowCoord);
-                    c = lerp(c, c * color_shallow, _ShadowStrength * (1.0h - shadowAttenutation));
+                    c = lerp(c, c * color_shallow, _ShadowStrength * (half4(1.0h, 1.0h, 1.0h, 1.0h) - shadowAttenutation));*/
                 #endif
 
                 /*

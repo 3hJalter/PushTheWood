@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using _Game.Managers;
+using _Game.UIs.Screen;
 using _Game.Utilities.Timer;
 using HControls;
 using UnityEngine;
@@ -33,8 +35,14 @@ namespace _Game._Scripts.Tutorial
             prevButton.onClick.AddListener(PrevPage);
             closeButton.onClick.AddListener(() => CloseDirectly());
             // Wait to zoom in camera
-            TimerManager.Ins.WaitForTime(1.5f, () =>
+            TimerManager.Ins.WaitForTime(1f, () =>
             {
+                if (UIManager.Ins.IsOpened<InGameScreen>())
+                {
+                    UIManager.Ins.CloseUI<InGameScreen>();
+                    // Stop timer
+                    if (GameManager.Ins.IsState(GameState.InGame)) GameplayManager.Ins.OnPauseGame();
+                }
                 panel.color = new Color(0,0,0,0.65f);
                 pages[_currentPageIndex].SetActive(true);
                 // Set active for next button if there are more than 1 page

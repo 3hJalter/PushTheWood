@@ -21,14 +21,15 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
             HInputManager.LockInput();
             SetupHoldAction();
             panel.raycastTarget = false;
+            TimerManager.Ins.WaitForFrame(1, () =>
+            {
+                if (!UIManager.Ins.IsOpened<InGameScreen>()) return;
+                UIManager.Ins.CloseUI<InGameScreen>();
+                // Stop timer
+                if (GameManager.Ins.IsState(GameState.InGame)) GameplayManager.Ins.OnPauseGame();
+            });
             TimerManager.Ins.WaitForTime(1f, () =>
             {
-                if (UIManager.Ins.IsOpened<InGameScreen>())
-                {
-                    UIManager.Ins.CloseUI<InGameScreen>();
-                    // Stop timer
-                    if (GameManager.Ins.IsState(GameState.InGame)) GameplayManager.Ins.OnPauseGame();
-                }
                 panel.raycastTarget = true;
                 panel.color = new Color(0,0,0,0.75f);
                 deco.SetActive(true);

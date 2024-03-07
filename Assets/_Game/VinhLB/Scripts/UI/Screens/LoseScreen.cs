@@ -17,8 +17,6 @@ namespace VinhLB
         [SerializeField]
         private CanvasGroup _canvasGroup;
         [SerializeField]
-        private RectTransform rectTransform;
-        [SerializeField]
         private Image _blockPanel;
         [SerializeField]
         private Image _contentImage;
@@ -35,6 +33,13 @@ namespace VinhLB
         {
             GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
         }
+        
+        private void ChangeLayoutForBanner(object isBannerActive)
+        {
+            int sizeAnchor = (bool)isBannerActive ? DataManager.Ins.ConfigData.bannerHeight : 0;
+            MRectTransform.offsetMin = new Vector2(MRectTransform.offsetMin.x, sizeAnchor);
+        }
+        
         public override void Setup(object param = null)
         {
             base.Setup(param);
@@ -66,18 +71,13 @@ namespace VinhLB
             GameManager.Ins.PostEvent(EventID.OnInterAdsStepCount, 1);
             Close();
         }
-        
+
         public void OnClickMainMenuButton()
         {
             LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<MainMenuScreen>();
             GameManager.Ins.PostEvent(EventID.OnInterAdsStepCount, 1);
-        }
-        private void ChangeLayoutForBanner(object isBannerActive)
-        {
-            int sizeAnchor = (bool)isBannerActive ? DataManager.Ins.ConfigData.bannerHeight : 0;
-            rectTransform.offsetMin = new Vector2(rectTransform.offsetMin.x, sizeAnchor);
         }
 
     }

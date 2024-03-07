@@ -15,14 +15,15 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
             base.Setup(param);
             HInputManager.LockInput();
             panelContainer.SetActive(false);
+            TimerManager.Ins.WaitForFrame(1, () =>
+            {
+                if (!UIManager.Ins.IsOpened<InGameScreen>()) return;
+                UIManager.Ins.CloseUI<InGameScreen>();
+                // Stop timer
+                if (GameManager.Ins.IsState(GameState.InGame)) GameplayManager.Ins.OnPauseGame();
+            });
             TimerManager.Ins.WaitForTime(1f, () =>
             {
-                if (UIManager.Ins.IsOpened<InGameScreen>())
-                {
-                    UIManager.Ins.CloseUI<InGameScreen>();
-                    // Stop timer
-                    if (GameManager.Ins.IsState(GameState.InGame)) GameplayManager.Ins.OnPauseGame();
-                }
                 panelContainer.SetActive(true);
                 HInputManager.LockInput(false);
             });

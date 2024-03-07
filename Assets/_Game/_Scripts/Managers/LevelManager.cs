@@ -327,6 +327,7 @@ namespace _Game.GameGrid
         {
             if (!CurrentLevel.IsInit) return; // No Init -> Means No Restart
             _isRestarting = true;
+            OnCheckTutorial();
             objectiveTotal = 0;
             enemies.Clear();
             finalPoints.Clear();

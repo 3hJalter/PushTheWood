@@ -33,8 +33,8 @@ namespace _Game._Scripts.Managers
 
         // TEMPORARY: cutscene
         [SerializeField] private FirstCutsceneHandler firstCutscenePf;
-        private readonly List<Transform> _objectOnCutscene = new();
-
+        public TutorialScreen currentTutorialScreenScreen;
+        
         private void Awake()
         {
             actData = new Queue<TutorialInputOnActData>();

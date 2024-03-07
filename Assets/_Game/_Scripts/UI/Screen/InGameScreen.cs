@@ -28,7 +28,6 @@ namespace _Game.UIs.Screen
         [SerializeField] private GameObject timerContainer;
 
         [SerializeField] private Image blockPanel;
-        [SerializeField] private RectTransform rectTransform;
         // Booster Button
         public BoosterButton undoButton;
         public BoosterButton pushHintButton;
@@ -47,6 +46,8 @@ namespace _Game.UIs.Screen
         private int time;
 
         private STimer undoTimer;
+
+        private Tween _fadeTween;
 
         public int Time
         {
@@ -139,18 +140,29 @@ namespace _Game.UIs.Screen
             AudioManager.Ins.PlayBgm(BgmType.InGame, 1f);
             AudioManager.Ins.PlayEnvironment(EnvironmentType.Ocean, 1f);
             DebugManager.Ins?.OpenDebugCanvas(UI_POSITION.IN_GAME);
-            DOVirtual.Float(0f, 1f, 1f, value => canvasGroup.alpha = value)
-                .OnComplete(() => { blockPanel.enabled = false; });
+            if (TutorialManager.Ins.currentTutorialScreenScreen)
+            {
+                Close();
+                return;
+            }
+            _fadeTween = DOVirtual.Float(0f, 1f, 1f, value => canvasGroup.alpha = value).OnKill(() => { blockPanel.enabled = false;});
         }
 
         public override void Close()
         {
+            _fadeTween?.Kill();
             OnShowTryHintAgain(false);
             MoveInputManager.Ins.ShowContainer(false);
             base.Close();
         }
 
         
+
+        public override void Show()
+        {
+            if (TutorialManager.Ins.currentTutorialScreenScreen) return;
+            base.Show();
+        }
 
         public void OnClickSettingButton()
         {
@@ -220,7 +232,7 @@ namespace _Game.UIs.Screen
         private void ChangeLayoutForBanner(object isBannerActive)
         {
             int sizeAnchor = (bool)isBannerActive ? DataManager.Ins.ConfigData.bannerHeight : 0;
-            rectTransform.offsetMin = new Vector2(rectTransform.offsetMin.x, sizeAnchor);
+            MRectTransform.offsetMin = new Vector2(MRectTransform.offsetMin.x, sizeAnchor);
         }
         private void UpdateLevelText()
         {

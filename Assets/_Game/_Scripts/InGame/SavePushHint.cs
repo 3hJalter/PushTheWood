@@ -198,7 +198,7 @@ namespace _Game._Scripts.InGame
             LevelType levelType = level.LevelType;
             int levelIndex = level.Index;
 
-            if (levelIndex == 0 && levelType == LevelType.Normal) return; // Don't save Level 0
+            // if (levelIndex == 0 && levelType == LevelType.Normal) return; // Don't save Level 0
 
             // Get the text asset of the current level
             TextAsset data = DataManager.Ins.GetLevelData(levelType, levelIndex);

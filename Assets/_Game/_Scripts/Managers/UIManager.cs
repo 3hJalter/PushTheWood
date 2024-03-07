@@ -64,12 +64,12 @@ namespace _Game.Managers
 
         public void HideUI<T>() where T : UICanvas
         {
-            if (IsOpened<T>()) GetUI<T>().gameObject.SetActive(false);
+            if (IsOpened<T>()) GetUI<T>().Hide();
         }
         
         public void ShowUI<T>() where T : UICanvas
         {
-            if (!IsOpened<T>()) GetUI<T>().gameObject.SetActive(true);
+            if (!IsOpened<T>()) GetUI<T>().Show();
         }
         
         public void CloseUI<T>() where T : UICanvas
