@@ -16,6 +16,7 @@ namespace _Game.Managers
         [SerializeField]
         InterstitialAds Interstitial;
         public RewardedAds RewardedAds => Reward;
+        public BannerAds BannerAds => Banner;
 
         STimer cooldownTimer;
         Action interCallBack;
