@@ -16,6 +16,8 @@ public class InitManager : Singleton<InitManager>
     [SerializeField]
     bool isDebugLog = false;
     [SerializeField]
+    bool isShowAds = true;
+    [SerializeField]
     GameObject debugObject;
     [SerializeField]
     InitCanvas debugCanvas;
@@ -29,7 +31,7 @@ public class InitManager : Singleton<InitManager>
         DontDestroyOnLoad(gameObject);
         debugCanvas._OnToggleValueChange += OnSetDebug;
         debugCanvas._OnStartGame += OnStartGame;
-        debugCanvas.SetData(isDebugGridLogic, isDebugFps, isDebugLog);
+        debugCanvas.SetData(isDebugGridLogic, isDebugFps, isDebugLog, isShowAds);
         GridUtilities.OverlayMaterial = _fontMaterial;
     }
 
@@ -46,6 +48,9 @@ public class InitManager : Singleton<InitManager>
             case 2:
                 isDebugLog = value;
                 break;
+            case 3:
+                isShowAds = value;
+                break;
         }
     }
 
@@ -54,7 +59,7 @@ public class InitManager : Singleton<InitManager>
         if (isDebug)
         {
             debugManager = Instantiate(debugObject).GetComponent<DebugManager>();
-            debugManager.OnInit(isDebugGridLogic, isDebugFps, isDebugLog, debugCanvas.StartLevel);
+            debugManager.OnInit(isDebugGridLogic, isDebugFps, isDebugLog, isShowAds, debugCanvas.StartLevel);
             DontDestroyOnLoad(debugManager.gameObject);
         }
         SceneManager.LoadScene(1);

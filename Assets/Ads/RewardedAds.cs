@@ -54,7 +54,14 @@ public class RewardedAds : MonoBehaviour
         AnalysticManager.Ins.AppsFlyerTrackEvent("af_rewarded_logicgame");
         if (MaxSdk.IsRewardedAdReady(adUnitId))
         {
-            MaxSdk.ShowRewardedAd(adUnitId);
+            if(DebugManager.Ins && !DebugManager.Ins.IsShowAds)
+            {
+                OnRewardedAdReceivedRewardEvent(default, default, default);
+            }
+            else
+            {
+                MaxSdk.ShowRewardedAd(adUnitId);
+            }
         }
         else
         {

@@ -15,10 +15,14 @@ public class DebugManager : SimpleSingleton<DebugManager>
     GameObject FpsDebug;
     [SerializeField]
     GameObject LogDebug;
+    [SerializeField]
+    bool isShowAds = false;
     List<UICanvas> DebugCanvass = new List<UICanvas>();
+
     int level = -1;
     public bool IsDebugGridLogic => debugGrid != null ? true : false;
     public int Level => level;
+    public bool IsShowAds => isShowAds;
     public void DebugGridData(Grid<GameGridCell, GameGridCellData> grid)
     {
         debugGrid?.DrawGrid(grid, true);
@@ -41,7 +45,7 @@ public class DebugManager : SimpleSingleton<DebugManager>
         }
         
     }
-    public void OnInit(bool isDebugGridLogic, bool isDebugFps, bool isDebugLog, int level = -1)
+    public void OnInit(bool isDebugGridLogic, bool isDebugFps, bool isDebugLog, bool isShowAds, int level = -1)
     {
         if(isDebugGridLogic)
         {
@@ -49,6 +53,7 @@ public class DebugManager : SimpleSingleton<DebugManager>
         }
         FpsDebug.SetActive(isDebugFps);
         LogDebug.SetActive(isDebugLog);
+        this.isShowAds = isShowAds;
         this.level = level;
         // Save the level to database
         GameData gameData = Database.LoadData();

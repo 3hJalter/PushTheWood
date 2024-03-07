@@ -55,7 +55,8 @@ namespace _Game.Managers
             int levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
             interCallBack = (Action)callBack;
 
-            if (levelIndex < DataManager.Ins.ConfigData.startInterAdsLevel || cooldownTimer.IsStart)
+            if (levelIndex < DataManager.Ins.ConfigData.startInterAdsLevel || cooldownTimer.IsStart 
+                || (DebugManager.Ins && !DebugManager.Ins.IsShowAds))
             {
                 interCallBack?.Invoke();
                 interCallBack = null;
@@ -74,7 +75,8 @@ namespace _Game.Managers
         private void OnInterAdsStepCount(object value)
         {
             int levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
-            if (levelIndex < DataManager.Ins.ConfigData.startInterAdsLevel || cooldownTimer.IsStart) return;
+            if (levelIndex < DataManager.Ins.ConfigData.startInterAdsLevel || cooldownTimer.IsStart
+                || (DebugManager.Ins && !DebugManager.Ins.IsShowAds)) return;
 
             AnalysticManager.Ins.AppsFlyerTrackEvent("af_inters_logicgame");
             intAdsStepCount += (int)value;
