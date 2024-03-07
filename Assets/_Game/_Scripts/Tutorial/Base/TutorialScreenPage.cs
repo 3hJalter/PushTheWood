@@ -27,6 +27,7 @@ namespace _Game._Scripts.Tutorial
             panel.color = new Color(0,0,0,0);
             _currentPageIndex = 0;
             HInputManager.LockInput();
+            pageContainer.SetActive(false);
             pages.ForEach(page => page.SetActive(false));
             nextButton.gameObject.SetActive(false);
             prevButton.gameObject.SetActive(false);
@@ -35,15 +36,17 @@ namespace _Game._Scripts.Tutorial
             prevButton.onClick.AddListener(PrevPage);
             closeButton.onClick.AddListener(() => CloseDirectly());
             // Wait to zoom in camera
+            TimerManager.Ins.WaitForFrame(1, () =>
+            {
+                if (!UIManager.Ins.IsOpened<InGameScreen>()) return;
+                UIManager.Ins.CloseUI<InGameScreen>();
+                // Stop timer
+                if (GameManager.Ins.IsState(GameState.InGame)) GameplayManager.Ins.OnPauseGame();
+            });
             TimerManager.Ins.WaitForTime(1f, () =>
             {
-                if (UIManager.Ins.IsOpened<InGameScreen>())
-                {
-                    UIManager.Ins.CloseUI<InGameScreen>();
-                    // Stop timer
-                    if (GameManager.Ins.IsState(GameState.InGame)) GameplayManager.Ins.OnPauseGame();
-                }
                 panel.color = new Color(0,0,0,0.65f);
+                pageContainer.SetActive(true);
                 pages[_currentPageIndex].SetActive(true);
                 // Set active for next button if there are more than 1 page
                 nextButton.gameObject.SetActive(pages.Count > 1);
