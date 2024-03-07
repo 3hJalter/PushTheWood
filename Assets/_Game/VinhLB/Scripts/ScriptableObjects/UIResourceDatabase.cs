@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using _Game._Scripts.InGame;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -23,6 +24,10 @@ namespace VinhLB
         private List<Sprite> _characterIconList;
         public Dictionary<CharacterType, UIResourceConfig> CharacterResourceConfigDict = new();
 
+        [Title("Win Lose Screen")] 
+        public Dictionary<LevelWinCondition, UIResourceConfig> WinScreenResourceConfigDict = new();
+        public  Dictionary<LevelLoseCondition, UIResourceConfig> LoseScreenResourceConfigDict = new();
+        
         [ContextMenu("Convert From List To Dict")]
         public void ConvertListToDict()
         {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using _Game._Scripts.InGame;
 using _Game.Data;
 using _Game.GameGrid;
 using _Game.Managers;
@@ -44,9 +45,14 @@ namespace VinhLB
         {
             base.Setup(param);
             _canvasGroup.alpha = 0f;
-            // cover param to bool
-            bool isTimeOut = param != null && (bool) param;
-            _moreTimeButton.gameObject.SetActive(isTimeOut);
+            // convert param to LevelLoseCondition
+            LevelLoseCondition loseCondition = LevelLoseCondition.Timeout; // default
+            if (param is LevelLoseCondition lC)
+            {
+                loseCondition = lC;
+            }
+            _contentImage.sprite = DataManager.Ins.UIResourceDatabase.LoseScreenResourceConfigDict[loseCondition].IconSprite;
+            _moreTimeButton.gameObject.SetActive(loseCondition == LevelLoseCondition.Timeout);
         }
 
         public override void Open(object param = null)

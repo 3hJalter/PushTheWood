@@ -1,5 +1,7 @@
 ﻿using System;
+using _Game._Scripts.InGame;
 using _Game.DesignPattern.StateMachine;
+using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
 using _Game.Utilities.Timer;
 
@@ -18,7 +20,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             TimerManager.Ins.WaitForTime(DIE_TIME, OnLoseGame);
             void OnLoseGame()
             {
-                GameManager.Ins.PostEvent(DesignPattern.EventID.LoseGame);
+                LevelLoseCondition loseCondition = LevelLoseCondition.Enemy;
+                if (t.CutTreeData.tree is TreeBee) // TEMPORARY because currently only have two type of die
+                {
+                    loseCondition = LevelLoseCondition.Bee;
+                }
+                GameManager.Ins.PostEvent(DesignPattern.EventID.LoseGame, loseCondition);
             }
         }
 

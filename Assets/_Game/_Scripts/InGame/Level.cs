@@ -568,6 +568,13 @@ namespace _Game._Scripts.InGame
         FindingChest = 3,
         FindingChickenBbq = 4,
     }
+
+    public enum LevelLoseCondition
+    {
+        Timeout = 0,
+        Enemy = 1,
+        Bee = 2,
+    }
     
     [Serializable]
     public struct RawLevelData
