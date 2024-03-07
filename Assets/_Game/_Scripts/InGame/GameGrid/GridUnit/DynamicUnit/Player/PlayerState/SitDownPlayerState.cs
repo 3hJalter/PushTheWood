@@ -39,8 +39,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             isSitDown = false;
             sitDistance = Constants.DirVector3F[oldDirection] * SIT_DISTANCE;
 
-            oldSkinPos = t.skin.transform.localPosition;
-            t.skin.transform.DOLocalMove(oldSkinPos + sitDistance, SIT_DOWN_TIME).OnComplete(PlayVFXSinging);
+            oldSkinPos = t.skin.localPosition;
+            t.skin.DOLocalMove(oldSkinPos + sitDistance, SIT_DOWN_TIME).OnComplete(PlayVFXSinging);
             t.OnCharacterChangePosition();
 
             void PlayVFXSinging()
