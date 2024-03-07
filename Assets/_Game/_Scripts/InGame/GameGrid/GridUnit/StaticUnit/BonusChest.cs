@@ -65,7 +65,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             base.OnOpenChestComplete();
             if (LevelManager.Ins.CollectedChests.Add(this))
             {
-                CollectingResourceManager.Ins.SpawnCollectingRewardKey(1, LevelManager.Ins.player.transform);
+                CollectingResourceManager.Ins.SpawnCollectingInGameRewardKey(1, LevelManager.Ins.player.transform);
                 LevelManager.Ins.KeyRewardCount += 1;
             }
             if (LevelManager.Ins.CurrentLevel.LevelType == LevelType.Secret)

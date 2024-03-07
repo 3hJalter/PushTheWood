@@ -16,7 +16,7 @@ namespace VinhLB
         public void SpawnFloatingWorldUI(Transform objectTF)
         {
             FloatingWorldUI floatingWorldUI =
-                SimplePool.Spawn<FloatingWorldUI>(DataManager.Ins.GetWorldUIUnit(PoolType.FloatingWorldUI));
+                SimplePool.Spawn<FloatingWorldUI>(DataManager.Ins.GetWorldUIUnit(PoolType.FloatingRewardKey));
 
             SetupWorldUIUnit(floatingWorldUI.Tf, objectTF);
 

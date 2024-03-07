@@ -8,8 +8,13 @@ using UnityEngine.SceneManagement;
 [DefaultExecutionOrder(-10)]
 public class SceneGameManager : Singleton<SceneGameManager>
 {
-    public event Action<int ,float> _OnLoadingScene;
-    private int id = 0;
+    public event Action<int ,float> OnLoadingScene;
+    public event Action<int> OnSceneLoaded;
+    
+    private int _id = 0;
+
+    public int Id => _id;
+    
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -19,17 +24,19 @@ public class SceneGameManager : Singleton<SceneGameManager>
     {
         StartCoroutine(LoadSceneAsyncCoroutine(id));
     }
-    IEnumerator LoadSceneAsyncCoroutine(int id)
+    
+    private IEnumerator LoadSceneAsyncCoroutine(int id)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(id);
-        this.id = id;
+        this._id = id;
         while (!asyncLoad.isDone)
         {
             float loadingPercentage = Mathf.Clamp01(asyncLoad.progress / 0.9f);
-            _OnLoadingScene?.Invoke(this.id, loadingPercentage);
+            OnLoadingScene?.Invoke(_id, loadingPercentage);
             // Update your loading UI with the percentage
             yield return null;
         }
         // Scene is fully loaded; hide loading UI
+        OnSceneLoaded?.Invoke(_id);
     }
 }

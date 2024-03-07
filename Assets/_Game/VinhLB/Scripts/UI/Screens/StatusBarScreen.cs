@@ -80,7 +80,7 @@ namespace VinhLB
             if (data.ChangedAmount > 0 && data.Source is Vector3 spawnPosition)
             {
                 int collectingCoinAmount = Mathf.Min((int)data.ChangedAmount, 8);
-                CollectingResourceManager.Ins.SpawnCollectingCoins(collectingCoinAmount, spawnPosition, _goldIconTF,
+                CollectingResourceManager.Ins.SpawnCollectingUICoins(collectingCoinAmount, spawnPosition, _goldIconTF,
                     (progress) =>
                     {
                         GameManager.Ins.SmoothGold += data.ChangedAmount / collectingCoinAmount;
@@ -106,7 +106,7 @@ namespace VinhLB
             {
                 float currentValue = data.OldValue;
                 int collectingAdTicketAmount = Mathf.Min((int)data.ChangedAmount, 8);
-                CollectingResourceManager.Ins.SpawnCollectingAdTickets(collectingAdTicketAmount, spawnPosition,
+                CollectingResourceManager.Ins.SpawnCollectingUIAdTickets(collectingAdTicketAmount, spawnPosition,
                     _adTicketIconTF,
                     (progress) =>
                     {
