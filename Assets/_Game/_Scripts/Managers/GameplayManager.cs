@@ -47,9 +47,9 @@ namespace _Game.Managers
             isCanGrowTreeInIsland[islandID] = value;
             screen.SetActiveGrowTree(value);
             isBoughtGrowTreeInIsland.TryAdd(islandID, false);
+            screen.growTreeButton.SetAmount(DataManager.Ins.GameData.user.growTreeCount);
             if (isCanGrowTreeInIsland[islandID] && isBoughtGrowTreeInIsland[islandID])
             {
-                screen.growTreeButton.SetAmount(DataManager.Ins.GameData.user.growTreeCount);
                 screen.growTreeButton.IsShowAds = false;
             }
         }
