@@ -1,5 +1,6 @@
 using _Game.DesignPattern;
 using _Game.Utilities.Timer;
+using AppsFlyerSDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,6 +34,7 @@ namespace _Game.Managers
             };
             GameManager.Ins.RegisterListenerEvent(EventID.OnInterAdsStepCount, OnInterAdsStepCount);
             GameManager.Ins.RegisterListenerEvent(EventID.OnCheckShowInterAds, CheckShowInterAds);
+            MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent += OnRewardedAdRevenuePaidEvent;
             cooldownTimer = new STimer();
         }
         public void ShowBannerAds()
@@ -60,7 +62,8 @@ namespace _Game.Managers
                 return;
             }
 
-            if((levelIndex - DataManager.Ins.ConfigData.startInterAdsLevel) % DataManager.Ins.ConfigData.winLevelCountInterAds == 0)
+            AnalysticManager.Ins.AppsFlyerTrackEvent("af_inters_logicgame");
+            if ((levelIndex - DataManager.Ins.ConfigData.startInterAdsLevel) % DataManager.Ins.ConfigData.winLevelCountInterAds == 0)
             {
                 Interstitial.Show(OnInterAdsDone);
                 return;
@@ -73,6 +76,7 @@ namespace _Game.Managers
             int levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
             if (levelIndex < DataManager.Ins.ConfigData.startInterAdsLevel || cooldownTimer.IsStart) return;
 
+            AnalysticManager.Ins.AppsFlyerTrackEvent("af_inters_logicgame");
             intAdsStepCount += (int)value;
             if(intAdsStepCount >= DataManager.Ins.ConfigData.stepInterAdsCountMax)
             {
@@ -80,12 +84,29 @@ namespace _Game.Managers
                 intAdsStepCount -= DataManager.Ins.ConfigData.stepInterAdsCountMax;
             }
         }
-        void OnInterAdsDone() { 
+        private void OnInterAdsDone() { 
             cooldownTimer.Start(DataManager.Ins.ConfigData.interAdsCooldownTime);
             interCallBack?.Invoke();
             interCallBack = null;
         }
+        private void OnRewardedAdRevenuePaidEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
+        {
+            //NOTE: Ad revenue paid. Use this callback to track user revenue.
+            Dictionary<string,string> parameters = new Dictionary<string, string>();
+            parameters.Add("ad_platform", "appLovin");
+            parameters.Add("ad_source", adInfo.NetworkName);
+            parameters.Add("ad_unit_name", adInfo.AdUnitIdentifier);
+            parameters.Add("ad_format", adInfo.AdFormat);
+            parameters.Add("placement", adInfo.Placement);
+            parameters.Add("value", adInfo.Revenue.ToString());
+            parameters.Add("ad_platform", "USD");
 
+            AppsFlyerAdRevenue.logAdRevenue(adInfo.NetworkName,
+                AppsFlyerAdRevenueMediationNetworkType.AppsFlyerAdRevenueMediationNetworkTypeApplovinMax,
+                adInfo.Revenue,
+                "USD",
+                parameters);
+        }
         private void OnDestroy()
         {
             GameManager.Ins.UnregisterListenerEvent(EventID.OnInterAdsStepCount, OnInterAdsStepCount);

@@ -9,6 +9,7 @@ using _Game.Ads;
 using _Game.Utilities.Timer;
 using System;
 using _Game._Scripts.InGame;
+using AppsFlyerSDK;
 
 namespace _Game.Managers
 {
@@ -174,6 +175,17 @@ namespace _Game.Managers
         public void Day()
         {
             FirebaseAnalytics.LogEvent("Day", "day", DataManager.Ins.GameData.user.playedDay);
+        }
+        public void AppsFlyerTrackEvent(string name)
+        {
+            //Dictionary<string, string> eventValue = new Dictionary<string, string>();
+            //eventValue.Add("af_quantity", "1");
+            AppsFlyer.sendEvent(name, null);
+        }
+
+        public void AppsFlyerTrackParamEvent(string name, Dictionary<string, string> param)
+        {
+            AppsFlyer.sendEvent(name, param);
         }
     }
 }

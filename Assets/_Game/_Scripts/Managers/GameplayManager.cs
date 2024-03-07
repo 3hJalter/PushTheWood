@@ -274,6 +274,10 @@ namespace _Game.Managers
             {
                 case LevelType.Normal:
                     DataManager.Ins.GameData.user.retryTime = 0;
+                    AnalysticManager.Ins.AppsFlyerTrackParamEvent("af_level_achieved", new Dictionary<string, string>
+                    {
+                        { "level", DataManager.Ins.GameData.user.normalLevelIndex.ToString() }
+                    });
                     break;
             }
             #endregion
