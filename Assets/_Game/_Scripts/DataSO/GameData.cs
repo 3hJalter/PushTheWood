@@ -25,6 +25,7 @@ namespace _Game.Data
             // daily challenge
             public bool isCompleteDailyChallengerTutorial;
             public int currentDailyChallengerDay = 1;
+            public int playedDay = 0;
             public List<int> dailyLevelIndexComplete = new();
             public List<int> dailyChallengeRewardCollected = new(); 
             
@@ -60,7 +61,7 @@ namespace _Game.Data
             
             //Other Data
             public int sessionPlayed;
-            
+            public int retryTime;
             
             public DateTime lastTimeLogOut = DateTime.UtcNow;
             public bool isFirstDayOfWeekCheck;

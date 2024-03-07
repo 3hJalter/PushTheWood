@@ -63,6 +63,7 @@ namespace _Game.Managers
         public InGameScreen Screen => screen;
 
         private int time;
+        private int maxTime;
         private STimer timer;
 
         public PushHintObject PushHintObject => pushHintObject;
@@ -92,6 +93,7 @@ namespace _Game.Managers
                 screen.SetActiveResetIsland(value);
             } 
         }
+        public int GameDuration => maxTime - time;
 
         private void Awake()
         {
@@ -209,6 +211,7 @@ namespace _Game.Managers
                 : DataManager.Ins.GetLevelTime(LevelManager.Ins.CurrentLevel.LevelType);
             // if first level of normal level, or daily time is MaxValue because it is tutorial level
             if (LevelManager.Ins.IsFirstTutorialLevel) time = int.MaxValue;
+            maxTime = time;
             screen.Time = time;
             timer.Start(1f, CountTime, true);
         }

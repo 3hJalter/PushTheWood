@@ -24,8 +24,6 @@ namespace _Game.UIs.Screen
         [SerializeField]
         private Image _contentImage;
         [SerializeField]
-        private RectTransform rectTransform;
-        [SerializeField]
         private RectTransform _rewardParentRectTF;
         [SerializeField]
         private RewardItem _rewardItemPrefab;
@@ -139,7 +137,7 @@ namespace _Game.UIs.Screen
         private void ChangeLayoutForBanner(object isBannerActive)
         {
             int sizeAnchor = (bool)isBannerActive ? UIManager.Ins.ConvertPixelToUnitHeight(DataManager.Ins.ConfigData.bannerHeight) : 0;
-            rectTransform.offsetMin = new Vector2(rectTransform.offsetMin.x, sizeAnchor);
+            MRectTransform.offsetMin = new Vector2(MRectTransform.offsetMin.x, sizeAnchor);
         }
         public void OnClickNextButton()
         {           

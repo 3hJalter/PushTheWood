@@ -204,4 +204,18 @@ namespace _Game.Resource
         Gus = 4,
         Ollie = 5,
     }
+
+    public enum Placement
+    {
+        None = -1,
+    }
+}
+
+namespace _Game.Ads
+{
+    public enum Placement
+    {
+        None = -1,
+        Booster_Popup = 0,
+    }
 }
