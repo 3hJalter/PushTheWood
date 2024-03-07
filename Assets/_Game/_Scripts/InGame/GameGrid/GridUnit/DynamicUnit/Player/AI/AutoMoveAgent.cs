@@ -96,9 +96,9 @@ namespace _Game.AI
                     {
                         isFindWater = true;
                         //NOTE: Checking if the direction between camera and player has objects
-                        for (int k = 1; k <= SCAN_DISTANCE; k++)
+                        for (int k = 0; k <= SCAN_DISTANCE; k++)
                         {
-                            GameGridCell checkingCell = waterCell.GetNeighborCell((Direction)i, j + k);
+                            GameGridCell checkingCell = waterCell.GetNeighborCell((Direction)i, k);
                             if (checkingCell != null 
                                 && (checkingCell.GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Water])
                                 || checkingCell.GetGridUnitAtHeight(Constants.DirFirstHeightOfSurface[GridSurfaceType.Ground])))
@@ -115,10 +115,6 @@ namespace _Game.AI
                                 moveDirections.Enqueue(diretion);
                             }
                             return (waterCell, playerCell);
-                        }
-                        else
-                        {
-                            break;
                         }
                     }
                 }

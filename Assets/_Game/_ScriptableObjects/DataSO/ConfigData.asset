@@ -219,6 +219,9 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+    - Name: DangerTime
+      Entry: 3
+      Data: 30
     - Name: stepInterAdsCountMax
       Entry: 3
       Data: 3
@@ -227,10 +230,13 @@ MonoBehaviour:
       Data: 45
     - Name: startInterAdsLevel
       Entry: 3
-      Data: 8
+      Data: 7
     - Name: winLevelCountInterAds
       Entry: 3
       Data: 4
+    - Name: bannerHeight
+      Entry: 3
+      Data: 150
   timePerNormalLevel:
   - levelNormalType: 0
     time: 90

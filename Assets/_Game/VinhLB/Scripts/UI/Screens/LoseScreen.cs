@@ -36,7 +36,7 @@ namespace VinhLB
         
         private void ChangeLayoutForBanner(object isBannerActive)
         {
-            int sizeAnchor = (bool)isBannerActive ? DataManager.Ins.ConfigData.bannerHeight : 0;
+            int sizeAnchor = (bool)isBannerActive ? UIManager.Ins.ConvertPixelToUnitHeight(DataManager.Ins.ConfigData.bannerHeight) : 0;
             MRectTransform.offsetMin = new Vector2(MRectTransform.offsetMin.x, sizeAnchor);
         }
         

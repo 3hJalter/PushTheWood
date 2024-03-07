@@ -26,7 +26,12 @@ namespace _Game.Managers
             GameManager.Ins.RegisterListenerEvent(EventID.OnUpdateUIs, UpdateUIs);
             GameManager.Ins.RegisterListenerEvent(EventID.OnChangeGameState, OnShowIndicator);
         }
-        
+        public int ConvertPixelToUnitHeight(float pixel)
+        {
+            float unitHeight = ((RectTransform)canvasParentTf).rect.height;
+            float pixelHeight = Screen.height;
+            return (int)(pixel / pixelHeight * unitHeight);
+        }
         #region Canvas
 
         public T OpenUI<T>() where T : UICanvas
