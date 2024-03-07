@@ -29,6 +29,12 @@ MonoBehaviour:
     - {fileID: 21300000, guid: ae9afce1624e9b64c91fbbe6b53da3b5, type: 3}
     - {fileID: 21300000, guid: 38280725855775c4ca261c28b7a10cb2, type: 3}
     - {fileID: 21300000, guid: 5f44be1b2dffb014fadbcb0baa42ef91, type: 3}
+    - {fileID: 21300000, guid: 0d6adbc4c9d1caa49950a52686e1d5eb, type: 3}
+    - {fileID: 21300000, guid: 32458510b5ac5cf42b34fb70ac2a694a, type: 3}
+    - {fileID: 21300000, guid: 32458510b5ac5cf42b34fb70ac2a694a, type: 3}
+    - {fileID: 21300000, guid: 9ce060ae21487bf49bd8925d9550b467, type: 3}
+    - {fileID: 21300000, guid: d9ecf0f7023828d4f9d2496a9be752da, type: 3}
+    - {fileID: 21300000, guid: 81487c79f968c99409c3401143e42c6b, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -373,6 +379,226 @@ MonoBehaviour:
     - Name: IconSprite
       Entry: 10
       Data: 12
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: WinScreenResourceConfigDict
+      Entry: 7
+      Data: 6|System.Collections.Generic.Dictionary`2[[_Game._Scripts.InGame.LevelWinCondition,
+        Assembly-CSharp],[VinhLB.UIResourceConfig, Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 7|System.Collections.Generic.EnumEqualityComparer`1[[_Game._Scripts.InGame.LevelWinCondition,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 5
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 4
+    - Name: $v
+      Entry: 7
+      Data: VinhLB.UIResourceConfig, Assembly-CSharp
+    - Name: Name
+      Entry: 1
+      Data: Om nom nom
+    - Name: IconSprite
+      Entry: 10
+      Data: 13
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 7
+      Data: VinhLB.UIResourceConfig, Assembly-CSharp
+    - Name: Name
+      Entry: 1
+      Data: Om nom nom
+    - Name: IconSprite
+      Entry: 10
+      Data: 13
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 7
+      Data: VinhLB.UIResourceConfig, Assembly-CSharp
+    - Name: Name
+      Entry: 1
+      Data: I'm so strong
+    - Name: IconSprite
+      Entry: 10
+      Data: 14
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 7
+      Data: VinhLB.UIResourceConfig, Assembly-CSharp
+    - Name: Name
+      Entry: 1
+      Data: So many treasure
+    - Name: IconSprite
+      Entry: 10
+      Data: 15
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 3
+    - Name: $v
+      Entry: 7
+      Data: VinhLB.UIResourceConfig, Assembly-CSharp
+    - Name: Name
+      Entry: 1
+      Data: Lucky day
+    - Name: IconSprite
+      Entry: 10
+      Data: 14
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: LoseScreenResourceConfigDict
+      Entry: 7
+      Data: 8|System.Collections.Generic.Dictionary`2[[_Game._Scripts.InGame.LevelLoseCondition,
+        Assembly-CSharp],[VinhLB.UIResourceConfig, Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 9|System.Collections.Generic.EnumEqualityComparer`1[[_Game._Scripts.InGame.LevelLoseCondition,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 7
+      Data: VinhLB.UIResourceConfig, Assembly-CSharp
+    - Name: Name
+      Entry: 1
+      Data: So hungry...
+    - Name: IconSprite
+      Entry: 10
+      Data: 16
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 7
+      Data: VinhLB.UIResourceConfig, Assembly-CSharp
+    - Name: Name
+      Entry: 1
+      Data: Run for your life
+    - Name: IconSprite
+      Entry: 10
+      Data: 17
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 7
+      Data: VinhLB.UIResourceConfig, Assembly-CSharp
+    - Name: Name
+      Entry: 1
+      Data: They attack me
+    - Name: IconSprite
+      Entry: 10
+      Data: 18
     - Name: 
       Entry: 8
       Data: 

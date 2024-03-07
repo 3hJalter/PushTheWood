@@ -48,6 +48,9 @@ namespace _Game.UIs.Screen
         {
             base.Setup(param);
             
+            _contentImage.sprite = DataManager.Ins.UIResourceDatabase.WinScreenResourceConfigDict[
+            LevelManager.Ins.CurrentLevel.LevelWinCondition].IconSprite;
+            
             if (param is true)
             {
                 _canvasGroup.alpha = 1f;

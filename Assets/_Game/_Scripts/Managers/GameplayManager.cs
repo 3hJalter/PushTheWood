@@ -261,13 +261,13 @@ namespace _Game.Managers
             GameManager.Ins.ChangeState(GameState.WinGame);
         }
 
-        private void OnLoseGame()
+        private void OnLoseGame(object o)
         {
             _pushHint.OnStopHint();
             timer.Stop();
             DevLog.Log(DevId.Hung, "ENDGAME - Show Lose Screen");
             // Show Different Lose based on reason (Ex: Lose by Die will not show More time booster, instead show Revive) -> Check by the time remaining
-            UIManager.Ins.OpenUI<LoseScreen>(time <= 0);
+            UIManager.Ins.OpenUI<LoseScreen>(o);
             GameManager.Ins.ChangeState(GameState.LoseGame);
         }
 
@@ -276,7 +276,7 @@ namespace _Game.Managers
             if (time < 0) return;
             time -= 1;
             screen.Time = time;
-            if (time <= 0) OnLoseGame();
+            if (time <= 0) OnLoseGame(LevelLoseCondition.Timeout);
         }
 
         #region Booster
