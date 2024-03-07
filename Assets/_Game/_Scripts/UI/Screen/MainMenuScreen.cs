@@ -63,8 +63,11 @@ namespace _Game.UIs.Screen
 
                 _bottomNavigationTabGroup.ResetSelectedTab(true);
             }
-            AdsManager.Ins.BannerAds.Hide();
-            GameManager.Ins.PostEvent(EventID.OnChangeLayoutForBanner, false);
+
+            #region BANNER
+            //AdsManager.Ins.HideBannerAds();
+            //GameManager.Ins.PostEvent(EventID.OnChangeLayoutForBanner, false);
+            #endregion
         }
 
         public override void Close()

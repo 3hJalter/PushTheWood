@@ -16,12 +16,12 @@ namespace _Game.Managers
         [SerializeField]
         InterstitialAds Interstitial;
         public RewardedAds RewardedAds => Reward;
-        public BannerAds BannerAds => Banner;
 
         STimer cooldownTimer;
         Action interCallBack;
 
         int intAdsStepCount = 0;
+        public bool IsBannerOpen => Banner.IsBannerOpen;
         private void Start()
         {
             DontDestroyOnLoad(gameObject);
@@ -34,6 +34,19 @@ namespace _Game.Managers
             GameManager.Ins.RegisterListenerEvent(EventID.OnInterAdsStepCount, OnInterAdsStepCount);
             GameManager.Ins.RegisterListenerEvent(EventID.OnCheckShowInterAds, CheckShowInterAds);
             cooldownTimer = new STimer();
+        }
+        public void ShowBannerAds()
+        {
+            int levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
+            if (levelIndex < DataManager.Ins.ConfigData.startBannerAds)
+                return;
+            Banner.Show();
+        }
+
+        public void HideBannerAds()
+        {
+            if(IsBannerOpen)
+                Banner.Hide();
         }
         private void CheckShowInterAds(object callBack = null)
         {

@@ -21,6 +21,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: unlockGoMainMenuOnLoseAtLevelIndex
+      Entry: 3
+      Data: 5
     - Name: unlockBonusChestAtLevelIndex
       Entry: 3
       Data: 5
@@ -231,6 +234,9 @@ MonoBehaviour:
     - Name: startInterAdsLevel
       Entry: 3
       Data: 7
+    - Name: startBannerAds
+      Entry: 3
+      Data: 3
     - Name: winLevelCountInterAds
       Entry: 3
       Data: 4
