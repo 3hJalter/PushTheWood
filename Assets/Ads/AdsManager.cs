@@ -35,7 +35,6 @@ namespace _Game.Managers
             GameManager.Ins.RegisterListenerEvent(EventID.OnCheckShowInterAds, CheckShowInterAds);
             cooldownTimer = new STimer();
         }
-        
         private void CheckShowInterAds(object callBack = null)
         {
             int levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;

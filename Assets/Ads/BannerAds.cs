@@ -5,7 +5,7 @@ using UnityEngine;
 public class BannerAds : MonoBehaviour
 {
     string bannerAdUnitId = "6966fa233ec0364f"; // Retrieve the ID from your account
-
+    bool isBannerOpen = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +16,6 @@ public class BannerAds : MonoBehaviour
             // Banners are automatically sized to 320×50 on phones and 728×90 on tablets
             // You may call the utility method MaxSdkUtils.isTablet() to help with view sizing adjustments
             MaxSdk.CreateBanner(bannerAdUnitId, MaxSdkBase.BannerPosition.BottomCenter);
-
             // Set background or background color for banners to be fully functional
             MaxSdk.SetBannerBackgroundColor(bannerAdUnitId, Color.black);
         };
@@ -28,8 +27,17 @@ public class BannerAds : MonoBehaviour
 
     public void Show()
     {
+        isBannerOpen = true;
         MaxSdk.ShowBanner(bannerAdUnitId);
     }
+
+    public void Hide()
+    {
+        isBannerOpen = false;
+        MaxSdk.HideBanner(bannerAdUnitId);
+    }
+
+    public bool IsBannerOpen => isBannerOpen;
     // Update is called once per frame
     void Update()
     {

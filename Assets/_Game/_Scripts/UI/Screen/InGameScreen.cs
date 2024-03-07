@@ -28,7 +28,7 @@ namespace _Game.UIs.Screen
         [SerializeField] private GameObject timerContainer;
 
         [SerializeField] private Image blockPanel;
-     
+        [SerializeField] private RectTransform rectTransform;
         // Booster Button
         public BoosterButton undoButton;
         public BoosterButton pushHintButton;
@@ -92,6 +92,7 @@ namespace _Game.UIs.Screen
             pushHintButton.AddEvent(OnClickPushHint);
             growTreeButton.AddEvent(OnClickGrowTree);
             resetIslandButton.AddEvent(OnClickResetIsland);
+            GameManager.Ins.RegisterListenerEvent(DesignPattern.EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
         }
 
         private void OnDestroy()
@@ -103,6 +104,7 @@ namespace _Game.UIs.Screen
             pushHintButton.RemoveEvent(OnClickPushHint);
             growTreeButton.RemoveEvent(OnClickGrowTree);
             resetIslandButton.RemoveEvent(OnClickResetIsland);
+            GameManager.Ins.UnregisterListenerEvent(DesignPattern.EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
         }
 
         public event Action OnUndo;
@@ -147,6 +149,8 @@ namespace _Game.UIs.Screen
             MoveInputManager.Ins.ShowContainer(false);
             base.Close();
         }
+
+        
 
         public void OnClickSettingButton()
         {
@@ -213,7 +217,11 @@ namespace _Game.UIs.Screen
             growTreeButton.SetAmount(DataManager.Ins.GameData.user.growTreeCount);
             if (active) growTreeButton.IsShowAds = false;
         }
-        
+        private void ChangeLayoutForBanner(object isBannerActive)
+        {
+            int sizeAnchor = (bool)isBannerActive ? 50 : 0;
+            rectTransform.offsetMin = new Vector2(rectTransform.offsetMin.x, sizeAnchor);
+        }
         private void UpdateLevelText()
         {
             int levelIndex = 1;

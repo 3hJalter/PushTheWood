@@ -7,6 +7,7 @@ using _Game.Managers;
 using _Game.UIs.Popup;
 using AudioEnum;
 using DG.Tweening;
+using StylizedWater2;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -49,6 +50,7 @@ namespace _Game.UIs.Screen
             CameraManager.Ins.ChangeCamera(ECameraType.PerspectiveCamera, 0f);
             AudioManager.Ins.PlayBgm(BgmType.MainMenu, 1f);
             AudioManager.Ins.StopEnvironment();
+            
             UIManager.Ins.OpenUI<StatusBarScreen>(param);
             if (param is true)
             {
@@ -61,6 +63,8 @@ namespace _Game.UIs.Screen
 
                 _bottomNavigationTabGroup.ResetSelectedTab(true);
             }
+            AdsManager.Ins.BannerAds.Hide();
+            GameManager.Ins.PostEvent(EventID.OnChangeLayoutForBanner, false);
         }
 
         public override void Close()

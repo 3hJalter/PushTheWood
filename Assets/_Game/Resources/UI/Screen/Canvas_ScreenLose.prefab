@@ -4351,6 +4351,7 @@ MonoBehaviour:
   useAnimator: 0
   animator: {fileID: 0}
   _canvasGroup: {fileID: 5000227738760051636}
+  rectTransform: {fileID: 5000227738760051637}
   _blockPanel: {fileID: 5837834491298183596}
   _contentImage: {fileID: 3341276536248213865}
   _moreTimeButton: {fileID: 8086534100586605013}

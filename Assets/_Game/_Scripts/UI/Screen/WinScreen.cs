@@ -24,6 +24,8 @@ namespace _Game.UIs.Screen
         [SerializeField]
         private Image _contentImage;
         [SerializeField]
+        private RectTransform rectTransform;
+        [SerializeField]
         private RectTransform _rewardParentRectTF;
         [SerializeField]
         private RewardItem _rewardItemPrefab;
@@ -32,7 +34,16 @@ namespace _Game.UIs.Screen
         
         private Action _nextLevel;
         private List<RewardItem> _rewardItemList = new List<RewardItem>();
-        
+        private void Awake()
+        {
+            GameManager.Ins.RegisterListenerEvent(DesignPattern.EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
+            ChangeLayoutForBanner(AdsManager.Ins.BannerAds.IsBannerOpen);
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.Ins.UnregisterListenerEvent(DesignPattern.EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
+        }
         public override void Setup(object param = null)
         {
             base.Setup(param);
@@ -122,7 +133,11 @@ namespace _Game.UIs.Screen
                 }
             });
         }
-        
+        private void ChangeLayoutForBanner(object isBannerActive)
+        {
+            int sizeAnchor = (bool)isBannerActive ? 50 : 0;
+            rectTransform.offsetMin = new Vector2(rectTransform.offsetMin.x, sizeAnchor);
+        }
         public void OnClickNextButton()
         {           
             DevLog.Log(DevId.Vinh, "Collect rewards");

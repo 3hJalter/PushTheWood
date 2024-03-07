@@ -1530,8 +1530,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 25}
+  m_SizeDelta: {x: 0, y: -50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &995249274732087734
 Canvas:
@@ -1602,6 +1602,7 @@ MonoBehaviour:
   settingButton: {fileID: 995249275173999257}
   timerContainer: {fileID: 7055623485558247756}
   blockPanel: {fileID: 2725511117278880449}
+  rectTransform: {fileID: 995249274732087730}
   undoButton: {fileID: 5396225558406985821}
   pushHintButton: {fileID: 3592529410336712623}
   growTreeButton: {fileID: 6250197807455768000}

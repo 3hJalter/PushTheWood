@@ -17,12 +17,24 @@ namespace VinhLB
         [SerializeField]
         private CanvasGroup _canvasGroup;
         [SerializeField]
+        private RectTransform rectTransform;
+        [SerializeField]
         private Image _blockPanel;
         [SerializeField]
         private Image _contentImage;
         [SerializeField]
         private HButton _moreTimeButton;
-        
+
+        private void Awake()
+        {
+            GameManager.Ins.RegisterListenerEvent(EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
+            ChangeLayoutForBanner(AdsManager.Ins.BannerAds.IsBannerOpen);
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
+        }
         public override void Setup(object param = null)
         {
             base.Setup(param);
@@ -62,5 +74,11 @@ namespace VinhLB
             UIManager.Ins.OpenUI<MainMenuScreen>();
             GameManager.Ins.PostEvent(EventID.OnInterAdsStepCount, 1);
         }
+        private void ChangeLayoutForBanner(object isBannerActive)
+        {
+            int sizeAnchor = (bool)isBannerActive ? 50 : 0;
+            rectTransform.offsetMin = new Vector2(rectTransform.offsetMin.x, sizeAnchor);
+        }
+
     }
 }
