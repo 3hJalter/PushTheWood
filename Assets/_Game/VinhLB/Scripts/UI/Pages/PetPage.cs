@@ -123,13 +123,7 @@ namespace VinhLB
             else
             {
                 _buyButton.gameObject.SetActive(false);
-                if (DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[_currentPetIndex].Data))
-                {
-                    _collectionItemList[_currentPetIndex].SetChosen(false);
-                    _collectionItemList[id].SetChosen(true);
-                    DataManager.Ins.SetCharacterSkinIndex(_collectionItemList[id].Data);
-                }
-                _collectionItemList[_currentPetIndex].SetChosen(false);
+                _collectionItemList[DataManager.Ins.CurrentPlayerSkinIndex].SetChosen(false);
                 _collectionItemList[id].SetChosen(true);
                 DataManager.Ins.SetCharacterSkinIndex(_collectionItemList[id].Data);
             }
