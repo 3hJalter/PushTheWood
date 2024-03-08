@@ -17,12 +17,12 @@ namespace VinhLB
         private TMP_Text _loadingText;
 
         private Coroutine _closeCoroutine;
-        private Tween _loadingTextTween;
+        private Sequence _loadingTextSequence;
 
         public override void Setup(object param = null)
         {
             base.Setup(param);
-            
+
             SceneGameManager.Ins.OnLoadingScene += SceneGameManager_OnLoadingScene;
             SceneGameManager.Ins.OnSceneLoaded += SceneGameManager_OnSceneLoaded;
         }
@@ -30,12 +30,15 @@ namespace VinhLB
         public override void Open(object param = null)
         {
             base.Open(param);
-            
+
             UpdateLoadingUI(0f);
 
-            if (_loadingTextTween == null)
+            if (_loadingTextSequence == null)
             {
-                _loadingTextTween = DOVirtual.Int(0, 2, 1f, (value) =>
+                float duration = 0.75f;
+                _loadingTextSequence = DOTween.Sequence();
+                _loadingTextSequence.SetDelay(duration / 3, true);
+                _loadingTextSequence.Append(DOVirtual.Int(0, 2, duration, (value) =>
                 {
                     string loadingText = "Loading.";
                     for (int i = 0; i < value; i++)
@@ -43,11 +46,12 @@ namespace VinhLB
                         loadingText += ".";
                     }
                     _loadingText.text = loadingText;
-                }).SetLoops(-1, LoopType.Restart);
+                }));
+                _loadingTextSequence.SetLoops(-1, LoopType.Restart);
             }
             else
             {
-                _loadingTextTween.Restart();
+                _loadingTextSequence.Restart();
             }
         }
 
@@ -61,7 +65,7 @@ namespace VinhLB
         {
             UpdateLoadingUI(progress);
         }
-        
+
         private void SceneGameManager_OnSceneLoaded(int id)
         {
             SceneGameManager.Ins.OnLoadingScene -= SceneGameManager_OnLoadingScene;
@@ -73,9 +77,9 @@ namespace VinhLB
         private IEnumerator CloseCoroutine(float delayTime)
         {
             yield return new WaitForSeconds(delayTime);
-            
-            _loadingTextTween.Pause();
-            
+
+            _loadingTextSequence.Pause();
+
             Close();
         }
     }
