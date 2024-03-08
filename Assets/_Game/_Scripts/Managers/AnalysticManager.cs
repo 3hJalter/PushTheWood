@@ -45,7 +45,7 @@ namespace _Game.Managers
                     // where app is a Firebase.FirebaseApp property of your application class.
 
                     // Set a flag here to indicate whether Firebase is ready to use by your app.
-                    isFirebaseInit |= true;
+                    isFirebaseInit = true;
                 }
                 else
                 {
@@ -190,17 +190,17 @@ namespace _Game.Managers
             });
         }
 
-        public void ResourceSpend(BoosterType type, Resource.Placement place, int amount)
-        {
-            if (!isFirebaseInit) return;
+        //public void ResourceSpend(BoosterType type, Resource.Placement place, int amount)
+        //{
+        //    if (!isFirebaseInit) return;
 
-            FirebaseAnalytics.LogEvent("resource_spend", new Parameter[]
-            {
-                new Parameter("name", type.ToString()),
-                new Parameter("placement", place.ToString()),
-                new Parameter("value", amount)
-            });
-        }
+        //    FirebaseAnalytics.LogEvent("resource_spend", new Parameter[]
+        //    {
+        //        new Parameter("name", type.ToString()),
+        //        new Parameter("placement", place.ToString()),
+        //        new Parameter("value", amount)
+        //    });
+        //}
 
         public void ResourceSpend(CurrencyType type, Resource.Placement place, int amount)
         {

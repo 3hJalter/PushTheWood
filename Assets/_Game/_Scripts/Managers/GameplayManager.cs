@@ -151,7 +151,7 @@ namespace _Game.Managers
         }
 
         private void OnChangeBoosterAmount(BoosterType boosterType, int amount)
-        {
+        {         
             switch (boosterType)
             {
                 case BoosterType.Undo:
@@ -170,6 +170,17 @@ namespace _Game.Managers
                         amount);
                     break;
             }
+
+            #region ANALYSTIC
+            if (amount < 0)
+            {
+                AnalysticManager.Ins.BoosterSpend(boosterType);
+            }
+            else if (amount > 0)
+            {
+                AnalysticManager.Ins.ResourceEarn(boosterType, Placement.None, amount);
+            }
+            #endregion
         }
 
         private void UpdateBoosterCount(ref int boosterCount, BoosterButton button, int amount)
@@ -436,8 +447,7 @@ namespace _Game.Managers
             else
             {
                 if (!LevelManager.Ins.OnUndo()) return;
-                DataManager.Ins.GameData.user.undoCount--;
-                screen.undoButton.SetAmount(DataManager.Ins.GameData.user.undoCount);
+                OnChangeBoosterAmount(BoosterType.Undo, -1);
                 // TEMPORARY
                 if (!_pushHint.IsStartHint)
                 {
@@ -477,8 +487,7 @@ namespace _Game.Managers
             }
             else
             {
-                DataManager.Ins.GameData.user.resetIslandCount--;
-                screen.resetIslandButton.SetAmount(DataManager.Ins.GameData.user.resetIslandCount);
+                OnChangeBoosterAmount(BoosterType.ResetIsland, -1);
                 LevelManager.Ins.ResetLevelIsland();
                 int pIslandID = LevelManager.Ins.player.islandID;
                 if (!isBoughtPushHintInIsland.TryGetValue(pIslandID, out bool value)) return;
@@ -519,9 +528,8 @@ namespace _Game.Managers
                 if (EventGlobalManager.Ins.OnGrowTree.listenerCount <= 0) return;
                 if (!IsBoughtGrowTreeInIsland(pIslandID))
                 {
+                    OnChangeBoosterAmount(BoosterType.GrowTree, -1);
                     SetBoughtTreeInIsland(pIslandID, true);
-                    DataManager.Ins.GameData.user.growTreeCount--;
-                    screen.growTreeButton.SetAmount(DataManager.Ins.GameData.user.growTreeCount);
                     screen.growTreeButton.IsShowAds = false; // TEMPORARY
                 }
                 EventGlobalManager.Ins.OnGrowTree.Dispatch(pIslandID);
@@ -555,8 +563,7 @@ namespace _Game.Managers
                 // If this is first player step cell in this island, return
                 if (!IsBoughtPushHintInIsland(playerIslandID))
                 {
-                    DataManager.Ins.GameData.user.pushHintCount--;
-                    screen.pushHintButton.SetAmount(DataManager.Ins.GameData.user.pushHintCount);
+                    OnChangeBoosterAmount(BoosterType.PushHint, -1);
                     SetBoughtPushHintInIsland(playerIslandID, true);
                     LevelManager.Ins.ResetLevelIsland();
                 }
