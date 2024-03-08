@@ -10,6 +10,7 @@ using _Game.Utilities.Timer;
 using System;
 using _Game._Scripts.InGame;
 using AppsFlyerSDK;
+using Firebase.Extensions;
 
 namespace _Game.Managers
 {
@@ -18,9 +19,14 @@ namespace _Game.Managers
         bool _firstAdsSession = false;
         STimer _firstAdsSessionTimer;
         int _firstAdsSessionTime = 0;
+        bool isFirebaseInit = false;
         private void Awake()
         {
             DontDestroyOnLoad(this);
+
+            if(!Application.isEditor)
+                Init();
+
             _firstAdsSessionTime = 0;
             _firstAdsSessionTimer = TimerManager.Ins.PopSTimer();
             _firstAdsSessionTimer.Start(1, () =>
@@ -29,8 +35,30 @@ namespace _Game.Managers
             }, true);
         }
 
+        private void Init()
+        {
+            Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
+                var dependencyStatus = task.Result;
+                if (dependencyStatus == Firebase.DependencyStatus.Available)
+                {
+                    // Create and hold a reference to your FirebaseApp,
+                    // where app is a Firebase.FirebaseApp property of your application class.
+
+                    // Set a flag here to indicate whether Firebase is ready to use by your app.
+                    isFirebaseInit = true;
+                }
+                else
+                {
+                    UnityEngine.Debug.LogError(System.String.Format(
+                      "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
+                    // Firebase Unity SDK is not safe to use here.
+                    isFirebaseInit = false;
+                }
+            });
+        }
         public void LevelStart(LevelType type)
         {
+            if (!isFirebaseInit) return;
             switch (type)
             {
                 case LevelType.Normal:
@@ -51,6 +79,7 @@ namespace _Game.Managers
 
         public void LevelComplete(LevelType type)
         {
+            if (!isFirebaseInit) return;
             Parameter[] param = new Parameter[3];
             switch (type)
             {
@@ -74,6 +103,8 @@ namespace _Game.Managers
 
         public void LevelFail(LevelType type, LevelLoseCondition loseCondition)
         {
+            if (!isFirebaseInit) return;
+
             Parameter[] param = new Parameter[3];
             switch (type)
             {
@@ -99,23 +130,31 @@ namespace _Game.Managers
 
         public void BoosterSpend(BoosterType type)
         {
+            if (!isFirebaseInit) return;
+
             FirebaseAnalytics.LogEvent("booster_spend", "name", type.ToString());
         }
 
         public void RewardAdsComplete(Ads.Placement place)
         {
+            if (!isFirebaseInit) return;
+
             FirebaseAnalytics.LogEvent("ads_reward_complete", "placement", place.ToString());
             CheckFirstAdsSession(place);           
         }
 
         public void InterAdsShow(Ads.Placement place)
         {
+            if (!isFirebaseInit) return;
+
             FirebaseAnalytics.LogEvent("ad_inter_show", "placement", place.ToString());
             CheckFirstAdsSession(place);
         }
 
         private void CheckFirstAdsSession(Ads.Placement place)
         {
+            if (!isFirebaseInit) return;
+
             if (!_firstAdsSession)
             {
                 _firstAdsSession = true;
@@ -129,6 +168,8 @@ namespace _Game.Managers
         }
         public void ResourceEarn(BoosterType type,Resource.Placement place, int amount)
         {
+            if (!isFirebaseInit) return;
+
             FirebaseAnalytics.LogEvent("resource_earn", new Parameter[]
             {
                 new Parameter("name", type.ToString()),
@@ -139,6 +180,8 @@ namespace _Game.Managers
 
         public void ResourceEarn(CurrencyType type, Resource.Placement place, int amount)
         {
+            if (!isFirebaseInit) return;
+
             FirebaseAnalytics.LogEvent("resource_earn", new Parameter[]
             {
                 new Parameter("name", type.ToString()),
@@ -147,18 +190,22 @@ namespace _Game.Managers
             });
         }
 
-        public void ResourceSpend(BoosterType type, Resource.Placement place, int amount)
-        {
-            FirebaseAnalytics.LogEvent("resource_spend", new Parameter[]
-            {
-                new Parameter("name", type.ToString()),
-                new Parameter("placement", place.ToString()),
-                new Parameter("value", amount)
-            });
-        }
+        //public void ResourceSpend(BoosterType type, Resource.Placement place, int amount)
+        //{
+        //    if (!isFirebaseInit) return;
+
+        //    FirebaseAnalytics.LogEvent("resource_spend", new Parameter[]
+        //    {
+        //        new Parameter("name", type.ToString()),
+        //        new Parameter("placement", place.ToString()),
+        //        new Parameter("value", amount)
+        //    });
+        //}
 
         public void ResourceSpend(CurrencyType type, Resource.Placement place, int amount)
         {
+            if (!isFirebaseInit) return;
+
             FirebaseAnalytics.LogEvent("resource_spend", new Parameter[]
             {
                 new Parameter("name", type.ToString()),
@@ -169,11 +216,15 @@ namespace _Game.Managers
 
         public void FireUserProps()
         {
+            if (!isFirebaseInit) return;
+
             FirebaseAnalytics.LogEvent("UserProps","Level",DataManager.Ins.GameData.user.normalLevelIndex);
         }
 
         public void Day()
         {
+            if (!isFirebaseInit) return;
+
             FirebaseAnalytics.LogEvent("Day", "day", DataManager.Ins.GameData.user.playedDay);
         }
         public void AppsFlyerTrackEvent(string name)

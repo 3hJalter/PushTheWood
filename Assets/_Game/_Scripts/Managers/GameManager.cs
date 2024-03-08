@@ -252,7 +252,16 @@ namespace _Game.Managers
             {
                 return false;
             }
-            
+            #region ANALYSTIC
+            if(amount > 0)
+            {
+                AnalysticManager.Ins.ResourceEarn(CurrencyType.Gold, Placement.None, amount);
+            }
+            else if(amount < 0)
+            {
+                AnalysticManager.Ins.ResourceSpend(CurrencyType.Gold, Placement.None, amount);
+            }
+            #endregion
             ResourceChangeData data = new ResourceChangeData()
             {
                 ChangedAmount = amount,
