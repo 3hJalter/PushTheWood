@@ -1103,6 +1103,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8295795834074003701, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 1071626561}
     - target: {fileID: 8295795834620773967, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -1826,6 +1830,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!20 &1071626561 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 6469700256872215672, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
+  m_PrefabInstance: {fileID: 1071626558}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1071626564 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4016213124189603824, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}

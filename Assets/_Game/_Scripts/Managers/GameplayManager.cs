@@ -10,6 +10,7 @@ using _Game.UIs.Screen;
 using _Game.Utilities;
 using _Game.Utilities.Timer;
 using TMPro;
+using Unity.Collections;
 using UnityEngine;
 using VinhLB;
 
@@ -62,7 +63,8 @@ namespace _Game.Managers
 
         public InGameScreen Screen => screen;
 
-        private int time;
+        [ReadOnly]
+        [SerializeField] private int time;
         private int maxTime;
         private STimer timer;
 
@@ -79,7 +81,12 @@ namespace _Game.Managers
                 screen.SetActiveUndo(value);
                 if (isCanUndo)
                 {
+                    screen.undoButton.IsInteractable = true;
                     screen.undoButton.SetAmount(DataManager.Ins.GameData.user.undoCount);
+                }
+                else
+                {
+                    screen.undoButton.IsInteractable = false;
                 }
             }
         }
@@ -544,6 +551,7 @@ namespace _Game.Managers
         public void OnFreePushHint(bool isReset, bool isShowHint)
         {
             int playerIslandID = LevelManager.Ins.player.islandID;
+            SetBoughtPushHintInIsland(playerIslandID, true);
             if (_pushHint.IsStartHint) return;
             if (isReset) LevelManager.Ins.ResetLevelIsland();
             OnStartHintOnPlayerIsland(playerIslandID, isShowHint);

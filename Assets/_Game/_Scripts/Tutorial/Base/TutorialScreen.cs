@@ -32,9 +32,9 @@ namespace _Game._Scripts.Tutorial
             // if InInGameScreen is open, hide it
             if (UIManager.Ins.IsOpened<InGameScreen>())
             {
+                if (GameManager.Ins.IsState(GameState.InGame)) GameplayManager.Ins.OnPauseGame();
                 UIManager.Ins.CloseUI<InGameScreen>();
                 // Stop timer
-                if (GameManager.Ins.IsState(GameState.InGame)) GameplayManager.Ins.OnPauseGame();
             }
             TutorialManager.Ins.currentTutorialScreenScreen = this;
         }

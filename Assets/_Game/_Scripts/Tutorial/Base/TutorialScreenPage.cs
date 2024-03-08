@@ -39,10 +39,10 @@ namespace _Game._Scripts.Tutorial
             // Wait to zoom in camera
             TimerManager.Ins.WaitForFrame(1, () =>
             {
+                if (GameManager.Ins.IsState(GameState.InGame)) GameplayManager.Ins.OnPauseGame();
                 if (!UIManager.Ins.IsOpened<InGameScreen>()) return;
                 UIManager.Ins.CloseUI<InGameScreen>();
                 // Stop timer
-                if (GameManager.Ins.IsState(GameState.InGame)) GameplayManager.Ins.OnPauseGame();
             });
             TimerManager.Ins.WaitForTime(1f, () =>
             {
