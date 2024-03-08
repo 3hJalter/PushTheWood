@@ -277,7 +277,7 @@ namespace _Game.GameGrid
                     break;
             }
             GameManager.Ins.GainGold(goldCount);
-            GameManager.Ins.GainRewardKey(KeyRewardCount);
+            GameManager.Ins.GainRewardKeys(KeyRewardCount);
             GameManager.Ins.GainSecretMapPiece(SecretMapPieceCount);
             foreach (KeyValuePair<BoosterType, int> booster in boosterRewardCount)
             {

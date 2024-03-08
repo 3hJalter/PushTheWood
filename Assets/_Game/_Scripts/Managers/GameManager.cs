@@ -112,6 +112,8 @@ namespace _Game.Managers
          
             SmoothAdTickets = AdTickets;
             SmoothGold = Gold;
+            SmoothRewardKeys = CanClaimRewardChest ? DataManager.Ins.ConfigData.requireRewardKey : RewardKeys;
+            SmoothLevelProgress = LevelProgress;
         }
         
         #region Game State Handling
@@ -154,6 +156,31 @@ namespace _Game.Managers
         public int LevelProgress => _gameData.user.levelChestProgress;
         public float SmoothGold { get; set; }
         public float SmoothAdTickets { get; set; }
+        public float SmoothRewardKeys { get; set; }
+        public float SmoothLevelProgress { get; set; }
+        public bool CanClaimRewardChest => _gameData.user.currentRewardChestIndex < _gameData.user.rewardChestUnlock;
+        public bool CanClaimLevelChest => _gameData.user.currentLevelChestIndex < _gameData.user.levelChestUnlock;
+        
+        public void GainBooster(BoosterType type, int amount)
+        {
+            switch (type)
+            {
+                case BoosterType.Undo:
+                    _gameData.user.undoCount += amount;
+                    break;
+                case BoosterType.PushHint:
+                    _gameData.user.pushHintCount += amount;
+                    break;
+                case BoosterType.GrowTree:
+                    _gameData.user.growTreeCount += amount;
+                    break;
+                case BoosterType.ResetIsland:
+                    _gameData.user.resetIslandCount += amount;
+                    break;
+            }
+            PostEvent(EventID.OnUpdateUIs);
+            Database.SaveData(_gameData);
+        }
         
         public void GainGold(int value, object source = null)
         {
@@ -179,39 +206,20 @@ namespace _Game.Managers
             Database.SaveData(_gameData);
         }
         
-        public void GainBooster(BoosterType type, int amount)
+        public void GainRewardKeys(int amount, object source = null)
         {
-            switch (type)
-            {
-                case BoosterType.Undo:
-                    _gameData.user.undoCount += amount;
-                    break;
-                case BoosterType.PushHint:
-                    _gameData.user.pushHintCount += amount;
-                    break;
-                case BoosterType.GrowTree:
-                    _gameData.user.growTreeCount += amount;
-                    break;
-                case BoosterType.ResetIsland:
-                    _gameData.user.resetIslandCount += amount;
-                    break;
-            }
-            PostEvent(EventID.OnUpdateUIs);
-            Database.SaveData(_gameData);
-        }
-        
-        public void GainRewardKey(int amount)
-        {
-            _gameData.user.rewardChestKeys += amount;
-            if(_gameData.user.rewardChestKeys >= DataManager.Ins.ConfigData.requireRewardKey)
-            {
-                _gameData.user.rewardChestUnlock += _gameData.user.rewardChestKeys / DataManager.Ins.ConfigData.requireRewardKey;
-                _gameData.user.rewardChestKeys = _gameData.user.rewardChestKeys % DataManager.Ins.ConfigData.requireRewardKey;
-                //PostEvent(EventID.OnUnlockRewardChest, _gameData.user.rewardChestUnlock);
-            }
-            //PostEvent(EventID.OnRewardChestKeyChange, _gameData.user.rewardChestKeys);
-            PostEvent(EventID.OnUpdateUIs);
-            Database.SaveData(_gameData);
+            // _gameData.user.rewardChestKeys += amount;
+            // if(_gameData.user.rewardChestKeys >= DataManager.Ins.ConfigData.requireRewardKey)
+            // {
+            //     _gameData.user.rewardChestUnlock += _gameData.user.rewardChestKeys / DataManager.Ins.ConfigData.requireRewardKey;
+            //     _gameData.user.rewardChestKeys = _gameData.user.rewardChestKeys % DataManager.Ins.ConfigData.requireRewardKey;
+            //     //PostEvent(EventID.OnUnlockRewardChest, _gameData.user.rewardChestUnlock);
+            // }
+            // //PostEvent(EventID.OnRewardChestKeyChange, _gameData.user.rewardChestKeys);
+            // PostEvent(EventID.OnUpdateUIs);
+            // Database.SaveData(_gameData);
+
+            TryModifyRewardKeys(amount, source);
         }
 
         public void GainLevelProgress(int amount)
@@ -271,7 +279,7 @@ namespace _Game.Managers
             };
             
             _gameData.user.gold += amount;
-            PostEvent(EventID.OnGoldChange, data);
+            PostEvent(EventID.OnChangeGold, data);
             Database.SaveData(_gameData);
 
             if (amount < 0)
@@ -298,12 +306,45 @@ namespace _Game.Managers
             };
             
             _gameData.user.adTickets += amount;
-            PostEvent(EventID.OnAdTicketsChange, data);
+            PostEvent(EventID.OnChangeAdTickets, data);
             Database.SaveData(_gameData);
 
             if (amount < 0)
             {
                 SmoothAdTickets = _gameData.user.adTickets;
+            }
+
+            return true;
+        }
+        
+        private bool TryModifyRewardKeys(int amount, object source)
+        {
+            if (_gameData.user.rewardChestKeys + amount < 0)
+            {
+                return false;
+            }
+            
+            ResourceChangeData data = new ResourceChangeData()
+            {
+                ChangedAmount = amount,
+                OldValue = _gameData.user.rewardChestKeys,
+                NewValue = _gameData.user.rewardChestKeys + amount,
+                Source = source
+            };
+            
+            _gameData.user.rewardChestKeys += amount;
+            if(_gameData.user.rewardChestKeys >= DataManager.Ins.ConfigData.requireRewardKey)
+            {
+                _gameData.user.rewardChestUnlock += _gameData.user.rewardChestKeys / DataManager.Ins.ConfigData.requireRewardKey;
+                _gameData.user.rewardChestKeys = _gameData.user.rewardChestKeys % DataManager.Ins.ConfigData.requireRewardKey;
+            }
+            
+            PostEvent(EventID.OnChangeRewardKeys, data);
+            Database.SaveData(_gameData);
+
+            if (amount < 0)
+            {
+                SmoothRewardKeys = _gameData.user.rewardChestKeys;
             }
 
             return true;

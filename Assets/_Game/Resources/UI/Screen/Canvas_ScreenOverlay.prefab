@@ -1,5 +1,41 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &579047930504338701
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 712603765492653827}
+  m_Layer: 5
+  m_Name: FloatingRewardKeys
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &712603765492653827
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 579047930504338701}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2631207827604691807}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1471458726297212058
 GameObject:
   m_ObjectHideFlags: 0
@@ -71,6 +107,7 @@ RectTransform:
   - {fileID: 8154318696650414469}
   - {fileID: 7776611010581436839}
   - {fileID: 7498035686313410275}
+  - {fileID: 712603765492653827}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -146,7 +183,8 @@ MonoBehaviour:
   animator: {fileID: 0}
   _uiCoinParentRectTF: {fileID: 8154318696650414469}
   _uiAdTicketParentRectTF: {fileID: 7776611010581436839}
-  _uiRewardKeyRectTF: {fileID: 7498035686313410275}
+  _uiRewardKeyParentRectTF: {fileID: 7498035686313410275}
+  _floatingRewardKeyParentRectTf: {fileID: 712603765492653827}
 --- !u!1 &4289598540088685976
 GameObject:
   m_ObjectHideFlags: 0

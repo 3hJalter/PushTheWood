@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using _Game.DesignPattern;
 using _Game.Managers;
-using _Game.UIs.Screen;
 using _Game.Utilities;
 using DG.Tweening;
 using Sirenix.OdinInspector;
@@ -15,7 +14,7 @@ namespace VinhLB
 {
     public class CollectingResourceManager : Singleton<CollectingResourceManager>
     {
-        [System.Serializable]
+        [Serializable]
         private class CollectingResourceConfig
         {
             public PoolType PrefabPoolType;
@@ -80,26 +79,39 @@ namespace VinhLB
 
             SpawnCollectingUIResource(_collectingUIAdTicketConfig, amount, startPosition, endPoint, onEachReachEnd);
         }
+        
+        public void SpawnCollectingUIRewardKeys(int amount, Vector3 startPosition, Transform endPoint,
+            Action<float> onEachReachEnd = null)
+        {
+            UpdateComponents();
+
+            if (_collectingUIRewardKeyConfig.CollectingResourceParentTF == null)
+            {
+                _collectingUIRewardKeyConfig.CollectingResourceParentTF = _overlayScreen.UIAdTicketParentRectTF;
+            }
+
+            SpawnCollectingUIResource(_collectingUIRewardKeyConfig, amount, startPosition, endPoint, onEachReachEnd);
+        }
 
         public void SpawnCollectingLevelProgress(int amount, Vector3 startPosition, Transform endPoint,
             Action<float> onEachReachEnd = null)
         {
             UpdateComponents();
 
-            if (_collectingUIAdTicketConfig.CollectingResourceParentTF == null)
+            if (_collectingUIRewardKeyConfig.CollectingResourceParentTF == null)
             {
-                _collectingUIAdTicketConfig.CollectingResourceParentTF = _overlayScreen.UIAdTicketParentRectTF;
+                _collectingUIRewardKeyConfig.CollectingResourceParentTF = _overlayScreen.UIRewardKeyParentRectTF;
             }
 
-            SpawnCollectingUIResource(_collectingUIAdTicketConfig, amount, startPosition, endPoint, onEachReachEnd);
+            SpawnCollectingUIResource(_collectingUIRewardKeyConfig, amount, startPosition, endPoint, onEachReachEnd);
         }
 
         public void SpawnCollectingRewardKey(int amount, Transform objectTransform)
         {
             UpdateComponents();
 
-            UIRewardKey unit =
-                SimplePool.Spawn<UIRewardKey>(
+            FloatingRewardKey unit =
+                SimplePool.Spawn<FloatingRewardKey>(
                     DataManager.Ins.GetUIUnit(_collectingInGameRewardKeyConfig.PrefabPoolType));
             Vector2 viewPortPoint =
                 CameraManager.Ins.WorldToViewportPoint(objectTransform.position) - Vector3.one * 0.5f;
@@ -108,7 +120,7 @@ namespace VinhLB
 
             if (_collectingInGameRewardKeyConfig.CollectingResourceParentTF == null)
             {
-                _collectingInGameRewardKeyConfig.CollectingResourceParentTF = _overlayScreen.UIRewardKeyRectTF;
+                _collectingInGameRewardKeyConfig.CollectingResourceParentTF = _overlayScreen.FloatingRewardKeyParentRectTF;
             }
             if (unit.Tf.parent != _collectingInGameRewardKeyConfig.CollectingResourceParentTF)
             {

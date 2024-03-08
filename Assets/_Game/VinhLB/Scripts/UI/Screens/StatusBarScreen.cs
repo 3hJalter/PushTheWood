@@ -25,17 +25,17 @@ namespace VinhLB
 
         private void Awake()
         {
-            GameManager.Ins.RegisterListenerEvent(EventID.OnGoldChange,
+            GameManager.Ins.RegisterListenerEvent(EventID.OnChangeGold,
                 data => ChangeGoldValue((ResourceChangeData)data));
-            GameManager.Ins.RegisterListenerEvent(EventID.OnAdTicketsChange,
+            GameManager.Ins.RegisterListenerEvent(EventID.OnChangeAdTickets,
                 data => ChangeAdTicketValue((ResourceChangeData)data));
         }
 
         private void OnDestroy()
         {
-            GameManager.Ins.UnregisterListenerEvent(EventID.OnGoldChange,
+            GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeGold,
                 data => ChangeGoldValue((ResourceChangeData)data));
-            GameManager.Ins.UnregisterListenerEvent(EventID.OnAdTicketsChange,
+            GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeAdTickets,
                 data => ChangeAdTicketValue((ResourceChangeData)data));
         }
 
@@ -43,8 +43,8 @@ namespace VinhLB
         {
             base.Setup(param);
 
-            _goldValueText.text = $"{GameManager.Ins.Gold}";
-            _adTicketValueText.text = $"{GameManager.Ins.AdTickets}";
+            _goldValueText.text = GameManager.Ins.Gold.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+            _adTicketValueText.text = GameManager.Ins.AdTickets.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
 
             if (param is true)
             {
@@ -79,7 +79,7 @@ namespace VinhLB
 
             if (data.ChangedAmount > 0 && data.Source is Vector3 spawnPosition)
             {
-                int collectingCoinAmount = Mathf.Min((int)data.ChangedAmount, 8);
+                int collectingCoinAmount = Mathf.Min((int)data.ChangedAmount, Constants.MAX_UI_UNIT);
                 CollectingResourceManager.Ins.SpawnCollectingUICoins(collectingCoinAmount, spawnPosition, _goldIconTF,
                     (progress) =>
                     {
@@ -104,15 +104,14 @@ namespace VinhLB
 
             if (data.ChangedAmount > 0 && data.Source is Vector3 spawnPosition)
             {
-                float currentValue = data.OldValue;
-                int collectingAdTicketAmount = Mathf.Min((int)data.ChangedAmount, 8);
+                int collectingAdTicketAmount = Mathf.Min((int)data.ChangedAmount, Constants.MAX_UI_UNIT);
                 CollectingResourceManager.Ins.SpawnCollectingUIAdTickets(collectingAdTicketAmount, spawnPosition,
                     _adTicketIconTF,
                     (progress) =>
                     {
-                        currentValue += data.ChangedAmount / collectingAdTicketAmount;
+                        GameManager.Ins.SmoothAdTickets += data.ChangedAmount / collectingAdTicketAmount;
                         _adTicketValueText.text =
-                            currentValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+                            GameManager.Ins.SmoothAdTickets.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
                     });
             }
             else

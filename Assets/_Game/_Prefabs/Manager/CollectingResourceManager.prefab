@@ -55,8 +55,8 @@ MonoBehaviour:
     SerializationNodes: []
   _collectingUICoinConfig:
     PrefabPoolType: 400
-    MinSpreadPosition: {x: -2, y: -2, z: 0}
-    MaxSpreadPosition: {x: 2, y: 2, z: 0}
+    MinSpreadPosition: {x: -3, y: -3, z: 0}
+    MaxSpreadPosition: {x: 3, y: 3, z: 0}
     SpreadDuration: 0.2
     MoveDuration: 1
     ReactPunchScale: {x: 0.25, y: 0.25, z: 0}
@@ -64,8 +64,8 @@ MonoBehaviour:
     CollectingResourceParentTF: {fileID: 0}
   _collectingUIAdTicketConfig:
     PrefabPoolType: 401
-    MinSpreadPosition: {x: -2, y: -2, z: 0}
-    MaxSpreadPosition: {x: 2, y: 2, z: 0}
+    MinSpreadPosition: {x: -3, y: -3, z: 0}
+    MaxSpreadPosition: {x: 3, y: 3, z: 0}
     SpreadDuration: 0.2
     MoveDuration: 1
     ReactPunchScale: {x: 0.25, y: 0.25, z: 0}
@@ -73,8 +73,8 @@ MonoBehaviour:
     CollectingResourceParentTF: {fileID: 0}
   _collectingUIRewardKeyConfig:
     PrefabPoolType: 402
-    MinSpreadPosition: {x: -2, y: -2, z: 0}
-    MaxSpreadPosition: {x: 2, y: 2, z: 0}
+    MinSpreadPosition: {x: -3, y: -3, z: 0}
+    MaxSpreadPosition: {x: 3, y: 3, z: 0}
     SpreadDuration: 0.2
     MoveDuration: 1
     ReactPunchScale: {x: 0.25, y: 0.25, z: 0}

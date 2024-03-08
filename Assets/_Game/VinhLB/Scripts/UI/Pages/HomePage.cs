@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Popup;
@@ -30,7 +32,7 @@ namespace VinhLB
         [SerializeField]
         private RectTransform _rewardChestIconRectTF;
         [SerializeField]
-        private GameObject _rewardChestCurrencyIconGO;
+        private RectTransform _rewardChestCurrencyIconRectTF;
         [SerializeField]
         private TMP_Text _rewardKeyTxt;
         [SerializeField]
@@ -38,7 +40,7 @@ namespace VinhLB
         [SerializeField]
         private RectTransform _levelChestIconRectTF;
         [SerializeField]
-        private GameObject _levelChestCurrencyIconGO;
+        private RectTransform _levelChestCurrencyIconRectTF;
         [SerializeField]
         private TMP_Text _levelProgressTxt;
         [SerializeField]
@@ -51,6 +53,11 @@ namespace VinhLB
 
         private void Awake()
         {
+            GameManager.Ins.RegisterListenerEvent(EventID.OnChangeRewardKeys,
+                data => ChangeRewardKeyValue((ResourceChangeData)data));
+            GameManager.Ins.RegisterListenerEvent(EventID.OnChangeLevelProgress,
+                data => ChangeLevelProgressValue((ResourceChangeData)data));
+
             _playButton.onClick.AddListener(() =>
             {
                 UIManager.Ins.CloseAll();
@@ -79,11 +86,23 @@ namespace VinhLB
             });
             _rewardChestButton.onClick.AddListener(() =>
             {
-                RewardManager.Ins.HomeReward.ClaimRewardChest();
+                if (!CanClaimRewardChest())
+                {
+                    return;
+                }
+                
+                if (RewardManager.Ins.HomeReward.TryClaimRewardChest())
+                {
+                    GameManager.Ins.SmoothRewardKeys = GameManager.Ins.RewardKeys;
+
+                    UpdateRewardChestUI();
+                }
             });
             _levelChestButton.onClick.AddListener(() =>
             {
-                RewardManager.Ins.HomeReward.ClaimLevelChest();
+                if (RewardManager.Ins.HomeReward.TryClaimLevelChest())
+                {
+                }
             });
 
             _shakeRewardTimer = TimerManager.Ins.PopSTimer();
@@ -104,38 +123,49 @@ namespace VinhLB
 
         private void OnDestroy()
         {
+            GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeRewardKeys,
+                data => ChangeRewardKeyValue((ResourceChangeData)data));
+            GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeLevelProgress,
+                data => ChangeLevelProgressValue((ResourceChangeData)data));
+
             TimerManager.Ins.PushSTimer(_shakeRewardTimer);
         }
-        public override void Open(object param = null)
+
+        public override void Setup(object param = null)
         {
-            base.Open(param);
+            base.Setup(param);
+            
             SetupHomeCamera();
+
+            UpdateRewardChestUI();
         }
+
         public override void UpdateUI()
         {
             _levelText.text = $"Level {LevelManager.Ins.NormalLevelIndex + 1}";
-            if (RewardManager.Ins.HomeReward.IsCanClaimRC)
-            {
-                if (!_shakeRewardTimer.IsStart)
-                {
-                    _shakeRewardTimer.Start(1f, () =>
-                    {
-                        _rewardChestIconRectTF.DOShakeRotation(0.5f, Vector3.forward * 10f, 10, 45f, true,
-                            ShakeRandomnessMode.Harmonic);
-                    }, true);
-                    _rewardKeyTxt.text = $"FULL";
-                    _rewardKeyTxt.color = Color.green;
-                    _rewardChestCurrencyIconGO.SetActive(false);
-                }
-            }
-            else
-            {
-                _shakeRewardTimer.Stop();
-                _rewardKeyTxt.text = $"{GameManager.Ins.RewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
-                _rewardKeyTxt.color = Color.white;
-                _rewardChestCurrencyIconGO.SetActive(true);
-                _rewardChestIconRectTF.localRotation = _startRewardChestIconQuaternion;
-            }
+            
+            // if (RewardManager.Ins.HomeReward.IsCanClaimRC)
+            // {
+            //     if (!_shakeRewardTimer.IsStart)
+            //     {
+            //         _shakeRewardTimer.Start(1f, () =>
+            //         {
+            //             _rewardChestIconRectTF.DOShakeRotation(0.5f, Vector3.forward * 10f, 10, 45f, true,
+            //                 ShakeRandomnessMode.Harmonic);
+            //         }, true);
+            //         _rewardKeyTxt.text = $"FULL";
+            //         _rewardKeyTxt.color = Color.green;
+            //         _rewardChestCurrencyIconRectTF.gameObject.SetActive(false);
+            //     }
+            // }
+            // else
+            // {
+            //     _shakeRewardTimer.Stop();
+            //     _rewardKeyTxt.text = $"{GameManager.Ins.RewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
+            //     _rewardKeyTxt.color = Color.white;
+            //     _rewardChestCurrencyIconRectTF.gameObject.SetActive(true);
+            //     _rewardChestIconRectTF.localRotation = _startRewardChestIconQuaternion;
+            // }
 
             if (RewardManager.Ins.HomeReward.IsCanClaimLC)
             {
@@ -148,7 +178,7 @@ namespace VinhLB
                     }, true);
                     _levelProgressTxt.text = $"FULL";
                     _levelProgressTxt.color = Color.green;
-                    _levelChestCurrencyIconGO.SetActive(false);
+                    _levelChestCurrencyIconRectTF.gameObject.SetActive(false);
                 }
             }
             else
@@ -157,23 +187,93 @@ namespace VinhLB
                 _levelProgressTxt.text =
                     $"{GameManager.Ins.LevelProgress}/{DataManager.Ins.ConfigData.requireLevelProgress}";
                 _levelProgressTxt.color = Color.white;
-                _levelChestCurrencyIconGO.SetActive(true);
+                _levelChestCurrencyIconRectTF.gameObject.SetActive(true);
                 _levelChestIconRectTF.localRotation = _startLevelChestIconQuaternion;
             }
         }
+
         private void SetupHomeCamera()
         {
             LevelManager.Ins.ConstructingLevel();
             GameGridCell waterCell, playerCell;
             (waterCell, playerCell) = LevelManager.Ins.player.SetActiveAgent(true);
             Vector3 offset = waterCell.WorldPos - playerCell.WorldPos;
-            offset.Set(Mathf.Abs(offset.x) < 0.001f ? Constants.CELL_SIZE : offset.x * 12, 3.5f, Mathf.Abs(offset.z) < 0.001f ? Constants.CELL_SIZE : offset.z * 12);
+            offset.Set(Mathf.Abs(offset.x) < 0.001f ? Constants.CELL_SIZE : offset.x * 12, 3.5f,
+                Mathf.Abs(offset.z) < 0.001f ? Constants.CELL_SIZE : offset.z * 12);
 
-            CinemachineFramingTransposer transposerCam = CameraManager.Ins.GetCameraCinemachineComponent<CinemachineFramingTransposer>(_Game.Camera.ECameraType.PerspectiveCamera);
+            CinemachineFramingTransposer transposerCam =
+                CameraManager.Ins.GetCameraCinemachineComponent<CinemachineFramingTransposer>(_Game.Camera.ECameraType
+                    .PerspectiveCamera);
             transposerCam.m_TrackedObjectOffset = offset;
             CameraManager.Ins.ChangeCameraTargetPosition(playerCell.WorldPos + Vector3.up * 2, 1f, Ease.OutQuad);
             CameraManager.Ins.ChangeCameraPosition(playerCell.WorldPos + offset);
         }
+
+        private void ChangeRewardKeyValue(ResourceChangeData data)
+        {
+            // If screen not open yet, just set value
+            if (!gameObject.activeSelf)
+            {
+                return;
+            }
+
+            if (data.ChangedAmount > 0 && data.Source is Vector3 spawnPosition)
+            {
+                int collectingRewardKeys = Mathf.Min((int)data.ChangedAmount, Constants.MAX_UI_UNIT);
+                CollectingResourceManager.Ins.SpawnCollectingUIRewardKeys(collectingRewardKeys, spawnPosition,
+                    _rewardChestIconRectTF,
+                    (progress) =>
+                    {
+                        GameManager.Ins.SmoothRewardKeys += data.ChangedAmount / collectingRewardKeys;
+
+                        UpdateRewardChestUI();
+                    });
+            }
+            else
+            {
+                _rewardKeyTxt.text = $"{GameManager.Ins.RewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
+            }
+        }
+
+        private void ChangeLevelProgressValue(ResourceChangeData data)
+        {
+        }
+
+        private void UpdateRewardChestUI()
+        {
+            if (CanClaimRewardChest())
+            {
+                if (!_shakeRewardTimer.IsStart)
+                {
+                    _shakeRewardTimer.Start(1f, () =>
+                    {
+                        _rewardChestIconRectTF.DOShakeRotation(0.5f, Vector3.forward * 10f, 10, 45f, true,
+                            ShakeRandomnessMode.Harmonic);
+                    }, true);
+                    _rewardKeyTxt.text = $"FULL";
+                    _rewardKeyTxt.color = Color.green;
+                    _rewardChestCurrencyIconRectTF.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                if (_shakeRewardTimer.IsStart)
+                {
+                    _shakeRewardTimer.Stop();
+                    _rewardKeyTxt.color = Color.white;
+                    _rewardChestCurrencyIconRectTF.gameObject.SetActive(true);
+                    _rewardChestIconRectTF.localRotation = _startRewardChestIconQuaternion;
+                }
+
+                _rewardKeyTxt.text = $"{GameManager.Ins.SmoothRewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
+            }
+        }
+
+        private bool CanClaimRewardChest()
+        {
+            return GameManager.Ins.SmoothRewardKeys >= DataManager.Ins.ConfigData.requireRewardKey;
+        }
+
         private void OpenMask()
         {
             UIManager.Ins.OpenUI<MaskScreen>(new MaskData()

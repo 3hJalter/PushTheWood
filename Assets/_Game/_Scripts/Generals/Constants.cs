@@ -76,8 +76,6 @@ public static class Constants
     ///  Update Feature soon
     /// </summary>
     public const string FEATURE_COMING_SOON = "This feature is coming soon!";
-
-    public const string VALUE_FORMAT = "#,#;#,#;0";
     
     /// <summary>
     /// Objective
@@ -87,6 +85,10 @@ public static class Constants
     public const string COLLECT_ALL_CHEST = "TARGET:\nCollect all chests";
     public const string FIND_FRUIT = "TARGET:\nFind the food";
     public const string FIND_CHICKEN_BBQ = "TARGET:\nFind the chicken BBQ";
+    
+    // UI
+    public const string VALUE_FORMAT = "#,#;#,#;0";
+    public const int MAX_UI_UNIT = 10;
     
     // Value Constants
     public const int UPPER_HEIGHT = 1;

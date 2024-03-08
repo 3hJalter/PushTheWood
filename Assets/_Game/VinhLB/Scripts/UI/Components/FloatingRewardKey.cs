@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace VinhLB
 {
-    public class UIRewardKey : UIUnit
+    public class FloatingRewardKey : UIUnit
     {
         [SerializeField]
         private CanvasGroup _canvasGroup;

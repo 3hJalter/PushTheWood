@@ -412,6 +412,7 @@ namespace _Game.DesignPattern
         UICoin = 400,
         UIAdTicket = 401,
         UIRewardKey = 402,
+        UILevelProgress = 403,
         
         // World UI
         FloatingRewardKey = 500,
