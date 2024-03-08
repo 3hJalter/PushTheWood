@@ -28,6 +28,11 @@ namespace VinhLB
             _rewardScrollRect.onValueChanged.AddListener(OnRewardScrollRectValueChanged);
         }
 
+        private void OnDestroy()
+        {
+            _rewardScrollRect.onValueChanged.RemoveListener(OnRewardScrollRectValueChanged);
+        }
+
         public override void Setup(object param = null)
         {
             base.Setup(param);
@@ -106,7 +111,6 @@ namespace VinhLB
 
         private void OnRewardScrollRectValueChanged(Vector2 value)
         {
-            Debug.Log(value);
             if (_rewardScrollRect.horizontalNormalizedPosition < 0.05f)
             {
                 _leftArrowGO.SetActive(false);

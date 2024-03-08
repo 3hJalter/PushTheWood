@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace VinhLB
         [SerializeField]
         private TMP_Text _loadingText;
 
+        private Coroutine _closeCoroutine;
         private Tween _loadingTextTween;
 
         public override void Setup(object param = null)
@@ -23,17 +25,17 @@ namespace VinhLB
             
             SceneGameManager.Ins.OnLoadingScene += SceneGameManager_OnLoadingScene;
             SceneGameManager.Ins.OnSceneLoaded += SceneGameManager_OnSceneLoaded;
-
-            UpdateUI(0f);
         }
 
         public override void Open(object param = null)
         {
             base.Open(param);
+            
+            UpdateLoadingUI(0f);
 
             if (_loadingTextTween == null)
             {
-                _loadingTextTween = DOVirtual.Int(0, 2, 0.5f, (value) =>
+                _loadingTextTween = DOVirtual.Int(0, 2, 1f, (value) =>
                 {
                     string loadingText = "Loading.";
                     for (int i = 0; i < value; i++)
@@ -49,7 +51,7 @@ namespace VinhLB
             }
         }
 
-        private void UpdateUI(float progress)
+        private void UpdateLoadingUI(float progress)
         {
             _progressSlider.value = progress;
             _progressText.text = $"{Mathf.RoundToInt(progress * 100f)}%";
@@ -57,7 +59,7 @@ namespace VinhLB
 
         private void SceneGameManager_OnLoadingScene(int id, float progress)
         {
-            UpdateUI(progress);
+            UpdateLoadingUI(progress);
         }
         
         private void SceneGameManager_OnSceneLoaded(int id)
@@ -65,6 +67,13 @@ namespace VinhLB
             SceneGameManager.Ins.OnLoadingScene -= SceneGameManager_OnLoadingScene;
             SceneGameManager.Ins.OnSceneLoaded -= SceneGameManager_OnSceneLoaded;
 
+            _closeCoroutine = StartCoroutine(CloseCoroutine(0.5f));
+        }
+
+        private IEnumerator CloseCoroutine(float delayTime)
+        {
+            yield return new WaitForSeconds(delayTime);
+            
             _loadingTextTween.Pause();
             
             Close();

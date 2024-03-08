@@ -7,6 +7,7 @@ namespace VinhLB
     public class SecretMapItem : HMonoBehaviour
     {
         public event Action<int> _OnPlayButtonClick;
+        
         [SerializeField]
         private int index;
         [SerializeField]
@@ -17,11 +18,14 @@ namespace VinhLB
         private GameObject _unlockProgressGO;
         [SerializeField]
         private Button _playButton;
+        [SerializeField]
+        private GameObject _completeGO;
 
         private void Awake()
         {
             _playButton.onClick.AddListener(OnPlayButtonClick);
         }
+        
         public void SetButtons(bool isUnlocked)
         {
             if (!isUnlocked)

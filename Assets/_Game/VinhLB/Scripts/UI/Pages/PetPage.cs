@@ -7,6 +7,7 @@ using _Game.Resource;
 using _Game.Utilities;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace VinhLB
 {
@@ -14,6 +15,12 @@ namespace VinhLB
     {
         [SerializeField]
         private CollectionItem _collectionItemPrefab;
+        [SerializeField]
+        private ScrollRect _scrollRect;
+        [SerializeField]
+        private GameObject _topBlurGO;
+        [SerializeField]
+        private GameObject _bottomBlurGO;
         [SerializeField]
         private Transform _collectionItemParentTF;
         [SerializeField]
@@ -25,6 +32,22 @@ namespace VinhLB
 
         private List<CollectionItem> _collectionItemList;
         private int _currentPetIndex = 0;
+
+        private void Awake()
+        {
+            _scrollRect.onValueChanged.AddListener(OnRewardScrollRectValueChanged);
+        }
+        
+        private void OnDestroy()
+        {
+            for (int i = 0; i < _collectionItemList.Count; i++)
+            {
+                _collectionItemList[i]._OnClick -= OnItemClick;
+            }
+            _buyButton.onClick.RemoveAllListeners();
+            
+            _scrollRect.onValueChanged.RemoveListener(OnRewardScrollRectValueChanged);
+        }
 
         public override void Setup(object param = null)
         {
@@ -67,6 +90,9 @@ namespace VinhLB
                     _collectionItemList[i].SetChosen(false);
                 }
             }
+
+            _scrollRect.verticalNormalizedPosition = 1f;
+            OnRewardScrollRectValueChanged(_scrollRect.normalizedPosition);
         }
 
         public override void Open(object param = null)
@@ -136,15 +162,6 @@ namespace VinhLB
             }
         }
 
-        private void OnDestroy()
-        {
-            for (int i = 0; i < _collectionItemList.Count; i++)
-            {
-                _collectionItemList[i]._OnClick -= OnItemClick;
-            }
-            _buyButton.onClick.RemoveAllListeners();
-        }
-
         private void OnBuy()
         {
             int buyCost = DataManager.Ins.ConfigData.CharacterCosts[_collectionItemList[_currentPetIndex].Data];
@@ -159,6 +176,27 @@ namespace VinhLB
             {
                 //NOTE: Notice not enough money
                 DevLog.Log(DevId.Hung, "Not Enough Money To Buy Characters");
+            }
+        }
+        
+        private void OnRewardScrollRectValueChanged(Vector2 value)
+        {
+            if (_scrollRect.verticalNormalizedPosition < 0.05f)
+            {
+                _bottomBlurGO.SetActive(false);
+            }
+            else
+            {
+                _bottomBlurGO.SetActive(true);
+            }
+
+            if (_scrollRect.verticalNormalizedPosition > 0.95f)
+            {
+                _topBlurGO.SetActive(false);
+            }
+            else
+            {
+                _topBlurGO.SetActive(true);
             }
         }
     }

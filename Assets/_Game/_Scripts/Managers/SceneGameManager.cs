@@ -28,7 +28,7 @@ public class SceneGameManager : Singleton<SceneGameManager>
     private IEnumerator LoadSceneAsyncCoroutine(int id)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(id);
-        this._id = id;
+        _id = id;
         while (!asyncLoad.isDone)
         {
             float loadingPercentage = Mathf.Clamp01(asyncLoad.progress / 0.9f);

@@ -48,6 +48,22 @@ namespace VinhLB
             _buyButton.gameObject.SetActive(GameManager.Ins.AdTickets < _boosterConfig.TicketPerBuyRatio.ticketNeed);
         }
 
+        public override void Open(object param = null)
+        {
+            base.Open(param);
+
+            UIManager.Ins.OpenUI<StatusBarScreen>(true);
+        }
+        
+        public override void Close()
+        {
+            UIManager.Ins.CloseUI<StatusBarScreen>();
+            
+            GameManager.Ins.ChangeState(GameState.InGame);
+            
+            base.Close();
+        }
+
         public override void UpdateUI()
         {
             base.UpdateUI();
@@ -94,12 +110,6 @@ namespace VinhLB
             {
                 Close();
             }
-        }
-
-        public override void Close()
-        {
-            GameManager.Ins.ChangeState(GameState.InGame);
-            base.Close();
         }
     }
 }
