@@ -63,6 +63,8 @@ namespace _Game.GameGrid
         public bool IsFirstLevel => normalLevelIndex == 0;
 
         private CareTaker savingState;
+        public bool IsCanUndo => savingState.IsCanUndo;
+
         private readonly Vector3 _cameraDownOffset = new(0, 0, Constants.DOWN_CAMERA_CELL_OFFSET * Constants.CELL_SIZE);
 
         public Vector3 CameraDownOffset => _cameraDownOffset;
@@ -430,7 +432,7 @@ namespace _Game.GameGrid
             LevelManager main;
             Stack<IMemento> dataHistorys = new Stack<IMemento>();
             Stack<List<IMemento>> objectHistorys = new Stack<List<IMemento>>();
-
+            public bool IsCanUndo => dataHistorys.Count > 1;
             public CareTaker(LevelManager main)
             {
                 this.main = main;
