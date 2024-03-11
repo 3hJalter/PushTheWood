@@ -57,6 +57,7 @@ MonoBehaviour:
     SerializationNodes: []
   FpsDebug: {fileID: 4291094713015642588}
   LogDebug: {fileID: 4291094713512389667}
+  isShowAds: 0
 --- !u!1001 &4291094713015475258
 PrefabInstance:
   m_ObjectHideFlags: 0

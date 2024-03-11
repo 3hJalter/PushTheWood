@@ -573,8 +573,8 @@ namespace _Game.Managers
                 {
                     OnChangeBoosterAmount(BoosterType.PushHint, -1);
                     SetBoughtPushHintInIsland(playerIslandID, true);
-                    LevelManager.Ins.ResetLevelIsland();
                 }
+                LevelManager.Ins.ResetLevelIsland();
                 OnStartHintOnPlayerIsland(playerIslandID);
             }
         }

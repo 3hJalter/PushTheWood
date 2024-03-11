@@ -59,7 +59,6 @@ namespace _Game._Scripts.InGame
             if (_playerStepsOnIsland.Count == 0) return;
             if (_currentPlayerSteps is not null) OnStopHint();
             // make a copy of the stack
-            _islandCompleted.Clear();
             _isShowHint = isShowHint;
             _currentPlayerSteps = new Stack<PlayerStep>(_playerStepsOnIsland[islandID]);
             _pops = new Stack<PlayerStep>();
@@ -121,6 +120,8 @@ namespace _Game._Scripts.InGame
             if (IsPlayerMakeHintWrong)
             {
                 GameplayManager.Ins.OnShowTryHintAgain(false);
+                // make the hint button show again
+                GameplayManager.Ins.Screen.ActivePushHintIsland(true);
                 IsPlayerMakeHintWrong = false;
                 OnStopHint();
             }

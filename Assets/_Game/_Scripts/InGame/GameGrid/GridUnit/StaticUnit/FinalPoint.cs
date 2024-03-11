@@ -71,7 +71,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
                 if (levelIndex == 2)
                 {
                     LevelManager.Ins.boosterRewardCount.Add(BoosterType.Undo, 2);
-                    LevelManager.Ins.boosterRewardCount.Add(BoosterType.ResetIsland, 2);
+                    // LevelManager.Ins.boosterRewardCount.Add(BoosterType.ResetIsland, 2);
                 } else if (levelIndex == 4)
                 {
                     LevelManager.Ins.boosterRewardCount.Add(BoosterType.GrowTree, 1);
