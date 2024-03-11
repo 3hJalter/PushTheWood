@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -15,25 +16,29 @@ namespace VinhLB
         [SerializeField]
         private TMP_Text _loadingText;
 
-        private Tween _loadingTextTween;
+        private Coroutine _closeCoroutine;
+        private Sequence _loadingTextSequence;
 
         public override void Setup(object param = null)
         {
             base.Setup(param);
-            
+
             SceneGameManager.Ins.OnLoadingScene += SceneGameManager_OnLoadingScene;
             SceneGameManager.Ins.OnSceneLoaded += SceneGameManager_OnSceneLoaded;
-
-            UpdateUI(0f);
         }
 
         public override void Open(object param = null)
         {
             base.Open(param);
 
-            if (_loadingTextTween == null)
+            UpdateLoadingUI(0f);
+
+            if (_loadingTextSequence == null)
             {
-                _loadingTextTween = DOVirtual.Int(0, 2, 0.5f, (value) =>
+                float duration = 0.75f;
+                _loadingTextSequence = DOTween.Sequence();
+                _loadingTextSequence.SetDelay(duration / 3, true);
+                _loadingTextSequence.Append(DOVirtual.Int(0, 2, duration, (value) =>
                 {
                     string loadingText = "Loading.";
                     for (int i = 0; i < value; i++)
@@ -41,15 +46,16 @@ namespace VinhLB
                         loadingText += ".";
                     }
                     _loadingText.text = loadingText;
-                }).SetLoops(-1, LoopType.Restart);
+                }));
+                _loadingTextSequence.SetLoops(-1, LoopType.Restart);
             }
             else
             {
-                _loadingTextTween.Restart();
+                _loadingTextSequence.Restart();
             }
         }
 
-        private void UpdateUI(float progress)
+        private void UpdateLoadingUI(float progress)
         {
             _progressSlider.value = progress;
             _progressText.text = $"{Mathf.RoundToInt(progress * 100f)}%";
@@ -57,16 +63,23 @@ namespace VinhLB
 
         private void SceneGameManager_OnLoadingScene(int id, float progress)
         {
-            UpdateUI(progress);
+            UpdateLoadingUI(progress);
         }
-        
+
         private void SceneGameManager_OnSceneLoaded(int id)
         {
             SceneGameManager.Ins.OnLoadingScene -= SceneGameManager_OnLoadingScene;
             SceneGameManager.Ins.OnSceneLoaded -= SceneGameManager_OnSceneLoaded;
 
-            _loadingTextTween.Pause();
-            
+            _closeCoroutine = StartCoroutine(CloseCoroutine(0.5f));
+        }
+
+        private IEnumerator CloseCoroutine(float delayTime)
+        {
+            yield return new WaitForSeconds(delayTime);
+
+            _loadingTextSequence.Pause();
+
             Close();
         }
     }

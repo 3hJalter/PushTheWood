@@ -1552,8 +1552,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 220, y: -100}
-  m_SizeDelta: {x: 440, y: 200}
+  m_AnchoredPosition: {x: 250, y: -114}
+  m_SizeDelta: {x: 500, y: 228}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8982762061525767603
 CanvasRenderer:
@@ -3710,7 +3710,6 @@ MonoBehaviour:
   _canvasGroup: {fileID: 7239107388192199635}
   _blockPanel: {fileID: 6636795778640806458}
   _contentImage: {fileID: 2469444431751346597}
-  rectTransform: {fileID: 7239107388192199634}
   _rewardParentRectTF: {fileID: 2867315323705177336}
   _rewardItemPrefab: {fileID: 2188298886722322113, guid: c7935d45b3f2f3f44b13ff462761a3c6, type: 3}
   _nextLevelButton: {fileID: 3618839642037570877}

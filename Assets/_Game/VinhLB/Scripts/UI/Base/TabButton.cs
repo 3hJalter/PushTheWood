@@ -102,7 +102,6 @@ namespace VinhLB
 
             if (_interactable)
             {
-                _inactiveIcon.gameObject.SetActive(true);
                 _lockedIcon.gameObject.SetActive(false);
 
                 SetActiveState(_active, false);
@@ -112,7 +111,6 @@ namespace VinhLB
                 SetActiveState(false, false);
 
                 _lockedIcon.gameObject.SetActive(true);
-                _inactiveIcon.gameObject.SetActive(false);
             }
         }
 

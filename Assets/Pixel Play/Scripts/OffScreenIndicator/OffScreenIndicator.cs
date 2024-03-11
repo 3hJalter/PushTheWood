@@ -17,7 +17,7 @@ public class OffScreenIndicator : MonoBehaviour
     [Tooltip("Distance offset of the indicators from the centre of the screen")]
     [SerializeField] private float screenBoundOffset = 0.9f;
 
-    private Camera mainCamera;
+    [SerializeField] private Camera mainCamera;
     private Vector3 screenCentre;
     private Vector3 screenBounds;
 
@@ -33,7 +33,6 @@ public class OffScreenIndicator : MonoBehaviour
 
     private void Start()
     {
-        mainCamera = Camera.main;
         screenCentre = new Vector3(Screen.width, Screen.height, 0) / 2;
         screenBounds = screenCentre * screenBoundOffset;
         if (GameManager.Ins.IsReduce) _increasePosFromRatio = GameManager.Ins.ReduceRatio;
@@ -41,7 +40,7 @@ public class OffScreenIndicator : MonoBehaviour
         DevLog.Log(DevId.Hoang, $"Screen size: {Screen.width} x {Screen.height}");
     }
 
-    void LateUpdate()
+    private void LateUpdate()
     {
         DrawIndicators();
     }
@@ -49,8 +48,12 @@ public class OffScreenIndicator : MonoBehaviour
     /// <summary>
     /// Draw the indicators on the screen and set their position and rotation and other properties.
     /// </summary>
-    void DrawIndicators()
+    private void DrawIndicators()
     {
+        if (!mainCamera.gameObject.activeSelf)
+        {
+            return;
+        }
         foreach(Target target in Targets)
         {
             Vector3 screenPosition = OffScreenIndicatorCore.GetScreenPosition(mainCamera, target.transform.position);

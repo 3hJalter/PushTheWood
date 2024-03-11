@@ -98,6 +98,7 @@ namespace _Game.UIs.Popup
             }
             _currentBtnClick.OnUnHover();
             _currentBtnClick = null;
+            
             base.Close();
         }
 

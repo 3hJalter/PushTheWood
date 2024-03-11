@@ -35,10 +35,10 @@ namespace VinhLB
             OpenVinhLBScene("BuildingTest");
         }
 
-        [MenuItem("Tools/VinhLB/Scenes/BendingTest")]
-        private static void OpenBendingTestScene()
+        [MenuItem("Tools/VinhLB/Scenes/Test")]
+        private static void OpenTestScene()
         {
-            OpenVinhLBScene("BendingTest");
+            OpenVinhLBScene("Test");
         }
 
         private static void OpenVinhLBScene(string sceneName)
