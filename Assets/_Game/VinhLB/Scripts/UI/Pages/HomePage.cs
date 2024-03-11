@@ -50,6 +50,8 @@ namespace VinhLB
         private STimer _shakeLevelTimer;
         private Quaternion _startRewardChestIconQuaternion;
         private Quaternion _startLevelChestIconQuaternion;
+        private event Action _delayCollectingRewardKeys;
+        private event Action _delayCollectingLevelStars;
 
         private void Awake()
         {
@@ -100,8 +102,16 @@ namespace VinhLB
             });
             _levelChestButton.onClick.AddListener(() =>
             {
+                if (!CanClaimLevelChest())
+                {
+                    return;
+                }
+                
                 if (RewardManager.Ins.HomeReward.TryClaimLevelChest())
                 {
+                    GameManager.Ins.SmoothLevelProgress = GameManager.Ins.LevelProgress;
+                    
+                    UpdateLevelChestUI();
                 }
             });
 
@@ -137,7 +147,25 @@ namespace VinhLB
             
             SetupHomeCamera();
 
-            UpdateRewardChestUI();
+            if (_delayCollectingRewardKeys == null)
+            {
+                UpdateRewardChestUI();
+            }
+            if (_delayCollectingLevelStars == null)
+            {
+                UpdateLevelChestUI();
+            }
+        }
+
+        public override void Open(object param = null)
+        {
+            base.Open(param);
+            
+            _delayCollectingRewardKeys?.Invoke();
+            _delayCollectingRewardKeys = null;
+                        
+            _delayCollectingLevelStars?.Invoke();
+            _delayCollectingLevelStars = null;
         }
 
         public override void UpdateUI()
@@ -167,29 +195,29 @@ namespace VinhLB
             //     _rewardChestIconRectTF.localRotation = _startRewardChestIconQuaternion;
             // }
 
-            if (RewardManager.Ins.HomeReward.IsCanClaimLC)
-            {
-                if (!_shakeLevelTimer.IsStart)
-                {
-                    _shakeLevelTimer.Start(1f, () =>
-                    {
-                        _levelChestIconRectTF.DOShakeRotation(0.5f, Vector3.forward * 10f, 10, 45f, true,
-                            ShakeRandomnessMode.Harmonic);
-                    }, true);
-                    _levelProgressTxt.text = $"FULL";
-                    _levelProgressTxt.color = Color.green;
-                    _levelChestCurrencyIconRectTF.gameObject.SetActive(false);
-                }
-            }
-            else
-            {
-                _shakeLevelTimer.Stop();
-                _levelProgressTxt.text =
-                    $"{GameManager.Ins.LevelProgress}/{DataManager.Ins.ConfigData.requireLevelProgress}";
-                _levelProgressTxt.color = Color.white;
-                _levelChestCurrencyIconRectTF.gameObject.SetActive(true);
-                _levelChestIconRectTF.localRotation = _startLevelChestIconQuaternion;
-            }
+            // if (RewardManager.Ins.HomeReward.IsCanClaimLC)
+            // {
+            //     if (!_shakeLevelTimer.IsStart)
+            //     {
+            //         _shakeLevelTimer.Start(1f, () =>
+            //         {
+            //             _levelChestIconRectTF.DOShakeRotation(0.5f, Vector3.forward * 10f, 10, 45f, true,
+            //                 ShakeRandomnessMode.Harmonic);
+            //         }, true);
+            //         _levelProgressTxt.text = $"FULL";
+            //         _levelProgressTxt.color = Color.green;
+            //         _levelChestCurrencyIconRectTF.gameObject.SetActive(false);
+            //     }
+            // }
+            // else
+            // {
+            //     _shakeLevelTimer.Stop();
+            //     _levelProgressTxt.text =
+            //         $"{GameManager.Ins.LevelProgress}/{DataManager.Ins.ConfigData.requireLevelProgress}";
+            //     _levelProgressTxt.color = Color.white;
+            //     _levelChestCurrencyIconRectTF.gameObject.SetActive(true);
+            //     _levelChestIconRectTF.localRotation = _startLevelChestIconQuaternion;
+            // }
         }
 
         private void SetupHomeCamera()
@@ -211,15 +239,26 @@ namespace VinhLB
 
         private void ChangeRewardKeyValue(ResourceChangeData data)
         {
-            // If screen not open yet, just set value
-            if (!gameObject.activeSelf)
+            if (data.ChangedAmount > 0)
             {
-                return;
+                if (!gameObject.activeInHierarchy)
+                {
+                    _delayCollectingRewardKeys += SpawnCollectingUIRewardKeys;
+                }
+                else
+                {
+                    SpawnCollectingUIRewardKeys();
+                }
+            }
+            else
+            {
+                _rewardKeyTxt.text = $"{GameManager.Ins.RewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
             }
 
-            if (data.ChangedAmount > 0 && data.Source is Vector3 spawnPosition)
+            void SpawnCollectingUIRewardKeys()
             {
                 int collectingRewardKeys = Mathf.Min((int)data.ChangedAmount, Constants.MAX_UI_UNIT);
+                Vector3 spawnPosition = data.Source as Vector3? ?? Vector3.zero;
                 CollectingResourceManager.Ins.SpawnCollectingUIRewardKeys(collectingRewardKeys, spawnPosition,
                     _rewardChestIconRectTF,
                     (progress) =>
@@ -229,14 +268,39 @@ namespace VinhLB
                         UpdateRewardChestUI();
                     });
             }
-            else
-            {
-                _rewardKeyTxt.text = $"{GameManager.Ins.RewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
-            }
         }
 
         private void ChangeLevelProgressValue(ResourceChangeData data)
         {
+            if (data.ChangedAmount > 0)
+            {
+                if (!gameObject.activeInHierarchy)
+                {
+                    _delayCollectingLevelStars += SpawnCollectingUILevelStars;
+                }
+                else
+                {
+                    SpawnCollectingUILevelStars();
+                }
+            }
+            else
+            {
+                _rewardKeyTxt.text = $"{GameManager.Ins.LevelProgress}/{DataManager.Ins.ConfigData.requireRewardKey}";
+            }
+
+            void SpawnCollectingUILevelStars()
+            {
+                int collectingLevelStars = Mathf.Min((int)data.ChangedAmount, Constants.MAX_UI_UNIT);
+                Vector3 spawnPosition = data.Source as Vector3? ?? Vector3.zero;
+                CollectingResourceManager.Ins.SpawnCollectingLevelStars(collectingLevelStars, spawnPosition,
+                    _levelChestIconRectTF,
+                    (progress) =>
+                    {
+                        GameManager.Ins.SmoothLevelProgress += data.ChangedAmount / collectingLevelStars;
+
+                        UpdateLevelChestUI();
+                    });
+            }
         }
 
         private void UpdateRewardChestUI()
@@ -269,9 +333,45 @@ namespace VinhLB
             }
         }
 
+        private void UpdateLevelChestUI()
+        {
+            if (CanClaimLevelChest())
+            {
+                if (!_shakeLevelTimer.IsStart)
+                {
+                    _shakeLevelTimer.Start(1f, () =>
+                    {
+                        _levelChestIconRectTF.DOShakeRotation(0.5f, Vector3.forward * 10f, 10, 45f, true,
+                            ShakeRandomnessMode.Harmonic);
+                    }, true);
+                    _levelProgressTxt.text = $"FULL";
+                    _levelProgressTxt.color = Color.green;
+                    _levelChestCurrencyIconRectTF.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                if (_shakeLevelTimer.IsStart)
+                {
+                    _shakeLevelTimer.Stop();
+                    _levelProgressTxt.color = Color.white;
+                    _levelChestCurrencyIconRectTF.gameObject.SetActive(true);
+                    _levelChestIconRectTF.localRotation = _startLevelChestIconQuaternion;
+                }
+                
+                _levelProgressTxt.text =
+                    $"{GameManager.Ins.SmoothLevelProgress}/{DataManager.Ins.ConfigData.requireLevelProgress}";
+            }
+        }
+
         private bool CanClaimRewardChest()
         {
             return GameManager.Ins.SmoothRewardKeys >= DataManager.Ins.ConfigData.requireRewardKey;
+        }
+
+        private bool CanClaimLevelChest()
+        {
+            return GameManager.Ins.SmoothLevelProgress >= DataManager.Ins.ConfigData.requireLevelProgress;
         }
 
         private void OpenMask()

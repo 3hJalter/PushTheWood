@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using _Game.DesignPattern;
 using _Game.Managers;
 using DG.Tweening;
@@ -23,6 +24,9 @@ namespace VinhLB
         [SerializeField]
         private Transform _adTicketIconTF;
 
+        private event Action _delayCollectingGold;
+        private event Action _delayCollectingAdTickets;
+
         private void Awake()
         {
             GameManager.Ins.RegisterListenerEvent(EventID.OnChangeGold,
@@ -43,8 +47,16 @@ namespace VinhLB
         {
             base.Setup(param);
 
-            _goldValueText.text = GameManager.Ins.Gold.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
-            _adTicketValueText.text = GameManager.Ins.AdTickets.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+            if (_delayCollectingGold == null)
+            {
+                _goldValueText.text =
+                    GameManager.Ins.Gold.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+            }
+            if (_delayCollectingAdTickets == null)
+            {
+                _adTicketValueText.text =
+                    GameManager.Ins.AdTickets.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+            }
 
             if (param is true)
             {
@@ -65,21 +77,38 @@ namespace VinhLB
             if (param is not true)
             {
                 DOVirtual.Float(0f, 1f, 1f, value => _canvasGroup.alpha = value)
-                    .OnComplete(() => _blockPanel.gameObject.SetActive(false));
+                    .OnComplete(() => { _blockPanel.gameObject.SetActive(false); });
             }
+
+            _delayCollectingGold?.Invoke();
+            _delayCollectingGold = null;
+
+            _delayCollectingAdTickets?.Invoke();
+            _delayCollectingAdTickets = null;
         }
 
         private void ChangeGoldValue(ResourceChangeData data)
         {
-            // If screen not open yet, just set value
-            if (!gameObject.activeSelf)
+            if (data.ChangedAmount > 0)
             {
-                return;
+                if (!gameObject.activeInHierarchy)
+                {
+                    // _delayCollectingGold += SpawnCollectingUICoins;
+                }
+                else
+                {
+                    SpawnCollectingUICoins();
+                }
+            }
+            else
+            {
+                _goldValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
             }
 
-            if (data.ChangedAmount > 0 && data.Source is Vector3 spawnPosition)
+            void SpawnCollectingUICoins()
             {
                 int collectingCoinAmount = Mathf.Min((int)data.ChangedAmount, Constants.MAX_UI_UNIT);
+                Vector3 spawnPosition = data.Source as Vector3? ?? Vector3.zero;
                 CollectingResourceManager.Ins.SpawnCollectingUICoins(collectingCoinAmount, spawnPosition, _goldIconTF,
                     (progress) =>
                     {
@@ -88,35 +117,40 @@ namespace VinhLB
                             GameManager.Ins.SmoothGold.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
                     });
             }
-            else
-            {
-                _goldValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
-            }
         }
 
         private void ChangeAdTicketValue(ResourceChangeData data)
         {
-            // If screen not open yet, just set value
-            if (!gameObject.activeSelf)
+            if (data.ChangedAmount > 0)
             {
-                return;
+                if (!gameObject.activeInHierarchy)
+                {
+                    // _delayCollectingAdTickets += SpawnCollectingUIAdTickets;
+                }
+                else
+                {
+                    SpawnCollectingUIAdTickets();
+                }
+            }
+            else
+            {
+                _adTicketValueText.text =
+                    data.NewValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
             }
 
-            if (data.ChangedAmount > 0 && data.Source is Vector3 spawnPosition)
+            void SpawnCollectingUIAdTickets()
             {
                 int collectingAdTicketAmount = Mathf.Min((int)data.ChangedAmount, Constants.MAX_UI_UNIT);
+                Vector3 spawnPosition = data.Source as Vector3? ?? Vector3.zero;
                 CollectingResourceManager.Ins.SpawnCollectingUIAdTickets(collectingAdTicketAmount, spawnPosition,
                     _adTicketIconTF,
                     (progress) =>
                     {
                         GameManager.Ins.SmoothAdTickets += data.ChangedAmount / collectingAdTicketAmount;
                         _adTicketValueText.text =
-                            GameManager.Ins.SmoothAdTickets.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+                            GameManager.Ins.SmoothAdTickets.ToString(Constants.VALUE_FORMAT,
+                                CultureInfo.InvariantCulture);
                     });
-            }
-            else
-            {
-                _adTicketValueText.text = data.NewValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
             }
         }
     }

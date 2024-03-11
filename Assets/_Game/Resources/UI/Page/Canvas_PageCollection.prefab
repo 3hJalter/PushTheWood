@@ -1740,7 +1740,7 @@ MonoBehaviour:
     m_Left: 0
     m_Right: 0
     m_Top: 170
-    m_Bottom: 240
+    m_Bottom: 270
   m_ChildAlignment: 1
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
@@ -8173,7 +8173,7 @@ MonoBehaviour:
   _tabGroup: {fileID: 5418933444050974870}
   _interactable: 0
   _buttonSound: 100
-  _changeSizeWhenActive: 1
+  _changeSizeWhenActive: 0
   _layoutElement: {fileID: 1903664895873909695}
   _background: {fileID: 4234698349443384316}
   _activeRectTF: {fileID: 2017573865945506856}
@@ -8184,7 +8184,7 @@ MonoBehaviour:
   _nameText: {fileID: 5792556826606971416}
   _hideNameTextWhenInactive: 0
   _changeNameTextColor: 1
-  _activeNameTextColor: {r: 0.9960785, g: 0.69411767, b: 0.23529413, a: 1}
+  _activeNameTextColor: {r: 0.7372549, g: 0.36078432, b: 0.12156863, a: 1}
   _inactiveNameTextColor: {r: 1, g: 1, b: 1, a: 1}
   _animType: 1
   _goUpDuration: 0.2
@@ -12404,7 +12404,7 @@ MonoBehaviour:
   _tabGroup: {fileID: 5418933444050974870}
   _interactable: 1
   _buttonSound: 100
-  _changeSizeWhenActive: 1
+  _changeSizeWhenActive: 0
   _layoutElement: {fileID: 3112432627475801897}
   _background: {fileID: 372537014296393075}
   _activeRectTF: {fileID: 1207553950707622054}
@@ -12415,7 +12415,7 @@ MonoBehaviour:
   _nameText: {fileID: 4149644601053474183}
   _hideNameTextWhenInactive: 0
   _changeNameTextColor: 1
-  _activeNameTextColor: {r: 0.9960785, g: 0.69411767, b: 0.23529413, a: 1}
+  _activeNameTextColor: {r: 0.7372549, g: 0.36078432, b: 0.12156863, a: 1}
   _inactiveNameTextColor: {r: 1, g: 1, b: 1, a: 1}
   _animType: 1
   _goUpDuration: 0.2

@@ -41,6 +41,8 @@ namespace _Game.UIs.Screen
         [SerializeField]
         private Button _addRewardKeysButton;
         [SerializeField]
+        private Button _addLevelStarsButton;
+        [SerializeField]
         private Button _addSecretMapPieceButton;
         [SerializeField]
         private Button _resetResourceButton;
@@ -80,6 +82,7 @@ namespace _Game.UIs.Screen
             _addAdTicketsButton.onClick.AddListener(AddAdTickets);
             _addGoldButton.onClick.AddListener(AddGold);
             _addRewardKeysButton.onClick.AddListener(AddRewardKeys);
+            _addLevelStarsButton.onClick.AddListener(AddLevelStars);
             _addSecretMapPieceButton.onClick.AddListener(AddSecretMapPiece);
             _resetResourceButton.onClick.AddListener(ResetUserData);
             _changePlayerSkinButton.onClick.AddListener(ChangePlayerSkin);
@@ -149,6 +152,11 @@ namespace _Game.UIs.Screen
         private void AddRewardKeys()
         {
             GameManager.Ins.GainRewardKeys(1, _addRewardKeysButton.transform.position);
+        }
+        
+        private void AddLevelStars()
+        {
+            GameManager.Ins.GainLevelProgress(1, _addLevelStarsButton.transform.position);
         }
         
         private void ChangePlayerSkin()

@@ -23,23 +23,35 @@ namespace _Game.UIs.Screen
         private const float UNDO_CD_TIME = 0.3f;
         private const float TIME_TXT_SCALE_UP = 1.1f;
 
-        [SerializeField] private CanvasGroup canvasGroup;
-        [SerializeField] private HButton settingButton;
-        [SerializeField] private GameObject timerContainer;
+        [SerializeField]
+        private CanvasGroup canvasGroup;
+        [SerializeField]
+        private HButton settingButton;
+        [SerializeField]
+        private GameObject timerContainer;
 
-        [SerializeField] private Image blockPanel;
+        [SerializeField]
+        private Image blockPanel;
         // Booster Button
         public BoosterButton undoButton;
         public BoosterButton pushHintButton;
         public BoosterButton growTreeButton;
         public BoosterButton resetIslandButton;
         // Time & Level Text 
-        [SerializeField] private Image timeImage;
-        [SerializeField] private TMP_Text timeText;
-        [SerializeField] private TMP_Text _levelText;
-        [SerializeField] private Color dangerTimeColor;
+        [SerializeField]
+        private Image timeImage;
+        [SerializeField]
+        private TMP_Text timeText;
+        [SerializeField]
+        private TMP_Text _levelText;
+        [SerializeField]
+        private Color dangerTimeColor;
 
-        [SerializeField] private TextMeshProUGUI objectiveText;
+        [SerializeField]
+        private TMP_Text objectiveText;
+        [SerializeField]
+        private TMP_Text objectiveCounterText;
+        
         bool isTimeNormal = false;
         private STimer resetIslandTimer;
 
@@ -57,6 +69,7 @@ namespace _Game.UIs.Screen
                 time = value;
                 int second = time % 60;
                 int minute = time / 60;
+
                 #region TIME ANIM
                 if (time <= DataManager.Ins.ConfigData.DangerTime)
                 {
@@ -76,9 +89,9 @@ namespace _Game.UIs.Screen
                         timeText.color = Color.white;
                         isTimeNormal = true;
                     }
-                    
                 }
                 #endregion
+
                 timeText.text = $"{minute:00}:{second:00}";
             }
         }
@@ -105,7 +118,8 @@ namespace _Game.UIs.Screen
             pushHintButton.RemoveEvent(OnClickPushHint);
             growTreeButton.RemoveEvent(OnClickGrowTree);
             resetIslandButton.RemoveEvent(OnClickResetIsland);
-            GameManager.Ins.UnregisterListenerEvent(DesignPattern.EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
+            GameManager.Ins.UnregisterListenerEvent(DesignPattern.EventID.OnChangeLayoutForBanner,
+                ChangeLayoutForBanner);
         }
 
         public event Action OnUndo;
@@ -128,10 +142,7 @@ namespace _Game.UIs.Screen
             UpdateObjectiveText();
             isTimeNormal = false;
             CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera);
-            TimerManager.Ins.WaitForTime(0.1f, () =>
-            {
-                CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera, 1f);
-            });
+            TimerManager.Ins.WaitForTime(0.1f, () => { CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera, 1f); });
         }
 
         public override void Open(object param = null)
@@ -145,7 +156,8 @@ namespace _Game.UIs.Screen
                 Close();
                 return;
             }
-            _fadeTween = DOVirtual.Float(0f, 1f, 1f, value => canvasGroup.alpha = value).OnKill(() => { blockPanel.enabled = false;});
+            _fadeTween = DOVirtual.Float(0f, 1f, 1f, value => canvasGroup.alpha = value)
+                .OnKill(() => { blockPanel.enabled = false; });
         }
 
         public override void UpdateUI()
@@ -153,6 +165,7 @@ namespace _Game.UIs.Screen
             base.UpdateUI();
             undoButton.IsInteractable = LevelManager.Ins.IsCanUndo;
         }
+
         public override void Close()
         {
             _fadeTween?.Kill();
@@ -161,7 +174,6 @@ namespace _Game.UIs.Screen
             base.Close();
         }
 
-        
 
         public override void Show()
         {
@@ -183,38 +195,38 @@ namespace _Game.UIs.Screen
 
         public void SetActiveUndo(bool active)
         {
-            if(active)
+            if (active)
                 undoTimer.Stop();
             undoButton.IsInteractable = active;
         }
-        
+
         public void SetActiveResetIsland(bool active)
         {
             resetIslandTimer.Stop();
             resetIslandButton.IsInteractable = active;
         }
-        
+
         public void OnBoughtGrowTree(bool active)
         {
             DevLog.Log(DevId.Hoang, "On Bought Grow Tree: " + active);
             growTreeButton.IsShowAmount = !active;
         }
-        
+
         public void SetActiveGrowTree(bool active)
         {
             growTreeButton.IsInteractable = active;
         }
-        
+
         public void ActivePushHintIsland(bool active)
         {
             pushHintButton.IsInteractable = active;
         }
-        
+
         public void ActiveGrowTreeIsland(bool active)
         {
             growTreeButton.IsInteractable = active;
         }
-        
+
         public void OnBoughtPushHintOnIsland(int islandID, bool active, bool isInit)
         {
             // Check if the current island is the island that the player is on
@@ -227,7 +239,7 @@ namespace _Game.UIs.Screen
             pushHintButton.SetAmount(DataManager.Ins.GameData.user.pushHintCount);
             if (active) pushHintButton.IsShowAds = false;
         }
-        
+
         public void OnBoughtGrowTreeOnIsland(int islandID, bool active)
         {
             // Check if the current island is the island that the player is on
@@ -235,11 +247,15 @@ namespace _Game.UIs.Screen
             growTreeButton.SetAmount(DataManager.Ins.GameData.user.growTreeCount);
             if (active) growTreeButton.IsShowAds = false;
         }
+
         private void ChangeLayoutForBanner(object isBannerActive)
         {
-            int sizeAnchor = (bool)isBannerActive ? UIManager.Ins.ConvertPixelToUnitHeight(DataManager.Ins.ConfigData.bannerHeight) : 0;
+            int sizeAnchor = (bool)isBannerActive
+                ? UIManager.Ins.ConvertPixelToUnitHeight(DataManager.Ins.ConfigData.bannerHeight)
+                : 0;
             MRectTransform.offsetMin = new Vector2(MRectTransform.offsetMin.x, sizeAnchor);
         }
+
         private void UpdateLevelText()
         {
             int levelIndex = 1;
@@ -276,8 +292,11 @@ namespace _Game.UIs.Screen
                 LevelWinCondition.FindingChickenBbq => Constants.FIND_CHICKEN_BBQ,
                 _ => objectiveText.text
             };
-            DevLog.Log(DevId.Hoang, "Update Objective Counter: " + LevelManager.Ins.ObjectiveCounterLeft() + "/" + LevelManager.Ins.ObjectiveTotal);
-            objectiveText.text = $"{constant}: {LevelManager.Ins.ObjectiveCounterLeft()}/{LevelManager.Ins.ObjectiveTotal}";
+            DevLog.Log(DevId.Hoang,
+                "Update Objective Counter: " + LevelManager.Ins.ObjectiveCounterLeft() + "/" +
+                LevelManager.Ins.ObjectiveTotal);
+            objectiveText.text = constant;
+            objectiveCounterText.text = $"{LevelManager.Ins.ObjectiveCounterLeft()}/{LevelManager.Ins.ObjectiveTotal}";
         }
 
         private void LevelManager_OnLevelNext()
@@ -285,22 +304,27 @@ namespace _Game.UIs.Screen
             UpdateLevelText();
             UpdateObjectiveText();
         }
-        
+
         public void OnCheckBoosterLock()
         {
             LevelType type = LevelManager.Ins.CurrentLevel.LevelType;
             if (type is LevelType.Normal)
             {
                 int currentLevel = LevelManager.Ins.CurrentLevel.Index;
-                bool isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)undoButton.Type].UnlockAtLevel;
+                bool isLock = currentLevel <
+                              DataManager.Ins.ConfigData.boosterConfigList[(int)undoButton.Type].UnlockAtLevel;
                 undoButton.IsLock = isLock;
-                isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)pushHintButton.Type].UnlockAtLevel;
+                isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)pushHintButton.Type]
+                    .UnlockAtLevel;
                 pushHintButton.IsLock = isLock;
-                isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)growTreeButton.Type].UnlockAtLevel;
+                isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)growTreeButton.Type]
+                    .UnlockAtLevel;
                 growTreeButton.IsLock = isLock;
-                isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)resetIslandButton.Type].UnlockAtLevel;
+                isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)resetIslandButton.Type]
+                    .UnlockAtLevel;
                 resetIslandButton.IsLock = isLock;
-            } else
+            }
+            else
             {
                 undoButton.IsLock = false;
                 pushHintButton.IsLock = false;
@@ -308,7 +332,7 @@ namespace _Game.UIs.Screen
                 resetIslandButton.IsLock = false;
             }
         }
-        
+
         public void OnSetBoosterAmount()
         {
             undoButton.SetAmount(DataManager.Ins.GameData.user.undoCount);
@@ -316,11 +340,9 @@ namespace _Game.UIs.Screen
             growTreeButton.SetAmount(DataManager.Ins.GameData.user.growTreeCount);
             resetIslandButton.SetAmount(DataManager.Ins.GameData.user.resetIslandCount);
             // Get the unlock level of the booster
-            
         }
-        
-        #region Booster
 
+        #region Booster
         private void OnClickUndo()
         {
             // Check number of ticket to use
@@ -347,24 +369,24 @@ namespace _Game.UIs.Screen
             if (undoButton.IsFocus) undoButton.IsFocus = false;
             if (resetIslandButton.IsFocus) resetIslandButton.IsFocus = false;
         }
-        
+
         private void OnClickPushHint()
         {
             OnUsePushHint?.Invoke();
             if (undoButton.IsFocus) undoButton.IsFocus = false;
             if (resetIslandButton.IsFocus) resetIslandButton.IsFocus = false;
         }
-        
         #endregion
 
-        
+
         private Tween _tryAgainImageTween;
+
         public void OnShowTryHintAgain(bool show)
-        { 
+        {
             undoButton.IsFocus = show;
-           resetIslandButton.IsFocus = show;
+            resetIslandButton.IsFocus = show;
         }
-        
+
         public void OnHandleTutorial()
         {
             bool isTutorial = LevelManager.Ins.IsFirstTutorialLevel;
@@ -374,7 +396,8 @@ namespace _Game.UIs.Screen
             timerContainer.SetActive(!isTutorial);
             settingButton.gameObject.SetActive(!isTutorial);
             // Hide Showing Booster
-            if (isTutorial && type is LevelType.Normal) {
+            if (isTutorial && type is LevelType.Normal)
+            {
                 undoButton.gameObject.SetActive(false);
                 growTreeButton.gameObject.SetActive(false);
                 pushHintButton.gameObject.SetActive(false);
@@ -390,8 +413,8 @@ namespace _Game.UIs.Screen
             // Other handle for specific level
             unlimitedUndoButton.gameObject.SetActive(false);
             unlimitedResetIslandButton.gameObject.SetActive(false);
-            #region Level 3 (index 2)
 
+            #region Level 3 (index 2)
             if (currentLevel == 2 && type is LevelType.Normal)
             {
                 undoButton.gameObject.SetActive(false);
@@ -400,28 +423,22 @@ namespace _Game.UIs.Screen
                 unlimitedResetIslandButton.gameObject.SetActive(true);
                 return;
             }
-            
-            
             #endregion
         }
 
         #region Unlimited Booster
-
         public void OnClickUnlimitedUndo()
         {
             GameplayManager.Ins.OnFreeUndo();
         }
-        
+
         public void OnClickUnlimitedResetIsland()
         {
             GameplayManager.Ins.OnFreeResetIsland();
         }
-        
+
         public HButton unlimitedUndoButton;
         public HButton unlimitedResetIslandButton;
-
         #endregion
-        
-        
     }
 }

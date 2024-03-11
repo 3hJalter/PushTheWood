@@ -61,7 +61,7 @@ MonoBehaviour:
     MoveDuration: 1
     ReactPunchScale: {x: 0.25, y: 0.25, z: 0}
     ReactDuration: 0.1
-    CollectingResourceParentTF: {fileID: 0}
+    CollectingResourceParentRectTF: {fileID: 0}
   _collectingUIAdTicketConfig:
     PrefabPoolType: 401
     MinSpreadPosition: {x: -3, y: -3, z: 0}
@@ -70,7 +70,7 @@ MonoBehaviour:
     MoveDuration: 1
     ReactPunchScale: {x: 0.25, y: 0.25, z: 0}
     ReactDuration: 0.1
-    CollectingResourceParentTF: {fileID: 0}
+    CollectingResourceParentRectTF: {fileID: 0}
   _collectingUIRewardKeyConfig:
     PrefabPoolType: 402
     MinSpreadPosition: {x: -3, y: -3, z: 0}
@@ -79,13 +79,22 @@ MonoBehaviour:
     MoveDuration: 1
     ReactPunchScale: {x: 0.25, y: 0.25, z: 0}
     ReactDuration: 0.1
-    CollectingResourceParentTF: {fileID: 0}
+    CollectingResourceParentRectTF: {fileID: 0}
+  _collectingUILevelStarConfig:
+    PrefabPoolType: 403
+    MinSpreadPosition: {x: -3, y: -3, z: 0}
+    MaxSpreadPosition: {x: 3, y: 3, z: 0}
+    SpreadDuration: 0.2
+    MoveDuration: 1
+    ReactPunchScale: {x: 0.25, y: 0.25, z: 0}
+    ReactDuration: 0.1
+    CollectingResourceParentRectTF: {fileID: 0}
   _collectingInGameRewardKeyConfig:
-    PrefabPoolType: 500
+    PrefabPoolType: 404
     MinSpreadPosition: {x: 0, y: 0, z: 0}
     MaxSpreadPosition: {x: 0, y: 0, z: 0}
     SpreadDuration: 0
     MoveDuration: 0.6
     ReactPunchScale: {x: 0, y: 0, z: 0}
     ReactDuration: 0
-    CollectingResourceParentTF: {fileID: 0}
+    CollectingResourceParentRectTF: {fileID: 0}

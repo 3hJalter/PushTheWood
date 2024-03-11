@@ -144,22 +144,22 @@ namespace _Game.UIs.Screen
         }
         public void OnClickNextButton()
         {           
-            DevLog.Log(DevId.Vinh, "Collect rewards");
-            for (int i = 0; i < _rewardItemList.Count; i++)
-            {
-                _rewardItemList[i].Reward.Obtain(_rewardItemList[i].IconImagePosition);
-            }
+            // DevLog.Log(DevId.Vinh, "Collect rewards");
+            // for (int i = 0; i < _rewardItemList.Count; i++)
+            // {
+            //     _rewardItemList[i].Reward.Obtain(_rewardItemList[i].IconImagePosition);
+            // }
             
             GameManager.Ins.PostEvent(DesignPattern.EventID.OnCheckShowInterAds, _nextLevel);   
         }
         
         public void OnClickMainMenuButton()
         {
-            DevLog.Log(DevId.Vinh, "Collect rewards");
-            for (int i = 0; i < _rewardItemList.Count; i++)
-            {
-                _rewardItemList[i].Reward.Obtain(_rewardItemList[i].IconImagePosition);
-            }
+            // DevLog.Log(DevId.Vinh, "Collect rewards");
+            // for (int i = 0; i < _rewardItemList.Count; i++)
+            // {
+            //     _rewardItemList[i].Reward.Obtain(_rewardItemList[i].IconImagePosition);
+            // }
             
             LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
             UIManager.Ins.CloseAll();
