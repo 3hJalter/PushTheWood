@@ -74,6 +74,9 @@ namespace VinhLB
                     case CurrencyType.RandomBooster:
                         GainBooster(BoosterType, Amount);
                         break;
+                    case CurrencyType.Key:
+                        GameManager.Ins.GainRewardKey(Amount);
+                        break;
                     case CurrencyType.None:
                     default:
                         break;

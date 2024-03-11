@@ -1,4 +1,6 @@
 ﻿using System;
+using _Game._Scripts.UIs.Component;
+using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Popup;
@@ -18,15 +20,18 @@ namespace VinhLB
         [SerializeField]
         private HButton _playButton;
         [SerializeField]
-        private HButton _dailyChallengeButton;
+        // private HButton _dailyChallengeButton;
+        private FeatureButton dailyChallengeButton;
+        [SerializeField]
+        // private HButton _secretMapButton;
+        private FeatureButton secretMapButton;
         [SerializeField]
         private HButton _dailyRewardButton;
         [SerializeField]
         private HButton _dailyMissionButton;
+        
         [SerializeField]
-        private HButton _secretMapButton;
-        [SerializeField]
-        private HButton _rewardChestButton;
+        private FeatureButton rewardChestButton;
         [SerializeField]
         private RectTransform _rewardChestIconRectTF;
         [SerializeField]
@@ -34,7 +39,7 @@ namespace VinhLB
         [SerializeField]
         private TMP_Text _rewardKeyTxt;
         [SerializeField]
-        private HButton _levelChestButton;
+        private FeatureButton levelChestButton;
         [SerializeField]
         private RectTransform _levelChestIconRectTF;
         [SerializeField]
@@ -49,6 +54,8 @@ namespace VinhLB
         private Quaternion _startRewardChestIconQuaternion;
         private Quaternion _startLevelChestIconQuaternion;
 
+        private bool _isTutorialRunning;
+        
         private void Awake()
         {
             _playButton.onClick.AddListener(() =>
@@ -57,7 +64,7 @@ namespace VinhLB
                 LevelManager.Ins.InitLevel();
                 UIManager.Ins.OpenUI<InGameScreen>();
             });
-            _dailyChallengeButton.onClick.AddListener(() =>
+            dailyChallengeButton.AddListener(() =>
             {
                 DevLog.Log(DevId.Hoang, "Click daily challenge button");
                 UIManager.Ins.OpenUI<DailyChallengePopup>();
@@ -72,16 +79,16 @@ namespace VinhLB
                 DevLog.Log(DevId.Vinh, "Click daily mission button");
                 UIManager.Ins.OpenUI<DailyMissionPopup>();
             });
-            _secretMapButton.onClick.AddListener(() =>
+            secretMapButton.AddListener(() =>
             {
                 DevLog.Log(DevId.Vinh, "Click secret map button");
                 UIManager.Ins.OpenUI<SecretMapPopup>();
             });
-            _rewardChestButton.onClick.AddListener(() =>
+            rewardChestButton.AddListener(() =>
             {
                 RewardManager.Ins.HomeReward.ClaimRewardChest();
             });
-            _levelChestButton.onClick.AddListener(() =>
+            levelChestButton.AddListener(() =>
             {
                 RewardManager.Ins.HomeReward.ClaimLevelChest();
             });
@@ -110,6 +117,7 @@ namespace VinhLB
         {
             base.Open(param);
             SetupHomeCamera();
+            OnShowFeature();
         }
         public override void UpdateUI()
         {
@@ -178,11 +186,23 @@ namespace VinhLB
         {
             UIManager.Ins.OpenUI<MaskScreen>(new MaskData()
             {
-                Position = _dailyChallengeButton.transform.position,
-                Size = _dailyChallengeButton.GetComponent<RectTransform>().sizeDelta + Vector2.one * 20f,
+                Position = dailyChallengeButton.transform.position,
+                Size = dailyChallengeButton.GetComponent<RectTransform>().sizeDelta + Vector2.one * 20f,
                 MaskType = MaskType.Rectangle,
-                ClickableItem = _dailyChallengeButton
+                ClickableItem = dailyChallengeButton
             });
+        }
+
+        private void OnShowFeature()
+        {
+            // Get normal level index
+            int normalLevelIndex = LevelManager.Ins.NormalLevelIndex;
+            dailyChallengeButton.IsLock = normalLevelIndex >= DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex;
+            secretMapButton.IsLock = normalLevelIndex >= DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex;
+            levelChestButton.IsLock = normalLevelIndex >= DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex;
+            rewardChestButton.IsLock = normalLevelIndex >= DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex;
+            
+            GameManager.Ins.PostEvent(EventID.OnShowTutorialInMenu, normalLevelIndex);
         }
     }
 }

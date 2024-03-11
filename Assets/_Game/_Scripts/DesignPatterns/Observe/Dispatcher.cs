@@ -80,7 +80,7 @@ namespace _Game.DesignPattern
         OnClaimRewardChest = 13,
         OnUpdateUIs = 14,
         OnChangeGameState = 15,
-
+        OnShowTutorialInMenu = 16,
         //NOTE: Ads
         OnInterAdsStepCount = 10000,
         OnCheckShowInterAds = 10001,

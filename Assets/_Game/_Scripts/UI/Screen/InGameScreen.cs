@@ -311,8 +311,11 @@ namespace _Game.UIs.Screen
         
         public void OnSetBoosterAmount()
         {
+            undoButton.IsShowAmount = true;
             undoButton.SetAmount(DataManager.Ins.GameData.user.undoCount);
+            pushHintButton.IsShowAmount = true;
             pushHintButton.SetAmount(DataManager.Ins.GameData.user.pushHintCount);
+            growTreeButton.IsShowAmount = true;
             growTreeButton.SetAmount(DataManager.Ins.GameData.user.growTreeCount);
             // resetIslandButton.SetAmount(DataManager.Ins.GameData.user.resetIslandCount);
             // Get the unlock level of the booster

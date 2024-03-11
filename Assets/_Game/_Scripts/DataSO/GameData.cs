@@ -22,6 +22,8 @@ namespace _Game.Data
             public int secretLevelIndex;
             public int secretLevelUnlock;
             
+            public List<int> completedMenuTutorial = new();
+            
             // daily challenge
             public bool isCompleteDailyChallengerTutorial;
             public int currentDailyChallengerDay = 1;

@@ -276,13 +276,6 @@ namespace _Game.GameGrid
                 default:
                     break;
             }
-            GameManager.Ins.GainGold(goldCount);
-            GameManager.Ins.GainRewardKey(KeyRewardCount);
-            GameManager.Ins.GainSecretMapPiece(SecretMapPieceCount);
-            foreach (KeyValuePair<BoosterType, int> booster in boosterRewardCount)
-            {
-                GameManager.Ins.GainBooster(booster.Key, booster.Value);
-            }
             if(CurrentLevel.LevelType == LevelType.Normal)
                 GameManager.Ins.GainLevelProgress(1);
             DataManager.Ins.Save();

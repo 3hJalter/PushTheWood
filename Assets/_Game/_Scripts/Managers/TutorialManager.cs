@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using _Game._Scripts.Tutorial;
 using _Game._Scripts.Tutorial.ObjectTutorial;
 using _Game.Data;
@@ -39,6 +38,7 @@ namespace _Game._Scripts.Managers
         {
             actData = new Queue<TutorialInputOnActData>();
             moveData = new Queue<TutorialInputOnMoveData>();
+            GameManager.Ins.RegisterListenerEvent(EventID.OnShowTutorialInMenu, OnHandleMenuTutorial);
         }
 
         private void Start()
@@ -55,6 +55,7 @@ namespace _Game._Scripts.Managers
         private void OnDestroy()
         {
             GameManager.Ins.UnregisterListenerEvent(EventID.StartGame, DequeueTutorialData);
+            GameManager.Ins.UnregisterListenerEvent(EventID.OnShowTutorialInMenu, OnHandleMenuTutorial);
         }
 
         private void DequeueTutorialData()
@@ -154,6 +155,28 @@ namespace _Game._Scripts.Managers
         {
             public GameGridCell cell;
             public GridUnit triggerUnit;
+        }
+
+        private void OnHandleMenuTutorial(object normalLevelIndex)
+        {
+            if (normalLevelIndex is not int index) return;
+            if (DataManager.Ins.GameData.user.completedMenuTutorial.Contains(index)) return;
+            if (DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex == index)
+            {
+                DataManager.Ins.GameData.user.completedMenuTutorial.Add(index);
+                // TODO: show tutorial UI, and change to only add index if tutorial is completed
+                DevLog.Log(DevId.Hoang, "Show Daily Challenge Tutorial");
+            } else if (DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex == index)
+            {
+                DataManager.Ins.GameData.user.completedMenuTutorial.Add(index);
+                // TODO: show tutorial UI, and change to only add index if tutorial is completed
+                DevLog.Log(DevId.Hoang, "Show Secret Level Tutorial");
+            } else if (DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex == index)
+            {
+                DataManager.Ins.GameData.user.completedMenuTutorial.Add(index);
+                // TODO: show tutorial UI, and change to only add index if tutorial is completed
+                DevLog.Log(DevId.Hoang, "Show Bonus Chest Tutorial");
+            }
         }
     }
 }

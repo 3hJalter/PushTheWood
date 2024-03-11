@@ -102,9 +102,9 @@ namespace _Game.UIs.Screen
             }
             else
             {
-                if (level.Index == DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex 
-                    || level.Index == DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex
-                    || level.Index == DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex)
+                if (level.Index == DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex - 1 
+                    || level.Index == DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex - 1
+                    || level.Index == DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex - 1)
                 {
                     _nextLevelButton.gameObject.SetActive(false);
                 }
@@ -118,13 +118,17 @@ namespace _Game.UIs.Screen
                 LevelManager.Ins.OnNextLevel(LevelType.Normal);
                 Close();
             };
-            mainMenuButton.SetActive(level.Index >= DataManager.Ins.ConfigData.unlockGoMainMenuOnLoseAtLevelIndex);
+            mainMenuButton.SetActive(level.Index >= DataManager.Ins.ConfigData.unlockGoMainMenuOnLoseAtLevelIndex - 1);
         }
 
         public override void Open(object param = null)
         {
             base.Open(param);
             _container.SetActive(false);
+            for (int i = 0; i < _rewardItemList.Count; i++)
+            {
+                _rewardItemList[i].Reward.Obtain(_rewardItemList[i].IconImagePosition);
+            }
             DOVirtual.DelayedCall(1f, () =>
             {
                 _container.SetActive(true);
@@ -145,22 +149,12 @@ namespace _Game.UIs.Screen
         public void OnClickNextButton()
         {           
             DevLog.Log(DevId.Vinh, "Collect rewards");
-            for (int i = 0; i < _rewardItemList.Count; i++)
-            {
-                _rewardItemList[i].Reward.Obtain(_rewardItemList[i].IconImagePosition);
-            }
-            
             GameManager.Ins.PostEvent(DesignPattern.EventID.OnCheckShowInterAds, _nextLevel);   
         }
         
         public void OnClickMainMenuButton()
         {
             DevLog.Log(DevId.Vinh, "Collect rewards");
-            for (int i = 0; i < _rewardItemList.Count; i++)
-            {
-                _rewardItemList[i].Reward.Obtain(_rewardItemList[i].IconImagePosition);
-            }
-            
             LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<MainMenuScreen>();
