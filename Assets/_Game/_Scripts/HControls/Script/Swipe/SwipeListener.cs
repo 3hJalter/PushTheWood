@@ -37,6 +37,7 @@ namespace GG.Infrastructure.Utils.Swipe
         private Vector3 _swipeStartPoint;
 
         private bool _waitForSwipe = true;
+        private bool _countingSwipeTime = false;
         
         private float _holdTimer = Constants.HOLD_TOUCH_TIME;
         private float _swipeTimer;
@@ -99,6 +100,7 @@ namespace GG.Infrastructure.Utils.Swipe
             }
             // Check if Swipe is continuous detection
             if (!continuousDetection) CheckSwipeCancellation();
+            if (_countingSwipeTime) swipeTouchTime -= Time.deltaTime;
         }
 
         public void SetDetectionMode(List<DirectionId> directions)
@@ -129,10 +131,12 @@ namespace GG.Infrastructure.Utils.Swipe
         private void CheckSwipe()
         {
             _offset = Input.mousePosition - _swipeStartPoint;
-            _swipeTimer -= Time.deltaTime;
 
             if (samplePoints.Count < 1)
+            {
                 samplePoints.Add(Vector2.zero);
+                _countingSwipeTime = true;
+            }
             //NOTE: Calculate distance from old sample point to new sample point.
             Vector2 distance = _offset - (Vector3)samplePoints[samplePoints.Count - 1];
             if (distance.magnitude >= _minMoveDistance)
@@ -149,7 +153,7 @@ namespace GG.Infrastructure.Utils.Swipe
                     if (!continuousDetection) _waitForSwipe = false;
                     SampleSwipeStart();
                     _isHolding = false;
-                    _swipeTimer = swipeTouchTime;
+                    _countingSwipeTime = false;
                 }                
             }
             else if (_holdTimer > 0) // Add Hold Gesture for this code
@@ -174,8 +178,8 @@ namespace GG.Infrastructure.Utils.Swipe
         private void SampleSwipeStart()
         {
             _swipeStartPoint = Input.mousePosition;
+            _swipeTimer = swipeTouchTime;
             _offset = Vector3.zero;
-            samplePoints.Add(Vector2.zero);
         }
     }
 }
