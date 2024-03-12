@@ -8,6 +8,7 @@ using GameGridEnum;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using VinhLB;
 
 namespace _Game.GameGrid.Unit.StaticUnit
 {
@@ -32,6 +33,12 @@ namespace _Game.GameGrid.Unit.StaticUnit
         public override void OnOpenChestComplete()
         {
             base.OnOpenChestComplete();
+            if (LevelManager.Ins.CollectedChests.Add(this))
+            {
+                CollectingResourceManager.Ins.SpawnCollectingRewardKey(1, LevelManager.Ins.player.transform);
+                LevelManager.Ins.KeyRewardCount += 1;
+                LevelManager.Ins.goldCount += 40;
+            }
             OnRemoveFromLevelManager();
         }
 
@@ -120,6 +127,8 @@ namespace _Game.GameGrid.Unit.StaticUnit
         //     ShowAnim(true);
         //     DOVirtual.DelayedCall(Constants.CHEST_OPEN_TIME, OnOpenChestComplete);
         // }
+        
+        
 
         private void SetUpButtonUnit()
         {

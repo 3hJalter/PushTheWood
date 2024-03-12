@@ -241,6 +241,11 @@ namespace VinhLB
             dailyChallengeButton.gameObject.SetActive(isShow);
         }
         
+        public void ShowSecretMapButton(bool isShow)
+        {
+            secretMapButton.gameObject.SetActive(isShow);
+        }
+        
         private void SetupHomeCamera()
         {
             LevelManager.Ins.ConstructingLevel();

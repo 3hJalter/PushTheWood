@@ -163,12 +163,15 @@ namespace _Game._Scripts.Managers
                     DevLog.Log(DevId.Hoang, "Show Daily Challenge Tutorial");
                 }
             }
-            // else if (DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex == index)
-            // {
-            //     DataManager.Ins.GameData.user.completedMenuTutorial.Add(index);
-            //     // TODO: show tutorial UI, and change to only add index if tutorial is completed
-            //     DevLog.Log(DevId.Hoang, "Show Secret Level Tutorial");
-            // } else if (DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex == index)
+            else if (DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex == index)
+            {
+                if (menuTutorialList.TryGetValue(index, out UICanvas tutorialScreen))
+                {
+                    UIManager.Ins.OpenUIDirectly(tutorialScreen);
+                    DevLog.Log(DevId.Hoang, "Show Daily Challenge Tutorial");
+                }
+            }
+            // else if (DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex == index)
             // {
             //     DataManager.Ins.GameData.user.completedMenuTutorial.Add(index);
             //     // TODO: show tutorial UI, and change to only add index if tutorial is completed
