@@ -45,7 +45,7 @@ namespace _Game.Data
             public int currentLevelChestIndex = 0;
             public int rewardChestUnlock = 0;
             public int levelChestUnlock = 0;
-            public int secretMapPieces;
+            public int secretMapPieces = 6;
 
             // Booster Data
             public int undoCount;

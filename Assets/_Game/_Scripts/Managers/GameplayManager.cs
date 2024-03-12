@@ -251,7 +251,7 @@ namespace _Game.Managers
             screen.OnHandleTutorial();
             screen.OnCheckBoosterLock();
             IsCanResetIsland = true;
-            IsCanUndo = true;
+            IsCanUndo = false;
             isBoughtPushHintInIsland.Clear();
             _pushHint?.OnStopHint(); // Clear old hint
             _pushHint = new PushHint(LevelManager.Ins.CurrentLevel.GetPushHint());

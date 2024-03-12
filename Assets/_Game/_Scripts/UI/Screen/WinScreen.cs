@@ -112,13 +112,14 @@ namespace _Game.UIs.Screen
                 {
                     _nextLevelButton.gameObject.SetActive(true);
                 }
+                mainMenuButton.SetActive(level.Index >= DataManager.Ins.ConfigData.unlockGoMainMenuOnLoseAtLevelIndex - 1);
             }
             _nextLevel = () =>
             {
                 LevelManager.Ins.OnNextLevel(LevelType.Normal);
                 Close();
             };
-            mainMenuButton.SetActive(level.Index >= DataManager.Ins.ConfigData.unlockGoMainMenuOnLoseAtLevelIndex - 1);
+
         }
 
         public override void Open(object param = null)

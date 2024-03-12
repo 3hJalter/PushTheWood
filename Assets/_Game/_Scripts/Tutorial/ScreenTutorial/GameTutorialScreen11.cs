@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 namespace _Game._Scripts.Tutorial.ScreenTutorial
 {
-    public class TutorialScreen11 : TutorialScreen
+    public class GameTutorialScreen11 : GameTutorialScreen
     {
         private UnityAction<string> _swipeEvent;
         [SerializeField] private float moveTime = 1f;
@@ -40,7 +40,7 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
             // Set panel alpha to 0
             panel.color = new Color(1, 1, 1, 0);
             // Tween to move _imageRectContainer to _finalImageRectPosition
-            TutorialManager.Ins.currentTutorialScreenScreen = null;
+            TutorialManager.Ins.currentGameTutorialScreenScreen = null;
             UIManager.Ins.OpenUI<InGameScreen>(false);
             GameplayManager.Ins.OnFreePushHint(false, true);
             Timing.RunCoroutine(MoveImageRect().CancelWith(gameObject));

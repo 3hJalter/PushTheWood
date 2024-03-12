@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace _Game._Scripts.Tutorial.ScreenTutorial
 {
-    public class TutorialScreen12 : TutorialScreen
+    public class GameTutorialScreen12 : GameTutorialScreen
     {
         private UnityAction<string> _swipeEvent;
         private UnityAction<string> _testSwipeEvent;

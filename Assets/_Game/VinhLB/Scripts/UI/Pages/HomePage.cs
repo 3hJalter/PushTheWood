@@ -59,6 +59,8 @@ namespace VinhLB
 
         private bool _isTutorialRunning;
 
+        private bool _isFirstShowed;
+        
         private void Awake()
         {
             GameManager.Ins.RegisterListenerEvent(EventID.OnChangeRewardKeys,
@@ -126,17 +128,7 @@ namespace VinhLB
             _startRewardChestIconQuaternion = _rewardChestIconRectTF.localRotation;
             _startLevelChestIconQuaternion = _levelChestIconRectTF.localRotation;
         }
-
-        private void Start()
-        {
-            if (!DailyRewardManager.Ins.IsTodayRewardObtained)
-            {
-                UIManager.Ins.OpenUI<DailyRewardPopup>();
-            }
-
-            // Invoke(nameof(OpenMask), 1f);
-        }
-
+        
         private void OnDestroy()
         {
             GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeRewardKeys,
@@ -151,6 +143,15 @@ namespace VinhLB
         {
             base.Setup(param);
 
+            if (!_isFirstShowed)
+            {
+                _isFirstShowed = true;
+                if (!DailyRewardManager.Ins.IsTodayRewardObtained)
+                {
+                    UIManager.Ins.OpenUI<DailyRewardPopup>();
+                }
+            }
+            
             SetupHomeCamera();
 
             SetupFeature();
@@ -169,7 +170,7 @@ namespace VinhLB
         {
             base.Open(param);
 
-            OnShowFeature();
+            OnShowMenuTutorial();
 
             if (rewardChestButton.IsUnlocked && _delayCollectingRewardKeys != null)
             {
@@ -235,6 +236,11 @@ namespace VinhLB
             // }
         }
 
+        public void ShowDailyChallengeButton(bool isShow)
+        {
+            dailyChallengeButton.gameObject.SetActive(isShow);
+        }
+        
         private void SetupHomeCamera()
         {
             LevelManager.Ins.ConstructingLevel();
@@ -413,7 +419,7 @@ namespace VinhLB
             rewardChestButton.IsUnlocked = normalLevelIndex >= DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex;
         }
 
-        private void OnShowFeature()
+        private void OnShowMenuTutorial()
         {
             // Get normal level index
             int normalLevelIndex = LevelManager.Ins.NormalLevelIndex;
