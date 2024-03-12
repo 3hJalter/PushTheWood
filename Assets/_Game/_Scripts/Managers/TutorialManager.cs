@@ -88,8 +88,6 @@ namespace _Game._Scripts.Managers
         
         public void OnUnitMoveToCell(GameGridCell cell, GridUnit triggerUnit)
         {
-            // TEMPORARY: CANCEL IF NOT NORMAL LEVEL
-            if (LevelManager.Ins.CurrentLevel.LevelType != LevelType.Normal) return;
             // NOTE: If not in game state and a unit go to cell, save data
             if (!GameManager.Ins.IsState(GameState.InGame))
             {
@@ -101,8 +99,7 @@ namespace _Game._Scripts.Managers
         
         private void OnGetMoveTutorial(GameGridCell cell, GridUnit triggerUnit)
         {
-            // Try Get tutorial data == LevelManager.CurrentLevel.Index
-            if (!tutorialList.TryGetValue(LevelManager.Ins.CurrentLevel.Index, out ITutorialCondition tutorialData)) return;
+            if (!tutorialList.TryGetValue(LevelManager.Ins.TutIndex, out ITutorialCondition tutorialData)) return;
             // Show tutorial data
             tutorialData.HandleShowTutorial(cell, triggerUnit);
         }
@@ -115,12 +112,7 @@ namespace _Game._Scripts.Managers
         
         public void OnUnitActWithOther(GridUnit triggerUnit, GridUnit targetUnit)
         {
-            // TEMPORARY: CANCEL IF NOT NORMAL LEVEL
-            if (LevelManager.Ins.CurrentLevel.LevelType != LevelType.Normal)
-            {
-                return;
-            }
-            // NOTE: If not in game state and a unit go to cell, save data
+           // NOTE: If not in game state and a unit go to cell, save data
             if (!GameManager.Ins.IsState(GameState.InGame))
             {
                 actData.Enqueue(new  TutorialInputOnActData{triggerUnit = triggerUnit, targetUnit = targetUnit});
@@ -131,8 +123,7 @@ namespace _Game._Scripts.Managers
 
         private void OnGetActTutorial(GridUnit triggerUnit, GridUnit targetUnit)
         {
-            // Try Get tutorial data == LevelManager.CurrentLevel.Index
-            if (!tutorialList.TryGetValue(LevelManager.Ins.CurrentLevel.Index, out ITutorialCondition tutorialData)) return;
+            if (!tutorialList.TryGetValue(LevelManager.Ins.TutIndex, out ITutorialCondition tutorialData)) return;
             // Show tutorial data
             tutorialData.HandleShowTutorial(triggerUnit, targetUnit);
         }

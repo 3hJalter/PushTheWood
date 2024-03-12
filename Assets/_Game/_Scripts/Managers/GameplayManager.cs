@@ -113,7 +113,6 @@ namespace _Game.Managers
             GameManager.Ins.RegisterListenerEvent(EventID.LoseGame, OnLoseGame);
             GameManager.Ins.RegisterListenerEvent(EventID.Pause, OnPauseGame);
             GameManager.Ins.RegisterListenerEvent(EventID.UnPause, OnUnPauseGame);
-            // GameManager.Ins.RegisterListenerEvent(EventID.OnResetToMainMenu, OnToMainMenu);
             // TODO: Refactor Booster later to avoid duplicate code
             screen.OnUndo += OnUndo;
             screen.OnGrowTree += OnGrowTree;
@@ -540,7 +539,11 @@ namespace _Game.Managers
                     screen.growTreeButton.IsShowAds = false; // TEMPORARY
                 }
                 EventGlobalManager.Ins.OnGrowTree.Dispatch(pIslandID);
-                if (_pushHint.IsStartHint) _pushHint.OnStopHint();
+                if (_pushHint.IsStartHint)
+                {
+                    screen.ActivePushHintIsland(true);
+                    _pushHint.OnStopHint();
+                }
             }
         }
 

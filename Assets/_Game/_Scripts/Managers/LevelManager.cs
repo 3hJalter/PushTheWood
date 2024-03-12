@@ -192,11 +192,32 @@ namespace _Game.GameGrid
             SecretMapPieceCount = 0;
         }
 
+        private int _tutIndex;
+        public int TutIndex => _tutIndex;
+        
+        private void OnAddEventToPlayer()
+        {
+            player.SetActWithUnitEvent(null);
+            player.SetMoveToCellEvent(null);
+            _tutIndex = CurrentLevel.Index;
+            // Special case for tutorial in daily challenger
+            if (_tutIndex == 0 && CurrentLevel.LevelType == LevelType.DailyChallenge)
+            {
+                _tutIndex = -1;
+            }
+            if (TutorialManager.Ins.TutorialList.ContainsKey(_tutIndex))
+            {
+                player.SetActWithUnitEvent(TutorialManager.Ins.OnUnitActWithOther);
+                player.SetMoveToCellEvent(TutorialManager.Ins.OnUnitMoveToCell);
+            }
+        }
+        
         public void ConstructingLevel()
         {
             if (_currentLevel.IsInit) return;
             levelWinCondition = CurrentLevel.LevelWinCondition;
             OnAddWinCondition(CurrentLevel.LevelWinCondition);
+            OnAddEventToPlayer();
             enemies.Clear();
             finalPoints.Clear();
             CollectedChests.Clear();

@@ -335,6 +335,10 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 1405890763511691423, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+    - target: {fileID: 1491281119590562120, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 1491281119590562120, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
     - target: {fileID: 1539822429057501282, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -787,10 +791,6 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 7207393967214040121, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
-    - target: {fileID: 7406205227297889723, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
-      propertyPath: serializationData.Prefab
-      value: 
-      objectReference: {fileID: 7406205227297889723, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
     - target: {fileID: 7528654158844924394, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: serializationData.Prefab
       value: 

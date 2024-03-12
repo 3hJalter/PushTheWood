@@ -85,7 +85,7 @@ namespace _Game.GameGrid.Unit
         protected Direction lastPushedDirection = Direction.None;
 
         public Direction LastPushedDirection => lastPushedDirection;
-
+        
         // The main cell that this unit is on
         protected GameGridCell mainCell;
         #region Saving Spawn State
@@ -253,12 +253,11 @@ namespace _Game.GameGrid.Unit
             }
         }
 
-        public void OnEnterCells(GameGridCell enterMainCell, List<GameGridCell> enterNextCells = null)
+        public virtual void OnEnterCells(GameGridCell enterMainCell, List<GameGridCell> enterNextCells = null)
         {
             SetHeight(EnterPosData.startHeight);
             InitCellsToUnit(enterMainCell, enterNextCells);
             SetNeighbor(LevelManager.Ins.CurrentLevel.GridMap);
-            TutorialManager.Ins.OnUnitMoveToCell(enterMainCell, this);
             return;
 
             void InitCellsToUnit(GameGridCell enterMainCellIn, List<GameGridCell> enterCells = null)

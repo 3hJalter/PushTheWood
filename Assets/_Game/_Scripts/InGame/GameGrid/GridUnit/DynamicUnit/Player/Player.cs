@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _Game._Scripts.InGame;
 using _Game._Scripts.InGame.GameCondition.Data;
 using _Game._Scripts.Managers;
@@ -42,6 +43,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             get => StateEnum.Idle;
             set => stateMachine.ChangeState(value);
         }
+        
         private IVehicle _vehicle;
         public InputDetection InputDetection { get; private set; } = new InputDetection();
         public override GameGridCell MainCell
@@ -53,6 +55,29 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 CheckingStunState();
             }
         }
+
+        #region Trigger Event
+
+        public event Action<GameGridCell, GridUnit> OnMoveToCell;
+        public event Action<GridUnit, GridUnit> OnActWithUnit;
+
+        public void SetMoveToCellEvent(Action<GameGridCell, GridUnit> action)
+        {
+            OnMoveToCell = action;
+        }
+        
+        public void SetActWithUnitEvent(Action<GridUnit, GridUnit> action)
+        {
+            OnActWithUnit = action;
+        }
+        
+        public void InvokeActWithUnit(GridUnit targetUnit)
+        {
+            OnActWithUnit?.Invoke(this, targetUnit);
+        }
+        
+        #endregion
+        
         private void Awake()
         {
             agent.enabled = false;
@@ -138,20 +163,22 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 LevelManager.Ins.SaveGameState(false);
                 #endregion
                 MovingData.blockDynamicUnits[^1].OnBePushed(direction, this);
-                TutorialManager.Ins.OnUnitActWithOther(this, MovingData.blockDynamicUnits[^1]);
+                // TutorialManager.Ins.OnUnitActWithOther(this, MovingData.blockDynamicUnits[^1]);
+                InvokeActWithUnit(MovingData.blockDynamicUnits[^1]);
                 return;
             }
             if (MovingData.blockStaticUnits.Count > 0)
             {
                 MovingData.blockStaticUnits[^1].OnBePushed(direction, this);
-                TutorialManager.Ins.OnUnitActWithOther(this, MovingData.blockStaticUnits[^1]);
+                // TutorialManager.Ins.OnUnitActWithOther(this, MovingData.blockStaticUnits[^1]);
+                InvokeActWithUnit(MovingData.blockStaticUnits[^1]);
             }
         }
 
-        protected override void OnOutTriggerBelow(GridUnit triggerUnit)
+        public override void OnEnterCells(GameGridCell enterMainCell, List<GameGridCell> enterNextCells = null)
         {
-            base.OnOutTriggerBelow(triggerUnit);
-            // TODO: Need Player Fall State
+            base.OnEnterCells(enterMainCell, enterNextCells);
+            OnMoveToCell?.Invoke(enterMainCell, this);
         }
 
         public override bool IsCurrentStateIs(StateEnum stateEnum)

@@ -124,10 +124,6 @@ namespace _Game.Managers
                 DOTween.PauseAll();
                 PostEvent(EventID.Pause);
             }
-            else if (gameStateI == GameState.MainMenu)
-            {
-                PostEvent(EventID.OnResetToMainMenu);
-            }
             if (gameState == GameState.Pause && gameStateI != GameState.Pause)
             {
                 DOTween.PlayAll();
