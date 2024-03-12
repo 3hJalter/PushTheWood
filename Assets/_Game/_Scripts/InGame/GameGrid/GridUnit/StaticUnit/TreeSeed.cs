@@ -107,7 +107,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
                mainCell.ValueChange();
                LevelManager.Ins.SaveGameState(false);
 
-               Tree tree = SimplePool.Spawn<Tree>(PoolType.TreeShort);
+               Tree tree = SimplePool.Spawn<Tree>(DataManager.Ins.GetGridUnit(PoolType.TreeShort));
                tree.OnInit(mainCell, startHeight);
                LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(tree);
 
