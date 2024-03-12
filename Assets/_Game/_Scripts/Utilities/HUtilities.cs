@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _Game.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ namespace _Game._Scripts.Utilities
 {
     public static class HUtilities
     {
+        private static LinearRegression linearRegression = new LinearRegression();
+
         public static Vector3 Change(this Vector3 org, float? x = null, float? y = null, float? z = null)
         {
             return new Vector3(x ?? org.x, y ?? org.y, z ?? org.z);
@@ -74,6 +77,11 @@ namespace _Game._Scripts.Utilities
             }
             return 0;
 
+        }
+        public static float PredictYFromLinearRegression(List<Vector2> data, float x)
+        {
+            linearRegression.CalculateRegression(data);
+            return linearRegression.PredictY(x);
         }
     }
 }
