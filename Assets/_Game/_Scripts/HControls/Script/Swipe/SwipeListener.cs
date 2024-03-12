@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using _Game._Scripts.Utilities;
 using _Game.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,6 +22,7 @@ namespace GG.Infrastructure.Utils.Swipe
         
         
         [SerializeField] private float sensitivity = 100;
+        [SerializeField] private float swipeTouchTime = 0.1f;
 
         [SerializeField] private bool continuousDetection;
 
@@ -35,11 +37,13 @@ namespace GG.Infrastructure.Utils.Swipe
         private Vector3 _swipeStartPoint;
 
         private bool _waitForSwipe = true;
+        private bool _countingSwipeTime = false;
         
-        private float _timer = Constants.HOLD_TOUCH_TIME;
+        private float _holdTimer = Constants.HOLD_TOUCH_TIME;
+        private float _swipeTimer;
 
         private bool _isHolding;
-        
+        private List<Vector2> samplePoints;
         public bool ContinuousDetection
         {
             get => continuousDetection;
@@ -64,6 +68,8 @@ namespace GG.Infrastructure.Utils.Swipe
 
         private void Start()
         {
+            samplePoints = new List<Vector2>();
+            _swipeTimer = swipeTouchTime;
             UpdateSensitivity();
 
             if (SwipeDetectionMode != SwipeDetectionMode.Custom)
@@ -94,6 +100,7 @@ namespace GG.Infrastructure.Utils.Swipe
             }
             // Check if Swipe is continuous detection
             if (!continuousDetection) CheckSwipeCancellation();
+            if (_countingSwipeTime) swipeTouchTime -= Time.deltaTime;
         }
 
         public void SetDetectionMode(List<DirectionId> directions)
@@ -124,18 +131,36 @@ namespace GG.Infrastructure.Utils.Swipe
         private void CheckSwipe()
         {
             _offset = Input.mousePosition - _swipeStartPoint;
-            if (_offset.magnitude >= _minMoveDistance)
+
+            if (samplePoints.Count < 1)
             {
-                onSwipe?.Invoke(_directions.GetSwipeId(_offset));
-                if (!continuousDetection) _waitForSwipe = false;
-                SampleSwipeStart();
-                _isHolding = false;
+                samplePoints.Add(Vector2.zero);
+                _countingSwipeTime = true;
             }
-            else if (_timer > 0) // Add Hold Gesture for this code
+            //NOTE: Calculate distance from old sample point to new sample point.
+            Vector2 distance = _offset - (Vector3)samplePoints[samplePoints.Count - 1];
+            if (distance.magnitude >= _minMoveDistance)
             {
-                _timer -= Time.deltaTime;
-                if (_timer > 0) return;
-                _timer = Constants.HOLD_TOUCH_TIME;
+                samplePoints.Add(_offset);
+                if (samplePoints.Count > 5 || _swipeTimer < 0)
+                {
+                    float y = HUtilities.PredictYFromLinearRegression(samplePoints, _offset.x);
+                    _offset.Set(_offset.x, y, 0);
+                    DevLog.Log(DevId.Hung, $"DIRECTION: {_offset}");
+                    onSwipe?.Invoke(_directions.GetSwipeId(_offset));
+                    samplePoints.Clear();
+
+                    if (!continuousDetection) _waitForSwipe = false;
+                    SampleSwipeStart();
+                    _isHolding = false;
+                    _countingSwipeTime = false;
+                }                
+            }
+            else if (_holdTimer > 0) // Add Hold Gesture for this code
+            {
+                _holdTimer -= Time.deltaTime;
+                if (_holdTimer > 0) return;
+                _holdTimer = Constants.HOLD_TOUCH_TIME;
                 onSwipe?.Invoke(Constants.NONE);
                 if (!continuousDetection) _waitForSwipe = false;
                 SampleSwipeStart();
@@ -146,13 +171,14 @@ namespace GG.Infrastructure.Utils.Swipe
         private void OnCancelSwipe()
         {
             _waitForSwipe = false;
-            _timer = Constants.HOLD_TOUCH_TIME;
+            _holdTimer = Constants.HOLD_TOUCH_TIME;
             onCancelSwipe?.Invoke();
         }
 
         private void SampleSwipeStart()
         {
             _swipeStartPoint = Input.mousePosition;
+            _swipeTimer = swipeTouchTime;
             _offset = Vector3.zero;
         }
     }

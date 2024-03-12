@@ -1,4 +1,5 @@
-﻿using _Game._Scripts.Managers;
+﻿using System;
+using _Game._Scripts.Managers;
 using _Game.Data;
 using _Game.Managers;
 using _Game.Utilities;
@@ -32,7 +33,7 @@ namespace VinhLB
         private HButton _buyButton;
 
         private BoosterConfig _boosterConfig;
-
+        
         public override void Setup(object param = null)
         {
             base.Setup(param);
@@ -58,9 +59,7 @@ namespace VinhLB
         public override void Close()
         {
             UIManager.Ins.CloseUI<StatusBarScreen>();
-            
             GameManager.Ins.ChangeState(GameState.InGame);
-            
             base.Close();
         }
 
@@ -103,8 +102,10 @@ namespace VinhLB
                 new List<int> { _boosterConfig.TicketPerBuyRatio.itemsPerBuy});
             if(_boosterConfig.Type == BoosterType.PushHint)
             {
-                if(DataManager.Ins.HintAdsCount >= (_boosterConfig.TicketPerBuyRatio.ticketNeed - 1)) //NOTE: If enough ads for hint 
+                if (DataManager.Ins.HintAdsCount >= (_boosterConfig.TicketPerBuyRatio.ticketNeed - 1))
+                {
                     Close();
+                } //NOTE: If enough ads for hint 
             }
             else
             {

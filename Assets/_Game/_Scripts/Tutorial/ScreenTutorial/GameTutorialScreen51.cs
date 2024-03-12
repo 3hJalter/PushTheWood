@@ -3,11 +3,12 @@ using _Game.Managers;
 using _Game.UIs.Screen;
 using _Game.Utilities.Timer;
 using HControls;
+using TMPro;
 using UnityEngine;
 
 namespace _Game._Scripts.Tutorial.ScreenTutorial
 {
-    public class TutorialScreen51 : TutorialScreen
+    public class GameTutorialScreen51 : GameTutorialScreen
     {
         [SerializeField] private GameObject panelContainer;
 

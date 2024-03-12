@@ -24,6 +24,9 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private CoroutineHandle _coroutine;
     private UnityAction _waitCooldown;
+    
+    private TweenerCore<Vector3, Vector3, VectorOptions> vectorTween;
+    private TweenerCore<float, float, FloatOptions> floatTween;
     private void Awake()
     {
         _hBtn = GetComponent<HButton>();
@@ -35,6 +38,8 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private void OnDestroy()
     {
+        floatTween?.Kill();
+        vectorTween?.Kill();
         Timing.KillCoroutines(_coroutine);
         _hBtn.onClick.RemoveListener(_waitCooldown);
     }
@@ -110,14 +115,14 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 {
                     _canvasGroup.alpha = 0;
 
-                    TweenerCore<float, float, FloatOptions> tween = _canvasGroup.DOFade(1, showAnimTime)
+                    floatTween = _canvasGroup.DOFade(1, showAnimTime)
                         .SetUpdate(unscaleTime)
                         .OnComplete(() => onComplete?.Invoke());
 
                     if (UseShowAnimCurve)
-                        tween.SetEase(showAnimCurve);
+                        floatTween.SetEase(showAnimCurve);
                     else
-                        tween.SetEase(doTweenEase);
+                        floatTween.SetEase(doTweenEase);
                 }
 
                 break;
@@ -154,14 +159,14 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 }
                 else
                 {
-                    TweenerCore<Vector3, Vector3, VectorOptions> tween = Tf.DOScale(1, showAnimTime)
+                    vectorTween = Tf.DOScale(1, showAnimTime)
                         .SetUpdate(unscaleTime)
                         .OnComplete(() => onComplete?.Invoke());
 
                     if (UseShowAnimCurve)
-                        tween.SetEase(showAnimCurve);
+                        vectorTween.SetEase(showAnimCurve);
                     else
-                        tween.SetEase(doTweenEase);
+                        vectorTween.SetEase(doTweenEase);
                 }
 
                 break;
@@ -187,14 +192,14 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 {
                     _canvasGroup.alpha = 1;
 
-                    TweenerCore<float, float, FloatOptions> tween = _canvasGroup.DOFade(0, hideAnimTime)
+                    floatTween = _canvasGroup.DOFade(0, hideAnimTime)
                         .SetUpdate(unscaleTime)
                         .OnComplete(() => onComplete?.Invoke());
 
                     if (UseHideAnimCurve)
-                        tween.SetEase(hideAnimCurve);
+                        vectorTween.SetEase(hideAnimCurve);
                     else
-                        tween.SetEase(doTweenEase);
+                        vectorTween.SetEase(doTweenEase);
                 }
 
                 break;
@@ -229,14 +234,14 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 }
                 else
                 {
-                    TweenerCore<Vector3, Vector3, VectorOptions> tween = Tf.DOScale(targetScale, hideAnimTime)
+                    vectorTween = Tf.DOScale(targetScale, hideAnimTime)
                         .SetUpdate(unscaleTime)
                         .OnComplete(() => onComplete?.Invoke());
 
                     if (UseHideAnimCurve)
-                        tween.SetEase(hideAnimCurve);
+                        vectorTween.SetEase(hideAnimCurve);
                     else
-                        tween.SetEase(doTweenEase);
+                        vectorTween.SetEase(doTweenEase);
                 }
 
                 break;
@@ -256,18 +261,18 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
         switch (pressAnimType)
         {
             case PressAnimType.Scale:
-                TweenerCore<Vector3, Vector3, VectorOptions> tween = Tf.DOScale(pressedTargetScaleI, pressAnimTime)
+                vectorTween = Tf.DOScale(pressedTargetScaleI, pressAnimTime)
                     .SetUpdate(unscaleTime);
 
                 if (UsePressAnimCurve)
-                    tween.SetEase(pressAnimCurve);
+                    vectorTween.SetEase(pressAnimCurve);
                 else
-                    tween.SetEase(doTweenEase);
+                    vectorTween.SetEase(doTweenEase);
 
                 break;
         }
     }
-
+    
     private void PointerUpAnim()
     {
         if (pressAnimType == PressAnimType.None)
@@ -279,13 +284,13 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
         switch (pressAnimType)
         {
             case PressAnimType.Scale:
-                TweenerCore<Vector3, Vector3, VectorOptions> tween = Tf.DOScale(Vector3.one, releaseAnimTime)
+                vectorTween = Tf.DOScale(Vector3.one, releaseAnimTime)
                     .SetUpdate(unscaleTime);
 
                 if (UseReleaseAnimCurve)
-                    tween.SetEase(releaseAnimCurve);
+                    vectorTween.SetEase(releaseAnimCurve);
                 else
-                    tween.SetEase(doTweenEase);
+                    vectorTween.SetEase(doTweenEase);
 
                 break;
         }

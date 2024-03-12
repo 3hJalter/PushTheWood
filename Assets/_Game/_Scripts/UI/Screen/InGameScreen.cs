@@ -151,7 +151,7 @@ namespace _Game.UIs.Screen
             AudioManager.Ins.PlayBgm(BgmType.InGame, 1f);
             AudioManager.Ins.PlayEnvironment(EnvironmentType.Ocean, 1f);
             DebugManager.Ins?.OpenDebugCanvas(UI_POSITION.IN_GAME);
-            if (TutorialManager.Ins.currentTutorialScreenScreen)
+            if (TutorialManager.Ins.currentGameTutorialScreenScreen)
             {
                 Close();
                 return;
@@ -177,7 +177,7 @@ namespace _Game.UIs.Screen
 
         public override void Show()
         {
-            if (TutorialManager.Ins.currentTutorialScreenScreen) return;
+            if (TutorialManager.Ins.currentGameTutorialScreenScreen) return;
             base.Show();
         }
 
@@ -392,7 +392,6 @@ namespace _Game.UIs.Screen
         public void OnHandleTutorial()
         {
             bool isTutorial = LevelManager.Ins.IsFirstTutorialLevel;
-            int currentLevel = LevelManager.Ins.CurrentLevel.Index;
             LevelType type = LevelManager.Ins.CurrentLevel.LevelType;
             // Handle Showing time & Setting button
             timerContainer.SetActive(!isTutorial);
@@ -412,20 +411,6 @@ namespace _Game.UIs.Screen
                 pushHintButton.gameObject.SetActive(true);
                 // resetIslandButton.gameObject.SetActive(true);
             }
-            // Other handle for specific level
-            unlimitedUndoButton.gameObject.SetActive(false);
-            // unlimitedResetIslandButton.gameObject.SetActive(false);
-
-            #region Level 3 (index 2)
-            if (currentLevel == 2 && type is LevelType.Normal)
-            {
-                undoButton.gameObject.SetActive(false);
-                // resetIslandButton.gameObject.SetActive(false);
-                unlimitedUndoButton.gameObject.SetActive(true);
-                // unlimitedResetIslandButton.gameObject.SetActive(true);
-                return;
-            }
-            #endregion
         }
 
         #region Unlimited Booster
@@ -438,9 +423,6 @@ namespace _Game.UIs.Screen
         {
             GameplayManager.Ins.OnFreeResetIsland();
         }
-
-        public HButton unlimitedUndoButton;
-        public HButton unlimitedResetIslandButton;
         #endregion
     }
 }

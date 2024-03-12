@@ -68,13 +68,17 @@ namespace _Game.GameGrid.Unit.StaticUnit
             {
                 int levelIndex = LevelManager.Ins.CurrentLevel.Index;
 
-                if (levelIndex == 2)
+                if (levelIndex == 1)
                 {
-                    LevelManager.Ins.boosterRewardCount.Add(BoosterType.Undo, 2);
+                    LevelManager.Ins.boosterRewardCount.Add(BoosterType.Undo, 10);
                     // LevelManager.Ins.boosterRewardCount.Add(BoosterType.ResetIsland, 2);
-                } else if (levelIndex == 4)
+                } 
+                else if (levelIndex == 3)
                 {
                     LevelManager.Ins.boosterRewardCount.Add(BoosterType.GrowTree, 1);
+                }
+                else if (levelIndex == 4)
+                {
                     LevelManager.Ins.boosterRewardCount.Add(BoosterType.PushHint, 1);
                 } else if (levelIndex == 5)
                 {

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace _Game._Scripts.Tutorial.ScreenTutorial
 {
-    public class TutorialScreen41 : TutorialScreen
+    public class GameTutorialScreen41 : GameTutorialScreen
     {
         [SerializeField] private Image panel;
         [SerializeField] private HHoldingButton holdingButton;

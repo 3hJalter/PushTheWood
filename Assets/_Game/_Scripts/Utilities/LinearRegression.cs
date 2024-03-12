@@ -10,31 +10,30 @@ namespace _Game.Utilities
         private float slope;
         private float yIntercept;
 
-        public LinearRegression(Point[] data)
+        public void CalculateRegression(List<Vector2> data)
         {
-            CalculateRegression(data);
-        }
-
-        private void CalculateRegression(Point[] data)
-        {
-            int n = data.Length;
+            int n = data.Count;
             float sumX = 0;
             float sumY = 0;
             float sumXY = 0;
             float sumX2 = 0;
 
-            foreach (Point p in data)
+            foreach (Vector2 p in data)
             {
-                sumX += p.X;
-                sumY += p.Y;
-                sumXY += p.X * p.Y;
-                sumX2 += p.X * p.X;
+                sumX += p.x;
+                sumY += p.y;
+                sumXY += p.x * p.y;
+                sumX2 += p.x * p.x;
             }
 
             float meanX = sumX / n;
             float meanY = sumY / n;
 
-            slope = (sumXY - n * meanX * meanY) / (sumX2 - n * meanX * meanX);
+            float xMul = sumX2 - n * meanX * meanX;
+            if (xMul != 0)
+                slope = (sumXY - n * meanX * meanY) / xMul;
+            else
+                slope = 0;
             yIntercept = meanY - slope * meanX;
         }
 
