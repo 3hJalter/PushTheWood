@@ -178,19 +178,7 @@ namespace _Game.Managers
             PostEvent(EventID.OnUpdateUIs);
             Database.SaveData(_gameData);
         }
-        public void GainRewardKey(int amount)
-        {
-            _gameData.user.rewardChestKeys += amount;
-            if (_gameData.user.rewardChestKeys >= DataManager.Ins.ConfigData.requireRewardKey)
-            {
-                _gameData.user.rewardChestUnlock += _gameData.user.rewardChestKeys / DataManager.Ins.ConfigData.requireRewardKey;
-                _gameData.user.rewardChestKeys = _gameData.user.rewardChestKeys % DataManager.Ins.ConfigData.requireRewardKey;
-                //PostEvent(EventID.OnUnlockRewardChest, _gameData.user.rewardChestUnlock);
-            }
-            //PostEvent(EventID.OnRewardChestKeyChange, _gameData.user.rewardChestKeys);
-            PostEvent(EventID.OnUpdateUIs);
-            Database.SaveData(_gameData);
-        }
+        
         public void GainGold(int value, object source = null)
         {
             TryModifyGold(value, source);
@@ -199,22 +187,6 @@ namespace _Game.Managers
         public void GainAdTickets(int value, object source = null)
         {
             TryModifyAdTickets(value, source);
-        }
-
-        public void GainSecretMapPiece(int amount)
-        {
-            _gameData.user.secretMapPieces += amount;
-            if (_gameData.user.secretMapPieces >= DataManager.Ins.ConfigData.requireSecretMapPiece)
-            {
-                _gameData.user.secretLevelUnlock +=
-                    _gameData.user.secretMapPieces / DataManager.Ins.ConfigData.requireSecretMapPiece;
-                _gameData.user.secretMapPieces =
-                    _gameData.user.secretMapPieces % DataManager.Ins.ConfigData.requireSecretMapPiece;
-                //PostEvent(EventID.OnUnlockSecretMap, _gameData.user.secretLevelUnlock);
-            }
-            //PostEvent(EventID.OnSecretMapPieceChange, _gameData.user.secretMapPieces);
-            PostEvent(EventID.OnUpdateUIs);
-            Database.SaveData(_gameData);
         }
 
         public void GainRewardKeys(int amount, object source = null)
@@ -249,6 +221,21 @@ namespace _Game.Managers
             TryModifyLevelProgress(amount, source);
         }
 
+        public void GainSecretMapPiece(int amount)
+        {
+            _gameData.user.secretMapPieces += amount;
+            if (_gameData.user.secretMapPieces >= DataManager.Ins.ConfigData.requireSecretMapPiece)
+            {
+                _gameData.user.secretLevelUnlock +=
+                    _gameData.user.secretMapPieces / DataManager.Ins.ConfigData.requireSecretMapPiece;
+                _gameData.user.secretMapPieces =
+                    _gameData.user.secretMapPieces % DataManager.Ins.ConfigData.requireSecretMapPiece;
+                //PostEvent(EventID.OnUnlockSecretMap, _gameData.user.secretLevelUnlock);
+            }
+            //PostEvent(EventID.OnSecretMapPieceChange, _gameData.user.secretMapPieces);
+            PostEvent(EventID.OnUpdateUIs);
+            Database.SaveData(_gameData);
+        }
 
         public bool TrySpendGold(int amount, object source = null)
         {

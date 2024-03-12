@@ -10,7 +10,7 @@ namespace _Game._Scripts.UIs.Component
         [SerializeField] private HButton button;
         [SerializeField] private GameObject lockObj;
         [SerializeField] private GameObject unlockObj;
-        private bool _isLock;
+        private bool _isUnlocked;
         
         public void AddListener(UnityEngine.Events.UnityAction action)
         {
@@ -22,13 +22,13 @@ namespace _Game._Scripts.UIs.Component
             button.onClick.RemoveListener(action);
         }
         
-        public bool IsLock
+        public bool IsUnlocked
         {
-            get => _isLock;
+            get => _isUnlocked;
             set
             {
-                _isLock = value;
-                if (_isLock)
+                _isUnlocked = value;
+                if (_isUnlocked)
                 {
                     unlockObj.SetActive(true);
                     lockObj.SetActive(false);

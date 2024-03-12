@@ -362,7 +362,7 @@ namespace _Game.Managers
                 Reward keyReward = new()
                 {
                     RewardType = RewardType.Currency,
-                    CurrencyType = CurrencyType.Key,
+                    CurrencyType = CurrencyType.RewardKey,
                     Amount = keyAmount
                 };
                 rewards.Add(keyReward);

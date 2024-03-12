@@ -244,7 +244,7 @@ MonoBehaviour:
       Data: VinhLB.UIResourceConfig, Assembly-CSharp
     - Name: Name
       Entry: 1
-      Data: Key
+      Data: Reward Key
     - Name: IconSprite
       Entry: 10
       Data: 7
