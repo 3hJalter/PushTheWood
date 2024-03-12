@@ -70,8 +70,8 @@ namespace _Game.DesignPattern
         WinGame = 3,
         LoseGame = 4,
         ObjectInOutDangerCell = 5, //NOTE: Event in gameplay may be in other sources
-        OnGoldChange = 6,
-        OnAdTicketsChange = 7,
+        OnChangeGold = 6,
+        OnChangeAdTickets = 7,
         OnResetToMainMenu = 8,
         OnSecretMapPieceChange = 9,
         OnUnlockSecretMap = 10,
@@ -80,7 +80,10 @@ namespace _Game.DesignPattern
         OnClaimRewardChest = 13,
         OnUpdateUIs = 14,
         OnChangeGameState = 15,
-        OnShowTutorialInMenu = 16,
+        OnChangeRewardKeys = 16,
+        OnChangeLevelProgress = 17,
+        OnShowTutorialInMenu = 18,
+
         //NOTE: Ads
         OnInterAdsStepCount = 10000,
         OnCheckShowInterAds = 10001,

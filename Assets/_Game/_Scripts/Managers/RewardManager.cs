@@ -36,7 +36,7 @@ namespace _Game.Managers
         public bool IsCanClaimRC => gameData.user.currentRewardChestIndex < gameData.user.rewardChestUnlock;
         public bool IsCanClaimLC => gameData.user.currentLevelChestIndex < gameData.user.levelChestUnlock;
         
-        public void ClaimRewardChest()
+        public bool TryClaimRewardChest()
         {
             if (IsCanClaimRC)
             {
@@ -45,10 +45,13 @@ namespace _Game.Managers
                 GameManager.Ins.PostEvent(EventID.OnClaimRewardChest, gameData.user.currentRewardChestIndex - 1);
                 GameManager.Ins.PostEvent(EventID.OnUpdateUIs);
 
+                return true;
             }
+            
+            return false;
         }
 
-        public void ClaimLevelChest()
+        public bool TryClaimLevelChest()
         {
             if (IsCanClaimLC)
             {
@@ -56,7 +59,11 @@ namespace _Game.Managers
                 UIManager.Ins.OpenUI<RewardPopup>(GetLCReward());
                 GameManager.Ins.PostEvent(EventID.OnClaimLevelChest, gameData.user.currentLevelChestIndex - 1);
                 GameManager.Ins.PostEvent(EventID.OnUpdateUIs);
+                
+                return true;
             }
+            
+            return false;
         }
 
         private Reward[] GetRCReward()

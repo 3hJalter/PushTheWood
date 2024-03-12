@@ -109,7 +109,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  poolType: 500
+  poolType: 404
   _rectTF: {fileID: 629073014984530617}
   _icon: {fileID: 5819347377706336863}
   _text: {fileID: 559893011140333915}

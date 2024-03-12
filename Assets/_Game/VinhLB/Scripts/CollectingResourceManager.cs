@@ -3,19 +3,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using _Game.DesignPattern;
 using _Game.Managers;
-using _Game.UIs.Screen;
 using _Game.Utilities;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace VinhLB
 {
     public class CollectingResourceManager : Singleton<CollectingResourceManager>
     {
-        [System.Serializable]
+        [Serializable]
         private class CollectingResourceConfig
         {
             public PoolType PrefabPoolType;
@@ -27,19 +25,17 @@ namespace VinhLB
             public float ReactDuration;
 
             [HideInInspector]
-            public Transform CollectingResourceParentTF;
+            public RectTransform CollectingResourceParentRectTF;
             public Tween ReactionTween;
         }
 
         private const float HEIGHT_OFFSET = 60;
         private const float HEIGHT_INCREASE = 50;
 
-        [FormerlySerializedAs("_collectingCoinConfig")]
         [Title("UI Gold")]
         [SerializeField]
         private CollectingResourceConfig _collectingUICoinConfig;
 
-        [FormerlySerializedAs("_collectingAdTicketConfig")]
         [Title("UI Ad Tickets")]
         [SerializeField]
         private CollectingResourceConfig _collectingUIAdTicketConfig;
@@ -47,8 +43,11 @@ namespace VinhLB
         [Title("UI Reward Keys")]
         [SerializeField]
         private CollectingResourceConfig _collectingUIRewardKeyConfig;
+        
+        [Title("UI Level Stars")]
+        [SerializeField]
+        private CollectingResourceConfig _collectingUILevelStarConfig;
 
-        [FormerlySerializedAs("_collectingRewardKeyConfig")]
         [Title("In-game Reward Keys")]
         [SerializeField]
         private CollectingResourceConfig _collectingInGameRewardKeyConfig;
@@ -56,66 +55,82 @@ namespace VinhLB
         private OverlayScreen _overlayScreen;
 
         public void SpawnCollectingUICoins(int amount, Vector3 startPosition, Transform endPoint,
-            Action<float> onEachReachEnd = null)
+            Action<float> eachReachedEnd = null, Action allReachedEnd = null)
         {
             UpdateComponents();
 
-            if (_collectingUICoinConfig.CollectingResourceParentTF == null)
+            if (_collectingUICoinConfig.CollectingResourceParentRectTF == null)
             {
-                _collectingUICoinConfig.CollectingResourceParentTF = _overlayScreen.UICoinParentRectTF;
+                _collectingUICoinConfig.CollectingResourceParentRectTF = _overlayScreen.UICoinParentRectTF;
             }
 
-            SpawnCollectingUIResource(_collectingUICoinConfig, amount, startPosition, endPoint, onEachReachEnd);
+            SpawnCollectingUIResource(_collectingUICoinConfig, amount, startPosition, endPoint, 
+                eachReachedEnd, allReachedEnd);
         }
 
         public void SpawnCollectingUIAdTickets(int amount, Vector3 startPosition, Transform endPoint,
-            Action<float> onEachReachEnd = null)
+            Action<float> eachReachedEnd = null, Action allReachedEnd = null)
         {
             UpdateComponents();
 
-            if (_collectingUIAdTicketConfig.CollectingResourceParentTF == null)
+            if (_collectingUIAdTicketConfig.CollectingResourceParentRectTF == null)
             {
-                _collectingUIAdTicketConfig.CollectingResourceParentTF = _overlayScreen.UIAdTicketParentRectTF;
+                _collectingUIAdTicketConfig.CollectingResourceParentRectTF = _overlayScreen.UIAdTicketParentRectTF;
             }
 
-            SpawnCollectingUIResource(_collectingUIAdTicketConfig, amount, startPosition, endPoint, onEachReachEnd);
+            SpawnCollectingUIResource(_collectingUIAdTicketConfig, amount, startPosition, endPoint, 
+                eachReachedEnd, allReachedEnd);
+        }
+        
+        public void SpawnCollectingUIRewardKeys(int amount, Vector3 startPosition, Transform endPoint,
+            Action<float> eachReachedEnd = null, Action allReachedEnd = null)
+        {
+            UpdateComponents();
+
+            if (_collectingUIRewardKeyConfig.CollectingResourceParentRectTF == null)
+            {
+                _collectingUIRewardKeyConfig.CollectingResourceParentRectTF = _overlayScreen.UIAdTicketParentRectTF;
+            }
+
+            SpawnCollectingUIResource(_collectingUIRewardKeyConfig, amount, startPosition, endPoint, 
+                eachReachedEnd, allReachedEnd);
         }
 
-        public void SpawnCollectingLevelProgress(int amount, Vector3 startPosition, Transform endPoint,
-            Action<float> onEachReachEnd = null)
+        public void SpawnCollectingLevelStars(int amount, Vector3 startPosition, Transform endPoint,
+            Action<float> eachReachedEnd = null, Action allReachedEnd = null)
         {
             UpdateComponents();
 
-            if (_collectingUIAdTicketConfig.CollectingResourceParentTF == null)
+            if (_collectingUILevelStarConfig.CollectingResourceParentRectTF == null)
             {
-                _collectingUIAdTicketConfig.CollectingResourceParentTF = _overlayScreen.UIAdTicketParentRectTF;
+                _collectingUILevelStarConfig.CollectingResourceParentRectTF = _overlayScreen.UILevelStarParentRectTF;
             }
 
-            SpawnCollectingUIResource(_collectingUIAdTicketConfig, amount, startPosition, endPoint, onEachReachEnd);
+            SpawnCollectingUIResource(_collectingUILevelStarConfig, amount, startPosition, endPoint, 
+                eachReachedEnd, allReachedEnd);
         }
 
         public void SpawnCollectingRewardKey(int amount, Transform objectTransform)
         {
             UpdateComponents();
 
-            UIRewardKey unit =
-                SimplePool.Spawn<UIRewardKey>(
+            FloatingRewardKey unit =
+                SimplePool.Spawn<FloatingRewardKey>(
                     DataManager.Ins.GetUIUnit(_collectingInGameRewardKeyConfig.PrefabPoolType));
             Vector2 viewPortPoint =
                 CameraManager.Ins.WorldToViewportPoint(objectTransform.position) - Vector3.one * 0.5f;
             unit.Text.text = $"+{amount}";
             unit.CanvasGroup.alpha = 0;
 
-            if (_collectingInGameRewardKeyConfig.CollectingResourceParentTF == null)
+            if (_collectingInGameRewardKeyConfig.CollectingResourceParentRectTF == null)
             {
-                _collectingInGameRewardKeyConfig.CollectingResourceParentTF = _overlayScreen.UIRewardKeyRectTF;
+                _collectingInGameRewardKeyConfig.CollectingResourceParentRectTF = _overlayScreen.FloatingRewardKeyParentRectTF;
             }
-            if (unit.Tf.parent != _collectingInGameRewardKeyConfig.CollectingResourceParentTF)
+            if (unit.Tf.parent != _collectingInGameRewardKeyConfig.CollectingResourceParentRectTF)
             {
-                unit.Tf.SetParent(_collectingInGameRewardKeyConfig.CollectingResourceParentTF, false);
+                unit.Tf.SetParent(_collectingInGameRewardKeyConfig.CollectingResourceParentRectTF, false);
             }
-            RectTransform parentRectTransform =
-                _collectingInGameRewardKeyConfig.CollectingResourceParentTF as RectTransform;
+            RectTransform parentRectTransform = _collectingInGameRewardKeyConfig.CollectingResourceParentRectTF;
 
             Sequence s = DOTween.Sequence();
             s.Append(unit.CanvasGroup.DOFade(1, _collectingInGameRewardKeyConfig.MoveDuration))
@@ -160,7 +175,7 @@ namespace VinhLB
         }
 
         private async void SpawnCollectingUIResource(CollectingResourceConfig config, int amount,
-            Vector3 startPosition, Transform endPoint, Action<float> onEachReachEnd)
+            Vector3 startPosition, Transform endPoint, Action<float> eachReachedEnd, Action allReachedEnd)
         {
             if (amount <= 0)
             {
@@ -179,9 +194,9 @@ namespace VinhLB
             for (int i = 0; i < amount; i++)
             {
                 UIUnit unit = SimplePool.Spawn<UIUnit>(DataManager.Ins.GetUIUnit(config.PrefabPoolType));
-                if (unit.transform.parent != config.CollectingResourceParentTF)
+                if (unit.transform.parent != config.CollectingResourceParentRectTF)
                 {
-                    unit.Tf.SetParent(config.CollectingResourceParentTF, false);
+                    unit.Tf.SetParent(config.CollectingResourceParentRectTF, false);
                 }
 
                 unit.Tf.position = startPosition;
@@ -215,11 +230,13 @@ namespace VinhLB
                             .SetEase(Ease.InOutElastic).OnComplete(() => { config.ReactionTween = null; });
                     }
 
-                    onEachReachEnd?.Invoke(progress);
+                    eachReachedEnd?.Invoke(progress);
                 });
 
                 await Task.Delay(50);
             }
+            
+            allReachedEnd?.Invoke();
         }
     }
 
