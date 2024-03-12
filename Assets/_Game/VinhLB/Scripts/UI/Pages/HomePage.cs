@@ -392,20 +392,23 @@ namespace VinhLB
 
         private void OpenMask()
         {
-            UIManager.Ins.OpenUI<MaskScreen>(new MaskData()
+            RectTransform rectTransform = _dailyRewardButton.GetComponent<RectTransform>();
+            MaskData maskData = new MaskData()
             {
-                Position = dailyChallengeButton.transform.position,
-                Size = dailyChallengeButton.GetComponent<RectTransform>().sizeDelta + Vector2.one * 20f,
+                Position = rectTransform.position,
+                Size = rectTransform.sizeDelta + Vector2.one * 100f,
                 MaskType = MaskType.Rectangle,
-                ClickableItem = dailyChallengeButton
-            });
+                ClickableItem = _dailyRewardButton,
+                OnClickedCallback = () => UIManager.Ins.CloseUI<MaskScreen>(),
+                ItemRectTF = rectTransform
+            };
+            UIManager.Ins.OpenUI<MaskScreen>(maskData);
         }
 
         private void SetupFeature()
         {
             // Get normal level index
             int normalLevelIndex = LevelManager.Ins.NormalLevelIndex;
-            Debug.Log(normalLevelIndex);
             dailyChallengeButton.IsUnlocked =
                 normalLevelIndex >= DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex;
             secretMapButton.IsUnlocked = normalLevelIndex >= DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex;

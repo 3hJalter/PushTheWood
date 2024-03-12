@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Coffee.UIExtensions;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -11,9 +12,11 @@ namespace VinhLB
         [SerializeField]
         private UIMask _uiMaskPrefab;
         [SerializeField]
-        private Transform _maskParentTF;
+        private RectTransform _unmaskedPanelRectTF;
         [SerializeField]
-        private Transform _simpleMaskableTF;
+        private RectTransform _uiMaskParentRectTF;
+        [SerializeField]
+        private RectTransform _simpleMaskableRectTF;
         [SerializeField]
         private MaskDatabase _maskDatabase;
 
@@ -43,24 +46,24 @@ namespace VinhLB
         {
             if (param == null)
             {
-                _maskParentTF.gameObject.SetActive(false);
-                _simpleMaskableTF.gameObject.SetActive(true);
+                _unmaskedPanelRectTF.gameObject.SetActive(false);
+                _simpleMaskableRectTF.gameObject.SetActive(true);
                 
                 return;
             }
             
-            _simpleMaskableTF.gameObject.SetActive(false);
-            _maskParentTF.gameObject.SetActive(true);
+            _simpleMaskableRectTF.gameObject.SetActive(false);
+            _unmaskedPanelRectTF.gameObject.SetActive(true);
             
             if (param is MaskData)
             {
-                MaskData data = param as MaskData;
+                MaskData data = (MaskData)param;
                 
                 InitializeUIMask(data);
             }
             else if (param is MaskData[])
             {
-                MaskData[] data = param as MaskData[];
+                MaskData[] data = (MaskData[])param;
 
                 for (int i = 0; i < data.Length; i++)
                 {
@@ -72,27 +75,33 @@ namespace VinhLB
         private void InitializeUIMask(MaskData data)
         {
             UIMask mask;
+            UnmaskRaycastFilter unmaskRaycastFilter;
             if (_availableUIMaskList.Count > 0)
             {
                 mask = _availableUIMaskList.Pop();
                 mask.Open();
+                unmaskRaycastFilter = mask.UnmaskRaycastFilter;
             }
             else
             {
-                mask = Instantiate(_uiMaskPrefab, _maskParentTF);
+                mask = Instantiate(_uiMaskPrefab, _uiMaskParentRectTF);
                 _createdUIMaskList.Add(mask);
+                unmaskRaycastFilter = _unmaskedPanelRectTF.gameObject.AddComponent<UnmaskRaycastFilter>();
             }
             
-            mask.Initialize(data.Position, data.Size, _maskDatabase.MaskSpriteDict[data.MaskType], data.ClickableItem, Close);
+            mask.Initialize(data.Position, data.Size, _maskDatabase.MaskSpriteDict[data.MaskType], 
+                data.ClickableItem, data.OnClickedCallback, data.ItemRectTF, unmaskRaycastFilter);
         }
     }
 
-    public class MaskData
+    public struct MaskData
     {
         public Vector3 Position;
         public Vector2 Size;
         public MaskType MaskType;
         public IClickable ClickableItem;
+        public System.Action OnClickedCallback;
+        public RectTransform ItemRectTF;
     }
 
     public enum MaskType
