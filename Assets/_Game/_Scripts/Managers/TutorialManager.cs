@@ -8,6 +8,7 @@ using _Game.GameGrid.Unit;
 using _Game.Managers;
 using _Game.Utilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Game._Scripts.Managers
 {
@@ -27,12 +28,14 @@ namespace _Game._Scripts.Managers
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         [SerializeField] private readonly Dictionary<int, ITutorialCondition> tutorialList = new();
         
+        [SerializeField] private readonly Dictionary<int, UICanvas> menuTutorialList = new();
+        
         public Dictionary<TutorialObj, BaseObjectTutorial> TutorialObjList => tutorialObjList;
         public Dictionary<int, ITutorialCondition> TutorialList => tutorialList;
 
         // TEMPORARY: cutscene
         [SerializeField] private FirstCutsceneHandler firstCutscenePf;
-        public TutorialScreen currentTutorialScreenScreen;
+        [FormerlySerializedAs("currentTutorialScreenScreen")] public GameTutorialScreen currentGameTutorialScreenScreen;
         
         private void Awake()
         {
@@ -163,20 +166,23 @@ namespace _Game._Scripts.Managers
             if (DataManager.Ins.GameData.user.completedMenuTutorial.Contains(index)) return;
             if (DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex == index)
             {
-                DataManager.Ins.GameData.user.completedMenuTutorial.Add(index);
-                // TODO: show tutorial UI, and change to only add index if tutorial is completed
-                DevLog.Log(DevId.Hoang, "Show Daily Challenge Tutorial");
-            } else if (DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex == index)
-            {
-                DataManager.Ins.GameData.user.completedMenuTutorial.Add(index);
-                // TODO: show tutorial UI, and change to only add index if tutorial is completed
-                DevLog.Log(DevId.Hoang, "Show Secret Level Tutorial");
-            } else if (DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex == index)
-            {
-                DataManager.Ins.GameData.user.completedMenuTutorial.Add(index);
-                // TODO: show tutorial UI, and change to only add index if tutorial is completed
-                DevLog.Log(DevId.Hoang, "Show Bonus Chest Tutorial");
+                if (menuTutorialList.TryGetValue(index, out UICanvas tutorialScreen))
+                {
+                    UIManager.Ins.OpenUIDirectly(tutorialScreen);
+                    DevLog.Log(DevId.Hoang, "Show Daily Challenge Tutorial");
+                }
             }
+            // else if (DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex == index)
+            // {
+            //     DataManager.Ins.GameData.user.completedMenuTutorial.Add(index);
+            //     // TODO: show tutorial UI, and change to only add index if tutorial is completed
+            //     DevLog.Log(DevId.Hoang, "Show Secret Level Tutorial");
+            // } else if (DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex == index)
+            // {
+            //     DataManager.Ins.GameData.user.completedMenuTutorial.Add(index);
+            //     // TODO: show tutorial UI, and change to only add index if tutorial is completed
+            //     DevLog.Log(DevId.Hoang, "Show Bonus Chest Tutorial");
+            // }
         }
     }
 }

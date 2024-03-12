@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace _Game._Scripts.Tutorial
 {
-    public class TutorialScreen : UICanvas
+    public abstract class GameTutorialScreen : UICanvas
     {
         private void Awake()
         {
@@ -36,13 +36,13 @@ namespace _Game._Scripts.Tutorial
                 UIManager.Ins.CloseUI<InGameScreen>();
                 // Stop timer
             }
-            TutorialManager.Ins.currentTutorialScreenScreen = this;
+            TutorialManager.Ins.currentGameTutorialScreenScreen = this;
         }
 
         public override void CloseDirectly(object param = null)
         {
             // Show InGameScreen
-            TutorialManager.Ins.currentTutorialScreenScreen = null;
+            TutorialManager.Ins.currentGameTutorialScreenScreen = null;
             if (!UIManager.Ins.IsOpened<InGameScreen>()) UIManager.Ins.OpenUI<InGameScreen>(param);
             if (GameManager.Ins.IsState(GameState.InGame)) GameplayManager.Ins.OnUnPause();
             // Close and destroy this screen
@@ -51,7 +51,7 @@ namespace _Game._Scripts.Tutorial
 
         public override void Close()
         {
-            TutorialManager.Ins.currentTutorialScreenScreen = null;
+            TutorialManager.Ins.currentGameTutorialScreenScreen = null;
             base.Close();
         }
     }

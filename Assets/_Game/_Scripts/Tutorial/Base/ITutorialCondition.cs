@@ -39,7 +39,7 @@ namespace _Game._Scripts.Tutorial
     public abstract class BaseTutorialData : SerializedScriptableObject
     {
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
-        [SerializeField] protected List<TutorialScreen> tutorialScreens = new();
+        [SerializeField] protected List<GameTutorialScreen> tutorialScreens = new();
         protected int currentTutIndex;
 
         [ReadOnly]

@@ -71,7 +71,6 @@ public class Indicator : MonoBehaviour
     /// <param name="value"></param>
     public void Activate(bool value)
     {
-        if (transform == null) return;
         transform.gameObject.SetActive(value);
     }
 }

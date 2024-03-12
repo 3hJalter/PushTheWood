@@ -1,9 +1,10 @@
 ﻿using _Game.Managers;
+using TMPro;
 using UnityEngine;
 
 namespace _Game._Scripts.Tutorial.ScreenTutorial
 {
-    public class TutorialScreen31 : TutorialScreen
+    public class GameTutorialScreen31 : GameTutorialScreen
     {
         [SerializeField] private HButton undoButton;
         [SerializeField] private HButton resetButton;
