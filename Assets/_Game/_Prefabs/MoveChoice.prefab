@@ -600,7 +600,7 @@ MonoBehaviour:
       m_Calls: []
   isOverlappingUI: 0
   sensitivity: 120
-  quickSensitive: 30
+  quickSensitive: 50
   swipeTouchTime: 0.1
   quickSwipeTouchTime: 0.035
   continuousDetection: 0

@@ -98,3 +98,12 @@ MonoBehaviour:
     ReactPunchScale: {x: 0, y: 0, z: 0}
     ReactDuration: 0
     CollectingResourceParentRectTF: {fileID: 0}
+  _collectingInGameCompassConfig:
+    PrefabPoolType: 405
+    MinSpreadPosition: {x: 0, y: 0, z: 0}
+    MaxSpreadPosition: {x: 0, y: 0, z: 0}
+    SpreadDuration: 0
+    MoveDuration: 0.6
+    ReactPunchScale: {x: 0, y: 0, z: 0}
+    ReactDuration: 0
+    CollectingResourceParentRectTF: {fileID: 0}

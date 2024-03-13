@@ -52,6 +52,10 @@ namespace VinhLB
         [SerializeField]
         private CollectingResourceConfig _collectingInGameRewardKeyConfig;
 
+        [Title("In-game Compass")]
+        [SerializeField]
+        private CollectingResourceConfig _collectingInGameCompassConfig;
+
         private OverlayScreen _overlayScreen;
 
         public void SpawnCollectingUICoins(int amount, Vector3 startPosition, Transform endPoint,
@@ -117,6 +121,55 @@ namespace VinhLB
             FloatingRewardKey unit =
                 SimplePool.Spawn<FloatingRewardKey>(
                     DataManager.Ins.GetUIUnit(_collectingInGameRewardKeyConfig.PrefabPoolType));
+            Vector2 viewPortPoint =
+                CameraManager.Ins.WorldToViewportPoint(objectTransform.position) - Vector3.one * 0.5f;
+            unit.Text.text = $"+{amount}";
+            unit.CanvasGroup.alpha = 0;
+
+            if (_collectingInGameRewardKeyConfig.CollectingResourceParentRectTF == null)
+            {
+                _collectingInGameRewardKeyConfig.CollectingResourceParentRectTF = _overlayScreen.FloatingRewardKeyParentRectTF;
+            }
+            if (unit.Tf.parent != _collectingInGameRewardKeyConfig.CollectingResourceParentRectTF)
+            {
+                unit.Tf.SetParent(_collectingInGameRewardKeyConfig.CollectingResourceParentRectTF, false);
+            }
+            RectTransform parentRectTransform = _collectingInGameRewardKeyConfig.CollectingResourceParentRectTF;
+
+            Sequence s = DOTween.Sequence();
+            s.Append(unit.CanvasGroup.DOFade(1, _collectingInGameRewardKeyConfig.MoveDuration))
+                .Join(DOVirtual.Float(0, HEIGHT_INCREASE, _collectingInGameRewardKeyConfig.MoveDuration, y =>
+                {
+                    Vector2 viewPortPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) -
+                                            Vector3.one * 0.5f;
+                    unit.RectTf.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewPortPoint.x,
+                        parentRectTransform.rect.height * viewPortPoint.y + 60 + y);
+                }).SetEase(Ease.OutQuart))
+                .Append(
+                    unit.CanvasGroup.DOFade(0, _collectingInGameRewardKeyConfig.MoveDuration * 1.5f)
+                        .SetEase(Ease.InQuint))
+                .Join(DOVirtual.Float(0, HEIGHT_INCREASE, _collectingInGameRewardKeyConfig.MoveDuration * 1.5f, y =>
+                {
+                    Vector2 viewPortPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) -
+                                            Vector3.one * 0.5f;
+                    unit.RectTf.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewPortPoint.x,
+                        parentRectTransform.rect.height * viewPortPoint.y + HEIGHT_OFFSET + HEIGHT_INCREASE);
+                }).SetEase(Ease.OutQuart))
+                .OnComplete(() => OnDespawnUnit(unit));
+            s.Play();
+
+            void OnDespawnUnit(UIUnit uiUnit)
+            {
+                uiUnit.Despawn();
+            }
+        }
+        public void SpawnCollectingCompass(int amount, Transform objectTransform)
+        {
+            UpdateComponents();
+
+            FloatingCompass unit =
+                SimplePool.Spawn<FloatingCompass>(
+                    DataManager.Ins.GetUIUnit(_collectingInGameCompassConfig.PrefabPoolType));
             Vector2 viewPortPoint =
                 CameraManager.Ins.WorldToViewportPoint(objectTransform.position) - Vector3.one * 0.5f;
             unit.Text.text = $"+{amount}";

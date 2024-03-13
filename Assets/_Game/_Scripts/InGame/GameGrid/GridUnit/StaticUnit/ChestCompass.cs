@@ -58,7 +58,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             // TODO: Change to collect compass
             if (LevelManager.Ins.CollectedChests.Add(this))
             {
-                CollectingResourceManager.Ins.SpawnCollectingRewardKey(1, LevelManager.Ins.player.transform);
+                CollectingResourceManager.Ins.SpawnCollectingCompass(1, LevelManager.Ins.player.transform);
                 LevelManager.Ins.SecretMapPieceCount += 1;
                 LevelManager.Ins.goldCount += 40;
                 DevLog.Log(DevId.Hoang, "Loot something");

@@ -414,6 +414,7 @@ namespace _Game.DesignPattern
         UIRewardKey = 402,
         UILevelStar = 403,
         FloatingRewardKey = 404,
+        FloatingCompass = 405,
         
         // World UI
         FloatingWorldUI = 500,
