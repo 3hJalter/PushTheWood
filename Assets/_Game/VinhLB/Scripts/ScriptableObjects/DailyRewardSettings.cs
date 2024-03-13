@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using _Game.Managers;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -27,6 +26,8 @@ namespace VinhLB
         public BoosterType BoosterType;
         [ShowIf(nameof(RewardType), RewardType.Currency)]
         public CurrencyType CurrencyType;
+        [ShowIf(nameof(RewardType), RewardType.Character)]
+        public CharacterType CharacterType;
         public int Amount;
 
         private UIResourceConfig _uiResourceConfig;
@@ -44,6 +45,9 @@ namespace VinhLB
                             break;
                         case RewardType.Currency:
                             _uiResourceConfig = DataManager.Ins.GetCurrencyUIResourceConfig(CurrencyType);
+                            break;
+                        case RewardType.Character:
+                            _uiResourceConfig = DataManager.Ins.GetCharacterUIResourceConfig(CharacterType);
                             break;
                     }
                 }
@@ -81,6 +85,10 @@ namespace VinhLB
                     default:
                         break;
                 }
+            }
+            else if (RewardType == RewardType.Character)
+            {
+                //TODO: Implement logic to obtain character by type
             }
             
             return;
