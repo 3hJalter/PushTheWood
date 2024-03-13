@@ -22,16 +22,18 @@ namespace _Game.Utilities
             {
                 sumX += p.x;
                 sumY += p.y;
-                sumXY += p.x * p.y;
-                sumX2 += p.x * p.x;
             }
-
+          
             float meanX = sumX / n;
             float meanY = sumY / n;
 
-            float xMul = sumX2 - n * meanX * meanX;
-            if (xMul != 0)
-                slope = (sumXY - n * meanX * meanY) / xMul;
+            foreach (Vector2 p in data)
+            {
+                sumXY += (p.x - meanX) * (p.y - meanX);
+                sumX2 += Mathf.Pow(p.x - meanX, 2);
+            }
+            if (sumX2 != 0)
+                slope = sumXY / sumX2;
             else
                 slope = 0;
             yIntercept = meanY - slope * meanX;
