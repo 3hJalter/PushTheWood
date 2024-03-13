@@ -24,6 +24,13 @@ namespace VinhLB
         private GameObject _selectedGO;
         [SerializeField]
         private GameObject _choosenGO;
+        [SerializeField]
+        private GameObject _lockedFrameGO;
+        [SerializeField]
+        private GameObject _lockedIconGO;
+        [SerializeField]
+        private GameObject _unlockedFrameGO;
+        
         
         private int _id;
         private int _data;
