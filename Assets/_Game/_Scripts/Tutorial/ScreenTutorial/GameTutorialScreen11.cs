@@ -25,11 +25,11 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
             // Add Close this screen when swipe
             _swipeEvent = _ =>
             {
-                FXManager.Ins.TrailHint.OnPlay(new List<Vector3>()
-                {
-                    new(7,3,7),
-                    new(7,3,13),
-                }, 8f, true);
+                // FXManager.Ins.TrailHint.OnPlay(new List<Vector3>()
+                // {
+                //     new(7,3,7),
+                //     new(7,3,13),
+                // }, 8f, true);
                 AfterSwipe();
             };
             MoveInputManager.Ins.HSwipe.AddListener(_swipeEvent);
