@@ -90,7 +90,7 @@ namespace VinhLB
             }
             
             mask.Initialize(data.Position, data.Size, _maskDatabase.MaskSpriteDict[data.MaskType], 
-                data.ClickableItem, data.OnClickedCallback, data.ItemRectTF, unmaskRaycastFilter);
+                data.ClickableItem, data.OnClickedCallback, data.TargetRectTF, unmaskRaycastFilter);
         }
     }
 
@@ -101,13 +101,13 @@ namespace VinhLB
         public MaskType MaskType;
         public IClickable ClickableItem;
         public System.Action OnClickedCallback;
-        public RectTransform ItemRectTF;
+        public RectTransform TargetRectTF;
     }
 
     public enum MaskType
     {
         None = -1,
-        Rectangle = 0,
+        RoundedCornerRectangle = 0,
         Eclipse = 1
     }
 }

@@ -21,8 +21,7 @@ namespace VinhLB
         public UnmaskRaycastFilter UnmaskRaycastFilter => _unmaskRaycastFilter;
 
         public void Initialize(Vector3 position, Vector2 size, Sprite sprite, IClickable clickableItem,
-            Action onClickedCallback,
-            RectTransform targetRectTF, UnmaskRaycastFilter unmaskRaycastFilter)
+            Action onClickedCallback, RectTransform targetRectTF, UnmaskRaycastFilter unmaskRaycastFilter)
         {
             _rectTransform.position = position;
             _rectTransform.sizeDelta = size;
@@ -35,7 +34,10 @@ namespace VinhLB
                 _clickableItem.OnClickedCallback += _onClickedCallback;
             }
 
-            _unmask.fitTarget = targetRectTF;
+            if (targetRectTF != null)
+            {
+                _unmask.fitTarget = targetRectTF;
+            }
 
             if (unmaskRaycastFilter != null && unmaskRaycastFilter != _unmaskRaycastFilter)
             {
