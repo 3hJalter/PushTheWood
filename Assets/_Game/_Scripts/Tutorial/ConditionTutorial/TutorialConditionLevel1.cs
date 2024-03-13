@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using _Game._Scripts.Managers;
-using _Game._Scripts.Tutorial.ObjectTutorial;
 using _Game.GameGrid;
 using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
@@ -36,7 +34,7 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
                         MoveInputManager.Ins.OnForceResetMove();
                         currentScreen = UIManager.Ins.OpenUIDirectly(tutorialScreens[currentTutIndex]);
                         currentTutIndex++;
-                        FXManager.Ins.TrailHint.OnCancel();
+                        // FXManager.Ins.TrailHint.OnCancel();
                     }
                     break;
                 }
