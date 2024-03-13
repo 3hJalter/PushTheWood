@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using _Game._Scripts.Utilities;
 using _Game.Utilities;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -22,7 +23,10 @@ namespace GG.Infrastructure.Utils.Swipe
         
         
         [SerializeField] private float sensitivity = 100;
-        [SerializeField] private float swipeTouchTime = 0.1f;
+        [SerializeField] private float quickSensitive = 50;
+        
+        [SerializeField] private float swipeTouchTime = 0.12f;
+        [SerializeField] private float quickSwipeTouchTime = 0.0035f;
 
         [SerializeField] private bool continuousDetection;
 
@@ -31,6 +35,7 @@ namespace GG.Infrastructure.Utils.Swipe
         private VectorToDirection _directions;
 
         private float _minMoveDistance = 0.1f;
+        private float _quickMinMoveDistance = 0.1f;
 
         private Vector3 _offset;
 
@@ -43,11 +48,22 @@ namespace GG.Infrastructure.Utils.Swipe
         private float _swipeTimer;
 
         private bool _isHolding;
-        private List<Vector2> samplePoints;
+        [ReadOnly] [SerializeField] private List<Vector2> samplePoints;
+        [ReadOnly] [SerializeField] private List<Vector2> quickSamplePoints;
         public bool ContinuousDetection
         {
             get => continuousDetection;
             set => continuousDetection = value;
+        }
+
+        public float QuickSensitive
+        {
+            get => quickSensitive;
+            set
+            {
+                quickSensitive = value;
+                UpdateQuickSensitivity();
+            }
         }
 
         public float Sensitivity
@@ -71,6 +87,7 @@ namespace GG.Infrastructure.Utils.Swipe
             samplePoints = new List<Vector2>();
             _swipeTimer = swipeTouchTime;
             UpdateSensitivity();
+            UpdateQuickSensitivity();
 
             if (SwipeDetectionMode != SwipeDetectionMode.Custom)
                 SetDetectionMode(DirectionPresets.GetPresetByMode(SwipeDetectionMode));
@@ -100,7 +117,10 @@ namespace GG.Infrastructure.Utils.Swipe
             }
             // Check if Swipe is continuous detection
             if (!continuousDetection) CheckSwipeCancellation();
-            if (_countingSwipeTime) swipeTouchTime -= Time.deltaTime;
+            if (_countingSwipeTime)
+            {
+                if (_swipeTimer <= Constants.HOLD_TOUCH_TIME) _swipeTimer += Time.deltaTime;
+            }
         }
 
         public void SetDetectionMode(List<DirectionId> directions)
@@ -112,6 +132,12 @@ namespace GG.Infrastructure.Utils.Swipe
         {
             int screenShortSide = Screen.width < Screen.height ? Screen.width : Screen.height;
             _minMoveDistance = screenShortSide / sensitivity;
+        }
+        
+        private void UpdateQuickSensitivity()
+        {
+            int screenShortSide = Screen.width < Screen.height ? Screen.width : Screen.height;
+            _quickMinMoveDistance = screenShortSide / quickSensitive;
         }
 
         private void CheckSwipeCancellation()
@@ -128,30 +154,66 @@ namespace GG.Infrastructure.Utils.Swipe
             _waitForSwipe = true;
         }
 
+        private bool isPredicted = false;
+        
         private void CheckSwipe()
         {
-            _offset = Input.mousePosition - _swipeStartPoint;
+            if (isPredicted) return;
 
+            _offset = Input.mousePosition - _swipeStartPoint;
+            
+            if (_swipeTimer < quickSwipeTouchTime)
+            {
+                // TODO
+                if (quickSamplePoints.Count < 1)
+                {
+                    quickSamplePoints.Add(Vector2.zero);
+                    _countingSwipeTime = true;
+                }
+                
+                Vector2 quickDistance = _offset - (Vector3)quickSamplePoints[^1];
+                if (quickDistance.magnitude >= _quickMinMoveDistance)
+                {
+                    quickSamplePoints.Add(_offset);
+                    if (samplePoints.Count >= 2 && !isPredicted)
+                    {
+                        isPredicted = true;
+                        float y = HUtilities.PredictYFromLinearRegression(samplePoints, _offset.x);
+                        _offset.Set(_offset.x, y, 0);
+                        DevLog.Log(DevId.Hoang, $"DIRECTION: {_offset}");
+                        onSwipe?.Invoke(_directions.GetSwipeId(_offset));
+                        if (!continuousDetection) _waitForSwipe = false;
+                        // SampleSwipeStart();
+                        _isHolding = false;
+                        _countingSwipeTime = false;
+                        return;
+                    }
+                }
+                
+            }
+            
             if (samplePoints.Count < 1)
             {
                 samplePoints.Add(Vector2.zero);
                 _countingSwipeTime = true;
             }
+            
             //NOTE: Calculate distance from old sample point to new sample point.
-            Vector2 distance = _offset - (Vector3)samplePoints[samplePoints.Count - 1];
+            Vector2 distance = _offset - (Vector3)samplePoints[^1];
+            
+            
             if (distance.magnitude >= _minMoveDistance)
             {
                 samplePoints.Add(_offset);
-                if (samplePoints.Count > 5 || _swipeTimer < 0)
+                if ((samplePoints.Count >= 4 || _swipeTimer > swipeTouchTime) && !isPredicted)
                 {
+                    isPredicted = true;
                     float y = HUtilities.PredictYFromLinearRegression(samplePoints, _offset.x);
                     _offset.Set(_offset.x, y, 0);
                     DevLog.Log(DevId.Hung, $"DIRECTION: {_offset}");
                     onSwipe?.Invoke(_directions.GetSwipeId(_offset));
-                    samplePoints.Clear();
-
                     if (!continuousDetection) _waitForSwipe = false;
-                    SampleSwipeStart();
+                    // SampleSwipeStart();
                     _isHolding = false;
                     _countingSwipeTime = false;
                 }                
@@ -163,7 +225,7 @@ namespace GG.Infrastructure.Utils.Swipe
                 _holdTimer = Constants.HOLD_TOUCH_TIME;
                 onSwipe?.Invoke(Constants.NONE);
                 if (!continuousDetection) _waitForSwipe = false;
-                SampleSwipeStart();
+                // SampleSwipeStart();
                 _isHolding = true;
             }
         }
@@ -177,8 +239,11 @@ namespace GG.Infrastructure.Utils.Swipe
 
         private void SampleSwipeStart()
         {
+            isPredicted = false;
+            samplePoints.Clear();
+            quickSamplePoints.Clear();
             _swipeStartPoint = Input.mousePosition;
-            _swipeTimer = swipeTouchTime;
+            _swipeTimer = 0;
             _offset = Vector3.zero;
         }
     }
