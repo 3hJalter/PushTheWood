@@ -13,6 +13,7 @@ namespace _Game._Scripts.Tutorial
         {
             GameManager.Ins.RegisterListenerEvent(EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
             ChangeLayoutForBanner(AdsManager.Ins.IsBannerOpen);
+            OnAwake();
         }
 
         private void OnDestroy()
@@ -53,6 +54,11 @@ namespace _Game._Scripts.Tutorial
         {
             TutorialManager.Ins.currentGameTutorialScreenScreen = null;
             base.Close();
+        }
+
+        public virtual void OnAwake()
+        {
+            
         }
     }
 }
