@@ -128,7 +128,12 @@ namespace VinhLB
             _startRewardChestIconQuaternion = _rewardChestIconRectTF.localRotation;
             _startLevelChestIconQuaternion = _levelChestIconRectTF.localRotation;
         }
-        
+
+        // private void Start()
+        // {
+        //     OpenMask();
+        // }
+
         private void OnDestroy()
         {
             GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeRewardKeys,
@@ -407,11 +412,12 @@ namespace VinhLB
             MaskData maskData = new MaskData()
             {
                 Position = rectTransform.position,
-                Size = rectTransform.sizeDelta + Vector2.one * 100f,
-                MaskType = MaskType.Rectangle,
+                Size = rectTransform.sizeDelta + Vector2.one * 40f,
+                MaskType = MaskType.Eclipse,
                 ClickableItem = _dailyRewardButton,
                 OnClickedCallback = () => UIManager.Ins.CloseUI<MaskScreen>(),
-                ItemRectTF = rectTransform
+                // If you want to make mask fit and follow target
+                // TargetRectTF = rectTransform
             };
             UIManager.Ins.OpenUI<MaskScreen>(maskData);
         }
