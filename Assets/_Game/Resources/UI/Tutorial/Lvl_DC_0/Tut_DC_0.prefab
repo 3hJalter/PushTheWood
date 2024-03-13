@@ -1038,6 +1038,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3876596560869282447}
     m_Modifications:
+    - target: {fileID: 468933242515022915, guid: a91574648ca2bd447bad3629a92e1126, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7292616749393523492, guid: a91574648ca2bd447bad3629a92e1126, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1122,17 +1126,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7709104719208015159, guid: a91574648ca2bd447bad3629a92e1126, type: 3}
+      propertyPath: m_text
+      value: MOVE OBJECT TO BUTTON
+      objectReference: {fileID: 0}
     - target: {fileID: 8743280422430089059, guid: a91574648ca2bd447bad3629a92e1126, type: 3}
       propertyPath: m_VideoClip
       value: 
-      objectReference: {fileID: 32900000, guid: 13c74992b77072c44850eadb54778e26, type: 3}
+      objectReference: {fileID: 32900000, guid: fe9b544076ed4e2449bf011bee5d92c0, type: 3}
     - target: {fileID: 8945343586281977450, guid: a91574648ca2bd447bad3629a92e1126, type: 3}
       propertyPath: m_Name
       value: VideoTutorial
       objectReference: {fileID: 0}
     - target: {fileID: 8945343586281977450, guid: a91574648ca2bd447bad3629a92e1126, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a91574648ca2bd447bad3629a92e1126, type: 3}

@@ -897,7 +897,7 @@ MonoBehaviour:
   - {fileID: 982089409632852223}
   panel: {fileID: 411562655595668974}
   panelTrigger: {fileID: 1963615946148850000}
-  loopVideoPerPage: 1
+  loopVideoPerPage: 0
 --- !u!1 &6678895474365572623
 GameObject:
   m_ObjectHideFlags: 0
