@@ -30,11 +30,13 @@ namespace _Game._Scripts.UIs.Component
                 _isUnlocked = value;
                 if (_isUnlocked)
                 {
+                    button.interactable = true;
                     unlockObj.SetActive(true);
                     lockObj.SetActive(false);
                 }
                 else
                 {
+                    button.interactable = false;
                     unlockObj.SetActive(false);
                     lockObj.SetActive(true);
                 }
