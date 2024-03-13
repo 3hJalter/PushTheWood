@@ -2,6 +2,7 @@
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
 namespace _Game._Scripts.UIs.Component
@@ -10,6 +11,9 @@ namespace _Game._Scripts.UIs.Component
     {
         [Title("Video Player")]
         [SerializeField] private VideoPlayer videoPlayer;
+        [SerializeField] private RawImage rawImage;
+
+        public RawImage RawImage => rawImage;
 
         private int _numberVideoLoop;
         private int _currentVideoLoop;

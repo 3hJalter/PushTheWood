@@ -175,12 +175,15 @@ namespace GG.Infrastructure.Utils.Swipe
                 if (quickDistance.magnitude >= _quickMinMoveDistance)
                 {
                     quickSamplePoints.Add(_offset);
-                    if (samplePoints.Count >= 2 && !isPredicted)
+                    if (quickSamplePoints.Count >= 2 && !isPredicted)
                     {
                         isPredicted = true;
-                        float y = HUtilities.PredictYFromLinearRegression(samplePoints, _offset.x);
+                        float y = HUtilities.PredictYFromLinearRegression(quickSamplePoints, _offset.x);
                         _offset.Set(_offset.x, y, 0);
+                        DevLog.Log(DevId.Hoang, "BEFORE NORMALIZE: " + _offset + ", SAMPLE COUNT: " + quickSamplePoints.Count);
+                        _offset.Normalize();
                         DevLog.Log(DevId.Hoang, $"DIRECTION: {_offset}");
+                        // normalize the _offset
                         onSwipe?.Invoke(_directions.GetSwipeId(_offset));
                         if (!continuousDetection) _waitForSwipe = false;
                         // SampleSwipeStart();
@@ -210,6 +213,7 @@ namespace GG.Infrastructure.Utils.Swipe
                     isPredicted = true;
                     float y = HUtilities.PredictYFromLinearRegression(samplePoints, _offset.x);
                     _offset.Set(_offset.x, y, 0);
+                    _offset.Normalize();
                     DevLog.Log(DevId.Hung, $"DIRECTION: {_offset}");
                     onSwipe?.Invoke(_directions.GetSwipeId(_offset));
                     if (!continuousDetection) _waitForSwipe = false;

@@ -403,6 +403,10 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 2280807146346555936, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+    - target: {fileID: 2368938922099347733, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 79.99988
+      objectReference: {fileID: 0}
     - target: {fileID: 2396359845654379012, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -933,7 +937,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8295795834640820245, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: quickSensitive
-      value: 30
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 8295795834640820245, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: swipeTouchTime

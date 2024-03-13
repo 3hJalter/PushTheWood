@@ -22,7 +22,7 @@ namespace _Game._Scripts.Tutorial
 
         private bool _firstLoopAllPagesDone;
         private int _currentVideoIndex;
-
+        
         public override void Setup(object param = null)
         {
             base.Setup(param);
