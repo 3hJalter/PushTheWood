@@ -599,9 +599,14 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isOverlappingUI: 0
-  sensitivity: 70
+  sensitivity: 120
+  quickSensitive: 30
+  swipeTouchTime: 0.1
+  quickSwipeTouchTime: 0.035
   continuousDetection: 0
   swipeDetectionMode: 2
+  samplePoints: []
+  quickSamplePoints: []
 --- !u!1 &7937655174677662599
 GameObject:
   m_ObjectHideFlags: 0

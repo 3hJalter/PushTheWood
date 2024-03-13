@@ -80,21 +80,24 @@ namespace _Game.Managers
         public void LevelComplete(LevelType type)
         {
             if (!isFirebaseInit) return;
-            Parameter[] param = new Parameter[3];
+            Parameter[] param = null;
             switch (type)
             {
                 case LevelType.Normal:
+                    param = new Parameter[3];
                     param[0] = new Parameter("level", DataManager.Ins.GameData.user.normalLevelIndex);
                     param[1] = new Parameter("retry", DataManager.Ins.GameData.user.retryTime);
                     param[2] = new Parameter("duration", GameplayManager.Ins.GameDuration);
                     break;
                 case LevelType.DailyChallenge:
+                    param = new Parameter[2];
                     param[0] = new Parameter("level_dailyChallenge", DataManager.Ins.GameData.user.currentDailyChallengerDay);
-                    param[2] = new Parameter("duration", GameplayManager.Ins.GameDuration);
+                    param[1] = new Parameter("duration", GameplayManager.Ins.GameDuration);
                     break;
                 case LevelType.Secret:
+                    param = new Parameter[2];
                     param[0] = new Parameter("level_expedition", DataManager.Ins.GameData.user.secretLevelIndex);
-                    param[2] = new Parameter("duration", GameplayManager.Ins.GameDuration);
+                    param[1] = new Parameter("duration", GameplayManager.Ins.GameDuration);
                     break;
             }
 
