@@ -41,7 +41,7 @@ MonoBehaviour:
       Data: 720
     - Name: requireRewardKey
       Entry: 3
-      Data: 3
+      Data: 5
     - Name: RCRewards
       Entry: 7
       Data: 0|_Game.Resource.CurrencyType[], Assembly-CSharp
@@ -116,7 +116,7 @@ MonoBehaviour:
       Data: 
     - Name: requireLevelProgress
       Entry: 3
-      Data: 3
+      Data: 5
     - Name: LCRewards
       Entry: 7
       Data: 3|_Game.Resource.CurrencyType[], Assembly-CSharp
