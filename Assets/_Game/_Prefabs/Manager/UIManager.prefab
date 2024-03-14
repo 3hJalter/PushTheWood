@@ -698,6 +698,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -5.299999
       objectReference: {fileID: 0}
+    - target: {fileID: 2716825694951213718, guid: 54c741e112f122c4dbfc64daeba72a43, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 2716825694951213718, guid: 54c741e112f122c4dbfc64daeba72a43, type: 3}
+    - target: {fileID: 3147549301094753054, guid: 54c741e112f122c4dbfc64daeba72a43, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 3147549301094753054, guid: 54c741e112f122c4dbfc64daeba72a43, type: 3}
     - target: {fileID: 5604325956632071126, guid: 54c741e112f122c4dbfc64daeba72a43, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -5.299999
@@ -4843,10 +4851,6 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 1732179909071897763, guid: 497fdb4a41facf14bbcf16c7c511cf4e, type: 3}
-    - target: {fileID: 1824299030540152753, guid: 497fdb4a41facf14bbcf16c7c511cf4e, type: 3}
-      propertyPath: m_SortingOrder
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 1824299030540152757, guid: 497fdb4a41facf14bbcf16c7c511cf4e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

@@ -177,7 +177,7 @@ namespace VinhLB
                     {
                         if (_showIcon)
                         {
-                            _activeIcon.rectTransform.localPosition = activeIconTargetPosition;
+                            _activeIcon.rectTransform.anchoredPosition = activeIconTargetPosition;
                             _activeIcon.rectTransform.localRotation = Quaternion.identity;
                             _activeIcon.rectTransform.localScale = Vector3.one * _sizeIncrease;
                         }
