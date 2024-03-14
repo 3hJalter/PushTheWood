@@ -282,7 +282,7 @@ namespace GG.Infrastructure.Utils.Swipe
                 // normalize the _offset
                 onSwipe?.Invoke(_directions.GetSwipeId(_offset));
                 _isHolding = false;
-                TimerManager.Ins.WaitForFrame(1, () => { onCancelSwipe?.Invoke();});
+                TimerManager.Ins.WaitForFixedFrame(2, () => { onCancelSwipe?.Invoke();});
             }
         }
         

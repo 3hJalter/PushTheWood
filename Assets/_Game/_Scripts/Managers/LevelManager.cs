@@ -78,8 +78,8 @@ namespace _Game.GameGrid
         #region Objective Win Condition Number
 
         [ReadOnly] [SerializeField] private int objectiveTotal;
-        [ReadOnly]  private readonly HashSet<IEnemy> enemies = new();
-        [ReadOnly]  private readonly HashSet<IFinalPoint> finalPoints = new();
+        private readonly HashSet<IEnemy> enemies = new();
+        private readonly HashSet<IFinalPoint> finalPoints = new();
         public int ObjectiveTotal => objectiveTotal;
         private int EnemyNums => enemies.Count;
         private int FinalPointNums => finalPoints.Count;
@@ -168,6 +168,9 @@ namespace _Game.GameGrid
             if (type == LevelType.Normal) OnCheckTutorial();
             IsConstructingLevel = true;
             _currentLevel = new Level(type, index);
+            objectiveTotal = 0;
+            DevLog.Log(DevId.Hoang, "Number of enemy: " + enemies.Count);
+            DevLog.Log(DevId.Hoang, "Number of final point: " + finalPoints.Count);
             if (needInit && !_currentLevel.IsInit)
             {
                 InitLevel();

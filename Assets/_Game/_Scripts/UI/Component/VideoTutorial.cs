@@ -11,6 +11,9 @@ namespace _Game._Scripts.UIs.Component
     {
         [Title("Video Player")]
         [SerializeField] private VideoPlayer videoPlayer;
+
+        public VideoPlayer VideoPlayer => videoPlayer;
+        
         [SerializeField] private RawImage rawImage;
 
         public RawImage RawImage => rawImage;

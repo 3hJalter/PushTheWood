@@ -128,6 +128,21 @@ namespace _Game.Utilities.Timer
             };
             timer.Start(frame, timerAction);
         }
+        
+        public void WaitForFixedFrame(int frame, Action action)
+        {
+            STimer timer = PopSTimer();
+
+            timer.Start(frame, TimerAction, STimer.EVENT_TYPE.FRAME_FIXED_UPDATE);
+            return;
+
+            void TimerAction()
+            {
+                action?.Invoke();
+                PushSTimer(timer, false);
+            }
+        }
+        
         public void WaitForTime(float time, Action action, bool isUnscaleTime = false) 
         {
             STimerData sTimerData = new(time, action);

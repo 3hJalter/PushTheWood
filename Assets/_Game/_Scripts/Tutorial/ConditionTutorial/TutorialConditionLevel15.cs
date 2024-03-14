@@ -24,7 +24,7 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
                     !(Math.Abs(cell.WorldY - 9) < Constants.TOLERANCE)) return;
                 // Show tutorial
                 UIManager.Ins.OpenUIDirectly(tutorialScreens[currentTutIndex]);
-                GameplayManager.Ins.OnFreePushHint(false, true);
+                // GameplayManager.Ins.OnFreePushHint(false, true);
                 currentTutIndex++;
             }
         }

@@ -940,6 +940,10 @@ PrefabInstance:
       value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 8295795834640820245, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: superSensitive
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 8295795834640820245, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: swipeTouchTime
       value: 0.1
       objectReference: {fileID: 0}

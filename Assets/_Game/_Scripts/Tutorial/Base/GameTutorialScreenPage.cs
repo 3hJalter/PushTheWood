@@ -7,6 +7,7 @@ using HControls;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 namespace _Game._Scripts.Tutorial
 {
@@ -22,7 +23,27 @@ namespace _Game._Scripts.Tutorial
 
         private bool _firstLoopAllPagesDone;
         private int _currentVideoIndex;
-        
+
+        public override void OnAwake()
+        {
+            // CustomRenderTexture rendTex = new(180, 240, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Default)
+            //     {
+            //         initializationMode = CustomRenderTextureUpdateMode.OnDemand,
+            //         initializationSource = CustomRenderTextureInitializationSource.TextureAndColor,
+            //         initializationColor = new Color(1, 0, 0, 0),
+            //         autoGenerateMips = false,
+            //         useMipMap = false
+            //     };
+            // rendTex.Initialize();
+            //
+            // foreach (VideoTutorial vt in videoTutorials)
+            // {
+            //     vt.VideoPlayer.renderMode = VideoRenderMode.RenderTexture;
+            //     vt.VideoPlayer.targetTexture = rendTex;
+            //     vt.RawImage.texture = rendTex;
+            // }
+        }
+
         public override void Setup(object param = null)
         {
             base.Setup(param);
