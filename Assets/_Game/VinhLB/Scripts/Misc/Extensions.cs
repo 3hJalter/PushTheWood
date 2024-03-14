@@ -30,6 +30,21 @@ namespace VinhLB
         #endregion
 
         #region Rect Transform
+        public static void SetSizeDeltaWidth(this RectTransform rectTransform, float width)
+        {
+            rectTransform.SetSizeDelta(width, rectTransform.sizeDelta.y);
+        }
+        
+        public static void SetSizeDeltaHeight(this RectTransform rectTransform, float height)
+        {
+            rectTransform.SetSizeDelta(rectTransform.sizeDelta.x, height);
+        }
+        
+        public static void SetSizeDelta(this RectTransform rectTransform, float width, float height)
+        {
+            rectTransform.sizeDelta = new Vector2(width, height);
+        }
+        
         public static void SetPaddingLeft(this RectTransform rectTransform, float left)
         {
             rectTransform.offsetMin = new Vector2(left, rectTransform.offsetMin.y);

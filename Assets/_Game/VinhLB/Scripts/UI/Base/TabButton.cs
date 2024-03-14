@@ -22,7 +22,7 @@ namespace VinhLB
             Enlarge = 1
         }
 
-        public event Action OnClickedCallback;
+        public event Action OnClicked;
 
         [Header("General")]
         [SerializeField]
@@ -83,8 +83,14 @@ namespace VinhLB
 
         private bool _active;
         private Tween _activeIconAnimTween;
+        private Vector3 _activeIconBasePosition;
 
         public bool Interactable => _interactable;
+
+        private void Awake()
+        {
+            _activeIconBasePosition = _activeIcon.rectTransform.anchoredPosition;
+        }
 
         private void Start()
         {
@@ -151,6 +157,7 @@ namespace VinhLB
 
                 if (_animType == AnimType.GoUp)
                 {
+                    Vector3 activeIconTargetPosition = Vector3.up * (_activeIconBasePosition.y + _goUpOffset);
                     if (animated)
                     {
                         DOVirtual.Float(0f, -_goUpOffset, _goUpDuration,
@@ -160,7 +167,8 @@ namespace VinhLB
                         {
                             Sequence iconSequence = DOTween.Sequence();
                             iconSequence.AppendCallback(PlayIconAnim)
-                                .Join(_activeIcon.rectTransform.DOLocalMove(Vector3.up * _goUpOffset, _goUpDuration)
+                                .Join(_activeIcon.rectTransform
+                                    .DOAnchorPos3D(activeIconTargetPosition, _goUpDuration)
                                     .SetEase(Ease.OutExpo))
                                 .Join(_activeIcon.rectTransform.DOScale(1.25f, _goUpDuration).SetEase(Ease.OutExpo));
                         }
@@ -169,7 +177,7 @@ namespace VinhLB
                     {
                         if (_showIcon)
                         {
-                            _activeIcon.rectTransform.localPosition = Vector3.up * _goUpOffset;
+                            _activeIcon.rectTransform.localPosition = activeIconTargetPosition;
                             _activeIcon.rectTransform.localRotation = Quaternion.identity;
                             _activeIcon.rectTransform.localScale = Vector3.one * _sizeIncrease;
                         }
@@ -211,7 +219,7 @@ namespace VinhLB
                 {
                     if (_showIcon)
                     {
-                        _activeIcon.rectTransform.localPosition = Vector3.zero;
+                        _activeIcon.rectTransform.localPosition = _activeIconBasePosition;
                         _activeIcon.rectTransform.localRotation = Quaternion.identity;
                         _activeIcon.rectTransform.localScale = Vector3.one;
                     }
@@ -246,12 +254,12 @@ namespace VinhLB
             {
                 return;
             }
-            
+
             if (_activeIconAnimTween != null)
             {
                 return;
             }
-            
+
             _activeIconAnimTween = _activeIcon.rectTransform.DOPunchRotation(Vector3.one * 10f, 0.4f, 8, 1f)
                 .OnComplete(() => { _activeIconAnimTween = null; });
         }
@@ -262,7 +270,7 @@ namespace VinhLB
             {
                 _tabGroup.OnTabSelected(this, true, false);
 
-                OnClickedCallback?.Invoke();
+                OnClicked?.Invoke();
             }
             else
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using _Game.Utilities;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -10,12 +11,16 @@ namespace VinhLB
     public class LoadingScreen : UICanvas
     {
         [SerializeField]
+        private RectTransform _backgroundRectTF;
+        [SerializeField]
         private Slider _progressSlider;
         [SerializeField]
         private TMP_Text _progressText;
         [SerializeField]
         private TMP_Text _loadingText;
 
+        private bool _isFirstTime = true;
+        private bool _isWidthFitting;
         private Coroutine _closeCoroutine;
         private Sequence _loadingTextSequence;
 
@@ -25,6 +30,8 @@ namespace VinhLB
 
             SceneGameManager.Ins.OnLoadingScene += SceneGameManager_OnLoadingScene;
             SceneGameManager.Ins.OnSceneLoaded += SceneGameManager_OnSceneLoaded;
+
+            UpdateBackground();
         }
 
         public override void Open(object param = null)
@@ -52,6 +59,32 @@ namespace VinhLB
             else
             {
                 _loadingTextSequence.Restart();
+            }
+        }
+
+        private void UpdateBackground()
+        {
+            float currentScreenRatio = (float)Screen.width / Screen.height;
+            // DevLog.Log(DevId.Vinh, $"{Constants.REF_SCREEN_RATIO} | {currentScreenRatio}");
+            if (currentScreenRatio >= Constants.REF_SCREEN_RATIO && (_isFirstTime || !_isWidthFitting))
+            {
+                // Fit width
+                _backgroundRectTF.anchorMin = new Vector2(0, 0.5f);
+                _backgroundRectTF.anchorMax = new Vector2(1f, 0.5f);
+                _backgroundRectTF.SetPadding(0, 0);
+                _backgroundRectTF.SetSizeDeltaHeight(2500f);
+                _isFirstTime = false;
+                _isWidthFitting = true;
+            }
+            else if (currentScreenRatio < Constants.REF_SCREEN_RATIO && (_isFirstTime || _isWidthFitting))
+            {
+                // Fit height
+                _backgroundRectTF.anchorMin = new Vector2(0.5f, 0);
+                _backgroundRectTF.anchorMax = new Vector2(0.5f, 1f);
+                _backgroundRectTF.SetPadding(0, 0);
+                _backgroundRectTF.SetSizeDeltaWidth(1500f);
+                _isFirstTime = false;
+                _isWidthFitting = false;
             }
         }
 

@@ -361,7 +361,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: -118727557
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &8295795833856298081
 MonoBehaviour:
@@ -402,7 +402,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 127
+    m_Bits: 32
 --- !u!1 &8295795833936262617
 GameObject:
   m_ObjectHideFlags: 0
@@ -5385,6 +5385,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 600
       objectReference: {fileID: 0}
+    - target: {fileID: 4095744315781355249, guid: 353b774f7945b3e48a164feecdacd5cf, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 4095744315781355249, guid: 353b774f7945b3e48a164feecdacd5cf, type: 3}
     - target: {fileID: 5000227738760051637, guid: 353b774f7945b3e48a164feecdacd5cf, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

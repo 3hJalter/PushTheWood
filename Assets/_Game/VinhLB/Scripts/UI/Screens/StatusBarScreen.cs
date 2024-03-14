@@ -94,6 +94,7 @@ namespace VinhLB
                 if (!gameObject.activeInHierarchy)
                 {
                     // _delayCollectingGold += SpawnCollectingUICoins;
+                    GameManager.Ins.SmoothGold += data.ChangedAmount;
                 }
                 else
                 {
@@ -126,6 +127,7 @@ namespace VinhLB
                 if (!gameObject.activeInHierarchy)
                 {
                     // _delayCollectingAdTickets += SpawnCollectingUIAdTickets;
+                    GameManager.Ins.SmoothAdTickets += data.ChangedAmount;
                 }
                 else
                 {

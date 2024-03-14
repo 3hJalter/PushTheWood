@@ -15,23 +15,23 @@ namespace VinhLB
         private Unmask _unmask;
 
         private IClickable _clickableItem;
-        private Action _onClickedCallback;
+        private Action _onClicked;
         private UnmaskRaycastFilter _unmaskRaycastFilter;
 
         public UnmaskRaycastFilter UnmaskRaycastFilter => _unmaskRaycastFilter;
 
         public void Initialize(Vector3 position, Vector2 size, Sprite sprite, IClickable clickableItem,
-            Action onClickedCallback, RectTransform targetRectTF, UnmaskRaycastFilter unmaskRaycastFilter)
+            Action onClicked, RectTransform targetRectTF, UnmaskRaycastFilter unmaskRaycastFilter)
         {
             _rectTransform.position = position;
             _rectTransform.sizeDelta = size;
             _image.sprite = sprite;
 
             _clickableItem = clickableItem;
-            _onClickedCallback = onClickedCallback;
+            _onClicked = onClicked;
             if (_clickableItem != null)
             {
-                _clickableItem.OnClickedCallback += _onClickedCallback;
+                _clickableItem.OnClicked += _onClicked;
             }
 
             if (targetRectTF != null)
@@ -56,7 +56,7 @@ namespace VinhLB
         {
             if (_clickableItem != null)
             {
-                _clickableItem.OnClickedCallback -= _onClickedCallback;
+                _clickableItem.OnClicked -= _onClicked;
             }
 
             if (_unmaskRaycastFilter != null)

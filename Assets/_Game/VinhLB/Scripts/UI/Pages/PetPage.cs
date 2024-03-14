@@ -24,8 +24,6 @@ namespace VinhLB
         [SerializeField]
         private Transform _collectionItemParentTF;
         [SerializeField]
-        private Transform _playerSkinParentTF;
-        [SerializeField]
         private HButton _buyButton;
         [SerializeField]
         private TMP_Text _costText;
@@ -95,18 +93,10 @@ namespace VinhLB
             OnRewardScrollRectValueChanged(_scrollRect.normalizedPosition);
         }
 
-        public override void Open(object param = null)
-        {
-            base.Open(param);
-
-            _playerSkinParentTF.gameObject.SetActive(true);
-        }
-
         public override void Close()
         {
             base.Close();
 
-            _playerSkinParentTF.gameObject.SetActive(false);
             LevelManager.Ins.player.ChangeSkin(DataManager.Ins.CurrentPlayerSkinIndex);
         }
 

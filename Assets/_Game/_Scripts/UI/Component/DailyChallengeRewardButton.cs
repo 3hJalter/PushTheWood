@@ -62,7 +62,7 @@ namespace _Game._Scripts.UIs.Component
             // Claim reward
             // TODO: Change to show claim popup to verify
             State = DcRewardState.Claimed;
-            UIManager.Ins.OpenUI<RewardPopup>(GetReward()).OnClickedCallback += () =>
+            UIManager.Ins.OpenUI<RewardPopup>(GetReward()).OnClicked += () =>
             {
                 DataManager.Ins.GameData.user.dailyChallengeRewardCollected.Add(_milestone.clearLevelNeed);
                 DataManager.Ins.Save();

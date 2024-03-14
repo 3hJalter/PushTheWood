@@ -6,7 +6,7 @@ using VinhLB;
 
 public class HButton : Button, IClickable
 {
-    public event Action OnClickedCallback;
+    public event Action OnClicked;
 
     public ButtonAnim buttonAnim;
 
@@ -14,7 +14,7 @@ public class HButton : Button, IClickable
     {
         base.OnPointerClick(eventData);
         
-        OnClickedCallback?.Invoke();
+        OnClicked?.Invoke();
     }
 
     public void Show(bool instant = false)
