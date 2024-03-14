@@ -1,4 +1,5 @@
-﻿using _Game.GameGrid.Unit.DynamicUnit.Player;
+﻿using System;
+using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.GameGrid.Unit.StaticUnit.Interface;
 using _Game.Managers;
 using AudioEnum;
@@ -19,6 +20,8 @@ namespace _Game.GameGrid.Unit.StaticUnit.Chest
         [ReadOnly]
         [SerializeField] protected bool isInteracted;
 
+        protected event Action OnChestOpen;
+        
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
             Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
@@ -53,6 +56,7 @@ namespace _Game.GameGrid.Unit.StaticUnit.Chest
             if (triggerUnit is not Player) return;
             isInteracted = true;
             ShowAnim(true);
+            OnChestOpen?.Invoke();
             DOVirtual.DelayedCall(Constants.CHEST_OPEN_TIME, OnOpenChestComplete);        
         }
     }
