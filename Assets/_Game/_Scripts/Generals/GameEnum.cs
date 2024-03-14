@@ -192,7 +192,8 @@ namespace _Game.Resource
         AdTicket = 1,
         SecretMapPiece = 2,
         RandomBooster = 3,
-        RewardKey = 4
+        RewardKey = 4,
+        LevelStar = 5
     }
 
     public enum CharacterType

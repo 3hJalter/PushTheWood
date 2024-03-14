@@ -8,7 +8,7 @@ namespace VinhLB
 {
     public class RewardPopup : UICanvas, IClickable
     {
-        public event Action OnClickedCallback;
+        public event Action OnClicked;
         
         [SerializeField]
         private RewardItem _rewardItemPrefab;
@@ -105,8 +105,8 @@ namespace VinhLB
                 _rewardItemList[i].Reward.Obtain(_rewardItemList[i].IconImagePosition);
             }
                 
-            OnClickedCallback?.Invoke();
-            OnClickedCallback = null;
+            OnClicked?.Invoke();
+            OnClicked = null;
         }
 
         private void OnRewardScrollRectValueChanged(Vector2 value)

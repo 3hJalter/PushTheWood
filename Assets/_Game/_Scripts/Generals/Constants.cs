@@ -89,6 +89,7 @@ public static class Constants
     // UI
     public const string VALUE_FORMAT = "#,#;#,#;0";
     public const int MAX_UI_UNIT = 10;
+    public const float REF_SCREEN_RATIO = 1080f / 1920f;
     
     // Value Constants
     public const int UPPER_HEIGHT = 1;

@@ -1,6 +1,6 @@
 ﻿using System;
 using _Game._Scripts.UIs.Component;
-using System.Globalization;
+using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.Managers;
@@ -49,6 +49,17 @@ namespace VinhLB
         private RectTransform _levelChestCurrencyIconRectTF;
         [SerializeField]
         private TMP_Text _levelProgressTxt;
+        
+        [SerializeField]
+        private TMP_Text _levelNormalText;
+        [SerializeField]
+        private Image _levelNormalFrame;
+        [SerializeField]
+        private Color _easyLevelNormalColor;
+        [SerializeField]
+        private Color _mediumLevelNormalColor;
+        [SerializeField]
+        private Color _hardLevelNormalColor;
 
         private STimer _shakeRewardTimer;
         private STimer _shakeLevelTimer;
@@ -192,6 +203,21 @@ namespace VinhLB
         public override void UpdateUI()
         {
             _levelText.text = $"Level {LevelManager.Ins.NormalLevelIndex + 1}";
+
+            LevelNormalType currentLevelLevelNormalType = LevelManager.Ins.CurrentLevel.LevelNormalType;
+            _levelNormalText.text = $"{currentLevelLevelNormalType} Level";
+            switch (currentLevelLevelNormalType)
+            {
+                case LevelNormalType.Easy:
+                    _levelNormalFrame.color = _easyLevelNormalColor;
+                    break;
+                case LevelNormalType.Medium:
+                    _levelNormalFrame.color = _mediumLevelNormalColor;
+                    break;
+                case LevelNormalType.Hard:
+                    _levelNormalFrame.color = _hardLevelNormalColor;
+                    break;
+            }
 
             // if (RewardManager.Ins.HomeReward.IsCanClaimRC)
             // {
@@ -426,10 +452,17 @@ namespace VinhLB
         {
             // Get normal level index
             int normalLevelIndex = LevelManager.Ins.NormalLevelIndex;
+            dailyChallengeButton.SetUnlockLevelIndex(DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex);
             dailyChallengeButton.IsUnlocked =
                 normalLevelIndex >= DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex;
+            
+            secretMapButton.SetUnlockLevelIndex(DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex);
             secretMapButton.IsUnlocked = normalLevelIndex >= DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex;
+            
+            levelChestButton.SetUnlockLevelIndex(DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex);
             levelChestButton.IsUnlocked = normalLevelIndex >= DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex;
+            
+            rewardChestButton.SetUnlockLevelIndex(DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex);
             rewardChestButton.IsUnlocked = normalLevelIndex >= DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex;
         }
 
