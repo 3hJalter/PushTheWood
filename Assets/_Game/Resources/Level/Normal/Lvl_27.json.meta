@@ -1,6 +1,11 @@
 fileFormatVersion: 2
-guid: 5620b99c7a87070499825f9d2d1c5a3a
+<<<<<<<< HEAD:Assets/_Game/Resources/Level/Normal/Lvl_21.json.meta
+guid: c1d01df131a066844b1df48e08fd7f7d
 TextScriptImporter:
+========
+guid: de41a70ead12af544a4e99a925b269d2
+DefaultImporter:
+>>>>>>>> origin/HoangHH:Assets/Plugins/Easy Save 3/Editor/ES3Asmdefs.unitypackage.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
