@@ -185,7 +185,7 @@ namespace GG.Infrastructure.Utils.Swipe
 
             int superSampleCount = superSamplePoint.Count;
             
-            if (superSampleCount < 2 && !isPredicted && !_countingSwipeTime)
+            if (superSampleCount < 2 && !isPredicted)
             {
                 if (superSampleCount == 0)
                 {
@@ -194,6 +194,7 @@ namespace GG.Infrastructure.Utils.Swipe
                 if (_offset.magnitude >= _superMinMoveDistance)
                 {
                     superSamplePoint.Add(_offset);
+                    _waitForSwipe = false;
                 }
             }
             
