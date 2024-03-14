@@ -1,4 +1,5 @@
-﻿using _Game.GameGrid.Unit.StaticUnit.Chest;
+﻿using _Game.GameGrid.Unit.Interface;
+using _Game.GameGrid.Unit.StaticUnit.Chest;
 using _Game.Utilities;
 using DG.Tweening;
 using GameGridEnum;
@@ -7,13 +8,23 @@ using VinhLB;
 
 namespace _Game.GameGrid.Unit.StaticUnit
 { 
-    public class ChestCompass : BChest
+    public class ChestCompass : BChest, IResourceHolder
     {
         private Vector3 originTransform;
         private Tween floatingTween;
         private const float MOVE_Y_VALUE = 0.06f;
         private const float MOVE_Y_TIME = 2f;
 
+        private void Awake()
+        {
+            OnChestOpen += OnTakeResource;
+        }
+
+        private void OnDestroy()
+        {
+            OnChestOpen -= OnTakeResource;
+        }
+        
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
             Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
@@ -56,12 +67,22 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             base.OnOpenChestComplete();
             // TODO: Change to collect compass
-            if (LevelManager.Ins.CollectedChests.Add(this))
+            if (isTakeResource)
             {
                 CollectingResourceManager.Ins.SpawnCollectingCompass(1, LevelManager.Ins.player.transform);
+                DevLog.Log(DevId.Hoang, "Loot something");
+            }
+        }
+
+        private bool isTakeResource;
+        
+        public void OnTakeResource()
+        {
+            isTakeResource = LevelManager.Ins.CollectedChests.Add(this);
+            if (isTakeResource)
+            {
                 LevelManager.Ins.SecretMapPieceCount += 1;
                 LevelManager.Ins.goldCount += 40;
-                DevLog.Log(DevId.Hoang, "Loot something");
             }
         }
     }

@@ -11,7 +11,7 @@ using VinhLB;
 
 namespace _Game.GameGrid.Unit.StaticUnit
 {
-    public class FinalPoint : GridUnitStatic, IFinalPoint
+    public class FinalPoint : GridUnitStatic, IFinalPoint, IResourceHolder
     {
         [SerializeField] protected Target indicatorTarget;
         [SerializeField] protected bool isInteracted;
@@ -37,7 +37,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             indicatorTarget.enabled = false;
             winParticle.Play();
-            OnGetResource(); // TEMPORARY
+            OnTakeResource(); // TEMPORARY
             OnRemoveFromLevelManager();
         }
         
@@ -59,7 +59,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             LevelManager.Ins.OnRemoveFinalPoint(this, checkWin);
         }
 
-        private void OnGetResource()
+        public void OnTakeResource()
         {
             #region Get Resource
             

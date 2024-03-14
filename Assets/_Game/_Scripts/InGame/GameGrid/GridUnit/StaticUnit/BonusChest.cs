@@ -1,4 +1,5 @@
-﻿using _Game._Scripts.Managers;
+﻿using System;
+using _Game._Scripts.Managers;
 using _Game.Data;
 using _Game.GameGrid.Unit.Interface;
 using _Game.GameGrid.Unit.StaticUnit.Chest;
@@ -10,13 +11,23 @@ using VinhLB;
 
 namespace _Game.GameGrid.Unit.StaticUnit
 {
-    public class BonusChest : BChest, IFinalPoint
+    public class BonusChest : BChest, IFinalPoint, IResourceHolder
     {
         private Vector3 originTransform;
         private Tween floatingTween;
         private const float MOVE_Y_VALUE = 0.06f;
         private const float MOVE_Y_TIME = 2f;
-        
+
+        private void Awake()
+        {
+            OnChestOpen += OnTakeResource;
+        }
+
+        private void OnDestroy()
+        {
+            OnChestOpen -= OnTakeResource;
+        }
+
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
             Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
@@ -63,11 +74,9 @@ namespace _Game.GameGrid.Unit.StaticUnit
         public override void OnOpenChestComplete()
         {
             base.OnOpenChestComplete();
-            if (LevelManager.Ins.CollectedChests.Add(this))
+            if (isTakeResource)
             {
                 CollectingResourceManager.Ins.SpawnCollectingRewardKey(1, LevelManager.Ins.player.transform);
-                LevelManager.Ins.KeyRewardCount += 1;
-                LevelManager.Ins.goldCount += 40;
             }
             if (LevelManager.Ins.CurrentLevel.LevelType == LevelType.Secret)
             {
@@ -83,6 +92,18 @@ namespace _Game.GameGrid.Unit.StaticUnit
         private void OnRemoveFromLevelManager(bool checkWin = true)
         {
             LevelManager.Ins.OnRemoveFinalPoint(this, checkWin);
+        }
+        
+        private bool isTakeResource;
+        
+        public void OnTakeResource()
+        {
+            isTakeResource = LevelManager.Ins.CollectedChests.Add(this);
+            if (isTakeResource)
+            {
+                LevelManager.Ins.KeyRewardCount += 1;
+                LevelManager.Ins.goldCount += 40;
+            }
         }
     }
 }
