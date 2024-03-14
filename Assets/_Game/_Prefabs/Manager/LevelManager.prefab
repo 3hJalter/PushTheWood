@@ -53,10 +53,23 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: enemies
+    - Name: boosterRewardCount
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[_Game.GameGrid.Unit.DynamicUnit.Interface.IEnemy,
+      Data: 0|System.Collections.Generic.Dictionary`2[[_Game.Resource.BoosterType,
+        Assembly-CSharp],[System.Int32, mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[_Game.Resource.BoosterType,
         Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 12
       Data: 0
@@ -71,9 +84,9 @@ MonoBehaviour:
   secretLevelIndex: 0
   KeyRewardCount: 0
   SecretMapPieceCount: 0
+  goldCount: 0
   IsConstructingLevel: 0
   player: {fileID: 0}
-  numsOfCollectingObjectInLevel: 0
-  objectiveCounter: 0
+  objectiveTotal: 0
   levelWinCondition: 0
   isSavePlayerPushStep: 0
