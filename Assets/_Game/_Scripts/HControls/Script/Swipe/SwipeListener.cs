@@ -120,6 +120,7 @@ namespace GG.Infrastructure.Utils.Swipe
                     _isHolding = false;
                 }
                 if (!_waitForSwipe) OnCancelSwipe();
+                else OnSuperCancelSwipe();
             } else if (Input.GetMouseButtonDown(0))
             {
                 // Check if button Pressed
@@ -194,7 +195,6 @@ namespace GG.Infrastructure.Utils.Swipe
                 if (_offset.magnitude >= _superMinMoveDistance)
                 {
                     superSamplePoint.Add(_offset);
-                    _waitForSwipe = false;
                 }
             }
             
@@ -268,8 +268,8 @@ namespace GG.Infrastructure.Utils.Swipe
                 _isHolding = true;
             }
         }
-        
-        private void OnCancelSwipe()
+
+        private void OnSuperCancelSwipe()
         {
             _waitForSwipe = false;
             _holdTimer = Constants.HOLD_TOUCH_TIME;
@@ -284,7 +284,13 @@ namespace GG.Infrastructure.Utils.Swipe
                 _isHolding = false;
                 TimerManager.Ins.WaitForFrame(1, () => { onCancelSwipe?.Invoke();});
             }
-            else onCancelSwipe?.Invoke();
+        }
+        
+        private void OnCancelSwipe()
+        {
+            _waitForSwipe = false;
+            _holdTimer = Constants.HOLD_TOUCH_TIME;
+            onCancelSwipe?.Invoke();
         }
 
         private void SampleSwipeStart()
