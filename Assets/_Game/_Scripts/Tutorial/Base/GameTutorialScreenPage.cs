@@ -41,7 +41,7 @@ namespace _Game._Scripts.Tutorial
                 UIManager.Ins.CloseUI<InGameScreen>();
                 // Stop timer
             });
-            TimerManager.Ins.WaitForTime(0.75f, HandleShowVideo);
+            TimerManager.Ins.WaitForTime(1f, HandleShowVideo);
         }
 
         private void HandleShowVideo()
