@@ -272,9 +272,9 @@ namespace GG.Infrastructure.Utils.Swipe
         {
             _waitForSwipe = false;
             _holdTimer = Constants.HOLD_TOUCH_TIME;
-            if (!_countingSwipeTime && !isPredicted)
+            if (!isPredicted)
             {
-                float y = HUtilities.PredictYFromLinearRegression(quickSamplePoints, _offset.x);
+                float y = HUtilities.PredictYFromLinearRegression(superSamplePoint, _offset.x);
                 _offset.Set(_offset.x, y, 0);
                 _offset.Normalize();
                 DevLog.Log(DevId.Hoang, $"DIRECTION ON CANCEL: {_offset}");
