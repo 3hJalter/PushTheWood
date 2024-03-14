@@ -1103,12 +1103,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1915671661371006086, guid: 293a8c7352bbcbd4faba9fa9295f5828, type: 3}
       propertyPath: isSavePlayerPushStep
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1915671661371006086, guid: 293a8c7352bbcbd4faba9fa9295f5828, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 1915671661371006086, guid: 293a8c7352bbcbd4faba9fa9295f5828, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 1915671661371006087, guid: 293a8c7352bbcbd4faba9fa9295f5828, type: 3}
       propertyPath: m_RootOrder
       value: 2
