@@ -272,7 +272,7 @@ namespace GG.Infrastructure.Utils.Swipe
         {
             _waitForSwipe = false;
             _holdTimer = Constants.HOLD_TOUCH_TIME;
-            if (!isPredicted)
+            if (!isPredicted && superSamplePoint.Count > 1)
             {
                 float y = HUtilities.PredictYFromLinearRegression(superSamplePoint, _offset.x);
                 _offset.Set(_offset.x, y, 0);
