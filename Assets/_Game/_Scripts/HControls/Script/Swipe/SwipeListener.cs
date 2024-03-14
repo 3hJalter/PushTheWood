@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using _Game._Scripts.Utilities;
 using _Game.Utilities;
+using _Game.Utilities.Timer;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
@@ -24,10 +25,11 @@ namespace GG.Infrastructure.Utils.Swipe
         
         [SerializeField] private float sensitivity = 100;
         [SerializeField] private float quickSensitive = 50;
+        [SerializeField] private float superSensitive = 150;
         
         [SerializeField] private float swipeTouchTime = 0.12f;
-        [SerializeField] private float quickSwipeTouchTime = 0.0035f;
-
+        [SerializeField] private float quickSwipeTouchTime = 0.035f;
+        
         [SerializeField] private bool continuousDetection;
 
         [SerializeField] private SwipeDetectionMode swipeDetectionMode = SwipeDetectionMode.EightSides;
@@ -36,6 +38,7 @@ namespace GG.Infrastructure.Utils.Swipe
 
         private float _minMoveDistance = 0.1f;
         private float _quickMinMoveDistance = 0.1f;
+        private float _superMinMoveDistance = 0.1f;
 
         private Vector3 _offset;
 
@@ -48,14 +51,26 @@ namespace GG.Infrastructure.Utils.Swipe
         private float _swipeTimer;
 
         private bool _isHolding;
-        [ReadOnly] [SerializeField] private List<Vector2> samplePoints;
-        [ReadOnly] [SerializeField] private List<Vector2> quickSamplePoints;
+        [ReadOnly] [SerializeField] private List<Vector2> samplePoints = new();
+        [ReadOnly] [SerializeField] private List<Vector2> quickSamplePoints = new();
+        [ReadOnly] [SerializeField] private List<Vector2> superSamplePoint = new();
+        
         public bool ContinuousDetection
         {
             get => continuousDetection;
             set => continuousDetection = value;
         }
 
+        public float SuperSensitive
+        {
+            get => superSensitive;
+            set
+            {
+                superSensitive = value;
+                UpdateSuperSensitivity();
+            }
+        }
+        
         public float QuickSensitive
         {
             get => quickSensitive;
@@ -88,7 +103,7 @@ namespace GG.Infrastructure.Utils.Swipe
             _swipeTimer = swipeTouchTime;
             UpdateSensitivity();
             UpdateQuickSensitivity();
-
+            UpdateSuperSensitivity();
             if (SwipeDetectionMode != SwipeDetectionMode.Custom)
                 SetDetectionMode(DirectionPresets.GetPresetByMode(SwipeDetectionMode));
         }
@@ -140,6 +155,12 @@ namespace GG.Infrastructure.Utils.Swipe
             _quickMinMoveDistance = screenShortSide / quickSensitive;
         }
 
+        private void UpdateSuperSensitivity()
+        {
+            int screenShortSide = Screen.width < Screen.height ? Screen.width : Screen.height;
+            _superMinMoveDistance = screenShortSide / superSensitive;
+        }
+        
         private void CheckSwipeCancellation()
         {
             if (Input.GetMouseButtonUp(0))
@@ -161,6 +182,20 @@ namespace GG.Infrastructure.Utils.Swipe
             if (isPredicted) return;
 
             _offset = Input.mousePosition - _swipeStartPoint;
+
+            int superSampleCount = superSamplePoint.Count;
+            
+            if (superSampleCount < 2 && !isPredicted && !_countingSwipeTime)
+            {
+                if (superSampleCount == 0)
+                {
+                    superSamplePoint.Add(Vector2.zero);
+                }
+                if (_offset.magnitude >= _superMinMoveDistance)
+                {
+                    superSamplePoint.Add(_offset);
+                }
+            }
             
             if (_swipeTimer < quickSwipeTouchTime)
             {
@@ -180,7 +215,6 @@ namespace GG.Infrastructure.Utils.Swipe
                         isPredicted = true;
                         float y = HUtilities.PredictYFromLinearRegression(quickSamplePoints, _offset.x);
                         _offset.Set(_offset.x, y, 0);
-                        DevLog.Log(DevId.Hoang, "BEFORE NORMALIZE: " + _offset + ", SAMPLE COUNT: " + quickSamplePoints.Count);
                         _offset.Normalize();
                         DevLog.Log(DevId.Hoang, $"DIRECTION: {_offset}");
                         // normalize the _offset
@@ -238,12 +272,24 @@ namespace GG.Infrastructure.Utils.Swipe
         {
             _waitForSwipe = false;
             _holdTimer = Constants.HOLD_TOUCH_TIME;
-            onCancelSwipe?.Invoke();
+            if (!_countingSwipeTime && !isPredicted)
+            {
+                float y = HUtilities.PredictYFromLinearRegression(quickSamplePoints, _offset.x);
+                _offset.Set(_offset.x, y, 0);
+                _offset.Normalize();
+                DevLog.Log(DevId.Hoang, $"DIRECTION ON CANCEL: {_offset}");
+                // normalize the _offset
+                onSwipe?.Invoke(_directions.GetSwipeId(_offset));
+                _isHolding = false;
+                TimerManager.Ins.WaitForFrame(1, () => { onCancelSwipe?.Invoke();});
+            }
+            else onCancelSwipe?.Invoke();
         }
 
         private void SampleSwipeStart()
         {
             isPredicted = false;
+            superSamplePoint.Clear();
             samplePoints.Clear();
             quickSamplePoints.Clear();
             _swipeStartPoint = Input.mousePosition;
