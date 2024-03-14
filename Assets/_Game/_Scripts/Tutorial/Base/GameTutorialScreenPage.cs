@@ -2,6 +2,7 @@
 using _Game._Scripts.UIs.Component;
 using _Game.Managers;
 using _Game.UIs.Screen;
+using _Game.Utilities;
 using _Game.Utilities.Timer;
 using HControls;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace _Game._Scripts.Tutorial
 {
     public class GameTutorialScreenPage : GameTutorialScreen
     {
-        [SerializeField] private HButton closeButton;
+         [SerializeField] private HButton closeButton;
          [SerializeField] private GameObject videoContainer;
          [SerializeField] private List<VideoTutorial> videoTutorials;
          [SerializeField] private Image panel;
@@ -23,27 +24,7 @@ namespace _Game._Scripts.Tutorial
 
         private bool _firstLoopAllPagesDone;
         private int _currentVideoIndex;
-
-        public override void OnAwake()
-        {
-            // CustomRenderTexture rendTex = new(180, 240, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Default)
-            //     {
-            //         initializationMode = CustomRenderTextureUpdateMode.OnDemand,
-            //         initializationSource = CustomRenderTextureInitializationSource.TextureAndColor,
-            //         initializationColor = new Color(1, 0, 0, 0),
-            //         autoGenerateMips = false,
-            //         useMipMap = false
-            //     };
-            // rendTex.Initialize();
-            //
-            // foreach (VideoTutorial vt in videoTutorials)
-            // {
-            //     vt.VideoPlayer.renderMode = VideoRenderMode.RenderTexture;
-            //     vt.VideoPlayer.targetTexture = rendTex;
-            //     vt.RawImage.texture = rendTex;
-            // }
-        }
-
+        
         public override void Setup(object param = null)
         {
             base.Setup(param);
@@ -60,17 +41,18 @@ namespace _Game._Scripts.Tutorial
                 UIManager.Ins.CloseUI<InGameScreen>();
                 // Stop timer
             });
-            TimerManager.Ins.WaitForTime(1f, () =>
-            {
-                panel.color = new Color(0,0,0,0.65f);
-                HandleShowVideo();
-            });
+            TimerManager.Ins.WaitForTime(0.75f, HandleShowVideo);
         }
 
         private void HandleShowVideo()
         {
             _currentVideoIndex = 0;
-            videoContainer.SetActive(true);
+            videoTutorials[_currentVideoIndex].isFadeUIOnAppear = true;
+            videoTutorials[_currentVideoIndex].OnPrepared += () =>
+            {
+                panel.color = new Color(0,0,0,0.65f);
+                videoContainer.SetActive(true);
+            };
             videoTutorials[_currentVideoIndex].Play(loopVideoPerPage, GoNextVideo);
         }
         
