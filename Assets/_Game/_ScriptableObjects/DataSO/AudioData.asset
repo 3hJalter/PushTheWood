@@ -16,8 +16,8 @@ MonoBehaviour:
     SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects:
-    - {fileID: 8300000, guid: de9f98a908968f14c844845f2a71617b, type: 3}
-    - {fileID: 8300000, guid: 207108605591df04b911db6ccec9c730, type: 3}
+    - {fileID: 8300000, guid: 2e28d00f47204e64a8f797afe5190a82, type: 3}
+    - {fileID: 8300000, guid: f4a1e9070eaf67c49b02c0211e68e675, type: 3}
     - {fileID: 8300000, guid: 7ad34eebbe1a77944baf40d04b52e714, type: 3}
     - {fileID: 8300000, guid: 116983fe145defa4f88b8f216857785e, type: 3}
     - {fileID: 8300000, guid: 3aad71a28c4c4eb4e9c39a8b472a4919, type: 3}
@@ -76,7 +76,7 @@ MonoBehaviour:
       Data: 0
     - Name: multiplier
       Entry: 4
-      Data: 0.3
+      Data: 0.8
     - Name: 
       Entry: 8
       Data: 
@@ -97,7 +97,7 @@ MonoBehaviour:
       Data: 1
     - Name: multiplier
       Entry: 4
-      Data: 0.3
+      Data: 0.8
     - Name: 
       Entry: 8
       Data: 
