@@ -23,16 +23,16 @@ MonoBehaviour:
     SerializationNodes:
     - Name: unlockGoMainMenuOnLoseAtLevelIndex
       Entry: 3
-      Data: 6
+      Data: 7
     - Name: unlockBonusChestAtLevelIndex
       Entry: 3
-      Data: 6
+      Data: 7
     - Name: unlockDailyChallengeAtLevelIndex
       Entry: 3
-      Data: 10
+      Data: 11
     - Name: unlockSecretLevelAtLevelIndex
       Entry: 3
-      Data: 20
+      Data: 21
     - Name: timePerDailyChallengeLevel
       Entry: 3
       Data: 150
