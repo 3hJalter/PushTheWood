@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using _Game.Utilities;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
@@ -9,28 +12,41 @@ namespace _Game._Scripts.UIs.Component
 {
     public class VideoTutorial : MonoBehaviour
     {
+        public bool isFadeUIOnAppear;
+        
         [Title("Video Player")]
         [SerializeField] private VideoPlayer videoPlayer;
 
         public VideoPlayer VideoPlayer => videoPlayer;
         
         [SerializeField] private RawImage rawImage;
-
+        [SerializeField] private Image maskImage;
+        
         public RawImage RawImage => rawImage;
+
+        [SerializeField] private List<GameObject> ui;
 
         private int _numberVideoLoop;
         private int _currentVideoLoop;
 
         public event Action OnCallback;
+        public event Action OnPrepared;
         
         private void Awake()
         {
+            ShowUI(!isFadeUIOnAppear);
             videoPlayer.loopPointReached += EndReached;
+            // videoPlayer.started += Started;
+            videoPlayer.prepareCompleted += Prepared;
         }
 
         private void OnDestroy()
         {
             videoPlayer.loopPointReached -= EndReached;
+            // videoPlayer.started -= Started;
+            videoPlayer.prepareCompleted -= Prepared;
+            OnPrepared = null;
+            OnCallback = null;
         }
         
         
@@ -49,6 +65,17 @@ namespace _Game._Scripts.UIs.Component
             if (gameObject.activeSelf) gameObject.SetActive(false);
         }
         
+        private void Prepared(VideoPlayer source)
+        {
+           DevLog.Log(DevId.Hoang, "Started at time: " + Time.time);
+           if (isFadeUIOnAppear)
+           {
+               ShowUI(true);
+           }
+           OnPrepared?.Invoke();
+           videoPlayer.prepareCompleted -= Prepared; // Unsubscribe so that it won't be called again
+        }
+        
         private void EndReached(VideoPlayer source)
         {
             if (_currentVideoLoop < _numberVideoLoop)
@@ -60,6 +87,16 @@ namespace _Game._Scripts.UIs.Component
             {
                 Stop();
                 OnCallback?.Invoke();
+            }
+        }
+
+        private void ShowUI(bool isShow)
+        {
+            rawImage.enabled = isShow;
+            maskImage.enabled = isShow;
+            for (int i = 0; i < ui.Count; i++)
+            {
+                ui[i].SetActive(isShow);
             }
         }
     }

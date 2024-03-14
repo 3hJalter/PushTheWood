@@ -80,6 +80,7 @@ namespace _Game.UIs.Popup
         public void OnChangeBgmVolume(bool value)
         {
             AudioManager.Ins.ToggleBgmVolume(value);
+            AudioManager.Ins.ToggleEnvironmentVolume(value);
         }
 
         public void OnChangeSfxVolume(bool value)
