@@ -107,12 +107,15 @@ namespace GG.Infrastructure.Utils.Swipe
             if (SwipeDetectionMode != SwipeDetectionMode.Custom)
                 SetDetectionMode(DirectionPresets.GetPresetByMode(SwipeDetectionMode));
         }
+
+        [ReadOnly] [SerializeField] private bool _isPointerUI;
         
         private void Update()
         {
             // Version 2
             if (Input.GetMouseButtonUp(0))
             {
+                _isPointerUI = false;
                 // Check if button Release
                 if (_isHolding)
                 {
@@ -124,12 +127,16 @@ namespace GG.Infrastructure.Utils.Swipe
             } else if (Input.GetMouseButtonDown(0))
             {
                 // Check if button Pressed
-                if (!isOverlappingUI && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
+                if (!isOverlappingUI && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+                {
+                    _isPointerUI = true;
+                    return;
+                }
                 InitSwipe();
             } else if (Input.GetMouseButton(0))
             {
                 // Check if button is being held
-                if (_waitForSwipe) CheckSwipe();
+                if (!_isPointerUI && _waitForSwipe) CheckSwipe();
             }
             // Check if Swipe is continuous detection
             if (!continuousDetection) CheckSwipeCancellation();
