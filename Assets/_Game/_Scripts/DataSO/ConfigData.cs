@@ -65,12 +65,8 @@ namespace _Game.Data
         public readonly int[] CharacterCosts;
         [FoldoutGroup("In Game/Time")]
         public readonly int DangerTime = 30;
-        [FoldoutGroup("In Game/More Time Cost")]
-        [InfoBox("Do not change the order of the list: Normal Easy -> Medium -> Hard -> Daily Challenge -> Secret Level")]
-        public readonly int[] MoreTimeCosts = new []
-        {
-            750, 1000, 1250, 1000, 2000
-        };
+        [FoldoutGroup("In Game/MoreTimeAdded")]
+        public readonly int MoreTimeAdded = 60;
         #endregion
 
         #region Daily Challenge Reward

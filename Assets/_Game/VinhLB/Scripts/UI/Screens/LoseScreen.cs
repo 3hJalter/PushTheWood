@@ -63,7 +63,6 @@ namespace VinhLB
         
         public void OnClickMoreTimeButton()
         {
-            GameplayManager.Ins.OnResetTime();
             GameManager.Ins.PostEvent(EventID.MoreTimeGame);
             Close();
         }

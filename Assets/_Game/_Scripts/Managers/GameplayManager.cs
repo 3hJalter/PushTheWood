@@ -9,7 +9,6 @@ using _Game.Resource;
 using _Game.UIs.Screen;
 using _Game.Utilities;
 using _Game.Utilities.Timer;
-using TMPro;
 using Unity.Collections;
 using UnityEngine;
 using VinhLB;
@@ -25,17 +24,17 @@ namespace _Game.Managers
         private readonly Dictionary<int, bool> isBoughtGrowTreeInIsland = new();
         private readonly Dictionary<int, bool> isCanGrowTreeInIsland = new();
 
-        public bool IsBoughtGrowTreeInIsland(int islandID)
+        private bool IsBoughtGrowTreeInIsland(int islandID)
         {
             return isBoughtGrowTreeInIsland.ContainsKey(islandID) && isBoughtGrowTreeInIsland[islandID];
         }
-        
-        public bool IsCanGrowTreeInIsland(int islandID)
+
+        private bool IsCanGrowTreeInIsland(int islandID)
         {
             return isCanGrowTreeInIsland.ContainsKey(islandID) && isCanGrowTreeInIsland[islandID];
         }
-        
-        public void SetBoughtTreeInIsland(int islandID, bool value)
+
+        private void SetBoughtTreeInIsland(int islandID, bool value)
         {
             isBoughtGrowTreeInIsland.TryAdd(islandID, false);
             isBoughtGrowTreeInIsland[islandID] = value;
@@ -65,7 +64,7 @@ namespace _Game.Managers
 
         [ReadOnly]
         [SerializeField] private int time;
-        private int maxTime;
+        private int _gameDuration;
         private STimer timer;
 
         public PushHintObject PushHintObject => pushHintObject;
@@ -100,7 +99,7 @@ namespace _Game.Managers
                 screen.SetActiveResetIsland(value);
             } 
         }
-        public int GameDuration => maxTime - time;
+        public int GameDuration => _gameDuration;
 
         private void Awake()
         {
@@ -194,13 +193,6 @@ namespace _Game.Managers
             boosterCount += amount;
             button.SetAmount(boosterCount);
         }
-        
-        private void OnToMainMenu()
-        {
-            _pushHint?.OnStopHint();
-            timer.Stop();
-            LevelManager.Ins.OnRestart();
-        }
 
         public void OnPauseGame()
         {
@@ -220,7 +212,7 @@ namespace _Game.Managers
             if (nextState is GameState.InGame) timer.Start(1f, CountTime, true);
         }
 
-        public void OnResetTime()
+        private void OnResetTime()
         {
             LevelType levelType = LevelManager.Ins.CurrentLevel.LevelType;
             time = levelType is LevelType.Normal
@@ -228,14 +220,16 @@ namespace _Game.Managers
                 : DataManager.Ins.GetLevelTime(LevelManager.Ins.CurrentLevel.LevelType);
             // if first level of normal level, or daily time is MaxValue because it is tutorial level
             if (LevelManager.Ins.IsFirstTutorialLevel) time = int.MaxValue;
-            maxTime = time;
+            _gameDuration = 0;
             screen.Time = time;
             timer.Start(1f, CountTime, true);
         }
 
         private void OnMoreTimeGame()
         {
-            OnResetTime();
+            time = DataManager.Ins.ConfigData.MoreTimeAdded;
+            screen.Time = time;
+            timer.Start(1f, CountTime, true);
             IsCanResetIsland = true;
             IsCanUndo = true;
             GameManager.Ins.ChangeState(GameState.InGame);
@@ -414,38 +408,11 @@ namespace _Game.Managers
         {
             if (time < 0) return;
             time -= 1;
+            _gameDuration += 1;
             screen.Time = time;
             if (time <= 0)
             {
-                #region Cost to Get More time
-
-                Level level = LevelManager.Ins.CurrentLevel;
-                int moreTimeCost = 1000;
-                switch (level.LevelType)
-                {
-                    case LevelType.Normal:
-                        moreTimeCost = level.LevelNormalType switch
-                        {
-                            LevelNormalType.Easy => DataManager.Ins.ConfigData.MoreTimeCosts[0],
-                            LevelNormalType.Medium => DataManager.Ins.ConfigData.MoreTimeCosts[1],
-                            LevelNormalType.Hard => DataManager.Ins.ConfigData.MoreTimeCosts[2],
-                            _ => moreTimeCost
-                        };
-                        break; 
-                    case   LevelType.DailyChallenge:
-                        moreTimeCost = DataManager.Ins.ConfigData.MoreTimeCosts[3];
-                        break;
-                    case LevelType.Secret:
-                        moreTimeCost = DataManager.Ins.ConfigData.MoreTimeCosts[4];
-                        break;
-                    case LevelType.None:
-                    default:
-                        moreTimeCost = 1000;
-                        break;
-                }
-
-                #endregion
-                UIManager.Ins.OpenUI<SaveMeScreen>(moreTimeCost);
+                UIManager.Ins.OpenUI<SaveMeScreen>();
             }
         }
 

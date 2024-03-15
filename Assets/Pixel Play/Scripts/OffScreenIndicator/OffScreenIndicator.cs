@@ -1,8 +1,6 @@
 ﻿using PixelPlay.OffScreenIndicator;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using _Game.GameGrid;
 using _Game.Managers;
 using _Game.Utilities;
 using UnityEngine;
@@ -76,10 +74,10 @@ public class OffScreenIndicator : MonoBehaviour
             if(indicator)
             {
                 indicator.SetImageColor(target.TargetColor);// Sets the image color of the indicator.
-                if (!isTargetVisible && target.NeedDistanceText)
-                {
-                    indicator.SetDistanceText(target.GetDistanceFromUnit(LevelManager.Ins.player));   //Set the distance text for the indicator.
-                }
+                // if (!isTargetVisible && target.NeedDistanceText)
+                // {
+                //     indicator.SetDistanceText(target.GetDistanceFromUnit(LevelManager.Ins.player));   //Set the distance text for the indicator.
+                // }
                 indicator.transform.position = screenPosition; //Sets the position of the indicator on the screen.
                 // DevLog.Log(DevId.Hoang, $"Set position for indicator: {screenPosition}");
                 indicator.SetTextRotation(Quaternion.identity); // Sets the rotation of the distance text of the indicator.
