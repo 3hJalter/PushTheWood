@@ -37,8 +37,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             sleepingParticle = ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.SleepingzZz), t.VFXPositions[0].position);
             AudioManager.Ins.PlaySfx(SfxType.Sleep);
             
-            // TEMPORARY: Handle player sleep when in not InGame
-            if (GameManager.Ins.IsState(GameState.InGame)) return;
             sfxTimer.Start(SLEEP_SFX_INTERVAL, () => AudioManager.Ins.PlaySfx(SfxType.Sleep), true);
         }
 
@@ -52,7 +50,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 t.SetAnimSpeed(initAnimSpeed * Constants.SLEEP_UP_ANIM_TIME / SLEEP_UP_TIME);
                 isSleeping = false;
                 sleepingParticle?.Stop();
-                SaveCommand(t);
                 timer.Start(SLEEP_UP_TIME, ChangeIdleState);
             }
 
