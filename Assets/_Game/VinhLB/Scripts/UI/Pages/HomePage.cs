@@ -61,6 +61,10 @@ namespace VinhLB
         [SerializeField]
         private Color _hardLevelNormalColor;
 
+        [SerializeField] private Color lastLevelNormalColor;
+        [SerializeField] private GameObject lastLevelLockFrame;
+        
+        
         private STimer _shakeRewardTimer;
         private STimer _shakeLevelTimer;
         private Quaternion _startRewardChestIconQuaternion;
@@ -202,8 +206,24 @@ namespace VinhLB
 
         public override void UpdateUI()
         {
-            _levelText.text = $"Level {LevelManager.Ins.NormalLevelIndex + 1}";
-
+            // if NormalLevelIndex is the last index of normal level in
+            int index = LevelManager.Ins.NormalLevelIndex;
+            _levelText.text = $"Level {index + 1}"; 
+            
+            if (index == DataManager.Ins.CountNormalLevel - 1)
+            {
+                _levelNormalFrame.color = lastLevelNormalColor;
+                _levelNormalText.text = "Not Available";
+                lastLevelLockFrame.SetActive(true);
+                _playButton.interactable = false;
+                return;
+            }
+            else
+            {
+                _playButton.interactable = true;
+                lastLevelLockFrame.SetActive(false);
+            }
+            
             LevelNormalType currentLevelLevelNormalType = LevelManager.Ins.CurrentLevel.LevelNormalType;
             _levelNormalText.text = $"{currentLevelLevelNormalType} Level";
             switch (currentLevelLevelNormalType)
