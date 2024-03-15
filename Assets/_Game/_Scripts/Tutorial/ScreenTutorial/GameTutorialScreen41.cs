@@ -33,7 +33,6 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
                 panel.raycastTarget = true;
                 panel.color = new Color(0,0,0,0.75f);
                 deco.SetActive(true);
-                HInputManager.LockInput(false);
             });
         }
 
@@ -46,6 +45,7 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
             void PointerUpAction()
             {
                 if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.ZoomOutCamera)) CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera, Constants.ZOOM_OUT_TIME);
+                HInputManager.LockInput(false);
                 CloseDirectly();
             }
 

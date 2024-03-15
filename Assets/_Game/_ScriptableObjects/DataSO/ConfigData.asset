@@ -300,7 +300,7 @@ MonoBehaviour:
       quantity: 1
   boosterConfigList:
   - type: 0
-    unlockAtLevel: 2
+    unlockAtLevel: 3
     goldPerBuyTen: 10
     ticketPerBuyRatio:
       ticketNeed: 1
@@ -309,7 +309,7 @@ MonoBehaviour:
       Name: Undo
       IconSprite: {fileID: 21300000, guid: fcc83227a2a4b534597cc89516aadc77, type: 3}
   - type: 1
-    unlockAtLevel: 5
+    unlockAtLevel: 6
     goldPerBuyTen: 10
     ticketPerBuyRatio:
       ticketNeed: 2
@@ -318,7 +318,7 @@ MonoBehaviour:
       Name: Push Hint
       IconSprite: {fileID: 21300000, guid: e2531dbb210c447358dfd4dd637545c5, type: 3}
   - type: 2
-    unlockAtLevel: 4
+    unlockAtLevel: 5
     goldPerBuyTen: 10
     ticketPerBuyRatio:
       ticketNeed: 1
@@ -327,7 +327,7 @@ MonoBehaviour:
       Name: Grow Tree
       IconSprite: {fileID: 21300000, guid: 567990f4e6ea7df4e91cdb593fcc2a6a, type: 3}
   - type: 3
-    unlockAtLevel: 2
+    unlockAtLevel: 3
     goldPerBuyTen: 10
     ticketPerBuyRatio:
       ticketNeed: 1

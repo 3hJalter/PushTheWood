@@ -27,13 +27,13 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
             TimerManager.Ins.WaitForTime(1f, () =>
             {
                 panelContainer.SetActive(true);
-                HInputManager.LockInput(false);
             });
         }
 
         public void OnClickGrowTree()
         {
             GameplayManager.Ins.OnFreeGrowTree();
+            HInputManager.LockInput(false);
             CloseDirectly();
         }
     }

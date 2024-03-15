@@ -48,7 +48,7 @@ namespace _Game.UIs.Screen
         private Color dangerTimeColor;
 
         [SerializeField]
-        private TMP_Text objectiveText;
+        private Image objectiveImage;
         [SerializeField]
         private TMP_Text objectiveCounterText;
         
@@ -283,19 +283,7 @@ namespace _Game.UIs.Screen
 
         private void UpdateObjectiveText()
         {
-            string constant = LevelManager.Ins.CurrentLevel.LevelWinCondition switch
-            {
-                LevelWinCondition.FindingFruit => Constants.FIND_FRUIT,
-                LevelWinCondition.DefeatAllEnemy => Constants.DEFEAT_ENEMY,
-                LevelWinCondition.CollectAllChest => Constants.COLLECT_ALL_CHEST,
-                LevelWinCondition.FindingChest => Constants.FIND_CHEST,
-                LevelWinCondition.FindingChickenBbq => Constants.FIND_CHICKEN_BBQ,
-                _ => objectiveText.text
-            };
-            DevLog.Log(DevId.Hoang,
-                "Update Objective Counter: " + LevelManager.Ins.ObjectiveCounterLeft() + "/" +
-                LevelManager.Ins.ObjectiveTotal);
-            objectiveText.text = constant;
+            objectiveImage.sprite = DataManager.Ins.UIResourceDatabase.objectiveIconDict[LevelManager.Ins.CurrentLevel.LevelWinCondition].IconSprite;
             objectiveCounterText.text = $"{LevelManager.Ins.ObjectiveCounterLeft()}/{LevelManager.Ins.ObjectiveTotal}";
         }
 

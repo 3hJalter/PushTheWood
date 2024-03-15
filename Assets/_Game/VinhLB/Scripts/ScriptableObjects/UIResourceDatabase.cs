@@ -28,6 +28,9 @@ namespace VinhLB
         public Dictionary<LevelWinCondition, UIResourceConfig> WinScreenResourceConfigDict = new();
         public  Dictionary<LevelLoseCondition, UIResourceConfig> LoseScreenResourceConfigDict = new();
         
+        [Title("Objective Icon")]
+        public Dictionary<LevelWinCondition, UIResourceConfig> objectiveIconDict = new();
+        
         [ContextMenu("Convert From List To Dict")]
         public void ConvertListToDict()
         {

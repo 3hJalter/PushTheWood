@@ -19,7 +19,7 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
             {
                 if (triggerUnit is not Player) return;
                 // if player at cell 13,7
-                if (!(Math.Abs(cell.WorldX - 7) < Constants.TOLERANCE) ||
+                if (!(Math.Abs(cell.WorldX - 9) < Constants.TOLERANCE) ||
                     !(Math.Abs(cell.WorldY - 7) < Constants.TOLERANCE)) return;
                 GameplayManager.Ins.OnFreePushHint(false, false);
                 currentTutIndex++;
