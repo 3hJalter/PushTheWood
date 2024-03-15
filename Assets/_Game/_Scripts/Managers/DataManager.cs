@@ -60,6 +60,8 @@ namespace _Game.Managers
         public int CurrentPlayerSkinIndex => GameData.user.currentPlayerSkinIndex;
         public int HintAdsCount => GameData.user.hintAdsCount;
         
+        public int GoldCount => GameData.user.gold;
+        
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);

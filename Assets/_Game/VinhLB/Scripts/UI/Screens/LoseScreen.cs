@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using _Game._Scripts.InGame;
 using _Game.Data;
 using _Game.GameGrid;
@@ -22,8 +19,8 @@ namespace VinhLB
         private Image _blockPanel;
         [SerializeField]
         private Image _contentImage;
-        [SerializeField]
-        private HButton _moreTimeButton;
+        // [SerializeField]
+        // private HButton _moreTimeButton;
 
         private void Awake()
         {
@@ -53,7 +50,7 @@ namespace VinhLB
                 loseCondition = lC;
             }
             _contentImage.sprite = DataManager.Ins.UIResourceDatabase.LoseScreenResourceConfigDict[loseCondition].IconSprite;
-            _moreTimeButton.gameObject.SetActive(loseCondition == LevelLoseCondition.Timeout);
+            // _moreTimeButton.gameObject.SetActive(loseCondition == LevelLoseCondition.Timeout);
         }
 
         public override void Open(object param = null)

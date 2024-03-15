@@ -2998,7 +2998,6 @@ MonoBehaviour:
   _canvasGroup: {fileID: 5000227738760051636}
   _blockPanel: {fileID: 5837834491298183596}
   _contentImage: {fileID: 3341276536248213865}
-  _moreTimeButton: {fileID: 7891454247159037684}
 --- !u!1 &5802322821624353125
 GameObject:
   m_ObjectHideFlags: 0
@@ -3425,7 +3424,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3395896648791603760
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3443,10 +3442,10 @@ RectTransform:
   m_Father: {fileID: 7830203055437535486}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 490, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 250, y: -100}
+  m_SizeDelta: {x: 490, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8958718561244117900
 CanvasRenderer:

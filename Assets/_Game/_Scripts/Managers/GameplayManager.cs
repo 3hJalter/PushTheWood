@@ -389,8 +389,8 @@ namespace _Game.Managers
             }
             return rewards.ToArray();
         }
-        
-        private void OnLoseGame(object o)
+
+        public void OnLoseGame(object o)
         {
             _pushHint.OnStopHint();
             timer.Stop();
@@ -417,8 +417,35 @@ namespace _Game.Managers
             screen.Time = time;
             if (time <= 0)
             {
-                // TODO: Show save me popup
-                OnLoseGame(LevelLoseCondition.Timeout);
+                #region Cost to Get More time
+
+                Level level = LevelManager.Ins.CurrentLevel;
+                int moreTimeCost = 1000;
+                switch (level.LevelType)
+                {
+                    case LevelType.Normal:
+                        moreTimeCost = level.LevelNormalType switch
+                        {
+                            LevelNormalType.Easy => DataManager.Ins.ConfigData.MoreTimeCosts[0],
+                            LevelNormalType.Medium => DataManager.Ins.ConfigData.MoreTimeCosts[1],
+                            LevelNormalType.Hard => DataManager.Ins.ConfigData.MoreTimeCosts[2],
+                            _ => moreTimeCost
+                        };
+                        break; 
+                    case   LevelType.DailyChallenge:
+                        moreTimeCost = DataManager.Ins.ConfigData.MoreTimeCosts[3];
+                        break;
+                    case LevelType.Secret:
+                        moreTimeCost = DataManager.Ins.ConfigData.MoreTimeCosts[4];
+                        break;
+                    case LevelType.None:
+                    default:
+                        moreTimeCost = 1000;
+                        break;
+                }
+
+                #endregion
+                UIManager.Ins.OpenUI<SaveMeScreen>(moreTimeCost);
             }
         }
 

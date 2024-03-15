@@ -225,6 +225,33 @@ MonoBehaviour:
     - Name: DangerTime
       Entry: 3
       Data: 30
+    - Name: MoreTimeCosts
+      Entry: 7
+      Data: 7|System.Int32[], mscorlib
+    - Name: 
+      Entry: 14
+      Data: 5
+    - Name: 
+      Entry: 3
+      Data: 100
+    - Name: 
+      Entry: 3
+      Data: 200
+    - Name: 
+      Entry: 3
+      Data: 300
+    - Name: 
+      Entry: 3
+      Data: 200
+    - Name: 
+      Entry: 3
+      Data: 500
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: stepInterAdsCountMax
       Entry: 3
       Data: 3
@@ -245,7 +272,7 @@ MonoBehaviour:
       Data: 150
   timePerNormalLevel:
   - levelNormalType: 0
-    time: 90
+    time: 20
   - levelNormalType: 1
     time: 150
   - levelNormalType: 2
