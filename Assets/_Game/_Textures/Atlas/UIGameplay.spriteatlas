@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UIGameplay
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: b419e0480302b144e89367c5f9927d5e, type: 3}
+    - {fileID: 2800000, guid: 1012a03e39ef4c149aee0eba370d2c3f, type: 3}
+    - {fileID: 2800000, guid: 3fd0bd92d4dbf314f8ddf1b084736524, type: 3}
+    - {fileID: 2800000, guid: 76f62754f7f22d04eb619ce11f16448a, type: 3}
+    - {fileID: 2800000, guid: 5a6efe32c48fc7e4c9666f9c445dbcf8, type: 3}
+    - {fileID: 2800000, guid: 5e32bc311a3b25b40b2518b71d4b2d7e, type: 3}
+    - {fileID: 2800000, guid: bcff4bf68556c9a4e8bb7d22207c9395, type: 3}
+    - {fileID: 2800000, guid: 3e53afb930fb97e479738d9639ad649e, type: 3}
+    - {fileID: 2800000, guid: dfc87af8ca5f0134cbe4669d65ba0237, type: 3}
+    - {fileID: 2800000, guid: 3d51b9499215c95409575808db7284c5, type: 3}
+    - {fileID: 2800000, guid: 13e53a5210354e94fa9cceb380380da5, type: 3}
+    - {fileID: 2800000, guid: 753aa0c9ea1d4d74db9323b3561059b9, type: 3}
+    - {fileID: 2800000, guid: 53a5f9376ba7ea74cb52863fb47c7456, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 5e32bc311a3b25b40b2518b71d4b2d7e, type: 3}
+  - {fileID: 21300000, guid: 5a6efe32c48fc7e4c9666f9c445dbcf8, type: 3}
+  - {fileID: 21300000, guid: 13e53a5210354e94fa9cceb380380da5, type: 3}
+  - {fileID: 21300000, guid: 3fd0bd92d4dbf314f8ddf1b084736524, type: 3}
+  - {fileID: 21300000, guid: 76f62754f7f22d04eb619ce11f16448a, type: 3}
+  - {fileID: 21300000, guid: bcff4bf68556c9a4e8bb7d22207c9395, type: 3}
+  - {fileID: 21300000, guid: 53a5f9376ba7ea74cb52863fb47c7456, type: 3}
+  - {fileID: 21300000, guid: b419e0480302b144e89367c5f9927d5e, type: 3}
+  - {fileID: 21300000, guid: dfc87af8ca5f0134cbe4669d65ba0237, type: 3}
+  - {fileID: 21300000, guid: 3d51b9499215c95409575808db7284c5, type: 3}
+  - {fileID: 21300000, guid: 3e53afb930fb97e479738d9639ad649e, type: 3}
+  - {fileID: 21300000, guid: 753aa0c9ea1d4d74db9323b3561059b9, type: 3}
+  - {fileID: 21300000, guid: 1012a03e39ef4c149aee0eba370d2c3f, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Fruit
+  - Enemy_Sample
+  - magnigying_glass
+  - booster_red_btn
+  - Chicken
+  - lock_icon
+  - key
+  - ad
+  - undo
+  - pause_btn
+  - star
+  - grow-tree
+  - reset
+  m_RenderDataMap: {}
+  m_Tag: UIGameplay
+  m_IsVariant: 0
