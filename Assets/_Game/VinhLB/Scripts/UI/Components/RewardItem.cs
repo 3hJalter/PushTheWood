@@ -40,6 +40,10 @@ namespace VinhLB
             {
                 amountText = $"{_reward.Amount}";
             }
+            else if (_reward.RewardType == RewardType.Character)
+            {
+                amountText = $"Unlock";
+            }
             else
             {
                 amountText = $"x{_reward.Amount}";

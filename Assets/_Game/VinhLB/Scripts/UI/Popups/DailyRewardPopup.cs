@@ -35,7 +35,7 @@ namespace VinhLB
 
             SetupDailyRewards();
 
-            DailyRewardManager.Ins.OnDailyRewardParamsChanged += DailyRewardManager_OnOnDailyRewardParamsChanged;
+            DailyRewardManager.Ins.OnDailyRewardParamsChanged += DailyRewardManager_OnDailyRewardParamsChanged;
         }
 
         public override void Setup(object param = null)
@@ -58,7 +58,7 @@ namespace VinhLB
             }
         }
 
-        private void DailyRewardManager_OnOnDailyRewardParamsChanged()
+        private void DailyRewardManager_OnDailyRewardParamsChanged()
         {
             SetupDailyRewards();
             

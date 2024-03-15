@@ -23,8 +23,8 @@ namespace VinhLB
         private RectTransform _checkedRectTF;
 
         private int _day = -1;
-        private Reward[] _rewards = null;
-        private List<RewardItem> _rewardItemList = new List<RewardItem>();
+        private Reward[] _rewards;
+        private List<RewardItem> _rewardItemList = new();
 
         public Reward[] Rewards => _rewards;
 
