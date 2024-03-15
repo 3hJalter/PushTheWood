@@ -2298,7 +2298,7 @@ MonoBehaviour:
   useAnimator: 0
   animator: {fileID: 0}
   btnMoreTime: {fileID: 3618839642037570877}
-  costText: {fileID: 37022063693944352}
+  costText: {fileID: 4835340762710226588}
   btnMoreTimeTicket: {fileID: 3503872946484362891}
   btnClose: {fileID: 5929154874320852025}
   btnTicketContainer: {fileID: 8378643402872985817}

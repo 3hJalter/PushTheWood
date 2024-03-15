@@ -38,7 +38,7 @@ namespace _Game.UIs.Screen
         public override void Setup(object param = null)
         {
             base.Setup(param);
-            GameManager.Ins.ChangeState(GameState.Pause);
+            // GameManager.Ins.ChangeState(GameState.Pause);
             _tweenTicketContainer = btnTicketContainer.DOScale(Vector3.one * 1.15f, 1f).SetLoops(-1, LoopType.Yoyo);
             // cast param to int
             if (param is int cost)
