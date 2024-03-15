@@ -17,9 +17,6 @@ namespace _Game.UIs.Screen
         
         private const float TIMER = 3f;
 
-        [SerializeField] private Transform btnTicketContainer;
-        private Tween _tweenTicketContainer;
-
         private int _costAmount;
         private void Awake()
         {
@@ -38,8 +35,7 @@ namespace _Game.UIs.Screen
         public override void Setup(object param = null)
         {
             base.Setup(param);
-            // GameManager.Ins.ChangeState(GameState.Pause);
-            _tweenTicketContainer = btnTicketContainer.DOScale(Vector3.one * 1.15f, 1f).SetLoops(-1, LoopType.Yoyo);
+            GameManager.Ins.ChangeState(GameState.Pause);
             // cast param to int
             if (param is int cost)
             {
@@ -59,12 +55,6 @@ namespace _Game.UIs.Screen
             {
                 btnClose.gameObject.SetActive(true);
             });
-        }
-
-        public override void Close()
-        {
-            _tweenTicketContainer?.Kill();
-            base.Close();
         }
 
         private void OnGoLose()
