@@ -25,6 +25,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         Vector3 sitDistance;
         Vector3 oldSkinPos;
         ParticleSystem musicalNotes;
+        Player player;
         public override void OnEnter(Player t)
         {
             if (timer == null)
@@ -32,6 +33,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                 timer = TimerManager.Ins.PopSTimer();
             }
 
+            player = t;
             initAnimSpeed = t.AnimSpeed;
             t.ChangeAnim(Constants.SIT_DOWN_ANIM, true);
             t.SetAnimSpeed(initAnimSpeed * Constants.SIT_DOWN_ANIM_TIME / SIT_DOWN_TIME);
@@ -42,6 +44,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             oldSkinPos = t.skin.localPosition;
             t.skin.DOLocalMove(oldSkinPos + sitDistance, SIT_DOWN_TIME).OnComplete(PlayVFXSinging);
             t.OnCharacterChangePosition();
+            GameManager.Ins.RegisterListenerEvent(EventID.StartGame, OnStandUp);
 
             void PlayVFXSinging()
             {
@@ -56,18 +59,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             if (!isSitDown) return;
             if (t.InputDirection != Direction.None && t.InputDirection != oldDirection)
             {
-                t.ChangeAnim(Constants.SIT_UP_ANIM);
-                t.SetAnimSpeed(initAnimSpeed * Constants.SIT_UP_ANIM_TIME / SIT_UP_TIME);
-
-                timer.Start(SIT_UP_TIME, ChangeIdleState);
-                t.skin.transform.DOLocalMove(oldSkinPos, SIT_UP_TIME);
-                musicalNotes?.Stop();
-                isSitDown = false;
-            }
-
-            void ChangeIdleState()
-            {
-                t.StateMachine.ChangeState(StateEnum.Idle);
+                OnStandUp();
             }
         }
 
@@ -78,6 +70,23 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             timer?.Stop();
             musicalNotes?.Stop();
             t.skin.transform.localPosition = oldSkinPos;
+            GameManager.Ins.UnregisterListenerEvent(EventID.StartGame, OnStandUp);
+        }
+
+        private void OnStandUp()
+        {
+            player.ChangeAnim(Constants.SIT_UP_ANIM);
+            player.SetAnimSpeed(initAnimSpeed * Constants.SIT_UP_ANIM_TIME / SIT_UP_TIME);
+
+            timer.Start(SIT_UP_TIME, ChangeIdleState);
+            player.skin.transform.DOLocalMove(oldSkinPos, SIT_UP_TIME);
+            musicalNotes?.Stop();
+            isSitDown = false;
+
+            void ChangeIdleState()
+            {
+                player.StateMachine.ChangeState(StateEnum.Idle);
+            }
         }
     }
 }
