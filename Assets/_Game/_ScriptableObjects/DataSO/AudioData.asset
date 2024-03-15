@@ -97,7 +97,7 @@ MonoBehaviour:
       Data: 1
     - Name: multiplier
       Entry: 4
-      Data: 0.3
+      Data: 0.15
     - Name: 
       Entry: 8
       Data: 
@@ -207,7 +207,7 @@ MonoBehaviour:
       Data: 5
     - Name: multiplier
       Entry: 4
-      Data: 0.9
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
@@ -354,7 +354,7 @@ MonoBehaviour:
       Data: 12
     - Name: multiplier
       Entry: 4
-      Data: 0.08
+      Data: 0.09
     - Name: 
       Entry: 8
       Data: 
@@ -438,7 +438,7 @@ MonoBehaviour:
       Data: 16
     - Name: multiplier
       Entry: 4
-      Data: 0.6
+      Data: 0.7
     - Name: 
       Entry: 8
       Data: 
@@ -548,7 +548,7 @@ MonoBehaviour:
       Data: 20
     - Name: multiplier
       Entry: 4
-      Data: 0.8
+      Data: 0.5
     - Name: 
       Entry: 8
       Data: 
