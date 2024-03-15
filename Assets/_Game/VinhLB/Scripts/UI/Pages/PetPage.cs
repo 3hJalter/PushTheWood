@@ -27,6 +27,10 @@ namespace VinhLB
         private HButton _buyButton;
         [SerializeField]
         private TMP_Text _costText;
+        [SerializeField]
+        private GameObject _infoGO;
+        [SerializeField]
+        private TMP_Text _infoText;
 
         private List<CollectionItem> _collectionItemList;
         private int _currentPetIndex = 0;
@@ -35,7 +39,7 @@ namespace VinhLB
         {
             _scrollRect.onValueChanged.AddListener(OnRewardScrollRectValueChanged);
         }
-        
+
         private void OnDestroy()
         {
             for (int i = 0; i < _collectionItemList.Count; i++)
@@ -43,7 +47,7 @@ namespace VinhLB
                 _collectionItemList[i]._OnClick -= OnItemClick;
             }
             _buyButton.onClick.RemoveAllListeners();
-            
+
             _scrollRect.onValueChanged.RemoveListener(OnRewardScrollRectValueChanged);
         }
 
@@ -74,7 +78,21 @@ namespace VinhLB
             {
                 if (DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[i].Id))
                 {
-                    _collectionItemList[i].SetOwned();
+                    _collectionItemList[i].ShowPrice(false);
+                }
+                else
+                {
+                    // Lock Weeny until player receives on day 7
+                    if (i == (int)CharacterType.Weeny)
+                    {
+                        _collectionItemList[i].SetLocked(true, "Receive in day 7");
+                        _collectionItemList[i].ShowPrice(false);
+                    }
+                    else
+                    {
+                        _collectionItemList[i].SetLocked(false);
+                        _collectionItemList[i].ShowPrice(true);
+                    }
                 }
 
                 if (i == _currentPetIndex)
@@ -102,17 +120,31 @@ namespace VinhLB
 
         private void OnItemClick(int id, int data)
         {
-            if (id == _currentPetIndex) return;
+            if (id == _currentPetIndex)
+            {
+                return;
+            }
 
             if (!DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[id].Data))
             {
-                _buyButton.gameObject.SetActive(true);
-                _costText.text = DataManager.Ins.ConfigData.CharacterCosts[_collectionItemList[id].Data]
-                    .ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+                if (!_collectionItemList[id].IsLocked)
+                {
+                    _buyButton.gameObject.SetActive(true);
+                    _costText.text = DataManager.Ins.ConfigData.CharacterCosts[_collectionItemList[id].Data]
+                        .ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+                    _infoGO.SetActive(false);
+                }
+                else
+                {
+                    _buyButton.gameObject.SetActive(false);
+                    _infoGO.SetActive(true);
+                    _infoText.text = _collectionItemList[id].UnlockInfo;
+                }
             }
             else
             {
                 _buyButton.gameObject.SetActive(false);
+                _infoGO.SetActive(false);
                 _collectionItemList[DataManager.Ins.CurrentPlayerSkinIndex].SetChosen(false);
                 _collectionItemList[id].SetChosen(true);
                 DataManager.Ins.SetCharacterSkinIndex(_collectionItemList[id].Data);
@@ -131,18 +163,32 @@ namespace VinhLB
             for (int i = 0; i < _collectionItemList.Count; i++)
             {
                 if (DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[i].Data))
-                    _collectionItemList[i].SetOwned();
+                {
+                    _collectionItemList[i].ShowPrice(false);
+                }
             }
 
             if (DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[_currentPetIndex].Data))
             {
                 _buyButton.gameObject.SetActive(false);
+                _infoGO.SetActive(false);
             }
             else
             {
-                _buyButton.gameObject.SetActive(true);
-                _costText.text = DataManager.Ins.ConfigData.CharacterCosts[_collectionItemList[_currentPetIndex].Data]
-                    .ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+                if (!_collectionItemList[_currentPetIndex].IsLocked)
+                {
+                    _buyButton.gameObject.SetActive(true);
+                    _costText.text = DataManager.Ins.ConfigData
+                        .CharacterCosts[_collectionItemList[_currentPetIndex].Data]
+                        .ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+                    _infoGO.SetActive(false);
+                }
+                else
+                {
+                    _buyButton.gameObject.SetActive(false);
+                    _infoGO.SetActive(true);
+                    _infoText.text = _collectionItemList[_currentPetIndex].UnlockInfo;
+                }
             }
         }
 
@@ -162,7 +208,7 @@ namespace VinhLB
                 DevLog.Log(DevId.Hung, "Not Enough Money To Buy Characters");
             }
         }
-        
+
         private void OnRewardScrollRectValueChanged(Vector2 value)
         {
             if (_scrollRect.verticalNormalizedPosition < 0.05f)

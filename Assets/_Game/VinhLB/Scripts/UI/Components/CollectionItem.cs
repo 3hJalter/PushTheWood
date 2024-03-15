@@ -21,7 +21,7 @@ namespace VinhLB
         [SerializeField]
         private GameObject _priceGO;
         [SerializeField]
-        private GameObject _selectedGO;
+        private GameObject[] _selectedGOs;
         [SerializeField]
         private GameObject _choosenGO;
         [SerializeField]
@@ -30,11 +30,13 @@ namespace VinhLB
         private GameObject _lockedIconGO;
         [SerializeField]
         private GameObject _unlockedFrameGO;
-        
-        
+
+        private bool _isLocked;
         private int _id;
         private int _data;
-        
+
+        public bool IsLocked => _isLocked;
+        public string UnlockInfo { get; private set; }
         public int Id => _id;
         public int Data => _data;
 
@@ -57,19 +59,46 @@ namespace VinhLB
             _OnClick?.Invoke(_id, _data);
         }
 
-        public void SetSelected(bool value)
+        public void SetLocked(bool value, string unlockInfo = null)
         {
-            _selectedGO.SetActive(value);
+            _isLocked = value;
+            UnlockInfo = unlockInfo;
+            
+            if (_isLocked)
+            {
+                _lockedFrameGO.SetActive(true);
+                _lockedIconGO.SetActive(true);
+                _unlockedFrameGO.SetActive(false);
+            }
+            else
+            {
+                _lockedFrameGO.SetActive(false);
+                _lockedIconGO.SetActive(false);
+                _unlockedFrameGO.SetActive(true);
+            }
         }
 
-        public void SetOwned()
+        public void SetSelected(bool value)
         {
-            _priceGO.SetActive(false);
+            for (int i = 0; i < _selectedGOs.Length; i++)
+            {
+                _selectedGOs[i].SetActive(value);
+            }
+
+            if (!_isLocked)
+            {
+                _unlockedFrameGO.SetActive(!value);
+            }
         }
 
         public void SetChosen(bool value)
         {
             _choosenGO.SetActive(value);
+        }
+        
+        public void ShowPrice(bool value)
+        {
+            _priceGO.SetActive(value);
         }
     }
 }
