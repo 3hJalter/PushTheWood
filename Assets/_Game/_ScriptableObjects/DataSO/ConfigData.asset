@@ -272,7 +272,7 @@ MonoBehaviour:
       Data: 150
   timePerNormalLevel:
   - levelNormalType: 0
-    time: 90
+    time: 20
   - levelNormalType: 1
     time: 150
   - levelNormalType: 2
