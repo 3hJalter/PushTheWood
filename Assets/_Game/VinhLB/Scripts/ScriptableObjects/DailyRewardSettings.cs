@@ -89,6 +89,7 @@ namespace VinhLB
             else if (RewardType == RewardType.Character)
             {
                 //TODO: Implement logic to obtain character by type
+                DataManager.Ins.SetUnlockCharacterSkin((int)CharacterType, true);
             }
             
             return;

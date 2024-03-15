@@ -5821,7 +5821,7 @@ MonoBehaviour:
   useAnimator: 0
   animator: {fileID: 0}
   panel: {fileID: 6630061402600170696}
-  secretMapButton: {fileID: 0}
+  secretMapButton: {fileID: 2233004412136640591}
   secretMapImage:
   - {fileID: 2257877076952732449}
   - {fileID: 4503919352428838039}

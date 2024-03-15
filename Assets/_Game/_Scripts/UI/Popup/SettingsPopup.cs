@@ -24,24 +24,32 @@ namespace _Game.UIs.Popup
         private GameObject[] _activeMoveChoices;
         
         [SerializeField]
-        private ToggleSwitch bgmToggleSwitch;
+        private Toggle _musicToggle;
         [SerializeField]
-        private ToggleSwitch sfxToggleSwitch;
+        private Toggle _soundToggle;
         [SerializeField]
-        private ToggleSwitch environmentToggleSwitch;
-        [SerializeField]
-        private ToggleSwitch _hapticToggleSwitch;
+        private Toggle _hapticToggle;
         [SerializeField]
         private ToggleSwitch _gridToggleSwitch;
-        
+
+        private void Awake()
+        {
+            _musicToggle.onValueChanged.AddListener(value => OnChangeMusicVolume(!value));
+            _soundToggle.onValueChanged.AddListener(value => OnChangeSoundVolume(!value));
+            _hapticToggle.onValueChanged.AddListener(value => OnChangeHapticValue(value));
+        }
+
         public override void Setup(object param = null)
         {
             base.Setup(param);
-            
-            bgmToggleSwitch.SetState(!AudioManager.Ins.IsBgmMute(), false);
-            sfxToggleSwitch.SetState(!AudioManager.Ins.IsSfxMute(), false);
-            environmentToggleSwitch.SetState(!AudioManager.Ins.IsEnvironmentMute(), false);
-            _hapticToggleSwitch.SetState(HVibrate.IsHapticOn, false);
+
+            // bgmToggleSwitch.SetState(!AudioManager.Ins.IsBgmMute(), false);
+            // sfxToggleSwitch.SetState(!AudioManager.Ins.IsSfxMute(), false);
+            // environmentToggleSwitch.SetState(!AudioManager.Ins.IsEnvironmentMute(), false);
+            // _hapticToggleSwitch.SetState(HVibrate.IsHapticOn, false);
+            _musicToggle.isOn = !AudioManager.Ins.IsBgmMute();
+            _soundToggle.isOn = !AudioManager.Ins.IsSfxMute();
+            _hapticToggle.isOn = HVibrate.IsHapticOn;
             _gridToggleSwitch.SetState(FXManager.Ins.IsGridOn, false);
 
             if (GameManager.Ins.IsState(GameState.InGame))
@@ -77,13 +85,13 @@ namespace _Game.UIs.Popup
             }
         }
 
-        public void OnChangeBgmVolume(bool value)
+        public void OnChangeMusicVolume(bool value)
         {
             AudioManager.Ins.ToggleBgmVolume(value);
             AudioManager.Ins.ToggleEnvironmentVolume(value);
         }
 
-        public void OnChangeSfxVolume(bool value)
+        public void OnChangeSoundVolume(bool value)
         {
             AudioManager.Ins.ToggleSfxVolume(value);
         }
@@ -91,6 +99,11 @@ namespace _Game.UIs.Popup
         public void OnChangeEnvironmentVolume(bool value)
         {
             AudioManager.Ins.ToggleEnvironmentVolume(value);
+        }
+
+        public void OnChangeHapticValue(bool value)
+        {
+            HVibrate.OnToggleHaptic(value);
         }
         
         public void OnToggleHapticOff()
