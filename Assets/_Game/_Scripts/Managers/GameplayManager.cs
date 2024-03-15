@@ -415,7 +415,11 @@ namespace _Game.Managers
             if (time < 0) return;
             time -= 1;
             screen.Time = time;
-            if (time <= 0) OnLoseGame(LevelLoseCondition.Timeout);
+            if (time <= 0)
+            {
+                // TODO: Show save me popup
+                OnLoseGame(LevelLoseCondition.Timeout);
+            }
         }
 
         #region Booster

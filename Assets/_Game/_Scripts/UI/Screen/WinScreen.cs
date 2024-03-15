@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using _Game._Scripts.InGame;
 using _Game.Utilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using VinhLB;
 
@@ -28,11 +29,9 @@ namespace _Game.UIs.Screen
         [SerializeField]
         private RewardItem _rewardItemPrefab;
         [SerializeField]
-        private Button _nextLevelButton;
-
-        [SerializeField] private GameObject mainMenuButton;
+        private Button btnContinue;
         
-        private Action _nextLevel;
+        private Action _onContinueClick;
         private List<RewardItem> _rewardItemList = new List<RewardItem>();
         private void Awake()
         {
@@ -94,32 +93,21 @@ namespace _Game.UIs.Screen
             }
             
             // Hide the next level button if the current level is not Normal level
+            
+            
             Level level = LevelManager.Ins.CurrentLevel;
-            if (level.LevelType != LevelType.Normal)
+            
+            if (level.LevelType is LevelType.Normal &&
+                level.Index < DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex - 1)
             {
-                _nextLevelButton.gameObject.SetActive(false);
-                mainMenuButton.SetActive(true);
+                _onContinueClick = OnGoNextLevel;
             }
             else
             {
-                if (level.Index == DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex - 1 
-                    || level.Index == DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex - 1
-                    || level.Index == DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex - 1)
-                {
-                    _nextLevelButton.gameObject.SetActive(false);
-                }
-                else
-                {
-                    _nextLevelButton.gameObject.SetActive(true);
-                }
-                mainMenuButton.SetActive(level.Index >= DataManager.Ins.ConfigData.unlockGoMainMenuOnLoseAtLevelIndex - 1);
+                _onContinueClick = null;
+                btnContinue.onClick.AddListener(OnGoMenu);
             }
-            _nextLevel = () =>
-            {
-                LevelManager.Ins.OnNextLevel(LevelType.Normal);
-                Close();
-            };
-
+            btnContinue.onClick.AddListener(() => OnClickContinue(_onContinueClick));
         }
 
         public override void Open(object param = null)
@@ -147,29 +135,25 @@ namespace _Game.UIs.Screen
             int sizeAnchor = (bool)isBannerActive ? UIManager.Ins.ConvertPixelToUnitHeight(DataManager.Ins.ConfigData.bannerHeight) : 0;
             MRectTransform.offsetMin = new Vector2(MRectTransform.offsetMin.x, sizeAnchor);
         }
-        public void OnClickNextButton()
+        private void OnGoNextLevel()
         {           
-            // DevLog.Log(DevId.Vinh, "Collect rewards");
-            // for (int i = 0; i < _rewardItemList.Count; i++)
-            // {
-            //     _rewardItemList[i].Reward.Obtain(_rewardItemList[i].IconImagePosition);
-            // }
-            
-            GameManager.Ins.PostEvent(DesignPattern.EventID.OnCheckShowInterAds, _nextLevel);   
+            LevelManager.Ins.OnNextLevel(LevelType.Normal);
+            Close();
+            // GameManager.Ins.PostEvent(DesignPattern.EventID.OnCheckShowInterAds, _onContinueClick);   
+        }
+
+        private void OnClickContinue(Action action)
+        {
+            GameManager.Ins.PostEvent(DesignPattern.EventID.OnCheckShowInterAds, action);   
+            btnContinue.onClick.RemoveAllListeners();
         }
         
-        public void OnClickMainMenuButton()
+        private void OnGoMenu()
         {
-            // DevLog.Log(DevId.Vinh, "Collect rewards");
-            // for (int i = 0; i < _rewardItemList.Count; i++)
-            // {
-            //     _rewardItemList[i].Reward.Obtain(_rewardItemList[i].IconImagePosition);
-            // }
-            
             LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<MainMenuScreen>();
-            GameManager.Ins.PostEvent(DesignPattern.EventID.OnCheckShowInterAds, null);
+            // GameManager.Ins.PostEvent(DesignPattern.EventID.OnCheckShowInterAds, null);
         }
     }
 }

@@ -82,7 +82,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
                     LevelManager.Ins.boosterRewardCount.Add(BoosterType.PushHint, 1);
                 } else if (levelIndex == 5)
                 {
-                    CollectingResourceManager.Ins.SpawnCollectingRewardKey(3, LevelManager.Ins.player.transform);
+                    CollectingResourceManager.Ins.SpawnCollectingRewardKey(3, LevelManager.Ins.player.Tf);
                     LevelManager.Ins.KeyRewardCount += 3;
                 }
                 else if (levelIndex >= DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex)
@@ -91,7 +91,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
                                      DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex;
                     if (getCompass > 0 && getCompass % 4 == 0)
                     {
-                        CollectingResourceManager.Ins.SpawnCollectingRewardKey(1, LevelManager.Ins.player.transform);
+                        CollectingResourceManager.Ins.SpawnCollectingCompass(1, LevelManager.Ins.player.Tf);
                         LevelManager.Ins.SecretMapPieceCount += 1;
                     }
                 }
