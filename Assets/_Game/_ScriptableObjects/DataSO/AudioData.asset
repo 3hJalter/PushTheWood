@@ -36,7 +36,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: c030d40f5b3b9b0429b5d4e1e19cef03, type: 3}
     - {fileID: 8300000, guid: fc5f3290db6adaa43ac6ef9e2a515afc, type: 3}
     - {fileID: 8300000, guid: feaa1eba5b087cf4f85d9583b646b800, type: 3}
-    - {fileID: 8300000, guid: 51d416904889a5d47a61f88a9228d1e7, type: 3}
+    - {fileID: 8300000, guid: 950cce47b22db2247ae24019ad65a511, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -548,7 +548,7 @@ MonoBehaviour:
       Data: 20
     - Name: multiplier
       Entry: 4
-      Data: 0.5
+      Data: 0.3
     - Name: 
       Entry: 8
       Data: 
