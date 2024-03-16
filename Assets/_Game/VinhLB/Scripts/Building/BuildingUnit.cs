@@ -7,7 +7,6 @@ namespace VinhLB
     {
         public override void OnInteract()
         {
-            DevLog.Log(DevId.Vinh, $"Interact with {gameObject.name}");
         }
     }
 }

@@ -34,8 +34,6 @@ public class OffScreenIndicator : MonoBehaviour
         screenCentre = new Vector3(Screen.width, Screen.height, 0) / 2;
         screenBounds = screenCentre * screenBoundOffset;
         if (GameManager.Ins.IsReduce) _increasePosFromRatio = GameManager.Ins.ReduceRatio;
-        DevLog.Log(DevId.Hoang,$"OffScreenIndicator: _increasePosFromRatio = {_increasePosFromRatio}");
-        DevLog.Log(DevId.Hoang, $"Screen size: {Screen.width} x {Screen.height}");
     }
 
     private void LateUpdate()
@@ -79,7 +77,6 @@ public class OffScreenIndicator : MonoBehaviour
                 //     indicator.SetDistanceText(target.GetDistanceFromUnit(LevelManager.Ins.player));   //Set the distance text for the indicator.
                 // }
                 indicator.transform.position = screenPosition; //Sets the position of the indicator on the screen.
-                // DevLog.Log(DevId.Hoang, $"Set position for indicator: {screenPosition}");
                 indicator.SetTextRotation(Quaternion.identity); // Sets the rotation of the distance text of the indicator.
             }
         }

@@ -91,22 +91,18 @@ namespace VinhLB
             });
             dailyChallengeButton.AddListener(() =>
             {
-                DevLog.Log(DevId.Hoang, "Click daily challenge button");
                 UIManager.Ins.OpenUI<DailyChallengePopup>();
             });
             _dailyRewardButton.onClick.AddListener(() =>
             {
-                DevLog.Log(DevId.Vinh, "Click daily reward button");
                 UIManager.Ins.OpenUI<DailyRewardPopup>();
             });
             _dailyMissionButton.onClick.AddListener(() =>
             {
-                DevLog.Log(DevId.Vinh, "Click daily mission button");
                 UIManager.Ins.OpenUI<DailyMissionPopup>();
             });
             secretMapButton.AddListener(() =>
             {
-                DevLog.Log(DevId.Vinh, "Click secret map button");
                 UIManager.Ins.OpenUI<SecretMapPopup>();
             });
             rewardChestButton.AddListener(() =>

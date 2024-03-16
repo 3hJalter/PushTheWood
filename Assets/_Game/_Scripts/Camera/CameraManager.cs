@@ -99,7 +99,6 @@ namespace _Game.Managers
         {
             virtualCameraDic[mainTypeCamera].enabled = false;
             mainCamera.transform.position = position;
-            DevLog.Log(DevId.Hung, $"Main Camera Position: {mainCamera.transform.position}");
             virtualCameraDic[mainTypeCamera].enabled = true;
         }
         public void ChangeCameraTarget(ECameraType eCameraType, Transform target)

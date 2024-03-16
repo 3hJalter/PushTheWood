@@ -182,7 +182,6 @@ namespace _Game.Data
                     GameManager.Ins.GainAdTickets(quantity, param);
                     break;
                 case CurrencyType.RandomBooster:
-                    DevLog.Log(DevId.Hoang, "Get random booster");
                     break;
                 case CurrencyType.None:
                 case CurrencyType.SecretMapPiece:

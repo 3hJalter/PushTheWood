@@ -50,9 +50,7 @@ namespace _Game.Managers
                 {
                     IsReduce = true;
                     int newScreenWidth = Mathf.RoundToInt(ratio * maxScreenHeight);
-                    DevLog.Log(DevId.Hoang, $"New resolution: {newScreenWidth} x {maxScreenHeight}");
                     ReduceRatio = Screen.currentResolution.width / (float)newScreenWidth;
-                    DevLog.Log(DevId.Hoang, $"Reduce screen resolution with ratio {ReduceRatio}");
                     Screen.SetResolution(newScreenWidth, maxScreenHeight, true);
                 }
             }
@@ -392,20 +390,17 @@ namespace _Game.Managers
         private void OnApplicationFocus(bool hasFocus)
         {
             if (hasFocus) return;
-            DevLog.Log(DevId.Hoang, "Application is in background");
             DataManager.Ins.Save();
         }
 
         private void OnApplicationPause(bool pauseStatus)
         {
             if (!pauseStatus) return;
-            DevLog.Log(DevId.Hoang, "Application is in background");
             DataManager.Ins.Save();
         }
 
         private void OnApplicationQuit()
         {
-            DevLog.Log(DevId.Hoang, "Application is quitting");
             _gameData.user.lastTimeLogOut = DateTime.Now;
             DataManager.Ins.Save();
         }

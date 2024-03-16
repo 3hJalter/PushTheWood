@@ -57,6 +57,7 @@ MonoBehaviour:
   isDebugGridLogic: 0
   isDebugFps: 1
   isDebugLog: 1
+  isShowAds: 1
   debugObject: {fileID: 4291094714596429661, guid: 50ce0b8b3b36f5d43a19f8f3498d378c, type: 3}
   debugCanvas: {fileID: 0}
-  _fontMaterial: {fileID: 2100000, guid: 9ad269c99dcf42b7aedefd83dd5a7b9d, type: 2}
+  _fontMaterial: {fileID: 6655746723336473214, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}

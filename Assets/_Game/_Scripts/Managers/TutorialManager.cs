@@ -12,25 +12,17 @@ using UnityEngine.Serialization;
 
 namespace _Game._Scripts.Managers
 {
-    public enum TutorialObj
-    {
-        LightSpot,
-        Arrow,
-    }
-    
     public class TutorialManager : Singleton<TutorialManager>
     {
-        // ReSharper disable once CollectionNeverUpdated.Local
-        // ReSharper disable once Unity.RedundantSerializeFieldAttribute
-        [SerializeField] private readonly Dictionary<TutorialObj, BaseObjectTutorial> tutorialObjList = new();
         
         // ReSharper disable once CollectionNeverUpdated.Local
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         [SerializeField] private readonly Dictionary<int, ITutorialCondition> tutorialList = new();
         
+        // ReSharper disable once CollectionNeverUpdated.Local
+        // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         [SerializeField] private readonly Dictionary<int, UICanvas> menuTutorialList = new();
         
-        public Dictionary<TutorialObj, BaseObjectTutorial> TutorialObjList => tutorialObjList;
         public Dictionary<int, ITutorialCondition> TutorialList => tutorialList;
 
         // TEMPORARY: cutscene

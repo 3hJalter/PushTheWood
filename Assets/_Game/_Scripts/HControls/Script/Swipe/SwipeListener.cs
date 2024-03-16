@@ -224,7 +224,6 @@ namespace GG.Infrastructure.Utils.Swipe
                         float y = HUtilities.PredictYFromLinearRegression(quickSamplePoints, _offset.x);
                         _offset.Set(_offset.x, y, 0);
                         _offset.Normalize();
-                        DevLog.Log(DevId.Hoang, $"DIRECTION: {_offset}");
                         // normalize the _offset
                         onSwipe?.Invoke(_directions.GetSwipeId(_offset));
                         if (!continuousDetection) _waitForSwipe = false;
@@ -256,7 +255,6 @@ namespace GG.Infrastructure.Utils.Swipe
                     float y = HUtilities.PredictYFromLinearRegression(samplePoints, _offset.x);
                     _offset.Set(_offset.x, y, 0);
                     _offset.Normalize();
-                    DevLog.Log(DevId.Hung, $"DIRECTION: {_offset}");
                     onSwipe?.Invoke(_directions.GetSwipeId(_offset));
                     if (!continuousDetection) _waitForSwipe = false;
                     // SampleSwipeStart();
@@ -285,7 +283,6 @@ namespace GG.Infrastructure.Utils.Swipe
                 float y = HUtilities.PredictYFromLinearRegression(superSamplePoint, _offset.x);
                 _offset.Set(_offset.x, y, 0);
                 _offset.Normalize();
-                DevLog.Log(DevId.Hoang, $"DIRECTION ON CANCEL: {_offset}");
                 // normalize the _offset
                 onSwipe?.Invoke(_directions.GetSwipeId(_offset));
                 _isHolding = false;

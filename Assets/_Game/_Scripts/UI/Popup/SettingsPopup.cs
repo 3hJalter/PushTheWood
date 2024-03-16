@@ -1,11 +1,9 @@
-﻿using System;
-using _Game._Scripts.Managers;
+﻿using _Game._Scripts.Managers;
 using _Game._Scripts.Utilities;
 using _Game.Data;
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Screen;
-using _Game.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,9 +17,6 @@ namespace _Game.UIs.Popup
         private TMP_Text _headerText;
         [SerializeField]
         private GameObject _navigationGroupGO;
-
-        [SerializeField]
-        private GameObject[] _activeMoveChoices;
         
         [SerializeField]
         private Toggle _musicToggle;
@@ -29,8 +24,6 @@ namespace _Game.UIs.Popup
         private Toggle _soundToggle;
         [SerializeField]
         private Toggle _hapticToggle;
-        [SerializeField]
-        private ToggleSwitch _gridToggleSwitch;
 
         private void Awake()
         {
@@ -50,7 +43,6 @@ namespace _Game.UIs.Popup
             _musicToggle.isOn = !AudioManager.Ins.IsBgmMute();
             _soundToggle.isOn = !AudioManager.Ins.IsSfxMute();
             _hapticToggle.isOn = HVibrate.IsHapticOn;
-            _gridToggleSwitch.SetState(FXManager.Ins.IsGridOn, false);
 
             if (GameManager.Ins.IsState(GameState.InGame))
             {
@@ -64,8 +56,6 @@ namespace _Game.UIs.Popup
                 _headerText.text = "Settings";
                 _navigationGroupGO.SetActive(false);
             }
-
-            UpdateCurrentMoveChoice();
         }
 
         public override void Open(object param = null)
@@ -130,34 +120,7 @@ namespace _Game.UIs.Popup
         {
             UIManager.Ins.OpenUI<MoveOptionPopup>();
         }
-
-        public void OnClickUseDPadButton()
-        {
-            MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.MoveChoice.DPad);
-
-            UpdateCurrentMoveChoice();
-        }
-
-        public void OnClickUseSwitchButton()
-        {
-            MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.MoveChoice.Switch);
-
-            UpdateCurrentMoveChoice();
-        }
-
-        public void OnClickUseSwipeButton()
-        {
-            MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.MoveChoice.Swipe);
-
-            UpdateCurrentMoveChoice();
-        }
-
-        public void OnClickUseSwipeContinuousButton()
-        {
-            MoveInputManager.Ins.OnChangeMoveChoice(MoveInputManager.MoveChoice.SwipeContinuous);
-
-            UpdateCurrentMoveChoice();
-        }
+        
 
         public void OnClickToggleGridButton()
         {
@@ -176,22 +139,7 @@ namespace _Game.UIs.Popup
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<MainMenuScreen>();
         }
-
-        private void UpdateCurrentMoveChoice()
-        {
-            for (int i = 0; i < _activeMoveChoices.Length; i++)
-            {
-                if (i == (int)MoveInputManager.Ins.CurrentChoice)
-                {
-                    _activeMoveChoices[i].SetActive(true);
-                }
-                else
-                {
-                    _activeMoveChoices[i].SetActive(false);
-                }
-            }
-        }
-
+        
         #region Old functions
         public void OnClickSelectLevelButton()
         {

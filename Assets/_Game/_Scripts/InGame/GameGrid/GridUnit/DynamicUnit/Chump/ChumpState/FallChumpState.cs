@@ -44,7 +44,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 if (unitInCells == t || unitInCells == null)
                 {
                     // Tween to final position
-                    DevLog.Log(DevId.Hung, "Fall into water cell that do not have anything");
                     Sequence s = DOTween.Sequence();
                     // Kill the other tween that currently running on the object
                     moveTween = s;
@@ -65,7 +64,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                 }
                 else //NOTE: Water have something
                 {
-                    DevLog.Log(DevId.Hung, "Fall into water cell that has object");
                     // t.StateMachine.ChangeState(StateEnum.FormRaft);
                     moveTween = t.Tf.DOMove(t.EnterPosData.finalPos, Constants.MOVING_TIME * 0.6f)
                         .SetEase(Ease.Linear).SetUpdate(UpdateType.Fixed).OnComplete(() =>

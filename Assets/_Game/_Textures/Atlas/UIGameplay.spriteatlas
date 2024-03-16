@@ -20,14 +20,26 @@ SpriteAtlas:
       readable: 0
       crunchedCompression: 0
       sRGB: 1
-    platformSettings: []
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: Android
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 29
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
     packingSettings:
       serializedVersion: 2
       padding: 4
       blockOffset: 1
       allowAlphaSplitting: 0
       enableRotation: 1
-      enableTightPacking: 1
+      enableTightPacking: 0
       enableAlphaDilation: 0
     secondaryTextureSettings: {}
     variantMultiplier: 1
@@ -45,6 +57,9 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 13e53a5210354e94fa9cceb380380da5, type: 3}
     - {fileID: 2800000, guid: 753aa0c9ea1d4d74db9323b3561059b9, type: 3}
     - {fileID: 2800000, guid: 53a5f9376ba7ea74cb52863fb47c7456, type: 3}
+    - {fileID: 2800000, guid: e8f82d3c5ef946f46aceb6099a0ab7e6, type: 3}
+    - {fileID: 2800000, guid: 982f3eb951abb7d4e9a43b4cf232b663, type: 3}
+    - {fileID: 2800000, guid: aef9a8b6bcbd3a34eb52d7957e26a207, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -55,13 +70,16 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 13e53a5210354e94fa9cceb380380da5, type: 3}
   - {fileID: 21300000, guid: 3fd0bd92d4dbf314f8ddf1b084736524, type: 3}
   - {fileID: 21300000, guid: 76f62754f7f22d04eb619ce11f16448a, type: 3}
+  - {fileID: 21300000, guid: aef9a8b6bcbd3a34eb52d7957e26a207, type: 3}
   - {fileID: 21300000, guid: bcff4bf68556c9a4e8bb7d22207c9395, type: 3}
   - {fileID: 21300000, guid: 53a5f9376ba7ea74cb52863fb47c7456, type: 3}
   - {fileID: 21300000, guid: b419e0480302b144e89367c5f9927d5e, type: 3}
   - {fileID: 21300000, guid: dfc87af8ca5f0134cbe4669d65ba0237, type: 3}
   - {fileID: 21300000, guid: 3d51b9499215c95409575808db7284c5, type: 3}
+  - {fileID: 21300000, guid: 982f3eb951abb7d4e9a43b4cf232b663, type: 3}
   - {fileID: 21300000, guid: 3e53afb930fb97e479738d9639ad649e, type: 3}
   - {fileID: 21300000, guid: 753aa0c9ea1d4d74db9323b3561059b9, type: 3}
+  - {fileID: 21300000, guid: e8f82d3c5ef946f46aceb6099a0ab7e6, type: 3}
   - {fileID: 21300000, guid: 1012a03e39ef4c149aee0eba370d2c3f, type: 3}
   m_PackedSpriteNamesToIndex:
   - Fruit
@@ -69,13 +87,16 @@ SpriteAtlas:
   - magnigying_glass
   - booster_red_btn
   - Chicken
+  - booster_btn
   - lock_icon
   - key
   - ad
   - undo
   - pause_btn
+  - DONT-No_Txt
   - star
   - grow-tree
+  - DO-No_Txt
   - reset
   m_RenderDataMap: {}
   m_Tag: UIGameplay

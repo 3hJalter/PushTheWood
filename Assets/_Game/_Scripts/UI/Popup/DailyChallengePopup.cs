@@ -22,33 +22,27 @@ namespace _Game.UIs.Popup
         private int _currentDay;
         
         // interact Btn
-        [SerializeField] private HButton tutorialBtn;
         [SerializeField] private GameObject notYetBtn;
         [SerializeField] private HButton payToPlayBtn;
         [SerializeField] private HButton adsToPlayBtn;
         [SerializeField] private HButton playBtn;
-        [SerializeField] private HButton replayBtn;
         
         private void Awake()
         {
             // Set panel height by adding 123f for each row, each row has 7 buttons
             panel.sizeDelta = new Vector2(panel.sizeDelta.x, PANEL_INIT_HEIGHT + (123f * Mathf.CeilToInt(Constants.DAILY_CHALLENGER_COUNT / 7f)));
             // Set listener for interact btn
-            tutorialBtn.onClick.AddListener(OnClickTutorialButton);
             payToPlayBtn.onClick.AddListener(OnClickPayToPlayButton);
             adsToPlayBtn.onClick.AddListener(OnClickAdToPlayButton);
             playBtn.onClick.AddListener(OnClickPlayButton);
-            replayBtn.onClick.AddListener(OnClickReplayButton);
         }
 
         private void OnDestroy()
         {
             // Remove listener for interact btn
-            tutorialBtn.onClick.RemoveAllListeners();
             payToPlayBtn.onClick.RemoveAllListeners();
             adsToPlayBtn.onClick.RemoveAllListeners();
             playBtn.onClick.RemoveAllListeners();
-            replayBtn.onClick.RemoveAllListeners();
         }
 
         private void OnUpdateProgress()
@@ -105,31 +99,20 @@ namespace _Game.UIs.Popup
         private void OnClickDailyChallengeButton(int index)
         {
             if (dailyChallengeButtons[index] == _currentBtnClick) return;
-            DevLog.Log(DevId.Hoang, $"OnClick Daily Challenge Button with index {index}");
             if (_currentBtnClick != null)
                 _currentBtnClick.OnUnHover();
             _currentBtnClick = dailyChallengeButtons[index];
             _currentBtnClick.OnHover();
             OnHandleCurrentButton();
         }
-
-        private static void OnClickTutorialButton()
-        {
-            DevLog.Log(DevId.Hoang, "OnClick Tutorial Button");
-            LevelManager.Ins.OnGoLevel(LevelType.DailyChallenge, 0);
-            UIManager.Ins.CloseAll();
-            UIManager.Ins.OpenUI<InGameScreen>();
-        }
         
         private void OnClickPlayButton()
         {
-            DevLog.Log(DevId.Hoang, "OnClick Play Button");
             OnPlay();
         }
 
         private void OnClickAdToPlayButton()
         {
-            DevLog.Log(DevId.Hoang, "OnClick Ad To Play Button");
             AdsManager.Ins.RewardedAds.Show();
             OnPlay();
         }
@@ -138,21 +121,9 @@ namespace _Game.UIs.Popup
         {
             if (GameManager.Ins.TrySpendAdTickets(1))
             {
-                DevLog.Log(DevId.Hoang, "OnClick Pay To Play Button");
-                // TODO: show popup to pay to play before play
                 // Temporary solution: just play
-                DevLog.Log(DevId.Hoang, "Temporary solution: just play");
                 OnPlay();
             };
-        }
-
-        private void OnClickReplayButton()
-        {
-            DevLog.Log(DevId.Hoang, "OnClick Replay Button");
-            // TODO: show popup to pay to play before play
-            // Temporary solution: just play
-            DevLog.Log(DevId.Hoang, "Temporary solution: just play");
-            OnPlay();
         }
 
         private void OnPlay()
@@ -168,7 +139,6 @@ namespace _Game.UIs.Popup
             notYetBtn.SetActive(false);
             payToPlayBtn.gameObject.SetActive(false);
             playBtn.gameObject.SetActive(false);
-            replayBtn.gameObject.SetActive(false);
             adsToPlayBtn.gameObject.SetActive(false);
             switch (_currentBtnClick.State)
             {

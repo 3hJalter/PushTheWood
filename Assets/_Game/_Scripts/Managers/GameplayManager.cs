@@ -305,7 +305,6 @@ namespace _Game.Managers
             #region ANALYSTIC
             AnalysticManager.Ins.LevelStart(LevelManager.Ins.CurrentLevel.LevelType);
             #endregion
-            DevLog.Log(DevId.Hoang, $"LEVEL NORMAL TYPE: {LevelManager.Ins.CurrentLevel.LevelNormalType}");
         }
 
         private void OnWinGame()
@@ -313,7 +312,6 @@ namespace _Game.Managers
             if (LevelManager.Ins.IsSavePlayerPushStep) SavePushHint.Save();
             _pushHint.OnStopHint();
             timer.Stop();
-            DevLog.Log(DevId.Hung, "ENDGAME - Show Win Screen");
             UIManager.Ins.OpenUI<WinScreen>(OnWinGameReward());
             GameManager.Ins.ChangeState(GameState.WinGame);
          
@@ -388,7 +386,6 @@ namespace _Game.Managers
         {
             _pushHint.OnStopHint();
             timer.Stop();
-            DevLog.Log(DevId.Hung, "ENDGAME - Show Lose Screen");
             // Show Different Lose based on reason (Ex: Lose by Die will not show More time booster, instead show Revive) -> Check by the time remaining
             UIManager.Ins.OpenUI<LoseScreen>(o);
             GameManager.Ins.ChangeState(GameState.LoseGame);
@@ -443,7 +440,6 @@ namespace _Game.Managers
             if (!isCanUndo) return;
             if (DataManager.Ins.GameData.user.undoCount <= 0)
             {
-                DevLog.Log(DevId.Hoang, "Show popup to buy undo");
                 BoosterConfig boosterConfig = DataManager.Ins.ConfigData.boosterConfigList[(int)BoosterType.Undo];
                 boosterConfig.UIResourceConfig = DataManager.Ins.GetBoosterUIResourceConfig(boosterConfig.Type);
                 UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(boosterConfig);
@@ -484,7 +480,6 @@ namespace _Game.Managers
         {
             if (DataManager.Ins.GameData.user.resetIslandCount <= 0)
             {
-                DevLog.Log(DevId.Hoang, "Show popup to buy reset");
                 BoosterConfig boosterConfig = DataManager.Ins.ConfigData.boosterConfigList[(int)BoosterType.ResetIsland];
                 boosterConfig.UIResourceConfig = DataManager.Ins.GetBoosterUIResourceConfig(boosterConfig.Type);
                 UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(boosterConfig);
@@ -522,7 +517,6 @@ namespace _Game.Managers
             }
             if (DataManager.Ins.GameData.user.growTreeCount <= 0)
             {
-                DevLog.Log(DevId.Hoang, "Show popup to buy grow tree");
                 BoosterConfig boosterConfig = DataManager.Ins.ConfigData.boosterConfigList[(int)BoosterType.GrowTree];
                 boosterConfig.UIResourceConfig = DataManager.Ins.GetBoosterUIResourceConfig(boosterConfig.Type);
                 UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(boosterConfig);
@@ -584,7 +578,6 @@ namespace _Game.Managers
         {
             screen.ActivePushHintIsland(false);
             _pushHint.OnStartHint(islandID, isShowHint);
-            DevLog.Log(DevId.Hoang, $"Show hint in {islandID}");
         }
 
         private int _lastPlayerIslandId = -1;
