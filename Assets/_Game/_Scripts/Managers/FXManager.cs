@@ -13,10 +13,6 @@ namespace _Game.Managers
     {
         [Title("General")]
         [SerializeField]
-        private UniversalRendererData _rendererData;
-        [SerializeField]
-        private UniversalRenderPipelineAsset _renderPipelineAsset;
-        [SerializeField]
         private UniversalAdditionalCameraData _cameraData;
         
         [Title("Environment Effects")]
@@ -46,9 +42,7 @@ namespace _Game.Managers
         private bool _activeWindDust = true;
         [SerializeField]
         private bool _activeRain = false;
-
-        private GrassTrampleFeature _feature;
-
+        
         public HintLineTrail TrailHint => trailHint;
         public bool IsGridOn => _gridGO.activeInHierarchy;
 
@@ -61,16 +55,6 @@ namespace _Game.Managers
             _windDustGO.SetActive(_activeWindDust);
             _rainGO.SetActive(_activeRain);
 
-            VinhLB.Utilities.TryGetRendererFeature(_rendererData, out _feature);
-        }
-
-        public void ChangeShadowDistance(float distance)
-        {
-            _renderPipelineAsset.shadowDistance = distance;
-            // if distance >= 150, normal bias is 0 
-            // else increase it until normal = 1 when distance <= 50
-            float normalBias = distance >= 150 ? 0f : 1f - (distance - 50f) / 100f;
-            _renderPipelineAsset.shadowNormalBias = normalBias;
         }
 
         public void TogglePostProcessing()

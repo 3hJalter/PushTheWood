@@ -29,7 +29,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5157738888456464950}
-  - {fileID: 6699374696523602083}
   - {fileID: 5097126803905133589}
   m_Father: {fileID: 6033861197893767010}
   m_RootOrder: 0
@@ -64,7 +63,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 659011302188247317}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4941841983449918107
 MonoBehaviour:
@@ -87,61 +86,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
---- !u!1 &3220887881070540004
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6699374696523602083}
-  - component: {fileID: 1165668080159340740}
-  m_Layer: 0
-  m_Name: GrassTramper
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6699374696523602083
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3220887881070540004}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 659011302188247317}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1165668080159340740
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3220887881070540004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e9de9ebb4ddc964899d3cea40a37b2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  _rendererData: {fileID: 11400000, guid: 82b4ed0936573764e945e1fb602913e0, type: 2}
-  _trampleRadius: 1.25
 --- !u!1 &5537220399447289996
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,6 +320,7 @@ MonoBehaviour:
   poolType: 23
   skin: {fileID: 659011302188247317}
   meshRenderer: {fileID: 0}
+  skinController: {fileID: 0}
   size: {x: 1, y: 2, z: 1}
   isMinusHalfSizeY: 0
   startHeight: 2
@@ -389,8 +334,5 @@ MonoBehaviour:
   islandID: -1
   gridUnitStaticType: 1
   anchor: {fileID: 4941841983449918107}
-  hasInteractBtn: 0
-  btnCanvas: {fileID: 0}
-  interactBtn: {fileID: 0}
   DEGREE: 3
   DECAY_VALUE: 0.8

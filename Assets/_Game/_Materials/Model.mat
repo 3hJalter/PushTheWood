@@ -200,10 +200,10 @@ Material:
     - _RimEnabled: 0
     - _RimMax: 1
     - _RimMin: 0.5
-    - _SelfShadingSize: 0.955
+    - _SelfShadingSize: 1
     - _SelfShadingSizeExtra: 0.6
     - _ShadowColorLightAtten: 1
-    - _ShadowEdgeSize: 0.086
+    - _ShadowEdgeSize: 0.296
     - _ShadowEdgeSizeExtra: 0.05
     - _Shadow_HSV_H: 0
     - _Shadow_HSV_S: 0
