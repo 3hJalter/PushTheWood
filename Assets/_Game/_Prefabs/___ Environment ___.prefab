@@ -584,6 +584,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TrailHint
       objectReference: {fileID: 0}
+    - target: {fileID: 2528511306385805755, guid: ee29aba1b87b111499f8964de0c1e254, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7132809153899325911, guid: ee29aba1b87b111499f8964de0c1e254, type: 3}
       propertyPath: m_RootOrder
       value: 7
