@@ -68,6 +68,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 797d468547ee6eb4999df48f2e1181d2, type: 3}
   - {fileID: 21300000, guid: b1941826215b5d4438fed333098a768d, type: 3}
   - {fileID: 21300000, guid: 0377d6f6d5ee1ff42a975f394253c0c9, type: 3}
+  - {fileID: 21300000, guid: 6e35c157ae629794e9b4b5ac10a0d329, type: 3}
   - {fileID: 21300000, guid: 862cf9a7b26a6de4f9c1b25ddffbd8c6, type: 3}
   - {fileID: 21300000, guid: 16f12348e64db3340bf5d1db7bf9b8ca, type: 3}
   - {fileID: 21300000, guid: 9fff6578feeb02a44a9486464dd4d58d, type: 3}
@@ -84,7 +85,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 424855fc5d38bda438f841e891d7c6b1, type: 3}
   - {fileID: 21300000, guid: 1ce9047dec37f2e4a9f3d2ad383d7341, type: 3}
   - {fileID: 21300000, guid: c7ae7c9da9dc16e48bac5beca424ba8b, type: 3}
-  - {fileID: 21300000, guid: 64ebeb0e8e90efd449cc36b8a58233de, type: 3}
   m_PackedSpriteNamesToIndex:
   - control-dpad
   - _0020_haptics_OFF
@@ -104,6 +104,7 @@ SpriteAtlas:
   - home-button
   - _0021_Group-8-copy-2
   - _0007_Layer-10
+  - _0028_Group-7
   - separator
   - _0013_Group-8-copy
   - _0012_Layer-14-copy
@@ -120,7 +121,6 @@ SpriteAtlas:
   - control-switch
   - grid
   - _0004_MOVE-CHOICES
-  - _0028_Group-7
   m_RenderDataMap: {}
   m_Tag: UIPause
   m_IsVariant: 0
