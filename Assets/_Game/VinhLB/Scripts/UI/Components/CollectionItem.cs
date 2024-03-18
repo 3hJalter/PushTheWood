@@ -8,7 +8,7 @@ namespace VinhLB
 {
     public class CollectionItem : HMonoBehaviour
     {
-        public event Action<int, int> _OnClick;
+        public event Action<int, int> OnClick;
         
         [SerializeField]
         private HButton _button;
@@ -42,7 +42,7 @@ namespace VinhLB
 
         private void Awake()
         {
-            _button.onClick.AddListener(OnClick);
+            _button.onClick.AddListener(OnCollectionItemClick);
         }
 
         public void Initialize(int id, int data, string text, Sprite sprite, int price)
@@ -54,9 +54,9 @@ namespace VinhLB
             _priceText.text = price.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
         }
 
-        private void OnClick()
+        private void OnCollectionItemClick()
         {
-            _OnClick?.Invoke(_id, _data);
+            OnClick?.Invoke(_id, _data);
         }
 
         public void SetLocked(bool value, string unlockInfo = null)

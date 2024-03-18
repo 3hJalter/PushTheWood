@@ -44,7 +44,7 @@ namespace VinhLB
         {
             for (int i = 0; i < _collectionItemList.Count; i++)
             {
-                _collectionItemList[i]._OnClick -= OnItemClick;
+                _collectionItemList[i].OnClick -= OnCollectionItemClick;
             }
             _buyButton.onClick.RemoveAllListeners();
 
@@ -67,7 +67,7 @@ namespace VinhLB
                     CollectionItem item = Instantiate(_collectionItemPrefab, _collectionItemParentTF);
                     item.Initialize((int)element.Key, (int)element.Key, element.Value.Name,
                         element.Value.IconSprite, DataManager.Ins.ConfigData.CharacterCosts[(int)element.Key]);
-                    item._OnClick += OnItemClick;
+                    item.OnClick += OnCollectionItemClick;
 
                     _collectionItemList.Add(item);
                 }
@@ -78,6 +78,7 @@ namespace VinhLB
             {
                 if (DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[i].Id))
                 {
+                    _collectionItemList[i].SetLocked(false);
                     _collectionItemList[i].ShowPrice(false);
                 }
                 else
@@ -118,7 +119,7 @@ namespace VinhLB
             LevelManager.Ins.player.ChangeSkin(DataManager.Ins.CurrentPlayerSkinIndex);
         }
 
-        private void OnItemClick(int id, int data)
+        private void OnCollectionItemClick(int id, int data)
         {
             if (id == _currentPetIndex)
             {
