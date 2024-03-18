@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.39260167, g: 0.68232363, b: 0.91764116, a: 1}
+  m_IndirectSpecularColor: {r: 0.3925838, g: 0.68262386, b: 0.91772735, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -251,8 +251,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _rendererData: {fileID: 11400000, guid: 82b4ed0936573764e945e1fb602913e0, type: 2}
-  _renderPipelineAsset: {fileID: 11400000, guid: 27753c6e9514d924dab306f724c17974, type: 2}
   _cameraData: {fileID: 0}
   trailHint: {fileID: 7030098244278345278}
   _gridGO: {fileID: 517049268}
@@ -1028,7 +1026,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1915671661371006086, guid: 293a8c7352bbcbd4faba9fa9295f5828, type: 3}
       propertyPath: isSavePlayerPushStep
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1915671661371006086, guid: 293a8c7352bbcbd4faba9fa9295f5828, type: 3}
       propertyPath: serializationData.Prefab
