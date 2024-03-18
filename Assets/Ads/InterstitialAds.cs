@@ -85,6 +85,7 @@ public class InterstitialAds : MonoBehaviour
     {
         // Interstitial ad is hidden. Pre-load the next ad.
         this.onAdsClose?.Invoke();
+        Load();
     }
 
     // Update is called once per frame

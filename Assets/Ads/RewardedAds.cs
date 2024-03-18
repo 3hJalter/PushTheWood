@@ -139,8 +139,9 @@ public class RewardedAds : MonoBehaviour
             AnalysticManager.Ins.RewardAdsComplete(placement);
             GameManager.Ins.PostEvent(_Game.DesignPattern.EventID.OnUpdateUIs);
         }
+        Load();
     }
-  
+
     // Update is called once per frame
     void Update()
     {
