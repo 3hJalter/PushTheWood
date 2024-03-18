@@ -82,6 +82,8 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 9bbbcc84a596b1b4183babc9a380e57f, type: 3}
     - {fileID: 2800000, guid: 531591340ee6b044f92749f7088fa48f, type: 3}
     - {fileID: 2800000, guid: 4be5b7a361aa9214cb1e203edfa04dc1, type: 3}
+    - {fileID: 2800000, guid: 7fc3af9d8b8df2f47b3b25d1ea305377, type: 3}
+    - {fileID: 2800000, guid: c0a2dd6eed325604b99b123e8706dd9f, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -120,7 +122,9 @@ SpriteAtlas:
   - {fileID: 21300000, guid: cbc6453cbe2221f4d97d06751f73f988, type: 3}
   - {fileID: 21300000, guid: 4e52782d67cff464d85aa4230a026a07, type: 3}
   - {fileID: 21300000, guid: 82607d5d21cf08f4989237c48de3d98c, type: 3}
+  - {fileID: 21300000, guid: 7fc3af9d8b8df2f47b3b25d1ea305377, type: 3}
   - {fileID: 21300000, guid: 67f018ad7aad54a42b9c7dc2367215c6, type: 3}
+  - {fileID: 21300000, guid: c0a2dd6eed325604b99b123e8706dd9f, type: 3}
   - {fileID: 21300000, guid: 01b13a7e647d10d48ad48104f992f026, type: 3}
   - {fileID: 21300000, guid: b7117d8ec715a5b45a3817d520574fae, type: 3}
   - {fileID: 21300000, guid: c16020eec7f5b404085d5d638044ae97, type: 3}
@@ -159,7 +163,9 @@ SpriteAtlas:
   - play_button
   - collection-active
   - lock
+  - chest_open_2
   - _0020_Layer-5 - -Smart-Object-Group-copy
+  - chest_open
   - _0008_Group-10-copy
   - _0028_setting
   - _0023_red_btn
