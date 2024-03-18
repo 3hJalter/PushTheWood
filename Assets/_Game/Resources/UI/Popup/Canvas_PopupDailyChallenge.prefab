@@ -1154,7 +1154,6 @@ MonoBehaviour:
   - {fileID: 842840097153834459}
   - {fileID: 6600377198350367059}
   - {fileID: 2312764328364309860}
-  tutorialBtn: {fileID: 0}
   notYetBtn: {fileID: 8506015796689086103}
   payToPlayBtn: {fileID: 2625057385337863496}
   adsToPlayBtn: {fileID: 8933383967731300669}

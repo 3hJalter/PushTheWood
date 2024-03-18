@@ -51,9 +51,11 @@ namespace _Game.UIs.Screen
 
         private void OnMoreTimeTicket()
         {
-            // TODO: Show ads, then callback this below
-            GameManager.Ins.PostEvent(EventID.MoreTimeGame);
-            Close();
+            AdsManager.Ins.RewardedAds.Show(() =>
+            {
+                GameManager.Ins.PostEvent(EventID.MoreTimeGame);
+                Close();
+            });
         }
         
         IEnumerator<float> CountDown()

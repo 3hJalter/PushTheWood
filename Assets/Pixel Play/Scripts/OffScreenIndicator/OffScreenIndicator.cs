@@ -97,7 +97,10 @@ public class OffScreenIndicator : MonoBehaviour
         }
         else
         {
-            target.indicator?.Activate(false);
+            if (target.indicator)
+            {
+                target.indicator.Activate(false);
+            }
             target.indicator = null;
             Targets.Remove(target);
         }

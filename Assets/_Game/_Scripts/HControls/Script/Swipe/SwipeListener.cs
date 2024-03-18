@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using _Game._Scripts.Utilities;
-using _Game.Utilities;
 using _Game.Utilities.Timer;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 namespace GG.Infrastructure.Utils.Swipe
 {
@@ -21,40 +21,44 @@ namespace GG.Infrastructure.Utils.Swipe
         public UnityEvent onCancelSwipe;
         public UnityEvent onUnHold;
         public bool isOverlappingUI;
-        
-        
+
+
         [SerializeField] private float sensitivity = 100;
         [SerializeField] private float quickSensitive = 50;
         [SerializeField] private float superSensitive = 150;
-        
+
         [SerializeField] private float swipeTouchTime = 0.12f;
         [SerializeField] private float quickSwipeTouchTime = 0.035f;
-        
+
         [SerializeField] private bool continuousDetection;
 
         [SerializeField] private SwipeDetectionMode swipeDetectionMode = SwipeDetectionMode.EightSides;
-
-        private VectorToDirection _directions;
-
-        private float _minMoveDistance = 0.1f;
-        private float _quickMinMoveDistance = 0.1f;
-        private float _superMinMoveDistance = 0.1f;
-
-        private Vector3 _offset;
-
-        private Vector3 _swipeStartPoint;
-
-        private bool _waitForSwipe = true;
-        private bool _countingSwipeTime = false;
-        
-        private float _holdTimer = Constants.HOLD_TOUCH_TIME;
-        private float _swipeTimer;
-
-        private bool _isHolding;
         [ReadOnly] [SerializeField] private List<Vector2> samplePoints = new();
         [ReadOnly] [SerializeField] private List<Vector2> quickSamplePoints = new();
         [ReadOnly] [SerializeField] private List<Vector2> superSamplePoint = new();
-        
+
+        [ReadOnly] [SerializeField] private bool _isPointerUI;
+        private bool _countingSwipeTime;
+
+        private VectorToDirection _directions;
+
+        private float _holdTimer = Constants.HOLD_TOUCH_TIME;
+
+        private bool _isHolding;
+
+        private float _minMoveDistance = 0.1f;
+
+        private Vector3 _offset;
+        private float _quickMinMoveDistance = 0.1f;
+        private float _superMinMoveDistance = 0.1f;
+
+        private Vector3 _swipeStartPoint;
+        private float _swipeTimer;
+
+        private bool _waitForSwipe = true;
+
+        private bool isPredicted;
+
         public bool ContinuousDetection
         {
             get => continuousDetection;
@@ -70,7 +74,7 @@ namespace GG.Infrastructure.Utils.Swipe
                 UpdateSuperSensitivity();
             }
         }
-        
+
         public float QuickSensitive
         {
             get => quickSensitive;
@@ -108,12 +112,14 @@ namespace GG.Infrastructure.Utils.Swipe
                 SetDetectionMode(DirectionPresets.GetPresetByMode(SwipeDetectionMode));
         }
 
-        [ReadOnly] [SerializeField] private bool _isPointerUI;
-        
         private void Update()
         {
             // Version 2
+#if UNITY_EDITOR
             if (Input.GetMouseButtonUp(0))
+#else
+            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+#endif
             {
                 _isPointerUI = false;
                 // Check if button Release
@@ -122,28 +128,53 @@ namespace GG.Infrastructure.Utils.Swipe
                     onUnHold?.Invoke();
                     _isHolding = false;
                 }
+
                 if (!_waitForSwipe) OnCancelSwipe();
                 else OnSuperCancelSwipe();
-            } else if (Input.GetMouseButtonDown(0))
+            }
+            
+#if UNITY_EDITOR
+            else if (Input.GetMouseButtonDown(0))
             {
                 // Check if button Pressed
-                if (!isOverlappingUI && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+                if (!isOverlappingUI && EventSystem.current.IsPointerOverGameObject())
                 {
                     _isPointerUI = true;
                     return;
                 }
+
                 InitSwipe();
-            } else if (Input.GetMouseButton(0))
+            }
+#else
+            else if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+                // Check if button Pressed
+                if (!isOverlappingUI && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+                {
+                    _isPointerUI = true;
+                    return;
+                }
+
+                InitSwipe();
+            }
+#endif
+
+#if UNITY_EDITOR
+            else if (Input.GetMouseButton(0))
+#else
+            else if (Input.touchCount > 0 && (Input.GetTouch(0).phase == TouchPhase.Moved ||
+                                              Input.GetTouch(0).phase == TouchPhase.Stationary))
+#endif
             {
                 // Check if button is being held
                 if (!_isPointerUI && _waitForSwipe) CheckSwipe();
             }
+
             // Check if Swipe is continuous detection
             if (!continuousDetection) CheckSwipeCancellation();
             if (_countingSwipeTime)
-            {
-                if (_swipeTimer <= Constants.HOLD_TOUCH_TIME) _swipeTimer += Time.deltaTime;
-            }
+                if (_swipeTimer <= Constants.HOLD_TOUCH_TIME)
+                    _swipeTimer += Time.deltaTime;
         }
 
         public void SetDetectionMode(List<DirectionId> directions)
@@ -156,7 +187,7 @@ namespace GG.Infrastructure.Utils.Swipe
             int screenShortSide = Screen.width < Screen.height ? Screen.width : Screen.height;
             _minMoveDistance = screenShortSide / sensitivity;
         }
-        
+
         private void UpdateQuickSensitivity()
         {
             int screenShortSide = Screen.width < Screen.height ? Screen.width : Screen.height;
@@ -168,7 +199,7 @@ namespace GG.Infrastructure.Utils.Swipe
             int screenShortSide = Screen.width < Screen.height ? Screen.width : Screen.height;
             _superMinMoveDistance = screenShortSide / superSensitive;
         }
-        
+
         private void CheckSwipeCancellation()
         {
             if (Input.GetMouseButtonUp(0))
@@ -183,8 +214,6 @@ namespace GG.Infrastructure.Utils.Swipe
             _waitForSwipe = true;
         }
 
-        private bool isPredicted = false;
-        
         private void CheckSwipe()
         {
             if (isPredicted) return;
@@ -192,19 +221,13 @@ namespace GG.Infrastructure.Utils.Swipe
             _offset = Input.mousePosition - _swipeStartPoint;
 
             int superSampleCount = superSamplePoint.Count;
-            
+
             if (superSampleCount < 2 && !isPredicted)
             {
-                if (superSampleCount == 0)
-                {
-                    superSamplePoint.Add(Vector2.zero);
-                }
-                if (_offset.magnitude >= _superMinMoveDistance)
-                {
-                    superSamplePoint.Add(_offset);
-                }
+                if (superSampleCount == 0) superSamplePoint.Add(Vector2.zero);
+                if (_offset.magnitude >= _superMinMoveDistance) superSamplePoint.Add(_offset);
             }
-            
+
             if (_swipeTimer < quickSwipeTouchTime)
             {
                 // TODO
@@ -213,7 +236,7 @@ namespace GG.Infrastructure.Utils.Swipe
                     quickSamplePoints.Add(Vector2.zero);
                     _countingSwipeTime = true;
                 }
-                
+
                 Vector2 quickDistance = _offset - (Vector3)quickSamplePoints[^1];
                 if (quickDistance.magnitude >= _quickMinMoveDistance)
                 {
@@ -233,19 +256,19 @@ namespace GG.Infrastructure.Utils.Swipe
                         return;
                     }
                 }
-                
+
             }
-            
+
             if (samplePoints.Count < 1)
             {
                 samplePoints.Add(Vector2.zero);
                 _countingSwipeTime = true;
             }
-            
+
             //NOTE: Calculate distance from old sample point to new sample point.
             Vector2 distance = _offset - (Vector3)samplePoints[^1];
-            
-            
+
+
             if (distance.magnitude >= _minMoveDistance)
             {
                 samplePoints.Add(_offset);
@@ -260,7 +283,7 @@ namespace GG.Infrastructure.Utils.Swipe
                     // SampleSwipeStart();
                     _isHolding = false;
                     _countingSwipeTime = false;
-                }                
+                }
             }
             else if (_holdTimer > 0) // Add Hold Gesture for this code
             {
@@ -286,10 +309,10 @@ namespace GG.Infrastructure.Utils.Swipe
                 // normalize the _offset
                 onSwipe?.Invoke(_directions.GetSwipeId(_offset));
                 _isHolding = false;
-                TimerManager.Ins.WaitForFixedFrame(2, () => { onCancelSwipe?.Invoke();});
+                TimerManager.Ins.WaitForFixedFrame(2, () => { onCancelSwipe?.Invoke(); });
             }
         }
-        
+
         private void OnCancelSwipe()
         {
             _waitForSwipe = false;

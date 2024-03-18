@@ -113,8 +113,7 @@ namespace _Game.UIs.Popup
 
         private void OnClickAdToPlayButton()
         {
-            AdsManager.Ins.RewardedAds.Show();
-            OnPlay();
+            AdsManager.Ins.RewardedAds.Show(OnPlay);
         }
         
         private void OnClickPayToPlayButton()

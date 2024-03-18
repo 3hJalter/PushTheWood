@@ -19,6 +19,8 @@ public class RewardedAds : MonoBehaviour
     List<int> boosterAmounts;
     List<int> resourceAmounts;
     _Game.Ads.Placement placement;
+    
+    private event Action OnCallBackAdReceivedRewardEvent;
 
     // Start is called before the first frame update
     void Start()
@@ -38,9 +40,18 @@ public class RewardedAds : MonoBehaviour
         showImmediate = show;
     }
 
+    public void Show(Action callback, _Game.Ads.Placement placement = _Game.Ads.Placement.None)
+    {
+        OnClearCallBack();
+        OnCallBackAdReceivedRewardEvent = callback;
+        this.placement = placement;
+        Show();
+    }
+    
     public void Show(List<CurrencyType> resourceTypes = null, List<int> resourceAmount = null,
         List<BoosterType> boosterTypes = null, List<int> boosterAmount = null, _Game.Ads.Placement placement = _Game.Ads.Placement.None)
     {
+        OnClearReward();
         this.resourceTypes = resourceTypes;
         this.resourceAmounts = resourceAmount;
         this.boosterTypes = boosterTypes;
@@ -114,7 +125,6 @@ public class RewardedAds : MonoBehaviour
     {
         if (resourceTypes != null)
         {
-
         }
 
         if (boosterTypes != null)
@@ -139,8 +149,23 @@ public class RewardedAds : MonoBehaviour
             AnalysticManager.Ins.RewardAdsComplete(placement);
             GameManager.Ins.PostEvent(_Game.DesignPattern.EventID.OnUpdateUIs);
         }
+        
+        OnCallBackAdReceivedRewardEvent?.Invoke();
     }
-  
+
+    private void OnClearReward()
+    {
+        resourceTypes = null;
+        resourceAmounts = null;
+        boosterTypes = null;
+        boosterAmounts = null;
+    }
+    
+    private void OnClearCallBack()
+    {
+        OnCallBackAdReceivedRewardEvent = null;
+    }
+    
     // Update is called once per frame
     void Update()
     {
