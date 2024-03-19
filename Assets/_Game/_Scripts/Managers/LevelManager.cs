@@ -4,6 +4,7 @@ using System.Linq;
 using _Game._Scripts.InGame;
 using _Game._Scripts.Managers;
 using _Game._Scripts.Tutorial;
+using _Game._Scripts.Utilities;
 using _Game.Camera;
 using _Game.Data;
 using _Game.DesignPattern;
@@ -18,6 +19,7 @@ using _Game.UIs.Screen;
 using _Game.Utilities;
 using _Game.Utilities.Timer;
 using DG.Tweening;
+using MoreMountains.NiceVibrations;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using static _Game.Utilities.Grid.Grid<_Game.GameGrid.GameGridCell, _Game.GameGrid.GameGridCellData>;
@@ -307,6 +309,7 @@ namespace _Game.GameGrid
                 GameManager.Ins.GainLevelProgress(1);
             DataManager.Ins.Save();
             GameManager.Ins.PostEvent(EventID.WinGame);
+            HVibrate.Haptic(HapticTypes.Success);
             // Future: Add reward collected in-game
         }
 

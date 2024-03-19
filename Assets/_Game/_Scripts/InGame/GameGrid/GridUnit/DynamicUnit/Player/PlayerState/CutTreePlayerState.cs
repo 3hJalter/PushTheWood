@@ -8,7 +8,9 @@ using System;
 using System.Collections.Generic;
 using _Game._Scripts.InGame;
 using _Game._Scripts.Managers;
+using _Game._Scripts.Utilities;
 using AudioEnum;
+using MoreMountains.NiceVibrations;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
@@ -66,6 +68,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         {
             if (!_isExecuted)
             {
+                HVibrate.Haptic(HapticTypes.MediumImpact);
                 t.InvokeActWithUnit(t.CutTreeData.tree);
                 _isExecuted = true;
                 LevelManager.Ins.SaveGameState(true);

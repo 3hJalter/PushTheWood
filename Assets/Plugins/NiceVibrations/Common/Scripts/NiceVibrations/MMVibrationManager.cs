@@ -205,9 +205,7 @@ namespace MoreMountains.NiceVibrations
             {
                 return;
             }
-
-            DebugLog("[MMVibrationManager] Regular Haptic");
-
+            
             if (Android())
 			{
 				switch (type)
