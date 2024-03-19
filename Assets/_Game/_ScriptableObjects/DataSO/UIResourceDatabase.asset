@@ -18,7 +18,7 @@ MonoBehaviour:
     ReferencedUnityObjects:
     - {fileID: 21300000, guid: dfc87af8ca5f0134cbe4669d65ba0237, type: 3}
     - {fileID: 21300000, guid: 13e53a5210354e94fa9cceb380380da5, type: 3}
-    - {fileID: 21300000, guid: 753aa0c9ea1d4d74db9323b3561059b9, type: 3}
+    - {fileID: 21300000, guid: 27eb4bc6eccfed4479f666177d467105, type: 3}
     - {fileID: 21300000, guid: 1012a03e39ef4c149aee0eba370d2c3f, type: 3}
     - {fileID: 21300000, guid: 239e6d44770ea2840add230e3cdc4936, type: 3}
     - {fileID: 21300000, guid: 3f0f861da080eae42b3f72238afd861c, type: 3}
@@ -27,6 +27,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 3e53afb930fb97e479738d9639ad649e, type: 3}
     - {fileID: 21300000, guid: 20411c0de6aeb5345b58b0ecc4ebe324, type: 3}
     - {fileID: 21300000, guid: 82352d1ee9196944f9d06389f1c05393, type: 3}
+    - {fileID: 21300000, guid: 4009caf1db1124d40abf597eb98991c1, type: 3}
     - {fileID: 21300000, guid: 9b09b47f7533d954bba51c6c138d27b6, type: 3}
     - {fileID: 21300000, guid: ae9afce1624e9b64c91fbbe6b53da3b5, type: 3}
     - {fileID: 21300000, guid: 38280725855775c4ca261c28b7a10cb2, type: 3}
@@ -78,9 +79,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Undo
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
       Data: 0
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -99,9 +103,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Push Hint
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
       Data: 1
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -120,9 +127,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Grow Tree
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
       Data: 2
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -141,9 +151,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Reset Island
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
       Data: 3
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -188,9 +201,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Gold
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
       Data: 4
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -209,9 +225,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Ad Ticket
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
       Data: 5
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -230,9 +249,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Secret Map Piece
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
       Data: 6
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -251,9 +273,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Reward Key
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
       Data: 7
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -272,9 +297,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Level Star
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
       Data: 8
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -319,9 +347,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Beeny
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
       Data: 9
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -340,9 +371,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Weeny
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
       Data: 10
+    - Name: SubIconSprite
+      Entry: 10
+      Data: 11
     - Name: 
       Entry: 8
       Data: 
@@ -361,9 +395,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Fuzzy
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
-      Data: 11
+      Data: 12
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -382,9 +419,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Millie
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
-      Data: 12
+      Data: 13
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -403,9 +443,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Gus
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
-      Data: 13
+      Data: 14
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -424,9 +467,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Ollie
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
-      Data: 14
+      Data: 15
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -471,9 +517,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Om nom nom
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
-      Data: 15
+      Data: 16
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -492,9 +541,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Om nom nom
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
-      Data: 15
+      Data: 16
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -513,9 +565,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: I'm so strong
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
-      Data: 16
+      Data: 17
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -534,9 +589,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: So many treasure
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
-      Data: 17
+      Data: 18
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -555,9 +613,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Lucky day
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
-      Data: 17
+      Data: 18
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -602,9 +663,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: So hungry...
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
-      Data: 18
+      Data: 19
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -623,9 +687,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Run for your life
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
-      Data: 19
+      Data: 20
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -644,9 +711,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: They attack me
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
-      Data: 20
+      Data: 21
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -691,9 +761,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Fruit
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
-      Data: 21
+      Data: 22
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -712,9 +785,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Enemy
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
-      Data: 22
+      Data: 23
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -733,9 +809,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Chicken
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
-      Data: 23
+      Data: 24
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -754,9 +833,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Chest
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
-      Data: 24
+      Data: 25
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -775,9 +857,12 @@ MonoBehaviour:
     - Name: Name
       Entry: 1
       Data: Chest
-    - Name: IconSprite
+    - Name: MainIconSprite
       Entry: 10
-      Data: 24
+      Data: 25
+    - Name: SubIconSprite
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 

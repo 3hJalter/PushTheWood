@@ -6,7 +6,7 @@ namespace VinhLB
 {
     public class SecretMapItem : HMonoBehaviour
     {
-        public event Action<int> _OnPlayButtonClick;
+        public event Action<int> OnPlayClick;
         
         [SerializeField]
         private int index;
@@ -46,7 +46,7 @@ namespace VinhLB
 
         private void OnPlayButtonClick()
         {
-            _OnPlayButtonClick?.Invoke(index);
+            OnPlayClick?.Invoke(index);
         }
 
         private void OnDestroy()

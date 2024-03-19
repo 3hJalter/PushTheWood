@@ -4127,6 +4127,10 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 7414293548751267282, guid: 655f60e4d5ffb844f8d7510eda3fd643, type: 3}
+    - target: {fileID: 7732570066001461266, guid: 655f60e4d5ffb844f8d7510eda3fd643, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -122
+      objectReference: {fileID: 0}
     - target: {fileID: 7765036611324238225, guid: 655f60e4d5ffb844f8d7510eda3fd643, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

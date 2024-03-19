@@ -20,20 +20,22 @@ namespace _Game.Managers
 
         //list from resource
         private UICanvas[] uiResources;
+
         private void Awake()
         {
             DontDestroyOnLoad(this);
-            GameManager.Ins.RegisterListenerEvent(EventID.OnUpdateUIs, UpdateUIs);
+            GameManager.Ins.RegisterListenerEvent(EventID.OnUpdateUI, UpdateAllUI);
             GameManager.Ins.RegisterListenerEvent(EventID.OnChangeGameState, OnShowIndicator);
         }
+
         public int ConvertPixelToUnitHeight(float pixel)
         {
             float unitHeight = ((RectTransform)canvasParentTf).rect.height;
             float pixelHeight = Screen.height;
             return (int)(pixel / pixelHeight * unitHeight);
         }
-        #region Canvas
 
+        #region Canvas
         public T OpenUI<T>() where T : UICanvas
         {
             UICanvas canvas = GetUI<T>();
@@ -50,7 +52,7 @@ namespace _Game.Managers
             canvas.Open(param);
             return (T)canvas;
         }
-        
+
         public UICanvas OpenUIDirectly(UICanvas ui)
         {
             UICanvas canvas = Instantiate(ui, canvasParentTf);
@@ -71,17 +73,17 @@ namespace _Game.Managers
         {
             if (IsOpened<T>()) GetUI<T>().Hide();
         }
-        
+
         public void ShowUI<T>() where T : UICanvas
         {
             if (!IsOpened<T>()) GetUI<T>().Show();
         }
-        
+
         public void CloseUI<T>() where T : UICanvas
         {
             if (IsOpened<T>()) GetUI<T>().Close();
         }
-        
+
         public void CloseUIDirectly(UICanvas ui)
         {
             if (!ui.gameObject.activeInHierarchy) return;
@@ -92,7 +94,7 @@ namespace _Game.Managers
         {
             return IsLoaded<T>() && uiCanvas[typeof(T)].gameObject.activeInHierarchy;
         }
-        
+
         public bool IsContain(UICanvas ui)
         {
             return uiCanvas.ContainsValue(ui);
@@ -132,14 +134,14 @@ namespace _Game.Managers
             return uiCanvasPrefab[typeof(T)] as T;
         }
 
-        private void UpdateUIs()
+        private void UpdateAllUI()
         {
-            for(int i = 0; i < backCanvas.Count; i++)
+            for (int i = 0; i < backCanvas.Count; i++)
             {
                 backCanvas[i].UpdateUI();
             }
         }
-        
+
         private void OnShowIndicator(object param)
         {
             if (param is GameState gameState)
@@ -150,7 +152,6 @@ namespace _Game.Managers
         #endregion
 
         #region Back Button
-
         private readonly Dictionary<UICanvas, UnityAction> backActionEvents = new();
         private readonly List<UICanvas> backCanvas = new();
 
@@ -204,7 +205,6 @@ namespace _Game.Managers
         {
             backCanvas.Clear();
         }
-
         #endregion
     }
 }

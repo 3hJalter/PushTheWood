@@ -74,12 +74,14 @@ namespace VinhLB
     public struct UIResourceConfig
     {
         public string Name;
-        public Sprite IconSprite;
+        public Sprite MainIconSprite;
+        public Sprite SubIconSprite;
 
-        public UIResourceConfig(string name, Sprite iconSprite)
+        public UIResourceConfig(string name, Sprite mainIconSprite, Sprite subIconSprite = null)
         {
             Name = name;
-            IconSprite = iconSprite;
+            MainIconSprite = mainIconSprite;
+            SubIconSprite = subIconSprite;
         }
     }   
 }

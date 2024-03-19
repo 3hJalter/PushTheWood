@@ -157,6 +157,7 @@ namespace GameGridEnum
         SleepingzZz = 7,
         MusicalNotes = 8,
         WaterSplash_Continuous = 9,
+        Confetti = 10,
     }
     
     public enum TutorialType

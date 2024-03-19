@@ -66,7 +66,7 @@ namespace VinhLB
                 {
                     CollectionItem item = Instantiate(_collectionItemPrefab, _collectionItemParentTF);
                     item.Initialize((int)element.Key, (int)element.Key, element.Value.Name,
-                        element.Value.IconSprite, DataManager.Ins.ConfigData.CharacterCosts[(int)element.Key]);
+                        element.Value.MainIconSprite, DataManager.Ins.ConfigData.CharacterCosts[(int)element.Key]);
                     item.OnClick += OnCollectionItemClick;
 
                     _collectionItemList.Add(item);
@@ -201,7 +201,7 @@ namespace VinhLB
             if (GameManager.Ins.TrySpendGold(buyCost))
             {
                 DataManager.Ins.SetUnlockCharacterSkin(character, true);
-                GameManager.Ins.PostEvent(_Game.DesignPattern.EventID.OnUpdateUIs);
+                GameManager.Ins.PostEvent(_Game.DesignPattern.EventID.OnUpdateUI);
             }
             else
             {

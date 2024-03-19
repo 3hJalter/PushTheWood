@@ -2,6 +2,7 @@
 using System.Globalization;
 using _Game.DesignPattern;
 using _Game.Managers;
+using _Game.UIs.Popup;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -23,6 +24,8 @@ namespace VinhLB
         private TMP_Text _adTicketValueText;
         [SerializeField]
         private Transform _adTicketIconTF;
+        [SerializeField]
+        private HButton _addButton;
 
         private event Action _delayCollectingGold;
         private event Action _delayCollectingAdTickets;
@@ -33,6 +36,11 @@ namespace VinhLB
                 data => ChangeGoldValue((ResourceChangeData)data));
             GameManager.Ins.RegisterListenerEvent(EventID.OnChangeAdTickets,
                 data => ChangeAdTicketValue((ResourceChangeData)data));
+            
+            _addButton.onClick.AddListener(() =>
+            {
+                UIManager.Ins.OpenUI<NotificationPopup>(Constants.FEATURE_COMING_SOON);
+            });
         }
 
         private void OnDestroy()

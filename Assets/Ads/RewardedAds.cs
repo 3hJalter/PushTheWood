@@ -137,7 +137,7 @@ public class RewardedAds : MonoBehaviour
                 }
             }
             AnalysticManager.Ins.RewardAdsComplete(placement);
-            GameManager.Ins.PostEvent(_Game.DesignPattern.EventID.OnUpdateUIs);
+            GameManager.Ins.PostEvent(_Game.DesignPattern.EventID.OnUpdateUI);
         }
         Load();
     }

@@ -169,7 +169,7 @@ namespace _Game.Managers
                     _gameData.user.resetIslandCount += amount;
                     break;
             }
-            PostEvent(EventID.OnUpdateUIs);
+            PostEvent(EventID.OnUpdateUI);
             Database.SaveData(_gameData);
         }
         
@@ -227,7 +227,7 @@ namespace _Game.Managers
                 //PostEvent(EventID.OnUnlockSecretMap, _gameData.user.secretLevelUnlock);
             }
             //PostEvent(EventID.OnSecretMapPieceChange, _gameData.user.secretMapPieces);
-            PostEvent(EventID.OnUpdateUIs);
+            PostEvent(EventID.OnUpdateUI);
             Database.SaveData(_gameData);
         }
 

@@ -67,7 +67,7 @@ namespace VinhLB
         {
             base.UpdateUI();
             // Change the _boosterIcon to boosterConfig.icon & _boosterText to boosterConfig.name
-            _boosterIcon.sprite = _boosterConfig.Icon;
+            _boosterIcon.sprite = _boosterConfig.MainIcon;
             _boosterText.text = _boosterConfig.Name;
             _boosterAmountText.text = $"x{_boosterConfig.TicketPerBuyRatio.itemsPerBuy}";
             _currencyAmountText.text = _boosterConfig.TicketPerBuyRatio.ticketNeed.ToString(("#,#"));

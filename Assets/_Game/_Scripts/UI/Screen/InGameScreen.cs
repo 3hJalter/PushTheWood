@@ -283,7 +283,7 @@ namespace _Game.UIs.Screen
 
         private void UpdateObjectiveText()
         {
-            objectiveImage.sprite = DataManager.Ins.UIResourceDatabase.objectiveIconDict[LevelManager.Ins.CurrentLevel.LevelWinCondition].IconSprite;
+            objectiveImage.sprite = DataManager.Ins.UIResourceDatabase.objectiveIconDict[LevelManager.Ins.CurrentLevel.LevelWinCondition].MainIconSprite;
             objectiveCounterText.text = $"{LevelManager.Ins.ObjectiveCounterLeft()}/{LevelManager.Ins.ObjectiveTotal}";
         }
 

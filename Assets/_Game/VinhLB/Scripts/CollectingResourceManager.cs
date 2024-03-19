@@ -43,7 +43,7 @@ namespace VinhLB
         [Title("UI Reward Keys")]
         [SerializeField]
         private CollectingResourceConfig _collectingUIRewardKeyConfig;
-        
+
         [Title("UI Level Stars")]
         [SerializeField]
         private CollectingResourceConfig _collectingUILevelStarConfig;
@@ -68,7 +68,7 @@ namespace VinhLB
                 _collectingUICoinConfig.CollectingResourceParentRectTF = _overlayScreen.UICoinParentRectTF;
             }
 
-            SpawnCollectingUIResource(_collectingUICoinConfig, amount, startPosition, endPoint, 
+            SpawnCollectingUIResource(_collectingUICoinConfig, amount, startPosition, endPoint,
                 eachReachedEnd, allReachedEnd);
         }
 
@@ -82,10 +82,10 @@ namespace VinhLB
                 _collectingUIAdTicketConfig.CollectingResourceParentRectTF = _overlayScreen.UIAdTicketParentRectTF;
             }
 
-            SpawnCollectingUIResource(_collectingUIAdTicketConfig, amount, startPosition, endPoint, 
+            SpawnCollectingUIResource(_collectingUIAdTicketConfig, amount, startPosition, endPoint,
                 eachReachedEnd, allReachedEnd);
         }
-        
+
         public void SpawnCollectingUIRewardKeys(int amount, Vector3 startPosition, Transform endPoint,
             Action<float> eachReachedEnd = null, Action allReachedEnd = null)
         {
@@ -96,11 +96,11 @@ namespace VinhLB
                 _collectingUIRewardKeyConfig.CollectingResourceParentRectTF = _overlayScreen.UIAdTicketParentRectTF;
             }
 
-            SpawnCollectingUIResource(_collectingUIRewardKeyConfig, amount, startPosition, endPoint, 
+            SpawnCollectingUIResource(_collectingUIRewardKeyConfig, amount, startPosition, endPoint,
                 eachReachedEnd, allReachedEnd);
         }
 
-        public void SpawnCollectingLevelStars(int amount, Vector3 startPosition, Transform endPoint,
+        public void SpawnCollectingUILevelStars(int amount, Vector3 startPosition, Transform endPoint,
             Action<float> eachReachedEnd = null, Action allReachedEnd = null)
         {
             UpdateComponents();
@@ -110,7 +110,7 @@ namespace VinhLB
                 _collectingUILevelStarConfig.CollectingResourceParentRectTF = _overlayScreen.UILevelStarParentRectTF;
             }
 
-            SpawnCollectingUIResource(_collectingUILevelStarConfig, amount, startPosition, endPoint, 
+            SpawnCollectingUIResource(_collectingUILevelStarConfig, amount, startPosition, endPoint,
                 eachReachedEnd, allReachedEnd);
         }
 
@@ -121,14 +121,13 @@ namespace VinhLB
             FloatingRewardKey unit =
                 SimplePool.Spawn<FloatingRewardKey>(
                     DataManager.Ins.GetUIUnit(_collectingInGameRewardKeyConfig.PrefabPoolType));
-            Vector2 viewPortPoint =
-                CameraManager.Ins.WorldToViewportPoint(objectTransform.position) - Vector3.one * 0.5f;
             unit.Text.text = $"+{amount}";
             unit.CanvasGroup.alpha = 0;
 
             if (_collectingInGameRewardKeyConfig.CollectingResourceParentRectTF == null)
             {
-                _collectingInGameRewardKeyConfig.CollectingResourceParentRectTF = _overlayScreen.FloatingRewardKeyParentRectTF;
+                _collectingInGameRewardKeyConfig.CollectingResourceParentRectTF =
+                    _overlayScreen.FloatingRewardKeyParentRectTF;
             }
             if (unit.Tf.parent != _collectingInGameRewardKeyConfig.CollectingResourceParentRectTF)
             {
@@ -140,20 +139,20 @@ namespace VinhLB
             s.Append(unit.CanvasGroup.DOFade(1, _collectingInGameRewardKeyConfig.MoveDuration))
                 .Join(DOVirtual.Float(0, HEIGHT_INCREASE, _collectingInGameRewardKeyConfig.MoveDuration, y =>
                 {
-                    Vector2 viewPortPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) -
+                    Vector2 viewportPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) -
                                             Vector3.one * 0.5f;
-                    unit.RectTf.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewPortPoint.x,
-                        parentRectTransform.rect.height * viewPortPoint.y + 60 + y);
+                    unit.RectTf.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewportPoint.x,
+                        parentRectTransform.rect.height * viewportPoint.y + 60 + y);
                 }).SetEase(Ease.OutQuart))
                 .Append(
                     unit.CanvasGroup.DOFade(0, _collectingInGameRewardKeyConfig.MoveDuration * 1.5f)
                         .SetEase(Ease.InQuint))
                 .Join(DOVirtual.Float(0, HEIGHT_INCREASE, _collectingInGameRewardKeyConfig.MoveDuration * 1.5f, y =>
                 {
-                    Vector2 viewPortPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) -
+                    Vector2 viewportPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) -
                                             Vector3.one * 0.5f;
-                    unit.RectTf.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewPortPoint.x,
-                        parentRectTransform.rect.height * viewPortPoint.y + HEIGHT_OFFSET + HEIGHT_INCREASE);
+                    unit.RectTf.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewportPoint.x,
+                        parentRectTransform.rect.height * viewportPoint.y + HEIGHT_OFFSET + HEIGHT_INCREASE);
                 }).SetEase(Ease.OutQuart))
                 .OnComplete(() => OnDespawnUnit(unit));
             s.Play();
@@ -163,6 +162,7 @@ namespace VinhLB
                 uiUnit.Despawn();
             }
         }
+
         public void SpawnCollectingCompass(int amount, Transform objectTransform)
         {
             UpdateComponents();
@@ -170,14 +170,13 @@ namespace VinhLB
             FloatingCompass unit =
                 SimplePool.Spawn<FloatingCompass>(
                     DataManager.Ins.GetUIUnit(_collectingInGameCompassConfig.PrefabPoolType));
-            Vector2 viewPortPoint =
-                CameraManager.Ins.WorldToViewportPoint(objectTransform.position) - Vector3.one * 0.5f;
             unit.Text.text = $"+{amount}";
             unit.CanvasGroup.alpha = 0;
 
             if (_collectingInGameRewardKeyConfig.CollectingResourceParentRectTF == null)
             {
-                _collectingInGameRewardKeyConfig.CollectingResourceParentRectTF = _overlayScreen.FloatingRewardKeyParentRectTF;
+                _collectingInGameRewardKeyConfig.CollectingResourceParentRectTF =
+                    _overlayScreen.FloatingRewardKeyParentRectTF;
             }
             if (unit.Tf.parent != _collectingInGameRewardKeyConfig.CollectingResourceParentRectTF)
             {
@@ -189,20 +188,20 @@ namespace VinhLB
             s.Append(unit.CanvasGroup.DOFade(1, _collectingInGameRewardKeyConfig.MoveDuration))
                 .Join(DOVirtual.Float(0, HEIGHT_INCREASE, _collectingInGameRewardKeyConfig.MoveDuration, y =>
                 {
-                    Vector2 viewPortPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) -
+                    Vector2 viewportPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) -
                                             Vector3.one * 0.5f;
-                    unit.RectTf.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewPortPoint.x,
-                        parentRectTransform.rect.height * viewPortPoint.y + 60 + y);
+                    unit.RectTf.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewportPoint.x,
+                        parentRectTransform.rect.height * viewportPoint.y + 60 + y);
                 }).SetEase(Ease.OutQuart))
                 .Append(
                     unit.CanvasGroup.DOFade(0, _collectingInGameRewardKeyConfig.MoveDuration * 1.5f)
                         .SetEase(Ease.InQuint))
                 .Join(DOVirtual.Float(0, HEIGHT_INCREASE, _collectingInGameRewardKeyConfig.MoveDuration * 1.5f, y =>
                 {
-                    Vector2 viewPortPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) -
+                    Vector2 viewportPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) -
                                             Vector3.one * 0.5f;
-                    unit.RectTf.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewPortPoint.x,
-                        parentRectTransform.rect.height * viewPortPoint.y + HEIGHT_OFFSET + HEIGHT_INCREASE);
+                    unit.RectTf.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewportPoint.x,
+                        parentRectTransform.rect.height * viewportPoint.y + HEIGHT_OFFSET + HEIGHT_INCREASE);
                 }).SetEase(Ease.OutQuart))
                 .OnComplete(() => OnDespawnUnit(unit));
             s.Play();
@@ -288,7 +287,7 @@ namespace VinhLB
 
                 await Task.Delay(50);
             }
-            
+
             allReachedEnd?.Invoke();
         }
     }

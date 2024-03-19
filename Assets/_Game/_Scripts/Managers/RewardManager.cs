@@ -43,7 +43,7 @@ namespace _Game.Managers
                 gameData.user.currentRewardChestIndex += 1;
                 UIManager.Ins.OpenUI<RewardPopup>(GetRCReward());
                 GameManager.Ins.PostEvent(EventID.OnClaimRewardChest, gameData.user.currentRewardChestIndex - 1);
-                GameManager.Ins.PostEvent(EventID.OnUpdateUIs);
+                GameManager.Ins.PostEvent(EventID.OnUpdateUI);
 
                 return true;
             }
@@ -58,7 +58,7 @@ namespace _Game.Managers
                 gameData.user.currentLevelChestIndex += 1;
                 UIManager.Ins.OpenUI<RewardPopup>(GetLCReward());
                 GameManager.Ins.PostEvent(EventID.OnClaimLevelChest, gameData.user.currentLevelChestIndex - 1);
-                GameManager.Ins.PostEvent(EventID.OnUpdateUIs);
+                GameManager.Ins.PostEvent(EventID.OnUpdateUI);
                 
                 return true;
             }
