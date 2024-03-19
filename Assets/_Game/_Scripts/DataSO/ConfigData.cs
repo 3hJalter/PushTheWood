@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using _Game.Managers;
 using _Game.Resource;
-using _Game.Utilities;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 using VinhLB;
 
 namespace _Game.Data
@@ -14,7 +12,6 @@ namespace _Game.Data
     public class ConfigData : SerializedScriptableObject
     {
         #region Feature Unlock
-        
         [FoldoutGroup("Feature Unlock")]
         public readonly int unlockGoMainMenuOnLoseAtLevelIndex = 5;
         [FoldoutGroup("Feature Unlock")]
@@ -23,20 +20,18 @@ namespace _Game.Data
         public readonly int unlockDailyChallengeAtLevelIndex = 9;
         [FoldoutGroup("Feature Unlock")]
         public readonly int unlockSecretLevelAtLevelIndex = 19;
-
         #endregion
-        
-        #region In Game
 
+        #region In Game
         [FoldoutGroup("In Game")]
         // Time per level
         [FoldoutGroup("In Game/Time Per Level/Normal")]
         [InfoBox("Do not change the order of the list: Easy -> Medium -> Hard")]
         public List<TimePerNormalLevel> timePerNormalLevel = new()
         {
-            new TimePerNormalLevel() {levelNormalType = LevelNormalType.Easy, time = 300},
-            new TimePerNormalLevel() {levelNormalType = LevelNormalType.Medium, time = 600},
-            new TimePerNormalLevel() {levelNormalType = LevelNormalType.Hard, time = 900},
+            new TimePerNormalLevel() { levelNormalType = LevelNormalType.Easy, time = 300 },
+            new TimePerNormalLevel() { levelNormalType = LevelNormalType.Medium, time = 600 },
+            new TimePerNormalLevel() { levelNormalType = LevelNormalType.Hard, time = 900 },
         };
         [FoldoutGroup("In Game/Time Per Level")]
         public readonly int timePerDailyChallengeLevel = 900;
@@ -70,12 +65,12 @@ namespace _Game.Data
         #endregion
 
         #region Daily Challenge Reward
-
         [FoldoutGroup("Daily Challenge Reward")]
         // Note: Add a theme resource when have, and make player take it the first time player clear full 7 days
         public List<DailyChallengeRewardMilestone> dailyChallengeRewardMilestones = new()
         {
-            new DailyChallengeRewardMilestone() {
+            new DailyChallengeRewardMilestone()
+            {
                 clearLevelNeed = 1,
                 rewards = new List<DailyChallengeReward>()
                 {
@@ -86,9 +81,11 @@ namespace _Game.Data
                     }
                 }
             },
-            new DailyChallengeRewardMilestone() {
+            new DailyChallengeRewardMilestone()
+            {
                 clearLevelNeed = 2,
-                rewards = new List<DailyChallengeReward>() {
+                rewards = new List<DailyChallengeReward>()
+                {
                     new()
                     {
                         currencyType = CurrencyType.Gold,
@@ -96,9 +93,11 @@ namespace _Game.Data
                     }
                 }
             },
-            new DailyChallengeRewardMilestone() {
+            new DailyChallengeRewardMilestone()
+            {
                 clearLevelNeed = 4,
-                rewards = new List<DailyChallengeReward>() {
+                rewards = new List<DailyChallengeReward>()
+                {
                     new()
                     {
                         currencyType = CurrencyType.AdTicket,
@@ -106,18 +105,22 @@ namespace _Game.Data
                     }
                 }
             },
-            new DailyChallengeRewardMilestone() {
+            new DailyChallengeRewardMilestone()
+            {
                 clearLevelNeed = 7,
-                rewards = new List<DailyChallengeReward>() {
+                rewards = new List<DailyChallengeReward>()
+                {
                     new()
                     {
                         currencyType = CurrencyType.Gold,
                         quantity = 120
-                    }, new()
+                    },
+                    new()
                     {
                         currencyType = CurrencyType.AdTicket,
                         quantity = 1
-                    }, new()
+                    },
+                    new()
                     {
                         currencyType = CurrencyType.RandomBooster,
                         quantity = 1,
@@ -125,11 +128,9 @@ namespace _Game.Data
                 }
             },
         };
-        
         #endregion
-        
-        #region Booster Purchase
 
+        #region Booster Purchase
         // Ticket purchase
         [FoldoutGroup("Booster Purchase")]
         [InfoBox("Do not change the order of the list, check order in BoosterType enum")]
@@ -150,6 +151,7 @@ namespace _Game.Data
         [FoldoutGroup("Ads")]
         public readonly int bannerHeight = 100;
         #endregion
+
         // [BoxGroup("Monetize")]
 
         public BoosterConfig GetBoosterConfig(BoosterType boosterType)
@@ -157,14 +159,14 @@ namespace _Game.Data
             return boosterConfigList.Find(x => x.Type == boosterType);
         }
     }
-   
+
     [Serializable]
     public struct DailyChallengeRewardMilestone
     {
         public int clearLevelNeed;
         public List<DailyChallengeReward> rewards;
     }
-    
+
     [Serializable]
     public struct DailyChallengeReward
     {
@@ -190,19 +192,22 @@ namespace _Game.Data
             }
         }
     }
-    
+
     [Serializable]
     public struct BoosterConfig
     {
-        [SerializeField] private BoosterType type;
-        [SerializeField] private int unlockAtLevel;
-        [SerializeField] private int goldPerBuyTen;
-        [SerializeField] private TicketPerBuyRatio ticketPerBuyRatio;
+        [SerializeField]
+        private BoosterType type;
+        [SerializeField]
+        private int unlockAtLevel;
+        [SerializeField]
+        private int goldPerBuyTen;
+        [SerializeField]
+        private TicketPerBuyRatio ticketPerBuyRatio;
 
-        [FormerlySerializedAs("UIResourceData")]
-        [FormerlySerializedAs("ResourceData")]
+        [HideInInspector]
         public UIResourceConfig UIResourceConfig;
-        
+
         public BoosterType Type => type;
         public int UnlockAtLevel => unlockAtLevel;
         public string Name => UIResourceConfig.Name;
@@ -211,22 +216,23 @@ namespace _Game.Data
         public TicketPerBuyRatio TicketPerBuyRatio => ticketPerBuyRatio;
         // Do with goldPerBuyMore
     }
-    
-    [Serializable] 
+
+    [Serializable]
     public record TimePerNormalLevel
     {
-       public LevelNormalType levelNormalType;
-       public int time;
+        public LevelNormalType levelNormalType;
+        public int time;
     }
-    
+
     [Serializable]
     public struct TicketPerBuyRatio
     {
-        public TicketPerBuyRatio(int first, int second) {
+        public TicketPerBuyRatio(int first, int second)
+        {
             ticketNeed = first;
             itemsPerBuy = second;
         }
-        
+
         public int ticketNeed;
         public int itemsPerBuy;
     }
