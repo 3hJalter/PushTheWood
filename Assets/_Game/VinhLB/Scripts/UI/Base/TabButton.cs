@@ -162,15 +162,17 @@ namespace VinhLB
                     {
                         DOVirtual.Float(0f, -_goUpOffset, _goUpDuration,
                             (floatValue) => { _activeRectTF.SetPaddingTop(floatValue); }).SetEase(Ease.OutExpo);
+                        
+                        _nameText.color = new Color(1f, 1f, 1f, 0f); 
+                        _nameText.DOColor(_activeNameTextColor, _goUpDuration).SetEase(Ease.OutExpo);
 
                         if (_showIcon)
                         {
                             Sequence iconSequence = DOTween.Sequence();
                             iconSequence.AppendCallback(PlayIconAnim)
-                                .Join(_activeIcon.rectTransform
-                                    .DOAnchorPos3D(activeIconTargetPosition, _goUpDuration)
-                                    .SetEase(Ease.OutExpo))
-                                .Join(_activeIcon.rectTransform.DOScale(1.25f, _goUpDuration).SetEase(Ease.OutExpo));
+                                .Join(_activeIcon.rectTransform.DOAnchorPos3D(activeIconTargetPosition, _goUpDuration))
+                                .Join(_activeIcon.rectTransform.DOScale(1.25f, _goUpDuration))
+                                .SetEase(Ease.OutExpo);
                         }
                     }
                     else
@@ -180,6 +182,8 @@ namespace VinhLB
                             _activeIcon.rectTransform.anchoredPosition = activeIconTargetPosition;
                             _activeIcon.rectTransform.localRotation = Quaternion.identity;
                             _activeIcon.rectTransform.localScale = Vector3.one * _sizeIncrease;
+
+                            _nameText.color = _activeNameTextColor;
                         }
                     }
                 }

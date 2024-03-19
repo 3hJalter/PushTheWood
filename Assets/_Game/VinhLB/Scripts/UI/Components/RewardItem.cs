@@ -33,7 +33,14 @@ namespace VinhLB
                 _nameText.text = _reward.UIResourceConfig.Name;
             }
 
-            _iconImage.sprite = _reward.UIResourceConfig.IconSprite;
+            if (_reward.RewardType == RewardType.Character)
+            {
+                _iconImage.sprite = _reward.UIResourceConfig.SubIconSprite;
+            }
+            else
+            {
+                _iconImage.sprite = _reward.UIResourceConfig.MainIconSprite;
+            }
 
             string amountText;
             if (_reward.RewardType == RewardType.Currency && _reward.CurrencyType == CurrencyType.Gold)

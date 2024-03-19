@@ -49,7 +49,8 @@ namespace _Game.DesignPattern
             Init(prefab, qty, parent);
         }
 
-        public static ParticleSystem Play(ParticleSystem prefab, Vector3 pos, Quaternion rot = default)
+        public static ParticleSystem Play(ParticleSystem prefab, Vector3 pos, Quaternion rot = default,
+            Transform parent = null, Vector3 scale = default)
         {
             if (prefab == null)
             {
@@ -64,7 +65,7 @@ namespace _Game.DesignPattern
                 pools[prefab.GetInstanceID()] = new Pool(prefab, 10, newRoot);
             }
 
-            return pools[prefab.GetInstanceID()].Play(pos, rot);
+            return pools[prefab.GetInstanceID()].Play(parent, pos, rot, scale);
         }
 
         public static void Release(ParticleSystem prefab)
@@ -144,7 +145,7 @@ namespace _Game.DesignPattern
             public int Count => inactive.Count;
 
             // Spawn an object from our pool
-            public ParticleSystem Play(Vector3 pos, Quaternion rot)
+            public ParticleSystem Play(Transform parent, Vector3 pos, Quaternion rot, Vector3 scale)
             {
                 index = index + 1 < inactive.Count ? index + 1 : 0;
 
@@ -157,7 +158,15 @@ namespace _Game.DesignPattern
                     inactive.Insert(index, obj);
                 }
 
+                if (parent != null)
+                {
+                    obj.transform.SetParent(parent);
+                }
                 obj.transform.SetPositionAndRotation(pos, rot);
+                if (!scale.Equals(default))
+                {
+                    obj.transform.localScale = scale;
+                }
                 obj.Play();
                 return obj;
             }

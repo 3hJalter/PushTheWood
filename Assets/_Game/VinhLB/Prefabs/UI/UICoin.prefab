@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2282518125657146497}
   - component: {fileID: 2282518125657146496}
   - component: {fileID: 7061199007589632919}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UICoin
   m_TagString: Untagged
   m_Icon: {fileID: 0}

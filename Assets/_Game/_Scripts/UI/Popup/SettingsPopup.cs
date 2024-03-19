@@ -16,7 +16,9 @@ namespace _Game.UIs.Popup
         [SerializeField]
         private TMP_Text _headerText;
         [SerializeField]
-        private GameObject _navigationGroupGO;
+        private GameObject _group2GO;
+        [SerializeField]
+        private GameObject _group3GO;
         
         [SerializeField]
         private Toggle _musicToggle;
@@ -49,12 +51,14 @@ namespace _Game.UIs.Popup
                 GameManager.Ins.ChangeState(GameState.Pause);
 
                 _headerText.text = "Pause";
-                _navigationGroupGO.SetActive(true);
+                _group2GO.SetActive(false);
+                _group3GO.SetActive(true);
             }
             else
             {
                 _headerText.text = "Settings";
-                _navigationGroupGO.SetActive(false);
+                _group2GO.SetActive(true);
+                _group3GO.SetActive(false);
             }
         }
 
@@ -121,15 +125,14 @@ namespace _Game.UIs.Popup
             UIManager.Ins.OpenUI<MoveOptionPopup>();
         }
         
-
         public void OnClickToggleGridButton()
         {
             FXManager.Ins.SwitchGridActive();
         }
 
-        public void OnClickTutorialButton()
+        public void OnSupportClick()
         {
-            UIManager.Ins.OpenUI<TutorialPopup>();
+            UIManager.Ins.OpenUI<NotificationPopup>(Constants.FEATURE_COMING_SOON);
         }
 
         public void OnClickGoMenuButton()

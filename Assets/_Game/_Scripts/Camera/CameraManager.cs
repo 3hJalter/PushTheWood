@@ -14,15 +14,23 @@ namespace _Game.Managers
     {
         private const int CAMERA_PRIORITY_ACTIVE = 99;
         private const int CAMERA_PRIORITY_INACTIVE = 1;
-        [SerializeField] private CinemachineBrain brain;
-        [SerializeField] private CinemachineVirtualCameraBase currentVirtualCamera;
+        [SerializeField]
+        private CinemachineBrain brain;
+        [SerializeField]
+        private CinemachineVirtualCameraBase currentVirtualCamera;
 
-        [SerializeField] private UnityEngine.Camera brainCamera;
-        [SerializeField] private UnityEngine.Camera perspectiveCamera;
-        [SerializeField] private Transform cameraTarget;
+        [SerializeField]
+        private UnityEngine.Camera brainCamera;
+        [SerializeField]
+        private UnityEngine.Camera perspectiveCamera;
+        [SerializeField]
+        private UnityEngine.Camera uiCamera;
+        [SerializeField]
+        private Transform cameraTarget;
 
-        [SerializeField] private float cameraMoveTime = 1f;
-        
+        [SerializeField]
+        private float cameraMoveTime = 1f;
+
         // ReSharper disable once Unity.RedundantSerializeFieldAttribute
         // ReSharper disable once CollectionNeverUpdated.Local
         [SerializeField]
@@ -40,6 +48,7 @@ namespace _Game.Managers
             DontDestroyOnLoad(gameObject);
             mainCamera = brainCamera;
         }
+
         public bool IsCurrentCameraIs(ECameraType eCameraType)
         {
             return currentVirtualCamera == virtualCameraDic[eCameraType];
@@ -72,11 +81,13 @@ namespace _Game.Managers
                     break;
             }
         }
+
         public T GetCameraCinemachineComponent<T>(ECameraType eCameraType) where T : CinemachineComponentBase
         {
             if (!cameraComponentDic.ContainsKey(eCameraType))
             {
-                cameraComponentDic.Add(eCameraType, virtualCameraDic[ECameraType.PerspectiveCamera].GetComponentInChildren<T>());
+                cameraComponentDic.Add(eCameraType,
+                    virtualCameraDic[ECameraType.PerspectiveCamera].GetComponentInChildren<T>());
             }
             return cameraComponentDic[ECameraType.PerspectiveCamera] as T;
         }
@@ -85,31 +96,39 @@ namespace _Game.Managers
         {
             // if the same position, do nothing
             if ((cameraTarget.position - position).sqrMagnitude < 0.01f) return;
-            
+
             if (moveTime < 0f) moveTime = cameraMoveTime;
             cameraTarget.DOKill();
             cameraTarget.DOMove(position, moveTime).SetEase(ease);
-        }   
+        }
+
         public void ChangeCameraTargetPositionInstant(Vector3 position)
         {
             cameraTarget.DOKill();
             cameraTarget.position = position;
         }
+
         public void ChangeCameraPosition(Vector3 position)
         {
             virtualCameraDic[mainTypeCamera].enabled = false;
             mainCamera.transform.position = position;
             virtualCameraDic[mainTypeCamera].enabled = true;
         }
+
         public void ChangeCameraTarget(ECameraType eCameraType, Transform target)
         {
             virtualCameraDic[eCameraType].Follow = target;
             virtualCameraDic[eCameraType].LookAt = target;
         }
+
         public Vector3 WorldToViewportPoint(Vector3 position)
         {
             return brainCamera.WorldToViewportPoint(position);
         }
 
+        public Vector3 ViewportToWorldPoint(Vector3 position)
+        {
+            return uiCamera.ViewportToWorldPoint(position);
+        }
     }
 }

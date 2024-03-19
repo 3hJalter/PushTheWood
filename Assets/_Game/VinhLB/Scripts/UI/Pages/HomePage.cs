@@ -6,7 +6,6 @@ using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Popup;
 using _Game.UIs.Screen;
-using _Game.Utilities;
 using _Game.Utilities.Timer;
 using Cinemachine;
 using DG.Tweening;
@@ -21,35 +20,41 @@ namespace VinhLB
         [SerializeField]
         private HButton _playButton;
         [SerializeField]
-        // private HButton _dailyChallengeButton;
-        private FeatureButton dailyChallengeButton;
+        private FeatureButton _dailyChallengeButton;
         [SerializeField]
-        // private HButton _secretMapButton;
-        private FeatureButton secretMapButton;
+        private FeatureButton _secretMapButton;
         [SerializeField]
-        private HButton _dailyRewardButton;
+        private FeatureButton _dailyRewardButton;
         [SerializeField]
-        private HButton _dailyMissionButton;
-
+        private FeatureButton _dailyMissionButton;
+        
+        [Space]
         [SerializeField]
-        private TMP_Text _levelText;
-        [SerializeField]
-        private FeatureButton rewardChestButton;
+        private FeatureButton _rewardChestButton;
         [SerializeField]
         private RectTransform _rewardChestIconRectTF;
         [SerializeField]
         private RectTransform _rewardChestCurrencyIconRectTF;
         [SerializeField]
-        private TMP_Text _rewardKeyTxt;
+        private GameObject _rewardKeyFrameGO;
         [SerializeField]
-        private FeatureButton levelChestButton;
+        private TMP_Text _rewardKeyText;
+        
+        [Space]
+        [SerializeField]
+        private FeatureButton _levelChestButton;
         [SerializeField]
         private RectTransform _levelChestIconRectTF;
         [SerializeField]
         private RectTransform _levelChestCurrencyIconRectTF;
         [SerializeField]
-        private TMP_Text _levelProgressTxt;
+        private GameObject _levelStarFrameGO;
+        [SerializeField]
+        private TMP_Text _levelStarText;
         
+        [Space]
+        [SerializeField]
+        private TMP_Text _levelText;
         [SerializeField]
         private TMP_Text _levelNormalText;
         [SerializeField]
@@ -60,9 +65,10 @@ namespace VinhLB
         private Color _mediumLevelNormalColor;
         [SerializeField]
         private Color _hardLevelNormalColor;
-
-        [SerializeField] private Color lastLevelNormalColor;
-        [SerializeField] private GameObject lastLevelLockFrame;
+        [SerializeField]
+        private Color _lastLevelNormalColor;
+        [SerializeField]
+        private GameObject _lastLevelLockGO;
         
         
         private STimer _shakeRewardTimer;
@@ -89,23 +95,23 @@ namespace VinhLB
                 LevelManager.Ins.InitLevel();
                 UIManager.Ins.OpenUI<InGameScreen>();
             });
-            dailyChallengeButton.AddListener(() =>
+            _dailyChallengeButton.AddListener(() =>
             {
                 UIManager.Ins.OpenUI<DailyChallengePopup>();
             });
-            _dailyRewardButton.onClick.AddListener(() =>
+            _dailyRewardButton.AddListener(() =>
             {
                 UIManager.Ins.OpenUI<DailyRewardPopup>();
             });
-            _dailyMissionButton.onClick.AddListener(() =>
+            _dailyMissionButton.AddListener(() =>
             {
                 UIManager.Ins.OpenUI<DailyMissionPopup>();
             });
-            secretMapButton.AddListener(() =>
+            _secretMapButton.AddListener(() =>
             {
                 UIManager.Ins.OpenUI<SecretMapPopup>();
             });
-            rewardChestButton.AddListener(() =>
+            _rewardChestButton.AddListener(() =>
             {
                 if (!CanClaimRewardChest())
                 {
@@ -119,7 +125,7 @@ namespace VinhLB
                     UpdateRewardChestUI();
                 }
             });
-            levelChestButton.AddListener(() =>
+            _levelChestButton.AddListener(() =>
             {
                 if (!CanClaimLevelChest())
                 {
@@ -172,11 +178,11 @@ namespace VinhLB
 
             SetupFeature();
 
-            if (rewardChestButton.IsUnlocked && _delayCollectingRewardKeys == null)
+            if (_rewardChestButton.IsUnlocked && _delayCollectingRewardKeys == null)
             {
                 UpdateRewardChestUI();
             }
-            if (levelChestButton.IsUnlocked && _delayCollectingLevelStars == null)
+            if (_levelChestButton.IsUnlocked && _delayCollectingLevelStars == null)
             {
                 UpdateLevelChestUI();
             }
@@ -188,12 +194,12 @@ namespace VinhLB
 
             OnShowMenuTutorial();
 
-            if (rewardChestButton.IsUnlocked && _delayCollectingRewardKeys != null)
+            if (_rewardChestButton.IsUnlocked && _delayCollectingRewardKeys != null)
             {
                 _delayCollectingRewardKeys.Invoke();
                 _delayCollectingRewardKeys = null;
             }
-            if (levelChestButton.IsUnlocked && _delayCollectingLevelStars != null)
+            if (_levelChestButton.IsUnlocked && _delayCollectingLevelStars != null)
             {
                 _delayCollectingLevelStars.Invoke();
                 _delayCollectingLevelStars = null;
@@ -202,23 +208,22 @@ namespace VinhLB
 
         public override void UpdateUI()
         {
-            // if NormalLevelIndex is the last index of normal level in
+            // If NormalLevelIndex is the last index of normal level in
             int index = LevelManager.Ins.NormalLevelIndex;
             _levelText.text = $"Level {index + 1}"; 
             
             if (index == DataManager.Ins.CountNormalLevel - 1)
             {
-                _levelNormalFrame.color = lastLevelNormalColor;
+                _levelNormalFrame.color = _lastLevelNormalColor;
                 _levelNormalText.text = "Not Available";
-                lastLevelLockFrame.SetActive(true);
+                _lastLevelLockGO.SetActive(true);
                 _playButton.interactable = false;
+                
                 return;
             }
-            else
-            {
-                _playButton.interactable = true;
-                lastLevelLockFrame.SetActive(false);
-            }
+            
+            _playButton.interactable = true;
+            _lastLevelLockGO.SetActive(false);
             
             LevelNormalType currentLevelLevelNormalType = LevelManager.Ins.CurrentLevel.LevelNormalType;
             _levelNormalText.text = $"{currentLevelLevelNormalType} Level";
@@ -235,62 +240,19 @@ namespace VinhLB
                     break;
             }
 
-            // if (RewardManager.Ins.HomeReward.IsCanClaimRC)
-            // {
-            //     if (!_shakeRewardTimer.IsStart)
-            //     {
-            //         _shakeRewardTimer.Start(1f, () =>
-            //         {
-            //             _rewardChestIconRectTF.DOShakeRotation(0.5f, Vector3.forward * 10f, 10, 45f, true,
-            //                 ShakeRandomnessMode.Harmonic);
-            //         }, true);
-            //         _rewardKeyTxt.text = $"FULL";
-            //         _rewardKeyTxt.color = Color.green;
-            //         _rewardChestCurrencyIconRectTF.gameObject.SetActive(false);
-            //     }
-            // }
-            // else
-            // {
-            //     _shakeRewardTimer.Stop();
-            //     _rewardKeyTxt.text = $"{GameManager.Ins.RewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
-            //     _rewardKeyTxt.color = Color.white;
-            //     _rewardChestCurrencyIconRectTF.gameObject.SetActive(true);
-            //     _rewardChestIconRectTF.localRotation = _startRewardChestIconQuaternion;
-            // }
+            int dailyRewardNotificationAmount = DailyRewardManager.Ins.IsTodayRewardObtained ? 0 : 1;
+            _dailyRewardButton.SetNotificationAmount(dailyRewardNotificationAmount);
 
-            // if (RewardManager.Ins.HomeReward.IsCanClaimLC)
-            // {
-            //     if (!_shakeLevelTimer.IsStart)
-            //     {
-            //         _shakeLevelTimer.Start(1f, () =>
-            //         {
-            //             _levelChestIconRectTF.DOShakeRotation(0.5f, Vector3.forward * 10f, 10, 45f, true,
-            //                 ShakeRandomnessMode.Harmonic);
-            //         }, true);
-            //         _levelProgressTxt.text = $"FULL";
-            //         _levelProgressTxt.color = Color.green;
-            //         _levelChestCurrencyIconRectTF.gameObject.SetActive(false);
-            //     }
-            // }
-            // else
-            // {
-            //     _shakeLevelTimer.Stop();
-            //     _levelProgressTxt.text =
-            //         $"{GameManager.Ins.LevelProgress}/{DataManager.Ins.ConfigData.requireLevelProgress}";
-            //     _levelProgressTxt.color = Color.white;
-            //     _levelChestCurrencyIconRectTF.gameObject.SetActive(true);
-            //     _levelChestIconRectTF.localRotation = _startLevelChestIconQuaternion;
-            // }
         }
 
         public void ShowDailyChallengeButton(bool isShow)
         {
-            dailyChallengeButton.gameObject.SetActive(isShow);
+            _dailyChallengeButton.gameObject.SetActive(isShow);
         }
         
         public void ShowSecretMapButton(bool isShow)
         {
-            secretMapButton.gameObject.SetActive(isShow);
+            _secretMapButton.gameObject.SetActive(isShow);
         }
         
         private void SetupHomeCamera()
@@ -325,7 +287,7 @@ namespace VinhLB
             }
             else
             {
-                _rewardKeyTxt.text = $"{GameManager.Ins.RewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
+                _rewardKeyText.text = $"{GameManager.Ins.RewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
             }
 
             void SpawnCollectingUIRewardKeys()
@@ -358,14 +320,14 @@ namespace VinhLB
             }
             else
             {
-                _rewardKeyTxt.text = $"{GameManager.Ins.LevelProgress}/{DataManager.Ins.ConfigData.requireRewardKey}";
+                _rewardKeyText.text = $"{GameManager.Ins.LevelProgress}/{DataManager.Ins.ConfigData.requireRewardKey}";
             }
 
             void SpawnCollectingUILevelStars()
             {
                 int collectingLevelStars = Mathf.Min((int)data.ChangedAmount, Constants.MAX_UI_UNIT);
                 Vector3 spawnPosition = data.Source as Vector3? ?? Vector3.zero;
-                CollectingResourceManager.Ins.SpawnCollectingLevelStars(collectingLevelStars, spawnPosition,
+                CollectingResourceManager.Ins.SpawnCollectingUILevelStars(collectingLevelStars, spawnPosition,
                     _levelChestIconRectTF,
                     (progress) =>
                     {
@@ -387,9 +349,13 @@ namespace VinhLB
                         _rewardChestIconRectTF.DOShakeRotation(0.5f, Vector3.forward * 10f, 10, 45f, true,
                             ShakeRandomnessMode.Harmonic);
                     }, true);
-                    _rewardKeyTxt.text = $"FULL";
-                    _rewardKeyTxt.color = Color.green;
-                    _rewardChestCurrencyIconRectTF.gameObject.SetActive(false);
+                    // _rewardKeyText.text = $"FULL";
+                    // _rewardKeyText.color = Color.green;
+                    // _rewardChestCurrencyIconRectTF.gameObject.SetActive(false);
+                    if (_rewardKeyFrameGO.activeSelf)
+                    {
+                        _rewardKeyFrameGO.SetActive(false);
+                    }
                 }
             }
             else
@@ -397,12 +363,16 @@ namespace VinhLB
                 if (_shakeRewardTimer.IsStart)
                 {
                     _shakeRewardTimer.Stop();
-                    _rewardKeyTxt.color = Color.white;
-                    _rewardChestCurrencyIconRectTF.gameObject.SetActive(true);
+                    if (!_rewardKeyFrameGO.activeSelf)
+                    {
+                        _rewardKeyFrameGO.SetActive(true);
+                    }
+                    // _rewardKeyText.color = Color.white;
+                    // _rewardChestCurrencyIconRectTF.gameObject.SetActive(true);
                     _rewardChestIconRectTF.localRotation = _startRewardChestIconQuaternion;
                 }
 
-                _rewardKeyTxt.text =
+                _rewardKeyText.text =
                     $"{GameManager.Ins.SmoothRewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
             }
         }
@@ -418,9 +388,13 @@ namespace VinhLB
                         _levelChestIconRectTF.DOShakeRotation(0.5f, Vector3.forward * 10f, 10, 45f, true,
                             ShakeRandomnessMode.Harmonic);
                     }, true);
-                    _levelProgressTxt.text = $"FULL";
-                    _levelProgressTxt.color = Color.green;
-                    _levelChestCurrencyIconRectTF.gameObject.SetActive(false);
+                    // _levelStarText.text = $"FULL";
+                    // _levelStarText.color = Color.green;
+                    // _levelChestCurrencyIconRectTF.gameObject.SetActive(false);
+                    if (_levelStarFrameGO.activeSelf)
+                    {
+                        _levelStarFrameGO.SetActive(false);
+                    }
                 }
             }
             else
@@ -428,12 +402,16 @@ namespace VinhLB
                 if (_shakeLevelTimer.IsStart)
                 {
                     _shakeLevelTimer.Stop();
-                    _levelProgressTxt.color = Color.white;
-                    _levelChestCurrencyIconRectTF.gameObject.SetActive(true);
+                    if (!_levelStarFrameGO.activeSelf)
+                    {
+                        _levelStarFrameGO.SetActive(true);
+                    }
+                    // _levelStarText.color = Color.white;
+                    // _levelChestCurrencyIconRectTF.gameObject.SetActive(true);
                     _levelChestIconRectTF.localRotation = _startLevelChestIconQuaternion;
                 }
 
-                _levelProgressTxt.text =
+                _levelStarText.text =
                     $"{GameManager.Ins.SmoothLevelProgress}/{DataManager.Ins.ConfigData.requireLevelProgress}";
             }
         }
@@ -459,7 +437,7 @@ namespace VinhLB
                 ClickableItem = _dailyRewardButton,
                 OnClickedCallback = () => UIManager.Ins.CloseUI<MaskScreen>(),
                 // If you want to make mask fit and follow target
-                // TargetRectTF = rectTransform
+                //TargetRectTF = rectTransform
             };
             UIManager.Ins.OpenUI<MaskScreen>(maskData);
         }
@@ -468,18 +446,18 @@ namespace VinhLB
         {
             // Get normal level index
             int normalLevelIndex = LevelManager.Ins.NormalLevelIndex;
-            dailyChallengeButton.SetUnlockLevelIndex(DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex);
-            dailyChallengeButton.IsUnlocked =
+            _dailyChallengeButton.SetUnlockLevelIndex(DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex);
+            _dailyChallengeButton.IsUnlocked =
                 normalLevelIndex >= DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex;
             
-            secretMapButton.SetUnlockLevelIndex(DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex);
-            secretMapButton.IsUnlocked = normalLevelIndex >= DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex;
+            _secretMapButton.SetUnlockLevelIndex(DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex);
+            _secretMapButton.IsUnlocked = normalLevelIndex >= DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex;
             
-            levelChestButton.SetUnlockLevelIndex(DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex);
-            levelChestButton.IsUnlocked = normalLevelIndex >= DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex;
+            _levelChestButton.SetUnlockLevelIndex(DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex);
+            _levelChestButton.IsUnlocked = normalLevelIndex >= DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex;
             
-            rewardChestButton.SetUnlockLevelIndex(DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex);
-            rewardChestButton.IsUnlocked = normalLevelIndex >= DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex;
+            _rewardChestButton.SetUnlockLevelIndex(DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex);
+            _rewardChestButton.IsUnlocked = normalLevelIndex >= DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex;
         }
 
         private void OnShowMenuTutorial()

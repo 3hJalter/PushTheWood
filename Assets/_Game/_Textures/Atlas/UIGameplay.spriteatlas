@@ -55,7 +55,6 @@ SpriteAtlas:
     - {fileID: 2800000, guid: dfc87af8ca5f0134cbe4669d65ba0237, type: 3}
     - {fileID: 2800000, guid: 3d51b9499215c95409575808db7284c5, type: 3}
     - {fileID: 2800000, guid: 13e53a5210354e94fa9cceb380380da5, type: 3}
-    - {fileID: 2800000, guid: 753aa0c9ea1d4d74db9323b3561059b9, type: 3}
     - {fileID: 2800000, guid: 53a5f9376ba7ea74cb52863fb47c7456, type: 3}
     - {fileID: 2800000, guid: e8f82d3c5ef946f46aceb6099a0ab7e6, type: 3}
     - {fileID: 2800000, guid: 982f3eb951abb7d4e9a43b4cf232b663, type: 3}
@@ -78,7 +77,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 3d51b9499215c95409575808db7284c5, type: 3}
   - {fileID: 21300000, guid: 982f3eb951abb7d4e9a43b4cf232b663, type: 3}
   - {fileID: 21300000, guid: 3e53afb930fb97e479738d9639ad649e, type: 3}
-  - {fileID: 21300000, guid: 753aa0c9ea1d4d74db9323b3561059b9, type: 3}
   - {fileID: 21300000, guid: e8f82d3c5ef946f46aceb6099a0ab7e6, type: 3}
   - {fileID: 21300000, guid: 1012a03e39ef4c149aee0eba370d2c3f, type: 3}
   m_PackedSpriteNamesToIndex:
@@ -95,7 +93,6 @@ SpriteAtlas:
   - pause_btn
   - DONT-No_Txt
   - star
-  - grow-tree
   - DO-No_Txt
   - reset
   m_RenderDataMap: {}

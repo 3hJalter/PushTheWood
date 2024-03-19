@@ -206,7 +206,7 @@ namespace _Game.Data
         public BoosterType Type => type;
         public int UnlockAtLevel => unlockAtLevel;
         public string Name => UIResourceConfig.Name;
-        public Sprite Icon => UIResourceConfig.IconSprite;
+        public Sprite MainIcon => UIResourceConfig.MainIconSprite;
         public int GoldPerBuyTen => goldPerBuyTen;
         public TicketPerBuyRatio TicketPerBuyRatio => ticketPerBuyRatio;
         // Do with goldPerBuyMore

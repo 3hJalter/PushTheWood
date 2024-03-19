@@ -55,6 +55,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 6123d0b029ac47547a285b4d88c154b9, type: 3}
   - {fileID: 21300000, guid: edaf64519ed99ae45a2c701764387fd2, type: 3}
   - {fileID: 21300000, guid: 8601a2b11ecb17345ab5d3d30abd91e6, type: 3}
+  - {fileID: 21300000, guid: 4009caf1db1124d40abf597eb98991c1, type: 3}
   - {fileID: 21300000, guid: 50991b92e8200f44dab227608e66446d, type: 3}
   - {fileID: 21300000, guid: 84929814e87c21c409f95b9ea5eb6e32, type: 3}
   - {fileID: 21300000, guid: 4b0d4344ab96df64080e52e1ca83d4e1, type: 3}
@@ -78,6 +79,7 @@ SpriteAtlas:
   - _0002_Group-12
   - _0001_CLAIM
   - _0021_DAY-4
+  - cat
   - _0002_Group-10
   - _0011_DAY-3
   - _0019_DAY-6
