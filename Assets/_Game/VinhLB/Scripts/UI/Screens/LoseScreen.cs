@@ -49,7 +49,7 @@ namespace VinhLB
             {
                 loseCondition = lC;
             }
-            _contentImage.sprite = DataManager.Ins.UIResourceDatabase.LoseScreenResourceConfigDict[loseCondition].IconSprite;
+            _contentImage.sprite = DataManager.Ins.UIResourceDatabase.LoseScreenResourceConfigDict[loseCondition].MainIconSprite;
             // _moreTimeButton.gameObject.SetActive(loseCondition == LevelLoseCondition.Timeout);
         }
 

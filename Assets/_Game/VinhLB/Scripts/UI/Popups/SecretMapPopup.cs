@@ -18,31 +18,31 @@ namespace VinhLB
         private GameObject _bottomBlurGO;
         [SerializeField]
         private SecretMapItem[] _secretMapItems;
-        
+
         private void Awake()
         {
-            for(int i = 0;  i < _secretMapItems.Length; i++)
+            for (int i = 0; i < _secretMapItems.Length; i++)
             {
-                _secretMapItems[i]._OnPlayButtonClick += OnPlayButtonClick;
+                _secretMapItems[i].OnPlayClick += PlayClick;
             }
-            
+
             _scrollRect.onValueChanged.AddListener(OnRewardScrollRectValueChanged);
         }
-        
+
         private void OnDestroy()
         {
             for (int i = 0; i < _secretMapItems.Length; i++)
             {
-                _secretMapItems[i]._OnPlayButtonClick -= OnPlayButtonClick;
+                _secretMapItems[i].OnPlayClick -= PlayClick;
             }
-            
+
             _scrollRect.onValueChanged.RemoveListener(OnRewardScrollRectValueChanged);
         }
 
         public override void Setup(object param = null)
         {
             base.Setup(param);
-            
+
             _scrollRect.verticalNormalizedPosition = 1f;
             OnRewardScrollRectValueChanged(_scrollRect.normalizedPosition);
         }
@@ -62,13 +62,13 @@ namespace VinhLB
             }
         }
 
-        private void OnPlayButtonClick(int index)
+        private void PlayClick(int index)
         {
             LevelManager.Ins.OnGoLevel(LevelType.Secret, index);
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<InGameScreen>();
         }
-        
+
         private void OnRewardScrollRectValueChanged(Vector2 value)
         {
             if (_scrollRect.verticalNormalizedPosition < 0.05f)

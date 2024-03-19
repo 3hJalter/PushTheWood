@@ -827,6 +827,7 @@ MonoBehaviour:
   currentVirtualCamera: {fileID: 3346765444090300846}
   brainCamera: {fileID: 6469700256872215672}
   perspectiveCamera: {fileID: 725037282}
+  uiCamera: {fileID: 2065497183}
   cameraTarget: {fileID: 6469700258097662802}
   cameraMoveTime: 0.5
 --- !u!1 &6469700258097662805

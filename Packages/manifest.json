@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.coffee.softmask-for-ugui": "https://github.com/mob-sakai/SoftMaskForUGUI.git",
     "com.coffee.unmask": "https://github.com/mob-sakai/UnmaskForUGUI.git",
     "com.unity.2d.spriteshape": "7.0.7",
     "com.unity.cinemachine": "2.8.9",
@@ -16,6 +15,7 @@
     "com.unity.textmeshpro": "3.0.8",
     "com.unity.timeline": "1.6.5",
     "com.unity.ugui": "1.0.0",
+    "com.unity.uiextensions": "https://github.com/Unity-UI-Extensions/com.unity.uiextensions.git",
     "com.unity.visualscripting": "1.7.8",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",

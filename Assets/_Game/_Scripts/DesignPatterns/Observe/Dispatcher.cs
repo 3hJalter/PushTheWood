@@ -78,7 +78,7 @@ namespace _Game.DesignPattern
         MoreTimeGame = 11,
         OnClaimLevelChest = 12,
         OnClaimRewardChest = 13,
-        OnUpdateUIs = 14,
+        OnUpdateUI = 14,
         OnChangeGameState = 15,
         OnChangeRewardKeys = 16,
         OnChangeLevelProgress = 17,

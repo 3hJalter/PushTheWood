@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using _Game.Data;
 using _Game.DesignPattern;
 using _Game.Managers;
 using _Game.Utilities;
@@ -20,9 +19,9 @@ namespace VinhLB
         #region Properties
         public DailyRewardSettings DailyRewardSettings => _dailyRewardSettings;
         public bool IsTodayRewardObtained =>
-            DateTime.Now.Date <= DataManager.Ins.GameData.user.lastDailyRewardClaimTime;
+            DateTime.UtcNow.Date <= DataManager.Ins.GameData.user.lastDailyRewardClaimTime;
         public int TotalDays => _dailyRewardSettings.MissRewardIfNotLogin
-            ? (DateTime.Now.Date - DataManager.Ins.GameData.user.startDailyRewardClaimTime.Date).Days
+            ? (DateTime.UtcNow.Date - DataManager.Ins.GameData.user.startDailyRewardClaimTime.Date).Days
             : (DataManager.Ins.GameData.user.dailyRewardClaimedCount - (IsTodayRewardObtained ? 1 : 0));
         public int CycleDay => TotalDays % _dailyRewardSettings.CycleDays;
         public bool IsInFirstCycle => TotalDays / _dailyRewardSettings.CycleDays == 0;
@@ -38,10 +37,12 @@ namespace VinhLB
             UIManager.Ins.OpenUI<RewardPopup>(CurrentRewards);
             
             DataManager.Ins.GameData.user.dailyRewardClaimedCount += 1;
-            DataManager.Ins.GameData.user.lastDailyRewardClaimTime = DateTime.Now.Date;
+            DataManager.Ins.GameData.user.lastDailyRewardClaimTime = DateTime.UtcNow.Date;
             DataManager.Ins.Save();
 
-            Ins.OnDailyRewardParamsChanged?.Invoke();
+            OnDailyRewardParamsChanged?.Invoke();
+            
+            GameManager.Ins.PostEvent(EventID.OnUpdateUI);
         }
 
         private void SetPlayerPrefsDateTime(string key, DateTime dateTime)
