@@ -98,16 +98,16 @@ MonoBehaviour:
       Data: 4
     - Name: 
       Entry: 4
-      Data: 0.75
+      Data: 0.94
     - Name: 
       Entry: 4
-      Data: 0.16
-    - Name: 
-      Entry: 4
-      Data: 0.07
+      Data: 0.03
     - Name: 
       Entry: 4
       Data: 0.02
+    - Name: 
+      Entry: 4
+      Data: 0.01
     - Name: 
       Entry: 13
       Data: 
@@ -225,33 +225,9 @@ MonoBehaviour:
     - Name: DangerTime
       Entry: 3
       Data: 30
-    - Name: MoreTimeCosts
-      Entry: 7
-      Data: 7|System.Int32[], mscorlib
-    - Name: 
-      Entry: 14
-      Data: 5
-    - Name: 
+    - Name: MoreTimeAdded
       Entry: 3
-      Data: 100
-    - Name: 
-      Entry: 3
-      Data: 200
-    - Name: 
-      Entry: 3
-      Data: 300
-    - Name: 
-      Entry: 3
-      Data: 200
-    - Name: 
-      Entry: 3
-      Data: 500
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
+      Data: 60
     - Name: stepInterAdsCountMax
       Entry: 3
       Data: 3
@@ -307,7 +283,8 @@ MonoBehaviour:
       itemsPerBuy: 3
     UIResourceConfig:
       Name: Undo
-      IconSprite: {fileID: 21300000, guid: fcc83227a2a4b534597cc89516aadc77, type: 3}
+      MainIconSprite: {fileID: 0}
+      SubIconSprite: {fileID: 0}
   - type: 1
     unlockAtLevel: 6
     goldPerBuyTen: 10
@@ -316,7 +293,8 @@ MonoBehaviour:
       itemsPerBuy: 1
     UIResourceConfig:
       Name: Push Hint
-      IconSprite: {fileID: 21300000, guid: e2531dbb210c447358dfd4dd637545c5, type: 3}
+      MainIconSprite: {fileID: 0}
+      SubIconSprite: {fileID: 0}
   - type: 2
     unlockAtLevel: 5
     goldPerBuyTen: 10
@@ -325,7 +303,8 @@ MonoBehaviour:
       itemsPerBuy: 1
     UIResourceConfig:
       Name: Grow Tree
-      IconSprite: {fileID: 21300000, guid: 567990f4e6ea7df4e91cdb593fcc2a6a, type: 3}
+      MainIconSprite: {fileID: 0}
+      SubIconSprite: {fileID: 0}
   - type: 3
     unlockAtLevel: 3
     goldPerBuyTen: 10
@@ -334,4 +313,5 @@ MonoBehaviour:
       itemsPerBuy: 1
     UIResourceConfig:
       Name: Reset Island
-      IconSprite: {fileID: 21300000, guid: 6c3c52c160625974ab16ce5a183d272b, type: 3}
+      MainIconSprite: {fileID: 0}
+      SubIconSprite: {fileID: 0}
