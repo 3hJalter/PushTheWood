@@ -275,7 +275,7 @@ namespace _Game.UIs.Screen
                         _levelText.text = "Tutorial";
                         break;
                     }
-                    levelIndex += LevelManager.Ins.DailyLevelIndex - 1;
+                    levelIndex += LevelManager.Ins.dailyLevelClickedDay;
                     _levelText.text = $"Day {levelIndex}";
                     break;
             }

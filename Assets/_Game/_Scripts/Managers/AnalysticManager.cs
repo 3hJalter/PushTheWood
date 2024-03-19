@@ -8,6 +8,7 @@ using _Game.Resource;
 using _Game.Ads;
 using _Game.Utilities.Timer;
 using System;
+using System.Globalization;
 using _Game._Scripts.InGame;
 using AppsFlyerSDK;
 using Firebase.Extensions;
@@ -56,47 +57,51 @@ namespace _Game.Managers
                 }
             });
         }
-        public void LevelStart(LevelType type)
+        public void LevelStart(Level level)
         {
+            LevelType type = level.LevelType;
+            int index = level.Index;
             if (!isFirebaseInit) return;
             switch (type)
             {
                 case LevelType.Normal:
-                    FirebaseAnalytics.LogEvent("level_start", "level", DataManager.Ins.GameData.user.normalLevelIndex);
+                    FirebaseAnalytics.LogEvent("level_start", "level", index);
                     break;
                 case LevelType.DailyChallenge:
                     FirebaseAnalytics.LogEvent("level_start", new Parameter[] 
                     { 
-                        new Parameter("level_dailyChallenge", DataManager.Ins.GameData.user.currentDailyChallengerDay),
-                        new Parameter("day", DateTime.UtcNow.Date.ToString())
+                        new Parameter("level_dailyChallenge", index),
+                        new Parameter("day", DateTime.UtcNow.Date.ToString(CultureInfo.InvariantCulture))
                     });
                     break;
                 case LevelType.Secret:
-                    FirebaseAnalytics.LogEvent("level_start", "level_expedition", DataManager.Ins.GameData.user.secretLevelIndex);
+                    FirebaseAnalytics.LogEvent("level_start", "level_expedition", index);
                     break;
             }
         }
 
-        public void LevelComplete(LevelType type)
+        public void LevelComplete(Level level)
         {
             if (!isFirebaseInit) return;
             Parameter[] param = null;
+            LevelType type = level.LevelType;
+            int index = level.Index;
             switch (type)
             {
                 case LevelType.Normal:
                     param = new Parameter[3];
-                    param[0] = new Parameter("level", DataManager.Ins.GameData.user.normalLevelIndex);
+                    param[0] = new Parameter("level", index);
                     param[1] = new Parameter("retry", DataManager.Ins.GameData.user.retryTime);
                     param[2] = new Parameter("duration", GameplayManager.Ins.GameDuration);
                     break;
                 case LevelType.DailyChallenge:
                     param = new Parameter[2];
-                    param[0] = new Parameter("level_dailyChallenge", DataManager.Ins.GameData.user.currentDailyChallengerDay);
+                    param[0] = new Parameter("level_dailyChallenge", index);
                     param[1] = new Parameter("duration", GameplayManager.Ins.GameDuration);
                     break;
                 case LevelType.Secret:
                     param = new Parameter[2];
-                    param[0] = new Parameter("level_expedition", DataManager.Ins.GameData.user.secretLevelIndex);
+                    param[0] = new Parameter("level_expedition", index);
                     param[1] = new Parameter("duration", GameplayManager.Ins.GameDuration);
                     break;
             }
@@ -104,25 +109,28 @@ namespace _Game.Managers
             FirebaseAnalytics.LogEvent("level_complete", param);
         }
 
-        public void LevelFail(LevelType type, LevelLoseCondition loseCondition)
+        public void LevelFail(Level level, LevelLoseCondition loseCondition)
         {
             if (!isFirebaseInit) return;
 
             Parameter[] param = new Parameter[3];
+            LevelType type = level.LevelType;
+            int index = level.Index;
+            
             switch (type)
             {
                 case LevelType.Normal:
-                    param[0] = new Parameter("level", DataManager.Ins.GameData.user.normalLevelIndex);
+                    param[0] = new Parameter("level", index);
                     param[1] = new Parameter("duration", GameplayManager.Ins.GameDuration);
                     param[2] = new Parameter("reason", loseCondition.ToString());
                     break;
                 case LevelType.DailyChallenge:
-                    param[0] = new Parameter("level_dailyChallenge", DataManager.Ins.GameData.user.currentDailyChallengerDay);
+                    param[0] = new Parameter("level_dailyChallenge", index);
                     param[1] = new Parameter("duration", GameplayManager.Ins.GameDuration);
                     param[2] = new Parameter("reason", loseCondition.ToString());
                     break;
                 case LevelType.Secret:
-                    param[0] = new Parameter("level_expedition", DataManager.Ins.GameData.user.secretLevelIndex);
+                    param[0] = new Parameter("level_expedition", index);
                     param[1] = new Parameter("duration", GameplayManager.Ins.GameDuration);
                     param[2] = new Parameter("reason", loseCondition.ToString());
                     break;

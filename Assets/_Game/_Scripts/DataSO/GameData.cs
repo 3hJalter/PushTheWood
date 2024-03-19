@@ -19,17 +19,19 @@ namespace _Game.Data
             public const int PLAYER_SKIN_COUNT = 6;
             // Level Progress Data
             public int normalLevelIndex;
-            public int secretLevelIndex;
-            public int secretLevelUnlock;
+           
             
             public List<int> completedMenuTutorial = new();
             
             // daily challenge
-            public bool isCompleteDailyChallengerTutorial;
             public int currentDailyChallengerDay = 1;
-            public int playedDay = 0;
+            public int[] dailyLevelIndex = { 1, 2, 3, 4, 5, 6, 7 };
             public List<int> dailyLevelIndexComplete = new();
             public List<int> dailyChallengeRewardCollected = new(); 
+            
+            // secret level
+            public int secretLevelUnlock;
+            public List<int> secretLevelIndexComplete = new();
             
             // daily reward            
             public int dailyRewardClaimedCount;
@@ -62,6 +64,7 @@ namespace _Game.Data
             public int[] playerSkinState = new int[PLAYER_SKIN_COUNT];
             
             //Other Data
+            public int playedDay = 0;
             public int sessionPlayed;
             public int retryTime;
             

@@ -47,6 +47,9 @@ namespace _Game.GameGrid
         [ReadOnly]
         private int secretLevelIndex;
 
+        // TEMPORARY
+        public int dailyLevelClickedDay;
+        
         private Level _currentLevel;
         private bool _isRestarting;
         private bool _isResetting;
@@ -153,7 +156,6 @@ namespace _Game.GameGrid
                 DataManager.Ins.GameData.user.normalLevelIndex = DebugManager.Ins.Level;
             }
             normalLevelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
-            secretLevelIndex = DataManager.Ins.GameData.user.secretLevelIndex;
             OnGenerateLevel(LevelType.Normal, normalLevelIndex, normalLevelIndex == 0);
 
             #region Handle If user passes first level
@@ -284,11 +286,8 @@ namespace _Game.GameGrid
                     DataManager.Ins.GameData.user.normalLevelIndex = normalLevelIndex;
                     break;
                 case LevelType.Secret:
-                    // +1 LevelIndex and save
-                    secretLevelIndex++;
-                    // Temporary handle when out of level
-                    if (secretLevelIndex >= DataManager.Ins.CountSecretLevel) secretLevelIndex = 0;
-                    DataManager.Ins.GameData.user.secretLevelIndex = secretLevelIndex;
+                    if (DataManager.Ins.GameData.user.secretLevelIndexComplete.Contains(secretLevelIndex)) break;
+                    DataManager.Ins.GameData.user.secretLevelIndexComplete.Add(secretLevelIndex);
                     break;
                 case LevelType.DailyChallenge:
                     // Check if contain
