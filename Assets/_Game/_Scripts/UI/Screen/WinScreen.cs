@@ -198,8 +198,8 @@ namespace _Game.UIs.Screen
             while (true)
             {
                 Vector3 randomViewportPoint = new Vector3(
-                    UnityRandom.Range(0.1f, 0.9f),
-                    UnityRandom.Range(0.6f, 0.95f));
+                    UnityRandom.Range(0.15f, 0.85f),
+                    UnityRandom.Range(0.75f, 0.95f));
                 Vector3 spawnPosition = CameraManager.Ins.ViewportToWorldPoint(randomViewportPoint);
                 // Debug.Log($"{randomViewportPoint} | {spawnPosition}");
                 ParticleSystem spawnedEffect = ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.Confetti), 

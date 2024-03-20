@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using _Game.DesignPattern;
 using _Game.Managers;
 using _Game.UIs.Popup;
 using _Game.Utilities;
@@ -63,6 +64,8 @@ namespace VinhLB
             SetupDailyRewards();
             
             _claimButton.gameObject.SetActive(!DailyRewardManager.Ins.IsTodayRewardObtained);
+            
+            GameManager.Ins.PostEvent(EventID.OnUpdateUI);
         }
     }
 }
