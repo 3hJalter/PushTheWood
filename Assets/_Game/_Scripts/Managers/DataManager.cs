@@ -66,6 +66,23 @@ namespace _Game.Managers
         {
             DontDestroyOnLoad(gameObject);
         }
+
+        public int GetDailyChallengeDay(int index)
+        {
+            if (index >= Constants.DAILY_CHALLENGER_COUNT) return 0;
+            return _gameData.user.dailyLevelIndex[index];
+        }
+        
+        public bool IsClearAllDailyChallenge()
+        {
+            return _gameData.user.dailyLevelIndexComplete.Count >= _gameData.user.currentDailyChallengerDay;
+        }
+
+        public bool IsClearAllSecretLevel()
+        {
+            return _gameData.user.secretLevelIndexComplete.Count >= _gameData.user.secretLevelUnlock;
+        }
+
         public bool IsAdsHintEnough()
         {
             return GameData.user.hintAdsCount >= ConfigData.GetBoosterConfig(BoosterType.PushHint).TicketPerBuyRatio.ticketNeed;

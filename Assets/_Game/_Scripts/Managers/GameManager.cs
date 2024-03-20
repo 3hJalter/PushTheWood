@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
+using _Game._Scripts.Utilities;
 using _Game.Data;
 using _Game.DesignPattern;
 using _Game.Resource;
-using _Game.UIs.Screen;
-using _Game.Utilities;
 using DG.Tweening;
 using UnityEngine;
 using VinhLB;
@@ -19,16 +17,15 @@ namespace _Game.Managers
         Pause,
         Transition,
         WinGame,
-        LoseGame,
+        LoseGame
     }
 
     [DefaultExecutionOrder(-95)]
     public class GameManager : Dispatcher<GameManager>
     {
-        [SerializeField]
-        private GameState gameState;
-        [SerializeField]
-        private bool reduceScreenResolution;
+        [SerializeField] private GameState gameState;
+
+        [SerializeField] private bool reduceScreenResolution;
 
         private GameData _gameData;
 
@@ -54,6 +51,7 @@ namespace _Game.Managers
                     Screen.SetResolution(newScreenWidth, maxScreenHeight, true);
                 }
             }
+
             VerifyGameData();
         }
 
@@ -67,45 +65,34 @@ namespace _Game.Managers
             }
 
             #region Handle day online
-            // If player not pass level 8, reset daily level index
-            // if (_gameData.user.normalLevelIndex < DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex)
-            // {
-            //     _gameData.user.isCompleteDailyChallengerTutorial = false;
-            //     _gameData.user.currentDailyChallengerDay = 1;
-            //     _gameData.user.dailyLevelIndexComplete.Clear();
-            //     _gameData.user.dailyChallengeRewardCollected.Clear();
-            // }
-            // else
+
+            // Get now day & last login day
+            int day = (int)(DateTime.UtcNow.Date - _gameData.user.lastTimeLogOut.ToUniversalTime().Date)
+                .TotalDays;
+
+
+            if (day > 0)
             {
-                // Check if pass daily challenger tutorial
-                // if (!_gameData.user.isCompleteDailyChallengerTutorial)
-                // {
-                //     _gameData.user.currentDailyChallengerDay = 1;
-                //     _gameData.user.dailyLevelIndexComplete.Clear();
-                //     _gameData.user.dailyChallengeRewardCollected.Clear();
-                // }
-                // else
+                _gameData.user.playedDay += 1;
+                _gameData.user.currentDailyChallengerDay += day;
+                AnalysticManager.Ins.Day();
+            }
+
+            // if the currentDailyChallengerDay is greater than the number of daily challenger, reset it
+            if (_gameData.user.currentDailyChallengerDay > Constants.DAILY_CHALLENGER_COUNT)
+            {
+                _gameData.user.currentDailyChallengerDay %= 7 + 1;
+                _gameData.user.dailyLevelIndexComplete.Clear();
+                _gameData.user.dailyChallengeRewardCollected.Clear();
+                if (_gameData.user.completedMenuTutorial.Contains(DataManager.Ins.ConfigData
+                        .unlockDailyChallengeAtLevelIndex)) // If clear the tutorial && unlock daily challenge
                 {
-                    // Get now day & last login day
-                    int day = (int)(DateTime.UtcNow.Date - _gameData.user.lastTimeLogOut.ToUniversalTime().Date)
-                        .TotalDays;
-
-
-                    if (day > 0)
-                    {
-                        _gameData.user.playedDay += 1;
-                        _gameData.user.currentDailyChallengerDay += day;
-                        AnalysticManager.Ins.Day();
-                    }
-                    // if the currentDailyChallengerDay is greater than the number of daily challenger, reset it
-                    if (_gameData.user.currentDailyChallengerDay > Constants.DAILY_CHALLENGER_COUNT)
-                    {
-                        _gameData.user.currentDailyChallengerDay %= 7 + 1;
-                        _gameData.user.dailyLevelIndexComplete.Clear();
-                        _gameData.user.dailyChallengeRewardCollected.Clear();
-                    }
+                    // Shuffle daily level index
+                    _gameData.user.dailyLevelIndex.Shuffle();
+                    Database.SaveData(_gameData);
                 }
             }
+
             #endregion
 
             SmoothAdTickets = AdTickets;
@@ -115,6 +102,7 @@ namespace _Game.Managers
         }
 
         #region Game State Handling
+
         public void ChangeState(GameState gameStateI)
         {
             if (gameStateI == GameState.Pause)
@@ -122,12 +110,14 @@ namespace _Game.Managers
                 DOTween.PauseAll();
                 PostEvent(EventID.Pause);
             }
+
             if (gameState == GameState.Pause && gameStateI != GameState.Pause)
             {
                 DOTween.PlayAll();
                 PostEvent(EventID.UnPause);
                 PostEvent(EventID.UnPause, gameStateI);
             }
+
             PostEvent(EventID.OnChangeGameState, gameStateI);
             gameState = gameStateI;
         }
@@ -136,9 +126,11 @@ namespace _Game.Managers
         {
             return gameState == gameStateI;
         }
+
         #endregion
 
         #region Income Data function
+
         public int SecretLevelUnlock => _gameData.user.secretLevelUnlock;
         public int SecretMapPieces => _gameData.user.secretMapPieces;
         public int Gold => _gameData.user.gold;
@@ -169,10 +161,11 @@ namespace _Game.Managers
                     _gameData.user.resetIslandCount += amount;
                     break;
             }
+
             PostEvent(EventID.OnUpdateUI);
             Database.SaveData(_gameData);
         }
-        
+
         public void GainGold(int value, object source = null)
         {
             TryModifyGold(value, source);
@@ -222,10 +215,10 @@ namespace _Game.Managers
             {
                 _gameData.user.secretLevelUnlock +=
                     _gameData.user.secretMapPieces / DataManager.Ins.ConfigData.requireSecretMapPiece;
-                _gameData.user.secretMapPieces =
-                    _gameData.user.secretMapPieces % DataManager.Ins.ConfigData.requireSecretMapPiece;
+                _gameData.user.secretMapPieces %= DataManager.Ins.ConfigData.requireSecretMapPiece;
                 //PostEvent(EventID.OnUnlockSecretMap, _gameData.user.secretLevelUnlock);
             }
+
             //PostEvent(EventID.OnSecretMapPieceChange, _gameData.user.secretMapPieces);
             PostEvent(EventID.OnUpdateUI);
             Database.SaveData(_gameData);
@@ -247,28 +240,21 @@ namespace _Game.Managers
             TrySpendAdTickets(_gameData.user.adTickets);
 
             _gameData.user.secretLevelUnlock = 0;
-            _gameData.user.secretLevelIndex = 0;
         }
 
         private bool TryModifyGold(int amount, object source)
         {
-            if (_gameData.user.gold + amount < 0)
-            {
-                return false;
-            }
+            if (_gameData.user.gold + amount < 0) return false;
 
             #region ANALYSTIC
+
             if (amount > 0)
-            {
                 AnalysticManager.Ins.ResourceEarn(CurrencyType.Gold, Placement.None, amount);
-            }
-            else if (amount < 0)
-            {
-                AnalysticManager.Ins.ResourceSpend(CurrencyType.Gold, Placement.None, amount);
-            }
+            else if (amount < 0) AnalysticManager.Ins.ResourceSpend(CurrencyType.Gold, Placement.None, amount);
+
             #endregion
 
-            ResourceChangeData data = new ResourceChangeData()
+            ResourceChangeData data = new()
             {
                 ChangedAmount = amount,
                 OldValue = _gameData.user.gold,
@@ -280,22 +266,16 @@ namespace _Game.Managers
             PostEvent(EventID.OnChangeGold, data);
             Database.SaveData(_gameData);
 
-            if (amount < 0)
-            {
-                SmoothGold = _gameData.user.gold;
-            }
+            if (amount < 0) SmoothGold = _gameData.user.gold;
 
             return true;
         }
 
         private bool TryModifyAdTickets(int amount, object source)
         {
-            if (_gameData.user.adTickets + amount < 0)
-            {
-                return false;
-            }
+            if (_gameData.user.adTickets + amount < 0) return false;
 
-            ResourceChangeData data = new ResourceChangeData()
+            ResourceChangeData data = new()
             {
                 ChangedAmount = amount,
                 OldValue = _gameData.user.adTickets,
@@ -307,22 +287,16 @@ namespace _Game.Managers
             PostEvent(EventID.OnChangeAdTickets, data);
             Database.SaveData(_gameData);
 
-            if (amount < 0)
-            {
-                SmoothAdTickets = _gameData.user.adTickets;
-            }
+            if (amount < 0) SmoothAdTickets = _gameData.user.adTickets;
 
             return true;
         }
 
         private bool TryModifyRewardKeys(int amount, object source)
         {
-            if (_gameData.user.rewardChestKeys + amount < 0)
-            {
-                return false;
-            }
+            if (_gameData.user.rewardChestKeys + amount < 0) return false;
 
-            ResourceChangeData data = new ResourceChangeData()
+            ResourceChangeData data = new()
             {
                 ChangedAmount = amount,
                 OldValue = _gameData.user.rewardChestKeys,
@@ -342,22 +316,16 @@ namespace _Game.Managers
             PostEvent(EventID.OnChangeRewardKeys, data);
             Database.SaveData(_gameData);
 
-            if (amount < 0)
-            {
-                SmoothRewardKeys = _gameData.user.rewardChestKeys;
-            }
+            if (amount < 0) SmoothRewardKeys = _gameData.user.rewardChestKeys;
 
             return true;
         }
 
         private bool TryModifyLevelProgress(int amount, object source)
         {
-            if (_gameData.user.levelChestProgress + amount < 0)
-            {
-                return false;
-            }
+            if (_gameData.user.levelChestProgress + amount < 0) return false;
 
-            ResourceChangeData data = new ResourceChangeData()
+            ResourceChangeData data = new()
             {
                 ChangedAmount = amount,
                 OldValue = _gameData.user.levelChestProgress,
@@ -369,7 +337,7 @@ namespace _Game.Managers
             if (_gameData.user.levelChestProgress >= DataManager.Ins.ConfigData.requireLevelProgress)
             {
                 _gameData.user.levelChestUnlock += _gameData.user.levelChestProgress /
-                                                     DataManager.Ins.ConfigData.requireLevelProgress;
+                                                   DataManager.Ins.ConfigData.requireLevelProgress;
                 _gameData.user.levelChestProgress = _gameData.user.levelChestProgress %
                                                     DataManager.Ins.ConfigData.requireLevelProgress;
             }
@@ -377,16 +345,15 @@ namespace _Game.Managers
             PostEvent(EventID.OnChangeLevelProgress, data);
             Database.SaveData(_gameData);
 
-            if (amount < 0)
-            {
-                SmoothLevelProgress = _gameData.user.levelChestProgress;
-            }
+            if (amount < 0) SmoothLevelProgress = _gameData.user.levelChestProgress;
 
             return true;
         }
+
         #endregion
 
         #region OnApplication
+
         private void OnApplicationFocus(bool hasFocus)
         {
             if (hasFocus) return;
@@ -404,6 +371,7 @@ namespace _Game.Managers
             _gameData.user.lastTimeLogOut = DateTime.Now;
             DataManager.Ins.Save();
         }
+
         #endregion
     }
 }

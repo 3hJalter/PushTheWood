@@ -303,7 +303,7 @@ namespace _Game.Managers
             //GameManager.Ins.PostEvent(EventID.OnChangeLayoutForBanner, true);
             #endregion
             #region ANALYSTIC
-            AnalysticManager.Ins.LevelStart(LevelManager.Ins.CurrentLevel.LevelType);
+            AnalysticManager.Ins.LevelStart(LevelManager.Ins.CurrentLevel);
             #endregion
         }
 
@@ -316,7 +316,7 @@ namespace _Game.Managers
             GameManager.Ins.ChangeState(GameState.WinGame);
          
             #region ANALYSTIC
-            AnalysticManager.Ins.LevelComplete(LevelManager.Ins.CurrentLevel.LevelType);
+            AnalysticManager.Ins.LevelComplete(LevelManager.Ins.CurrentLevel);
             switch (LevelManager.Ins.CurrentLevel.LevelType)
             {
                 case LevelType.Normal:
@@ -391,7 +391,7 @@ namespace _Game.Managers
             GameManager.Ins.ChangeState(GameState.LoseGame);
 
             #region ANALYSTIC
-            AnalysticManager.Ins.LevelFail(LevelManager.Ins.CurrentLevel.LevelType, (LevelLoseCondition)o);
+            AnalysticManager.Ins.LevelFail(LevelManager.Ins.CurrentLevel, (LevelLoseCondition)o);
             switch (LevelManager.Ins.CurrentLevel.LevelType)
             {
                 case LevelType.Normal:

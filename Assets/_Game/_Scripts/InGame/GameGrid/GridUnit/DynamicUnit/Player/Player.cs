@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using _Game._Scripts.InGame;
 using _Game._Scripts.InGame.GameCondition.Data;
 using _Game._Scripts.Managers;
+using _Game._Scripts.Utilities;
 using _Game.AI;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
@@ -13,6 +14,7 @@ using _Game.Managers;
 using _Game.Utilities;
 using GameGridEnum;
 using HControls;
+using MoreMountains.NiceVibrations;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player
@@ -165,6 +167,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 MovingData.blockDynamicUnits[^1].OnBePushed(direction, this);
                 // TutorialManager.Ins.OnUnitActWithOther(this, MovingData.blockDynamicUnits[^1]);
                 InvokeActWithUnit(MovingData.blockDynamicUnits[^1]);
+                HVibrate.Haptic(HapticTypes.MediumImpact);
                 return;
             }
             if (MovingData.blockStaticUnits.Count > 0)
@@ -172,6 +175,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 MovingData.blockStaticUnits[^1].OnBePushed(direction, this);
                 // TutorialManager.Ins.OnUnitActWithOther(this, MovingData.blockStaticUnits[^1]);
                 InvokeActWithUnit(MovingData.blockStaticUnits[^1]);
+                HVibrate.Haptic(HapticTypes.LightImpact);
             }
         }
 

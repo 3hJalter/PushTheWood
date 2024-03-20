@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = System.Random;
 
 namespace _Game._Scripts.Utilities
 {
     public static class HUtilities
     {
-        private static LinearRegression linearRegression = new LinearRegression();
+        private static readonly LinearRegression LinearRegression = new();
 
         public static Vector3 Change(this Vector3 org, float? x = null, float? y = null, float? z = null)
         {
@@ -18,6 +19,32 @@ namespace _Game._Scripts.Utilities
         {
             return new Vector3Int(x ?? org.x, y ?? org.y, z ?? org.z);
         }
+        
+        
+        public static void Shuffle<T>(this T[] arr)
+        {
+            Random rng = new();
+            int n = arr.Length;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                (arr[k], arr[n]) = (arr[n], arr[k]);
+            }
+        }
+        
+        public static void Shuffle(this List<int> list)
+        {
+            Random rng = new();
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                (list[k], list[n]) = (list[n], list[k]);
+            }
+        }
+        
         public static bool PercentRandom(float rate)
         {
             rate = Mathf.Clamp01(rate);
@@ -80,8 +107,8 @@ namespace _Game._Scripts.Utilities
         }
         public static float PredictYFromLinearRegression(List<Vector2> data, float x)
         {
-            linearRegression.CalculateRegression(data);
-            return linearRegression.PredictY(x);
+            LinearRegression.CalculateRegression(data);
+            return LinearRegression.PredictY(x);
         }
     }
 }

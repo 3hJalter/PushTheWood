@@ -2,6 +2,8 @@ using System;
 using _Game.Managers;
 using System.Collections;
 using System.Collections.Generic;
+using _Game._Scripts.Utilities;
+using _Game.Data;
 using UnityEngine;
 using UnityEngine.UI;
 using VinhLB;
@@ -184,6 +186,12 @@ namespace _Game.UIs.Screen
                 DataManager.Ins.GameData.user.currentDailyChallengerDay = 1;
                 DataManager.Ins.GameData.user.dailyLevelIndexComplete.Clear();
                 DataManager.Ins.GameData.user.dailyChallengeRewardCollected.Clear();
+                if (DataManager.Ins.GameData.user.completedMenuTutorial.Contains(DataManager.Ins.ConfigData
+                        .unlockDailyChallengeAtLevelIndex)) // If clear the tutorial && unlock daily challenge
+                {
+                    // Shuffle daily level index
+                    DataManager.Ins.GameData.user.dailyLevelIndex.Shuffle();
+                }
             }
             if (!UIManager.Ins.IsOpened<DailyChallengePopup>()) return;
             DailyChallengePopup popup = UIManager.Ins.GetUI<DailyChallengePopup>();

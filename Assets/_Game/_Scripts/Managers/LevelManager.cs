@@ -4,6 +4,7 @@ using System.Linq;
 using _Game._Scripts.InGame;
 using _Game._Scripts.Managers;
 using _Game._Scripts.Tutorial;
+using _Game._Scripts.Utilities;
 using _Game.Camera;
 using _Game.Data;
 using _Game.DesignPattern;
@@ -18,6 +19,7 @@ using _Game.UIs.Screen;
 using _Game.Utilities;
 using _Game.Utilities.Timer;
 using DG.Tweening;
+using MoreMountains.NiceVibrations;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using static _Game.Utilities.Grid.Grid<_Game.GameGrid.GameGridCell, _Game.GameGrid.GameGridCellData>;
@@ -47,6 +49,9 @@ namespace _Game.GameGrid
         [ReadOnly]
         private int secretLevelIndex;
 
+        // TEMPORARY
+        public int dailyLevelClickedDay;
+        
         private Level _currentLevel;
         private bool _isRestarting;
         private bool _isResetting;
@@ -153,7 +158,6 @@ namespace _Game.GameGrid
                 DataManager.Ins.GameData.user.normalLevelIndex = DebugManager.Ins.Level;
             }
             normalLevelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
-            secretLevelIndex = DataManager.Ins.GameData.user.secretLevelIndex;
             OnGenerateLevel(LevelType.Normal, normalLevelIndex, normalLevelIndex == 0);
 
             #region Handle If user passes first level
@@ -284,11 +288,8 @@ namespace _Game.GameGrid
                     DataManager.Ins.GameData.user.normalLevelIndex = normalLevelIndex;
                     break;
                 case LevelType.Secret:
-                    // +1 LevelIndex and save
-                    secretLevelIndex++;
-                    // Temporary handle when out of level
-                    if (secretLevelIndex >= DataManager.Ins.CountSecretLevel) secretLevelIndex = 0;
-                    DataManager.Ins.GameData.user.secretLevelIndex = secretLevelIndex;
+                    if (DataManager.Ins.GameData.user.secretLevelIndexComplete.Contains(secretLevelIndex)) break;
+                    DataManager.Ins.GameData.user.secretLevelIndexComplete.Add(secretLevelIndex);
                     break;
                 case LevelType.DailyChallenge:
                     // Check if contain
@@ -308,6 +309,7 @@ namespace _Game.GameGrid
                 GameManager.Ins.GainLevelProgress(1);
             DataManager.Ins.Save();
             GameManager.Ins.PostEvent(EventID.WinGame);
+            HVibrate.Haptic(HapticTypes.Success);
             // Future: Add reward collected in-game
         }
 

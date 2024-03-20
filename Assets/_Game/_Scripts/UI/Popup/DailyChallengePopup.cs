@@ -127,7 +127,8 @@ namespace _Game.UIs.Popup
 
         private void OnPlay()
         {
-            LevelManager.Ins.OnGoLevel(LevelType.DailyChallenge, _currentBtnClick.Index + 1);
+            LevelManager.Ins.dailyLevelClickedDay = _currentBtnClick.Index;
+            LevelManager.Ins.OnGoLevel(LevelType.DailyChallenge, DataManager.Ins.GetDailyChallengeDay(_currentBtnClick.Index));
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<InGameScreen>();
         }
