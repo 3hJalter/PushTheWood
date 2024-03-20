@@ -10257,7 +10257,7 @@ MonoBehaviour:
   needArrowIndicator: 1
   needDistanceText: 0
   indicator: {fileID: 0}
-  thisUnit: {fileID: 0}
+  thisUnit: {fileID: 3831606463841547381}
 --- !u!1 &2207868225575490729
 GameObject:
   m_ObjectHideFlags: 0
