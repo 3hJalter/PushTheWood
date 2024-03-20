@@ -236,7 +236,7 @@ MonoBehaviour:
       Data: 45
     - Name: startInterAdsLevel
       Entry: 3
-      Data: 7
+      Data: 8
     - Name: startBannerAds
       Entry: 3
       Data: 3

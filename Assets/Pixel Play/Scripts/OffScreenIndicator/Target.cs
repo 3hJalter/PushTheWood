@@ -7,6 +7,10 @@ using UnityEngine;
 [DefaultExecutionOrder(0)]
 public class Target : MonoBehaviour
 {
+    [SerializeField] private ArrowIndicatorType arrowIndicatorType;
+
+    public ArrowIndicatorType ArrowIndicatorType => arrowIndicatorType;
+
     [Tooltip("Change this color to change the indicators color for this target")]
     [SerializeField] private Color targetColor = Color.red;
 

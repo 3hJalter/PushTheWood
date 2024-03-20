@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
@@ -10,34 +11,44 @@ public class Indicator : MonoBehaviour
     private Image indicatorImage;
     private Text distanceText;
 
+    [SerializeField] private Image customizeArrowImage;
+    [SerializeField] private List<Sprite> arrowSprites;
+    
     /// <summary>
     /// Gets if the game object is active in hierarchy.
     /// </summary>
-    public bool Active
-    {
-        get
-        {
-            return transform.gameObject.activeInHierarchy;
-        }
-    }
+    public bool Active => gameObject.activeInHierarchy;
 
     /// <summary>
     /// Gets the indicator type
     /// </summary>
-    public IndicatorType Type
-    {
-        get
-        {
-            return indicatorType;
-        }
-    }
+    public IndicatorType Type => indicatorType;
 
     void Awake()
     {
-        indicatorImage = transform.GetComponent<Image>();
-        distanceText = transform.GetComponentInChildren<Text>();
+        indicatorImage = GetComponent<Image>();
+        distanceText = GetComponentInChildren<Text>();
     }
 
+    public void SetArrowImage(ArrowIndicatorType arrowIndicatorType)
+    {
+        if (indicatorType is not IndicatorType.ARROW) {
+                customizeArrowImage.enabled = false;
+                return;
+        }
+        
+        if (arrowIndicatorType is not ArrowIndicatorType.None)
+        {
+            customizeArrowImage.enabled = true;
+            customizeArrowImage.sprite = arrowSprites[(int)arrowIndicatorType];
+            customizeArrowImage.rectTransform.rotation = Quaternion.identity;
+        }
+        else
+        {
+            customizeArrowImage.enabled = false;
+        }
+    }
+    
     /// <summary>
     /// Sets the image color for the indicator.
     /// </summary>
@@ -71,7 +82,8 @@ public class Indicator : MonoBehaviour
     /// <param name="value"></param>
     public void Activate(bool value)
     {
-        transform.gameObject.SetActive(value);
+        gameObject.SetActive(value);
+        
     }
 }
 
@@ -79,4 +91,13 @@ public enum IndicatorType
 {
     BOX,
     ARROW
+}
+
+public enum ArrowIndicatorType
+{
+    None = -1,
+    Fruit = 0,
+    Chicken = 1,
+    BonusChest = 2,
+    CompassChest = 3,
 }
