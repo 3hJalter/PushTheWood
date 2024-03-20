@@ -156,7 +156,7 @@ namespace _Game.UIs.Screen
                 Close();
                 return;
             }
-            _fadeTween = DOVirtual.Float(0f, 1f, 1f, value => canvasGroup.alpha = value)
+            _fadeTween = DOVirtual.Float(0f, 1f, 0.1f, value => canvasGroup.alpha = value)
                 .OnKill(() => { blockPanel.enabled = false; });
         }
 
