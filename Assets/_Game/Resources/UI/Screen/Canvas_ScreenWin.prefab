@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -584,7 +584,7 @@ MonoBehaviour:
   m_MinWidth: -1
   m_MinHeight: -1
   m_PreferredWidth: 960
-  m_PreferredHeight: 800
+  m_PreferredHeight: 860
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -642,10 +642,10 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 20
+    m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  SpacingX: 25
+  SpacingX: 30
   SpacingY: 0
   ExpandHorizontalSpacing: 0
   ChildForceExpandWidth: 0
@@ -913,7 +913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -2368,10 +2368,10 @@ PrefabInstance:
     - target: {fileID: 2188298886722322113, guid: c7935d45b3f2f3f44b13ff462761a3c6, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2188298886722322113, guid: c7935d45b3f2f3f44b13ff462761a3c6, type: 3}
     - target: {fileID: 2188298886722322113, guid: c7935d45b3f2f3f44b13ff462761a3c6, type: 3}
       propertyPath: serializationData.SerializedFormat
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4159290435852266402, guid: c7935d45b3f2f3f44b13ff462761a3c6, type: 3}
       propertyPath: m_Name

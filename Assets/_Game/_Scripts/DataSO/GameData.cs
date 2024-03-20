@@ -35,8 +35,8 @@ namespace _Game.Data
             
             // daily reward            
             public int dailyRewardClaimedCount;
-            public DateTime startDailyRewardClaimTime = DateTime.UtcNow.Date;
-            public DateTime lastDailyRewardClaimTime = DateTime.UtcNow.AddHours(-24);
+            public DateTime startDailyRewardClaimDate = DateTime.UtcNow.Date;
+            public DateTime lastDailyRewardClaimDate = DateTime.UtcNow.Date.AddHours(-24);
             
             // Income Progress Data
             public int gold;

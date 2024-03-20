@@ -87,6 +87,7 @@ public static class Constants
     public const string FIND_CHICKEN_BBQ = "Find the chicken BBQ";
     
     // UI
+    public const string GAME_TITLE = "Push The Wood";
     public const string VALUE_FORMAT = "#,#;#,#;0";
     public const int MAX_UI_UNIT = 10;
     public const float REF_SCREEN_RATIO = 1080f / 1920f;
