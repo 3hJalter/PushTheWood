@@ -27,7 +27,7 @@ namespace _Game._Scripts.Managers
 
         // TEMPORARY: cutscene
         [SerializeField] private FirstCutsceneHandler firstCutscenePf;
-        [FormerlySerializedAs("currentTutorialScreenScreen")] public GameTutorialScreen currentGameTutorialScreenScreen;
+        [HideInInspector] public GameTutorialScreen currentGameTutorialScreenScreen;
         
         private void Awake()
         {

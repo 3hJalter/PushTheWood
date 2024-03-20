@@ -215,10 +215,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 411060de4483b5e4c9847cd3cbc18554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  arrowIndicatorType: 2
   targetColor: {r: 0.67058825, g: 0.4901961, b: 0.8235295, a: 1}
   needBoxIndicator: 1
   needArrowIndicator: 1
-  needDistanceText: 1
+  needDistanceText: 0
   indicator: {fileID: 0}
   thisUnit: {fileID: 3138856877929832973}
 --- !u!1 &3138856879025384563
