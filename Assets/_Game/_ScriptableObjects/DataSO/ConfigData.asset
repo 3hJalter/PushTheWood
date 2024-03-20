@@ -41,7 +41,7 @@ MonoBehaviour:
       Data: 720
     - Name: requireRewardKey
       Entry: 3
-      Data: 5
+      Data: 4
     - Name: RCRewards
       Entry: 7
       Data: 0|_Game.Resource.CurrencyType[], Assembly-CSharp
