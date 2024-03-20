@@ -18,6 +18,6 @@ public class LoadStart : MonoBehaviour
         
         SceneGameManager.Ins.LoadingSceneAsync(2);
         
-        GleyNotifications.SendNotification("Test Title", "Test content", new TimeSpan(0, 1, 0));
+        // GleyNotifications.SendNotification("Test Title", "Test content", new TimeSpan(0, 1, 0));
     }
 }

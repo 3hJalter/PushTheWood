@@ -117,7 +117,8 @@ namespace VinhLB
             void SpawnCollectingUICoins()
             {
                 int collectingCoinAmount = Mathf.Min((int)data.ChangedAmount, Constants.MAX_UI_UNIT);
-                Vector3 spawnPosition = data.Source as Vector3? ?? Vector3.zero;
+                Vector3 spawnPosition = data.Source as Vector3? ??
+                                        CameraManager.Ins.ViewportToWorldPoint(new Vector3(0.5f, 0.5f));
                 CollectingResourceManager.Ins.SpawnCollectingUICoins(collectingCoinAmount, spawnPosition, _goldIconTF,
                     (progress) =>
                     {
@@ -151,7 +152,8 @@ namespace VinhLB
             void SpawnCollectingUIAdTickets()
             {
                 int collectingAdTicketAmount = Mathf.Min((int)data.ChangedAmount, Constants.MAX_UI_UNIT);
-                Vector3 spawnPosition = data.Source as Vector3? ?? Vector3.zero;
+                Vector3 spawnPosition = data.Source as Vector3? ??
+                                        CameraManager.Ins.ViewportToWorldPoint(new Vector3(0.5f, 0.5f));
                 CollectingResourceManager.Ins.SpawnCollectingUIAdTickets(collectingAdTicketAmount, spawnPosition,
                     _adTicketIconTF,
                     (progress) =>
