@@ -21,6 +21,8 @@ namespace _Game._Scripts.Managers
         [SerializeField] private HSwitch hSwitch;
         [SerializeField] private HDpad dpad;
         [SerializeField] private HSwipe hSwipe;
+
+        [SerializeField] private bool isTesting;
         
         public HSwipe HSwipe => hSwipe;
 
@@ -28,7 +30,34 @@ namespace _Game._Scripts.Managers
         private HSwitch HSwitch => hSwitch;
         private GameObject DpadObj => dpad.gameObject;
 
-        public MoveChoice CurrentChoice { get; set; }
+        private MoveChoice CurrentChoice { get; set; }
+        
+#if UNITY_EDITOR
+        private void Update()
+        {
+            if (!isTesting) return;
+            if (Input.GetKey(KeyCode.A))
+            {
+                HInputManager.SetDirectionInput(Direction.Left);
+            }
+            else if (Input.GetKey(KeyCode.W))
+            {
+                HInputManager.SetDirectionInput(Direction.Forward);
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                HInputManager.SetDirectionInput(Direction.Right);
+            }
+            else if (Input.GetKey(KeyCode.S))
+            {
+                HInputManager.SetDirectionInput(Direction.Back);
+            }
+            else
+            {
+                HInputManager.SetDirectionInput(Direction.None);
+            }
+        }
+#endif
         
         public void OnForceResetMove()
         {

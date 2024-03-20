@@ -27,7 +27,7 @@ namespace VinhLB
         private FeatureButton _dailyRewardButton;
         [SerializeField]
         private FeatureButton _dailyMissionButton;
-        
+
         [Space]
         [SerializeField]
         private FeatureButton _rewardChestButton;
@@ -39,7 +39,7 @@ namespace VinhLB
         private GameObject _rewardKeyFrameGO;
         [SerializeField]
         private TMP_Text _rewardKeyText;
-        
+
         [Space]
         [SerializeField]
         private FeatureButton _levelChestButton;
@@ -51,7 +51,7 @@ namespace VinhLB
         private GameObject _levelStarFrameGO;
         [SerializeField]
         private TMP_Text _levelStarText;
-        
+
         [Space]
         [SerializeField]
         private TMP_Text _levelText;
@@ -69,8 +69,8 @@ namespace VinhLB
         private Color _lastLevelNormalColor;
         [SerializeField]
         private GameObject _lastLevelLockGO;
-        
-        
+
+
         private STimer _shakeRewardTimer;
         private STimer _shakeLevelTimer;
         private Quaternion _startRewardChestIconQuaternion;
@@ -81,7 +81,7 @@ namespace VinhLB
         private bool _isTutorialRunning;
 
         private bool _isFirstShowed;
-        
+
         private void Awake()
         {
             GameManager.Ins.RegisterListenerEvent(EventID.OnChangeRewardKeys,
@@ -95,22 +95,10 @@ namespace VinhLB
                 LevelManager.Ins.InitLevel();
                 UIManager.Ins.OpenUI<InGameScreen>();
             });
-            _dailyChallengeButton.AddListener(() =>
-            {
-                UIManager.Ins.OpenUI<DailyChallengePopup>();
-            });
-            _dailyRewardButton.AddListener(() =>
-            {
-                UIManager.Ins.OpenUI<DailyRewardPopup>();
-            });
-            _dailyMissionButton.AddListener(() =>
-            {
-                UIManager.Ins.OpenUI<DailyMissionPopup>();
-            });
-            _secretMapButton.AddListener(() =>
-            {
-                UIManager.Ins.OpenUI<SecretMapPopup>();
-            });
+            _dailyChallengeButton.AddListener(() => { UIManager.Ins.OpenUI<DailyChallengePopup>(); });
+            _dailyRewardButton.AddListener(() => { UIManager.Ins.OpenUI<DailyRewardPopup>(); });
+            _dailyMissionButton.AddListener(() => { UIManager.Ins.OpenUI<DailyMissionPopup>(); });
+            _secretMapButton.AddListener(() => { UIManager.Ins.OpenUI<SecretMapPopup>(); });
             _rewardChestButton.AddListener(() =>
             {
                 if (!CanClaimRewardChest())
@@ -146,11 +134,6 @@ namespace VinhLB
             _startLevelChestIconQuaternion = _levelChestIconRectTF.localRotation;
         }
 
-        // private void Start()
-        // {
-        //     OpenMask();
-        // }
-
         private void OnDestroy()
         {
             GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeRewardKeys,
@@ -173,7 +156,7 @@ namespace VinhLB
                     UIManager.Ins.OpenUI<DailyRewardPopup>();
                 }
             }
-            
+
             SetupHomeCamera();
 
             SetupFeature();
@@ -210,21 +193,21 @@ namespace VinhLB
         {
             // If NormalLevelIndex is the last index of normal level in
             int index = LevelManager.Ins.NormalLevelIndex;
-            _levelText.text = $"Level {index + 1}"; 
-            
+            _levelText.text = $"Level {index + 1}";
+
             if (index == DataManager.Ins.CountNormalLevel - 1)
             {
                 _levelNormalFrame.color = _lastLevelNormalColor;
                 _levelNormalText.text = "Not Available";
                 _lastLevelLockGO.SetActive(true);
                 _playButton.interactable = false;
-                
+
                 return;
             }
-            
+
             _playButton.interactable = true;
             _lastLevelLockGO.SetActive(false);
-            
+
             LevelNormalType currentLevelLevelNormalType = LevelManager.Ins.CurrentLevel.LevelNormalType;
             _levelNormalText.text = $"{currentLevelLevelNormalType} Level";
             switch (currentLevelLevelNormalType)
@@ -243,18 +226,23 @@ namespace VinhLB
             int dailyRewardNotificationAmount = DailyRewardManager.Ins.IsTodayRewardObtained ? 0 : 1;
             _dailyRewardButton.SetNotificationAmount(dailyRewardNotificationAmount);
 
+            int dailyChallengeNotificationAmount = DataManager.Ins.IsClearAllDailyChallenge() ? 0 : 1;
+            _dailyChallengeButton.SetNotificationAmount(dailyChallengeNotificationAmount);
+
+            int secretMapNotificationAmount = DataManager.Ins.IsClearAllSecretLevel() ? 0 : 1;
+            _secretMapButton.SetNotificationAmount(secretMapNotificationAmount);
         }
 
         public void ShowDailyChallengeButton(bool isShow)
         {
             _dailyChallengeButton.gameObject.SetActive(isShow);
         }
-        
+
         public void ShowSecretMapButton(bool isShow)
         {
             _secretMapButton.gameObject.SetActive(isShow);
         }
-        
+
         private void SetupHomeCamera()
         {
             LevelManager.Ins.ConstructingLevel();
@@ -293,7 +281,8 @@ namespace VinhLB
             void SpawnCollectingUIRewardKeys()
             {
                 int collectingRewardKeys = Mathf.Min((int)data.ChangedAmount, Constants.MAX_UI_UNIT);
-                Vector3 spawnPosition = data.Source as Vector3? ?? Vector3.zero;
+                Vector3 spawnPosition = data.Source as Vector3? ??
+                                        CameraManager.Ins.ViewportToWorldPoint(new Vector3(0.5f, 0.5f));
                 CollectingResourceManager.Ins.SpawnCollectingUIRewardKeys(collectingRewardKeys, spawnPosition,
                     _rewardChestIconRectTF,
                     (progress) =>
@@ -326,7 +315,8 @@ namespace VinhLB
             void SpawnCollectingUILevelStars()
             {
                 int collectingLevelStars = Mathf.Min((int)data.ChangedAmount, Constants.MAX_UI_UNIT);
-                Vector3 spawnPosition = data.Source as Vector3? ?? Vector3.zero;
+                Vector3 spawnPosition = data.Source as Vector3? ??
+                                        CameraManager.Ins.ViewportToWorldPoint(new Vector3(0.5f, 0.5f));
                 CollectingResourceManager.Ins.SpawnCollectingUILevelStars(collectingLevelStars, spawnPosition,
                     _levelChestIconRectTF,
                     (progress) =>
@@ -449,13 +439,13 @@ namespace VinhLB
             _dailyChallengeButton.SetUnlockLevelIndex(DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex);
             _dailyChallengeButton.IsUnlocked =
                 normalLevelIndex >= DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex;
-            
+
             _secretMapButton.SetUnlockLevelIndex(DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex);
             _secretMapButton.IsUnlocked = normalLevelIndex >= DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex;
-            
+
             _levelChestButton.SetUnlockLevelIndex(DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex);
             _levelChestButton.IsUnlocked = normalLevelIndex >= DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex;
-            
+
             _rewardChestButton.SetUnlockLevelIndex(DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex);
             _rewardChestButton.IsUnlocked = normalLevelIndex >= DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex;
         }

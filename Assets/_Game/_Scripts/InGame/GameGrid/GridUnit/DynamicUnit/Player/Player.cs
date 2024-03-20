@@ -284,21 +284,26 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         private const float MOVE_TIME = 0.25f;
         private static readonly Vector3 CameraDownOffsetVector = new(0, 0, CAMERA_DOWN_OFFSET);
 
+        private bool _isOutOfIsland;
+        
         public void SetUpCamera(Island island, GameGridCell cell)
         {
             // TRICK: Take offset = 3 to make camera not really see the edge of the island
 
             float x = cell.WorldPos.x;
-            // NOTE: If the island is small (Size.x < 7), the camera will not change target pos
-            if (island.isSmallIsland) return;
-
+            
             // If the player is out of the island 1 cell, the camera will change target to Player
             if (island.minXIslandPos.x - x > Constants.CELL_SIZE * OUT_OF_ISLAND_CELL_BEFORE_TARGET_CAM_TO_PLAYER ||
                 x - island.maxXIslandPos.x > Constants.CELL_SIZE * OUT_OF_ISLAND_CELL_BEFORE_TARGET_CAM_TO_PLAYER)
             {
+                _isOutOfIsland = true;
                 CameraManager.Ins.ChangeCameraTargetPosition(cell.WorldPos + CameraDownOffsetVector, MOVE_TIME);
                 return;
             }
+            
+            // NOTE: If the island is small (Size.x < 7), the camera will not change target pos
+            if (island.isSmallIsland && !_isOutOfIsland) return;
+            _isOutOfIsland = false;
             if (Mathf.Abs(x - island.minXIslandPos.x) < 0.1f) // if minX
             {
                 CameraManager.Ins.ChangeCameraTargetPosition(new Vector3(island.minXIslandPos.x + OFFSET, 0, island.centerIslandPos.z + CAMERA_DOWN_OFFSET), MOVE_TIME);

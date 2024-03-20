@@ -91,7 +91,7 @@ MonoBehaviour:
     prefab: {fileID: 7944945198528721920, guid: 03e515ebbd1bf0c419a03ee36aa5d51f, type: 3}
     amount: 2
   - root: {fileID: 2003738223610586936}
-    prefab: {fileID: 198617934630346986, guid: 211df3921ba166e4d97f049834dc5490, type: 3}
+    prefab: {fileID: 198183601560427922, guid: 0f5583f6cb76de7438dc0a99818c17e6, type: 3}
     amount: 2
   _fishSpawner: {fileID: 3212642321361187348}
   _worldUIUnitSpawner: {fileID: 2103450192750005411}

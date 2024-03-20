@@ -4642,10 +4642,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b7d74b11b4d412790a7ede3ea568bc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 2223397522943446478}
-  lockObj: {fileID: 6737199338074782317}
-  unlockObj: {fileID: 4480219267358572230}
-  unlockLevelText: {fileID: 5246419510509166099}
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  _button: {fileID: 0}
+  _lockedGO: {fileID: 0}
+  _unlockGO: {fileID: 0}
+  _unlockedLevelText: {fileID: 0}
+  _notificationGO: {fileID: 0}
+  _notificationText: {fileID: 0}
 --- !u!1 &5697966301763161136
 GameObject:
   m_ObjectHideFlags: 0
@@ -7385,7 +7396,7 @@ MonoBehaviour:
   m_text: play
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}
-  m_sharedMaterial: {fileID: 2147374, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 17e6b9a8d0707434aae607f2307a50a1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
