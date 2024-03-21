@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2161125012368641077}
   - component: {fileID: 2161125012368641076}
   m_Layer: 0
-  m_Name: NotificationManager
+  m_Name: PushNotificationManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,18 +1,22 @@
 ﻿using System;
 using _Game.DesignPattern;
+using _Game.Utilities;
 using UnityEngine;
 
 namespace VinhLB
 {
-    public class NotificationManager : Singleton<NotificationManager>
+    public class PushNotificationManager : Singleton<PushNotificationManager>
     {
-        private void Start()
+        private void Awake()
         {
+            DontDestroyOnLoad(this);
+            
             GleyNotifications.Initialize();
         }
 
         private void OnApplicationFocus(bool focus)
         {
+            // DevLog.Log(DevId.Vinh, $"OnApplicationFocus: {focus}");
             if (focus == false)
             {
                 // If user left your app schedule all your notifications
