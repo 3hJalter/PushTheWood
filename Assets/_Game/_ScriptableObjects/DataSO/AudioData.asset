@@ -31,11 +31,13 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 023bfa0afc01b5b4995554f79f051722, type: 3}
     - {fileID: 8300000, guid: da2e516830550b1478dbf050b2ecc833, type: 3}
     - {fileID: 8300000, guid: 264a8ba21eee8a641a0f633510abbbc7, type: 3}
-    - {fileID: 8300000, guid: 3c749aee29c51074482be7c3ef86bcf7, type: 3}
+    - {fileID: 8300000, guid: d2626a500839fbf41826016f489561cb, type: 3}
     - {fileID: 8300000, guid: 976eae68c0665474f91be86dfa80d6a4, type: 3}
     - {fileID: 8300000, guid: c030d40f5b3b9b0429b5d4e1e19cef03, type: 3}
     - {fileID: 8300000, guid: fc5f3290db6adaa43ac6ef9e2a515afc, type: 3}
     - {fileID: 8300000, guid: feaa1eba5b087cf4f85d9583b646b800, type: 3}
+    - {fileID: 8300000, guid: aa87795c5391ce24a8c3d1e5015e1266, type: 3}
+    - {fileID: 8300000, guid: 600edb09cbcf53841bbf6c49711b73f5, type: 3}
     - {fileID: 8300000, guid: 950cce47b22db2247ae24019ad65a511, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
@@ -129,7 +131,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 18
+      Data: 20
     - Name: 
       Entry: 7
       Data: 
@@ -417,7 +419,7 @@ MonoBehaviour:
       Data: 15
     - Name: multiplier
       Entry: 4
-      Data: 1
+      Data: 0.3
     - Name: 
       Entry: 8
       Data: 
@@ -509,6 +511,48 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 105
+    - Name: $v
+      Entry: 7
+      Data: 24|_Game.Data.Audio, Assembly-CSharp
+    - Name: clip
+      Entry: 10
+      Data: 20
+    - Name: multiplier
+      Entry: 4
+      Data: 0.3
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 106
+    - Name: $v
+      Entry: 7
+      Data: 25|_Game.Data.Audio, Assembly-CSharp
+    - Name: clip
+      Entry: 10
+      Data: 21
+    - Name: multiplier
+      Entry: 4
+      Data: 0.3
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
       Entry: 13
       Data: 
     - Name: 
@@ -516,11 +560,11 @@ MonoBehaviour:
       Data: 
     - Name: _environmentAudioDict
       Entry: 7
-      Data: 24|System.Collections.Generic.Dictionary`2[[AudioEnum.EnvironmentType,
+      Data: 26|System.Collections.Generic.Dictionary`2[[AudioEnum.EnvironmentType,
         Assembly-CSharp],[_Game.Data.Audio, Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 25|System.Collections.Generic.EnumEqualityComparer`1[[AudioEnum.EnvironmentType,
+      Data: 27|System.Collections.Generic.EnumEqualityComparer`1[[AudioEnum.EnvironmentType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -542,10 +586,10 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 7
-      Data: 26|_Game.Data.Audio, Assembly-CSharp
+      Data: 28|_Game.Data.Audio, Assembly-CSharp
     - Name: clip
       Entry: 10
-      Data: 20
+      Data: 22
     - Name: multiplier
       Entry: 4
       Data: 0.3

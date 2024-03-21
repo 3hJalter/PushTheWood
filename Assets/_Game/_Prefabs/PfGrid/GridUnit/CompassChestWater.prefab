@@ -210,7 +210,7 @@ MonoBehaviour:
   startHeight: 1
   endHeight: 2
   overrideStartHeight: 1
-  floatingHeightOffset: 0
+  floatingHeightOffset: 1
   unitTypeY: 0
   yOffsetOnDown: 0.5
   unitTypeXZ: 2
