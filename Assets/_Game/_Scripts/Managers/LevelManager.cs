@@ -66,6 +66,8 @@ namespace _Game.GameGrid
         public bool IsConstructingLevel;
 
         public bool IsFirstLevel => normalLevelIndex == 0;
+        
+        public bool IsHardLevel => CurrentLevel.LevelType == LevelType.Normal && CurrentLevel.LevelNormalType == LevelNormalType.Hard;
 
         private CareTaker savingState;
         public bool IsCanUndo => savingState.IsCanUndo;

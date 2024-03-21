@@ -93,7 +93,14 @@ namespace VinhLB
             {
                 UIManager.Ins.CloseAll();
                 LevelManager.Ins.InitLevel();
-                UIManager.Ins.OpenUI<InGameScreen>();
+                if (LevelManager.Ins.IsHardLevel)
+                {
+                    UIManager.Ins.OpenUI<HardWarningScreen>();
+                }
+                else
+                {
+                    UIManager.Ins.OpenUI<InGameScreen>();
+                }
             });
             _dailyChallengeButton.AddListener(() => { UIManager.Ins.OpenUI<DailyChallengePopup>(); });
             _dailyRewardButton.AddListener(() => { UIManager.Ins.OpenUI<DailyRewardPopup>(); });

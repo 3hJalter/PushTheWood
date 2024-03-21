@@ -97,12 +97,18 @@ namespace _Game.Managers
             // if the same position, do nothing
             if ((cameraTarget.position - position).sqrMagnitude < 0.01f) return;
 
+            // if moveTime between -0.01 to 0.01, move instantly
+            if (Mathf.Abs(moveTime) < 0.01f)
+            {
+                ChangeCameraTargetPositionInstant(position);
+                return;
+            }
             if (moveTime < 0f) moveTime = cameraMoveTime;
             cameraTarget.DOKill();
             cameraTarget.DOMove(position, moveTime).SetEase(ease);
         }
 
-        public void ChangeCameraTargetPositionInstant(Vector3 position)
+        private void ChangeCameraTargetPositionInstant(Vector3 position)
         {
             cameraTarget.DOKill();
             cameraTarget.position = position;

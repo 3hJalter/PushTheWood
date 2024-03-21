@@ -83,7 +83,7 @@ SpriteAtlas:
   - _0002_Group-10
   - _0011_DAY-3
   - _0019_DAY-6
-  - coin
+  - _0006_coin
   - _0022_Group-7
   - _0017_Group-3
   - _0003_DAY-7
@@ -92,7 +92,7 @@ SpriteAtlas:
   - _0015_return_text
   - _0016_daily-gift
   - _0009_Group-8
-  - ad_ticket
+  - _0004_ticket
   - _0000_check_btn
   - _0014_choose
   - _0010_DAY-1
