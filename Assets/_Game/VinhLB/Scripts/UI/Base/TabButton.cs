@@ -30,7 +30,7 @@ namespace VinhLB
         [SerializeField]
         private bool _interactable = true;
         [SerializeField]
-        private SfxType _buttonSound = SfxType.ClickOpen;
+        private SfxType _buttonSound = SfxType.Click;
 
         [Header("Animation")]
         [SerializeField]

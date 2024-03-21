@@ -16,7 +16,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(HButton), typeof(CanvasGroup))]
 public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler
 {
-    [SerializeField] private SfxType btnSound = SfxType.ClickOpen;
+    [SerializeField] private SfxType btnSound = SfxType.Click;
     [SerializeField] private bool unscaleTime;
     [SerializeField] private float cooldownTime = 0.1f;
     private CanvasGroup _canvasGroup;
