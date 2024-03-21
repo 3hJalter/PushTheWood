@@ -58,6 +58,7 @@ namespace AudioEnum
         Lose = 102,
         BuyItem = 103,
         CollectReward = 104,
+        CollectItem = 105,
     }
 
     public enum BgmType

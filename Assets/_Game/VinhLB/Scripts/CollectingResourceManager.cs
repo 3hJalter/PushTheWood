@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using _Game.DesignPattern;
 using _Game.Managers;
 using _Game.Utilities;
+using AudioEnum;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -136,13 +137,14 @@ namespace VinhLB
             RectTransform parentRectTransform = _collectingInGameRewardKeyConfig.CollectingResourceParentRectTF;
 
             Sequence s = DOTween.Sequence();
+            AudioManager.Ins.PlaySfx(SfxType.CollectItem);
             s.Append(unit.CanvasGroup.DOFade(1, _collectingInGameRewardKeyConfig.MoveDuration))
                 .Join(DOVirtual.Float(0, HEIGHT_INCREASE, _collectingInGameRewardKeyConfig.MoveDuration, y =>
                 {
                     Vector2 viewportPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) -
                                             Vector3.one * 0.5f;
                     unit.RectTf.anchoredPosition = new Vector2(parentRectTransform.rect.width * viewportPoint.x,
-                        parentRectTransform.rect.height * viewportPoint.y + 60 + y);
+                        parentRectTransform.rect.height * viewportPoint.y + 60 + y);              
                 }).SetEase(Ease.OutQuart))
                 .Append(
                     unit.CanvasGroup.DOFade(0, _collectingInGameRewardKeyConfig.MoveDuration * 1.5f)
