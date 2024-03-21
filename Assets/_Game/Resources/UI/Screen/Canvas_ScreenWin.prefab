@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -913,7 +913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -1818,8 +1818,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7239107388192199634}
   - component: {fileID: 7239107388192199638}
-  - component: {fileID: 7239107388192199636}
   - component: {fileID: 7239107388192199635}
+  - component: {fileID: 7239107388192199636}
   - component: {fileID: 8471357506757252945}
   m_Layer: 5
   m_Name: Canvas_ScreenWin
@@ -1871,6 +1871,18 @@ Canvas:
   m_SortingLayerID: -118727557
   m_SortingOrder: 2
   m_TargetDisplay: 0
+--- !u!225 &7239107388192199635
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7239107388192199633}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &7239107388192199636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1888,18 +1900,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 32
---- !u!225 &7239107388192199635
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7239107388192199633}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!114 &8471357506757252945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2368,10 +2368,10 @@ PrefabInstance:
     - target: {fileID: 2188298886722322113, guid: c7935d45b3f2f3f44b13ff462761a3c6, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2188298886722322113, guid: c7935d45b3f2f3f44b13ff462761a3c6, type: 3}
     - target: {fileID: 2188298886722322113, guid: c7935d45b3f2f3f44b13ff462761a3c6, type: 3}
       propertyPath: serializationData.SerializedFormat
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4159290435852266402, guid: c7935d45b3f2f3f44b13ff462761a3c6, type: 3}
       propertyPath: m_Name

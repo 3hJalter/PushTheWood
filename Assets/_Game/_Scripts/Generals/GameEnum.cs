@@ -158,6 +158,7 @@ namespace GameGridEnum
         MusicalNotes = 8,
         WaterSplash_Continuous = 9,
         Confetti = 10,
+        FlameWarning = 11,
     }
     
     public enum TutorialType

@@ -869,7 +869,6 @@ MonoBehaviour:
   canvasGroup: {fileID: 995249274732087731}
   settingButton: {fileID: 995249275173999257}
   timerContainer: {fileID: 7055623485558247756}
-  blockPanel: {fileID: 2725511117278880449}
   undoButton: {fileID: 5396225558406985821}
   pushHintButton: {fileID: 3592529410336712623}
   growTreeButton: {fileID: 6250197807455768000}
@@ -9425,7 +9424,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8762493832433632564}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
