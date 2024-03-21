@@ -5,27 +5,33 @@ using _Game.Managers;
 using HControls;
 using MEC;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _Game.UIs.Screen
 {
     public class SaveMeScreen : UICanvas
     {
-        [SerializeField] private HButton btnMoreTimeTicket;
-        [SerializeField] private HButton btnClose;
-        
         private const float TIMER = 3f;
 
+        [SerializeField]
+        private HButton _moreTimeButton;
+        [SerializeField]
+        private HButton _closeButton;
+        [SerializeField]
+        private Image _clockFillImage;
+
         private float _progress; // DO THIS FOR FILL AMOUNT
+
         private void Awake()
         {
-            btnClose.onClick.AddListener(OnGoLose);
-            btnMoreTimeTicket.onClick.AddListener(OnMoreTimeTicket);
+            _closeButton.onClick.AddListener(OnGoLose);
+            _moreTimeButton.onClick.AddListener(OnMoreTimeTicket);
         }
 
         private void OnDestroy()
         {
-            btnClose.onClick.RemoveAllListeners();
-            btnMoreTimeTicket.onClick.RemoveAllListeners();
+            _closeButton.onClick.RemoveAllListeners();
+            _moreTimeButton.onClick.RemoveAllListeners();
         }
 
         public override void Setup(object param = null)
@@ -33,7 +39,9 @@ namespace _Game.UIs.Screen
             base.Setup(param);
             GameManager.Ins.ChangeState(GameState.Pause);
             HInputManager.LockInput();
-            btnClose.gameObject.SetActive(false);
+            // _closeButton.gameObject.SetActive(false);
+            _progress = 1f;
+            // _clockFillImage.fillAmount = _progress;
             Timing.RunCoroutine(CountDown());
         }
 
@@ -57,18 +65,20 @@ namespace _Game.UIs.Screen
                 Close();
             });
         }
-        
-        IEnumerator<float> CountDown()
+
+        private IEnumerator<float> CountDown()
         {
-            _progress = 0;
             float time = TIMER;
             while (time > 0)
             {
-                _progress = time / TIMER;
                 time -= Time.deltaTime;
+                
+                _progress = Mathf.Clamp(time / TIMER, 0f, TIMER);
+                // _clockFillImage.fillAmount = _progress;
+                
                 yield return Timing.WaitForOneFrame;
             }
-            btnClose.gameObject.SetActive(true);
+            // _closeButton.gameObject.SetActive(true);
         }
     }
 }
