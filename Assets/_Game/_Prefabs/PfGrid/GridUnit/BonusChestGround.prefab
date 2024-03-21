@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrowIndicatorType: 2
-  targetColor: {r: 0.6901961, g: 0.5058824, b: 0.83921576, a: 1}
+  targetColor: {r: 1, g: 1, b: 1, a: 1}
   needBoxIndicator: 1
   needArrowIndicator: 1
   needDistanceText: 0

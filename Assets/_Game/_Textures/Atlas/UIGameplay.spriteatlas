@@ -61,12 +61,14 @@ SpriteAtlas:
     - {fileID: 2800000, guid: aef9a8b6bcbd3a34eb52d7957e26a207, type: 3}
     - {fileID: 2800000, guid: 47a121d492edf974f8e1dd70f8a6fe02, type: 3}
     - {fileID: 2800000, guid: 82ae1d62ce56fd64eb349ce342c11752, type: 3}
+    - {fileID: 2800000, guid: 49e72cf12ea404541bf3df7d6e014d26, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 5e32bc311a3b25b40b2518b71d4b2d7e, type: 3}
+  - {fileID: 21300000, guid: 49e72cf12ea404541bf3df7d6e014d26, type: 3}
   - {fileID: 21300000, guid: 5a6efe32c48fc7e4c9666f9c445dbcf8, type: 3}
   - {fileID: 21300000, guid: 13e53a5210354e94fa9cceb380380da5, type: 3}
   - {fileID: 21300000, guid: 82ae1d62ce56fd64eb349ce342c11752, type: 3}
@@ -85,6 +87,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 1012a03e39ef4c149aee0eba370d2c3f, type: 3}
   m_PackedSpriteNamesToIndex:
   - Fruit
+  - text_box
   - Enemy_Sample
   - magnigying_glass
   - _0012_chest1

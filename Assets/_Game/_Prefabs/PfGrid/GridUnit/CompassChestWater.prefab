@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrowIndicatorType: 3
-  targetColor: {r: 0.41960788, g: 0.3137255, b: 0.25882354, a: 1}
+  targetColor: {r: 1, g: 1, b: 1, a: 1}
   needBoxIndicator: 1
   needArrowIndicator: 1
   needDistanceText: 0
@@ -210,7 +210,7 @@ MonoBehaviour:
   startHeight: 1
   endHeight: 2
   overrideStartHeight: 1
-  floatingHeightOffset: 0
+  floatingHeightOffset: 1
   unitTypeY: 0
   yOffsetOnDown: 0.5
   unitTypeXZ: 2
