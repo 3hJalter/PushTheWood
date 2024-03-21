@@ -224,7 +224,7 @@ MonoBehaviour:
       Data: 
     - Name: DangerTime
       Entry: 3
-      Data: 30
+      Data: 15
     - Name: MoreTimeAdded
       Entry: 3
       Data: 60

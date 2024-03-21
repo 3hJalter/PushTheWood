@@ -77,6 +77,7 @@ namespace _Game.UIs.Screen
                     timeText.color = dangerTimeColor;
                     timeImage.transform.DOShakePosition(0.3f, 6f, 40, 90, false, true, ShakeRandomnessMode.Harmonic);
                     timeText.transform.DOScale(TIME_TXT_SCALE_UP, 0.15f).SetLoops(2, LoopType.Yoyo);
+                    AudioManager.Ins.PlaySfx(SfxType.ClockTick);
                     isTimeNormal = false;
                 }
                 else

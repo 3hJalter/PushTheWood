@@ -53,12 +53,16 @@ namespace AudioEnum
         Happy = 11,
         Whistling = 12,
         // UI
-        Click = 100,
+        ClickOpen = 100,
         Win = 101,
         Lose = 102,
         BuyItem = 103,
         CollectReward = 104,
         CollectItem = 105,
+        ClickClose = 106,
+        ClickToggle = 107,
+        ClockTick = 108,
+        PopupOpen = 109,
     }
 
     public enum BgmType

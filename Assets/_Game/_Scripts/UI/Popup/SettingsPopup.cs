@@ -83,20 +83,24 @@ namespace _Game.UIs.Popup
         {
             AudioManager.Ins.ToggleBgmVolume(value);
             AudioManager.Ins.ToggleEnvironmentVolume(value);
+            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.ClickToggle);
         }
 
         public void OnChangeSoundVolume(bool value)
         {
             AudioManager.Ins.ToggleSfxVolume(value);
+            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.ClickToggle);
         }
 
         public void OnChangeEnvironmentVolume(bool value)
         {
+            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.ClickToggle);
             AudioManager.Ins.ToggleEnvironmentVolume(value);
         }
 
         public void OnChangeHapticValue(bool value)
         {
+            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.ClickToggle);
             HVibrate.OnToggleHaptic(value);
         }
         
