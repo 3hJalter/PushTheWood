@@ -49,20 +49,31 @@ namespace VinhLB
 
             _dayText.text = $"Day {_day + 1}";
 
-            for (int i = 0; i < _rewards.Length; i++)
+            // Adjust _rewardItemList size
+            int differentInSize = _rewards.Length - _rewardItemList.Count;
+            if (differentInSize > 0)
             {
-                RewardItem rewardItem;
-                if (i < _rewardItemList.Count)
+                for (int i = 0; i < differentInSize; i++)
                 {
-                    rewardItem = _rewardItemList[i];
-                }
-                else
-                {
-                    rewardItem = Instantiate(_rewardItemPrefab, _rewardItemParentTF);
+                    RewardItem rewardItem = Instantiate(_rewardItemPrefab, _rewardItemParentTF);
+
                     _rewardItemList.Add(rewardItem);
                 }
+            }
+            else if (differentInSize < 0)
+            {
+                int startIndex = _rewardItemList.Count - 1;
+                for (int i = startIndex; i > startIndex + differentInSize; i--)
+                {
+                    Destroy(_rewardItemList[i].gameObject);
 
-                rewardItem.Initialize(_rewards[i]);
+                    _rewardItemList.RemoveAt(i);
+                }
+            }
+            
+            for (int i = 0; i < _rewards.Length; i++)
+            {
+                _rewardItemList[i].Initialize(_rewards[i]);
             }
 
             if (_day <= DailyRewardManager.Ins.CycleDay)

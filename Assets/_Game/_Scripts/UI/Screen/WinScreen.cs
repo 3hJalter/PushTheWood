@@ -70,6 +70,7 @@ namespace _Game.UIs.Screen
 
             if (param is Reward[] rewards && rewards.Length > 0)
             {
+                _rewardParentRectTF.gameObject.SetActive(true);
                 // Adjust _rewardItemList size
                 int differentInSize = rewards.Length - _rewardItemList.Count;
                 if (differentInSize > 0)
@@ -97,6 +98,10 @@ namespace _Game.UIs.Screen
                 {
                     _rewardItemList[i].Initialize(rewards[i]);
                 }
+            }
+            else
+            {
+                _rewardParentRectTF.gameObject.SetActive(false);
             }
 
             // Hide the next level button if the current level is not Normal level
