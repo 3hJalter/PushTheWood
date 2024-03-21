@@ -1048,7 +1048,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  btnSound: -1
+  btnSound: 100
   unscaleTime: 0
   cooldownTime: 0.1
   showAnimType: 0
@@ -1861,7 +1861,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  btnSound: 100
+  btnSound: -1
   unscaleTime: 0
   cooldownTime: 0.3
   showAnimType: 0
@@ -4945,7 +4945,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  btnSound: 100
+  btnSound: -1
   unscaleTime: 0
   cooldownTime: 0.3
   showAnimType: 0
@@ -5922,7 +5922,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  btnSound: 100
+  btnSound: -1
   unscaleTime: 0
   cooldownTime: 0.3
   showAnimType: 0

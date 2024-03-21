@@ -69,6 +69,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             if (!_isExecuted)
             {
                 HVibrate.Haptic(HapticTypes.MediumImpact);
+                AudioManager.Ins.PlaySfx(SfxType.PushTree);
                 t.InvokeActWithUnit(t.CutTreeData.tree);
                 _isExecuted = true;
                 LevelManager.Ins.SaveGameState(true);
