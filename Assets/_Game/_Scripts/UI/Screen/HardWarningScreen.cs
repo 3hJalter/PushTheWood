@@ -14,6 +14,7 @@ namespace _Game.UIs.Screen
             base.Setup(param);
             // Pause game
             UIManager.Ins.CloseUI<InGameScreen>();
+            AudioManager.Ins.StopBgm();
             CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera, 0f);
             GameManager.Ins.ChangeState(GameState.Pause);
             LevelManager.Ins.SetCameraToPlayerIsland(0f);
