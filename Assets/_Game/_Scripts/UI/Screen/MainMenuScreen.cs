@@ -78,13 +78,6 @@ namespace _Game.UIs.Screen
             _bottomNavigationTabGroup.ClearSelectedTab();
         }
 
-        public void OnClickStart()
-        {
-            UIManager.Ins.OpenUI<InGameScreen>();
-            LevelManager.Ins.InitLevel();
-            Close();
-        }
-
         public void OnClickSettingButton()
         {
             UIManager.Ins.OpenUI<SettingsPopup>();

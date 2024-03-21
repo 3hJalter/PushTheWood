@@ -30,8 +30,8 @@ namespace _Game.UIs.Screen
         [SerializeField]
         private GameObject timerContainer;
 
-        [SerializeField]
-        private Image blockPanel;
+        // [SerializeField]
+        // private Image blockPanel;
         // Booster Button
         public BoosterButton undoButton;
         public BoosterButton pushHintButton;
@@ -126,7 +126,7 @@ namespace _Game.UIs.Screen
         public event Action OnGrowTree;
         public event Action OnUsePushHint;
         public event Action OnResetIsland;
-
+        
         public override void Setup(object param = null)
         {
             base.Setup(param);
@@ -137,7 +137,7 @@ namespace _Game.UIs.Screen
             else MoveInputManager.Ins.ShowContainer(true, (bool)param);
             if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
             canvasGroup.alpha = 0f;
-            blockPanel.enabled = true;
+            // blockPanel.enabled = true;
             UpdateLevelText();
             UpdateObjectiveText();
             isTimeNormal = false;
@@ -156,8 +156,8 @@ namespace _Game.UIs.Screen
                 Close();
                 return;
             }
-            _fadeTween = DOVirtual.Float(0f, 1f, 0.1f, value => canvasGroup.alpha = value)
-                .OnKill(() => { blockPanel.enabled = false; });
+            _fadeTween = DOVirtual.Float(0f, 1f, 0.1f, value => canvasGroup.alpha = value);
+                // .OnKill(() => { blockPanel.enabled = false; });
         }
 
         public override void UpdateUI()
