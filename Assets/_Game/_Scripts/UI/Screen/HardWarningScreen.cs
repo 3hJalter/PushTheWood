@@ -23,6 +23,7 @@ namespace _Game.UIs.Screen
         public override void Open(object param = null)
         {
             base.Open(param);
+            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.WarningLevel);
             warningEffect.RunSequence(() =>
             {
                 GameManager.Ins.ChangeState(GameState.InGame);
