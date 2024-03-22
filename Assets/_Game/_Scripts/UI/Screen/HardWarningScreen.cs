@@ -14,7 +14,6 @@ namespace _Game.UIs.Screen
             base.Setup(param);
             // Pause game
             UIManager.Ins.CloseUI<InGameScreen>();
-            AudioManager.Ins.StopBgm();
             CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera, 0f);
             GameManager.Ins.ChangeState(GameState.Pause);
             LevelManager.Ins.SetCameraToPlayerIsland(0f);
@@ -23,6 +22,7 @@ namespace _Game.UIs.Screen
         public override void Open(object param = null)
         {
             base.Open(param);
+            AudioManager.Ins.StopBgm();
             AudioManager.Ins.PlaySfx(AudioEnum.SfxType.WarningLevel);
             warningEffect.RunSequence(() =>
             {
