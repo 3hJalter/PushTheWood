@@ -326,6 +326,7 @@ namespace _Game.GameGrid
                 case LevelType.None:
                 default: break;
             }
+            TutorialManager.Ins.DiscardQueue();
             IsConstructingLevel = true;
             OnRemoveWinCondition();
             _currentLevel.OnDeSpawnLevel();
