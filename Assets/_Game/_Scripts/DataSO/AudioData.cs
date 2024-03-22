@@ -65,6 +65,7 @@ namespace AudioEnum
         ClickToggle = 107,
         ClockTick = 108,
         PopupOpen = 109,
+        WarningLevel = 110,
     }
 
     public enum BgmType

@@ -20,7 +20,7 @@ public class ObjectContainer : MonoBehaviour
     List<List<bool>> availableState = new List<List<bool>>();
     List<int> startFindIndex = new List<int>();
 
-    public void OnInit()
+    public void OnInit(bool isPopMain = false)
     {
         for (int i = 0; i < MainObjects.Length; i++)
         {
@@ -57,7 +57,14 @@ public class ObjectContainer : MonoBehaviour
                 if (dataContain != null)
                 {
                     Data[i].Add(dataContain);
-                    availableState[i].Add(true);
+                    if(j == 0)
+                    {
+                        availableState[i].Add(!isPopMain);
+                    }
+                    else
+                    {
+                        availableState[i].Add(true);
+                    }
                 }
             }
 

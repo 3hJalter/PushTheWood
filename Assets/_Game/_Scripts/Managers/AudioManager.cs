@@ -23,6 +23,7 @@ namespace _Game.Managers
         [SerializeField] private float baseVolume;
 
         private List<AudioSource> audioSources;
+        public bool IsPlaying => audioSource.isPlaying;
 
         public void SetLoop(bool loop)
         {
@@ -34,8 +35,9 @@ namespace _Game.Managers
             if (audio is null) return;
             if (audioSourcePool && audioSource.isPlaying)
             {
+                AudioSource newAudio = audioSourcePool.Pop(0).AudioSource;
                 audioSourcePool.Push(0, audioSource.transform);
-                audioSource = audioSourcePool.Pop(0).AudioSource;
+                audioSource = newAudio;
             }
 
             currentAudio = audio;
@@ -89,7 +91,7 @@ namespace _Game.Managers
 
         private void Awake()
         {
-            audioSourcePool.OnInit();
+            audioSourcePool.OnInit(true);
             sfx.audioSourcePool = audioSourcePool;
             
             bgm.BaseVolume = DataManager.Ins.GameData.setting.isBgmMute ? 0 : 1;
@@ -153,7 +155,7 @@ namespace _Game.Managers
         {
             Audio audioIn = GetBgmAudio(type);
             if (audioIn is null) return;
-            if (audioIn == bgm.currentAudio) return;
+            if (audioIn == bgm.currentAudio && bgm.IsPlaying) return;
             bgm.SetLoop(true);
             if (fadeOut == 0f || bgm.IsMute)
             {

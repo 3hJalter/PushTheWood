@@ -36,7 +36,7 @@ namespace _Game.GameGrid
         public event Action OnLevelRestarted;
         public event Action OnLevelIslandReset;
         public event Action OnCheckWinCondition;
-        public event Action OnLevelNext;
+        public event Action _OnNextLevel;
         public event Action OnObjectiveChange;
 
         [SerializeField]
@@ -339,6 +339,7 @@ namespace _Game.GameGrid
             OnRemoveWinCondition();
             _currentLevel.OnDeSpawnLevel();
             OnGenerateLevel(type, normalLevelIndex, false);
+            _OnNextLevel?.Invoke();
             if (!_currentLevel.IsInit)
             {
                 InitLevel();
