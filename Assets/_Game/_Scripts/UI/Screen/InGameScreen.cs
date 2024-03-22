@@ -161,12 +161,6 @@ namespace _Game.UIs.Screen
                 // .OnKill(() => { blockPanel.enabled = false; });
         }
 
-        public override void UpdateUI()
-        {
-            base.UpdateUI();
-            undoButton.IsInteractable = LevelManager.Ins.IsCanUndo;
-        }
-
         public override void Close()
         {
             _fadeTween?.Kill();
@@ -341,7 +335,6 @@ namespace _Game.UIs.Screen
             undoButton.Button.interactable = false;
             AudioManager.Ins.PlaySfx(SfxType.Undo);
             undoTimer.Start(UNDO_CD_TIME, () => undoButton.Button.interactable = true);
-            UpdateUI();
 
             if (undoButton.IsFocus) undoButton.IsFocus = false;
             // if (resetIslandButton.IsFocus) resetIslandButton.IsFocus = false;

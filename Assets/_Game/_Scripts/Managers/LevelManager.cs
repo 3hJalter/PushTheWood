@@ -444,17 +444,20 @@ namespace _Game.GameGrid
         {
             bool success = savingState.Undo();
             player.SetUpCamera(CurrentLevel.Islands[player.islandID], player.MainCell);
+            GameplayManager.Ins.IsCanUndo = IsCanUndo;
             return success;
         }
 
         public void SaveGameState(bool isMerge)
         {
             savingState.Save(isMerge);
+            GameplayManager.Ins.IsCanUndo = IsCanUndo;
         }
 
         public void DiscardSaveState()
         {
             savingState.PopSave();
+            GameplayManager.Ins.IsCanUndo = IsCanUndo;
         }
         public class CareTaker
         {
