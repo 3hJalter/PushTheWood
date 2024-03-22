@@ -372,10 +372,6 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 2782781669929651471, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
-    - target: {fileID: 2789546897398349007, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2805191285944749677, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -684,14 +680,6 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 154198015}
-    - target: {fileID: 8295795833618016488, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
-      propertyPath: m_RenderMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8295795833618016488, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
-      propertyPath: m_PlaneDistance
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8295795833765866558, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: m_Camera
       value: 
