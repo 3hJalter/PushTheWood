@@ -1,4 +1,5 @@
 ﻿using _Game.DesignPattern.ConditionRule;
+using _Game.GameGrid;
 using _Game.GameGrid.Unit;
 
 namespace _Game._Scripts.InGame.GameCondition.Data
@@ -10,6 +11,8 @@ namespace _Game._Scripts.InGame.GameCondition.Data
 
         public GridUnit pushUnit;
 
+        public GameGridCell pushUnitMainCell;
+        
         // Constructor
         public BeInteractedData(GridUnit owner)
         {
@@ -21,6 +24,7 @@ namespace _Game._Scripts.InGame.GameCondition.Data
         {
             inputDirection = direction;
             pushUnit = interactedUnitIn;
+            pushUnitMainCell = interactedUnitIn.MainCell;
         }
     }
 }
