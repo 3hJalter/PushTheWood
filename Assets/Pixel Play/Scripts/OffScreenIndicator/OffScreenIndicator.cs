@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using _Game.Managers;
-using _Game.Utilities;
 using UnityEngine;
 
 /// <summary>
@@ -16,6 +15,7 @@ public class OffScreenIndicator : MonoBehaviour
     [SerializeField] private float screenBoundOffset = 0.9f;
 
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private Camera uiCamera;
     private Vector3 screenCentre;
     private Vector3 screenBounds;
 
@@ -77,7 +77,7 @@ public class OffScreenIndicator : MonoBehaviour
                 // {
                 //     indicator.SetDistanceText(target.GetDistanceFromUnit(LevelManager.Ins.player));   //Set the distance text for the indicator.
                 // }
-                indicator.transform.position = screenPosition; //Sets the position of the indicator on the screen.
+                indicator.transform.position = uiCamera.ScreenToWorldPoint(screenPosition);; //Sets the position of the indicator on the screen.
                 indicator.SetTextRotation(Quaternion.identity); // Sets the rotation of the distance text of the indicator.
             }
         }
