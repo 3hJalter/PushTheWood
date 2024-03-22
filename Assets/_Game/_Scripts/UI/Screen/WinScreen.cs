@@ -194,6 +194,7 @@ namespace _Game.UIs.Screen
         {
             LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
             UIManager.Ins.CloseAll();
+            UIManager.Ins.OpenUI<SplashScreen>();
             UIManager.Ins.OpenUI<MainMenuScreen>();
             // GameManager.Ins.PostEvent(DesignPattern.EventID.OnCheckShowInterAds, null);
         }
