@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 80294894285981651}
   - component: {fileID: 80294894285981649}
   - component: {fileID: 80294894285981654}
-  - component: {fileID: -1766296623101361839}
+  - component: {fileID: 5377449324185279889}
   m_Layer: 5
   m_Name: Canvas_ScreenSplash
   m_TagString: Untagged
@@ -168,7 +168,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &-1766296623101361839
+--- !u!114 &5377449324185279889
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -177,7 +177,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 80294894285981652}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd4cd0c715fc47e799c5f8987f3a2953, type: 3}
+  m_Script: {fileID: 11500000, guid: 289a2b27b9304999b8ad09c3e05a4385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isDestroyOnClose: 0
