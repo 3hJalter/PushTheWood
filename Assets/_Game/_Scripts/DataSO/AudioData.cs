@@ -55,6 +55,9 @@ namespace AudioEnum
         Whistling2 = 13,
         Whistling3 = 14,
         PushEnemy = 15,
+        BlockTree = 16,
+        Hint = 17,
+        EnemyDie = 18,
         // UI
         ClickOpen = 100,
         Win = 101,
