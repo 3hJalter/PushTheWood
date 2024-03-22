@@ -1096,6 +1096,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1811354214723299609, guid: a91574648ca2bd447bad3629a92e1126, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 771.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 1811354214723299609, guid: a91574648ca2bd447bad3629a92e1126, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -322.49
+      objectReference: {fileID: 0}
     - target: {fileID: 7292616749393523492, guid: a91574648ca2bd447bad3629a92e1126, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1182,7 +1190,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7709104719208015159, guid: a91574648ca2bd447bad3629a92e1126, type: 3}
       propertyPath: m_text
-      value: MOVE OBJECT TO BUTTON
+      value: press all buttons to unlock the chest
       objectReference: {fileID: 0}
     - target: {fileID: 8743280422430089059, guid: a91574648ca2bd447bad3629a92e1126, type: 3}
       propertyPath: m_VideoClip
