@@ -1,6 +1,9 @@
 ﻿using System;
+using _Game._Scripts.InGame;
+using _Game._Scripts.Managers;
 using _Game.DesignPattern;
 using _Game.DesignPattern.StateMachine;
+using _Game.GameGrid.Unit.DynamicUnit.Chump;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Managers;
 using _Game.Utilities;
@@ -58,7 +61,6 @@ namespace _Game.GameGrid.Unit.StaticUnit
             }
         }
 
-        // BUG: Tree also spawn with TreeBee when back the game
         protected override void OnPushedComplete()
         {
             if (!gameObject.activeSelf) return;
@@ -72,6 +74,22 @@ namespace _Game.GameGrid.Unit.StaticUnit
             tree.OnInit(mainCell, startHeight);
             LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(tree);
             // Then despawn it
+
+            #region Special Case for handle PushHint
+
+            if (pushedUnit is Chump c && c.BeInteractedData.pushUnit is Player)
+            {
+                EventGlobalManager.Ins.OnPlayerPushStep?.Dispatch(new PlayerStep
+                {
+                    x = c.BeInteractedData.pushUnitMainCell.X,
+                    y = c.BeInteractedData.pushUnitMainCell.Y,
+                    d = (int) c.BeInteractedData.inputDirection,
+                    i = c.BeInteractedData.pushUnit.islandID
+                });
+            }
+            
+            #endregion
+            
             OnDespawn();
             LevelManager.Ins.SaveGameState(true);
 
