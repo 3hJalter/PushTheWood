@@ -59,6 +59,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             //NOTE: Refactor
             //NOTE: Play Shake Animation
             DevLog.Log(DevId.Hung, "Tree Blocking");
+            AudioManager.Ins.PlaySfx(SfxType.PushChump);
             pushedUnit = pushUnit;
             Vector3 axis = Vector3.Cross(Vector3.up, Constants.DirVector3[direction]);
             float lastAngle = 0;
