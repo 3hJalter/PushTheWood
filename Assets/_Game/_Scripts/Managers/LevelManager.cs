@@ -339,19 +339,23 @@ namespace _Game.GameGrid
             OnRemoveWinCondition();
             _currentLevel.OnDeSpawnLevel();
             OnGenerateLevel(type, normalLevelIndex, false);
-            // Hide the screen
-            UIManager.Ins.HideUI<InGameScreen>();
-            // SetCameraToPosition(CurrentLevel.GetCenterPos());
             if (!_currentLevel.IsInit)
             {
                 InitLevel();
             }
+            if (IsHardLevel)
+            {
+                UIManager.Ins.OpenUI<HardWarningScreen>();
+                return;
+            }
+            // Hide the screen
+            // SetCameraToPosition(CurrentLevel.GetCenterPos());
+            UIManager.Ins.HideUI<InGameScreen>();
             SetCameraToPlayerIsland(0f);
             // Zoom out
             CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera, 0f);
             TimerManager.Ins.WaitForTime(0.1f, () =>
             {
-                OnLevelNext?.Invoke();
                 CameraManager.Ins.ChangeCamera(ECameraType.InGameCamera, 1f);
                 TimerManager.Ins.WaitForTime(0.5f, () =>
                 {
