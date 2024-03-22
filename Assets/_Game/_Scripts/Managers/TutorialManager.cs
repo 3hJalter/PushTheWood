@@ -53,6 +53,12 @@ namespace _Game._Scripts.Managers
             GameManager.Ins.UnregisterListenerEvent(EventID.OnShowTutorialInMenu, OnHandleMenuTutorial);
         }
 
+        public void DiscardQueue()
+        {
+            moveData.Clear();
+            actData.Clear();
+        }
+        
         private void DequeueTutorialData()
         {
             if (moveData.Count > 0)
