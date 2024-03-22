@@ -1,5 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
+using MEC;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,8 +17,11 @@ namespace VinhLB
 
         private bool _isFirstTime = true;
         private bool _isWidthFitting = false;
-        private Coroutine _delayCloseCoroutine;
+        private CoroutineHandle _delayCloseCoroutine;
 
+        public event Action OnCloseCallback;
+        public event Action OnOpenCallback;
+        
         public override void Setup(object param = null)
         {
             base.Setup(param);
@@ -26,18 +32,26 @@ namespace VinhLB
         public override void Open(object param = null)
         {
             base.Open(param);
-
+            
             _canvasGroup.alpha = 1f;
 
-            if (_delayCloseCoroutine != null)
+            // Stop the previous coroutine if it's still running
+            if (Timing.IsRunning(_delayCloseCoroutine))
             {
-                StopCoroutine(_delayCloseCoroutine);
+                Timing.KillCoroutines(_delayCloseCoroutine);
             }
             
             float delayTime = param != null ? (float)param : 1f;
-            _delayCloseCoroutine = StartCoroutine(DelayCloseCoroutine(delayTime));
+            _delayCloseCoroutine = Timing.RunCoroutine(DelayCloseCoroutine(delayTime));
         }
-        
+
+        public override void Close()
+        {
+            OnCloseCallback?.Invoke();
+            OnCloseCallback = null;
+            base.Close();
+        }
+
         private void UpdateBackground()
         {
             float currentScreenRatio = (float)Screen.width / Screen.height;
@@ -64,14 +78,16 @@ namespace VinhLB
             }
         }
 
-        private IEnumerator DelayCloseCoroutine(float delayTime)
+        private IEnumerator<float> DelayCloseCoroutine(float delayTime)
         {
-            yield return new WaitForSeconds(delayTime);
+            // Wait a frame to make sure the OnOpenCallback is set
+            yield return Timing.WaitForOneFrame;
+            OnOpenCallback?.Invoke();
+            OnOpenCallback = null;
+            yield return Timing.WaitForSeconds(delayTime);
             
             DOVirtual.Float(1f, 0f, 0.25f, value => _canvasGroup.alpha = value)
                 .OnComplete(Close);
-            
-            _delayCloseCoroutine = null;
         }
     }
 }

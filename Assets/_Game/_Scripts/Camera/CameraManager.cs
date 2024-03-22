@@ -56,7 +56,7 @@ namespace _Game.Managers
 
         public void ChangeCamera(ECameraType eCameraType, float blendTime = 2f)
         {
-            if (currentVirtualCamera != null)
+            if (currentVirtualCamera is not null)
             {
                 currentVirtualCamera.Priority = CAMERA_PRIORITY_INACTIVE;
                 currentVirtualCamera.enabled = false;

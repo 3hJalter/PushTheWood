@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using _Game._Scripts.UIs.Component;
+using _Game.Camera;
 using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid;
@@ -86,8 +87,7 @@ namespace VinhLB
         
         private event Action _delayCollectingRewardKeys;
         private event Action _delayCollectingLevelStars;
-
-
+        
         private void Awake()
         {
             GameManager.Ins.RegisterListenerEvent(EventID.OnChangeRewardKeys,
@@ -99,10 +99,11 @@ namespace VinhLB
             {
                 UIManager.Ins.CloseAll();
                 LevelManager.Ins.InitLevel();
-                UIManager.Ins.OpenUI<SplashScreen>();
+                SplashScreen splash = UIManager.Ins.OpenUI<SplashScreen>();
                 if (LevelManager.Ins.IsHardLevel)
                 {
-                    UIManager.Ins.OpenUI<HardWarningScreen>();
+                    splash.OnOpenCallback += () => CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera, 0f);
+                    splash.OnCloseCallback += () => UIManager.Ins.OpenUI<HardWarningScreen>();
                 }
                 else
                 {
