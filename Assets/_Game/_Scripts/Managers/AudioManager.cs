@@ -210,15 +210,15 @@ namespace _Game.Managers
         // Play a sound effect
         // </summary>
         // <param name="type">Type of SFX</param>
-        public void PlaySfx(SfxType type)
+        public Audio PlaySfx(SfxType type)
         {
             Audio audioIn = GetSfxAudio(type);
-            if (audioIn is null) return;
+            if (audioIn is null) return null;
             sfx.SetAudio(audioIn);
             sfx.Play();
+            return audioIn;
         }
         
-
         // <summary>
         // Play a random sound effect from a list
         // </summary>
