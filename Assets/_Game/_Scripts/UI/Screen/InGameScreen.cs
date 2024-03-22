@@ -99,7 +99,7 @@ namespace _Game.UIs.Screen
 
         private void Awake()
         {
-            LevelManager.Ins.OnLevelNext += LevelManager_OnLevelNext;
+            LevelManager.Ins._OnNextLevel += LevelManager_OnLevelNext;
             LevelManager.Ins.OnObjectiveChange += UpdateObjectiveText;
             undoTimer = TimerManager.Ins.PopSTimer();
             resetIslandTimer = TimerManager.Ins.PopSTimer();
@@ -112,7 +112,7 @@ namespace _Game.UIs.Screen
 
         private void OnDestroy()
         {
-            LevelManager.Ins.OnLevelNext -= LevelManager_OnLevelNext;
+            LevelManager.Ins._OnNextLevel -= LevelManager_OnLevelNext;
             TimerManager.Ins.PushSTimer(undoTimer);
             TimerManager.Ins.PushSTimer(resetIslandTimer);
             undoButton.RemoveEvent(OnClickUndo);
