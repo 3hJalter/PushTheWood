@@ -79,6 +79,7 @@ namespace VinhLB
         {
             LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
             UIManager.Ins.CloseAll();
+            UIManager.Ins.OpenUI<SplashScreen>();
             UIManager.Ins.OpenUI<MainMenuScreen>();
             GameManager.Ins.PostEvent(EventID.OnInterAdsStepCount, 1);
         }

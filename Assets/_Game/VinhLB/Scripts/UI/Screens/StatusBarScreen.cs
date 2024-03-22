@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Globalization;
 using _Game.DesignPattern;
 using _Game.Managers;
@@ -27,6 +28,8 @@ namespace VinhLB
         [SerializeField]
         private HButton _addButton;
 
+        private Coroutine _delayOpenCoroutine;
+        
         private event Action _delayCollectingGold;
         private event Action _delayCollectingAdTickets;
 
@@ -36,7 +39,7 @@ namespace VinhLB
                 data => ChangeGoldValue((ResourceChangeData)data));
             GameManager.Ins.RegisterListenerEvent(EventID.OnChangeAdTickets,
                 data => ChangeAdTicketValue((ResourceChangeData)data));
-            
+
             _addButton.onClick.AddListener(() =>
             {
                 UIManager.Ins.OpenUI<NotificationPopup>(Constants.FEATURE_COMING_SOON);
@@ -88,11 +91,11 @@ namespace VinhLB
                     .OnComplete(() => { _blockPanel.gameObject.SetActive(false); });
             }
 
-            _delayCollectingGold?.Invoke();
-            _delayCollectingGold = null;
-
-            _delayCollectingAdTickets?.Invoke();
-            _delayCollectingAdTickets = null;
+            if (_delayOpenCoroutine != null)
+            {
+                StopCoroutine(_delayOpenCoroutine);
+            }
+            _delayOpenCoroutine = StartCoroutine(DelayOpenCoroutine());
         }
 
         private void ChangeGoldValue(ResourceChangeData data)
@@ -164,6 +167,27 @@ namespace VinhLB
                                 CultureInfo.InvariantCulture);
                     });
             }
+        }
+
+        private IEnumerator DelayOpenCoroutine()
+        {
+            while (UIManager.Ins.IsOpened<SplashScreen>())
+            {
+                yield return null;
+            }
+
+            if (_delayCollectingGold != null)
+            {
+                _delayCollectingGold.Invoke();
+                _delayCollectingGold = null;
+            }
+            if (_delayCollectingAdTickets != null)
+            {
+                _delayCollectingAdTickets?.Invoke();
+                _delayCollectingAdTickets = null;
+            }
+
+            _delayOpenCoroutine = null;
         }
     }
 }

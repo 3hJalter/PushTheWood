@@ -8,6 +8,7 @@ using _Game.UIs.Screen;
 using _Game.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
+using VinhLB;
 
 namespace _Game.UIs.Popup
 {
@@ -130,6 +131,7 @@ namespace _Game.UIs.Popup
             LevelManager.Ins.dailyLevelClickedDay = _currentBtnClick.Index;
             LevelManager.Ins.OnGoLevel(LevelType.DailyChallenge, DataManager.Ins.GetDailyChallengeDay(_currentBtnClick.Index));
             UIManager.Ins.CloseAll();
+            UIManager.Ins.OpenUI<SplashScreen>();
             UIManager.Ins.OpenUI<InGameScreen>();
         }
         

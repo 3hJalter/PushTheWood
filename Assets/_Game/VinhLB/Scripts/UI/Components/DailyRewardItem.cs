@@ -89,7 +89,7 @@ namespace VinhLB
                 {
                     _button.interactable = false;
                     _activeRectTF.gameObject.SetActive(false);
-                    _inactiveRectTF.gameObject.SetActive(false);
+                    _inactiveRectTF.gameObject.SetActive(true);
                     _checkedRectTF.gameObject.SetActive(true);
                 }
             }
@@ -97,7 +97,7 @@ namespace VinhLB
             {
                 _button.interactable = false;
                 _activeRectTF.gameObject.SetActive(false);
-                _inactiveRectTF.gameObject.SetActive(true);
+                _inactiveRectTF.gameObject.SetActive(false);
                 _checkedRectTF.gameObject.SetActive(false);
             }
         }

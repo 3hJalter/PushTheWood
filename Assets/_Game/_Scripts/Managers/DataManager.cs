@@ -98,14 +98,21 @@ namespace _Game.Managers
             return _gameData.user.secretLevelIndexComplete.Count >= _gameData.user.secretLevelUnlock;
         }
 
+        public bool IsSecretLevelComplete(int index)
+        {
+            return _gameData.user.secretLevelIndexComplete.Contains(index);
+        }
+
         public bool IsAdsHintEnough()
         {
             return GameData.user.hintAdsCount >= ConfigData.GetBoosterConfig(BoosterType.PushHint).TicketPerBuyRatio.ticketNeed;
         }
+        
         public bool IsCharacterSkinUnlock(int index)
         {
             return GameData.user.playerSkinState[index] != 0;
         }
+        
         public void SetUnlockCharacterSkin(int index, bool value)
         {
             GameData.user.playerSkinState[index] = value ? 1 : 0;
@@ -115,6 +122,7 @@ namespace _Game.Managers
         {
             GameData.user.currentPlayerSkinIndex = index;
         }
+        
         public int GetLevelTime(LevelType type, LevelNormalType normalType = LevelNormalType.None)
         {
             return type switch
