@@ -1,5 +1,6 @@
 ﻿using System;
 using _Game.Data;
+using _Game.DesignPattern;
 using _Game.Managers;
 using _Game.Resource;
 using _Game.UIs.Popup;
@@ -66,6 +67,7 @@ namespace _Game._Scripts.UIs.Component
             {
                 DataManager.Ins.GameData.user.dailyChallengeRewardCollected.Add(_milestone.clearLevelNeed);
                 DataManager.Ins.Save();
+                GameManager.Ins.PostEvent(EventID.OnUpdateUI);
             };
         }
 

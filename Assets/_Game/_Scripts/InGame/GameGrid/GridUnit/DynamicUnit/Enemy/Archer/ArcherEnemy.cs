@@ -93,7 +93,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
                 case GameState.MainMenu:
                 case GameState.WinGame:
                 case GameState.LoseGame:
-                    stateMachine.ChangeState(StateEnum.Idle);
+                    if (stateMachine.CurrentState.Id == StateEnum.Idle)
+                        stateMachine.ChangeState(StateEnum.Idle);
                     break;
             }
         }

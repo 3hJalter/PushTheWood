@@ -29,7 +29,7 @@ MonoBehaviour:
       Data: 7
     - Name: unlockDailyChallengeAtLevelIndex
       Entry: 3
-      Data: 11
+      Data: 9
     - Name: unlockSecretLevelAtLevelIndex
       Entry: 3
       Data: 21
@@ -173,16 +173,16 @@ MonoBehaviour:
       Data: 4
     - Name: 
       Entry: 4
-      Data: 0.75
+      Data: 0.94
     - Name: 
       Entry: 4
-      Data: 0.16
-    - Name: 
-      Entry: 4
-      Data: 0.07
+      Data: 0.03
     - Name: 
       Entry: 4
       Data: 0.02
+    - Name: 
+      Entry: 4
+      Data: 0.01
     - Name: 
       Entry: 13
       Data: 

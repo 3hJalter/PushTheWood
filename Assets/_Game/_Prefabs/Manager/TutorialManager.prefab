@@ -48,8 +48,6 @@ MonoBehaviour:
     SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects:
-    - {fileID: 5887992959553493391, guid: 372508cc7ae03424f97886e72c051425, type: 3}
-    - {fileID: 7475971549517363791, guid: 8405c3d9c1a453c4b9a54ff1fd9e59b0, type: 3}
     - {fileID: 11400000, guid: 1c56817b1440126488887871b311e4db, type: 2}
     - {fileID: 11400000, guid: 33217b3a4148e5f4690a83507c64066a, type: 2}
     - {fileID: 11400000, guid: 585364f771ea5c5418b25842904f7393, type: 2}
@@ -68,64 +66,13 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: tutorialObjList
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[_Game._Scripts.Managers.TutorialObj,
-        Assembly-CSharp],[_Game._Scripts.Tutorial.ObjectTutorial.BaseObjectTutorial,
-        Assembly-CSharp]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[_Game._Scripts.Managers.TutorialObj,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 10
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 1
-    - Name: $v
-      Entry: 10
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: tutorialList
       Entry: 7
-      Data: 2|System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[_Game._Scripts.Tutorial.ITutorialCondition,
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[_Game._Scripts.Tutorial.ITutorialCondition,
         Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 3|System.Collections.Generic.GenericEqualityComparer`1[[System.Int32,
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.Int32,
         mscorlib]], mscorlib
     - Name: 
       Entry: 8
@@ -141,7 +88,7 @@ MonoBehaviour:
       Data: 4
     - Name: $v
       Entry: 10
-      Data: 2
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -153,7 +100,7 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 10
-      Data: 3
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
@@ -165,7 +112,7 @@ MonoBehaviour:
       Data: 2
     - Name: $v
       Entry: 10
-      Data: 4
+      Data: 2
     - Name: 
       Entry: 8
       Data: 
@@ -177,7 +124,7 @@ MonoBehaviour:
       Data: 3
     - Name: $v
       Entry: 10
-      Data: 5
+      Data: 3
     - Name: 
       Entry: 8
       Data: 
@@ -189,7 +136,7 @@ MonoBehaviour:
       Data: 5
     - Name: $v
       Entry: 10
-      Data: 6
+      Data: 4
     - Name: 
       Entry: 8
       Data: 
@@ -201,7 +148,7 @@ MonoBehaviour:
       Data: 8
     - Name: $v
       Entry: 10
-      Data: 7
+      Data: 5
     - Name: 
       Entry: 8
       Data: 
@@ -213,7 +160,7 @@ MonoBehaviour:
       Data: 15
     - Name: $v
       Entry: 10
-      Data: 8
+      Data: 6
     - Name: 
       Entry: 8
       Data: 
@@ -225,7 +172,7 @@ MonoBehaviour:
       Data: 19
     - Name: $v
       Entry: 10
-      Data: 9
+      Data: 7
     - Name: 
       Entry: 8
       Data: 
@@ -237,7 +184,7 @@ MonoBehaviour:
       Data: 27
     - Name: $v
       Entry: 10
-      Data: 10
+      Data: 8
     - Name: 
       Entry: 8
       Data: 
@@ -249,7 +196,7 @@ MonoBehaviour:
       Data: 30
     - Name: $v
       Entry: 10
-      Data: 11
+      Data: 9
     - Name: 
       Entry: 8
       Data: 
@@ -261,7 +208,7 @@ MonoBehaviour:
       Data: -1
     - Name: $v
       Entry: 10
-      Data: 12
+      Data: 10
     - Name: 
       Entry: 8
       Data: 
@@ -273,11 +220,11 @@ MonoBehaviour:
       Data: 
     - Name: menuTutorialList
       Entry: 7
-      Data: 4|System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[UICanvas,
+      Data: 2|System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[UICanvas,
         Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 5|System.Collections.Generic.GenericEqualityComparer`1[[System.Int32,
+      Data: 3|System.Collections.Generic.GenericEqualityComparer`1[[System.Int32,
         mscorlib]], mscorlib
     - Name: 
       Entry: 8
@@ -290,10 +237,10 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 3
-      Data: 11
+      Data: 9
     - Name: $v
       Entry: 10
-      Data: 13
+      Data: 11
     - Name: 
       Entry: 8
       Data: 
@@ -305,7 +252,7 @@ MonoBehaviour:
       Data: 21
     - Name: $v
       Entry: 10
-      Data: 14
+      Data: 12
     - Name: 
       Entry: 8
       Data: 
