@@ -72,6 +72,21 @@ namespace _Game.Managers
             if (index >= Constants.DAILY_CHALLENGER_COUNT) return 0;
             return _gameData.user.dailyLevelIndex[index];
         }
+
+        public bool IsCollectedAllDailyChallengeReward()
+        {
+            int collected = _gameData.user.dailyChallengeRewardCollected.Count;
+            int cleared = _gameData.user.dailyLevelIndexComplete.Count;
+            // TEMP: Need change if total daily challenge reward is changed
+            return cleared switch
+            {
+                7 => collected >= 4,
+                4 or 5 or 6 => collected >= 3,
+                2 or 3 => collected >= 2,
+                1 => collected >= 1,
+                _ => false
+            };
+        }
         
         public bool IsClearAllDailyChallenge()
         {
