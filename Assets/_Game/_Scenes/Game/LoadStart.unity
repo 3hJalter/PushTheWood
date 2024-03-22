@@ -680,6 +680,18 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1071626561}
+    - target: {fileID: 8295795833618016488, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 154198015}
+    - target: {fileID: 8295795833618016488, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8295795833618016488, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_PlaneDistance
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8295795833765866558, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: m_Camera
       value: 
@@ -740,6 +752,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8295795834074003701, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: uiCamera
+      value: 
+      objectReference: {fileID: 154198015}
     - target: {fileID: 8295795834074003701, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: mainCamera
       value: 

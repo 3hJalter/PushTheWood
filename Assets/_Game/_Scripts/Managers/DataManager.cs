@@ -77,7 +77,7 @@ namespace _Game.Managers
         {
             int collected = _gameData.user.dailyChallengeRewardCollected.Count;
             int cleared = _gameData.user.dailyLevelIndexComplete.Count;
-            // TEMP: Need change if total daily challenge reward is changed
+            // TEMPORARY: Need change if total daily challenge reward is changed
             return cleared switch
             {
                 7 => collected >= 4,
