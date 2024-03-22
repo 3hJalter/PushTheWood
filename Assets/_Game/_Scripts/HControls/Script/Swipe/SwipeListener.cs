@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using _Game._Scripts.Utilities;
+using _Game.Utilities;
 using _Game.Utilities.Timer;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -110,6 +111,11 @@ namespace GG.Infrastructure.Utils.Swipe
             UpdateSuperSensitivity();
             if (SwipeDetectionMode != SwipeDetectionMode.Custom)
                 SetDetectionMode(DirectionPresets.GetPresetByMode(SwipeDetectionMode));
+        }
+
+        private void OnEnable()
+        {
+            _isPointerUI = false;
         }
 
         private void Update()
@@ -249,6 +255,7 @@ namespace GG.Infrastructure.Utils.Swipe
                         _offset.Normalize();
                         // normalize the _offset
                         onSwipe?.Invoke(_directions.GetSwipeId(_offset));
+                        DevLog.Log(DevId.Hung, "Quick Swipe");
                         if (!continuousDetection) _waitForSwipe = false;
                         // SampleSwipeStart();
                         _isHolding = false;
@@ -278,6 +285,8 @@ namespace GG.Infrastructure.Utils.Swipe
                     float y = HUtilities.PredictYFromLinearRegression(samplePoints, _offset.x);
                     _offset.Set(_offset.x, y, 0);
                     _offset.Normalize();
+                    DevLog.Log(DevId.Hung, "Normal Swipe");
+
                     onSwipe?.Invoke(_directions.GetSwipeId(_offset));
                     if (!continuousDetection) _waitForSwipe = false;
                     // SampleSwipeStart();
@@ -304,6 +313,7 @@ namespace GG.Infrastructure.Utils.Swipe
             if (!isPredicted && superSamplePoint.Count > 1)
             {
                 float y = HUtilities.PredictYFromLinearRegression(superSamplePoint, _offset.x);
+                DevLog.Log(DevId.Hung, "Super Swipe");
                 _offset.Set(_offset.x, y, 0);
                 _offset.Normalize();
                 // normalize the _offset
