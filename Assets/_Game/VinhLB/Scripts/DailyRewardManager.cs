@@ -4,7 +4,6 @@ using _Game.DesignPattern;
 using _Game.Managers;
 using _Game.Utilities;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace VinhLB
 {
@@ -12,7 +11,6 @@ namespace VinhLB
     {
         public event Action OnDailyRewardParamsChanged;
 
-        [FormerlySerializedAs("_dailyRewardSettingsSO")]
         [SerializeField]
         private DailyRewardSettings _dailyRewardSettings;
 
@@ -30,6 +28,11 @@ namespace VinhLB
             : _dailyRewardSettings.RewardsList;
         public Reward[] CurrentRewards => Rewards[CycleDay];
         #endregion
+
+        private void Awake()
+        {
+            DontDestroyOnLoad(this);
+        }
 
         public void ObtainTodayReward()
         {

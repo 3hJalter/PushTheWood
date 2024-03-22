@@ -8,8 +8,12 @@ public class LoadStart : MonoBehaviour
     private void Start()
     {
         UIManager.Ins.OpenUI<LoadingScreen>();
-        UIManager.Ins.GetUI<StatusBarScreen>().Close();
-        UIManager.Ins.GetUI<HomePage>().Close();
+        
+        StatusBarScreen statusBarScreen = UIManager.Ins.GetUI<StatusBarScreen>();
+        statusBarScreen.Close();
+        
+        HomePage homePage = UIManager.Ins.GetUI<HomePage>();
+        homePage.Close();
         
         SceneGameManager.Ins.LoadingSceneAsync(2);
     }

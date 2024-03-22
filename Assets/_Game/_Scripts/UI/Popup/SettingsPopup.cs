@@ -1,4 +1,5 @@
-﻿using _Game._Scripts.Managers;
+﻿using System;
+using _Game._Scripts.Managers;
 using _Game._Scripts.Utilities;
 using _Game.Data;
 using _Game.GameGrid;
@@ -21,17 +22,24 @@ namespace _Game.UIs.Popup
         private GameObject _group3GO;
         
         [SerializeField]
-        private Toggle _musicToggle;
+        private ToggleButton _musicToggle;
         [SerializeField]
-        private Toggle _soundToggle;
+        private ToggleButton _soundToggle;
         [SerializeField]
-        private Toggle _hapticToggle;
+        private ToggleButton _hapticToggle;
 
         private void Awake()
         {
-            _musicToggle.onValueChanged.AddListener(value => OnChangeMusicVolume(!value));
-            _soundToggle.onValueChanged.AddListener(value => OnChangeSoundVolume(!value));
-            _hapticToggle.onValueChanged.AddListener(value => OnChangeHapticValue(value));
+            _musicToggle.OnValueChanged.AddListener(value => OnChangeMusicVolume(!value));
+            _soundToggle.OnValueChanged.AddListener(value => OnChangeSoundVolume(!value));
+            _hapticToggle.OnValueChanged.AddListener(value => OnChangeHapticValue(value));
+        }
+
+        private void OnDestroy()
+        {
+            _musicToggle.OnValueChanged.RemoveListener(value => OnChangeMusicVolume(!value));
+            _soundToggle.OnValueChanged.RemoveListener(value => OnChangeSoundVolume(!value));
+            _hapticToggle.OnValueChanged.RemoveListener(value => OnChangeHapticValue(value));
         }
 
         public override void Setup(object param = null)
@@ -42,9 +50,9 @@ namespace _Game.UIs.Popup
             // sfxToggleSwitch.SetState(!AudioManager.Ins.IsSfxMute(), false);
             // environmentToggleSwitch.SetState(!AudioManager.Ins.IsEnvironmentMute(), false);
             // _hapticToggleSwitch.SetState(HVibrate.IsHapticOn, false);
-            _musicToggle.isOn = !AudioManager.Ins.IsBgmMute();
-            _soundToggle.isOn = !AudioManager.Ins.IsSfxMute();
-            _hapticToggle.isOn = HVibrate.IsHapticOn;
+            _musicToggle.IsOn = !AudioManager.Ins.IsBgmMute();
+            _soundToggle.IsOn = !AudioManager.Ins.IsSfxMute();
+            _hapticToggle.IsOn = HVibrate.IsHapticOn;
 
             if (GameManager.Ins.IsState(GameState.InGame))
             {

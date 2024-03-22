@@ -380,7 +380,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  btnSound: 100
+  btnSound: 106
   unscaleTime: 0
   cooldownTime: 0.1
   showAnimType: 0
