@@ -52,6 +52,7 @@ public class RewardedAds : MonoBehaviour
         List<BoosterType> boosterTypes = null, List<int> boosterAmount = null, _Game.Ads.Placement placement = _Game.Ads.Placement.None)
     {
         OnClearReward();
+        OnClearCallBack();
         this.resourceTypes = resourceTypes;
         this.resourceAmounts = resourceAmount;
         this.boosterTypes = boosterTypes;

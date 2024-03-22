@@ -63,10 +63,10 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             if (!gameObject.activeSelf) return;
             // Spawn the Base tree in this cell + Save the state
-            LevelManager.Ins.SaveGameState(true);
-            pushedUnit.MainCell.ValueChange();
-            mainCell.ValueChange();
-            LevelManager.Ins.SaveGameState(false);
+            //LevelManager.Ins.SaveGameState(true);
+            //pushedUnit.MainCell.ValueChange();
+            //mainCell.ValueChange();
+            //LevelManager.Ins.SaveGameState(false);
             // Spawn tree
             Tree tree = SimplePool.Spawn<Tree>(treePrefab);
             tree.OnInit(mainCell, startHeight);
