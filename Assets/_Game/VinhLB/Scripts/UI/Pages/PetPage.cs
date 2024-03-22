@@ -126,6 +126,11 @@ namespace VinhLB
                 return;
             }
 
+            UpdateItem(id, data);
+        }
+
+        private void UpdateItem(int id, int data)
+        {
             if (!DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[id].Data))
             {
                 if (!_collectionItemList[id].IsLocked)
@@ -202,6 +207,7 @@ namespace VinhLB
             {
                 DataManager.Ins.SetUnlockCharacterSkin(character, true);
                 GameManager.Ins.PostEvent(_Game.DesignPattern.EventID.OnUpdateUI);
+                UpdateItem(_currentPetIndex, character);
             }
             else
             {
