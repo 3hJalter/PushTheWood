@@ -64,21 +64,22 @@ namespace _Game.GameGrid.Unit.StaticUnit
         protected override void OnPushedComplete()
         {
             if (!gameObject.activeSelf) return;
-            // Spawn the Base tree in this cell + Save the state
-            //LevelManager.Ins.SaveGameState(true);
-            //pushedUnit.MainCell.ValueChange();
-            //mainCell.ValueChange();
-            //LevelManager.Ins.SaveGameState(false);
-            // Spawn tree
-            Tree tree = SimplePool.Spawn<Tree>(treePrefab);
-            tree.OnInit(mainCell, startHeight);
-            LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(tree);
-            // Then despawn it
-
+            
             #region Special Case for handle PushHint
 
             if (pushedUnit is Chump c && c.BeInteractedData.pushUnit is Player)
             {
+                // Spawn the Base tree in this cell + Save the state
+                LevelManager.Ins.SaveGameState(true);
+                pushedUnit.MainCell.ValueChange();
+                mainCell.ValueChange();
+                LevelManager.Ins.SaveGameState(false);
+                // Spawn tree
+                Tree tree = SimplePool.Spawn<Tree>(treePrefab);
+                tree.OnInit(mainCell, startHeight);
+                LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(tree);
+                // Then despawn it
+                
                 EventGlobalManager.Ins.OnPlayerPushStep?.Dispatch(new PlayerStep
                 {
                     x = c.BeInteractedData.pushUnitMainCell.X,
@@ -87,7 +88,13 @@ namespace _Game.GameGrid.Unit.StaticUnit
                     i = c.BeInteractedData.pushUnit.islandID
                 });
             }
-            
+            else
+            {
+                Tree tree = SimplePool.Spawn<Tree>(treePrefab);
+                tree.OnInit(mainCell, startHeight);
+                LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(tree);
+                // Then despawn it
+            }
             #endregion
             
             OnDespawn();
