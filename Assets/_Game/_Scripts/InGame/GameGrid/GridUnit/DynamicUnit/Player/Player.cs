@@ -121,6 +121,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
                 AddState();
             }
             //stateMachine.Debug = false;          
+            skin.localPosition = Vector3.zero;
+            skin.localRotation = Quaternion.identity;
             Direction = Direction.None;
             IsDead = false;
             IsStun = false;
