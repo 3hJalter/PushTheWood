@@ -43,6 +43,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
         }
         public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
         {
+            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.PushEnemy);
             LookDirection(Constants.InvDirection[direction]);
             Direction = direction;
 
