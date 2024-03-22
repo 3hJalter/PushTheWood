@@ -45,6 +45,11 @@ namespace _Game.UIs.Screen
             Timing.RunCoroutine(CountDown());
         }
 
+        public override void Open(object param = null)
+        {
+            base.Open(param);
+            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.PopupOpen);
+        }
         public override void Close()
         {
             HInputManager.LockInput(false);
