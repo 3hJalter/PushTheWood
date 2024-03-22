@@ -33,25 +33,27 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
             t.skin.rotation = Quaternion.Euler(0f, BuildingUnitData.GetRotationAngle(attackDirection), 0f);
             GameGridCell cell = t.MainCell;
             main = t;
-            for (int i = 0; i < MAX_RANGE; i++)
+            if (GameManager.Ins.IsState(GameState.InGame))
             {
-                cell = cell.GetNeighborCell(attackDirection);
-                if (cell == null || cell.Data.gridSurfaceType == GridSurfaceType.Water) break;
-                if (IsPreventAttack())
+                for (int i = 0; i < MAX_RANGE; i++)
                 {
-                    cell.Data.IsBlockDanger = true;
-                    cell.Data.SetDanger(false, GetHashCode());
+                    cell = cell.GetNeighborCell(attackDirection);
+                    if (cell == null || cell.Data.gridSurfaceType == GridSurfaceType.Water) break;
+                    if (IsPreventAttack())
+                    {
+                        cell.Data.IsBlockDanger = true;
+                        cell.Data.SetDanger(false, GetHashCode());
+                        t.AttackRange.Add(cell);
+                        break;
+                    }
+
+                    cell.Data.SetDanger(true, GetHashCode());
+                    cell.Data.IsBlockDanger = false;
+                    isAttack = isAttack || IsHavePlayer();
                     t.AttackRange.Add(cell);
-                    break;
+                    t.AttackRangeVFX.Add(SimplePool.Spawn<DangerIndicator>(PoolType.DangerIndicator, cell.WorldPos + Vector3.up * 1.25f, Quaternion.identity));
                 }
-
-                cell.Data.SetDanger(true, GetHashCode());
-                cell.Data.IsBlockDanger = false;
-                isAttack = isAttack || IsHavePlayer();
-                t.AttackRange.Add(cell);
-                t.AttackRangeVFX.Add(SimplePool.Spawn<DangerIndicator>(PoolType.DangerIndicator, cell.WorldPos + Vector3.up * 1.25f, Quaternion.identity));
-            }
-
+            }           
             bool IsPreventAttack()
             {
                 for (int i = (int)t.StartHeight; i <= (int)t.EndHeight; i++)

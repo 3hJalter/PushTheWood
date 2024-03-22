@@ -235,6 +235,9 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+    - Name: _OnCharacterChangePosition
+      Entry: 6
+      Data: 
     - Name: AttackRange
       Entry: 7
       Data: 5|System.Collections.Generic.List`1[[_Game.GameGrid.GameGridCell, Assembly-CSharp]],
@@ -277,6 +280,7 @@ MonoBehaviour:
   poolType: 16
   skin: {fileID: 7201353118747304535}
   meshRenderer: {fileID: 0}
+  skinController: {fileID: 0}
   size: {x: 1, y: 1, z: 1}
   isMinusHalfSizeY: 0
   startHeight: 2
@@ -291,6 +295,7 @@ MonoBehaviour:
   gridUnitDynamicType: 100
   anchor: {fileID: 7201353118211979960}
   animator: {fileID: 7201353119226068969}
+  Direction: -1
 --- !u!1001 &6296751858834678056
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -402,7 +407,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5c8102f4c3b7daa4c83e82dadeff6289, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.5
+      value: -0.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5c8102f4c3b7daa4c83e82dadeff6289, type: 3}
       propertyPath: m_LocalPosition.z

@@ -19,7 +19,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             get => StateEnum.Idle;
             set => stateMachine.ChangeState(value);
         }
-    
+        
         private void FixedUpdate()
         {
             if (!GameManager.Ins.IsState(GameState.InGame)) return;
@@ -40,6 +40,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             Direction = Direction.None;
             AddToLevelManager();
             stateMachine.ChangeState(StateEnum.Idle);
+            GameManager.Ins.RegisterListenerEvent(DesignPattern.EventID.OnChangeGameState, OnGameStateChange);
+        }
+
+        public override void OnDespawn()
+        {
+            base.OnDespawn();
+            GameManager.Ins.UnregisterListenerEvent(DesignPattern.EventID.OnChangeGameState, OnGameStateChange);
         }
         public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
         {
@@ -75,6 +82,20 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
         public void RemoveFromLevelManager()
         {
             LevelManager.Ins.OnRemoveEnemy(this);
+        }
+
+        public void OnGameStateChange(object param)
+        {
+            GameState state = (GameState)param;
+            switch (state)
+            {
+                case GameState.InGame:
+                case GameState.MainMenu:
+                case GameState.WinGame:
+                case GameState.LoseGame:
+                    stateMachine.ChangeState(StateEnum.Idle);
+                    break;
+            }
         }
 
         // protected override void OnMementoRestoreData()
