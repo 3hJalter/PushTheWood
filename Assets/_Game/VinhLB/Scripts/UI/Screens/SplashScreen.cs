@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using DG.Tweening;
 using MEC;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace VinhLB
 {
@@ -17,38 +16,39 @@ namespace VinhLB
 
         private bool _isFirstTime = true;
         private bool _isWidthFitting = false;
-        private CoroutineHandle _delayCloseCoroutine;
+        private Coroutine _delayActionCoroutine;
 
-        public event Action OnCloseCallback;
         public event Action OnOpenCallback;
+        public event Action OnCloseCallback;
         
         public override void Setup(object param = null)
         {
             base.Setup(param);
             
             UpdateBackground();
+            
+            _canvasGroup.alpha = 0;
         }
 
         public override void Open(object param = null)
         {
             base.Open(param);
-            
-            _canvasGroup.alpha = 1f;
 
             // Stop the previous coroutine if it's still running
-            if (Timing.IsRunning(_delayCloseCoroutine))
+            if (_delayActionCoroutine != null)
             {
-                Timing.KillCoroutines(_delayCloseCoroutine);
+                StopCoroutine(_delayActionCoroutine);
             }
             
             float delayTime = param != null ? (float)param : 1f;
-            _delayCloseCoroutine = Timing.RunCoroutine(DelayCloseCoroutine(delayTime));
+            _delayActionCoroutine = StartCoroutine(DelayActionCoroutine(delayTime));
         }
 
         public override void Close()
         {
             OnCloseCallback?.Invoke();
             OnCloseCallback = null;
+            
             base.Close();
         }
 
@@ -78,16 +78,29 @@ namespace VinhLB
             }
         }
 
-        private IEnumerator<float> DelayCloseCoroutine(float delayTime)
+        private IEnumerator DelayActionCoroutine(float delayTime)
         {
+            Tween openTween = 
+                DOVirtual.Float(0, 1f, 0.125f, value => _canvasGroup.alpha = value);
+            
+            yield return openTween.WaitForCompletion();
+            
             // Wait a frame to make sure the OnOpenCallback is set
-            yield return Timing.WaitForOneFrame;
+            // yield return new WaitForEndOfFrame();
+            
             OnOpenCallback?.Invoke();
             OnOpenCallback = null;
-            yield return Timing.WaitForSeconds(delayTime);
             
-            DOVirtual.Float(1f, 0f, 0.25f, value => _canvasGroup.alpha = value)
-                .OnComplete(Close);
+            yield return new WaitForSeconds(delayTime);
+
+            Tween closeTween =
+                DOVirtual.Float(1f, 0, 0.175f, value => _canvasGroup.alpha = value);
+                    
+            yield return closeTween.WaitForCompletion();
+
+            Close();
+
+            _delayActionCoroutine = null;
         }
     }
 }

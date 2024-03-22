@@ -18,7 +18,8 @@ namespace _Game.Managers
     [DefaultExecutionOrder(-90)]
     public class GameplayManager : Singleton<GameplayManager>
     {
-        [SerializeField] private PushHintObject pushHintObject;
+        [SerializeField]
+        private PushHintObject pushHintObject;
 
         private readonly Dictionary<int, bool> isBoughtPushHintInIsland = new();
         private readonly Dictionary<int, bool> isBoughtGrowTreeInIsland = new();
@@ -40,7 +41,7 @@ namespace _Game.Managers
             isBoughtGrowTreeInIsland[islandID] = value;
             screen.OnBoughtGrowTree(value);
         }
-        
+
         public void SetGrowTreeInIsland(int islandID, bool value)
         {
             isCanGrowTreeInIsland.TryAdd(islandID, false);
@@ -53,7 +54,7 @@ namespace _Game.Managers
                 screen.growTreeButton.IsShowAds = false;
             }
         }
-        
+
         private PushHint _pushHint;
         private bool isCanResetIsland = true;
         private bool isCanUndo = true;
@@ -63,7 +64,8 @@ namespace _Game.Managers
         public InGameScreen Screen => screen;
 
         [ReadOnly]
-        [SerializeField] private int time;
+        [SerializeField]
+        private int time;
         private int _gameDuration;
         private STimer timer;
 
@@ -97,7 +99,7 @@ namespace _Game.Managers
             {
                 isCanResetIsland = value;
                 screen.SetActiveResetIsland(value);
-            } 
+            }
         }
         public int GameDuration => _gameDuration;
 
@@ -156,7 +158,7 @@ namespace _Game.Managers
         }
 
         private void OnChangeBoosterAmount(BoosterType boosterType, int amount)
-        {         
+        {
             switch (boosterType)
             {
                 case BoosterType.Undo:
@@ -251,7 +253,6 @@ namespace _Game.Managers
             if (LevelManager.Ins.CurrentLevel.IsInit)
             {
                 #region Handling Tree seed when level is play again without init
-
                 List<int> keysToModify = new();
 
                 foreach (KeyValuePair<int, bool> isBought in isBoughtGrowTreeInIsland)
@@ -261,7 +262,7 @@ namespace _Game.Managers
                         keysToModify.Add(isBought.Key);
                     }
                 }
-                
+
                 foreach (int key in keysToModify)
                 {
                     isBoughtGrowTreeInIsland[key] = false;
@@ -270,9 +271,9 @@ namespace _Game.Managers
                         screen.OnBoughtGrowTree(false);
                     }
                 }
-                
+
                 keysToModify.Clear();
-                
+
                 foreach (KeyValuePair<int, bool> canGrow in isCanGrowTreeInIsland)
                 {
                     if (!canGrow.Value)
@@ -280,14 +281,13 @@ namespace _Game.Managers
                         keysToModify.Add(canGrow.Key);
                     }
                 }
-                
+
                 foreach (int key in keysToModify)
                 {
                     isCanGrowTreeInIsland[key] = true;
                 }
-
                 #endregion
-                
+
                 OnPlayerChangeIsland(true);
             }
             else
@@ -298,10 +298,12 @@ namespace _Game.Managers
             screen.OnSetBoosterAmount();
             GameManager.Ins.ChangeState(GameState.InGame);
             // If hard level, show a notification -> If it None -> not show
+
             #region BANNER
             //AdsManager.Ins.ShowBannerAds();
             //GameManager.Ins.PostEvent(EventID.OnChangeLayoutForBanner, true);
             #endregion
+
             #region ANALYSTIC
             AnalysticManager.Ins.LevelStart(LevelManager.Ins.CurrentLevel);
             #endregion
@@ -314,7 +316,7 @@ namespace _Game.Managers
             timer.Stop();
             UIManager.Ins.OpenUI<WinScreen>(OnWinGameReward());
             GameManager.Ins.ChangeState(GameState.WinGame);
-         
+
             #region ANALYSTIC
             AnalysticManager.Ins.LevelComplete(LevelManager.Ins.CurrentLevel);
             switch (LevelManager.Ins.CurrentLevel.LevelType)
@@ -328,7 +330,6 @@ namespace _Game.Managers
                     break;
             }
             #endregion
-
         }
 
         private Reward[] OnWinGameReward()
@@ -414,9 +415,7 @@ namespace _Game.Managers
         }
 
         #region Booster
-
         #region Undo
-
         public void OnFreeUndo()
         {
             if (!isCanUndo) return;
@@ -434,7 +433,7 @@ namespace _Game.Managers
                 }
             }
         }
-        
+
         private void OnUndo()
         {
             if (!isCanUndo) return;
@@ -463,11 +462,9 @@ namespace _Game.Managers
                 }
             }
         }
-
         #endregion
-        
-        #region Reset Island
 
+        #region Reset Island
         public void OnFreeResetIsland(bool isShowHint = true)
         {
             LevelManager.Ins.ResetLevelIsland();
@@ -475,12 +472,13 @@ namespace _Game.Managers
             _pushHint.OnStopHint();
             _pushHint.OnStartHint(LevelManager.Ins.player.islandID, isShowHint);
         }
-        
+
         private void OnResetIsland()
         {
             if (DataManager.Ins.GameData.user.resetIslandCount <= 0)
             {
-                BoosterConfig boosterConfig = DataManager.Ins.ConfigData.boosterConfigList[(int)BoosterType.ResetIsland];
+                BoosterConfig boosterConfig =
+                    DataManager.Ins.ConfigData.boosterConfigList[(int)BoosterType.ResetIsland];
                 boosterConfig.UIResourceConfig = DataManager.Ins.GetBoosterUIResourceConfig(boosterConfig.Type);
                 UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(boosterConfig);
             }
@@ -493,18 +491,16 @@ namespace _Game.Managers
                 if (value) _pushHint.OnStartHint(pIslandID);
             }
         }
-
         #endregion
-        
-        #region Grow Tree
 
+        #region Grow Tree
         public void OnFreeGrowTree()
         {
             int pIslandID = LevelManager.Ins.player.islandID;
             SetBoughtTreeInIsland(pIslandID, true);
             EventGlobalManager.Ins.OnGrowTree.Dispatch(pIslandID);
         }
-        
+
         private void OnGrowTree()
         {
             int pIslandID = LevelManager.Ins.player.islandID;
@@ -538,11 +534,9 @@ namespace _Game.Managers
                 }
             }
         }
-
         #endregion
 
         # region PUSH HINT
-
         public void OnFreePushHint(bool isReset, bool isShowHint)
         {
             int playerIslandID = LevelManager.Ins.player.islandID;
@@ -551,14 +545,16 @@ namespace _Game.Managers
             if (isReset) LevelManager.Ins.ResetLevelIsland();
             OnStartHintOnPlayerIsland(playerIslandID, isShowHint);
         }
-        
+
         private void OnPushHint()
         {
             int playerIslandID = LevelManager.Ins.player.islandID;
             if (!isBoughtPushHintInIsland.ContainsKey(playerIslandID)) return;
             if (DataManager.Ins.GameData.user.pushHintCount <= 0 && !IsBoughtPushHintInIsland(playerIslandID))
             {
-               UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(DataManager.Ins.ConfigData.boosterConfigList[(int)BoosterType.PushHint]);
+                BoosterConfig boosterConfig = DataManager.Ins.ConfigData.boosterConfigList[(int)BoosterType.PushHint];
+                boosterConfig.UIResourceConfig = DataManager.Ins.GetBoosterUIResourceConfig(boosterConfig.Type);
+                UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(boosterConfig);
             }
             else
             {
@@ -582,13 +578,14 @@ namespace _Game.Managers
         }
 
         private int _lastPlayerIslandId = -1;
-        
+
         private void OnPlayerChangeIsland(bool isInit)
         {
             int islandId = LevelManager.Ins.player.islandID;
             if (_lastPlayerIslandId == islandId) return;
             _lastPlayerIslandId = islandId;
-            screen.ActivePushHintIsland(_pushHint.ContainIsland(islandId) && !_pushHint.IsCompleted(islandId) && !_pushHint.isHintActiveOnIsland(islandId));
+            screen.ActivePushHintIsland(_pushHint.ContainIsland(islandId) && !_pushHint.IsCompleted(islandId) &&
+                                        !_pushHint.isHintActiveOnIsland(islandId));
             screen.ActiveGrowTreeIsland(isBoughtGrowTreeInIsland.ContainsKey(islandId));
             // Check if contain
             if (!isBoughtPushHintInIsland.ContainsKey(islandId))
@@ -597,7 +594,7 @@ namespace _Game.Managers
             }
             bool isBoughtPushHint = IsBoughtPushHintInIsland(islandId);
             screen.OnBoughtPushHintOnIsland(islandId, isBoughtPushHint, isInit);
-            
+
             // Tree seed
             if (isBoughtGrowTreeInIsland.ContainsKey(islandId))
             {
@@ -612,9 +609,7 @@ namespace _Game.Managers
         {
             screen.OnShowTryHintAgain(show);
         }
-
         #endregion
-
         #endregion
     }
 }

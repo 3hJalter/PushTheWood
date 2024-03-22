@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace VinhLB
 {
-    public class ToggleSwitch : HMonoBehaviour, IPointerClickHandler
+    public class ToggleSwitch : ToggleButton
     {
         [Header("Setup")]
         [SerializeField]
@@ -28,24 +28,22 @@ namespace VinhLB
 
         [Header("Animation")]
         [SerializeField]
-        private bool _animate = true;
-        [ShowIf(nameof(_animate), false)]
+        private bool _animated = true;
+        [ShowIf(nameof(_animated), false)]
         [SerializeField]
         private float _animationDuration = 0.5f;
-        [ShowIf(nameof(_animate), false)]
+        [ShowIf(nameof(_animated), false)]
         [SerializeField]
         private Ease _slideEase = Ease.Linear;
 
-        [Header("Events")]
-        [SerializeField]
-        private UnityEvent _onToggleOn;
-        [SerializeField]
-        private UnityEvent _onToggleOff;
-
         private Tween _animateSliderTween;
 
-        public bool CurrentValue { get; private set; }
-
+        public bool Animated
+        {
+            get => _animated;
+            set => _animated = value;
+        }
+        
         private void OnValidate()
         {
             SetupSliderComponent();
@@ -71,26 +69,12 @@ namespace VinhLB
             SetupSliderComponent();
         }
 
-        public void OnPointerClick(PointerEventData eventData)
+        public override void OnPointerClick(PointerEventData eventData)
         {
-            SetState(!CurrentValue, _animate);
-        }
-
-        public void SetState(bool state, bool animate)
-        {
-            CurrentValue = state;
-
-            if (CurrentValue)
-            {
-                _onToggleOn?.Invoke();
-            }
-            else
-            {
-                _onToggleOff?.Invoke();
-            }
-
-            float endValue = CurrentValue ? 1f : 0f;
-            if (animate)
+            base.OnPointerClick(eventData);
+            
+            float endValue = _isOn ? 1f : 0f;
+            if (_animated)
             {
                 if (_animateSliderTween != null)
                 {

@@ -34,14 +34,14 @@ namespace VinhLB
                 }
             });
 
-            SetupDailyRewards();
-
             DailyRewardManager.Ins.OnDailyRewardParamsChanged += DailyRewardManager_OnDailyRewardParamsChanged;
         }
 
         public override void Setup(object param = null)
         {
             base.Setup(param);
+            
+            SetupDailyRewards();
 
             _claimButton.gameObject.SetActive(!DailyRewardManager.Ins.IsTodayRewardObtained);
         }

@@ -102,8 +102,22 @@ namespace VinhLB
                 SplashScreen splash = UIManager.Ins.OpenUI<SplashScreen>();
                 if (LevelManager.Ins.IsHardLevel)
                 {
-                    splash.OnOpenCallback += () => CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera, 0f);
-                    splash.OnCloseCallback += () => UIManager.Ins.OpenUI<HardWarningScreen>();
+                    splash.OnOpenCallback += ChangeCamera;
+                    splash.OnCloseCallback += OpenHardWarning;
+
+                    void ChangeCamera()
+                    {
+                        CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera, 0f);
+
+                        splash.OnOpenCallback -= ChangeCamera;
+                    }
+
+                    void OpenHardWarning()
+                    {
+                        UIManager.Ins.OpenUI<HardWarningScreen>();
+                        
+                        splash.OnCloseCallback -= OpenHardWarning;
+                    }
                 }
                 else
                 {

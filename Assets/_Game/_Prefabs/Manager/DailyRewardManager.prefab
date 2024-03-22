@@ -53,4 +53,4 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _dailyRewardSettingsSO: {fileID: 11400000, guid: e0a320a7468d5f14898cb17bc328a29f, type: 2}
+  _dailyRewardSettings: {fileID: 11400000, guid: e0a320a7468d5f14898cb17bc328a29f, type: 2}
