@@ -51,7 +51,9 @@ namespace AudioEnum
         OpenChest = 9,
         Sleep = 10,
         Happy = 11,
-        Whistling = 12,
+        Whistling1 = 12,
+        Whistling2 = 13,
+        Whistling3 = 14,
         // UI
         ClickOpen = 100,
         Win = 101,
