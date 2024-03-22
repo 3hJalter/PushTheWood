@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using _Game._Scripts.UIs.Component;
 using _Game.Data;
 using _Game.DesignPattern;
@@ -39,6 +40,8 @@ namespace VinhLB
         private GameObject _rewardKeyFrameGO;
         [SerializeField]
         private TMP_Text _rewardKeyText;
+        [SerializeField]
+        private GameObject _rewardChestEffectGO;
 
         [Space]
         [SerializeField]
@@ -51,6 +54,8 @@ namespace VinhLB
         private GameObject _levelStarFrameGO;
         [SerializeField]
         private TMP_Text _levelStarText;
+        [SerializeField]
+        private GameObject _levelChestEffectGO;
 
         [Space]
         [SerializeField]
@@ -75,12 +80,13 @@ namespace VinhLB
         private STimer _shakeLevelTimer;
         private Quaternion _startRewardChestIconQuaternion;
         private Quaternion _startLevelChestIconQuaternion;
+        private bool _isTutorialRunning;
+        private bool _isFirstShowed;
+        private Coroutine _delayOpenCoroutine;
+        
         private event Action _delayCollectingRewardKeys;
         private event Action _delayCollectingLevelStars;
 
-        private bool _isTutorialRunning;
-
-        private bool _isFirstShowed;
 
         private void Awake()
         {
@@ -93,6 +99,7 @@ namespace VinhLB
             {
                 UIManager.Ins.CloseAll();
                 LevelManager.Ins.InitLevel();
+                UIManager.Ins.OpenUI<SplashScreen>();
                 if (LevelManager.Ins.IsHardLevel)
                 {
                     UIManager.Ins.OpenUI<HardWarningScreen>();
@@ -182,18 +189,11 @@ namespace VinhLB
         {
             base.Open(param);
 
-            OnShowMenuTutorial();
-
-            if (_rewardChestButton.IsUnlocked && _delayCollectingRewardKeys != null)
+            if (_delayOpenCoroutine != null)
             {
-                _delayCollectingRewardKeys.Invoke();
-                _delayCollectingRewardKeys = null;
+                StopCoroutine(_delayOpenCoroutine);
             }
-            if (_levelChestButton.IsUnlocked && _delayCollectingLevelStars != null)
-            {
-                _delayCollectingLevelStars.Invoke();
-                _delayCollectingLevelStars = null;
-            }
+            _delayOpenCoroutine = StartCoroutine(DelayOpenCoroutine());
         }
 
         public override void UpdateUI()
@@ -233,7 +233,8 @@ namespace VinhLB
             int dailyRewardNotificationAmount = DailyRewardManager.Ins.IsTodayRewardObtained ? 0 : 1;
             _dailyRewardButton.SetNotificationAmount(dailyRewardNotificationAmount);
 
-            int dailyChallengeNotificationAmount = DataManager.Ins.IsClearAllDailyChallenge() ? 0 : 1;
+            int dailyChallengeNotificationAmount = DataManager.Ins.IsClearAllDailyChallenge() && 
+                                                   DataManager.Ins.IsCollectedAllDailyChallengeReward() ? 0 : 1;
             _dailyChallengeButton.SetNotificationAmount(dailyChallengeNotificationAmount);
 
             int secretMapNotificationAmount = DataManager.Ins.IsClearAllSecretLevel() ? 0 : 1;
@@ -349,10 +350,14 @@ namespace VinhLB
                     // _rewardKeyText.text = $"FULL";
                     // _rewardKeyText.color = Color.green;
                     // _rewardChestCurrencyIconRectTF.gameObject.SetActive(false);
-                    if (_rewardKeyFrameGO.activeSelf)
-                    {
-                        _rewardKeyFrameGO.SetActive(false);
-                    }
+                }
+                if (_rewardKeyFrameGO.activeSelf)
+                {
+                    _rewardKeyFrameGO.SetActive(false);
+                }
+                if (!_rewardChestEffectGO.activeSelf)
+                {
+                    _rewardChestEffectGO.SetActive(true);
                 }
             }
             else
@@ -360,13 +365,17 @@ namespace VinhLB
                 if (_shakeRewardTimer.IsStart)
                 {
                     _shakeRewardTimer.Stop();
-                    if (!_rewardKeyFrameGO.activeSelf)
-                    {
-                        _rewardKeyFrameGO.SetActive(true);
-                    }
                     // _rewardKeyText.color = Color.white;
                     // _rewardChestCurrencyIconRectTF.gameObject.SetActive(true);
                     _rewardChestIconRectTF.localRotation = _startRewardChestIconQuaternion;
+                }
+                if (_rewardChestEffectGO.activeSelf)
+                {
+                    _rewardChestEffectGO.SetActive(false);
+                }
+                if (!_rewardKeyFrameGO.activeSelf)
+                {
+                    _rewardKeyFrameGO.SetActive(true);
                 }
 
                 _rewardKeyText.text =
@@ -388,10 +397,14 @@ namespace VinhLB
                     // _levelStarText.text = $"FULL";
                     // _levelStarText.color = Color.green;
                     // _levelChestCurrencyIconRectTF.gameObject.SetActive(false);
-                    if (_levelStarFrameGO.activeSelf)
-                    {
-                        _levelStarFrameGO.SetActive(false);
-                    }
+                }
+                if (_levelStarFrameGO.activeSelf)
+                {
+                    _levelStarFrameGO.SetActive(false);
+                }
+                if (!_levelChestEffectGO.activeSelf)
+                {
+                    _levelChestEffectGO.SetActive(true);
                 }
             }
             else
@@ -399,13 +412,17 @@ namespace VinhLB
                 if (_shakeLevelTimer.IsStart)
                 {
                     _shakeLevelTimer.Stop();
-                    if (!_levelStarFrameGO.activeSelf)
-                    {
-                        _levelStarFrameGO.SetActive(true);
-                    }
                     // _levelStarText.color = Color.white;
                     // _levelChestCurrencyIconRectTF.gameObject.SetActive(true);
                     _levelChestIconRectTF.localRotation = _startLevelChestIconQuaternion;
+                }
+                if (!_levelStarFrameGO.activeSelf)
+                {
+                    _levelStarFrameGO.SetActive(true);
+                }
+                if (_levelChestEffectGO.activeSelf)
+                {
+                    _levelChestEffectGO.SetActive(false);
                 }
 
                 _levelStarText.text =
@@ -463,6 +480,29 @@ namespace VinhLB
             int normalLevelIndex = LevelManager.Ins.NormalLevelIndex;
 
             GameManager.Ins.PostEvent(EventID.OnShowTutorialInMenu, normalLevelIndex);
+        }
+
+        private IEnumerator DelayOpenCoroutine()
+        {
+            while (UIManager.Ins.IsOpened<SplashScreen>())
+            {
+                yield return null;
+            }
+            
+            OnShowMenuTutorial();
+
+            if (_rewardChestButton.IsUnlocked && _delayCollectingRewardKeys != null)
+            {
+                _delayCollectingRewardKeys.Invoke();
+                _delayCollectingRewardKeys = null;
+            }
+            if (_levelChestButton.IsUnlocked && _delayCollectingLevelStars != null)
+            {
+                _delayCollectingLevelStars.Invoke();
+                _delayCollectingLevelStars = null;
+            }
+
+            _delayOpenCoroutine = null;
         }
     }
 }

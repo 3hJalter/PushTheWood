@@ -20,7 +20,7 @@ namespace VinhLB
         private TMP_Text _loadingText;
 
         private bool _isFirstTime = true;
-        private bool _isWidthFitting;
+        private bool _isWidthFitting = false;
         private Coroutine _closeCoroutine;
         private Sequence _loadingTextSequence;
 

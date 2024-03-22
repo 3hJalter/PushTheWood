@@ -53,11 +53,22 @@ namespace VinhLB
             {
                 if (i < GameManager.Ins.SecretLevelUnlock)
                 {
-                    _secretMapItems[i].SetButtons(true);
+                    if (!DataManager.Ins.IsSecretLevelComplete(i))
+                    {
+                        _secretMapItems[i].SetState(SecretMapItem.State.Playable);
+                    }
+                    else
+                    {
+                        _secretMapItems[i].SetState(SecretMapItem.State.Completed);
+                    }
+                }
+                else if (i == GameManager.Ins.SecretLevelUnlock)
+                {
+                    _secretMapItems[i].SetState(SecretMapItem.State.InProgress, GameManager.Ins.SecretMapPieces);
                 }
                 else
                 {
-                    _secretMapItems[i].SetButtons(false);
+                    _secretMapItems[i].SetState(SecretMapItem.State.Locked);
                 }
             }
         }
@@ -66,6 +77,7 @@ namespace VinhLB
         {
             LevelManager.Ins.OnGoLevel(LevelType.Secret, index);
             UIManager.Ins.CloseAll();
+            UIManager.Ins.OpenUI<SplashScreen>();
             UIManager.Ins.OpenUI<InGameScreen>();
         }
 

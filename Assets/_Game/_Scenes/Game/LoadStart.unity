@@ -456,6 +456,14 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 3597637144379937314, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+    - target: {fileID: 3654139397013029234, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3654139397013029234, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3671688711630642183, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -584,6 +592,14 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 6010176973587238316, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+    - target: {fileID: 6035970480277883877, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6035970480277883877, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6091027823309404329, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -624,6 +640,10 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 6959369434489602010, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+    - target: {fileID: 6962420607008678399, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7207393967214040121, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -680,6 +700,14 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1071626561}
+    - target: {fileID: 8295795833618016488, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 154198015}
+    - target: {fileID: 8295795833618016488, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_PlaneDistance
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8295795833765866558, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: m_Camera
       value: 
@@ -792,6 +820,22 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8496467179108828901, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+    - target: {fileID: 8538785064425426157, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8538785064425426157, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8538785064425426157, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8538785064425426157, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8555894017278483938, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -824,6 +868,22 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8904258672976687246, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+    - target: {fileID: 8936318584332509331, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8936318584332509331, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8936318584332509331, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8936318584332509331, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9034049123459099339, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: serializationData.Prefab
       value: 
