@@ -262,7 +262,7 @@ namespace _Game.UIs.Screen
                     break;
                 case LevelType.Secret:
                     levelIndex += LevelManager.Ins.SecretLevelIndex;
-                    _levelText.text = $"Level {levelIndex}";
+                    _levelText.text = $"EXPEDITION";
                     break;
                 case LevelType.DailyChallenge:
                     if (LevelManager.Ins.DailyLevelIndex == 0)
