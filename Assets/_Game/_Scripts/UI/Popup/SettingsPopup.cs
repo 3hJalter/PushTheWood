@@ -30,26 +30,22 @@ namespace _Game.UIs.Popup
 
         private void Awake()
         {
-            _musicToggle.OnValueChanged.AddListener(value => OnChangeMusicVolume(!value));
-            _soundToggle.OnValueChanged.AddListener(value => OnChangeSoundVolume(!value));
-            _hapticToggle.OnValueChanged.AddListener(value => OnChangeHapticValue(value));
+            _musicToggle.OnValueChanged.AddListener(OnMusicVolumeChanged);
+            _soundToggle.OnValueChanged.AddListener(OnSoundVolumeChanged);
+            _hapticToggle.OnValueChanged.AddListener(OnHapticValueChanged);
         }
 
         private void OnDestroy()
         {
-            _musicToggle.OnValueChanged.RemoveListener(value => OnChangeMusicVolume(!value));
-            _soundToggle.OnValueChanged.RemoveListener(value => OnChangeSoundVolume(!value));
-            _hapticToggle.OnValueChanged.RemoveListener(value => OnChangeHapticValue(value));
+            _musicToggle.OnValueChanged.RemoveListener(OnMusicVolumeChanged);
+            _soundToggle.OnValueChanged.RemoveListener(OnSoundVolumeChanged);
+            _hapticToggle.OnValueChanged.RemoveListener(OnHapticValueChanged);
         }
 
         public override void Setup(object param = null)
         {
             base.Setup(param);
-
-            // bgmToggleSwitch.SetState(!AudioManager.Ins.IsBgmMute(), false);
-            // sfxToggleSwitch.SetState(!AudioManager.Ins.IsSfxMute(), false);
-            // environmentToggleSwitch.SetState(!AudioManager.Ins.IsEnvironmentMute(), false);
-            // _hapticToggleSwitch.SetState(HVibrate.IsHapticOn, false);
+            
             _musicToggle.IsOn = !AudioManager.Ins.IsBgmMute();
             _soundToggle.IsOn = !AudioManager.Ins.IsSfxMute();
             _hapticToggle.IsOn = HVibrate.IsHapticOn;
@@ -87,26 +83,23 @@ namespace _Game.UIs.Popup
             }
         }
 
-        public void OnChangeMusicVolume(bool value)
+        public void OnMusicVolumeChanged(bool value)
         {
-            AudioManager.Ins.ToggleBgmVolume(value);
-            AudioManager.Ins.ToggleEnvironmentVolume(value);
-            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.ClickToggle);
+            AudioManager.Ins.ToggleBgmVolume(!value);
+            AudioManager.Ins.ToggleEnvironmentVolume(!value);
         }
 
-        public void OnChangeSoundVolume(bool value)
+        public void OnSoundVolumeChanged(bool value)
         {
-            AudioManager.Ins.ToggleSfxVolume(value);
-            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.ClickToggle);
+            AudioManager.Ins.ToggleSfxVolume(!value);
         }
 
         public void OnChangeEnvironmentVolume(bool value)
         {
-            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.ClickToggle);
             AudioManager.Ins.ToggleEnvironmentVolume(value);
         }
 
-        public void OnChangeHapticValue(bool value)
+        public void OnHapticValueChanged(bool value)
         {
             AudioManager.Ins.PlaySfx(AudioEnum.SfxType.ClickToggle);
             HVibrate.OnToggleHaptic(value);
@@ -147,7 +140,7 @@ namespace _Game.UIs.Popup
             UIManager.Ins.OpenUI<NotificationPopup>(Constants.FEATURE_COMING_SOON);
         }
 
-        public void OnClickGoMenuButton()
+        public void OnGoMenuClick()
         {
             LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
             GameManager.Ins.PostEvent(DesignPattern.EventID.OnInterAdsStepCount, 1);
