@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using _Game._Scripts.UIs.Component;
 using _Game.Camera;
 using _Game.Data;
@@ -85,8 +87,8 @@ namespace VinhLB
         private bool _isFirstShown;
         private Coroutine _delayOpenCoroutine;
         
-        private event Action _delayCollectingRewardKeys;
-        private event Action _delayCollectingLevelStars;
+        private event Func<Task> _delayCollectingRewardKeys;
+        private event Func<Task> _delayCollectingLevelStars;
         
         private void Awake()
         {
@@ -99,24 +101,24 @@ namespace VinhLB
             {
                 UIManager.Ins.CloseAll();
                 LevelManager.Ins.InitLevel();
-                SplashScreen splash = UIManager.Ins.OpenUI<SplashScreen>();
+                SplashScreen splashScreen = UIManager.Ins.OpenUI<SplashScreen>();
                 if (LevelManager.Ins.IsHardLevel)
                 {
-                    splash.OnOpenCallback += ChangeCamera;
-                    splash.OnCloseCallback += OpenHardWarning;
+                    splashScreen.OnOpenCallback += ChangeCamera;
+                    splashScreen.OnCloseCallback += OpenHardWarning;
 
                     void ChangeCamera()
                     {
-                        CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera, 0f);
+                        splashScreen.OnOpenCallback -= ChangeCamera;
 
-                        splash.OnOpenCallback -= ChangeCamera;
+                        CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera, 0f);
                     }
 
                     void OpenHardWarning()
                     {
-                        UIManager.Ins.OpenUI<HardWarningScreen>();
+                        splashScreen.OnCloseCallback -= OpenHardWarning;
                         
-                        splash.OnCloseCallback -= OpenHardWarning;
+                        UIManager.Ins.OpenUI<HardWarningScreen>();
                     }
                 }
                 else
@@ -177,15 +179,6 @@ namespace VinhLB
         {
             base.Setup(param);
 
-            if (!_isFirstShown)
-            {
-                _isFirstShown = true;
-                if (!DailyRewardManager.Ins.IsTodayRewardObtained)
-                {
-                    // UIManager.Ins.OpenUI<DailyRewardPopup>();
-                }
-            }
-
             SetupHomeCamera();
 
             SetupFeature();
@@ -203,12 +196,52 @@ namespace VinhLB
         public override void Open(object param = null)
         {
             base.Open(param);
+            
+            // SplashScreen splashScreen = UIManager.Ins.GetUI<SplashScreen>();
+            // splashScreen.OnCloseCallback += OpenActions;
+            //
+            // async void OpenActions()
+            // {
+            //     splashScreen.OnCloseCallback -= OpenActions;
+            //     
+            //     List<Task> taskList = new List<Task>();
+            //     if (_rewardChestButton.IsUnlocked && _delayCollectingRewardKeys != null)
+            //     {
+            //         Task task = _delayCollectingRewardKeys.Invoke();
+            //         taskList.Add(task);
+            //     }
+            //     if (_levelChestButton.IsUnlocked && _delayCollectingLevelStars != null)
+            //     {
+            //         Task task = _delayCollectingLevelStars.Invoke();
+            //         taskList.Add(task);
+            //     }
+            //
+            //     if (taskList.Count > 0)
+            //     {
+            //         await Task.WhenAll(taskList);
+            //     }
+            //
+            //     Debug.Log("done");
+            //     _delayCollectingRewardKeys = null;
+            //     _delayCollectingLevelStars = null;
+            //
+            //     OnShowMenuTutorial();
+            //
+            //     // if (!_isFirstShown)
+            //     // {
+            //     //     _isFirstShown = true;
+            //     //     if (!DailyRewardManager.Ins.IsTodayRewardObtained)
+            //     //     {
+            //     //         UIManager.Ins.OpenUI<DailyRewardPopup>();
+            //     //     }
+            //     // }
+            // }
 
             if (_delayOpenCoroutine != null)
             {
                 StopCoroutine(_delayOpenCoroutine);
             }
-            _delayOpenCoroutine = StartCoroutine(DelayOpenCoroutine());
+            _delayOpenCoroutine = StartCoroutine(OpenActionsCoroutine());
         }
 
         public override void UpdateUI()
@@ -283,7 +316,7 @@ namespace VinhLB
             CameraManager.Ins.ChangeCameraPosition(playerCell.WorldPos + offset);
         }
 
-        private void ChangeRewardKeyValue(ResourceChangeData data)
+        private async void ChangeRewardKeyValue(ResourceChangeData data)
         {
             if (data.ChangedAmount > 0)
             {
@@ -293,7 +326,7 @@ namespace VinhLB
                 }
                 else
                 {
-                    SpawnCollectingUIRewardKeys();
+                    await SpawnCollectingUIRewardKeys();
                 }
             }
             else
@@ -301,12 +334,12 @@ namespace VinhLB
                 _rewardKeyText.text = $"{GameManager.Ins.RewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
             }
 
-            void SpawnCollectingUIRewardKeys()
+            async Task SpawnCollectingUIRewardKeys()
             {
                 int collectingRewardKeys = Mathf.Min((int)data.ChangedAmount, Constants.MAX_UI_UNIT);
                 Vector3 spawnPosition = data.Source as Vector3? ??
                                         CameraManager.Ins.ViewportToWorldPoint(new Vector3(0.5f, 0.5f));
-                CollectingResourceManager.Ins.SpawnCollectingUIRewardKeys(collectingRewardKeys, spawnPosition,
+                await CollectingResourceManager.Ins.SpawnCollectingUIRewardKeys(collectingRewardKeys, spawnPosition,
                     _rewardChestIconRectTF,
                     (progress) =>
                     {
@@ -317,7 +350,7 @@ namespace VinhLB
             }
         }
 
-        private void ChangeLevelProgressValue(ResourceChangeData data)
+        private async void ChangeLevelProgressValue(ResourceChangeData data)
         {
             if (data.ChangedAmount > 0)
             {
@@ -327,7 +360,7 @@ namespace VinhLB
                 }
                 else
                 {
-                    SpawnCollectingUILevelStars();
+                    await SpawnCollectingUILevelStars();
                 }
             }
             else
@@ -335,12 +368,12 @@ namespace VinhLB
                 _rewardKeyText.text = $"{GameManager.Ins.LevelProgress}/{DataManager.Ins.ConfigData.requireRewardKey}";
             }
 
-            void SpawnCollectingUILevelStars()
+            async Task SpawnCollectingUILevelStars()
             {
                 int collectingLevelStars = Mathf.Min((int)data.ChangedAmount, Constants.MAX_UI_UNIT);
                 Vector3 spawnPosition = data.Source as Vector3? ??
                                         CameraManager.Ins.ViewportToWorldPoint(new Vector3(0.5f, 0.5f));
-                CollectingResourceManager.Ins.SpawnCollectingUILevelStars(collectingLevelStars, spawnPosition,
+                await CollectingResourceManager.Ins.SpawnCollectingUILevelStars(collectingLevelStars, spawnPosition,
                     _levelChestIconRectTF,
                     (progress) =>
                     {
@@ -497,26 +530,45 @@ namespace VinhLB
             GameManager.Ins.PostEvent(EventID.OnShowTutorialInMenu, normalLevelIndex);
         }
 
-        private IEnumerator DelayOpenCoroutine()
+        private IEnumerator OpenActionsCoroutine()
         {
             while (UIManager.Ins.IsOpened<SplashScreen>())
             {
                 yield return null;
             }
-            
-            OnShowMenuTutorial();
 
+            List<Task> taskList = new List<Task>();
             if (_rewardChestButton.IsUnlocked && _delayCollectingRewardKeys != null)
             {
-                _delayCollectingRewardKeys.Invoke();
-                _delayCollectingRewardKeys = null;
+                Task task = _delayCollectingRewardKeys.Invoke();
+                taskList.Add(task);
             }
             if (_levelChestButton.IsUnlocked && _delayCollectingLevelStars != null)
             {
-                _delayCollectingLevelStars.Invoke();
-                _delayCollectingLevelStars = null;
+                Task task = _delayCollectingLevelStars.Invoke();
+                taskList.Add(task);
             }
 
+            if (taskList.Count > 0)
+            {
+                yield return new WaitUntil(() => Task.WhenAll(taskList).IsCompleted);
+            }
+            
+            Debug.Log("done");
+            _delayCollectingRewardKeys = null;
+            _delayCollectingLevelStars = null;
+            
+            OnShowMenuTutorial();
+            
+            // if (!_isFirstShown)
+            // {
+            //     _isFirstShown = true;
+            //     if (!DailyRewardManager.Ins.IsTodayRewardObtained)
+            //     {
+            //         UIManager.Ins.OpenUI<DailyRewardPopup>();
+            //     }
+            // }
+            
             _delayOpenCoroutine = null;
         }
     }
