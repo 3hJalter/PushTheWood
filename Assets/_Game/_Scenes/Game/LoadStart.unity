@@ -1304,14 +1304,6 @@ PrefabInstance:
       propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.data[5]
       value: 
       objectReference: {fileID: 1071626560}
-    - target: {fileID: 2065497180, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 115762509571263440, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
-      propertyPath: m_DefaultBlend.m_Time
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6469700257093512040, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
       propertyPath: m_Name
       value: ___ Camera
