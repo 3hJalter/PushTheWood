@@ -18,6 +18,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         public const float SIT_UP_TIME = 0.4f;
         public const float SIT_DOWN_TIME = 0.4f;
         public const float SIT_DISTANCE = 0.4f;
+        private const float TIME_RANDOM_CHANGE_SIT_HUNGRY = 5f;
+        private const float RANDOM_CHANGE_SIT_HUNGRY_RATE = 0.4f;
+        private bool isRunHungryAnimOne;
+        private Tween tweenHungryAnim;
+        
         public override StateEnum Id => StateEnum.SitDown;
         private STimer timer;
         private STimer whistlingTimer;
@@ -33,6 +38,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         Player player;
         public override void OnEnter(Player t)
         {
+            isRunHungryAnimOne = false;
             if (timer == null)
             {
                 timer = TimerManager.Ins.PopSTimer();
@@ -51,8 +57,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             oldSkinPos = t.skin.localPosition;
             t.skin.DOLocalMove(oldSkinPos + sitDistance, SIT_DOWN_TIME).OnComplete(Singing);
             t.OnCharacterChangePosition();
+            SetHungryAnim(t);
             GameManager.Ins.RegisterListenerEvent(EventID.StartGame, OnStandUp);
-
+        
+            return;
+            
             void Singing()
             {
                 musicalNotes = ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.MusicalNotes), t.VFXPositions[1].position);
@@ -80,9 +89,14 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         {
             t.SetAnimSpeed(initAnimSpeed);
             t.skin.DOKill();
+            tweenHungryAnim?.Kill();
             timer?.Stop();
             whistlingTimer?.Stop();
-            musicalNotes?.Stop();
+            if (musicalNotes)
+            {
+                musicalNotes.Stop();
+                musicalNotes = null;
+            }
             t.skin.transform.localPosition = oldSkinPos;
             GameManager.Ins.UnregisterListenerEvent(EventID.StartGame, OnStandUp);
         }
@@ -100,7 +114,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 
             timer.Start(SIT_UP_TIME, ChangeIdleState);
             player.skin.transform.DOLocalMove(oldSkinPos, SIT_UP_TIME);
-            musicalNotes?.Stop();
+            if (musicalNotes)
+            {
+                musicalNotes.Stop();
+                musicalNotes = null;
+            }
             isSitDown = false;
 
             void ChangeIdleState()
@@ -109,6 +127,25 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
             }
         }
 
+        private void SetHungryAnim(Player t)
+        {
+            tweenHungryAnim = DOVirtual.DelayedCall(TIME_RANDOM_CHANGE_SIT_HUNGRY, () =>
+            {
+                if (!isRunHungryAnimOne)
+                {
+                    if (!(Random.value < RANDOM_CHANGE_SIT_HUNGRY_RATE * 2)) return;
+                    isRunHungryAnimOne = true;
+                    t.ChangeAnimNoStore(Constants.SIT_HUNGRY_ANIM, true);
+                }
+                else
+                {
+                    if (!(Random.value < RANDOM_CHANGE_SIT_HUNGRY_RATE)) return;
+                    t.ChangeAnimNoStore(Constants.SIT_HUNGRY_ANIM, true);
+                }
+            }).SetLoops(-1);
+
+        }
+        
         private SfxType GetWhistlingAudio()
         {
             int value = Random.Range(0, 3);
