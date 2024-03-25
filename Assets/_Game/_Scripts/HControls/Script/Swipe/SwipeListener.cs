@@ -254,8 +254,8 @@ namespace GG.Infrastructure.Utils.Swipe
                         _offset.Set(_offset.x, y, 0);
                         _offset.Normalize();
                         // normalize the _offset
-                        onSwipe?.Invoke(_directions.GetSwipeId(_offset));
                         DevLog.Log(DevId.Hung, "Quick Swipe");
+                        onSwipe?.Invoke(_directions.GetSwipeId(_offset));
                         if (!continuousDetection) _waitForSwipe = false;
                         // SampleSwipeStart();
                         _isHolding = false;
