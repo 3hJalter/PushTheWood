@@ -5,6 +5,8 @@ using VinhLB;
 
 public class LoadStart : MonoBehaviour
 {
+    [SerializeField]
+    int gameSceneIndex;
     private void Start()
     {
         UIManager.Ins.OpenUI<LoadingScreen>();
@@ -15,6 +17,6 @@ public class LoadStart : MonoBehaviour
         HomePage homePage = UIManager.Ins.GetUI<HomePage>();
         homePage.Close();
         
-        SceneGameManager.Ins.LoadingSceneAsync(2);
+        SceneGameManager.Ins.LoadingSceneAsync(gameSceneIndex);
     }
 }
