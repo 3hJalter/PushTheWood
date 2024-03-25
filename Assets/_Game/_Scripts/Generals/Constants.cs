@@ -54,6 +54,8 @@ public static class Constants
     public const string SLEEP_UP_ANIM = "sleepUp";
     public const string SIT_DOWN_ANIM = "sitDown";
     public const string SIT_UP_ANIM = "sitUp";
+    public const string SIT_HUNGRY_ANIM = "sitHungry";
+    public const string HUNGRY_ANIM = "hungry";
     public const string RUN_ABOVE_CHUMP_ANIM = "runAboveChump";
 
     public const string TREE_GROW_ANIM = "grow";

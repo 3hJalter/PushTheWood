@@ -213,7 +213,7 @@ namespace _Game.GameGrid
             if (_tutIndex == 0 && CurrentLevel.LevelType == LevelType.DailyChallenge)
             {
                 _tutIndex = -1;
-            }
+            } else if (CurrentLevel.LevelType is not LevelType.Normal) return;
             if (TutorialManager.Ins.TutorialList.ContainsKey(_tutIndex))
             {
                 player.SetActWithUnitEvent(TutorialManager.Ins.OnUnitActWithOther);

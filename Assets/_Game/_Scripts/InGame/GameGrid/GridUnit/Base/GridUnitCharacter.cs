@@ -38,6 +38,16 @@ namespace _Game.GameGrid.Unit
             _currentAnim = animName;
             animator.SetTrigger(_currentAnim);
         }
+        
+        public void ChangeAnimNoStore(string animName, bool forceAnim = false)
+        {
+            if (!forceAnim)
+                if (_currentAnim.Equals(animName))
+                    return;
+            animator.ResetTrigger(_currentAnim);
+            animator.SetTrigger(animName);
+        }
+        
         public void SetAnimSpeed(float speed)
         {
             animator.speed = speed;
