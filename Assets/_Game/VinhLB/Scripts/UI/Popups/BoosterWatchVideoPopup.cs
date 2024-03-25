@@ -101,10 +101,12 @@ namespace VinhLB
                 new List<int> { _boosterConfig.TicketPerBuyRatio.itemsPerBuy});
             if(_boosterConfig.Type == BoosterType.PushHint)
             {
+                //NOTE: If enough ads for hint 
                 if (DataManager.Ins.HintAdsCount >= (_boosterConfig.TicketPerBuyRatio.ticketNeed - 1))
                 {
+                    //NOTE: Run Push Hint
                     Close();
-                } //NOTE: If enough ads for hint 
+                } 
             }
             else
             {
