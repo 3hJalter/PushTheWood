@@ -3,6 +3,7 @@ using _Game._Scripts.InGame.GameCondition.Data;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Box.BoxState;
+using _Game.GameGrid.Unit.Interface;
 using _Game.Managers;
 using _Game.Utilities;
 using AudioEnum;
@@ -11,7 +12,7 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Box
 {
-    public class Box : GridUnitDynamic
+    public class Box : GridUnitDynamic, IBeInteractedUnit
     {
         private StateMachine<Box> _stateMachine;
 

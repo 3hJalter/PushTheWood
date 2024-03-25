@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using _Game.GameGrid.Unit;
+using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Utilities;
 using _Game.Utilities.Grid;
 using GameGridEnum;
@@ -68,7 +69,7 @@ namespace _Game.GameGrid
 
         public void RemoveGridUnit(GridUnit removeUnit)
         {
-            ValueChange();
+            if (removeUnit is not Player) ValueChange();
             for (int i = 0; i < data.gridUnits.Length; i++)
                 if (data.gridUnits[i] == removeUnit)
                     data.gridUnits[i] = null;
@@ -76,7 +77,7 @@ namespace _Game.GameGrid
 
         public void AddGridUnit(GridUnit addUnit)
         {
-            ValueChange();
+            if (addUnit is not Player) ValueChange();
             for (int i = (int)addUnit.StartHeight; i <= (int)addUnit.EndHeight; i++) data.gridUnits[i] = addUnit;
         }
 

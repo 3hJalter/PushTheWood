@@ -573,7 +573,6 @@ namespace _Game.Managers
             else
             {
                 AudioManager.Ins.PlaySfx(AudioEnum.SfxType.Hint);
-                if (_pushHint.IsStartHint) return;
                 // If this is first player step cell in this island, return
                 if (!IsBoughtPushHintInIsland(playerIslandID))
                 {
@@ -587,6 +586,11 @@ namespace _Game.Managers
 
         private void OnStartHintOnPlayerIsland(int islandID, bool isShowHint = true)
         {
+            // check if _pushHint is run
+            if (_pushHint.IsStartHint && _pushHint.LastHintIslandId != islandID)
+            {
+                _pushHint.OnStopHint();
+            }
             screen.ActivePushHintIsland(false);
             _pushHint.OnStartHint(islandID, isShowHint);
         }

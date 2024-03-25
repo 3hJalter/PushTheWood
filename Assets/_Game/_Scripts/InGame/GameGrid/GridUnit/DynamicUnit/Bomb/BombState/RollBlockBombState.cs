@@ -108,7 +108,13 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Bomb.BombState
                         {
                             GameplayManager.Ins.SavePushHint.SaveStep(p.MainCell.X, p.MainCell.Y, (int) p.LastPushedDirection, p.islandID);        
                         }
-                        EventGlobalManager.Ins.OnPlayerPushStep?.Dispatch(new PlayerStep{x = p.MainCell.X, y = p.MainCell.Y, d = (int) p.LastPushedDirection, i = p.islandID});
+                        EventGlobalManager.Ins.OnPlayerPushStep?.Dispatch(new PlayerStep
+                            {
+                                x = t.BeInteractedData.pushUnitMainCell.X,
+                                y = t.BeInteractedData.pushUnitMainCell.Y,
+                                d = (int) t.BeInteractedData.inputDirection,
+                                i = t.BeInteractedData.pushUnit.islandID
+                            });
                     }
 
                     #endregion

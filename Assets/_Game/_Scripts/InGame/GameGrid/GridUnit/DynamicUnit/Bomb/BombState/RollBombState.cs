@@ -32,7 +32,14 @@ namespace a
             {
                 if (t.BeInteractedData.pushUnit is Player p)
                 {
-                    EventGlobalManager.Ins.OnPlayerPushStep?.Dispatch(new PlayerStep{x = p.MainCell.X, y = p.MainCell.Y, d = (int) p.LastPushedDirection, i = p.islandID});
+                    EventGlobalManager.Ins.OnPlayerPushStep?.Dispatch(new PlayerStep
+                        {
+                            x = t.BeInteractedData.pushUnitMainCell.X,
+                            y = t.BeInteractedData.pushUnitMainCell.Y,
+                            d = (int) t.BeInteractedData.inputDirection,
+                            i = t.BeInteractedData.pushUnit.islandID
+                            
+                        });
                 }
                 t.SetEnterCellData(t.MovingData.inputDirection, t.MovingData.enterMainCell, t.UnitTypeY, false,
                     t.MovingData.enterCells);

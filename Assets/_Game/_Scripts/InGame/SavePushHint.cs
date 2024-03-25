@@ -29,12 +29,13 @@ namespace _Game._Scripts.InGame
         private readonly HashSet<int> _islandCompleted = new();
         private readonly Dictionary<int, Stack<PlayerStep>> _playerStepsOnIsland;
         private Stack<PlayerStep> _currentPlayerSteps;
-
+        private int _currentIslandHintId;
         private bool _isShowHint;
         private Stack<PlayerStep> _pops;
 
         public PushHint(IEnumerable<PlayerStep> steps)
         {
+            _currentIslandHintId = -1;
             _playerStepsOnIsland = new Dictionary<int, Stack<PlayerStep>>();
             if (steps is null) return;
             foreach (PlayerStep step in steps)
@@ -49,6 +50,8 @@ namespace _Game._Scripts.InGame
 
         public bool IsStartHint { get; private set; }
 
+        public int LastHintIslandId => _currentIslandHintId;
+        
         public bool ContainIsland(int islandID)
         {
             return _playerStepsOnIsland.ContainsKey(islandID);
@@ -59,6 +62,7 @@ namespace _Game._Scripts.InGame
             if (_playerStepsOnIsland.Count == 0) return;
             if (_currentPlayerSteps is not null) OnStopHint();
             // make a copy of the stack
+            _currentIslandHintId = islandID;
             _isShowHint = isShowHint;
             _currentPlayerSteps = new Stack<PlayerStep>(_playerStepsOnIsland[islandID]);
             _pops = new Stack<PlayerStep>();
@@ -86,6 +90,7 @@ namespace _Game._Scripts.InGame
         {
             // check if the event contains the listener
             if (isRemoveListener) RemoveListener();
+            _currentIslandHintId = -1;
             _currentPlayerSteps = null;
             _pops = null;
             IsStartHint = false;
