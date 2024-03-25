@@ -10,26 +10,46 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
 {
     public class IdlePlayerState : AbstractPlayerState
     {
+        private const float FIRST_CHANCE_TO_SLEEP = 0.5f;
+        private bool _isHungryDone;
+        
+        
         private bool _isChangeAnim;
         private bool isFirstStop;
         private int cutTreeFrameCount;
-        bool hasTreeRoot = false;
-        STimer sleepTimer;
+        private bool hasTreeRoot = false;
+        private STimer changeAnimTimer;
 
         public override StateEnum Id => StateEnum.Idle;
 
         public override void OnEnter(Player t)
         {
+            _isHungryDone = false;
             isFirstStop = true;
             cutTreeFrameCount = Constants.WAIT_CUT_TREE_FRAMES;
             if (LevelManager.Ins.IsFirstLevel) return;
-            sleepTimer ??= TimerManager.Ins.PopSTimer();
-            sleepTimer.Start(Constants.SLEEP_TIME, ChangeSleepState);
+            changeAnimTimer ??= TimerManager.Ins.PopSTimer();
+            changeAnimTimer.Start(Constants.SLEEP_TIME, ChangeAnimState);
             return;
 
-            void ChangeSleepState()
+            void ChangeAnimState()
             {
-                t.StateMachine.ChangeState(StateEnum.Sleep);
+                if (_isHungryDone)
+                {
+                    t.StateMachine.ChangeState(StateEnum.Sleep);
+                    return;
+                }
+                if (Random.value < FIRST_CHANCE_TO_SLEEP)
+                {
+                    t.StateMachine.ChangeState(StateEnum.Sleep);
+                }
+                else
+                {
+                    t.ChangeAnimNoStore(Constants.HUNGRY_ANIM);
+                    _isHungryDone = true;
+                    changeAnimTimer = TimerManager.Ins.PopSTimer();
+                    changeAnimTimer.Start(Constants.SLEEP_TIME, ChangeAnimState);
+                }
             }
         }
 
@@ -169,7 +189,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         public override void OnExit(Player t)
         {
             _isChangeAnim = false;
-            sleepTimer?.Stop();
+            changeAnimTimer?.Stop();
         }
         
     }
