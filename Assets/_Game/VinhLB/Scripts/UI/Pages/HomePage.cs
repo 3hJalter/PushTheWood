@@ -82,7 +82,7 @@ namespace VinhLB
         private Quaternion _startRewardChestIconQuaternion;
         private Quaternion _startLevelChestIconQuaternion;
         private bool _isTutorialRunning;
-        private bool _isFirstShowed;
+        private bool _isFirstShown;
         private Coroutine _delayOpenCoroutine;
         
         private event Action _delayCollectingRewardKeys;
@@ -177,12 +177,12 @@ namespace VinhLB
         {
             base.Setup(param);
 
-            if (!_isFirstShowed)
+            if (!_isFirstShown)
             {
-                _isFirstShowed = true;
+                _isFirstShown = true;
                 if (!DailyRewardManager.Ins.IsTodayRewardObtained)
                 {
-                    UIManager.Ins.OpenUI<DailyRewardPopup>();
+                    // UIManager.Ins.OpenUI<DailyRewardPopup>();
                 }
             }
 

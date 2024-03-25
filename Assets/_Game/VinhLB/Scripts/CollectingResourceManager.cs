@@ -60,7 +60,7 @@ namespace VinhLB
         private OverlayScreen _overlayScreen;
 
         public void SpawnCollectingUICoins(int amount, Vector3 startPosition, Transform endPoint,
-            Action<float> eachReachedEnd = null, Action allReachedEnd = null)
+            Action<float> eachCompleted = null, Action allCompleted = null)
         {
             UpdateComponents();
 
@@ -70,11 +70,11 @@ namespace VinhLB
             }
 
             SpawnCollectingUIResource(_collectingUICoinConfig, amount, startPosition, endPoint,
-                eachReachedEnd, allReachedEnd);
+                eachCompleted, allCompleted);
         }
 
         public void SpawnCollectingUIAdTickets(int amount, Vector3 startPosition, Transform endPoint,
-            Action<float> eachReachedEnd = null, Action allReachedEnd = null)
+            Action<float> eachCompleted = null, Action allCompleted = null)
         {
             UpdateComponents();
 
@@ -84,11 +84,11 @@ namespace VinhLB
             }
 
             SpawnCollectingUIResource(_collectingUIAdTicketConfig, amount, startPosition, endPoint,
-                eachReachedEnd, allReachedEnd);
+                eachCompleted, allCompleted);
         }
 
         public void SpawnCollectingUIRewardKeys(int amount, Vector3 startPosition, Transform endPoint,
-            Action<float> eachReachedEnd = null, Action allReachedEnd = null)
+            Action<float> eachCompleted = null, Action allCompleted = null)
         {
             UpdateComponents();
 
@@ -98,11 +98,11 @@ namespace VinhLB
             }
 
             SpawnCollectingUIResource(_collectingUIRewardKeyConfig, amount, startPosition, endPoint,
-                eachReachedEnd, allReachedEnd);
+                eachCompleted, allCompleted);
         }
 
         public void SpawnCollectingUILevelStars(int amount, Vector3 startPosition, Transform endPoint,
-            Action<float> eachReachedEnd = null, Action allReachedEnd = null)
+            Action<float> eachCompleted = null, Action allCompleted = null)
         {
             UpdateComponents();
 
@@ -112,7 +112,7 @@ namespace VinhLB
             }
 
             SpawnCollectingUIResource(_collectingUILevelStarConfig, amount, startPosition, endPoint,
-                eachReachedEnd, allReachedEnd);
+                eachCompleted, allCompleted);
         }
 
         public void SpawnCollectingRewardKey(int amount, Transform objectTransform)
@@ -229,7 +229,7 @@ namespace VinhLB
         }
 
         private async void SpawnCollectingUIResource(CollectingResourceConfig config, int amount,
-            Vector3 startPosition, Transform endPoint, Action<float> eachReachedEnd, Action allReachedEnd)
+            Vector3 startPosition, Transform endPoint, Action<float> eachCompleted, Action allCompleted)
         {
             if (amount <= 0)
             {
@@ -243,6 +243,7 @@ namespace VinhLB
                 return;
             }
 
+            List<Task> taskList = new List<Task>();
             List<UIUnit> unitList = new List<UIUnit>();
             // Spawn units with random value
             for (int i = 0; i < amount; i++)
@@ -260,10 +261,14 @@ namespace VinhLB
                     startPosition.z);
                 // unit.Tf.DOMove(targetPosition, config.SpreadDuration).SetEase(Ease.OutCirc);
                 float jumpPower = Random.Range(0.5f, 2f);
-                unit.Tf.DOJump(targetPosition, jumpPower, 1, config.SpreadDuration);
+                Task task = unit.Tf.DOJump(targetPosition, jumpPower, 1, config.SpreadDuration).AsyncWaitForCompletion();
 
                 unitList.Add(unit);
+                taskList.Add(task);
             }
+
+            await Task.WhenAll(taskList);
+            taskList.Clear();
 
             // Delay before moving
             await Task.Delay(500);
@@ -273,24 +278,31 @@ namespace VinhLB
             {
                 UIUnit unit = unitList[i];
                 float progress = (float)(i + 1) / unitList.Count;
-                unit.Tf.DOMove(endPoint.position, config.MoveDuration).SetEase(Ease.InBack).OnComplete(() =>
+                Task task = unit.Tf.DOMove(endPoint.position, config.MoveDuration).SetEase(Ease.InBack).OnComplete(() =>
                 {
                     unit.Despawn();
 
                     if (config.ReactionTween == null)
                     {
                         // React to units
-                        config.ReactionTween = endPoint.DOPunchScale(config.ReactPunchScale, config.ReactDuration)
+                        config.ReactionTween =  endPoint.DOPunchScale(config.ReactPunchScale, config.ReactDuration)
                             .SetEase(Ease.InOutElastic).OnComplete(() => { config.ReactionTween = null; });
                     }
 
-                    eachReachedEnd?.Invoke(progress);
-                });
+                    eachCompleted?.Invoke(progress);
+                }).AsyncWaitForCompletion();
+                taskList.Add(task);
 
-                await Task.Delay(50);
+                if (i < unitList.Count - 1)
+                {
+                    await Task.Delay(50);
+                }
             }
+            
+            await Task.WhenAll(taskList);
+            taskList.Clear();
 
-            allReachedEnd?.Invoke();
+            allCompleted?.Invoke();
         }
     }
 
