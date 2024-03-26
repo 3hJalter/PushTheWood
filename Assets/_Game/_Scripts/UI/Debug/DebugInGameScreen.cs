@@ -16,6 +16,8 @@ namespace _Game.UIs.Screen
         [SerializeField]
         Button onOffTutorial;
         [SerializeField]
+        Button onOffHint;
+        [SerializeField]
         Button onOffButton;
         [SerializeField]
         GameObject container;
@@ -25,12 +27,14 @@ namespace _Game.UIs.Screen
             onOffInGameUIBtn.onClick.AddListener(OnOffInGameScreen);
             onOffTutorial.onClick.AddListener(OnOffTutorial);
             onOffButton.onClick.AddListener(OnOffUI);
+            onOffHint.onClick.AddListener(OnOffHint);
         }
         private void OnDestroy()
         {
             onOffInGameUIBtn.onClick.RemoveAllListeners();
             onOffTutorial.onClick.RemoveAllListeners();
             onOffButton.onClick.RemoveAllListeners();
+            onOffHint.onClick.RemoveAllListeners();
         }
 
         private void OnOffInGameScreen()
@@ -48,25 +52,33 @@ namespace _Game.UIs.Screen
 
         private void OnOffTutorial()
         {
-            BaseTutorialData tut = TutorialManager.Ins.TutorialList[LevelManager.Ins.NormalLevelIndex] as BaseTutorialData;
-            tut.CurrentScreen.isDestroyOnClose = false;
-
-
-            if (tut == null)
+            BaseTutorialData tut = TutorialManager.Ins.TutorialList[LevelManager.Ins.NormalLevelIndex] as BaseTutorialData;       
+            if (tut == null || tut.CurrentScreen == null)
                 return;
 
+            tut.CurrentScreen.isDestroyOnClose = false;           
             if (!tut.CurrentScreen.gameObject.activeInHierarchy)
             {
-                tut.CurrentScreen.Open();
-                GameplayManager.Ins.PushHint.OnStopHint();
-                GameplayManager.Ins.OnFreePushHint(false, true);
+                tut.CurrentScreen.Open();               
             }
             else
             {
                 tut.CurrentScreen.Close();
-                GameplayManager.Ins.PushHintObject.SetActive(false);
+                ;
             }
         }
         
+        private void OnOffHint()
+        {
+            if (GameplayManager.Ins.PushHintObject.gameObject.activeInHierarchy)
+            {
+                GameplayManager.Ins.PushHintObject.SetActive(false);
+            }
+            else
+            {
+                GameplayManager.Ins.PushHint.OnStopHint();
+                GameplayManager.Ins.OnFreePushHint(false, true);
+            }
+        }
     }
 }
