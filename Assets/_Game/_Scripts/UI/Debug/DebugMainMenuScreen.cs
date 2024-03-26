@@ -32,6 +32,10 @@ namespace _Game.UIs.Screen
         private Button _dailyRewardButton;
         [SerializeField]
         private Button _dailyChallengeButton;
+        [SerializeField]
+        private Button _changeLevel;
+        [SerializeField]
+        private TMP_InputField _levelInputField;
 
         [Header("Resource Menu")]
         [SerializeField]
@@ -97,6 +101,8 @@ namespace _Game.UIs.Screen
             _increase1ChallengeDay.onClick.AddListener(AddOneDailyChallengeDay);
 
             _playerSkinInputField.text = DataManager.Ins.GameData.user.currentPlayerSkinIndex.ToString();
+            _levelInputField.text = DataManager.Ins.GameData.user.normalLevelIndex.ToString();
+            _changeLevel.onClick.AddListener(ChangeLevel);
         }
 
         private void OnEnable()
@@ -178,6 +184,12 @@ namespace _Game.UIs.Screen
             //UIManager.Ins.UpdateUIs();
         }       
         
+        private void ChangeLevel()
+        {
+            int index = int.Parse(_levelInputField.text);
+            DataManager.Ins.GameData.user.normalLevelIndex = index;
+            LevelManager.Ins.OnGoLevel(LevelType.Normal, DataManager.Ins.GameData.user.normalLevelIndex, true);
+        }
         private void AddOneDailyChallengeDay()
         {
             DataManager.Ins.GameData.user.currentDailyChallengerDay++;

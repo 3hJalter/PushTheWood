@@ -55,7 +55,9 @@ namespace _Game.UIs.Screen
 
         private void OnOffTutorial()
         {
-            BaseTutorialData tut = TutorialManager.Ins.TutorialList[LevelManager.Ins.NormalLevelIndex] as BaseTutorialData;       
+            BaseTutorialData tut = null;
+            if (TutorialManager.Ins.TutorialList.ContainsKey(LevelManager.Ins.NormalLevelIndex))
+                tut = TutorialManager.Ins.TutorialList[LevelManager.Ins.NormalLevelIndex] as BaseTutorialData;       
             if (tut == null || tut.CurrentScreen == null)
                 return;
 
