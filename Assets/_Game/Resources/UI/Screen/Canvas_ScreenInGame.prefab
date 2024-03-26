@@ -6585,6 +6585,7 @@ GameObject:
   - component: {fileID: 3394109631141807961}
   - component: {fileID: 5545877716057603162}
   - component: {fileID: 4349588111817070026}
+  - component: {fileID: 4147782074775543517}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -6650,6 +6651,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4147782074775543517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6040015994006780632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 120
+  m_PreferredHeight: 120
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &6044455514953883245
 GameObject:
   m_ObjectHideFlags: 0
@@ -9719,8 +9740,8 @@ MonoBehaviour:
   m_Padding:
     m_Left: 35
     m_Right: 35
-    m_Top: 35
-    m_Bottom: 75
+    m_Top: 32
+    m_Bottom: 78
   m_ChildAlignment: 4
   m_Spacing: 0
   m_ChildForceExpandWidth: 1

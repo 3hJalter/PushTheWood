@@ -29,7 +29,7 @@ namespace VinhLB
             public RectTransform CollectingResourceParentRectTF;
             public Tween ReactionTween;
         }
-
+        
         private const float HEIGHT_OFFSET = 60;
         private const float HEIGHT_INCREASE = 50;
 
