@@ -75,6 +75,7 @@ namespace _Game.Managers
             {
                 _gameData.user.playedDay += 1;
                 _gameData.user.currentDailyChallengerDay += day;
+                _gameData.user.isFreeDailyChallengeFirstTime = true;
                 AnalysticManager.Ins.Day();
             }
 

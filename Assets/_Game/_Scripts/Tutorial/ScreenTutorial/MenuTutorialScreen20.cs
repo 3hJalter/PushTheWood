@@ -21,7 +21,6 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
         [SerializeField] private Transform lockImage;
         [SerializeField] private Image unlockImage;
         [SerializeField] private GameObject focusObject;
-        [SerializeField] private GameObject fakeSecretMapPopup;
         
         public override void Setup(object param = null)
         {
@@ -29,7 +28,6 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
             panel.color = new Color(0, 0, 0, 0);
             secretMapButton.interactable = false;
             focusObject.SetActive(false);
-            fakeSecretMapPopup.SetActive(false);
             unlockImage.gameObject.SetActive(false);
             lockImage.gameObject.SetActive(true);
             if (UIManager.Ins.IsLoaded<HomePage>())
@@ -45,7 +43,6 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
 
         private void OnUnlock()
         {
-            // TODO: Unlock Animation
             // 1. Set an animation which lock image is vibrate 3 times
             lockImage.DOShakePosition(0.5f, 10).SetLoops(2)
                 .OnComplete(() =>
@@ -73,22 +70,16 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
         public void OnClickFakeSecretButton()
         {
             focusObject.SetActive(false);
-            // 7. Show a fake DailyChallengePopup
-            fakeSecretMapPopup.SetActive(true);
+            UIManager.Ins.GetUI<HomePage>().ShowSecretMapButton(true);
+            UIManager.Ins.OpenUI<SecretMapPopup>();
+            CloseDirectly();
         }
 
-        public void OnClickSecretLevel()
+        public override void CloseDirectly(object param = null)
         {
-            if (UIManager.Ins.IsLoaded<HomePage>())
-            {
-                UIManager.Ins.GetUI<HomePage>().ShowSecretMapButton(true);
-            }
-            CloseDirectly();
-            DataManager.Ins.GameData.user.completedMenuTutorial.Add(
-                DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex);
-            LevelManager.Ins.OnGoLevel(LevelType.Secret, 0);
-            UIManager.Ins.CloseAll();
-            UIManager.Ins.OpenUI<InGameScreen>();
+            DataManager.Ins.GameData.user.completedMenuTutorial
+                .Add(DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex);
+            base.CloseDirectly(param);
         }
     }
 }

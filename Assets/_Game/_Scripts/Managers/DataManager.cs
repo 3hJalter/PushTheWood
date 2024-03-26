@@ -73,6 +73,26 @@ namespace _Game.Managers
             return _gameData.user.dailyLevelIndex[index];
         }
 
+        public bool IsOpenInGameDailyChallengeTut()
+        {
+            return _gameData.user.isOpenInGameDailyChallengeTut;
+        }
+        
+        public void ChangeOpenDailyChallengeTut(bool value)
+        {
+            _gameData.user.isOpenInGameDailyChallengeTut = value;
+        }
+        
+        public bool IsDailyChallengeFreePlay()
+        {
+            return _gameData.user.isFreeDailyChallengeFirstTime;
+        }
+        
+        public void ChangeDailyChallengeFreePlay(bool value)
+        {
+            _gameData.user.isFreeDailyChallengeFirstTime = value;
+        }
+        
         public bool IsCollectedAllDailyChallengeReward()
         {
             int collected = _gameData.user.dailyChallengeRewardCollected.Count;

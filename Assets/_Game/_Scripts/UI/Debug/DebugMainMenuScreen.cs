@@ -193,6 +193,7 @@ namespace _Game.UIs.Screen
         private void AddOneDailyChallengeDay()
         {
             DataManager.Ins.GameData.user.currentDailyChallengerDay++;
+            DataManager.Ins.GameData.user.isFreeDailyChallengeFirstTime = true;
             if (DataManager.Ins.GameData.user.currentDailyChallengerDay > Constants.DAILY_CHALLENGER_COUNT)
             {
                 DataManager.Ins.GameData.user.currentDailyChallengerDay = 1;

@@ -28,6 +28,8 @@ namespace _Game.Data
             public int[] dailyLevelIndex = { 1, 2, 3, 4, 5, 6, 7 };
             public List<int> dailyLevelIndexComplete = new();
             public List<int> dailyChallengeRewardCollected = new(); 
+            public bool isFreeDailyChallengeFirstTime = true;
+            public bool isOpenInGameDailyChallengeTut;
             
             // secret level
             public int secretLevelUnlock;
