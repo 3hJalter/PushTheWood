@@ -44,10 +44,12 @@ namespace PixelPlay.OffScreenIndicator
 
             // When the targets are behind the camera their projections on the screen (WorldToScreenPoint) are inverted,
             // so just invert them.
-            if(screenPosition.z < 0)
-            {
-                screenPosition *= -1;
-            }
+            // BUG: position z < 0 is not a valid check for behind the camera.
+            // TEMPORARY FIX: Remove the z < 0 check.
+            // if(screenPosition.z < 0)
+            // {
+            //     screenPosition *= -1;
+            // }
 
             // Angle between the x-axis (bottom of screen) and a vector starting at zero(bottom-left corner of screen) and terminating at screenPosition.
             angle = Mathf.Atan2(screenPosition.y, screenPosition.x);
