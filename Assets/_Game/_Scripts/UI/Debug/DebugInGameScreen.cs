@@ -39,8 +39,11 @@ namespace _Game.UIs.Screen
 
         private void OnOffInGameScreen()
         {
-            if(UIManager.Ins.IsOpened<InGameScreen>())
+            if (UIManager.Ins.IsOpened<InGameScreen>())
+            {
                 UIManager.Ins.CloseUI<InGameScreen>();
+                MoveInputManager.Ins.ShowContainer(true);
+            }               
             else
                 UIManager.Ins.OpenUI<InGameScreen>();
         }
