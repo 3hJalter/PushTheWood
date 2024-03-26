@@ -1,3 +1,6 @@
+using _Game._Scripts.Managers;
+using _Game._Scripts.Tutorial;
+using _Game.GameGrid;
 using _Game.Managers;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +12,9 @@ namespace _Game.UIs.Screen
     public class DebugInGameScreen : UICanvas
     {
         [SerializeField]
-        Button onOffInGameBtn;
+        Button onOffInGameUIBtn;
+        [SerializeField]
+        Button onOffTutorial;
         [SerializeField]
         Button onOffButton;
         [SerializeField]
@@ -17,8 +22,15 @@ namespace _Game.UIs.Screen
 
         private void Awake()
         {
-            onOffInGameBtn.onClick.AddListener(OnOffInGameScreen);
+            onOffInGameUIBtn.onClick.AddListener(OnOffInGameScreen);
+            onOffTutorial.onClick.AddListener(OnOffTutorial);
             onOffButton.onClick.AddListener(OnOffUI);
+        }
+        private void OnDestroy()
+        {
+            onOffInGameUIBtn.onClick.RemoveAllListeners();
+            onOffTutorial.onClick.RemoveAllListeners();
+            onOffButton.onClick.RemoveAllListeners();
         }
 
         private void OnOffInGameScreen()
@@ -34,10 +46,27 @@ namespace _Game.UIs.Screen
             container.SetActive(!container.activeInHierarchy);
         }
 
-        private void OnDestroy()
+        private void OnOffTutorial()
         {
-            onOffInGameBtn.onClick.RemoveAllListeners();
-            onOffButton.onClick.RemoveAllListeners();
+            BaseTutorialData tut = TutorialManager.Ins.TutorialList[LevelManager.Ins.NormalLevelIndex] as BaseTutorialData;
+            tut.CurrentScreen.isDestroyOnClose = false;
+
+
+            if (tut == null)
+                return;
+
+            if (!tut.CurrentScreen.gameObject.activeInHierarchy)
+            {
+                tut.CurrentScreen.Open();
+                GameplayManager.Ins.PushHint.OnStopHint();
+                GameplayManager.Ins.OnFreePushHint(false, true);
+            }
+            else
+            {
+                tut.CurrentScreen.Close();
+                GameplayManager.Ins.PushHintObject.SetActive(false);
+            }
         }
+        
     }
 }

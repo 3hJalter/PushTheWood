@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using _Game.GameGrid;
 using _Game.GameGrid.Unit;
+using _Game.Managers;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -44,11 +45,13 @@ namespace _Game._Scripts.Tutorial
 
         [ReadOnly]
         [SerializeField] protected UICanvas currentScreen;
+        public UICanvas CurrentScreen => currentScreen;
         
         [ContextMenu("Reset Tutorial")]
         public void ResetTutorial()
         {
             currentTutIndex = 0;
         }
+
     }
 }

@@ -62,6 +62,7 @@ namespace _Game.Managers
         private InGameScreen screen;
 
         public InGameScreen Screen => screen;
+        public PushHint PushHint => _pushHint;
 
         [ReadOnly]
         [SerializeField]
