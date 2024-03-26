@@ -109,6 +109,7 @@ namespace _Game.UIs.Popup
         
         private void OnClickPlayButton()
         {
+            DataManager.Ins.ChangeDailyChallengeFreePlay(false);
             OnPlay();
         }
 
@@ -166,7 +167,21 @@ namespace _Game.UIs.Popup
                     break;
                 // if current button is today, show play btn
                 case DailyChallengeButtonState.Today:
-                    playBtn.gameObject.SetActive(true);
+                    if (DataManager.Ins.IsDailyChallengeFreePlay())
+                    {
+                        playBtn.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        if (DataManager.Ins.GameData.user.adTickets > 0)
+                        {
+                            payToPlayBtn.gameObject.SetActive(true);
+                        }
+                        else
+                        {
+                            adsToPlayBtn.gameObject.SetActive(true);
+                        }
+                    }
                     break;
             }
         }

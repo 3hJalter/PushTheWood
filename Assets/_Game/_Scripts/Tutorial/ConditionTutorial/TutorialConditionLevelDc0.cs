@@ -17,13 +17,8 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
         {
             if (currentTutIndex == 0)
             {
-                if (triggerUnit is not Player) return;
-                // if player at cell 9, 7 -> Change to Cell that Player init in Tutorial Daily Challenge
-                if (!(Math.Abs(cell.WorldX - 9) < Constants.TOLERANCE) ||
-                    !(Math.Abs(cell.WorldY - 7) < Constants.TOLERANCE)) return;
                 // Show tutorial
                 UIManager.Ins.OpenUIDirectly(tutorialScreens[currentTutIndex]);
-                GameplayManager.Ins.OnFreePushHint(false, true);
                 currentTutIndex++;
             }
         }

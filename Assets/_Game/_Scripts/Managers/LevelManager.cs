@@ -78,7 +78,7 @@ namespace _Game.GameGrid
 
         public bool IsFirstTutorialLevel => (CurrentLevel.LevelType == LevelType.Normal && NormalLevelIndex == 0)
                                        || (CurrentLevel.LevelType == LevelType.DailyChallenge && DailyLevelIndex == 0);
-
+        
         [ReadOnly]
         public Player player;
 
@@ -210,9 +210,10 @@ namespace _Game.GameGrid
             player.SetMoveToCellEvent(null);
             _tutIndex = CurrentLevel.Index;
             // Special case for tutorial in daily challenger
-            if (_tutIndex == 0 && CurrentLevel.LevelType == LevelType.DailyChallenge)
+            if (CurrentLevel.LevelType == LevelType.DailyChallenge && !DataManager.Ins.IsOpenInGameDailyChallengeTut())
             {
                 _tutIndex = -1;
+                DataManager.Ins.ChangeOpenDailyChallengeTut(true);
             } else if (CurrentLevel.LevelType is not LevelType.Normal) return;
             if (TutorialManager.Ins.TutorialList.ContainsKey(_tutIndex))
             {
@@ -294,12 +295,6 @@ namespace _Game.GameGrid
                     DataManager.Ins.GameData.user.secretLevelIndexComplete.Add(secretLevelIndex);
                     break;
                 case LevelType.DailyChallenge:
-                    // Check if contain
-                    if (dailyLevelIndex == 0) {
-                        if (DataManager.Ins.GameData.user.completedMenuTutorial.Contains(normalLevelIndex)) return;
-                        DataManager.Ins.GameData.user.completedMenuTutorial.Add(normalLevelIndex);
-                        dailyLevelIndex = 1; // Storing the index 1 instead of 0
-                    }           
                     if (DataManager.Ins.GameData.user.dailyLevelIndexComplete.Contains(dailyLevelIndex)) break;
                     DataManager.Ins.GameData.user.dailyLevelIndexComplete.Add(dailyLevelIndex);
                     break;

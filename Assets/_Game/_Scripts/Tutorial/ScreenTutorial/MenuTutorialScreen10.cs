@@ -2,6 +2,7 @@
 using _Game.Data;
 using _Game.GameGrid;
 using _Game.Managers;
+using _Game.UIs.Popup;
 using _Game.UIs.Screen;
 using _Game.Utilities;
 using _Game.Utilities.Timer;
@@ -20,7 +21,6 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
         [SerializeField] private Transform lockImage;
         [SerializeField] private Image unlockImage;
         [SerializeField] private GameObject focusObject;
-        [SerializeField] private GameObject fakeDailyChallengePopup;
         
         public override void Setup(object param = null)
         {
@@ -28,7 +28,6 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
             panel.color = new Color(0, 0, 0, 0);
             dailyChallengeButton.interactable = false;
             focusObject.SetActive(false);
-            fakeDailyChallengePopup.SetActive(false);
             unlockImage.gameObject.SetActive(false);
             lockImage.gameObject.SetActive(true);
             if (UIManager.Ins.IsLoaded<HomePage>())
@@ -71,18 +70,19 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
 
         public void OnClickDailyChallengeTutorial()
         {
-            focusObject.SetActive(false);
+            DataManager.Ins.GameData.user.completedMenuTutorial
+                .Add(DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex);
             // 7. Show a fake DailyChallengePopup
-            fakeDailyChallengePopup.SetActive(true);
+            UIManager.Ins.GetUI<HomePage>().ShowDailyChallengeButton(true);
+            UIManager.Ins.OpenUI<DailyChallengePopup>();
+            CloseDirectly();
         }
 
         public void OnClickTutorialButton()
         {
             if (UIManager.Ins.IsLoaded<HomePage>())
             {
-                UIManager.Ins.GetUI<HomePage>().ShowDailyChallengeButton(true);
             }
-            CloseDirectly();
             
             DevLog.Log(DevId.Hoang, "OnClick Tutorial Button");
             LevelManager.Ins.OnGoLevel(LevelType.DailyChallenge, 0);
