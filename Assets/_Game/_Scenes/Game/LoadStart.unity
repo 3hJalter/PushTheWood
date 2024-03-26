@@ -760,6 +760,10 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8295795834640820244, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+    - target: {fileID: 8295795834640820245, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: superSensitive
+      value: 135
+      objectReference: {fileID: 0}
     - target: {fileID: 8295795834807576279, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: serializationData.Prefab
       value: 
