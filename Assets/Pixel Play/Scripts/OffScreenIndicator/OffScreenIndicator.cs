@@ -52,6 +52,7 @@ public class OffScreenIndicator : MonoBehaviour
         }
         foreach(Target target in Targets)
         {
+            if (!target.NeedArrowIndicator) continue;
             Vector3 screenPosition = OffScreenIndicatorCore.GetScreenPosition(mainCamera, target.transform.position);
             bool isTargetVisible = OffScreenIndicatorCore.IsTargetVisible(screenPosition);
             // float distanceFromCamera = target.NeedDistanceText ? target.GetDistanceFromCamera(mainCamera.transform.position) : float.MinValue;// Gets the target distance from the camera.

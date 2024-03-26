@@ -42,6 +42,11 @@ public class DebugManager : SimpleSingleton<DebugManager>
                 if(!DebugCanvass.Contains(canvas))
                     DebugCanvass.Add(canvas);
                 break;
+            case UI_POSITION.IN_GAME:
+                canvas = UIManager.Ins.OpenUI<DebugInGameScreen>();
+                if (!DebugCanvass.Contains(canvas))
+                    DebugCanvass.Add(canvas);
+                break;
         }
         
     }

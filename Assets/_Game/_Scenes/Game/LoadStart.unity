@@ -760,6 +760,10 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8295795834640820244, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+    - target: {fileID: 8295795834640820245, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: superSensitive
+      value: 135
+      objectReference: {fileID: 0}
     - target: {fileID: 8295795834807576279, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -1304,14 +1308,6 @@ PrefabInstance:
       propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.data[5]
       value: 
       objectReference: {fileID: 1071626560}
-    - target: {fileID: 2065497180, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 115762509571263440, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
-      propertyPath: m_DefaultBlend.m_Time
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6469700257093512040, guid: f261061fd70cd7149b02cb898bdb0b37, type: 3}
       propertyPath: m_Name
       value: ___ Camera

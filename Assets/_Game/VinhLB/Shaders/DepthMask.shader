@@ -1,4 +1,4 @@
-Shader "Custom/Depth Mask"
+Shader "Custom/DepthMask"
 {
     SubShader
     {

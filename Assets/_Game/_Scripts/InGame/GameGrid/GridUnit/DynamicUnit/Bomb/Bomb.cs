@@ -5,6 +5,7 @@ using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Bomb.BombState;
 using _Game.GameGrid.Unit.DynamicUnit.Interface;
+using _Game.GameGrid.Unit.Interface;
 using _Game.Utilities.Timer;
 using a;
 using GameGridEnum;
@@ -13,7 +14,7 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Bomb 
 {
-    public class Bomb : GridUnitDynamic, IExplosives
+    public class Bomb : GridUnitDynamic, IExplosives, IBeInteractedUnit
     {
         [Title("Bomb")]
         [SerializeField] private GameObject waitExplosionObjectEffect;

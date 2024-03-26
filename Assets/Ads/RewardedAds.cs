@@ -140,6 +140,7 @@ public class RewardedAds : MonoBehaviour
                         {
                             DataManager.Ins.GameData.user.hintAdsCount = 0;
                             EventGlobalManager.Ins.OnChangeBoosterAmount.Dispatch(boosterTypes[i], boosterAmounts[i]);
+                            EventGlobalManager.Ins.OnUsingBooster.Dispatch(BoosterType.PushHint);
                         }
                         break;
                     default:

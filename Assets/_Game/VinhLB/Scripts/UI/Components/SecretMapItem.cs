@@ -64,7 +64,7 @@ namespace VinhLB
                     _completeGO.gameObject.SetActive(false);
                     break;
                 case State.Completed:
-                    _statusGO.SetActive(false);
+                    _statusGO.SetActive(true);
                     _lockGO.SetActive(false);
                     _unlockProgressGO.SetActive(false);
                     _playButton.gameObject.SetActive(false);

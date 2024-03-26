@@ -123,10 +123,6 @@ namespace _Game.UIs.Screen
                 ChangeLayoutForBanner);
         }
 
-        public event Action OnUndo;
-        public event Action OnGrowTree;
-        public event Action OnUsePushHint;
-        public event Action OnResetIsland;
         
         public override void Setup(object param = null)
         {
@@ -331,7 +327,7 @@ namespace _Game.UIs.Screen
         private void OnClickUndo()
         {
             // Check number of ticket to use
-            OnUndo?.Invoke();
+            EventGlobalManager.Ins.OnUsingBooster.Dispatch(Resource.BoosterType.Undo);
             undoButton.Button.interactable = false;
             AudioManager.Ins.PlaySfx(SfxType.Undo);
             undoTimer.Start(UNDO_CD_TIME, () => undoButton.Button.interactable = true);
@@ -342,21 +338,21 @@ namespace _Game.UIs.Screen
 
         private void OnClickGrowTree()
         {
-            OnGrowTree?.Invoke();
+            EventGlobalManager.Ins.OnUsingBooster.Dispatch(Resource.BoosterType.GrowTree);
             if (undoButton.IsFocus) undoButton.IsFocus = false;
             // if (resetIslandButton.IsFocus) resetIslandButton.IsFocus = false;
         }
 
         private void OnClickResetIsland()
         {
-            OnResetIsland?.Invoke();
+            EventGlobalManager.Ins.OnUsingBooster.Dispatch(Resource.BoosterType.ResetIsland);
             if (undoButton.IsFocus) undoButton.IsFocus = false;
             // if (resetIslandButton.IsFocus) resetIslandButton.IsFocus = false;
         }
 
         private void OnClickPushHint()
         {
-            OnUsePushHint?.Invoke();
+            EventGlobalManager.Ins.OnUsingBooster.Dispatch(Resource.BoosterType.PushHint);
             if (undoButton.IsFocus) undoButton.IsFocus = false;
             // if (resetIslandButton.IsFocus) resetIslandButton.IsFocus = false;
         }

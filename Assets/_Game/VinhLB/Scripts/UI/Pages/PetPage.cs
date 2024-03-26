@@ -135,10 +135,19 @@ namespace VinhLB
             {
                 if (!_collectionItemList[id].IsLocked)
                 {
-                    _buyButton.gameObject.SetActive(true);
-                    _costText.text = DataManager.Ins.ConfigData.CharacterCosts[_collectionItemList[id].Data]
-                        .ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
-                    _infoGO.SetActive(false);
+                    if (DataManager.Ins.ConfigData.CharacterCosts[_collectionItemList[id].Data] > GameManager.Ins.Gold)
+                    {
+                        _buyButton.gameObject.SetActive(false);
+                        _infoGO.SetActive(true);
+                        _infoText.text = "Not enough gold";
+                    }
+                    else
+                    {
+                        _buyButton.gameObject.SetActive(true);
+                        _costText.text = DataManager.Ins.ConfigData.CharacterCosts[_collectionItemList[id].Data]
+                            .ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+                        _infoGO.SetActive(false);
+                    }
                 }
                 else
                 {

@@ -16,7 +16,7 @@ namespace VinhLB
 
         private bool _isFirstTime = true;
         private bool _isWidthFitting = false;
-        private Coroutine _delayActionCoroutine;
+        private Coroutine _delayActionsCoroutine;
 
         public event Action OnOpenCallback;
         public event Action OnCloseCallback;
@@ -35,13 +35,13 @@ namespace VinhLB
             base.Open(param);
 
             // Stop the previous coroutine if it's still running
-            if (_delayActionCoroutine != null)
+            if (_delayActionsCoroutine != null)
             {
-                StopCoroutine(_delayActionCoroutine);
+                StopCoroutine(_delayActionsCoroutine);
             }
             
             float delayTime = param != null ? (float)param : 1f;
-            _delayActionCoroutine = StartCoroutine(DelayActionCoroutine(delayTime));
+            _delayActionsCoroutine = StartCoroutine(DelayActionsCoroutine(delayTime));
         }
 
         public override void Close()
@@ -78,7 +78,7 @@ namespace VinhLB
             }
         }
 
-        private IEnumerator DelayActionCoroutine(float delayTime)
+        private IEnumerator DelayActionsCoroutine(float delayTime)
         {
             Tween openTween = 
                 DOVirtual.Float(0, 1f, 0.125f, value => _canvasGroup.alpha = value);
@@ -100,7 +100,7 @@ namespace VinhLB
 
             Close();
 
-            _delayActionCoroutine = null;
+            _delayActionsCoroutine = null;
         }
     }
 }

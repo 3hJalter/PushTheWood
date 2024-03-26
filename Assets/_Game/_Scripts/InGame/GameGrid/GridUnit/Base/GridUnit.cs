@@ -308,9 +308,9 @@ namespace _Game.GameGrid.Unit
 
         private void OnOutTrigger()
         {
-            foreach (GridUnit unit in neighborUnits) unit.OnOutTriggerNeighbor(this);
-            foreach (GridUnit unit in belowUnits) unit.OnOutTriggerUpper(this);
-            foreach (GridUnit unit in upperUnits) unit.OnOutTriggerBelow(this);
+            foreach (GridUnit unit in neighborUnits.ToList()) unit.OnOutTriggerNeighbor(this);
+            foreach (GridUnit unit in belowUnits.ToList()) unit.OnOutTriggerUpper(this);
+            foreach (GridUnit unit in upperUnits.ToList()) unit.OnOutTriggerBelow(this);
         }
 
         protected virtual void OnOutTriggerNeighbor(GridUnit triggerUnit)

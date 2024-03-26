@@ -4,6 +4,7 @@ using _Game._Scripts.InGame.GameCondition.Data;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState;
+using _Game.GameGrid.Unit.Interface;
 using _Game.Managers;
 using _Game.Utilities;
 using AudioEnum;
@@ -12,7 +13,7 @@ using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Chump
 {
-    public class Chump : GridUnitDynamic, IJumpTreeRootUnit
+    public class Chump : GridUnitDynamic, IJumpTreeRootUnit, IBeInteractedUnit
     {
         [SerializeField] private StateEnum onBePushedStraightState;
         [SerializeField] private StateEnum onBePushedPerpendicularState;

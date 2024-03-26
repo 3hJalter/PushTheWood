@@ -5,6 +5,7 @@ using _Game.DesignPattern;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Chump;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
+using _Game.GameGrid.Unit.Interface;
 using _Game.Managers;
 using _Game.Utilities;
 using DG.Tweening;
@@ -61,40 +62,48 @@ namespace _Game.GameGrid.Unit.StaticUnit
             }
         }
 
+        public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
+        {
+            base.OnBePushed(direction, pushUnit);
+            if (pushedUnit is IBeInteractedUnit biu && biu.BeInteractedData.pushUnit is Player p)
+            {
+                if (LevelManager.Ins.IsSavePlayerPushStep)
+                {
+                    GameplayManager.Ins.SavePushHint.SaveStep(
+                        biu.BeInteractedData.pushUnitMainCell.X,
+                        biu.BeInteractedData.pushUnitMainCell.Y,
+                        (int) biu.BeInteractedData.inputDirection,
+                        biu.BeInteractedData.pushUnit.islandID);        
+                }
+                EventGlobalManager.Ins.OnPlayerPushStep?.Dispatch(new PlayerStep
+                {
+                    x = biu.BeInteractedData.pushUnitMainCell.X,
+                    y = biu.BeInteractedData.pushUnitMainCell.Y,
+                    d = (int) biu.BeInteractedData.inputDirection,
+                    i = biu.BeInteractedData.pushUnit.islandID
+                });
+            }
+        }
+
         protected override void OnPushedComplete()
         {
             if (!gameObject.activeSelf) return;
             
             #region Special Case for handle PushHint
 
-            if (pushedUnit is Chump c && c.BeInteractedData.pushUnit is Player)
+            if (pushedUnit is IBeInteractedUnit biu && biu.BeInteractedData.pushUnit is Player p)
             {
                 // Spawn the Base tree in this cell + Save the state
                 LevelManager.Ins.SaveGameState(true);
                 pushedUnit.MainCell.ValueChange();
                 mainCell.ValueChange();
                 LevelManager.Ins.SaveGameState(false);
-                // Spawn tree
-                Tree tree = SimplePool.Spawn<Tree>(treePrefab);
-                tree.OnInit(mainCell, startHeight);
-                LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(tree);
-                // Then despawn it
-                
-                EventGlobalManager.Ins.OnPlayerPushStep?.Dispatch(new PlayerStep
-                {
-                    x = c.BeInteractedData.pushUnitMainCell.X,
-                    y = c.BeInteractedData.pushUnitMainCell.Y,
-                    d = (int) c.BeInteractedData.inputDirection,
-                    i = c.BeInteractedData.pushUnit.islandID
-                });
             }
-            else
-            {
-                Tree tree = SimplePool.Spawn<Tree>(treePrefab);
-                tree.OnInit(mainCell, startHeight);
-                LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(tree);
-                // Then despawn it
-            }
+            // Spawn tree
+            Tree tree = SimplePool.Spawn<Tree>(treePrefab);
+            tree.OnInit(mainCell, startHeight);
+            LevelManager.Ins.CurrentLevel.AddNewUnitToIsland(tree);
+            // Then despawn it
             #endregion
             
             OnDespawn();

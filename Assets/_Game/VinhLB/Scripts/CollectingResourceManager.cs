@@ -29,6 +29,9 @@ namespace VinhLB
             public RectTransform CollectingResourceParentRectTF;
             public Tween ReactionTween;
         }
+        
+        public Func<Task> DelayCollectingRewardKeys;
+        public Func<Task> DelayCollectingLevelStars;
 
         private const float HEIGHT_OFFSET = 60;
         private const float HEIGHT_INCREASE = 50;
@@ -87,7 +90,7 @@ namespace VinhLB
                 eachCompleted, allCompleted);
         }
 
-        public void SpawnCollectingUIRewardKeys(int amount, Vector3 startPosition, Transform endPoint,
+        public async Task SpawnCollectingUIRewardKeys(int amount, Vector3 startPosition, Transform endPoint,
             Action<float> eachCompleted = null, Action allCompleted = null)
         {
             UpdateComponents();
@@ -97,11 +100,11 @@ namespace VinhLB
                 _collectingUIRewardKeyConfig.CollectingResourceParentRectTF = _overlayScreen.UIAdTicketParentRectTF;
             }
 
-            SpawnCollectingUIResource(_collectingUIRewardKeyConfig, amount, startPosition, endPoint,
+            await SpawnCollectingUIResource(_collectingUIRewardKeyConfig, amount, startPosition, endPoint,
                 eachCompleted, allCompleted);
         }
 
-        public void SpawnCollectingUILevelStars(int amount, Vector3 startPosition, Transform endPoint,
+        public async Task SpawnCollectingUILevelStars(int amount, Vector3 startPosition, Transform endPoint,
             Action<float> eachCompleted = null, Action allCompleted = null)
         {
             UpdateComponents();
@@ -111,7 +114,7 @@ namespace VinhLB
                 _collectingUILevelStarConfig.CollectingResourceParentRectTF = _overlayScreen.UILevelStarParentRectTF;
             }
 
-            SpawnCollectingUIResource(_collectingUILevelStarConfig, amount, startPosition, endPoint,
+            await SpawnCollectingUIResource(_collectingUILevelStarConfig, amount, startPosition, endPoint,
                 eachCompleted, allCompleted);
         }
 
@@ -228,7 +231,7 @@ namespace VinhLB
             }
         }
 
-        private async void SpawnCollectingUIResource(CollectingResourceConfig config, int amount,
+        private async Task SpawnCollectingUIResource(CollectingResourceConfig config, int amount,
             Vector3 startPosition, Transform endPoint, Action<float> eachCompleted, Action allCompleted)
         {
             if (amount <= 0)

@@ -62,6 +62,7 @@ namespace _Game.Managers
         private InGameScreen screen;
 
         public InGameScreen Screen => screen;
+        public PushHint PushHint => _pushHint;
 
         [ReadOnly]
         [SerializeField]
@@ -115,10 +116,8 @@ namespace _Game.Managers
             GameManager.Ins.RegisterListenerEvent(EventID.Pause, OnPauseGame);
             GameManager.Ins.RegisterListenerEvent(EventID.UnPause, OnUnPauseGame);
             // TODO: Refactor Booster later to avoid duplicate code
-            screen.OnUndo += OnUndo;
-            screen.OnGrowTree += OnGrowTree;
-            screen.OnUsePushHint += OnPushHint;
-            screen.OnResetIsland += OnResetIsland;
+
+            EventGlobalManager.Ins.OnUsingBooster.AddListener(OnUsingBooster);
             screen.undoButton.SetAmount(DataManager.Ins.GameData.user.undoCount);
             screen.pushHintButton.SetAmount(DataManager.Ins.GameData.user.pushHintCount);
             screen.growTreeButton.SetAmount(DataManager.Ins.GameData.user.growTreeCount);
@@ -140,9 +139,7 @@ namespace _Game.Managers
             GameManager.Ins.UnregisterListenerEvent(EventID.Pause, OnPauseGame);
             GameManager.Ins.UnregisterListenerEvent(EventID.UnPause, OnUnPauseGame);
             EventGlobalManager.Ins.OnChangeBoosterAmount?.RemoveListener(OnChangeBoosterAmount);
-            screen.OnUndo -= OnUndo;
-            screen.OnGrowTree -= OnGrowTree;
-            screen.OnUsePushHint -= OnPushHint;
+            EventGlobalManager.Ins.OnUsingBooster?.RemoveListener(OnUsingBooster);
             EventGlobalManager.Ins.OnPlayerChangeIsland?.RemoveListener(OnPlayerChangeIsland);
             TimerManager.Ins.PushSTimer(timer);
         }
@@ -415,6 +412,24 @@ namespace _Game.Managers
         }
 
         #region Booster
+        public void OnUsingBooster(BoosterType boosterType)
+        {
+            switch (boosterType)
+            {
+                case BoosterType.Undo:
+                    OnUndo();
+                    break;
+                case BoosterType.GrowTree:
+                    OnGrowTree();
+                    break;
+                case BoosterType.PushHint:
+                    OnPushHint();
+                    break;
+                case BoosterType.ResetIsland:
+                    OnResetIsland();
+                    break;
+            }
+        }
         #region Undo
         public void OnFreeUndo()
         {
@@ -559,7 +574,6 @@ namespace _Game.Managers
             else
             {
                 AudioManager.Ins.PlaySfx(AudioEnum.SfxType.Hint);
-                if (_pushHint.IsStartHint) return;
                 // If this is first player step cell in this island, return
                 if (!IsBoughtPushHintInIsland(playerIslandID))
                 {
@@ -573,6 +587,11 @@ namespace _Game.Managers
 
         private void OnStartHintOnPlayerIsland(int islandID, bool isShowHint = true)
         {
+            // check if _pushHint is run
+            if (_pushHint.IsStartHint && _pushHint.LastHintIslandId != islandID)
+            {
+                _pushHint.OnStopHint();
+            }
             screen.ActivePushHintIsland(false);
             _pushHint.OnStartHint(islandID, isShowHint);
         }
