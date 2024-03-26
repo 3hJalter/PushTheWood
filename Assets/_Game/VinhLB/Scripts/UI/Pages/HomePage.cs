@@ -551,12 +551,11 @@ namespace VinhLB
 
             if (taskList.Count > 0)
             {
+                _delayCollectingRewardKeys = null;
+                _delayCollectingLevelStars = null;
+                
                 yield return new WaitUntil(() => Task.WhenAll(taskList).IsCompleted);
             }
-            
-            Debug.Log("done");
-            _delayCollectingRewardKeys = null;
-            _delayCollectingLevelStars = null;
             
             OnShowMenuTutorial();
             

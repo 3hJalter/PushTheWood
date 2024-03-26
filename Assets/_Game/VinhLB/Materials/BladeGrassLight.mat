@@ -44,7 +44,7 @@ Material:
     - _BaseColor: {r: 0.28301284, g: 0.6981132, b: 0.023050921, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _CurvedWorldBendSettings: {r: 2, g: 1, b: 0, a: 0}
-    - _TipColor: {r: 0.33095872, g: 0.8396226, b: 0.0039604935, a: 1}
+    - _TipColor: {r: 0.33452916, g: 0.8584906, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &3491717857063969027
 MonoBehaviour:

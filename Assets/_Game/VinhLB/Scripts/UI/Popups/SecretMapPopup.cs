@@ -51,6 +51,13 @@ namespace VinhLB
         {
             for (int i = 0; i < _secretMapItems.Length; i++)
             {
+                if (i >= DataManager.Ins.CountSecretLevel)
+                {
+                    _secretMapItems[i].SetState(SecretMapItem.State.Locked);
+                    
+                    continue;
+                }
+                
                 if (i < GameManager.Ins.SecretLevelUnlock)
                 {
                     if (!DataManager.Ins.IsSecretLevelComplete(i))
