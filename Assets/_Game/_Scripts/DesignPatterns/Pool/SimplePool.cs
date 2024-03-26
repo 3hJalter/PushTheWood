@@ -402,7 +402,9 @@ namespace _Game.DesignPattern
         SurfaceGround2Side = 146,
         SurfaceGround2SideConnect = 147,
         SurfaceGroundEdgeAndConnect = 148,
-        
+        SurfaceGroundCornerAndConnect = 149,
+        SurfaceGroundEdgeAndConnect2 = 150,
+
         // Environment Object
         Cloud = 200,
         Flower = 201,
