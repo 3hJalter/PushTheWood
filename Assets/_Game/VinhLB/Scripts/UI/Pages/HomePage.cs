@@ -99,24 +99,25 @@ namespace VinhLB
 
             _playButton.onClick.AddListener(() =>
             {
-                UIManager.Ins.CloseAll();
                 LevelManager.Ins.InitLevel();
+                UIManager.Ins.CloseAll();
+
                 SplashScreen splashScreen = UIManager.Ins.OpenUI<SplashScreen>();
                 if (LevelManager.Ins.IsHardLevel)
                 {
-                    splashScreen.OnOpenCallback += ChangeCamera;
-                    splashScreen.OnCloseCallback += OpenHardWarning;
+                    splashScreen.OnOpenCallback += OpenActions;
+                    splashScreen.OnCloseCallback += CloseActions;
 
-                    void ChangeCamera()
+                    void OpenActions()
                     {
-                        splashScreen.OnOpenCallback -= ChangeCamera;
+                        splashScreen.OnOpenCallback -= OpenActions;
 
                         CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera, 0f);
                     }
 
-                    void OpenHardWarning()
+                    void CloseActions()
                     {
-                        splashScreen.OnCloseCallback -= OpenHardWarning;
+                        splashScreen.OnCloseCallback -= CloseActions;
                         
                         UIManager.Ins.OpenUI<HardWarningScreen>();
                     }

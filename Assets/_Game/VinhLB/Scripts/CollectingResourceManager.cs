@@ -30,6 +30,9 @@ namespace VinhLB
             public Tween ReactionTween;
         }
         
+        public Func<Task> DelayCollectingRewardKeys;
+        public Func<Task> DelayCollectingLevelStars;
+
         private const float HEIGHT_OFFSET = 60;
         private const float HEIGHT_INCREASE = 50;
 

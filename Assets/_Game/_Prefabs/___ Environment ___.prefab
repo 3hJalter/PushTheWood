@@ -242,13 +242,13 @@ GameObject:
   - component: {fileID: 7030098245329535400}
   - component: {fileID: 7030098245329535407}
   - component: {fileID: 1119362965}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7030098245329535406
 Transform:
   m_ObjectHideFlags: 0
