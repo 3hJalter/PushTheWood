@@ -164,8 +164,8 @@ Material:
     - _CustomPanSwitch: 0
     - _Cutoff: 0.5
     - _DepthExp: 1
-    - _DepthHorizontal: 4
-    - _DepthVertical: 4
+    - _DepthHorizontal: 0.52
+    - _DepthVertical: 16
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DisableDepthTexture: 0
@@ -280,18 +280,18 @@ Material:
     - _ZTest: 2
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0, g: 0.077713445, b: 0.3018868, a: 1}
+    - _BaseColor: {r: 0, g: 0.0783357, b: 0.5188679, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Direction: {r: -1, g: -1, b: 0, a: 0}
     - _DissolveMaskChannel: {r: 0, g: 1, b: 0, a: 0}
     - _DistanceNormalsFadeDist: {r: 100, g: 300, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FoamColor: {r: 1, g: 1, b: 1, a: 0.23529412}
     - _FoamTiling: {r: 0.05, g: 0.05, b: 0, a: 0}
-    - _HorizonColor: {r: 0, g: 0.5686275, b: 0.25258896, a: 0.77254903}
+    - _HorizonColor: {r: 0, g: 1, b: 0.55506897, a: 0.77254903}
     - _IntersectionColor: {r: 1, g: 1, b: 1, a: 0.78431374}
     - _NormalTiling: {r: 0.05, g: 0.05, b: 0, a: 0}
-    - _ShallowColor: {r: 0.22745098, g: 1.2313726, b: 1.2862746, a: 0.5019608}
+    - _ShallowColor: {r: 0.5754717, g: 0.24342968, b: 0, a: 0.5019608}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _TextureChannel: {r: 0, g: 1, b: 0, a: 0}
     - _WaveDirection: {r: 1, g: 1, b: 1, a: 1}
