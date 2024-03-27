@@ -82,6 +82,7 @@ MonoBehaviour:
   normalLevelIndex: 0
   dailyLevelIndex: 0
   secretLevelIndex: 0
+  dailyLevelClickedDay: 0
   KeyRewardCount: 0
   SecretMapPieceCount: 0
   goldCount: 0

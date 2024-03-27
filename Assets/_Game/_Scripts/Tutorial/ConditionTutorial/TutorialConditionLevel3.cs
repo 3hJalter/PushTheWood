@@ -1,4 +1,5 @@
-﻿using _Game.GameGrid;
+﻿using System;
+using _Game.GameGrid;
 using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Managers;
@@ -17,9 +18,8 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
                 GameplayManager.Ins.OnFreePushHint(false, true);
                 currentTutIndex++;
             }
-            
         }
-
+        
         public void OnForceShowTutorial(int index, bool isIncrement = true)
         { }
 

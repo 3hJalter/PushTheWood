@@ -23,7 +23,7 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
                 currentTutIndex++;
             }
         }
-
+        
         public void HandleShowTutorial(GridUnit triggerUnit, GridUnit targetUnit)
         {
             
