@@ -182,11 +182,11 @@ namespace VinhLB
 
             SetupFeature();
 
-            if (_rewardChestButton.IsUnlocked && _delayCollectingRewardKeys == null)
+            if (_rewardChestButton.IsUnlocked)
             {
                 UpdateRewardChestUI();
             }
-            if (_levelChestButton.IsUnlocked && _delayCollectingLevelStars == null)
+            if (_levelChestButton.IsUnlocked)
             {
                 UpdateLevelChestUI();
             }
@@ -426,7 +426,7 @@ namespace VinhLB
                 }
 
                 _rewardKeyText.text =
-                    $"{GameManager.Ins.SmoothRewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
+                    $"{(int)GameManager.Ins.SmoothRewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
             }
         }
 
@@ -473,7 +473,7 @@ namespace VinhLB
                 }
 
                 _levelStarText.text =
-                    $"{GameManager.Ins.SmoothLevelProgress}/{DataManager.Ins.ConfigData.requireLevelProgress}";
+                    $"{(int)GameManager.Ins.SmoothLevelProgress}/{DataManager.Ins.ConfigData.requireLevelProgress}";
             }
         }
 
