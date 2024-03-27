@@ -176,15 +176,15 @@ namespace _Game._Scripts.UIs.Component
             }
         }
 
-        public void SetUnlockLevel(int unlockLevel)
+        public void SetUnlockLevel(int unlockLevelIndex)
         {
             if (_unlockLevelText != null)
             {
-                _unlockLevelText.text = $"Lv.{unlockLevel}";
+                _unlockLevelText.text = $"Lv.{unlockLevelIndex + 1}";
             }
             if (_alternativeUnlockLevelText != null)
             {
-                _alternativeUnlockLevelText.text = $"Lv.{unlockLevel}";
+                _alternativeUnlockLevelText.text = $"Lv.{unlockLevelIndex + 1}";
             }
         }
     }
