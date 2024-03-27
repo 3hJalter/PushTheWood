@@ -129,13 +129,13 @@ namespace _Game.UIs.Screen
             base.Setup(param);
             GameManager.Ins.ChangeState(GameState.InGame);
             OnShowTryHintAgain(false);
+            UpdateLevelText();
             // Log param
             if (param is null) MoveInputManager.Ins.ShowContainer(true);
             else MoveInputManager.Ins.ShowContainer(true, (bool)param);
             if (CameraManager.Ins.IsCurrentCameraIs(ECameraType.InGameCamera)) return;
             canvasGroup.alpha = 0f;
             // blockPanel.enabled = true;
-            UpdateLevelText();
             UpdateObjectiveText();
             isTimeNormal = false;
             CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera);
@@ -289,19 +289,19 @@ namespace _Game.UIs.Screen
             LevelType type = LevelManager.Ins.CurrentLevel.LevelType;
             if (type is LevelType.Normal)
             {
-                int currentLevel = LevelManager.Ins.CurrentLevel.Index;
+                int currentLevelIndex = LevelManager.Ins.CurrentLevel.Index;
                 
-                int unlockLevel = DataManager.Ins.ConfigData.boosterConfigList[(int)undoButton.Type].UnlockAtLevel;
-                undoButton.SetUnlockLevel(unlockLevel);
-                undoButton.IsLock = currentLevel < unlockLevel;
+                int unlockLevelIndex = DataManager.Ins.ConfigData.boosterConfigList[(int)undoButton.Type].UnlockAtLevel;
+                undoButton.SetUnlockLevel(unlockLevelIndex);
+                undoButton.IsLock = currentLevelIndex < unlockLevelIndex;
                 
-                unlockLevel = DataManager.Ins.ConfigData.boosterConfigList[(int)pushHintButton.Type].UnlockAtLevel;
-                pushHintButton.SetUnlockLevel(unlockLevel);
-                pushHintButton.IsLock = currentLevel < unlockLevel;
+                unlockLevelIndex = DataManager.Ins.ConfigData.boosterConfigList[(int)pushHintButton.Type].UnlockAtLevel;
+                pushHintButton.SetUnlockLevel(unlockLevelIndex);
+                pushHintButton.IsLock = currentLevelIndex < unlockLevelIndex;
 
-                unlockLevel = DataManager.Ins.ConfigData.boosterConfigList[(int)growTreeButton.Type].UnlockAtLevel;
-                growTreeButton.SetUnlockLevel(unlockLevel);
-                growTreeButton.IsLock = currentLevel < unlockLevel;
+                unlockLevelIndex = DataManager.Ins.ConfigData.boosterConfigList[(int)growTreeButton.Type].UnlockAtLevel;
+                growTreeButton.SetUnlockLevel(unlockLevelIndex);
+                growTreeButton.IsLock = currentLevelIndex < unlockLevelIndex;
                 
                 // isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)resetIslandButton.Type].UnlockAtLevel;
                 resetIslandButton.IsLock = true;
