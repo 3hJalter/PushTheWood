@@ -40,7 +40,7 @@ namespace _Game.Data
         [FoldoutGroup("In Game/Reward Chest")]
         public readonly int requireRewardKey = 3;
         [FoldoutGroup("In Game/Reward Chest")]
-        public readonly CurrencyType[] RCRewards;
+        public readonly BoosterType[] RCRewards;
         [FoldoutGroup("In Game/Reward Chest")]
         public readonly int[] RCQuantitys;
         [FoldoutGroup("In Game/Reward Chest")]
