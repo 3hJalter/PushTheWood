@@ -63,24 +63,12 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             #region Get Resource
             
-            LevelManager.Ins.goldCount += 20;
+            LevelManager.Ins.goldCount += DataManager.Ins.ConfigData.finalPointGoldReward;
             if (LevelManager.Ins.CurrentLevel.LevelType == LevelType.Normal)
             {
                 int levelIndex = LevelManager.Ins.CurrentLevel.Index;
 
-                if (levelIndex == 2)
-                {
-                    LevelManager.Ins.boosterRewardCount.Add(BoosterType.Undo, 10);
-                    // LevelManager.Ins.boosterRewardCount.Add(BoosterType.ResetIsland, 2);
-                } 
-                else if (levelIndex == 4)
-                {
-                    LevelManager.Ins.boosterRewardCount.Add(BoosterType.GrowTree, 1);
-                }
-                else if (levelIndex == 5)
-                {
-                    LevelManager.Ins.boosterRewardCount.Add(BoosterType.PushHint, 1);
-                } else if (levelIndex == 6)
+                if (levelIndex == 6)
                 {
                     CollectingResourceManager.Ins.SpawnCollectingRewardKey(3, LevelManager.Ins.player.Tf);
                     LevelManager.Ins.KeyRewardCount += 3;

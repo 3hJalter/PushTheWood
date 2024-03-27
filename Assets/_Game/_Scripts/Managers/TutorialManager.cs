@@ -53,6 +53,11 @@ namespace _Game._Scripts.Managers
             GameManager.Ins.UnregisterListenerEvent(EventID.OnShowTutorialInMenu, OnHandleMenuTutorial);
         }
 
+        public bool IsOneTimeTutCompleted(int index)
+        {
+            return DataManager.Ins.GameData.user.completedOneTimeTutorial.Contains(index);
+        }
+        
         public void DiscardQueue()
         {
             moveData.Clear();
@@ -152,13 +157,12 @@ namespace _Game._Scripts.Managers
         private void OnHandleMenuTutorial(object normalLevelIndex)
         {
             if (normalLevelIndex is not int index) return;
-            if (DataManager.Ins.GameData.user.completedMenuTutorial.Contains(index)) return;
+            if (IsOneTimeTutCompleted(index)) return;
             if (DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex == index)
             {
                 if (menuTutorialList.TryGetValue(index, out UICanvas tutorialScreen))
                 {
                     UIManager.Ins.OpenUIDirectly(tutorialScreen);
-                    DevLog.Log(DevId.Hoang, "Show Daily Challenge Tutorial");
                 }
             }
             else if (DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex == index)
@@ -166,7 +170,6 @@ namespace _Game._Scripts.Managers
                 if (menuTutorialList.TryGetValue(index, out UICanvas tutorialScreen))
                 {
                     UIManager.Ins.OpenUIDirectly(tutorialScreen);
-                    DevLog.Log(DevId.Hoang, "Show Daily Challenge Tutorial");
                 }
             }
             // else if (DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex == index)

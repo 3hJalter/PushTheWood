@@ -199,7 +199,7 @@ namespace _Game.UIs.Screen
                 DataManager.Ins.GameData.user.currentDailyChallengerDay = 1;
                 DataManager.Ins.GameData.user.dailyLevelIndexComplete.Clear();
                 DataManager.Ins.GameData.user.dailyChallengeRewardCollected.Clear();
-                if (DataManager.Ins.GameData.user.completedMenuTutorial.Contains(DataManager.Ins.ConfigData
+                if (DataManager.Ins.GameData.user.completedOneTimeTutorial.Contains(DataManager.Ins.ConfigData
                         .unlockDailyChallengeAtLevelIndex)) // If clear the tutorial && unlock daily challenge
                 {
                     // Shuffle daily level index

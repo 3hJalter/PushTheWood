@@ -85,7 +85,7 @@ namespace _Game.Managers
                 _gameData.user.currentDailyChallengerDay %= 7 + 1;
                 _gameData.user.dailyLevelIndexComplete.Clear();
                 _gameData.user.dailyChallengeRewardCollected.Clear();
-                if (_gameData.user.completedMenuTutorial.Contains(DataManager.Ins.ConfigData
+                if (_gameData.user.completedOneTimeTutorial.Contains(DataManager.Ins.ConfigData
                         .unlockDailyChallengeAtLevelIndex)) // If clear the tutorial && unlock daily challenge
                 {
                     // Shuffle daily level index

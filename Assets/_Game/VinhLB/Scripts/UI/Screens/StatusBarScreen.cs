@@ -58,17 +58,6 @@ namespace VinhLB
         {
             base.Setup(param);
 
-            if (_delayCollectingGold == null)
-            {
-                _goldValueText.text =
-                    GameManager.Ins.Gold.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
-            }
-            if (_delayCollectingAdTickets == null)
-            {
-                _adTicketValueText.text =
-                    GameManager.Ins.AdTickets.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
-            }
-
             if (param is true)
             {
                 _canvasGroup.alpha = 1f;
@@ -79,6 +68,11 @@ namespace VinhLB
                 _canvasGroup.alpha = 0f;
                 _blockPanel.gameObject.SetActive(true);
             }
+            
+            _goldValueText.text =
+                ((int)GameManager.Ins.SmoothGold).ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+            _adTicketValueText.text =
+                ((int)GameManager.Ins.SmoothAdTickets).ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
         }
 
         public override void Open(object param = null)

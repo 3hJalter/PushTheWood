@@ -21,7 +21,7 @@ namespace _Game.Data
             public int normalLevelIndex;
            
             
-            public List<int> completedMenuTutorial = new();
+            public List<int> completedOneTimeTutorial = new();
             
             // daily challenge
             public int currentDailyChallengerDay = 1;
@@ -52,10 +52,10 @@ namespace _Game.Data
             public int secretMapPieces = 7;
 
             // Booster Data
-            public int undoCount;
+            public int undoCount = 10;
             public int resetIslandCount;
-            public int growTreeCount;
-            public int pushHintCount;
+            public int growTreeCount = 3;
+            public int pushHintCount = 1;
             
             // Purchase & First rate Data
             public bool purchasedNoAds;
@@ -64,6 +64,7 @@ namespace _Game.Data
             // TODO: Shop data
             public int currentPlayerSkinIndex = 0;
             public int[] playerSkinState = new int[PLAYER_SKIN_COUNT];
+            public int[] playerRentSkinState = new int[PLAYER_SKIN_COUNT];
             
             //Other Data
             public int playedDay = 0;

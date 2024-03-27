@@ -40,7 +40,7 @@ namespace _Game.Data
         [FoldoutGroup("In Game/Reward Chest")]
         public readonly int requireRewardKey = 3;
         [FoldoutGroup("In Game/Reward Chest")]
-        public readonly CurrencyType[] RCRewards;
+        public readonly BoosterType[] RCRewards;
         [FoldoutGroup("In Game/Reward Chest")]
         public readonly int[] RCQuantitys;
         [FoldoutGroup("In Game/Reward Chest")]
@@ -62,6 +62,9 @@ namespace _Game.Data
         public readonly int DangerTime = 30;
         [FoldoutGroup("In Game/MoreTimeAdded")]
         public readonly int MoreTimeAdded = 60;
+
+        [FoldoutGroup("InGame/Reward")] public readonly int finalPointGoldReward = 20;
+        [FoldoutGroup("InGame/Reward")] public readonly int bonusChestGoldReward = 40;
         #endregion
 
         #region Daily Challenge Reward

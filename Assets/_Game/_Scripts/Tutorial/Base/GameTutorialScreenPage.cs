@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _Game._Scripts.UIs.Component;
 using _Game.Managers;
 using _Game.UIs.Screen;
-using _Game.Utilities;
 using _Game.Utilities.Timer;
 using HControls;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine.Video;
 
 namespace _Game._Scripts.Tutorial
 {
@@ -24,6 +23,8 @@ namespace _Game._Scripts.Tutorial
 
         private bool _firstLoopAllPagesDone;
         private int _currentVideoIndex;
+
+        public event Action OnCloseCallback;
         
         public override void Setup(object param = null)
         {
@@ -78,6 +79,7 @@ namespace _Game._Scripts.Tutorial
 
         public void OnClose()
         {
+            OnCloseCallback?.Invoke();
             CloseDirectly();
         }
         

@@ -29,7 +29,7 @@ namespace _Game.Utilities
 
             foreach (Vector2 p in data)
             {
-                sumXY += (p.x - meanX) * (p.y - meanX);
+                sumXY += (p.x - meanX) * (p.y - meanY);
                 sumX2 += Mathf.Pow(p.x - meanX, 2);
             }
             if (sumX2 != 0)

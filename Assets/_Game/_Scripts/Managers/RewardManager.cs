@@ -70,18 +70,10 @@ namespace _Game.Managers
         {
             Reward[] rewards = new Reward[] { new Reward() };
             int index = HUtilities.WheelRandom(DataManager.Ins.ConfigData.RCRates);
-            CurrencyType type = DataManager.Ins.ConfigData.RCRewards[index];
-            rewards[0].CurrencyType = type;
-            rewards[0].RewardType = RewardType.Currency;
-            switch (type)
-            {
-                case CurrencyType.Gold:
-                    rewards[0].Amount = UnityEngine.Random.Range(100, 201);
-                    break;
-                case CurrencyType.AdTicket:
-                    rewards[0].Amount = DataManager.Ins.ConfigData.RCQuantitys[index];
-                    break;
-            }
+            BoosterType type = DataManager.Ins.ConfigData.RCRewards[index];
+            rewards[0].BoosterType = type;
+            rewards[0].RewardType = RewardType.Booster;
+            rewards[0].Amount = DataManager.Ins.ConfigData.RCQuantitys[index];
             return rewards;
         }
 

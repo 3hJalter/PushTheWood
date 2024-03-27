@@ -83,10 +83,10 @@ namespace _Game.Managers
             if(intAdsStepCount >= DataManager.Ins.ConfigData.stepInterAdsCountMax)
             {
                 Interstitial.Show(OnInterAdsDone);
-                intAdsStepCount -= DataManager.Ins.ConfigData.stepInterAdsCountMax;
             }
         }
-        private void OnInterAdsDone() { 
+        private void OnInterAdsDone() {
+            intAdsStepCount -= DataManager.Ins.ConfigData.stepInterAdsCountMax;
             cooldownTimer.Start(DataManager.Ins.ConfigData.interAdsCooldownTime);
             interCallBack?.Invoke();
             interCallBack = null;

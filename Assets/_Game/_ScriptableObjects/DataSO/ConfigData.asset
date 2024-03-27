@@ -44,10 +44,10 @@ MonoBehaviour:
       Data: 4
     - Name: RCRewards
       Entry: 7
-      Data: 0|_Game.Resource.CurrencyType[], Assembly-CSharp
+      Data: 0|_Game.Resource.BoosterType[], Assembly-CSharp
     - Name: 
       Entry: 12
-      Data: 4
+      Data: 3
     - Name: 
       Entry: 3
       Data: 0
@@ -56,10 +56,7 @@ MonoBehaviour:
       Data: 1
     - Name: 
       Entry: 3
-      Data: 1
-    - Name: 
-      Entry: 3
-      Data: 1
+      Data: 2
     - Name: 
       Entry: 13
       Data: 
@@ -71,19 +68,16 @@ MonoBehaviour:
       Data: 1|System.Int32[], mscorlib
     - Name: 
       Entry: 14
-      Data: 4
+      Data: 3
     - Name: 
       Entry: 3
-      Data: 160
+      Data: 3
     - Name: 
       Entry: 3
       Data: 1
     - Name: 
       Entry: 3
       Data: 2
-    - Name: 
-      Entry: 3
-      Data: 3
     - Name: 
       Entry: 13
       Data: 
@@ -95,19 +89,16 @@ MonoBehaviour:
       Data: 2|System.Single[], mscorlib
     - Name: 
       Entry: 14
-      Data: 4
+      Data: 3
     - Name: 
       Entry: 4
-      Data: 0.94
+      Data: 0.6
     - Name: 
       Entry: 4
-      Data: 0.03
+      Data: 0.1
     - Name: 
       Entry: 4
-      Data: 0.02
-    - Name: 
-      Entry: 4
-      Data: 0.01
+      Data: 0.3
     - Name: 
       Entry: 13
       Data: 
@@ -116,7 +107,7 @@ MonoBehaviour:
       Data: 
     - Name: requireLevelProgress
       Entry: 3
-      Data: 5
+      Data: 10
     - Name: LCRewards
       Entry: 7
       Data: 3|_Game.Resource.CurrencyType[], Assembly-CSharp
@@ -228,6 +219,12 @@ MonoBehaviour:
     - Name: MoreTimeAdded
       Entry: 3
       Data: 60
+    - Name: finalPointGoldReward
+      Entry: 3
+      Data: 20
+    - Name: bonusChestGoldReward
+      Entry: 3
+      Data: 40
     - Name: stepInterAdsCountMax
       Entry: 3
       Data: 3
@@ -286,7 +283,7 @@ MonoBehaviour:
       MainIconSprite: {fileID: 0}
       SubIconSprite: {fileID: 0}
   - type: 1
-    unlockAtLevel: 6
+    unlockAtLevel: 7
     goldPerBuyTen: 10
     ticketPerBuyRatio:
       ticketNeed: 2
@@ -296,7 +293,7 @@ MonoBehaviour:
       MainIconSprite: {fileID: 0}
       SubIconSprite: {fileID: 0}
   - type: 2
-    unlockAtLevel: 5
+    unlockAtLevel: 6
     goldPerBuyTen: 10
     ticketPerBuyRatio:
       ticketNeed: 1
