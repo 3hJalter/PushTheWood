@@ -27,7 +27,6 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
                         UIManager.Ins.OpenUI<OverlayScreen>().BoosterUnlockEffectUI.PlayUnlockEffect(BoosterType.PushHint);                      
                         DataManager.Ins.GameData.user.completedOneTimeTutorial
                             .Add(boosterUnlockIndex); // UNDO index = 0
-                        GameplayManager.Ins.OnFreePushHint(false, false);
                     };
                 }
                 currentTutIndex++;
