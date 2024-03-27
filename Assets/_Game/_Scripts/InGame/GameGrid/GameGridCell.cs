@@ -69,7 +69,8 @@ namespace _Game.GameGrid
 
         public void RemoveGridUnit(GridUnit removeUnit)
         {
-            if (removeUnit is not Player) ValueChange();
+            ValueChange();
+            LevelManager.Ins.SaveChangeUnits.Add(removeUnit);
             for (int i = 0; i < data.gridUnits.Length; i++)
                 if (data.gridUnits[i] == removeUnit)
                     data.gridUnits[i] = null;
@@ -77,7 +78,8 @@ namespace _Game.GameGrid
 
         public void AddGridUnit(GridUnit addUnit)
         {
-            if (addUnit is not Player) ValueChange();
+            ValueChange();
+            LevelManager.Ins.SaveChangeUnits.Add(addUnit);
             for (int i = (int)addUnit.StartHeight; i <= (int)addUnit.EndHeight; i++) data.gridUnits[i] = addUnit;
         }
 

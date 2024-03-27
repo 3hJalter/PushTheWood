@@ -55,6 +55,8 @@ namespace _Game.GameGrid
         private Level _currentLevel;
         private bool _isRestarting;
         private bool _isResetting;
+
+        public readonly HashSet<GameUnit> SaveChangeUnits = new HashSet<GameUnit>();
         public int KeyRewardCount = 0;
         public int SecretMapPieceCount = 0;
         public int goldCount;
@@ -161,7 +163,6 @@ namespace _Game.GameGrid
             }
             normalLevelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
             OnGenerateLevel(LevelType.Normal, normalLevelIndex, normalLevelIndex == 0);
-
             #region Handle If user passes first level
 
             if (DataManager.Ins.GameData.user.normalLevelIndex > 0) UIManager.Ins.OpenUI<MainMenuScreen>(true);
@@ -448,13 +449,17 @@ namespace _Game.GameGrid
         public void SaveGameState(bool isMerge)
         {
             savingState.Save(isMerge);
+            if (!isMerge)
+                SaveChangeUnits.Clear();
             GameplayManager.Ins.IsCanUndo = IsCanUndo;
+            
         }
 
         public void DiscardSaveState()
         {
             savingState.PopSave();
             GameplayManager.Ins.IsCanUndo = IsCanUndo;
+            SaveChangeUnits.Clear();
         }
         public class CareTaker
         {
