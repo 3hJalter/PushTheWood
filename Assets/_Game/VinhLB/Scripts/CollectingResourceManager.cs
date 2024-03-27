@@ -219,12 +219,11 @@ namespace VinhLB
 
         private void UpdateComponents()
         {
-            if (_overlayScreen == null)
+            if (_overlayScreen is null)
             {
                 _overlayScreen = UIManager.Ins.OpenUI<OverlayScreen>();
             }
-
-            if (_overlayScreen != null && !_overlayScreen.gameObject.activeInHierarchy)
+            else if (!_overlayScreen.gameObject.activeInHierarchy)
             {
                 _overlayScreen.Setup();
                 _overlayScreen.Open();

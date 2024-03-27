@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using _Game._Scripts.UIs.Component;
+using UnityEngine;
 
 namespace VinhLB
 {
@@ -15,10 +16,15 @@ namespace VinhLB
         [SerializeField]
         private RectTransform _floatingRewardKeyParentRectTf;
 
+        [SerializeField] private BoosterUnlockEffectUI boosterUnlockEffectUI;
+        
         public RectTransform UICoinParentRectTF => _uiCoinParentRectTF;
         public RectTransform UIAdTicketParentRectTF => _uiAdTicketParentRectTF;
         public RectTransform UIRewardKeyParentRectTF => _uiRewardKeyParentRectTF;
         public RectTransform UILevelStarParentRectTF => _uiLevelStarParentRectTF;
         public RectTransform FloatingRewardKeyParentRectTF => _floatingRewardKeyParentRectTf;
+        
+        public BoosterUnlockEffectUI BoosterUnlockEffectUI => boosterUnlockEffectUI;
+        
     }
 }

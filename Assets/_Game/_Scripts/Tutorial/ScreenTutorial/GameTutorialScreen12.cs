@@ -1,5 +1,4 @@
-﻿using System;
-using _Game._Scripts.Managers;
+﻿using _Game._Scripts.Managers;
 using _Game.Utilities;
 using GG.Infrastructure.Utils.Swipe;
 using HControls;
