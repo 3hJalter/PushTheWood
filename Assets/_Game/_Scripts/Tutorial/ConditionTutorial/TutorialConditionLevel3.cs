@@ -18,20 +18,8 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
                 GameplayManager.Ins.OnFreePushHint(false, true);
                 currentTutIndex++;
             }
-            else if (currentTutIndex == 1)
-            {
-                if (triggerUnit is not Player) return;
-               // If player move to cell (9-17) then show hint
-               if (Math.Abs(cell.WorldX - 9) < TOLERANCE && Math.Abs(cell.WorldY - 17) < TOLERANCE)
-               {
-                   GameplayManager.Ins.OnFreePushHint(false, true);
-                   currentTutIndex++;
-               }
-            }
         }
-
-        private const double TOLERANCE = 0.01;
-
+        
         public void OnForceShowTutorial(int index, bool isIncrement = true)
         { }
 

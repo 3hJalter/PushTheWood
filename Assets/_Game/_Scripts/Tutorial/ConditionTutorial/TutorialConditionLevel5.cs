@@ -21,20 +21,9 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
                 UIManager.Ins.OpenUIDirectly(tutorialScreens[currentTutIndex]);
                 GameplayManager.Ins.OnFreePushHint(false, true);
                 currentTutIndex++;
-            } else if (currentTutIndex == 1)
-            {
-                if (triggerUnit is not Player) return;
-                // If player move to cell (17 13) then show hint
-                if (Math.Abs(cell.WorldX - 17) < TOLERANCE && Math.Abs(cell.WorldY - 13) < TOLERANCE)
-                {
-                    GameplayManager.Ins.OnFreePushHint(false, true);
-                    currentTutIndex++;
-                }
             }
         }
-
-        private const double TOLERANCE = 0.01;
-
+        
         public void HandleShowTutorial(GridUnit triggerUnit, GridUnit targetUnit)
         {
             
