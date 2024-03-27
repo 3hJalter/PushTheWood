@@ -64,6 +64,7 @@ namespace _Game.Data
             // TODO: Shop data
             public int currentPlayerSkinIndex = 0;
             public int[] playerSkinState = new int[PLAYER_SKIN_COUNT];
+            public int[] playerRentSkinState = new int[PLAYER_SKIN_COUNT];
             
             //Other Data
             public int playedDay = 0;

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace _Game._Scripts.UIs.Component
 {
     [RequireComponent(typeof(HButton))]
-    public class BoosterButton : MonoBehaviour
+    public class BoosterButton : HMonoBehaviour
     {
         [SerializeField] private BoosterType type;
 
@@ -110,6 +110,8 @@ namespace _Game._Scripts.UIs.Component
         [SerializeField] private Image image;
         [SerializeField] private Image lockImage;
         [SerializeField] private Image unInteractableImage;
+        [SerializeField] 
+        private TMP_Text _unlockLevelText;
         
         [SerializeField] private bool hasAlternativeImage;
         [ShowIf("hasAlternativeImage")]
@@ -118,12 +120,15 @@ namespace _Game._Scripts.UIs.Component
         [SerializeField] private Image alternativeLockImage;
         [ShowIf("hasAlternativeImage")]
         [SerializeField] private Image alternativeUnInteractableImage;
+        [ShowIf("hasAlternativeImage")]
+        [SerializeField] 
+        private TMP_Text _alternativeUnlockLevelText;
         
         [Title("Monetize")]
         [SerializeField] private RectTransform amountFrame;
-        [SerializeField] private TextMeshProUGUI amountText;
+        [SerializeField] private TMP_Text amountText;
 
-        public TextMeshProUGUI AmountText => amountText;
+        public TMP_Text AmountText => amountText;
 
         [SerializeField] private Image adsRequireImage;
         
@@ -168,6 +173,18 @@ namespace _Game._Scripts.UIs.Component
             {
                 amountFrame.gameObject.SetActive(_isShowAmount && !_isLock);
                 adsRequireImage.gameObject.SetActive(false);
+            }
+        }
+
+        public void SetUnlockLevel(int unlockLevel)
+        {
+            if (_unlockLevelText != null)
+            {
+                _unlockLevelText.text = $"Lv.{unlockLevel}";
+            }
+            if (_alternativeUnlockLevelText != null)
+            {
+                _alternativeUnlockLevelText.text = $"Lv.{unlockLevel}";
             }
         }
     }

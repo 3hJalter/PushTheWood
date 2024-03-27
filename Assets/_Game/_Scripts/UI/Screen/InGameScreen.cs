@@ -290,17 +290,21 @@ namespace _Game.UIs.Screen
             if (type is LevelType.Normal)
             {
                 int currentLevel = LevelManager.Ins.CurrentLevel.Index;
-                bool isLock = currentLevel <
-                              DataManager.Ins.ConfigData.boosterConfigList[(int)undoButton.Type].UnlockAtLevel;
-                undoButton.IsLock = isLock;
-                isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)pushHintButton.Type]
-                    .UnlockAtLevel;
-                pushHintButton.IsLock = isLock;
-                isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)growTreeButton.Type]
-                    .UnlockAtLevel;
-                growTreeButton.IsLock = isLock;
+                
+                int unlockLevel = DataManager.Ins.ConfigData.boosterConfigList[(int)undoButton.Type].UnlockAtLevel;
+                undoButton.SetUnlockLevel(unlockLevel);
+                undoButton.IsLock = currentLevel < unlockLevel;
+                
+                unlockLevel = DataManager.Ins.ConfigData.boosterConfigList[(int)pushHintButton.Type].UnlockAtLevel;
+                pushHintButton.SetUnlockLevel(unlockLevel);
+                pushHintButton.IsLock = currentLevel < unlockLevel;
+
+                unlockLevel = DataManager.Ins.ConfigData.boosterConfigList[(int)growTreeButton.Type].UnlockAtLevel;
+                growTreeButton.SetUnlockLevel(unlockLevel);
+                growTreeButton.IsLock = currentLevel < unlockLevel;
+                
                 // isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)resetIslandButton.Type].UnlockAtLevel;
-                resetIslandButton.IsLock = isLock;
+                resetIslandButton.IsLock = true;
             }
             else
             {
