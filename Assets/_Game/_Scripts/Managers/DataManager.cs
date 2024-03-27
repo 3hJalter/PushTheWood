@@ -136,13 +136,30 @@ namespace _Game.Managers
         public void SetUnlockCharacterSkin(int index, bool value)
         {
             GameData.user.playerSkinState[index] = value ? 1 : 0;
+            if (value)
+            {
+                GameData.user.playerRentSkinState[index] = 0;
+            }
         }
 
         public void SetCharacterSkinIndex(int index)
         {
             GameData.user.currentPlayerSkinIndex = index;
         }
-        
+        public void SetRentCharacterSkinCount(int index, int value)
+        {
+            GameData.user.playerRentSkinState[index] = value;
+        }
+
+        public int GetRentCharacterSkinCount(int index)
+        {
+            return GameData.user.playerRentSkinState[index];
+        }
+        public void AddRentCharacterSkinCount(int index, int value)
+        {
+            GameData.user.playerRentSkinState[index] += value;
+        }
+
         public int GetLevelTime(LevelType type, LevelNormalType normalType = LevelNormalType.None)
         {
             return type switch
