@@ -134,9 +134,10 @@ namespace _Game.Utilities.Grid
                 TimerManager.Ins.WaitForFrame(2, () => DebugData(x, y));
                 void DebugData(int x, int y)
                 {
-                    debugTextArray[x, y].text = gridArray[x, y].ToString();
+                    if (debugTextArray[x, y] != null)
+                        debugTextArray[x, y].text = gridArray[x, y].ToString();
                 }
-            }           
+            }
             #endregion
             if (isRevert) return;
             isChange = true;
@@ -167,7 +168,7 @@ namespace _Game.Utilities.Grid
             isChange = false;
             cellMementos.Clear();
             cellPos.Clear();
-            foreach(GridCell<TD> cell in gridArray)
+            foreach (GridCell<TD> cell in gridArray)
             {
                 cell.Data.ResetData();
             }
@@ -196,7 +197,7 @@ namespace _Game.Utilities.Grid
                         if (detail)
                         {
                             string content = grid.gridArray[x, y].GetCellPosition().ToString();
-                            Vector3 localPosition = grid.GetWorldPosition(x, y) + new Vector3(grid.CellSize / 5, grid.CellSize / 2 + 0.1f, grid.CellSize * 0.75f);
+                            Vector3 localPosition = grid.GetWorldPosition(x, y) + new Vector3(grid.CellSize / 5, grid.CellSize / 2 + 0.3f, grid.CellSize * 0.75f);
                             grid.debugTextArray[x, y] = GridUtilities.CreateWorldText(content, null, localPosition, 2, Color.white, TextAnchor.MiddleCenter);
                             // Rotate text base on the gridPlane
                             grid.debugTextArray[x, y].transform.rotation = grid.GridPlaneType switch
