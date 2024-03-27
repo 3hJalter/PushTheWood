@@ -1,11 +1,12 @@
-﻿using System;
+﻿using _Game._Scripts.Managers;
 using _Game.GameGrid;
 using _Game.GameGrid.Unit;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.Managers;
+using _Game.Resource;
 using _Game.Utilities;
-using DG.Tweening;
 using UnityEngine;
+using VinhLB;
 
 namespace _Game._Scripts.Tutorial.ConditionTutorial
 {
@@ -17,11 +18,19 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
             if (currentTutIndex == 0)
             {
                 if (triggerUnit is not Player) return;
-                if (!(Math.Abs(cell.WorldX - 9) < Constants.TOLERANCE) ||
-                    !(Math.Abs(cell.WorldY - 7) < Constants.TOLERANCE)) return;
-                GameplayManager.Ins.OnFreePushHint(false, true);
+                int boosterUnlockIndex = DataManager.Ins.ConfigData.boosterConfigList[(int) BoosterType.PushHint].UnlockAtLevel;
+                if (!TutorialManager.Ins.IsOneTimeTutCompleted(boosterUnlockIndex))
+                {
+                    GameTutorialScreenPage ui = (GameTutorialScreenPage) UIManager.Ins.OpenUIDirectly(tutorialScreens[0]);
+                    ui.OnCloseCallback += () =>
+                    {
+                        UIManager.Ins.OpenUI<OverlayScreen>().BoosterUnlockEffectUI.PlayUnlockEffect(BoosterType.PushHint);                      
+                        DataManager.Ins.GameData.user.completedOneTimeTutorial
+                            .Add(boosterUnlockIndex); // UNDO index = 0
+                        GameplayManager.Ins.OnFreePushHint(false, false);
+                    };
+                }
                 currentTutIndex++;
-                return;
             }
         }
 

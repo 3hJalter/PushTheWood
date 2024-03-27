@@ -17,14 +17,10 @@ namespace _Game._Scripts.Tutorial.ConditionTutorial
             if (currentTutIndex == 0)
             {
                 if (triggerUnit is not Player) return;
-                if (!(Math.Abs(cell.WorldX - 7) < Constants.TOLERANCE) ||
-                    !(Math.Abs(cell.WorldY - 7) < Constants.TOLERANCE)) return;
-                DevLog.Log(DevId.Hoang, "TutorialConditionLevel5, HandleShowTutorial, show tutorial 1");
                 // Open TutorialScreen
                 UIManager.Ins.OpenUIDirectly(tutorialScreens[currentTutIndex]);
                 GameplayManager.Ins.OnFreePushHint(false, true);
                 currentTutIndex++;
-                return;
             }
         }
 

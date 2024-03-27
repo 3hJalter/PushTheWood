@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using _Game._Scripts.Managers;
+﻿using _Game._Scripts.Managers;
 using _Game.Managers;
 using _Game.UIs.Screen;
-using MEC;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;

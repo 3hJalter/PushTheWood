@@ -70,7 +70,7 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
 
         public void OnClickDailyChallengeTutorial()
         {
-            DataManager.Ins.GameData.user.completedMenuTutorial
+            DataManager.Ins.GameData.user.completedOneTimeTutorial
                 .Add(DataManager.Ins.ConfigData.unlockDailyChallengeAtLevelIndex);
             // 7. Show a fake DailyChallengePopup
             UIManager.Ins.GetUI<HomePage>().ShowDailyChallengeButton(true);

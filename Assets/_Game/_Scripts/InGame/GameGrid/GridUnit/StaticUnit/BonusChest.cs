@@ -3,6 +3,7 @@ using _Game._Scripts.Managers;
 using _Game.Data;
 using _Game.GameGrid.Unit.Interface;
 using _Game.GameGrid.Unit.StaticUnit.Chest;
+using _Game.Managers;
 using _Game.Utilities;
 using DG.Tweening;
 using GameGridEnum;
@@ -102,7 +103,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             if (isTakeResource)
             {
                 LevelManager.Ins.KeyRewardCount += 1;
-                LevelManager.Ins.goldCount += 40;
+                LevelManager.Ins.goldCount += DataManager.Ins.ConfigData.bonusChestGoldReward;
             }
         }
     }

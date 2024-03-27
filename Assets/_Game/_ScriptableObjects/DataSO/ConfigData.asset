@@ -228,6 +228,12 @@ MonoBehaviour:
     - Name: MoreTimeAdded
       Entry: 3
       Data: 60
+    - Name: finalPointGoldReward
+      Entry: 3
+      Data: 20
+    - Name: bonusChestGoldReward
+      Entry: 3
+      Data: 40
     - Name: stepInterAdsCountMax
       Entry: 3
       Data: 3
@@ -286,7 +292,7 @@ MonoBehaviour:
       MainIconSprite: {fileID: 0}
       SubIconSprite: {fileID: 0}
   - type: 1
-    unlockAtLevel: 6
+    unlockAtLevel: 7
     goldPerBuyTen: 10
     ticketPerBuyRatio:
       ticketNeed: 2
@@ -296,7 +302,7 @@ MonoBehaviour:
       MainIconSprite: {fileID: 0}
       SubIconSprite: {fileID: 0}
   - type: 2
-    unlockAtLevel: 5
+    unlockAtLevel: 6
     goldPerBuyTen: 10
     ticketPerBuyRatio:
       ticketNeed: 1
