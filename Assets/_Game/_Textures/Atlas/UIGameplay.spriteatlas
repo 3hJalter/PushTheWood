@@ -95,7 +95,7 @@ SpriteAtlas:
   - Chicken
   - _0011_chest2
   - booster_btn
-  - lock_icon
+  - clock_icon
   - key
   - ad
   - undo

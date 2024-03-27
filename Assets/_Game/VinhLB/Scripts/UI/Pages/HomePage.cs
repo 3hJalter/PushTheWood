@@ -64,8 +64,6 @@ namespace VinhLB
         [SerializeField]
         private TMP_Text _levelText;
         [SerializeField]
-        private TMP_Text _levelNormalText;
-        [SerializeField]
         private Image _levelNormalFrame;
         [SerializeField]
         private Color _easyLevelNormalColor;
@@ -248,13 +246,13 @@ namespace VinhLB
         public override void UpdateUI()
         {
             // If NormalLevelIndex is the last index of normal level in
-            int index = LevelManager.Ins.NormalLevelIndex;
-            _levelText.text = $"Level {index + 1}";
+            int levelIndex = LevelManager.Ins.NormalLevelIndex;
+            _levelText.text = $"Level {levelIndex + 1}";
 
-            if (index == DataManager.Ins.CountNormalLevel - 1)
+            if (levelIndex == DataManager.Ins.CountNormalLevel - 1)
             {
                 _levelNormalFrame.color = _lastLevelNormalColor;
-                _levelNormalText.text = "Not Available";
+                _levelText.text = "Not Available";
                 _lastLevelLockGO.SetActive(true);
                 _playButton.interactable = false;
 
@@ -265,7 +263,6 @@ namespace VinhLB
             _lastLevelLockGO.SetActive(false);
 
             LevelNormalType currentLevelLevelNormalType = LevelManager.Ins.CurrentLevel.LevelNormalType;
-            _levelNormalText.text = $"{currentLevelLevelNormalType} Level";
             switch (currentLevelLevelNormalType)
             {
                 case LevelNormalType.Easy:
@@ -275,6 +272,7 @@ namespace VinhLB
                     _levelNormalFrame.color = _mediumLevelNormalColor;
                     break;
                 case LevelNormalType.Hard:
+                    _levelText.text += $" - {currentLevelLevelNormalType.ToString().ToUpper()}";
                     _levelNormalFrame.color = _hardLevelNormalColor;
                     break;
             }
