@@ -313,6 +313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handRotation: {x: 0, y: 0, z: 0}
+  handPointer: {fileID: 921619477282331055}
   handClick: {fileID: 4236407511603897867}
   circleFx: {fileID: 3436741710419521931}
   video: {fileID: 4821535169654149395}

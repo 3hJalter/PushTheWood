@@ -9,6 +9,7 @@ namespace _Game._Scripts.UIs.Component
     public class HandPointerEffectUI : MonoBehaviour
     {
         [SerializeField] private Vector3 handRotation;
+        [SerializeField] private Image handPointer;
         [SerializeField] private GameObject handClick;
         [SerializeField] private Image circleFx;
         [SerializeField] private VideoPlayer video;
@@ -23,9 +24,11 @@ namespace _Game._Scripts.UIs.Component
         
         private void Start()
         {
+            handPointer.color = new Color(1, 1, 1, 0);
             circleFx.gameObject.SetActive(false);
             handClick.SetActive(false);
             _initRotation = Tf.localEulerAngles;
+            video.prepareCompleted += OnPrepared;
             video.loopPointReached += EndReached;
         }
 
@@ -43,6 +46,12 @@ namespace _Game._Scripts.UIs.Component
                 _isTrigger = true;
                 DoAnimation();
             }
+        }
+
+        private void OnPrepared(VideoPlayer vp)
+        {
+            handPointer.color = new Color(1, 1, 1, 1);
+            video.prepareCompleted -= OnPrepared;
         }
         
         private void EndReached(VideoPlayer vp)

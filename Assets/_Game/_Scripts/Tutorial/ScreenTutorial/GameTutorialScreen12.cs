@@ -1,8 +1,11 @@
 ﻿using _Game._Scripts.Managers;
+using _Game.Managers;
 using _Game.Utilities;
 using GG.Infrastructure.Utils.Swipe;
 using HControls;
+using UnityEngine;
 using UnityEngine.Events;
+using VinhLB;
 
 namespace _Game._Scripts.Tutorial.ScreenTutorial
 {
@@ -10,7 +13,8 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
     {
         private UnityAction<string> _swipeEvent;
         private UnityAction<string> _testSwipeEvent;
-
+        [SerializeField] private RectTransform mask;
+        
         public override void Setup(object param = null)
         {
             base.Setup(param);
@@ -29,9 +33,24 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
             MoveInputManager.Ins.HSwipe.RemoveListener();
             MoveInputManager.Ins.HSwipe.AddListener(_swipeEvent);
             MoveInputManager.Ins.HSwipe.AddListener(_testSwipeEvent);
-
+            // OpenMask();
         }
 
+        private void OpenMask()
+        {
+            MaskData maskData = new()
+            {
+                Position = mask.position,
+                Size = mask.sizeDelta + Vector2.one * 40f,
+                MaskType = MaskType.Eclipse,
+                ClickableItem = null,
+                OnClickedCallback = () => UIManager.Ins.CloseUI<MaskScreen>(),
+                // If you want to make mask fit and follow target
+                //TargetRectTF = rectTransform
+            };
+            UIManager.Ins.OpenUI<MaskScreen>(maskData);
+        }
+        
         public override void CloseDirectly(object param = null)
         {
             // Remove Close this screen when swipe 
