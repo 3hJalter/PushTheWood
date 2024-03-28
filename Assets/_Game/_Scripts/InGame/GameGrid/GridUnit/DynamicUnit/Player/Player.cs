@@ -385,7 +385,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
 
         public override void OnCharacterDie()
         {
-            DevLog.Log(DevId.Hoang, "TODO: Player Die Logic");
             stateMachine.OverrideState = StateEnum.Die;
             IsDead = true;
             stateMachine.ChangeState(StateEnum.Die);
