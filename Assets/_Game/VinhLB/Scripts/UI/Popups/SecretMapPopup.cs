@@ -82,10 +82,13 @@ namespace VinhLB
 
         private void PlayClick(int index)
         {
-            LevelManager.Ins.OnGoLevel(LevelType.Secret, index);
             UIManager.Ins.CloseAll();
-            UIManager.Ins.OpenUI<SplashScreen>();
-            UIManager.Ins.OpenUI<InGameScreen>();
+            SplashScreen ui = UIManager.Ins.OpenUI<SplashScreen>();
+            ui.OnOpenCallback += () =>
+            {
+                LevelManager.Ins.OnGoLevel(LevelType.Secret, index);
+                UIManager.Ins.OpenUI<InGameScreen>();
+            };
         }
 
         private void OnRewardScrollRectValueChanged(Vector2 value)

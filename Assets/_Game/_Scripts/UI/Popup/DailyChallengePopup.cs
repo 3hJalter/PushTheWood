@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using _Game._Scripts.UIs.Component;
 using _Game.Data;
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Screen;
-using _Game.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 using VinhLB;
@@ -124,16 +122,19 @@ namespace _Game.UIs.Popup
             {
                 // Temporary solution: just play
                 OnPlay();
-            };
+            }
         }
 
         private void OnPlay()
         {
             LevelManager.Ins.dailyLevelClickedDay = _currentBtnClick.Index;
-            LevelManager.Ins.OnGoLevel(LevelType.DailyChallenge, DataManager.Ins.GetDailyChallengeDay(_currentBtnClick.Index));
             UIManager.Ins.CloseAll();
-            UIManager.Ins.OpenUI<SplashScreen>();
-            UIManager.Ins.OpenUI<InGameScreen>();
+            SplashScreen ui = UIManager.Ins.OpenUI<SplashScreen>();
+            ui.OnOpenCallback += () =>
+            {
+                LevelManager.Ins.OnGoLevel(LevelType.DailyChallenge, DataManager.Ins.GetDailyChallengeDay(LevelManager.Ins.dailyLevelClickedDay));
+                UIManager.Ins.OpenUI<InGameScreen>();
+            };
         }
         
         private void OnHandleCurrentButton()

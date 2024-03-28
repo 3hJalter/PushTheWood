@@ -77,11 +77,14 @@ namespace VinhLB
 
         public void OnClickMainMenuButton()
         {
-            LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
             UIManager.Ins.CloseAll();
-            UIManager.Ins.OpenUI<SplashScreen>();
-            UIManager.Ins.OpenUI<MainMenuScreen>();
-            GameManager.Ins.PostEvent(EventID.OnInterAdsStepCount, 1);
+            SplashScreen ui = UIManager.Ins.OpenUI<SplashScreen>();
+            ui.OnOpenCallback += () =>
+            {
+                LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
+                UIManager.Ins.OpenUI<MainMenuScreen>();
+                GameManager.Ins.PostEvent(EventID.OnInterAdsStepCount, 1);
+            };
         }
 
     }
