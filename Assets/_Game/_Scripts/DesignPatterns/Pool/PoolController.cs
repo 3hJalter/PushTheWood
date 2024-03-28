@@ -16,11 +16,8 @@ namespace _Game.DesignPattern
         [Title("Spawners")]
         [SerializeField]
         private FishSpawner _fishSpawner;
-        [SerializeField]
-        private WorldUIUnitSpawner _worldUIUnitSpawner;
 
         public FishSpawner FishSpawner => _fishSpawner;
-        public WorldUIUnitSpawner WorldUIUnitSpawner => _worldUIUnitSpawner;
 
         public void Awake()
         {

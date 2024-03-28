@@ -71,6 +71,10 @@ namespace AudioEnum
         ClockTick = 108,
         PopupOpen = 109,
         WarningLevel = 110,
+        CollectCurrency = 111,
+        Confetti1 = 112,
+        Confetti2 = 113,
+        Confetti3 = 114,
     }
 
     public enum BgmType

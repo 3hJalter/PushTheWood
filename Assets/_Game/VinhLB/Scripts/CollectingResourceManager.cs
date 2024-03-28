@@ -290,7 +290,9 @@ namespace VinhLB
                         config.ReactionTween =  endPoint.DOPunchScale(config.ReactPunchScale, config.ReactDuration)
                             .SetEase(Ease.InOutElastic).OnComplete(() => { config.ReactionTween = null; });
                     }
-
+                    
+                    AudioManager.Ins.PlaySfx(SfxType.CollectCurrency);
+                    
                     eachCompleted?.Invoke(progress);
                 }).AsyncWaitForCompletion();
                 taskList.Add(task);

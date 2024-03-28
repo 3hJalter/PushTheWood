@@ -52,14 +52,12 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 33217b3a4148e5f4690a83507c64066a, type: 2}
     - {fileID: 11400000, guid: 585364f771ea5c5418b25842904f7393, type: 2}
     - {fileID: 11400000, guid: 9b3f135cde82add4c80ff2ad5921d954, type: 2}
-    - {fileID: 11400000, guid: 754d05800578c8141bc053e2b7cd1012, type: 2}
     - {fileID: 11400000, guid: 539475d7bced969489c23bdf3a59a2e3, type: 2}
     - {fileID: 11400000, guid: 0bf97afa5219e2346abbd791ac09975d, type: 2}
     - {fileID: 11400000, guid: ee2c9a4757bc0f04eae68441884e2b84, type: 2}
     - {fileID: 11400000, guid: 267791ae8880155408a488f74e5676c7, type: 2}
     - {fileID: 11400000, guid: f0ec6dde7468d754b9e9d771aad1af21, type: 2}
     - {fileID: 6897839885235142226, guid: 54c741e112f122c4dbfc64daeba72a43, type: 3}
-    - {fileID: 2972864207908123367, guid: 9f02a42fa04520343bfe2b0f4baba521, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -134,8 +132,8 @@ MonoBehaviour:
       Entry: 3
       Data: 6
     - Name: $v
-      Entry: 10
-      Data: 4
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -147,7 +145,7 @@ MonoBehaviour:
       Data: 15
     - Name: $v
       Entry: 10
-      Data: 5
+      Data: 4
     - Name: 
       Entry: 8
       Data: 
@@ -159,7 +157,7 @@ MonoBehaviour:
       Data: 19
     - Name: $v
       Entry: 10
-      Data: 6
+      Data: 5
     - Name: 
       Entry: 8
       Data: 
@@ -171,7 +169,7 @@ MonoBehaviour:
       Data: 30
     - Name: $v
       Entry: 10
-      Data: 7
+      Data: 6
     - Name: 
       Entry: 8
       Data: 
@@ -183,7 +181,7 @@ MonoBehaviour:
       Data: -1
     - Name: $v
       Entry: 10
-      Data: 8
+      Data: 7
     - Name: 
       Entry: 8
       Data: 
@@ -194,8 +192,8 @@ MonoBehaviour:
       Entry: 3
       Data: 7
     - Name: $v
-      Entry: 10
-      Data: 9
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -227,7 +225,7 @@ MonoBehaviour:
       Data: 9
     - Name: $v
       Entry: 10
-      Data: 10
+      Data: 8
     - Name: 
       Entry: 8
       Data: 
@@ -238,8 +236,8 @@ MonoBehaviour:
       Entry: 3
       Data: 21
     - Name: $v
-      Entry: 10
-      Data: 11
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
@@ -249,5 +247,6 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  firstCutscenePf: {fileID: 7587644704987353143, guid: 0719bbddee55adc419493767683b6514, type: 3}
+  firstCutscenePf: {fileID: 7587644704987353143, guid: 0719bbddee55adc419493767683b6514,
+    type: 3}
   currentGameTutorialScreenScreen: {fileID: 0}
