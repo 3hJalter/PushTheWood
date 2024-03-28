@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using _Game.Managers;
 using _Game.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
@@ -94,7 +95,11 @@ namespace VinhLB
                 }
             }
         }
-
+        public override void Open(object param = null)
+        {
+            base.Open(param);
+            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.CollectReward);
+        }
         public override void Close()
         {
             base.Close();

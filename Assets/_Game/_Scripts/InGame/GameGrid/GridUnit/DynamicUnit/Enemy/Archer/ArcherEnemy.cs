@@ -59,12 +59,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
         }
         public override void OnBePushed(Direction direction, GridUnit pushUnit)
         {
-            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.PushEnemy);
-            LookDirection(Constants.InvDirection[direction]);
-            Direction = direction;
+            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.PushEnemy);           
 
             if (pushUnit is Player.Player player)
             {
+                LookDirection(Constants.InvDirection[direction]);
+                Direction = direction;
                 stateMachine.ChangeState(StateEnum.Idle);
                 player.CheckingStunState();
             }
