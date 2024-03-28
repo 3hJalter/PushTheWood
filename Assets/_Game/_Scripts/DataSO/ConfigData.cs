@@ -155,6 +155,12 @@ namespace _Game.Data
         public readonly int bannerHeight = 100;
         #endregion
 
+        #region Collection
+        [FoldoutGroup("Collection")]
+        public readonly int maxRentCount = 3;
+
+        #endregion
+
         // [BoxGroup("Monetize")]
 
         public BoosterConfig GetBoosterConfig(BoosterType boosterType)
