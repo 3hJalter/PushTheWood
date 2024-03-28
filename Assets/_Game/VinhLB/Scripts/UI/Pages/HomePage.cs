@@ -535,6 +535,8 @@ namespace VinhLB
             {
                 yield return null;
             }
+            
+            OnShowMenuTutorial();
 
             List<Task> taskList = new List<Task>();
             if (_rewardChestButton.IsUnlocked && _delayCollectingRewardKeys != null)
@@ -555,8 +557,6 @@ namespace VinhLB
                 
                 yield return new WaitUntil(() => Task.WhenAll(taskList).IsCompleted);
             }
-            
-            OnShowMenuTutorial();
             
             // if (!_isFirstShown)
             // {
