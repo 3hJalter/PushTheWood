@@ -28,6 +28,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates
             void Attack()
             {
                 LevelManager.Ins.player.IsDead = true;
+                AudioManager.Ins.PlaySfx(AudioEnum.SfxType.ShotArrow);
             }
             void ChangeToIdle()
             {

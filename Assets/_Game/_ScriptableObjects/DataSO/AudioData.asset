@@ -53,6 +53,8 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 592973e781953dd4dac59712be385c0e, type: 3}
     - {fileID: 8300000, guid: 5d728b7f6e24b81469164a7a25c6a824, type: 3}
     - {fileID: 8300000, guid: 595af7e2ce0241b40b1c71056bac8e5e, type: 3}
+    - {fileID: 8300000, guid: 305d9f5b8a9f4974a82e36f6584213ee, type: 3}
+    - {fileID: 8300000, guid: 3f35d54c017e2c24c9a69f1c6f1d5eed, type: 3}
     - {fileID: 8300000, guid: 950cce47b22db2247ae24019ad65a511, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
@@ -146,7 +148,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 35
+      Data: 37
     - Name: 
       Entry: 7
       Data: 
@@ -883,6 +885,48 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 20
+    - Name: $v
+      Entry: 7
+      Data: 41|_Game.Data.Audio, Assembly-CSharp
+    - Name: clip
+      Entry: 10
+      Data: 37
+    - Name: multiplier
+      Entry: 4
+      Data: 0.5
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 21
+    - Name: $v
+      Entry: 7
+      Data: 42|_Game.Data.Audio, Assembly-CSharp
+    - Name: clip
+      Entry: 10
+      Data: 38
+    - Name: multiplier
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
       Entry: 13
       Data: 
     - Name: 
@@ -890,11 +934,11 @@ MonoBehaviour:
       Data: 
     - Name: _environmentAudioDict
       Entry: 7
-      Data: 41|System.Collections.Generic.Dictionary`2[[AudioEnum.EnvironmentType,
+      Data: 43|System.Collections.Generic.Dictionary`2[[AudioEnum.EnvironmentType,
         Assembly-CSharp],[_Game.Data.Audio, Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 42|System.Collections.Generic.EnumEqualityComparer`1[[AudioEnum.EnvironmentType,
+      Data: 44|System.Collections.Generic.EnumEqualityComparer`1[[AudioEnum.EnvironmentType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -916,10 +960,10 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 7
-      Data: 43|_Game.Data.Audio, Assembly-CSharp
+      Data: 45|_Game.Data.Audio, Assembly-CSharp
     - Name: clip
       Entry: 10
-      Data: 37
+      Data: 39
     - Name: multiplier
       Entry: 4
       Data: 0.3
