@@ -46,9 +46,9 @@ namespace _Game.UIs.Popup
         {
             base.Setup(param);
 
-            _musicToggle.SetOnValueWithoutInvoke(!AudioManager.Ins.IsBgmMute());
-            _soundToggle.SetOnValueWithoutInvoke(!AudioManager.Ins.IsBgmMute());
-            _hapticToggle.SetOnValueWithoutInvoke(HVibrate.IsHapticOn);
+            _musicToggle.IsOn = !AudioManager.Ins.IsBgmMute();
+            _soundToggle.IsOn = !AudioManager.Ins.IsSfxMute();
+            _hapticToggle.IsOn = HVibrate.IsHapticOn;
 
             if (GameManager.Ins.IsState(GameState.InGame))
             {
@@ -101,7 +101,6 @@ namespace _Game.UIs.Popup
 
         public void OnHapticValueChanged(bool value)
         {
-            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.ClickToggle);
             HVibrate.OnToggleHaptic(value);
         }
         
