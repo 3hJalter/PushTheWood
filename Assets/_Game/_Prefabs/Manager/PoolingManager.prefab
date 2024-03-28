@@ -60,12 +60,87 @@ MonoBehaviour:
   _poolAmounts:
   - root: {fileID: 8158926971168626917}
     prefab: {fileID: 8956248557540126228, guid: 9203ff7b4e0598b40a04be596d1ac05b, type: 3}
-    amount: 20
+    amount: 10
     collect: 1
     clamp: 0
-  - root: {fileID: 2877985422891345758}
-    prefab: {fileID: 3039115369026176717, guid: 4ade82e13c0381d43843c130e0424bd0, type: 3}
+  - root: {fileID: 8158926971168626917}
+    prefab: {fileID: 1530619860800294612, guid: 07aa4d949821f9b46b2c9fb83fdce80e, type: 3}
+    amount: 50
+    collect: 1
+    clamp: 0
+  - root: {fileID: 8158926971168626917}
+    prefab: {fileID: 2216916433288156275, guid: c75bed4bf655dcb43bdf25b7da9aaf7f, type: 3}
     amount: 10
+    collect: 1
+    clamp: 0
+  - root: {fileID: 8158926971168626917}
+    prefab: {fileID: 3141307885317097457, guid: 2e1f6c46bd1e250439dcea7605e565fc, type: 3}
+    amount: 10
+    collect: 1
+    clamp: 0
+  - root: {fileID: 8158926971168626917}
+    prefab: {fileID: 1704600907059805368, guid: c16b1ddacbb332a44ad2048b9273705a, type: 3}
+    amount: 10
+    collect: 1
+    clamp: 0
+  - root: {fileID: 8158926971168626917}
+    prefab: {fileID: 6339097340024965215, guid: 4cc5494473a645e4f9730d044b789132, type: 3}
+    amount: 5
+    collect: 1
+    clamp: 0
+  - root: {fileID: 8158926971168626917}
+    prefab: {fileID: 8538035402792478575, guid: e51b66539c236b94386021d95f746ece, type: 3}
+    amount: 5
+    collect: 1
+    clamp: 0
+  - root: {fileID: 8158926971168626917}
+    prefab: {fileID: 2102487067434064595, guid: 5cf5e71fc2800db45ae76bcef98f8244, type: 3}
+    amount: 5
+    collect: 1
+    clamp: 0
+  - root: {fileID: 8158926971168626917}
+    prefab: {fileID: 7475919495590875395, guid: 1ba27f3e7bc228d43a21f1ea8d0fa763, type: 3}
+    amount: 3
+    collect: 1
+    clamp: 0
+  - root: {fileID: 8158926971168626917}
+    prefab: {fileID: 2961570268787554455, guid: 8b438b2ccb5506e42bf3cbeb948cb3ad, type: 3}
+    amount: 1
+    collect: 1
+    clamp: 0
+  - root: {fileID: 8158926971168626917}
+    prefab: {fileID: 625381817198060776, guid: 1bce3ee87a601454ea022ac203bf1dc9, type: 3}
+    amount: 1
+    collect: 1
+    clamp: 0
+  - root: {fileID: 8158926971168626917}
+    prefab: {fileID: 625381817198060776, guid: 8d5bfb41e9b9d0541a3f132e3d5b4607, type: 3}
+    amount: 1
+    collect: 1
+    clamp: 0
+  - root: {fileID: 8158926971168626917}
+    prefab: {fileID: -6492541787636497690, guid: 563a0790fbbc1bb438932d4d6d753bcb, type: 3}
+    amount: 10
+    collect: 1
+    clamp: 0
+  - root: {fileID: 8158926971168626917}
+    prefab: {fileID: -2026251214701203340, guid: 8d79ee0068123434bbe1ba109882044e, type: 3}
+    amount: 10
+    collect: 1
+    clamp: 0
+  - root: {fileID: 8158926971168626917}
+    prefab: {fileID: 6844371137788254552, guid: d559ee9c7d49da243b674c9542f3e0c6, type: 3}
+    amount: 10
+    collect: 1
+    clamp: 0
+  - root: {fileID: 8158926971168626917}
+    prefab: {fileID: 6339097340024965215, guid: cdcfe61f59b0b824a9dbb094eb814769, type: 3}
+    amount: 3
+    collect: 1
+    clamp: 0
+  - root: {fileID: 8158926971168626917}
+    prefab: {fileID: 6339097340024965215, guid: b3f0f9cf3b70e4346a915bd70b303f17, type: 3}
+    amount: 3
     collect: 1
     clamp: 0
   _particleAmounts:
