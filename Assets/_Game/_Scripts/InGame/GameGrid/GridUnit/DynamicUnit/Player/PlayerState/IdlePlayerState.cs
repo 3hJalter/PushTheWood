@@ -3,7 +3,6 @@ using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.StaticUnit;
 using _Game.Managers;
 using _Game.Utilities.Timer;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
@@ -17,7 +16,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         private bool _isChangeAnim;
         private bool isFirstStop;
         private int cutTreeFrameCount;
-        private bool hasTreeRoot = false;
+        private bool hasTreeRoot;
         private STimer changeAnimTimer;
 
         public override StateEnum Id => StateEnum.Idle;
@@ -133,6 +132,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                     }
                 }
 
+                // If current state is Push, return
+                if (t.StateMachine.CurrentState.Id == StateEnum.Push) return;
+                
                 switch (t.MovingData.Condition)
                 {
                     case CONDITION.SIT_DOWN:
@@ -141,8 +143,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                         break;
                     case CONDITION.RUN_ABOVE_CHUMP:
                         t.StateMachine.ChangeState(StateEnum.RunAboveChump);
-                        break;
-                    default:
                         break;
                 }
                 return;
