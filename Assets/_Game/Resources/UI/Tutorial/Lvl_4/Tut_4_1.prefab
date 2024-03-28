@@ -174,7 +174,7 @@ MonoBehaviour:
   handClick: {fileID: 3797828462527148542}
   circleFx: {fileID: 3694947538262856288}
   video: {fileID: 139308974911728614}
-  triggerTime: 1.3
+  triggerTime: 1.7
 --- !u!1 &868798573100882892
 GameObject:
   m_ObjectHideFlags: 0
