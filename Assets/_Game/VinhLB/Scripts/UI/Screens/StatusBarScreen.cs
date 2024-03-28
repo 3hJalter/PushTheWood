@@ -121,7 +121,7 @@ namespace VinhLB
                     {
                         GameManager.Ins.SmoothGold += data.ChangedAmount / collectingCoinAmount;
                         _goldValueText.text =
-                            GameManager.Ins.SmoothGold.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+                            ((int)GameManager.Ins.SmoothGold).ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
                     });
             }
         }
@@ -157,8 +157,7 @@ namespace VinhLB
                     {
                         GameManager.Ins.SmoothAdTickets += data.ChangedAmount / collectingAdTicketAmount;
                         _adTicketValueText.text =
-                            GameManager.Ins.SmoothAdTickets.ToString(Constants.VALUE_FORMAT,
-                                CultureInfo.InvariantCulture);
+                            ((int)GameManager.Ins.SmoothAdTickets).ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
                     });
             }
         }
