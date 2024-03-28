@@ -19,7 +19,7 @@ public class RewardedAds : MonoBehaviour
     List<int> boosterAmounts;
     List<int> resourceAmounts;
     _Game.Ads.Placement placement;
-    
+
     private event Action OnCallBackAdReceivedRewardEvent;
 
     // Start is called before the first frame update
@@ -47,7 +47,7 @@ public class RewardedAds : MonoBehaviour
         this.placement = placement;
         Show();
     }
-    
+
     public void Show(List<CurrencyType> resourceTypes = null, List<int> resourceAmount = null,
         List<BoosterType> boosterTypes = null, List<int> boosterAmount = null, _Game.Ads.Placement placement = _Game.Ads.Placement.None)
     {
@@ -66,7 +66,7 @@ public class RewardedAds : MonoBehaviour
         AnalysticManager.Ins.AppsFlyerTrackEvent("af_rewarded_logicgame");
         if (MaxSdk.IsRewardedAdReady(adUnitId))
         {
-            if(DebugManager.Ins && !DebugManager.Ins.IsShowAds)
+            if (DebugManager.Ins && !DebugManager.Ins.IsShowAds)
             {
                 OnRewardedAdReceivedRewardEvent(default, default, default);
             }
@@ -104,7 +104,7 @@ public class RewardedAds : MonoBehaviour
         Invoke("LoadRewardedAd", (float)retryDelay);
     }
 
-    private void OnRewardedAdDisplayedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo) 
+    private void OnRewardedAdDisplayedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
     {
         AnalysticManager.Ins.AppsFlyerTrackEvent("af_rewarded_displayed");
     }
@@ -135,13 +135,8 @@ public class RewardedAds : MonoBehaviour
                 switch (boosterTypes[i])
                 {
                     case BoosterType.PushHint:
-                        DataManager.Ins.GameData.user.hintAdsCount++;
-                        if (DataManager.Ins.IsAdsHintEnough())
-                        {
-                            DataManager.Ins.GameData.user.hintAdsCount = 0;
-                            EventGlobalManager.Ins.OnChangeBoosterAmount.Dispatch(boosterTypes[i], boosterAmounts[i]);
-                            EventGlobalManager.Ins.OnUsingBooster.Dispatch(BoosterType.PushHint);
-                        }
+                        EventGlobalManager.Ins.OnChangeBoosterAmount.Dispatch(boosterTypes[i], boosterAmounts[i]);
+                        EventGlobalManager.Ins.OnUsingBooster.Dispatch(BoosterType.PushHint);
                         break;
                     default:
                         EventGlobalManager.Ins.OnChangeBoosterAmount.Dispatch(boosterTypes[i], boosterAmounts[i]);
@@ -152,7 +147,7 @@ public class RewardedAds : MonoBehaviour
             GameManager.Ins.PostEvent(_Game.DesignPattern.EventID.OnUpdateUI);
         }
         Load();
-        
+
         OnCallBackAdReceivedRewardEvent?.Invoke();
     }
 
@@ -163,13 +158,13 @@ public class RewardedAds : MonoBehaviour
         boosterTypes = null;
         boosterAmounts = null;
     }
-    
+
     private void OnClearCallBack()
     {
         OnCallBackAdReceivedRewardEvent = null;
     }
 
-    
+
     // Update is called once per frame
     void Update()
     {
