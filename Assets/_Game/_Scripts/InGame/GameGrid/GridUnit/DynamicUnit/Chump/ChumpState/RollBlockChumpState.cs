@@ -10,6 +10,7 @@ using _Game._Scripts.Managers;
 using UnityEngine;
 using _Game.Utilities;
 using _Game.Managers;
+using System.Linq;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
 {
@@ -107,12 +108,17 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState
                     objectBlocking += $"{blockObjects[i]} ";
                 }
                 //NOTE: Checking if push dynamic object does not create any change in grid -> discard the newest save.
+                HashSet<GameUnit> changeUnits = LevelManager.Ins.SaveChangeUnits;
                 if (!LevelManager.Ins.CurrentLevel.GridMap.IsChange)
                 {
                     LevelManager.Ins.DiscardSaveState();
                 }
                 else
                 {
+                    if(changeUnits.Count == 1 && changeUnits.First().PoolType == PoolType.Player)
+                    {
+                        LevelManager.Ins.DiscardSaveState();
+                    }
                     #region Push Hint Step Handler
 
                     if (t.BeInteractedData.pushUnit is Player.Player p)

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using _Game._Scripts.InGame;
 using _Game._Scripts.InGame.GameCondition.Data;
 using _Game._Scripts.Managers;
+using _Game.DesignPattern;
 using _Game.DesignPattern.StateMachine;
 using _Game.Managers;
 using _Game.Utilities;
@@ -95,10 +97,17 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Bomb.BombState
                 if (t.MovingData.blockDynamicUnits.Count > 0) t.OnPush(t.MovingData.inputDirection, t.MovingData);
                 DevLog.Log(DevId.Hung, $"{objectBlocking} || DYNAMIC - {t.MovingData.blockDynamicUnits.Count}");
                 //NOTE: Checking if push dynamic object does not create any change in grid -> discard the newest save.
+                HashSet<GameUnit> changeUnits = LevelManager.Ins.SaveChangeUnits;
                 if (!LevelManager.Ins.CurrentLevel.GridMap.IsChange)
+                {
                     LevelManager.Ins.DiscardSaveState();
+                }
                 else
                 {
+                    if (changeUnits.Count == 1 && changeUnits.First().PoolType == PoolType.Player)
+                    {
+                        LevelManager.Ins.DiscardSaveState();
+                    }
                     #region Push Hint Step Handler
 
                     if (t.BeInteractedData.pushUnit is Player.Player p)

@@ -6,10 +6,12 @@ using UnityEngine;
 namespace _Game.GameGrid.Unit.DynamicUnit.Box.BoxState
 {
     using _Game._Scripts.InGame.GameCondition.Data;
+    using _Game.DesignPattern;
     using _Game.DesignPattern.StateMachine;
     using _Game.Managers;
     using _Game.Utilities.Timer;
     using DG.Tweening;
+    using System.Linq;
 
     public class MoveBlockBoxState : IState<Box>
     {
@@ -50,12 +52,17 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box.BoxState
                     blockObjects[i].OnBePushed(blockDirection, t);
                 }
                 //NOTE: Checking if push dynamic object does not create any change in grid -> discard the newest save.
+                HashSet<GameUnit> changeUnits = LevelManager.Ins.SaveChangeUnits;
                 if (!LevelManager.Ins.CurrentLevel.GridMap.IsChange)
                 {
                     LevelManager.Ins.DiscardSaveState();
                 }
                 else
                 {
+                    if (changeUnits.Count == 1 && changeUnits.First().PoolType == PoolType.Player)
+                    {
+                        LevelManager.Ins.DiscardSaveState();
+                    }
                     #region Push Hint Step Handler
 
                     if (t.BeInteractedData.pushUnit is Player.Player p)
