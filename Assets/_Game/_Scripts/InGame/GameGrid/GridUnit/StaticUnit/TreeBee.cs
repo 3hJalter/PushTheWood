@@ -1,15 +1,13 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using _Game._Scripts.InGame;
 using _Game._Scripts.Managers;
 using _Game.DesignPattern;
-using _Game.DesignPattern.StateMachine;
-using _Game.GameGrid.Unit.DynamicUnit.Chump;
 using _Game.GameGrid.Unit.DynamicUnit.Player;
 using _Game.GameGrid.Unit.Interface;
 using _Game.Managers;
-using _Game.Utilities;
 using DG.Tweening;
 using GameGridEnum;
+using MEC;
 using UnityEngine;
 
 namespace _Game.GameGrid.Unit.StaticUnit
@@ -27,6 +25,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
             hive.parent ??= skin;
+            hive.gameObject.SetActive(true);
             if (_isSetHiveLocalPos) hive.localPosition = _hiveInitLocalPos;
             _hiveFallPos = hive.position + new Vector3(0, -0.5f, 0);
         }
@@ -44,28 +43,16 @@ namespace _Game.GameGrid.Unit.StaticUnit
                 player.IsStun = true;
                 hive.DOMove(_hiveFallPos, 0.2f).OnComplete(() =>
                 {
+                    Timing.RunCoroutine(DelayInActiveHive());
                     player.IsDead = true;
                 });
             });
-            DevLog.Log(DevId.Hoang, "Bee attack player");
-
-            return;
-
-            
-            Direction GetDirectionFromPlayer()
-            {
-                Vector3 playerPos = player.MainCell.WorldPos;
-                Vector3 treePos = mainCell.WorldPos;
-                if (Math.Abs(playerPos.x - treePos.x) < 0.01f)
-                    return playerPos.z > treePos.z ? Direction.Back : Direction.Forward;
-                return playerPos.x > treePos.x ? Direction.Left : Direction.Right;
-            }
         }
 
         public override void OnBePushed(Direction direction, GridUnit pushUnit)
         {
             base.OnBePushed(direction, pushUnit);
-            if (pushedUnit is IBeInteractedUnit biu && biu.BeInteractedData.pushUnit is Player p)
+            if (pushedUnit is IBeInteractedUnit biu && biu.BeInteractedData.pushUnit is Player)
             {
                 if (LevelManager.Ins.IsSavePlayerPushStep)
                 {
@@ -91,7 +78,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             
             #region Special Case for handle PushHint
 
-            if (pushedUnit is IBeInteractedUnit biu && biu.BeInteractedData.pushUnit is Player p)
+            if (pushedUnit is IBeInteractedUnit biu && biu.BeInteractedData.pushUnit is Player)
             {
                 // Spawn the Base tree in this cell + Save the state
                 LevelManager.Ins.SaveGameState(true);
@@ -120,6 +107,12 @@ namespace _Game.GameGrid.Unit.StaticUnit
         protected override void OnDestroyCall()
         {
             _isSetHiveLocalPos = false;
+        }
+        
+        private IEnumerator<float> DelayInActiveHive()
+        {
+            yield return Timing.WaitForSeconds(1f);
+            hive.gameObject.SetActive(false);
         }
     }
 }
