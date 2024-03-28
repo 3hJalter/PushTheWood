@@ -14,13 +14,18 @@ namespace VinhLB
             GleyNotifications.Initialize();
         }
 
+        private void OnApplicationQuit()
+        {
+            CheckDailyReward();
+        }
+
         private void OnApplicationFocus(bool focus)
         {
             // DevLog.Log(DevId.Vinh, $"OnApplicationFocus: {focus}");
             if (focus == false)
             {
                 // If user left your app schedule all your notifications
-                CheckDailyReward();
+                // CheckDailyReward();
             }
             else
             {
@@ -33,7 +38,7 @@ namespace VinhLB
         {
             if (!DailyRewardManager.Ins.IsTodayRewardObtained)
             {
-                TimeSpan timeSpan = new TimeSpan(0, 1, 0);
+                TimeSpan timeSpan = new TimeSpan(0, 5, 0);
                 GleyNotifications.SendNotification(Constants.GAME_TITLE, "Come back to receive daily gift today!", timeSpan);
             }
             else

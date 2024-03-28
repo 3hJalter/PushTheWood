@@ -214,6 +214,9 @@ namespace _Game.UIs.Screen
                 {
                     _spawnedEffects.Add(spawnedEffect);
                 }
+
+                int confettiType = (int)SfxType.Confetti1;
+                AudioManager.Ins.PlaySfx((SfxType)(confettiType + UnityRandom.Range(0, 3)));
                 
                 yield return new WaitForSeconds(UnityRandom.Range(1.5f, 2.5f));
             }
