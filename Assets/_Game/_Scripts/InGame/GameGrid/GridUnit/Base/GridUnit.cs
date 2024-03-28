@@ -146,15 +146,17 @@ namespace _Game.GameGrid.Unit
         public HeightLevel BelowStartHeight => startHeight - Constants.BELOW_HEIGHT;
         public HeightLevel UpperEndHeight => endHeight + Constants.UPPER_HEIGHT;
 
-        public UnitInitData UnitUnitData => _unitInitData; //DEV: Can be optimize
+        public UnitInitData UnitInitData
+        {
+            get => _unitInitData; //DEV: Can be optimize
+            set => _unitInitData = value;
+        }
+
         public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
             bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
             //Saving state before spawn, when map has already init
-            if (!LevelManager.Ins.IsConstructingLevel)
-                overrideSpawnSave = RawSave();
-            else
-                overrideSpawnSave = null;
+            overrideSpawnSave = !LevelManager.Ins.IsConstructingLevel ? RawSave() : null;
             SaveInitData(LevelManager.Ins.CurrentLevel.Index);
             if (isUseInitData) GetInitData();
             islandID = mainCellIn.IslandID;
@@ -383,7 +385,7 @@ namespace _Game.GameGrid.Unit
                 _unitInitData = new UnitInitData(this, level);
         }
 
-        private void GetInitData()
+        protected void GetInitData()
         {
             size = _unitInitData.Size;
             unitTypeY = _unitInitData.UnitTypeY;

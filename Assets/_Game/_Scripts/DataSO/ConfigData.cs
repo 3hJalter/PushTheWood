@@ -65,6 +65,7 @@ namespace _Game.Data
 
         [FoldoutGroup("In Game/Reward")] public readonly int finalPointGoldReward = 20;
         [FoldoutGroup("In Game/Reward")] public readonly int bonusChestGoldReward = 40;
+        [FoldoutGroup("In Game/Reward")] public readonly int finalEnemyGoldReward = 40;
         #endregion
 
         #region Daily Challenge Reward
