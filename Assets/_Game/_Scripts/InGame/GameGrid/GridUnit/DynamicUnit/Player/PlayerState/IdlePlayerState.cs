@@ -49,6 +49,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
                     _isHungryDone = true;
                     changeAnimTimer = TimerManager.Ins.PopSTimer();
                     changeAnimTimer.Start(Constants.SLEEP_TIME, ChangeAnimState);
+
+                    if (GameManager.Ins.IsState(GameState.InGame))
+                        AudioManager.Ins.PlaySfx(AudioEnum.SfxType.PlayerStomachGrowl);
                 }
             }
         }

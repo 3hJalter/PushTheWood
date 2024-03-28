@@ -11,6 +11,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         {
             GameplayManager.Ins.IsCanUndo = false;
             GameplayManager.Ins.IsCanResetIsland = false;
+            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.PlayerBeAttacked);
         }
 
         public override void OnExecute(Player t)

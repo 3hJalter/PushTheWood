@@ -53,7 +53,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 592973e781953dd4dac59712be385c0e, type: 3}
     - {fileID: 8300000, guid: 5d728b7f6e24b81469164a7a25c6a824, type: 3}
     - {fileID: 8300000, guid: 595af7e2ce0241b40b1c71056bac8e5e, type: 3}
-    - {fileID: 8300000, guid: 305d9f5b8a9f4974a82e36f6584213ee, type: 3}
+    - {fileID: 8300000, guid: 25021c8146275954e92bd7988c634303, type: 3}
     - {fileID: 8300000, guid: 3f35d54c017e2c24c9a69f1c6f1d5eed, type: 3}
     - {fileID: 8300000, guid: 50ba0befa13d8324ba97c236718ca83c, type: 3}
     - {fileID: 8300000, guid: 950cce47b22db2247ae24019ad65a511, type: 3}
@@ -899,7 +899,7 @@ MonoBehaviour:
       Data: 37
     - Name: multiplier
       Entry: 4
-      Data: 0.6
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
