@@ -52,6 +52,7 @@ public class DebugManager : SimpleSingleton<DebugManager>
     }
     public void OnInit(bool isDebugGridLogic, bool isDebugFps, bool isDebugLog, bool isShowAds, int level = -1)
     {
+        _instance = this;
         if(isDebugGridLogic)
         {
             debugGrid = new Grid<GameGridCell, GameGridCellData>.DebugGrid();
