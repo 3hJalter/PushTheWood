@@ -82,8 +82,8 @@ namespace _Game._Scripts.UIs.Component
             boosterAmount.text = type switch
             {
                 BoosterType.Undo => 10.ToString(),
-                BoosterType.PushHint => 3.ToString(),
-                BoosterType.GrowTree => 5.ToString(),
+                BoosterType.PushHint => 1.ToString(),
+                BoosterType.GrowTree => 3.ToString(),
                 _ => 0.ToString()
             };
         }

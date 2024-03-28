@@ -135,12 +135,10 @@ namespace _Game._Scripts.InGame
             // Check if same step with the top of the stack
             if (playerPushStep.IsSameStep(_currentPlayerSteps.Peek()))
             {
-                DevLog.Log(DevId.Hoang, "Correct step, move to next");
                 _currentPlayerSteps.Pop();
                 _pops.Push(playerPushStep);
                 if (_currentPlayerSteps.Count == 0)
                 {
-                    DevLog.Log(DevId.Hoang, "Finish hint");
                     OnStopHint();
                     _islandCompleted.Add(playerPushStep.i);
                 }
@@ -151,7 +149,6 @@ namespace _Game._Scripts.InGame
             }
             else
             {
-                DevLog.Log(DevId.Hoang, "Wrong step, must reset");
                 OnPauseHint();
                 IsPlayerMakeHintWrong = true;
                 GameplayManager.Ins.OnShowTryHintAgain(true);
