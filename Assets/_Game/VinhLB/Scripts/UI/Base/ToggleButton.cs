@@ -29,6 +29,11 @@ namespace VinhLB
                 _onValueChanged?.Invoke(value);
             }
         }
+        
+        public void SetOnValueWithoutInvoke(bool value)
+        {
+            _isOn = value;
+        }
 
         public virtual void OnPointerClick(PointerEventData eventData)
         {
