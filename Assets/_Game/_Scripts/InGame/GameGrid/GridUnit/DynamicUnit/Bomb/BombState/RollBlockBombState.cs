@@ -107,6 +107,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Bomb.BombState
                     if (changeUnits.Count == 1 && changeUnits.First().PoolType == PoolType.Player)
                     {
                         LevelManager.Ins.DiscardSaveState();
+                        return;
                     }
                     #region Push Hint Step Handler
 
