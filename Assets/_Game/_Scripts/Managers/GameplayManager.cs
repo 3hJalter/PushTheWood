@@ -9,6 +9,7 @@ using _Game.Resource;
 using _Game.UIs.Screen;
 using _Game.Utilities;
 using _Game.Utilities.Timer;
+using AudioEnum;
 using Unity.Collections;
 using UnityEngine;
 using VinhLB;
@@ -522,6 +523,7 @@ namespace _Game.Managers
             if (IsBoughtGrowTreeInIsland(pIslandID))
             {
                 if (EventGlobalManager.Ins.OnGrowTree.listenerCount <= 0) return;
+                AudioManager.Ins.PlaySfx(SfxType.GrowTree);
                 EventGlobalManager.Ins.OnGrowTree.Dispatch(pIslandID);
                 if (_pushHint.IsStartHint) _pushHint.OnStopHint();
                 return;
@@ -535,6 +537,7 @@ namespace _Game.Managers
             else
             {
                 if (EventGlobalManager.Ins.OnGrowTree.listenerCount <= 0) return;
+                AudioManager.Ins.PlaySfx(SfxType.GrowTree);
                 if (!IsBoughtGrowTreeInIsland(pIslandID))
                 {
                     OnChangeBoosterAmount(BoosterType.GrowTree, -1);
@@ -573,7 +576,7 @@ namespace _Game.Managers
             }
             else
             {
-                AudioManager.Ins.PlaySfx(AudioEnum.SfxType.Hint);
+                AudioManager.Ins.PlaySfx(SfxType.Hint);
                 // If this is first player step cell in this island, return
                 if (!IsBoughtPushHintInIsland(playerIslandID))
                 {
