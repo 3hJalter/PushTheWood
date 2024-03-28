@@ -101,7 +101,7 @@ namespace _Game.Managers
             parameters.Add("ad_format", adInfo.AdFormat);
             parameters.Add("placement", adInfo.Placement);
             parameters.Add("value", adInfo.Revenue.ToString());
-            parameters.Add("ad_platform", "USD");
+            parameters.Add("currency", "USD");
 
             AppsFlyerAdRevenue.logAdRevenue(adInfo.NetworkName,
                 AppsFlyerAdRevenueMediationNetworkType.AppsFlyerAdRevenueMediationNetworkTypeApplovinMax,
