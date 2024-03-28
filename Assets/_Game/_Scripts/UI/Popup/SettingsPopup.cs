@@ -142,11 +142,15 @@ namespace _Game.UIs.Popup
 
         public void OnGoMenuClick()
         {
-            LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
-            GameManager.Ins.PostEvent(DesignPattern.EventID.OnInterAdsStepCount, 1);
+            
             UIManager.Ins.CloseAll();
-            UIManager.Ins.OpenUI<SplashScreen>();
-            UIManager.Ins.OpenUI<MainMenuScreen>();
+            SplashScreen ui = UIManager.Ins.OpenUI<SplashScreen>();
+            ui.OnOpenCallback += () =>
+            {
+                LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
+                GameManager.Ins.PostEvent(DesignPattern.EventID.OnInterAdsStepCount, 1);
+                UIManager.Ins.OpenUI<MainMenuScreen>();
+            };
         }
         
         #region Old functions
