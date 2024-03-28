@@ -52,7 +52,6 @@ namespace HControls
         
         private static void OnSwipe(string direction)
         {
-            DevLog.Log(DevId.Hoang, $"Swipe - {direction}");
             switch (direction)
             {
                 case DirectionId.ID_LEFT:

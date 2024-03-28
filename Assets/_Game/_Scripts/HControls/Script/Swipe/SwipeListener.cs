@@ -255,7 +255,6 @@ namespace GG.Infrastructure.Utils.Swipe
                         _offset.Normalize();
                         // normalize the _offset
                         onSwipe?.Invoke(_directions.GetSwipeId(_offset));
-                        DevLog.Log(DevId.Hoang, "QS: " + _offset);
                         if (!continuousDetection) _waitForSwipe = false;
                         // SampleSwipeStart();
                         _isHolding = false;
@@ -285,7 +284,6 @@ namespace GG.Infrastructure.Utils.Swipe
                     float y = HUtilities.PredictYFromLinearRegression(samplePoints, _offset.x);
                     _offset.Set(_offset.x, y, 0);
                     _offset.Normalize();
-                    DevLog.Log(DevId.Hoang, "NS" + _offset);
 
                     onSwipe?.Invoke(_directions.GetSwipeId(_offset));
                     if (!continuousDetection) _waitForSwipe = false;
@@ -316,7 +314,6 @@ namespace GG.Infrastructure.Utils.Swipe
                 _offset.Set(_offset.x, y, 0);
                 _offset.Normalize();
                 // normalize the _offset
-                DevLog.Log(DevId.Hoang, "SS" + _offset);
                 onSwipe?.Invoke(_directions.GetSwipeId(_offset));
                 _isHolding = false;
                 TimerManager.Ins.WaitForFixedFrame(2, () => { onCancelSwipe?.Invoke(); });

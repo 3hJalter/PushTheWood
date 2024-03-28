@@ -176,8 +176,6 @@ namespace _Game.GameGrid
             IsConstructingLevel = true;
             _currentLevel = new Level(type, index);
             objectiveTotal = 0;
-            DevLog.Log(DevId.Hoang, "Number of enemy: " + enemies.Count);
-            DevLog.Log(DevId.Hoang, "Number of final point: " + finalPoints.Count);
             if (needInit && !_currentLevel.IsInit)
             {
                 InitLevel();
@@ -502,10 +500,8 @@ namespace _Game.GameGrid
                     {
                         SavingObjects();
                     }
-                    DevLog.Log(DevId.Hung, "UNDO_STATE - SUCCESS!!");
                     return true;
                 }
-                DevLog.Log(DevId.Hung, "UNDO_STATE - FAILURE!!");
                 return false;
             }
 

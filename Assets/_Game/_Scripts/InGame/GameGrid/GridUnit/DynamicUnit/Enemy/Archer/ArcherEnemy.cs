@@ -69,7 +69,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
         }   
         public override void OnCharacterDie()
         {
-            DevLog.Log(DevId.Hoang, "TODO: Character Die Logic");
             IsDead = true;
             stateMachine.ChangeState(StateEnum.Die);
         }
