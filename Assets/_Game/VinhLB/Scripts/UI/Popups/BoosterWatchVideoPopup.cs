@@ -70,16 +70,17 @@ namespace VinhLB
             _boosterText.text = _boosterConfig.Name;
             _boosterAmountText.text = $"x{_boosterConfig.TicketPerBuyRatio.itemsPerBuy}";
             _currencyAmountText.text = _boosterConfig.TicketPerBuyRatio.ticketNeed.ToString(("#,#"));
+            _videoAmountText.text = "CLAIM";
 
-            switch (_boosterConfig.Type)
-            {
-                case BoosterType.PushHint:
-                    _videoAmountText.text = $"CLAIM({DataManager.Ins.HintAdsCount}/{_boosterConfig.TicketPerBuyRatio.ticketNeed})";
-                    break;
-                default:
-                    _videoAmountText.text = "CLAIM";
-                    break;
-            }
+            //switch (_boosterConfig.Type)
+            //{
+            //    case BoosterType.PushHint:
+            //        _videoAmountText.text = $"CLAIM({DataManager.Ins.HintAdsCount}/{_boosterConfig.TicketPerBuyRatio.ticketNeed})";
+            //        break;
+            //    default:
+            //        _videoAmountText.text = "CLAIM";
+            //        break;
+            //}
         }
         
         public void OnClickBuyButton()
@@ -99,19 +100,7 @@ namespace VinhLB
         {
             AdsManager.Ins.RewardedAds.Show(null, null, new List<BoosterType> { _boosterConfig.Type },
                 new List<int> { _boosterConfig.TicketPerBuyRatio.itemsPerBuy});
-            if(_boosterConfig.Type == BoosterType.PushHint)
-            {
-                //NOTE: If enough ads for hint 
-                if (DataManager.Ins.HintAdsCount >= (_boosterConfig.TicketPerBuyRatio.ticketNeed - 1))
-                {
-                    //NOTE: Run Push Hint
-                    Close();
-                } 
-            }
-            else
-            {
-                Close();
-            }
+            Close();          
         }
     }
 }

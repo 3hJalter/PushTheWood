@@ -286,7 +286,7 @@ MonoBehaviour:
     unlockAtLevel: 7
     goldPerBuyTen: 10
     ticketPerBuyRatio:
-      ticketNeed: 2
+      ticketNeed: 1
       itemsPerBuy: 1
     UIResourceConfig:
       Name: Push Hint

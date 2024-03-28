@@ -63,8 +63,8 @@ namespace _Game.Data
         [FoldoutGroup("In Game/MoreTimeAdded")]
         public readonly int MoreTimeAdded = 60;
 
-        [FoldoutGroup("InGame/Reward")] public readonly int finalPointGoldReward = 20;
-        [FoldoutGroup("InGame/Reward")] public readonly int bonusChestGoldReward = 40;
+        [FoldoutGroup("In Game/Reward")] public readonly int finalPointGoldReward = 20;
+        [FoldoutGroup("In Game/Reward")] public readonly int bonusChestGoldReward = 40;
         #endregion
 
         #region Daily Challenge Reward
