@@ -45,10 +45,10 @@ namespace _Game.UIs.Popup
         public override void Setup(object param = null)
         {
             base.Setup(param);
-            
-            _musicToggle.IsOn = !AudioManager.Ins.IsBgmMute();
-            _soundToggle.IsOn = !AudioManager.Ins.IsSfxMute();
-            _hapticToggle.IsOn = HVibrate.IsHapticOn;
+
+            _musicToggle.SetOnValueWithoutInvoke(!AudioManager.Ins.IsBgmMute());
+            _soundToggle.SetOnValueWithoutInvoke(!AudioManager.Ins.IsBgmMute());
+            _hapticToggle.SetOnValueWithoutInvoke(HVibrate.IsHapticOn);
 
             if (GameManager.Ins.IsState(GameState.InGame))
             {
