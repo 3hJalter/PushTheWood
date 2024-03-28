@@ -36,7 +36,8 @@ namespace _Game._Scripts.InGame
             OnSpawnUnits();
             // Spawn Grid Surface
             SpawnGridSurfaceToGrid();
-            OnSetHintLine();
+            // OnSpawnShadowUnit();
+            // OnSetHintLine();
             // if isInit -> AddIsland & InitUnit
             if (parent is null) return;
             // Set parent
