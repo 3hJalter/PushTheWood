@@ -61,6 +61,7 @@ namespace AudioEnum
         GrowTree = 19,
         PlayerPassout = 20,
         PlayerBeAttacked = 21,
+        PlayerStomachGrowl = 22,
         // UI
         ClickOpen = 100,
         Win = 101,

@@ -16,6 +16,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         {
             GameplayManager.Ins.IsCanUndo = false;
             GameplayManager.Ins.IsCanResetIsland = false;
+            AudioManager.Ins.PlaySfx(AudioEnum.SfxType.PlayerPassout);
             t.ChangeAnim(Constants.DIE_ANIM);
             TimerManager.Ins.WaitForTime(DIE_TIME, OnLoseGame);
             void OnLoseGame()
