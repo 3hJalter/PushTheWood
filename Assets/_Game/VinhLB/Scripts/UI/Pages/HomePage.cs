@@ -123,6 +123,7 @@ namespace VinhLB
                 else
                 {
                     UIManager.Ins.OpenUI<InGameScreen>();
+                    DataManager.Ins.CheckingRentPlayerSkinCount();
                 }
             });
             _dailyChallengeButton.AddListener(() => { UIManager.Ins.OpenUI<DailyChallengePopup>(); });

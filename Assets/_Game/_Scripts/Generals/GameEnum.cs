@@ -222,5 +222,6 @@ namespace _Game.Ads
         None = -1,
         Booster_Popup = 0,
         In_Game = 1,
+        Collection = 2,
     }
 }

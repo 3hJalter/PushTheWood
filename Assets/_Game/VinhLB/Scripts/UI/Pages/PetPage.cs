@@ -36,6 +36,10 @@ namespace VinhLB
         private HButton _tryButton;
         [SerializeField]
         private TMP_Text _tryAmountText;
+        [SerializeField]
+        private GameObject _tryInfo;
+        [SerializeField]
+        private TMP_Text _tryInfoText;
 
         private List<CollectionItem> _collectionItemList;
         private int _currentPetIndex = 0;
@@ -54,7 +58,7 @@ namespace VinhLB
             {
                 _collectionItemList[i].OnClick -= OnCollectionItemClick;
             }
-            
+
             _buyButton.onClick.RemoveListener(OnBuyClick);
             _tryButton.onClick.RemoveListener(OnTryClick);
 
@@ -64,7 +68,7 @@ namespace VinhLB
         public override void Setup(object param = null)
         {
             base.Setup(param);
-
+            _tryAmountText.text = $"{DataManager.Ins.ConfigData.maxRentCount} times";
             _currentPetIndex = DataManager.Ins.CurrentPlayerSkinIndex;
 
             if (_collectionItemList == null)
@@ -140,7 +144,18 @@ namespace VinhLB
 
         private void UpdateItem(int id, int data)
         {
-            if (!DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[id].Data))
+            if (DataManager.Ins.IsCharacterSkinRent(_collectionItemList[id].Data))
+            {
+                _buyButton.gameObject.SetActive(true);
+                _tryButton.gameObject.SetActive(false);
+                _tryInfo.SetActive(true);
+                _tryInfoText.text = $"{DataManager.Ins.GetRentCharacterSkinCount(_collectionItemList[id].Data)}/{DataManager.Ins.ConfigData.maxRentCount}";
+                _infoGO.SetActive(true);
+                _collectionItemList[DataManager.Ins.CurrentPlayerSkinIndex].SetChosen(false);
+                _collectionItemList[id].SetChosen(true);
+                DataManager.Ins.SetCharacterSkinIndex(_collectionItemList[id].Data);
+            }
+            else if (!DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[id].Data))
             {
                 if (!_collectionItemList[id].IsLocked)
                 {
@@ -148,6 +163,7 @@ namespace VinhLB
                     {
                         _buyButton.gameObject.SetActive(false);
                         _tryButton.gameObject.SetActive(true);
+                        _tryInfo.SetActive(false);
                         _infoGO.SetActive(true);
                         _infoText.text = "Not enough gold";
                     }
@@ -155,6 +171,7 @@ namespace VinhLB
                     {
                         _buyButton.gameObject.SetActive(true);
                         _tryButton.gameObject.SetActive(true);
+                        _tryInfo.SetActive(false);
                         _costText.text = DataManager.Ins.ConfigData.CharacterCosts[_collectionItemList[id].Data]
                             .ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
                         _infoGO.SetActive(false);
@@ -164,6 +181,7 @@ namespace VinhLB
                 {
                     _buyButton.gameObject.SetActive(false);
                     _tryButton.gameObject.SetActive(true);
+                    _tryInfo.SetActive(false);
                     _infoGO.SetActive(true);
                     _infoText.text = _collectionItemList[id].UnlockInfo;
                 }
@@ -172,6 +190,7 @@ namespace VinhLB
             {
                 _buyButton.gameObject.SetActive(false);
                 _tryButton.gameObject.SetActive(false);
+                _tryInfo.SetActive(false);
                 _infoGO.SetActive(false);
                 _collectionItemList[DataManager.Ins.CurrentPlayerSkinIndex].SetChosen(false);
                 _collectionItemList[id].SetChosen(true);
@@ -195,32 +214,7 @@ namespace VinhLB
                     _collectionItemList[i].ShowPrice(false);
                 }
             }
-
-            if (DataManager.Ins.IsCharacterSkinUnlock(_collectionItemList[_currentPetIndex].Data))
-            {
-                _buyButton.gameObject.SetActive(false);
-                _tryButton.gameObject.SetActive(false);
-                _infoGO.SetActive(false);
-            }
-            else
-            {
-                if (!_collectionItemList[_currentPetIndex].IsLocked)
-                {
-                    _buyButton.gameObject.SetActive(true);
-                    _tryButton.gameObject.SetActive(true);
-                    _costText.text = DataManager.Ins.ConfigData
-                        .CharacterCosts[_collectionItemList[_currentPetIndex].Data]
-                        .ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
-                    _infoGO.SetActive(false);
-                }
-                else
-                {
-                    _buyButton.gameObject.SetActive(false);
-                    _tryButton.gameObject.SetActive(true);
-                    _infoGO.SetActive(true);
-                    _infoText.text = _collectionItemList[_currentPetIndex].UnlockInfo;
-                }
-            }
+            UpdateItem(_currentPetIndex, _collectionItemList[_currentPetIndex].Data);
         }
 
         private void OnBuyClick()
@@ -244,7 +238,14 @@ namespace VinhLB
         private void OnTryClick()
         {
             // TODO: Implement logic for trying pet button
-            UIManager.Ins.OpenUI<NotificationPopup>(Constants.FEATURE_COMING_SOON);
+            DevLog.Log(DevId.Hung, "Rent");
+            AdsManager.Ins.RewardedAds.Show(UpdateRentCharacter, _Game.Ads.Placement.Collection);
+
+            void UpdateRentCharacter()
+            {
+                DataManager.Ins.SetRentCharacterSkinCount(_collectionItemList[_currentPetIndex].Data, DataManager.Ins.ConfigData.maxRentCount);
+                UpdateItem(_currentPetIndex, _collectionItemList[_currentPetIndex].Data);
+            }
         }
 
         private void OnRewardScrollRectValueChanged(Vector2 value)

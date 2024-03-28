@@ -17,22 +17,22 @@ namespace _Game.Managers
 
         #region Game Saving Data
         private GameData _gameData;
-        
+
         public GameData GameData => _gameData ?? Load();
 
         private GameData Load()
         {
             _gameData = Database.LoadData();
             return _gameData;
-        }      
+        }
         public void Save()
         {
             Database.SaveData(_gameData);
         }
         #endregion
-        
+
         #region In-Game Data
-        [SerializeField] 
+        [SerializeField]
         private ConfigData configData;
         [SerializeField]
         private AudioData audioData;
@@ -44,24 +44,34 @@ namespace _Game.Managers
         private VFXData vfxData;
         [SerializeField]
         private UIResourceDatabase _uiResourceDatabase;
-        
+
         public ConfigData ConfigData => configData;
         public AudioData AudioData => audioData;
         public VFXData VFXData => vfxData;
         public UIResourceDatabase UIResourceDatabase => _uiResourceDatabase;
-        
+
         #endregion
-        
+
         #region In-Game Function
-        
+
         public int CountNormalLevel => gridData.CountNormalLevel;
         public int CountSecretLevel => gridData.CountSecretLevel;
         public int CountSurfaceMaterial => materialData.CountSurfaceMaterial;
-        public int CurrentPlayerSkinIndex => GameData.user.currentPlayerSkinIndex;
+        public int CurrentPlayerSkinIndex
+        {
+            get
+            {
+                if (!(IsCharacterSkinUnlock(GameData.user.currentPlayerSkinIndex) || IsCharacterSkinRent(GameData.user.currentPlayerSkinIndex)))
+                {
+                    GameData.user.currentPlayerSkinIndex = GameData.user.currentUnlockPlayerSkinIndex;
+                }
+                return GameData.user.currentPlayerSkinIndex;
+            }
+        }
         public int HintAdsCount => GameData.user.hintAdsCount;
-        
+
         public int GoldCount => GameData.user.gold;
-        
+
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
@@ -77,22 +87,22 @@ namespace _Game.Managers
         {
             return _gameData.user.isOpenInGameDailyChallengeTut;
         }
-        
+
         public void ChangeOpenDailyChallengeTut(bool value)
         {
             _gameData.user.isOpenInGameDailyChallengeTut = value;
         }
-        
+
         public bool IsDailyChallengeFreePlay()
         {
             return _gameData.user.isFreeDailyChallengeFirstTime;
         }
-        
+
         public void ChangeDailyChallengeFreePlay(bool value)
         {
             _gameData.user.isFreeDailyChallengeFirstTime = value;
         }
-        
+
         public bool IsCollectedAllDailyChallengeReward()
         {
             int collected = _gameData.user.dailyChallengeRewardCollected.Count;
@@ -107,7 +117,7 @@ namespace _Game.Managers
                 _ => false
             };
         }
-        
+
         public bool IsClearAllDailyChallenge()
         {
             return _gameData.user.dailyLevelIndexComplete.Count >= _gameData.user.currentDailyChallengerDay;
@@ -127,12 +137,19 @@ namespace _Game.Managers
         {
             return GameData.user.hintAdsCount >= ConfigData.GetBoosterConfig(BoosterType.PushHint).TicketPerBuyRatio.ticketNeed;
         }
-        
+
+        public void CheckingRentPlayerSkinCount()
+        {
+            if (IsCharacterSkinRent(GameData.user.currentPlayerSkinIndex))
+            {
+                AddRentCharacterSkinCount(GameData.user.currentPlayerSkinIndex, -1);
+            }
+        }
         public bool IsCharacterSkinUnlock(int index)
         {
             return GameData.user.playerSkinState[index] != 0;
         }
-        
+
         public void SetUnlockCharacterSkin(int index, bool value)
         {
             GameData.user.playerSkinState[index] = value ? 1 : 0;
@@ -145,6 +162,13 @@ namespace _Game.Managers
         public void SetCharacterSkinIndex(int index)
         {
             GameData.user.currentPlayerSkinIndex = index;
+            if (IsCharacterSkinUnlock(index))
+                GameData.user.currentUnlockPlayerSkinIndex = index;
+        }
+
+        public bool IsCharacterSkinRent(int index)
+        {
+            return GameData.user.playerRentSkinState[index] > 0;
         }
         public void SetRentCharacterSkinCount(int index, int value)
         {
@@ -165,39 +189,39 @@ namespace _Game.Managers
             return type switch
             {
                 LevelType.Normal => normalType is LevelNormalType.None
-                    ? configData.timePerNormalLevel[(int) LevelNormalType.Medium].time
-                    : configData.timePerNormalLevel[(int) normalType].time,
+                    ? configData.timePerNormalLevel[(int)LevelNormalType.Medium].time
+                    : configData.timePerNormalLevel[(int)normalType].time,
                 LevelType.Secret => configData.timePerSecretLevel,
                 LevelType.DailyChallenge => configData.timePerDailyChallengeLevel,
                 _ => configData.timePerNormalLevel[(int)LevelNormalType.Medium].time
             };
         }
-        
+
         public Material GetTransparentMaterial()
         {
             return materialData.GetTransparentMaterial();
         }
-        
+
         public Material GetSurfaceMaterial(MaterialEnum materialEnum)
         {
             return materialData.GetSurfaceMaterial(materialEnum);
         }
-        
+
         public Material GetGrassMaterial(MaterialEnum materialEnum)
         {
             return materialData.GetGrassMaterial(materialEnum);
         }
-        
+
         public TextAsset GetLevelData(LevelType type, int index)
         {
             return gridData.GetLevelData(type, index);
         }
-        
+
         public void AddGridTextData(LevelType type, TextAsset textAsset)
         {
             gridData.AddGridTextData(type, textAsset);
         }
-        
+
         public bool HasGridTextData(LevelType type, TextAsset textAsset)
         {
             return gridData.HasGridTextData(type, textAsset);
@@ -227,7 +251,7 @@ namespace _Game.Managers
         {
             return gridData.GetUIUnit(poolType);
         }
-        
+
         public UIUnit GetWorldUIUnit(PoolType poolType)
         {
             return gridData.GetWorldUIUnit(poolType);
@@ -246,12 +270,12 @@ namespace _Game.Managers
             }
             return _uiResourceDatabase.CurrencyResourceConfigDict[type];
         }
-        
+
         public UIResourceConfig GetCharacterUIResourceConfig(CharacterType type)
         {
             return _uiResourceDatabase.CharacterResourceConfigDict[type];
         }
-        
+
         #endregion
     }
 }

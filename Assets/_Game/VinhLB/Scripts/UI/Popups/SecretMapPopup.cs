@@ -88,6 +88,7 @@ namespace VinhLB
             {
                 LevelManager.Ins.OnGoLevel(LevelType.Secret, index);
                 UIManager.Ins.OpenUI<InGameScreen>();
+                DataManager.Ins.CheckingRentPlayerSkinCount();
             };
         }
 
