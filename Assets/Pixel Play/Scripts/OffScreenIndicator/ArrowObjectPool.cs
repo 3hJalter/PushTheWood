@@ -12,24 +12,26 @@ class ArrowObjectPool : MonoBehaviour
     [Tooltip("Should the pooled amount increase.")]
     public bool willGrow = true;
 
-    List<Indicator> pooledObjects;
+    private List<Indicator> pooledObjects;
 
-    void Awake()
-    {
-        current = this;
-    }
+    private List<Indicator> PooledObjects => pooledObjects ??= GeneratePooledObjects();
 
-    void Start()
+    private List<Indicator> GeneratePooledObjects()
     {
         pooledObjects = new List<Indicator>();
 
         for (int i = 0; i < pooledAmount; i++)
         {
-            Indicator arrow = Instantiate(pooledObject);
-            arrow.transform.SetParent(transform, false);
+            Indicator arrow = Instantiate(pooledObject, transform, false);
             arrow.Activate(false);
             pooledObjects.Add(arrow);
         }
+        return pooledObjects;
+    }
+
+    private void Awake()
+    {
+        current = this;
     }
 
     /// <summary>
@@ -38,30 +40,27 @@ class ArrowObjectPool : MonoBehaviour
     /// <returns></returns>
     public Indicator GetPooledObject()
     {
-        for (int i = 0; i < pooledObjects.Count; i++)
+        for (int i = 0; i < PooledObjects.Count; i++)
         {
-            if (!pooledObjects[i].Active)
+            if (!PooledObjects[i].Active)
             {
-                return pooledObjects[i];
+                return PooledObjects[i];
             }
         }
-        if (willGrow)
-        {
-            Indicator arrow = Instantiate(pooledObject);
-            arrow.transform.SetParent(transform, false);
-            arrow.Activate(false);
-            pooledObjects.Add(arrow);
-            return arrow;
-        }
-        return null;
+
+        if (!willGrow) return null;
+        Indicator arrow = Instantiate(pooledObject, transform, false);
+        arrow.Activate(false);
+        PooledObjects.Add(arrow);
+        return arrow;
     }
 
     /// <summary>
-    /// Deactive all the objects in the pool.
+    /// De-active all the objects in the pool.
     /// </summary>
     public void DeactivateAllPooledObjects()
     {
-        foreach (Indicator arrow in pooledObjects)
+        foreach (Indicator arrow in PooledObjects)
         {
             arrow.Activate(false);
         }
