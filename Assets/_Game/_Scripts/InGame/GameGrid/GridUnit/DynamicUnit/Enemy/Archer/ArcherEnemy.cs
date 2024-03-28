@@ -24,20 +24,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
             bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
-            //Saving state before spawn, when map has already init
-            overrideSpawnSave = !LevelManager.Ins.IsConstructingLevel ? RawSave() : null;
-            SaveInitData(LevelManager.Ins.CurrentLevel.Index);
-            //DEV: Not use init data
-            // if (isUseInitData) GetInitData();
-            islandID = mainCellIn.IslandID;
-            SetHeight(startHeightIn);
-            SetEnterCellData(Direction.None, mainCellIn, unitTypeY);
-            OnEnterCells(mainCellIn, InitCell(mainCellIn, skinDirection));
-            // Set position
-            if (!hasSetPosAndRot) OnSetPositionAndRotation(EnterPosData.finalPos, skinDirection);
-            
-            isSpawn = true;
-            
+            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
+
             SaveInitData(LevelManager.Ins.CurrentLevel.Index);
             if (!_isAddState)
             {

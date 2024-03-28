@@ -474,6 +474,7 @@ namespace _Game._Scripts.InGame
             {
                 GameGridCell cell = GridMap.GetGridCell(x, y);
                 GridUnit unit = SimplePool.Spawn<GridUnit>(DataManager.Ins.GetGridUnit(type));
+                unit.UnitInitData = null; // null it to create new init data when init new level
                 LevelUnitData levelUnitData = new()
                 {
                     mainCellIn = cell,
@@ -541,7 +542,7 @@ namespace _Game._Scripts.InGame
             LevelManager.Ins.player.ResetData();
             LevelManager.Ins.player.OnInit(FirstPlayerInitCell, HeightLevel.One, false, firstPlayerDirection);
             Islands[FirstPlayerInitCell.Data.gridSurface.IslandID].AddInitUnitToIsland(
-                LevelManager.Ins.player, LevelManager.Ins.player.UnitUnitData, FirstPlayerInitCell);
+                LevelManager.Ins.player, LevelManager.Ins.player.UnitInitData, FirstPlayerInitCell);
             Islands[FirstPlayerInitCell.Data.gridSurface.IslandID].SetFirstPlayerStepCell(FirstPlayerInitCell);
         }
 
@@ -555,7 +556,7 @@ namespace _Game._Scripts.InGame
                 return;
             }
             Islands[data.mainCellIn.Data.gridSurface.IslandID]
-                .AddInitUnitToIsland(data.unit, data.unit.UnitUnitData, data.mainCellIn);
+                .AddInitUnitToIsland(data.unit, data.unit.UnitInitData, data.mainCellIn);
         }
         #endregion
     }

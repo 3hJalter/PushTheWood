@@ -22,6 +22,7 @@ using DG.Tweening;
 using MoreMountains.NiceVibrations;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using VinhLB;
 using static _Game.Utilities.Grid.Grid<_Game.GameGrid.GameGridCell, _Game.GameGrid.GameGridCellData>;
 
 namespace _Game.GameGrid
@@ -283,10 +284,25 @@ namespace _Game.GameGrid
             switch (_currentLevel.LevelType)
             {
                 case LevelType.Normal:
+                    // TEMPORARY: Add reward if the normal level is defeat enemy
+                    if (CurrentLevel.LevelWinCondition == LevelWinCondition.DefeatAllEnemy)
+                    {
+                        goldCount += DataManager.Ins.ConfigData.finalEnemyGoldReward;
+                        CollectingResourceManager.Ins.SpawnCollectingRewardKey(1, player.Tf);
+                        KeyRewardCount += 1;
+                        if (CurrentLevel.Index >= DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex)
+                        {
+                            int getCompass = CurrentLevel.Index - DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex;
+                            if (getCompass > 0 && getCompass % 4 == 0)
+                            {
+                                CollectingResourceManager.Ins.SpawnCollectingCompass(1, player.Tf);
+                                SecretMapPieceCount += 1;
+                            }
+                        }
+                    }
                     // +1 LevelIndex and save
                     normalLevelIndex++;
                     // Temporary handle when out of level
-                    if (normalLevelIndex >= DataManager.Ins.CountNormalLevel) normalLevelIndex = 0;
                     DataManager.Ins.GameData.user.normalLevelIndex = normalLevelIndex;
                     break;
                 case LevelType.Secret:
