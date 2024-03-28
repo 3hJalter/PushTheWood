@@ -7,7 +7,6 @@ using GameGridEnum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Game._Scripts.Managers;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -149,7 +148,7 @@ namespace _Game.GameGrid.Unit
 
         public UnitInitData UnitUnitData => _unitInitData; //DEV: Can be optimize
         public virtual void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
-            bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRos = false)
+            bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
             //Saving state before spawn, when map has already init
             if (!LevelManager.Ins.IsConstructingLevel)
@@ -163,7 +162,7 @@ namespace _Game.GameGrid.Unit
             SetEnterCellData(Direction.None, mainCellIn, unitTypeY);
             OnEnterCells(mainCellIn, InitCell(mainCellIn, skinDirection));
             // Set position
-            if (!hasSetPosAndRos) OnSetPositionAndRotation(EnterPosData.finalPos, skinDirection);
+            if (!hasSetPosAndRot) OnSetPositionAndRotation(EnterPosData.finalPos, skinDirection);
             
             isSpawn = true;
         }
@@ -372,7 +371,7 @@ namespace _Game.GameGrid.Unit
             pushUnit.StartHeight += 1;
             pushUnit.EndHeight += 1;
         }
-        private void SetHeight(HeightLevel startHeightIn)
+        protected void SetHeight(HeightLevel startHeightIn)
         {
             startHeight = startHeightIn;
             endHeight = CalculateEndHeight(startHeightIn, size);
@@ -394,7 +393,7 @@ namespace _Game.GameGrid.Unit
             skinRotationDirection = _unitInitData.SkinDirection;
         }
 
-        private List<GameGridCell> InitCell(GameGridCell mainCellIn, Direction skinDirection)
+        protected List<GameGridCell> InitCell(GameGridCell mainCellIn, Direction skinDirection)
         {
             List<GameGridCell> initCells = new();
             MainCell = mainCellIn;

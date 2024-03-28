@@ -34,9 +34,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Bomb
         private STimer timer;
         
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
-            Direction skinDirection = Direction.None, bool hasSetPosAndRos = false)
+            Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
-            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRos);
+            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
             if (!_isAddState)
             {
                 _isAddState = true;
@@ -61,7 +61,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Bomb
             for (int i = 0; i < movingData.blockDynamicUnits.Count; i++) movingData.blockDynamicUnits[i].OnBePushed(direction, this);
         }
         
-        public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
+        public override void OnBePushed(Direction direction, GridUnit pushUnit)
         {
             BeInteractedData.SetData(direction, pushUnit);
             if (!ConditionMergeOnBeInteracted.IsApplicable(BeInteractedData)) return;

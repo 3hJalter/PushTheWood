@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using _Game._Scripts.InGame.GameCondition.Data;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Chump.ChumpState;
 using _Game.GameGrid.Unit.Interface;
 using _Game.Managers;
-using _Game.Utilities;
 using AudioEnum;
 using GameGridEnum;
 using UnityEngine;
@@ -86,7 +84,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Chump
             for (int i = 0; i < blockUnits.Count; i++) blockUnits[i].OnBePushed(direction, this);
         }
 
-        public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
+        public override void OnBePushed(Direction direction, GridUnit pushUnit)
         {
 
             #region Check Condition

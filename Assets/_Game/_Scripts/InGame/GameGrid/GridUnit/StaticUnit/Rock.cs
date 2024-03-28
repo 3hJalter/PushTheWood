@@ -1,5 +1,4 @@
 ﻿using _Game.Managers;
-using _Game.Utilities;
 using AudioEnum;
 using DG.Tweening;
 using UnityEngine;
@@ -8,11 +7,9 @@ namespace _Game.GameGrid.Unit.StaticUnit
 {
     public class Rock : GridUnitStatic
     {
-        [SerializeField]
-        private int DEGREE = 6;
-        [SerializeField]
-        private float DECAY_VALUE = 0.9f;
-        public override void OnBePushed(Direction direction = Direction.None, GridUnit unit = null)
+        private const int DEGREE = 6;
+        private const float DECAY_VALUE = 0.9f;
+        public override void OnBePushed(Direction direction, GridUnit unit)
         {
             //NOTE: Refactor
             //NOTE: Play Shake Animation

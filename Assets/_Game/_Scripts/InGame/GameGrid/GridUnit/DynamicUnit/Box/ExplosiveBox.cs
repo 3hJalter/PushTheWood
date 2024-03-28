@@ -52,7 +52,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
             #endregion
         }
 
-        public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
+        public override void OnBePushed(Direction direction, GridUnit pushUnit)
         {
             base.OnBePushed(direction, pushUnit);
             if (_isWaitForExplode) return;

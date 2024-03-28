@@ -1,10 +1,8 @@
-using _Game._Scripts.Managers;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates;
 using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using _Game.Managers;
 using GameGridEnum;
-using _Game.Utilities;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
 {
@@ -24,9 +22,23 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             stateMachine?.UpdateState();
         }
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
-            bool isUseInitData = false, Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
+            bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
-            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot); //DEV: Not use init data
+            //Saving state before spawn, when map has already init
+            overrideSpawnSave = !LevelManager.Ins.IsConstructingLevel ? RawSave() : null;
+            SaveInitData(LevelManager.Ins.CurrentLevel.Index);
+            //DEV: Not use init data
+            // if (isUseInitData) GetInitData();
+            islandID = mainCellIn.IslandID;
+            SetHeight(startHeightIn);
+            SetEnterCellData(Direction.None, mainCellIn, unitTypeY);
+            OnEnterCells(mainCellIn, InitCell(mainCellIn, skinDirection));
+            // Set position
+            if (!hasSetPosAndRot) OnSetPositionAndRotation(EnterPosData.finalPos, skinDirection);
+            
+            isSpawn = true;
+            
+            SaveInitData(LevelManager.Ins.CurrentLevel.Index);
             if (!_isAddState)
             {
                 _isAddState = true;
@@ -38,7 +50,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             AddToLevelManager();
             stateMachine.ChangeState(StateEnum.Idle);
         }
-        public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
+        public override void OnBePushed(Direction direction, GridUnit pushUnit)
         {
             if (pushUnit is Player.Player player)
             {
