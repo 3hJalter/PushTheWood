@@ -168,7 +168,7 @@ namespace _Game.Managers
 
         public bool IsCharacterSkinRent(int index)
         {
-            return GameData.user.playerRentSkinState[index] > 0;
+            return GameData.user.playerRentSkinState[index] >= 0;
         }
         public void SetRentCharacterSkinCount(int index, int value)
         {

@@ -188,6 +188,7 @@ namespace _Game.UIs.Screen
         {
             GameManager.Ins.PostEvent(EventID.OnCheckShowInterAds, action);
             _continueButton.onClick.RemoveAllListeners();
+            DataManager.Ins.CheckingRentPlayerSkinCount();
         }
 
         private void OnGoMenu()

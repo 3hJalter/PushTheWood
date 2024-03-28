@@ -70,6 +70,7 @@ namespace VinhLB
         public void OnClickRestartButton()
         {
             GameManager.Ins.PostEvent(EventID.StartGame);
+            DataManager.Ins.CheckingRentPlayerSkinCount();
             LevelManager.Ins.OnRestart();
             GameManager.Ins.PostEvent(EventID.OnInterAdsStepCount, 1);
             Close();
