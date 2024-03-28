@@ -415,6 +415,7 @@ namespace _Game.Managers
         #region Booster
         public void OnUsingBooster(BoosterType boosterType)
         {
+            if (LevelManager.Ins.player.IsStun || LevelManager.Ins.player.IsDead) return;
             switch (boosterType)
             {
                 case BoosterType.Undo:
