@@ -118,9 +118,8 @@ namespace _Game.Managers
                 PostEvent(EventID.UnPause);
                 PostEvent(EventID.UnPause, gameStateI);
             }
-
-            PostEvent(EventID.OnChangeGameState, gameStateI);
             gameState = gameStateI;
+            PostEvent(EventID.OnChangeGameState, gameStateI);
         }
 
         public bool IsState(GameState gameStateI)
