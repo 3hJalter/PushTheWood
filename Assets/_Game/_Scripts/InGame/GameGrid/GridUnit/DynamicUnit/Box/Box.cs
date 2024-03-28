@@ -1,11 +1,9 @@
-﻿using System.Linq;
-using _Game._Scripts.InGame.GameCondition.Data;
+﻿using _Game._Scripts.InGame.GameCondition.Data;
 using _Game.DesignPattern.ConditionRule;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Box.BoxState;
 using _Game.GameGrid.Unit.Interface;
 using _Game.Managers;
-using _Game.Utilities;
 using AudioEnum;
 using GameGridEnum;
 using UnityEngine;
@@ -21,9 +19,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
         private bool _isAddState;
 
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
-            Direction skinDirection = Direction.None, bool hasSetPosAndRos = false)
+            Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
-            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRos);
+            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
             if (!_isAddState)
             {
                 _isAddState = true;
@@ -45,7 +43,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Box
             for (int i = 0; i < movingData.blockDynamicUnits.Count; i++) movingData.blockDynamicUnits[i].OnBePushed(direction, this);
         }
 
-        public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
+        public override void OnBePushed(Direction direction, GridUnit pushUnit)
         {
             AudioManager.Ins.PlaySfx(SfxType.PushChump);
             BeInteractedData.SetData(direction, pushUnit);

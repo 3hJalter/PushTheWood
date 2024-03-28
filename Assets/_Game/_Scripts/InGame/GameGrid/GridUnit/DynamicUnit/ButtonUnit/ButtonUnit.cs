@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.ButtonUnitState;
-using _Game.Utilities;
 using DG.Tweening;
 using GameGridEnum;
 using UnityEngine;
@@ -24,9 +23,9 @@ namespace _Game.GameGrid.Unit.DynamicUnit
         
         
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
-            Direction skinDirection = Direction.None, bool hasSetPosAndRos = false)
+            Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
-            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRos);
+            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
             if (!_isAddState)
             {
                 _isAddState = true;

@@ -1,18 +1,14 @@
-using _Game._Scripts.Managers;
 using _Game.DesignPattern.StateMachine;
 using _Game.GameGrid.Unit.DynamicUnit.Enemy.EnemyStates;
 using _Game.GameGrid.Unit.DynamicUnit.Interface;
 using _Game.Managers;
-using DG.Tweening;
 using GameGridEnum;
-using _Game.Utilities;
-using UnityEngine;
 
 namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
 {
     public class ArcherEnemy : GridUnitCharacter, IEnemy
     {
-        protected StateMachine<ArcherEnemy> stateMachine;
+        private StateMachine<ArcherEnemy> stateMachine;
         public StateMachine<ArcherEnemy> StateMachine => stateMachine;
         public override StateEnum CurrentStateId
         {
@@ -26,9 +22,22 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             stateMachine?.UpdateState();
         }
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One,
-            bool isUseInitData = false, Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
+            bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
-            base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot); //DEV: Not use init data
+            //Saving state before spawn, when map has already init
+            overrideSpawnSave = !LevelManager.Ins.IsConstructingLevel ? RawSave() : null;
+            SaveInitData(LevelManager.Ins.CurrentLevel.Index);
+            //DEV: Not use init data
+            // if (isUseInitData) GetInitData();
+            islandID = mainCellIn.IslandID;
+            SetHeight(startHeightIn);
+            SetEnterCellData(Direction.None, mainCellIn, unitTypeY);
+            OnEnterCells(mainCellIn, InitCell(mainCellIn, skinDirection));
+            // Set position
+            if (!hasSetPosAndRot) OnSetPositionAndRotation(EnterPosData.finalPos, skinDirection);
+            
+            isSpawn = true;
+            
             SaveInitData(LevelManager.Ins.CurrentLevel.Index);
             if (!_isAddState)
             {
@@ -48,7 +57,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             base.OnDespawn();
             GameManager.Ins.UnregisterListenerEvent(DesignPattern.EventID.OnChangeGameState, OnGameStateChange);
         }
-        public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
+        public override void OnBePushed(Direction direction, GridUnit pushUnit)
         {
             AudioManager.Ins.PlaySfx(AudioEnum.SfxType.PushEnemy);
             LookDirection(Constants.InvDirection[direction]);
@@ -58,7 +67,6 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             {
                 stateMachine.ChangeState(StateEnum.Idle);
                 player.CheckingStunState();
-                return;
             }
         }
         protected override void AddState()
@@ -83,7 +91,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             LevelManager.Ins.OnRemoveEnemy(this);
         }
 
-        public void OnGameStateChange(object param)
+        private void OnGameStateChange(object param)
         {
             GameState state = (GameState)param;
             switch (state)

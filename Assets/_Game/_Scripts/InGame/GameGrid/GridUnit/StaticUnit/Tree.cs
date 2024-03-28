@@ -54,7 +54,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
             }
         }
 
-        public override void OnBePushed(Direction direction = Direction.None, GridUnit pushUnit = null)
+        public override void OnBePushed(Direction direction, GridUnit pushUnit)
         {
             //NOTE: Refactor
             //NOTE: Play Shake Animation
