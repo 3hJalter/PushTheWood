@@ -263,7 +263,7 @@ MonoBehaviour:
   _activeGround: 1
   _activeWater: 1
   _activeRollingFog: 1
-  _activeWindDust: 1
+  _activeWindDust: 0
   _activeRain: 0
 --- !u!1001 &317977267
 PrefabInstance:
