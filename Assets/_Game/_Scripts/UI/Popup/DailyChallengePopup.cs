@@ -134,7 +134,6 @@ namespace _Game.UIs.Popup
             {
                 LevelManager.Ins.OnGoLevel(LevelType.DailyChallenge, DataManager.Ins.GetDailyChallengeDay(LevelManager.Ins.dailyLevelClickedDay));
                 UIManager.Ins.OpenUI<InGameScreen>();
-                DataManager.Ins.CheckingRentPlayerSkinCount();
             };
         }
         

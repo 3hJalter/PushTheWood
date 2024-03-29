@@ -293,6 +293,7 @@ namespace _Game.Managers
                 isBoughtGrowTreeInIsland.Clear();
                 isCanGrowTreeInIsland.Clear();
             }
+            ChangePlayerSkin();
             screen.OnSetBoosterAmount();
             GameManager.Ins.ChangeState(GameState.InGame);
             // If hard level, show a notification -> If it None -> not show
@@ -633,6 +634,15 @@ namespace _Game.Managers
             screen.OnShowTryHintAgain(show);
         }
         #endregion
+        #endregion
+
+        #region Skin
+        private void ChangePlayerSkin()
+        {
+            DataManager.Ins.CheckingRentPlayerSkinCount();
+            LevelManager.Ins.player.ChangeSkin(DataManager.Ins.CurrentPlayerSkinIndex);
+        }
+
         #endregion
     }
 }
