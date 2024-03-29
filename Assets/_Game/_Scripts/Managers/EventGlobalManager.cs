@@ -19,7 +19,8 @@ namespace _Game._Scripts.Managers
         private Relay<PlayerStep> _onPlayerPushStep; // For Push Hint
         private Relay<int> _onGrowTreeOnIsland; // For Grow Tree on Island
         private Relay<BoosterType> _onUsingBooster;
-        private Relay<int, int> _onUsingRentCharacter; 
+        private Relay<int, int> _onUsingRentCharacter;
+        private Relay _onUndoBoosterCall;
         
         public Relay OnChangeLevelCollectingObjectNumber => _onChangeLevelCollectingObjectNumber ??= new Relay();
         public Relay<bool> OnButtonUnitEnter => _onButtonUnitEnter ??= new Relay<bool>();
@@ -33,6 +34,9 @@ namespace _Game._Scripts.Managers
         public Relay<PlayerStep> OnPlayerPushStep => _onPlayerPushStep ??= new Relay<PlayerStep>();
         public Relay<BoosterType> OnUsingBooster => _onUsingBooster ??= new Relay<BoosterType>();
         public Relay<int, int> OnUsingRentCharacter => _onUsingRentCharacter ??=new Relay<int, int>();
+        
+        public Relay OnUndoBoosterCall => _onUndoBoosterCall ??= new Relay();
+        
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);

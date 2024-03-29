@@ -473,6 +473,8 @@ namespace _Game.Managers
             else
             {
                 if (!LevelManager.Ins.OnUndo()) return;
+                // Send an undo Signal
+                EventGlobalManager.Ins.OnUndoBoosterCall.Dispatch();
                 OnChangeBoosterAmount(BoosterType.Undo, -1);
                 // TEMPORARY
                 if (!_pushHint.IsStartHint)
