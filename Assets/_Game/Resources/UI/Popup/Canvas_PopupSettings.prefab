@@ -1570,7 +1570,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _isOn: 0
+  _isOn: 1
   _buttonSound: 107
   _onValueChanged:
     m_PersistentCalls:
@@ -3081,7 +3081,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _isOn: 0
+  _isOn: 1
   _buttonSound: 107
   _onValueChanged:
     m_PersistentCalls:
@@ -3495,7 +3495,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _isOn: 0
+  _isOn: 1
   _buttonSound: 107
   _onValueChanged:
     m_PersistentCalls:

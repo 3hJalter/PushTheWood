@@ -1,11 +1,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace VinhLB
 {
     public static class Extensions
     {
+        #region List
+        public static void Shift<T>(this List<T> list, int amount)
+        {
+            List<T> tempList = list.ToList();
+            for (int i = 0; i < list.Count; i++)
+            {
+                int newValueIndex = (i + amount) % list.Count;
+                list[i] = tempList[newValueIndex];
+            }
+        }
+        #endregion
+
         #region Transform
         public static void SetLayer(this Transform transform, int layer, bool recursive = false)
         {
@@ -34,17 +47,17 @@ namespace VinhLB
         {
             rectTransform.SetSizeDelta(width, rectTransform.sizeDelta.y);
         }
-        
+
         public static void SetSizeDeltaHeight(this RectTransform rectTransform, float height)
         {
             rectTransform.SetSizeDelta(rectTransform.sizeDelta.x, height);
         }
-        
+
         public static void SetSizeDelta(this RectTransform rectTransform, float width, float height)
         {
             rectTransform.sizeDelta = new Vector2(width, height);
         }
-        
+
         public static void SetPaddingLeft(this RectTransform rectTransform, float left)
         {
             rectTransform.offsetMin = new Vector2(left, rectTransform.offsetMin.y);
@@ -64,27 +77,52 @@ namespace VinhLB
         {
             rectTransform.offsetMin = new Vector2(rectTransform.offsetMin.x, bottom);
         }
-        
-        public static void SetPadding(this RectTransform rectTransform, float horizontal, float vertical) {
+
+        public static void SetPadding(this RectTransform rectTransform, float horizontal, float vertical)
+        {
             rectTransform.offsetMax = new Vector2(-horizontal, -vertical);
             rectTransform.offsetMin = new Vector2(horizontal, vertical);
         }
 
-        public static void SetPadding(this RectTransform rectTransform, float left, float top, float right, float bottom)
+        public static void SetPadding(this RectTransform rectTransform, float left, float top, float right,
+            float bottom)
         {
             rectTransform.offsetMax = new Vector2(-right, -top);
             rectTransform.offsetMin = new Vector2(left, bottom);
         }
         #endregion
-        
-        #region List
-        public static void Shift<T>(this List<T> list, int amount)
+
+        #region UI
+        public static void ScrollTo(this ScrollRect scrollRect, RectTransform targetRectTransform,
+            RectTransform contentRectTransform)
         {
-            List<T> tempList = list.ToList();
-            for (int i = 0; i < list.Count; i++)
+            Canvas.ForceUpdateCanvases();
+            Vector2 viewportLocalPosition = scrollRect.viewport.localPosition;
+            Vector2 targetLocalPosition = targetRectTransform.localPosition;
+
+            Vector2 newTargetLocalPosition = new Vector2(
+                0 - (viewportLocalPosition.x + targetLocalPosition.x) + (scrollRect.viewport.rect.width / 2) -
+                (targetRectTransform.rect.width / 2),
+                0 - (viewportLocalPosition.y + targetLocalPosition.y) + (scrollRect.viewport.rect.height / 2) -
+                (targetRectTransform.rect.height / 2));
+            contentRectTransform.localPosition = newTargetLocalPosition;
+        }
+        
+        public static void ScrollTo(this ScrollRect scrollRect, RectTransform targetRectTransform)
+        {
+            Canvas.ForceUpdateCanvases();
+            Debug.Log(scrollRect.content.InverseTransformPoint(targetRectTransform.position));
+            Debug.Log(targetRectTransform.anchoredPosition);
+            Debug.Log(scrollRect.viewport.localPosition);
+            Debug.Log(targetRectTransform.localPosition);
+            
+            if (scrollRect.horizontal)
             {
-                int newValueIndex = (i + amount) % list.Count;
-                list[i] = tempList[newValueIndex];
+                
+            }
+            if (scrollRect.vertical)
+            {
+                
             }
         }
         #endregion

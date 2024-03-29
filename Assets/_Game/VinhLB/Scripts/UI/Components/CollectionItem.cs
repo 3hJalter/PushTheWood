@@ -9,7 +9,9 @@ namespace VinhLB
     public class CollectionItem : HMonoBehaviour
     {
         public event Action<int, int> OnClick;
-        
+
+        [SerializeField]
+        private RectTransform _rectTransform;
         [SerializeField]
         private HButton _button;
         [SerializeField]
@@ -35,6 +37,7 @@ namespace VinhLB
         private int _id;
         private int _data;
 
+        public RectTransform RectTransform => _rectTransform;
         public bool IsLocked => _isLocked;
         public string UnlockInfo { get; private set; }
         public int Id => _id;

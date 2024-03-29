@@ -27,6 +27,8 @@ namespace _Game.UIs.Screen
         [SerializeField]
         private GameObject _debugMenuGO;
         [SerializeField] 
+        private Button _settingsButton;
+        [SerializeField] 
         private Button _resourceButton;
         [SerializeField]
         private Button _dailyRewardButton;
@@ -37,6 +39,12 @@ namespace _Game.UIs.Screen
         [SerializeField]
         private TMP_InputField _levelInputField;
 
+        [Header("Settings Menu")]
+        [SerializeField]
+        private GameObject _settingsMenuGO;
+        [SerializeField] 
+        private Button _toggleWaterButton;
+        
         [Header("Resource Menu")]
         [SerializeField]
         private GameObject _resourceMenuGO;
@@ -81,9 +89,12 @@ namespace _Game.UIs.Screen
             _debugMenusToggle.onValueChanged.AddListener(ToggleDebugMenu);
             _backButton.onClick.AddListener(BackToDebugMenu);
             
+            _settingsButton.onClick.AddListener(SettingsButton);
             _resourceButton.onClick.AddListener(ResourceButton);
             _dailyRewardButton.onClick.AddListener(DailyRewardButton);
             _dailyChallengeButton.onClick.AddListener(DailyChallengeButton);
+            
+            _toggleWaterButton.onClick.AddListener(ToggleWater);
             
             _addAdTicketsButton.onClick.AddListener(AddAdTickets);
             _addGoldButton.onClick.AddListener(AddGold);
@@ -119,9 +130,17 @@ namespace _Game.UIs.Screen
         {
             _backButton.gameObject.SetActive(false);
             _debugMenuGO.SetActive(true);
+            _settingsMenuGO.SetActive(false);
             _resourceMenuGO.SetActive(false);
             _dailyRewardMenuGO.SetActive(false);
             _dailyChallengeMenuGO.SetActive(false);
+        }
+        
+        private void SettingsButton()
+        {
+            _backButton.gameObject.SetActive(true);
+            _debugMenuGO.SetActive(false);
+            _settingsMenuGO.SetActive(true);
         }
 
         private void ResourceButton()
@@ -143,6 +162,11 @@ namespace _Game.UIs.Screen
             _backButton.gameObject.SetActive(true);
             _debugMenuGO.SetActive(false);
             _dailyChallengeMenuGO.SetActive(true);
+        }
+        
+        private void ToggleWater()
+        {
+            FXManager.Ins.ToggleWater();
         }
 
         private void AddAdTickets()

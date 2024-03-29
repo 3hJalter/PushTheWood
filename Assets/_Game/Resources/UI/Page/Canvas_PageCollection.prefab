@@ -831,10 +831,10 @@ RectTransform:
   m_Father: {fileID: 3316458403717996659}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 540, y: -170}
-  m_SizeDelta: {x: 990, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7890974478190099330
 MonoBehaviour:
@@ -5356,10 +5356,10 @@ RectTransform:
   m_Father: {fileID: 372541974989840255}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 495, y: 0}
-  m_SizeDelta: {x: 990, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8004304936418285740
 MonoBehaviour:
@@ -5600,7 +5600,7 @@ MonoBehaviour:
   _scrollRect: {fileID: 4140043386614950722}
   _topBlurGO: {fileID: 4835676905229128978}
   _bottomBlurGO: {fileID: 381808280552118168}
-  _collectionItemParentTF: {fileID: 1653060509237132603}
+  _collectionItemParentRectTF: {fileID: 1653060509237132603}
   _buyButton: {fileID: 503914363282799946}
   _costText: {fileID: 3894030595705075104}
   _infoGO: {fileID: 3976688775828861493}
