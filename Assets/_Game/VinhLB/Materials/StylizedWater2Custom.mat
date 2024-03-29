@@ -29,9 +29,10 @@ Material:
   - _SHARP_INERSECTION
   - _SPECULARHIGHLIGHTS_OFF
   - _UNLIT
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _ZCLIP_ON
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -160,7 +161,7 @@ Material:
     - _CustomPanSwitch: 0
     - _Cutoff: 0.5
     - _DepthExp: 0
-    - _DepthHorizontal: 0.52
+    - _DepthHorizontal: 1
     - _DepthVertical: 16
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
@@ -181,7 +182,7 @@ Material:
     - _FoamClipping: 0.999
     - _FoamDistortion: 0.2
     - _FoamOn: 1
-    - _FoamSpeed: 1
+    - _FoamSpeed: 0.01
     - _FoamSpeedDynamic: 0.1
     - _FoamSubSpeed: 0.29999995
     - _FoamSubSpeedDynamic: -0.1
@@ -202,7 +203,7 @@ Material:
     - _IntersectionSource: 0
     - _IntersectionSpeed: 0.1
     - _IntersectionStyle: 1
-    - _IntersectionTiling: 0.5
+    - _IntersectionTiling: 100
     - _LightingOn: 0
     - _Metallic: 0
     - _NormalMapOn: 0
@@ -271,8 +272,8 @@ Material:
     - _WaveTint: 0
     - _WavesOn: 0
     - _WorkflowMode: 1
-    - _WorldSpaceUV: 1
-    - _ZClip: 0
+    - _WorldSpaceUV: 0
+    - _ZClip: 1
     - _ZTest: 2
     - _ZWrite: 0
     m_Colors:
@@ -283,7 +284,7 @@ Material:
     - _DistanceNormalsFadeDist: {r: 100, g: 300, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FoamColor: {r: 1, g: 1, b: 1, a: 0.23529412}
-    - _FoamTiling: {r: 0.05, g: 0.05, b: 0, a: 0}
+    - _FoamTiling: {r: 5, g: 5, b: 0, a: 0}
     - _HorizonColor: {r: 0.017577427, g: 0.745283, b: 0.5076648, a: 0.80784315}
     - _IntersectionColor: {r: 1, g: 1, b: 1, a: 0.78431374}
     - _NormalTiling: {r: 0.05, g: 0.05, b: 0, a: 0}
