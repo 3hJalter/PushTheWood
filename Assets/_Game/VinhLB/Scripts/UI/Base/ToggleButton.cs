@@ -10,7 +10,7 @@ namespace VinhLB
     {
         [Header("General")]
         [SerializeField]
-        protected bool _isOn;
+        protected bool _isOn = true;
         [SerializeField]
         protected SfxType _buttonSound = SfxType.ClickToggle;
 
@@ -25,11 +25,6 @@ namespace VinhLB
             get => _isOn;
             set
             {
-                if (value == _isOn)
-                {
-                    return;
-                }
-                
                 _isOn = value;
                 _onValueChanged.Invoke(value);
             }

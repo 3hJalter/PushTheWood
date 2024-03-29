@@ -23,7 +23,7 @@ namespace VinhLB
         [SerializeField]
         private GameObject _bottomBlurGO;
         [SerializeField]
-        private Transform _collectionItemParentTF;
+        private RectTransform _collectionItemParentRectTF;
         [SerializeField]
         private HButton _buyButton;
         [SerializeField]
@@ -78,7 +78,7 @@ namespace VinhLB
                 foreach (KeyValuePair<CharacterType, UIResourceConfig> element
                          in DataManager.Ins.UIResourceDatabase.CharacterResourceConfigDict)
                 {
-                    CollectionItem item = Instantiate(_collectionItemPrefab, _collectionItemParentTF);
+                    CollectionItem item = Instantiate(_collectionItemPrefab, _collectionItemParentRectTF);
                     item.Initialize((int)element.Key, (int)element.Key, element.Value.Name,
                         element.Value.MainIconSprite, DataManager.Ins.ConfigData.CharacterCosts[(int)element.Key]);
                     item.OnClick += OnCollectionItemClick;
@@ -121,6 +121,7 @@ namespace VinhLB
                 }
             }
 
+            // _scrollRect.ScrollTo(_collectionItemList[_currentPetIndex].RectTransform);
             _scrollRect.verticalNormalizedPosition = 1f;
             OnRewardScrollRectValueChanged(_scrollRect.normalizedPosition);
         }
