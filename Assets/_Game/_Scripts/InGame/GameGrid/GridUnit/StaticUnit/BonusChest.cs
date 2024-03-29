@@ -29,6 +29,8 @@ namespace _Game.GameGrid.Unit.StaticUnit
             OnChestOpen -= OnTakeResource;
         }
 
+        public bool IsActive => gameObject.activeSelf;
+        
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
             Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
@@ -84,6 +86,8 @@ namespace _Game.GameGrid.Unit.StaticUnit
                 OnRemoveFromLevelManager();
             }
         }
+        
+        public bool IsActivated => gameObject.activeSelf;
         
         private void OnAddToLevelManager()
         {

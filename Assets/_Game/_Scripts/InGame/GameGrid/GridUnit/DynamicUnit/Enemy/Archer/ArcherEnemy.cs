@@ -79,6 +79,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             LevelManager.Ins.OnRemoveEnemy(this);
         }
 
+        public bool IsActive => gameObject.activeSelf;
+        
         private void OnGameStateChange(object param)
         {
             GameState state = (GameState)param;

@@ -17,6 +17,8 @@ namespace _Game.GameGrid.Unit.StaticUnit
         [SerializeField] protected bool isInteracted;
         [SerializeField] protected ParticleSystem winParticle;
 
+        public bool IsActive => gameObject.activeSelf;
+        
         public override void OnInit(GameGridCell mainCellIn, HeightLevel startHeightIn = HeightLevel.One, bool isUseInitData = true,
             Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {

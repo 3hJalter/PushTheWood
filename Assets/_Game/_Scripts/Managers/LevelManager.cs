@@ -244,7 +244,25 @@ namespace _Game.GameGrid
             _currentLevel.ResetIslandPlayerOn();
             SetCameraToPlayerIsland();
             OnLevelIslandReset?.Invoke();
+            HandleObjectiveChangeOnReset();
             _isResetting = false;
+        }
+
+        private void HandleObjectiveChangeOnReset()
+        {
+            if (CurrentLevel.LevelWinCondition is LevelWinCondition.DefeatAllEnemy)
+            {
+                // check the enemy set, if it in-active -> remove it
+                enemies.RemoveWhere(enemy => !enemy.IsActive);
+                objectiveTotal = enemies.Count;
+            }
+            else
+            {
+                // check the final point set, if it in-active -> remove it
+                finalPoints.RemoveWhere(finalPoint => !finalPoint.IsActive);
+                objectiveTotal = finalPoints.Count;
+            }
+            OnObjectiveChange?.Invoke();
         }
 
         private void OnCheckTutorial()

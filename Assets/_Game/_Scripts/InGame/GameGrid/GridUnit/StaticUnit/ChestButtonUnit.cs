@@ -30,6 +30,8 @@ namespace _Game.GameGrid.Unit.StaticUnit
         private int numberOfButtonEntered;
         private int numberOfButtonInLevel;
 
+        public bool IsActive => gameObject.activeSelf;
+        
         public override void OnOpenChestComplete()
         {
             base.OnOpenChestComplete();
