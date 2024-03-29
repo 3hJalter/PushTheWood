@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: AbiGames
-  productName: 'Push The Wood : Pet Puzzle Adventure'
+  productName: Push The Wood
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
@@ -276,7 +276,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 3c75d0358cef73343ab7f1f7ace4e354, type: 3}
+      m_Icon: {fileID: 2800000, guid: b31a57a402820224f81adf027a323c80, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0

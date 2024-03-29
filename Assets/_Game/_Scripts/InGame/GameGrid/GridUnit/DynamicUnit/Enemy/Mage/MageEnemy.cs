@@ -16,6 +16,8 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Enemy
             set => stateMachine.ChangeState(value);
         }
 
+        public bool IsActive => gameObject.activeSelf;
+        
         private void FixedUpdate()
         {
             if (!GameManager.Ins.IsState(GameState.InGame)) return;

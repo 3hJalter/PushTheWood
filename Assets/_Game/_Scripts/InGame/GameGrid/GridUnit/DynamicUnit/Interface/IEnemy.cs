@@ -4,5 +4,7 @@
     {
         public void AddToLevelManager();
         public void RemoveFromLevelManager();
+
+        bool IsActive { get; }
     }
 }

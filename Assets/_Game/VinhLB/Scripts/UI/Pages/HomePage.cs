@@ -248,6 +248,8 @@ namespace VinhLB
             {
                 StopCoroutine(_delayOpenCoroutine);
             }
+            OnShowMenuTutorial();
+
             _delayOpenCoroutine = StartCoroutine(OpenActionsCoroutine());
         }
 
@@ -547,8 +549,6 @@ namespace VinhLB
             {
                 yield return null;
             }
-
-            OnShowMenuTutorial();
 
             List<Task> taskList = new List<Task>();
             if (_rewardChestButton.IsUnlocked && _delayCollectingRewardKeys != null)

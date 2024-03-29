@@ -174,6 +174,7 @@ namespace _Game.GameGrid
         public void OnGenerateLevel(LevelType type, int index, bool needInit)
         {
             if (type == LevelType.Normal) OnCheckTutorial();
+            GameplayManager.Ins.ClearBoosterPurchase();
             IsConstructingLevel = true;
             _currentLevel = new Level(type, index);
             objectiveTotal = 0;
@@ -244,7 +245,25 @@ namespace _Game.GameGrid
             _currentLevel.ResetIslandPlayerOn();
             SetCameraToPlayerIsland();
             OnLevelIslandReset?.Invoke();
+            HandleObjectiveChangeOnReset();
             _isResetting = false;
+        }
+
+        private void HandleObjectiveChangeOnReset()
+        {
+            if (CurrentLevel.LevelWinCondition is LevelWinCondition.DefeatAllEnemy)
+            {
+                // check the enemy set, if it in-active -> remove it
+                enemies.RemoveWhere(enemy => !enemy.IsActive);
+                objectiveTotal = enemies.Count;
+            }
+            else
+            {
+                // check the final point set, if it in-active -> remove it
+                finalPoints.RemoveWhere(finalPoint => !finalPoint.IsActive);
+                objectiveTotal = finalPoints.Count;
+            }
+            OnObjectiveChange?.Invoke();
         }
 
         private void OnCheckTutorial()

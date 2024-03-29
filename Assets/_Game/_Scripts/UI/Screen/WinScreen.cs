@@ -6,6 +6,7 @@ using _Game.Data;
 using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.Managers;
+using _Game.UIs.Popup;
 using AudioEnum;
 using DG.Tweening;
 using GameGridEnum;
@@ -190,12 +191,17 @@ namespace _Game.UIs.Screen
 
         private void OnGoMenu()
         {
+            LevelType type = LevelManager.Ins.CurrentLevel.LevelType;
             UIManager.Ins.CloseAll();
             SplashScreen ui = UIManager.Ins.OpenUI<SplashScreen>();
             ui.OnOpenCallback += () =>
             {
                 LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
                 UIManager.Ins.OpenUI<MainMenuScreen>();
+                if (type is LevelType.DailyChallenge && !DataManager.Ins.IsCollectedAllDailyChallengeReward())
+                {
+                    UIManager.Ins.OpenUI<DailyChallengePopup>();
+                }
             };
         }
 
