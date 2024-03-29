@@ -68,6 +68,18 @@ namespace _Game.Managers
                 return GameData.user.currentPlayerSkinIndex;
             }
         }
+        public int CurrentUIPlayerSkinIndex
+        {
+            get
+            {
+                if (!(IsCharacterSkinUnlock(GameData.user.currentPlayerSkinIndex) || 
+                      GameData.user.playerRentSkinState[GameData.user.currentPlayerSkinIndex] > 0))
+                {
+                    return GameData.user.currentUnlockPlayerSkinIndex;
+                }
+                return GameData.user.currentPlayerSkinIndex;
+            }
+        }
         public int HintAdsCount => GameData.user.hintAdsCount;
 
         public int GoldCount => GameData.user.gold;
@@ -170,6 +182,7 @@ namespace _Game.Managers
         {
             return GameData.user.playerRentSkinState[index] >= 0;
         }
+        
         public void SetRentCharacterSkinCount(int index, int value)
         {
             GameData.user.playerRentSkinState[index] = value;

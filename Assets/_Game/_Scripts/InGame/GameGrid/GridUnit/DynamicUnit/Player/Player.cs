@@ -113,7 +113,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             bool isUseInitData = true, Direction skinDirection = Direction.None, bool hasSetPosAndRot = false)
         {
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
-            ChangeSkin(DataManager.Ins.GameData.user.currentPlayerSkinIndex);
+            ChangeSkin(DataManager.Ins.CurrentUIPlayerSkinIndex);
             if (!_isAddState)
             {
                 _isAddState = true;
