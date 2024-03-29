@@ -174,6 +174,7 @@ namespace _Game.GameGrid
         public void OnGenerateLevel(LevelType type, int index, bool needInit)
         {
             if (type == LevelType.Normal) OnCheckTutorial();
+            GameplayManager.Ins.ClearBoosterPurchase();
             IsConstructingLevel = true;
             _currentLevel = new Level(type, index);
             objectiveTotal = 0;

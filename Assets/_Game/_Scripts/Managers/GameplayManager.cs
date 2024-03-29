@@ -122,7 +122,7 @@ namespace _Game.Managers
             screen.undoButton.SetAmount(DataManager.Ins.GameData.user.undoCount);
             screen.pushHintButton.SetAmount(DataManager.Ins.GameData.user.pushHintCount);
             screen.growTreeButton.SetAmount(DataManager.Ins.GameData.user.growTreeCount);
-            screen.resetIslandButton.SetAmount(DataManager.Ins.GameData.user.resetIslandCount);
+            // screen.resetIslandButton.SetAmount(DataManager.Ins.GameData.user.resetIslandCount);
         }
 
         private void Start()
@@ -170,10 +170,10 @@ namespace _Game.Managers
                     UpdateBoosterCount(ref DataManager.Ins.GameData.user.pushHintCount, screen.pushHintButton,
                         amount);
                     break;
-                case BoosterType.ResetIsland:
-                    UpdateBoosterCount(ref DataManager.Ins.GameData.user.resetIslandCount, screen.resetIslandButton,
-                        amount);
-                    break;
+                // case BoosterType.ResetIsland:
+                //     UpdateBoosterCount(ref DataManager.Ins.GameData.user.resetIslandCount, screen.resetIslandButton,
+                //         amount);
+                //     break;
             }
 
             #region ANALYSTIC
@@ -194,6 +194,13 @@ namespace _Game.Managers
             button.SetAmount(boosterCount);
         }
 
+        public void ClearBoosterPurchase()
+        {
+            isBoughtPushHintInIsland.Clear();
+            isBoughtGrowTreeInIsland.Clear();
+            isCanGrowTreeInIsland.Clear();
+        }
+        
         public void OnPauseGame()
         {
             timer.Stop();

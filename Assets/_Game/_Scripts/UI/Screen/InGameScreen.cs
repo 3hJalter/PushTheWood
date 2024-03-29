@@ -36,7 +36,7 @@ namespace _Game.UIs.Screen
         public BoosterButton undoButton;
         public BoosterButton pushHintButton;
         public BoosterButton growTreeButton;
-        public BoosterButton resetIslandButton;
+        // public BoosterButton resetIslandButton;
         // Time & Level Text 
         [SerializeField]
         private Image timeImage;
@@ -106,7 +106,7 @@ namespace _Game.UIs.Screen
             undoButton.AddEvent(OnClickUndo);
             pushHintButton.AddEvent(OnClickPushHint);
             growTreeButton.AddEvent(OnClickGrowTree);
-            resetIslandButton.AddEvent(OnClickResetIsland);
+            // resetIslandButton.AddEvent(OnClickResetIsland);
             GameManager.Ins.RegisterListenerEvent(DesignPattern.EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
         }
 
@@ -118,7 +118,7 @@ namespace _Game.UIs.Screen
             undoButton.RemoveEvent(OnClickUndo);
             pushHintButton.RemoveEvent(OnClickPushHint);
             growTreeButton.RemoveEvent(OnClickGrowTree);
-            resetIslandButton.RemoveEvent(OnClickResetIsland);
+            // resetIslandButton.RemoveEvent(OnClickResetIsland);
             GameManager.Ins.UnregisterListenerEvent(DesignPattern.EventID.OnChangeLayoutForBanner,
                 ChangeLayoutForBanner);
         }
@@ -194,7 +194,7 @@ namespace _Game.UIs.Screen
         public void SetActiveResetIsland(bool active)
         {
             resetIslandTimer.Stop();
-            resetIslandButton.IsInteractable = active;
+            // resetIslandButton.IsInteractable = active;
         }
 
         public void OnBoughtGrowTree(bool active)
@@ -304,7 +304,7 @@ namespace _Game.UIs.Screen
                 growTreeButton.IsLock = currentLevelIndex < unlockLevelIndex;
                 
                 // isLock = currentLevel < DataManager.Ins.ConfigData.boosterConfigList[(int)resetIslandButton.Type].UnlockAtLevel;
-                resetIslandButton.IsLock = true;
+                // resetIslandButton.IsLock = true;
             }
             else
             {
@@ -368,7 +368,7 @@ namespace _Game.UIs.Screen
         public void OnShowFocusBooster(bool show)
         {
             undoButton.IsFocus = show;
-            resetIslandButton.IsFocus = show;
+            // resetIslandButton.IsFocus = show;
         }
 
         public void OnHandleTutorial()

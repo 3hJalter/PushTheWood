@@ -96,7 +96,7 @@ namespace _Game._Scripts.UIs.Component
                 BoosterType.Undo => ui.undoButton,
                 BoosterType.PushHint => ui.pushHintButton,
                 BoosterType.GrowTree => ui.growTreeButton,
-                BoosterType.ResetIsland => ui.resetIslandButton,
+                // BoosterType.ResetIsland => ui.resetIslandButton,
                 _ => null
             };
         }

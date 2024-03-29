@@ -87,11 +87,13 @@ namespace _Game.UIs.Popup
         {
             AudioManager.Ins.ToggleBgmVolume(!value);
             AudioManager.Ins.ToggleEnvironmentVolume(!value);
+            DataManager.Ins.Save();
         }
 
         public void OnSoundVolumeChanged(bool value)
         {
             AudioManager.Ins.ToggleSfxVolume(!value);
+            DataManager.Ins.Save();
         }
 
         public void OnChangeEnvironmentVolume(bool value)
@@ -102,6 +104,7 @@ namespace _Game.UIs.Popup
         public void OnHapticValueChanged(bool value)
         {
             HVibrate.OnToggleHaptic(value);
+            DataManager.Ins.Save();
         }
         
         public void OnToggleHapticOff()
