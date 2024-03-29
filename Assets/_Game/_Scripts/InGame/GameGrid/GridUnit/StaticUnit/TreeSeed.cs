@@ -91,8 +91,9 @@ namespace _Game.GameGrid.Unit.StaticUnit
         }
 
 
-        private void OnUndoBoosterCall()
+        private void OnUndoBoosterCall(int pId)
         {
+            if (pId != islandID) return;
             _currentFallTween?.Kill();
             if (upperUnits.Count == 0)
             { 

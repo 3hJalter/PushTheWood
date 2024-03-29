@@ -14,7 +14,7 @@ public class BannerAds : MonoBehaviour
         {
 
             // AppLovin SDK is initialized, start loading ads
-            // Banners are automatically sized to 320×50 on phones and 728×90 on tablets
+            // Banners are automatically sized to 320Ã—50 on phones and 728Ã—90 on tablets
             // You may call the utility method MaxSdkUtils.isTablet() to help with view sizing adjustments
             MaxSdk.CreateBanner(bannerAdUnitId, MaxSdkBase.BannerPosition.BottomCenter);
             // Set background or background color for banners to be fully functional

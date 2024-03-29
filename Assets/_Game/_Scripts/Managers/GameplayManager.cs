@@ -474,7 +474,7 @@ namespace _Game.Managers
             {
                 if (!LevelManager.Ins.OnUndo()) return;
                 // Send an undo Signal
-                EventGlobalManager.Ins.OnUndoBoosterCall.Dispatch();
+                EventGlobalManager.Ins.OnUndoBoosterCall.Dispatch(LevelManager.Ins.player.islandID);
                 OnChangeBoosterAmount(BoosterType.Undo, -1);
                 // TEMPORARY
                 if (!_pushHint.IsStartHint)
