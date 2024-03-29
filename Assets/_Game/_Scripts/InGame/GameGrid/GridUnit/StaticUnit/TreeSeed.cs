@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using _Game._Scripts.Managers;
 using _Game.DesignPattern;
 using _Game.Managers;
@@ -36,6 +37,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             base.OnInit(mainCellIn, startHeightIn, isUseInitData, skinDirection, hasSetPosAndRot);
             EventGlobalManager.Ins.OnGrowTree.AddListener(OnGrow);
+            EventGlobalManager.Ins.OnUndoBoosterCall.AddListener(OnUndoBoosterCall);
             ChangeAnim(Constants.IDLE_ANIM);
             GameplayManager.Ins.SetGrowTreeInIsland(islandID, upperUnits.Count == 0);
             _isGrown = false;
@@ -44,6 +46,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         protected override void OnMementoRestoreSpawn()
         {
             EventGlobalManager.Ins.OnGrowTree.AddListener(OnGrow);
+            EventGlobalManager.Ins.OnUndoBoosterCall.AddListener(OnUndoBoosterCall);
             GameplayManager.Ins.SetGrowTreeInIsland(islandID, upperUnits.Count == 0);
             ChangeAnim(Constants.IDLE_ANIM);
             _isGrown = false;
@@ -52,6 +55,7 @@ namespace _Game.GameGrid.Unit.StaticUnit
         public override void OnDespawn()
         {
             EventGlobalManager.Ins.OnGrowTree.RemoveListener(OnGrow);
+            EventGlobalManager.Ins.OnUndoBoosterCall.AddListener(OnUndoBoosterCall);
             GameplayManager.Ins.SetGrowTreeInIsland(islandID, false);
             base.OnDespawn();
         }
@@ -86,6 +90,23 @@ namespace _Game.GameGrid.Unit.StaticUnit
             fallTreeDirection = Direction.None;
         }
 
+
+        private void OnUndoBoosterCall()
+        {
+            _currentFallTween?.Kill();
+            if (upperUnits.Count == 0)
+            { 
+                fallTreeDirection = Direction.None;
+                GameplayManager.Ins.SetGrowTreeInIsland(islandID, true);
+            }
+            else
+            {
+                fallTreeDirection = upperUnits.First().LastPushedDirection;
+                GameplayManager.Ins.SetGrowTreeInIsland(islandID, false);
+            }
+            skin.localRotation = Quaternion.Euler(_fallDirectionLocalSkinRot[fallTreeDirection]); 
+        }
+        
         [ContextMenu("Grow Tree")] // TEST
         public void OnGrow(int inputIslandID)
         {
