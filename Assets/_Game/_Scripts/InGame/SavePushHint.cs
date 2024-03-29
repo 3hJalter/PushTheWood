@@ -71,7 +71,7 @@ namespace _Game._Scripts.InGame
             IsStartHint = true;
             IsPlayerMakeHintWrong = false;
             OnShowHint(_currentPlayerSteps.Peek(), _isShowHint);
-            GameplayManager.Ins.OnShowTryHintAgain(false);
+            GameplayManager.Ins.OnShowFocusBooster(false);
         }
 
         private void OnPauseHint()
@@ -124,7 +124,7 @@ namespace _Game._Scripts.InGame
         {
             if (IsPlayerMakeHintWrong)
             {
-                GameplayManager.Ins.OnShowTryHintAgain(false);
+                GameplayManager.Ins.OnShowFocusBooster(false);
                 // make the hint button show again
                 GameplayManager.Ins.Screen.ActivePushHintIsland(true);
                 IsPlayerMakeHintWrong = false;
@@ -151,7 +151,7 @@ namespace _Game._Scripts.InGame
             {
                 OnPauseHint();
                 IsPlayerMakeHintWrong = true;
-                GameplayManager.Ins.OnShowTryHintAgain(true);
+                GameplayManager.Ins.OnShowFocusBooster(true);
             }
         }
 

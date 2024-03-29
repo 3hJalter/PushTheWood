@@ -67,7 +67,6 @@ namespace _Game._Scripts.UIs.Component
         
         private void Prepared(VideoPlayer source)
         {
-           DevLog.Log(DevId.Hoang, "Started at time: " + Time.time);
            if (isFadeUIOnAppear)
            {
                ShowUI(true);

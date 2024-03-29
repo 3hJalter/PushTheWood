@@ -58,14 +58,13 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             //NOTE: Refactor
             //NOTE: Play Shake Animation
-            DevLog.Log(DevId.Hung, "Tree Blocking");
             AudioManager.Ins.PlaySfx(SfxType.BlockTree);
             pushedUnit = pushUnit;
             Vector3 axis = Vector3.Cross(Vector3.up, Constants.DirVector3[direction]);
             float lastAngle = 0;
             ParticlePool.Play(DataManager.Ins.VFXData.GetParticleSystem(VFXType.LeafExplosion),
                 Tf.position + Vector3.up * 2f);
-            _pushTween = DOVirtual.Float(0, DEGREE * 4 * DECAY_VALUE * DECAY_VALUE, Constants.MOVING_TIME * 1f, i =>
+            _pushTween = DOVirtual.Float(0, DEGREE * 4 * DECAY_VALUE * DECAY_VALUE, Constants.MOVING_TIME * 0.5f, i =>
                 {
                     float rotateAngle;
                     //NOTE: Calculate Angle

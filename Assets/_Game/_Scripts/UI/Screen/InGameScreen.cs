@@ -128,7 +128,7 @@ namespace _Game.UIs.Screen
         {
             base.Setup(param);
             GameManager.Ins.ChangeState(GameState.InGame);
-            OnShowTryHintAgain(false);
+            OnShowFocusBooster(false);
             UpdateLevelText();
             // Log param
             if (param is null) MoveInputManager.Ins.ShowContainer(true);
@@ -160,7 +160,7 @@ namespace _Game.UIs.Screen
         public override void Close()
         {
             _fadeTween?.Kill();
-            OnShowTryHintAgain(false);
+            OnShowFocusBooster(false);
             MoveInputManager.Ins.ShowContainer(false);
             base.Close();
         }
@@ -365,7 +365,7 @@ namespace _Game.UIs.Screen
 
         private Tween _tryAgainImageTween;
 
-        public void OnShowTryHintAgain(bool show)
+        public void OnShowFocusBooster(bool show)
         {
             undoButton.IsFocus = show;
             resetIslandButton.IsFocus = show;

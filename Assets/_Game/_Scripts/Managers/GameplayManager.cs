@@ -294,6 +294,7 @@ namespace _Game.Managers
                 isCanGrowTreeInIsland.Clear();
             }
             screen.OnSetBoosterAmount();
+            screen.OnShowFocusBooster(false);
             GameManager.Ins.ChangeState(GameState.InGame);
             // If hard level, show a notification -> If it None -> not show
 
@@ -628,9 +629,9 @@ namespace _Game.Managers
             }
         }
 
-        public void OnShowTryHintAgain(bool show)
+        public void OnShowFocusBooster(bool show)
         {
-            screen.OnShowTryHintAgain(show);
+            screen.OnShowFocusBooster(show);
         }
         #endregion
         #endregion

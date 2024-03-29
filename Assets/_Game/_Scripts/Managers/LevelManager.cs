@@ -459,7 +459,7 @@ namespace _Game.GameGrid
             GameplayManager.Ins.IsCanUndo = IsCanUndo;
             return success;
         }
-
+        
         public void SaveGameState(bool isMerge)
         {
             savingState.Save(isMerge);
