@@ -84,10 +84,10 @@ namespace VinhLB
         private bool _isTutorialRunning;
         private bool _isFirstShown;
         private Coroutine _delayOpenCoroutine;
-        
+
         private event Func<Task> _delayCollectingRewardKeys;
         private event Func<Task> _delayCollectingLevelStars;
-        
+
         private void Awake()
         {
             GameManager.Ins.RegisterListenerEvent(EventID.OnChangeRewardKeys,
@@ -116,7 +116,7 @@ namespace VinhLB
                     void CloseActions()
                     {
                         splashScreen.OnCloseCallback -= CloseActions;
-                        
+
                         UIManager.Ins.OpenUI<HardWarningScreen>();
                     }
                 }
@@ -138,7 +138,11 @@ namespace VinhLB
 
                 if (RewardManager.Ins.HomeReward.TryClaimRewardChest())
                 {
-                    GameManager.Ins.SmoothRewardKeys = GameManager.Ins.RewardKeys;
+                    int amount = GameManager.Ins.RewardKeys +
+                                 (DataManager.Ins.GameData.user.rewardChestUnlock -
+                                  DataManager.Ins.GameData.user.currentRewardChestIndex) *
+                                 DataManager.Ins.ConfigData.requireRewardKey;
+                    GameManager.Ins.SmoothRewardKeys = amount;
 
                     UpdateRewardChestUI();
                 }
@@ -152,7 +156,11 @@ namespace VinhLB
 
                 if (RewardManager.Ins.HomeReward.TryClaimLevelChest())
                 {
-                    GameManager.Ins.SmoothLevelProgress = GameManager.Ins.LevelProgress;
+                    int amount = GameManager.Ins.LevelProgress +
+                                 (DataManager.Ins.GameData.user.levelChestUnlock -
+                                  DataManager.Ins.GameData.user.currentLevelChestIndex) *
+                                 DataManager.Ins.ConfigData.requireLevelProgress;
+                    GameManager.Ins.SmoothLevelProgress = amount;
 
                     UpdateLevelChestUI();
                 }
@@ -195,7 +203,7 @@ namespace VinhLB
         public override void Open(object param = null)
         {
             base.Open(param);
-            
+
             // SplashScreen splashScreen = UIManager.Ins.GetUI<SplashScreen>();
             // splashScreen.OnCloseCallback += OpenActions;
             //
@@ -280,8 +288,10 @@ namespace VinhLB
             int dailyRewardNotificationAmount = DailyRewardManager.Ins.IsTodayRewardObtained ? 0 : 1;
             _dailyRewardButton.SetNotificationAmount(dailyRewardNotificationAmount);
 
-            int dailyChallengeNotificationAmount = DataManager.Ins.IsClearAllDailyChallenge() && 
-                                                   DataManager.Ins.IsCollectedAllDailyChallengeReward() ? 0 : 1;
+            int dailyChallengeNotificationAmount = DataManager.Ins.IsClearAllDailyChallenge() &&
+                                                   DataManager.Ins.IsCollectedAllDailyChallengeReward()
+                ? 0
+                : 1;
             _dailyChallengeButton.SetNotificationAmount(dailyChallengeNotificationAmount);
 
             int secretMapNotificationAmount = DataManager.Ins.IsClearAllSecretLevel() ? 0 : 1;
@@ -425,8 +435,9 @@ namespace VinhLB
                     _rewardKeyFrameGO.SetActive(true);
                 }
 
+                int normalizedValue = Mathf.RoundToInt(GameManager.Ins.SmoothRewardKeys);
                 _rewardKeyText.text =
-                    $"{(int)GameManager.Ins.SmoothRewardKeys}/{DataManager.Ins.ConfigData.requireRewardKey}";
+                    $"{normalizedValue}/{DataManager.Ins.ConfigData.requireRewardKey}";
             }
         }
 
@@ -472,8 +483,9 @@ namespace VinhLB
                     _levelChestEffectGO.SetActive(false);
                 }
 
+                int normalizedValue = Mathf.RoundToInt(GameManager.Ins.SmoothLevelProgress);
                 _levelStarText.text =
-                    $"{(int)GameManager.Ins.SmoothLevelProgress}/{DataManager.Ins.ConfigData.requireLevelProgress}";
+                    $"{normalizedValue}/{DataManager.Ins.ConfigData.requireLevelProgress}";
             }
         }
 
@@ -535,7 +547,7 @@ namespace VinhLB
             {
                 yield return null;
             }
-            
+
             OnShowMenuTutorial();
 
             List<Task> taskList = new List<Task>();
@@ -554,10 +566,10 @@ namespace VinhLB
             {
                 _delayCollectingRewardKeys = null;
                 _delayCollectingLevelStars = null;
-                
+
                 yield return new WaitUntil(() => Task.WhenAll(taskList).IsCompleted);
             }
-            
+
             // if (!_isFirstShown)
             // {
             //     _isFirstShown = true;
@@ -566,7 +578,7 @@ namespace VinhLB
             //         UIManager.Ins.OpenUI<DailyRewardPopup>();
             //     }
             // }
-            
+
             _delayOpenCoroutine = null;
         }
     }

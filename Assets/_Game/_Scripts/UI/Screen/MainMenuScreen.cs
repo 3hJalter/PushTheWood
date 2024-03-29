@@ -44,10 +44,13 @@ namespace _Game.UIs.Screen
         public override void Open(object param = null)
         {
             base.Open(param);
-            // CameraFollow.Ins.ChangeCamera(ECameraType.MainMenuCamera);
-            // FxManager.Ins.PlayTweenFog();
+            
             DebugManager.Ins?.OpenDebugCanvas(UI_POSITION.MAIN_MENU);
-            LevelManager.Ins.player.ChangeSkin(DataManager.Ins.CurrentPlayerSkinIndex);
+            if (DataManager.Ins.CurrentUIPlayerSkinIndex != DataManager.Ins.CurrentPlayerSkinIndex)
+            {
+                Debug.Log(DataManager.Ins.CurrentUIPlayerSkinIndex);
+                LevelManager.Ins.player.ChangeSkin(DataManager.Ins.CurrentUIPlayerSkinIndex);
+            }
             GameManager.Ins.ChangeState(GameState.MainMenu);
             CameraManager.Ins.ChangeCamera(ECameraType.PerspectiveCamera, 0f);
             AudioManager.Ins.PlayBgm(BgmType.MainMenu, 1f);

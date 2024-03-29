@@ -69,7 +69,7 @@ namespace VinhLB
         {
             base.Setup(param);
             _tryAmountText.text = $"{DataManager.Ins.ConfigData.maxRentCount} times";
-            _currentPetIndex = DataManager.Ins.CurrentPlayerSkinIndex;
+            _currentPetIndex = DataManager.Ins.CurrentUIPlayerSkinIndex;
 
             if (_collectionItemList == null)
             {
@@ -129,7 +129,10 @@ namespace VinhLB
         {
             base.Close();
 
-            LevelManager.Ins.player.ChangeSkin(DataManager.Ins.CurrentPlayerSkinIndex);
+            if (DataManager.Ins.CurrentUIPlayerSkinIndex != _currentPetIndex)
+            {
+                LevelManager.Ins.player.ChangeSkin(DataManager.Ins.CurrentUIPlayerSkinIndex);
+            }
         }
 
         private void OnCollectionItemClick(int id, int data)
@@ -144,14 +147,16 @@ namespace VinhLB
 
         private void UpdateItem(int id, int data)
         {
-            if (DataManager.Ins.IsCharacterSkinRent(_collectionItemList[id].Data))
+            if (DataManager.Ins.IsCharacterSkinRent(_collectionItemList[id].Data) &&
+                DataManager.Ins.GetRentCharacterSkinCount(_collectionItemList[id].Data) > 0)
             {
                 _buyButton.gameObject.SetActive(true);
                 _tryButton.gameObject.SetActive(false);
                 _tryInfo.SetActive(true);
-                _tryInfoText.text = $"{DataManager.Ins.GetRentCharacterSkinCount(_collectionItemList[id].Data)}/{DataManager.Ins.ConfigData.maxRentCount}";
+                _tryInfoText.text =
+                    $"{DataManager.Ins.GetRentCharacterSkinCount(_collectionItemList[id].Data)}/{DataManager.Ins.ConfigData.maxRentCount}";
                 _infoGO.SetActive(true);
-                _collectionItemList[DataManager.Ins.CurrentPlayerSkinIndex].SetChosen(false);
+                _collectionItemList[DataManager.Ins.CurrentUIPlayerSkinIndex].SetChosen(false);
                 _collectionItemList[id].SetChosen(true);
                 DataManager.Ins.SetCharacterSkinIndex(_collectionItemList[id].Data);
             }
@@ -192,15 +197,15 @@ namespace VinhLB
                 _tryButton.gameObject.SetActive(false);
                 _tryInfo.SetActive(false);
                 _infoGO.SetActive(false);
-                _collectionItemList[DataManager.Ins.CurrentPlayerSkinIndex].SetChosen(false);
+                _collectionItemList[DataManager.Ins.CurrentUIPlayerSkinIndex].SetChosen(false);
                 _collectionItemList[id].SetChosen(true);
                 DataManager.Ins.SetCharacterSkinIndex(_collectionItemList[id].Data);
             }
 
             _collectionItemList[_currentPetIndex].SetSelected(false);
             _currentPetIndex = id;
-            LevelManager.Ins.player.ChangeSkin(data);
             _collectionItemList[_currentPetIndex].SetSelected(true);
+            LevelManager.Ins.player.ChangeSkin(data);
         }
 
         public override void UpdateUI()
@@ -243,7 +248,8 @@ namespace VinhLB
 
             void UpdateRentCharacter()
             {
-                DataManager.Ins.SetRentCharacterSkinCount(_collectionItemList[_currentPetIndex].Data, DataManager.Ins.ConfigData.maxRentCount);
+                DataManager.Ins.SetRentCharacterSkinCount(_collectionItemList[_currentPetIndex].Data,
+                    DataManager.Ins.ConfigData.maxRentCount);
                 UpdateItem(_currentPetIndex, _collectionItemList[_currentPetIndex].Data);
             }
         }

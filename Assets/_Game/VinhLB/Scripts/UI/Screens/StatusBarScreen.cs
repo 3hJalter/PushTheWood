@@ -68,11 +68,11 @@ namespace VinhLB
                 _canvasGroup.alpha = 0f;
                 _blockPanel.gameObject.SetActive(true);
             }
-            
-            _goldValueText.text =
-                ((int)GameManager.Ins.SmoothGold).ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
-            _adTicketValueText.text =
-                ((int)GameManager.Ins.SmoothAdTickets).ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+
+            int normalizedValue = Mathf.RoundToInt(GameManager.Ins.SmoothGold);
+            _goldValueText.text = normalizedValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+            normalizedValue = Mathf.RoundToInt(GameManager.Ins.SmoothAdTickets);
+            _adTicketValueText.text = normalizedValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
         }
 
         public override void Open(object param = null)
@@ -120,8 +120,8 @@ namespace VinhLB
                     (progress) =>
                     {
                         GameManager.Ins.SmoothGold += data.ChangedAmount / collectingCoinAmount;
-                        _goldValueText.text =
-                            ((int)GameManager.Ins.SmoothGold).ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+                        int normalizedValue = Mathf.RoundToInt(GameManager.Ins.SmoothGold);
+                        _goldValueText.text = normalizedValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
                     });
             }
         }
@@ -156,8 +156,8 @@ namespace VinhLB
                     (progress) =>
                     {
                         GameManager.Ins.SmoothAdTickets += data.ChangedAmount / collectingAdTicketAmount;
-                        _adTicketValueText.text =
-                            ((int)GameManager.Ins.SmoothAdTickets).ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+                        int normalizedValue = Mathf.RoundToInt(GameManager.Ins.SmoothAdTickets);
+                        _adTicketValueText.text = normalizedValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
                     });
             }
         }
