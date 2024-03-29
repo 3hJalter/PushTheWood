@@ -293,6 +293,7 @@ namespace _Game.Managers
                 isBoughtGrowTreeInIsland.Clear();
                 isCanGrowTreeInIsland.Clear();
             }
+            ChangePlayerSkin();
             screen.OnSetBoosterAmount();
             screen.OnShowFocusBooster(false);
             GameManager.Ins.ChangeState(GameState.InGame);
@@ -634,6 +635,15 @@ namespace _Game.Managers
             screen.OnShowFocusBooster(show);
         }
         #endregion
+        #endregion
+
+        #region Skin
+        private void ChangePlayerSkin()
+        {
+            DataManager.Ins.CheckingRentPlayerSkinCount();
+            LevelManager.Ins.player.ChangeSkin(DataManager.Ins.CurrentPlayerSkinIndex);
+        }
+
         #endregion
     }
 }
