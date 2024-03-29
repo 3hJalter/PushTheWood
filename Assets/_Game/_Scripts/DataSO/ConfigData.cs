@@ -153,7 +153,7 @@ namespace _Game.Data
         [FoldoutGroup("Ads")]
         public readonly int winLevelCountInterAds = 3;
         [FoldoutGroup("Ads")]
-        public readonly int bannerHeight = 100;
+        public int bannerHeight = 100;
         #endregion
 
         #region Collection

@@ -1,3 +1,4 @@
+using _Game.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,6 +30,7 @@ public class BannerAds : MonoBehaviour
     {
         isBannerOpen = true;
         MaxSdk.ShowBanner(bannerAdUnitId);
+        //DataManager.Ins.ConfigData.bannerHeight = (int)MaxSdk.GetMRecLayout(bannerAdUnitId).height;
     }
 
     public void Hide()

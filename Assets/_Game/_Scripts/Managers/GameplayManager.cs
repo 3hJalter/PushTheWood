@@ -300,8 +300,9 @@ namespace _Game.Managers
             // If hard level, show a notification -> If it None -> not show
 
             #region BANNER
-            //AdsManager.Ins.ShowBannerAds();
-            //GameManager.Ins.PostEvent(EventID.OnChangeLayoutForBanner, true);
+            AdsManager.Ins.ShowBannerAds();
+            if(AdsManager.Ins.IsBannerOpen)
+                GameManager.Ins.PostEvent(EventID.OnChangeLayoutForBanner, true);
             #endregion
 
             #region ANALYSTIC

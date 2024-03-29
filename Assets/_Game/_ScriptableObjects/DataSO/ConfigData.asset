@@ -225,6 +225,9 @@ MonoBehaviour:
     - Name: bonusChestGoldReward
       Entry: 3
       Data: 40
+    - Name: finalEnemyGoldReward
+      Entry: 3
+      Data: 40
     - Name: stepInterAdsCountMax
       Entry: 3
       Data: 3
@@ -240,9 +243,9 @@ MonoBehaviour:
     - Name: winLevelCountInterAds
       Entry: 3
       Data: 4
-    - Name: bannerHeight
+    - Name: maxRentCount
       Entry: 3
-      Data: 150
+      Data: 3
   timePerNormalLevel:
   - levelNormalType: 0
     time: 90
@@ -312,3 +315,4 @@ MonoBehaviour:
       Name: Reset Island
       MainIconSprite: {fileID: 0}
       SubIconSprite: {fileID: 0}
+  bannerHeight: 150
