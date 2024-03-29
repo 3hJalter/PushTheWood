@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace _Game.Managers
 {
+    [DefaultExecutionOrder(-100)]
     public class AdsManager : Singleton<AdsManager>
     {
         [SerializeField]
@@ -23,7 +24,7 @@ namespace _Game.Managers
 
         int intAdsStepCount = 0;
         public bool IsBannerOpen => Banner.IsBannerOpen;
-        private void Start()
+        protected void Awake()
         {
             DontDestroyOnLoad(gameObject);
             MaxSdkCallbacks.OnSdkInitializedEvent += (MaxSdkBase.SdkConfiguration sdkConfiguration) =>
