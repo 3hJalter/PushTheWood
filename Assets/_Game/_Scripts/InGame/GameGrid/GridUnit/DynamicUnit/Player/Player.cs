@@ -135,6 +135,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
         {
             _vehicle = null;
             if (_isAddState) stateMachine.OverrideState = StateEnum.None;
+            CommandCache.Clear();
             base.OnDespawn();
         }
 
