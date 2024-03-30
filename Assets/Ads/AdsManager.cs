@@ -41,13 +41,15 @@ namespace _Game.Managers
         public void ShowBannerAds()
         {
             int levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
-            if (levelIndex < DataManager.Ins.ConfigData.startBannerAds)
+            if (levelIndex < DataManager.Ins.ConfigData.startBannerAds || (DebugManager.Ins && !DebugManager.Ins.IsShowAds))
                 return;
             Banner.Show();
         }
 
         public void HideBannerAds()
         {
+            if (DebugManager.Ins && !DebugManager.Ins.IsShowAds)
+                return;
             if(IsBannerOpen)
                 Banner.Hide();
         }
