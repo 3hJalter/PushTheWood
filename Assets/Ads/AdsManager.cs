@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace _Game.Managers
 {
@@ -106,14 +107,14 @@ namespace _Game.Managers
                 || (DebugManager.Ins && !DebugManager.Ins.IsShowAds)) return;
 
             AnalysticManager.Ins.AppsFlyerTrackEvent("af_inters_logicgame");
-            intAdsStepCount += (int)value;
-            if(intAdsStepCount >= DataManager.Ins.ConfigData.stepInterAdsCountMax)
+            DataManager.Ins.AddInterAdsStepCount((int)value);
+            if(DataManager.Ins.InterAdsStepCount >= DataManager.Ins.ConfigData.stepInterAdsCountMax)
             {
                 Interstitial.Show(OnInterAdsDone);
             }
         }
         private void OnInterAdsDone() {
-            intAdsStepCount -= DataManager.Ins.ConfigData.stepInterAdsCountMax;
+            DataManager.Ins.AddInterAdsStepCount(-DataManager.Ins.ConfigData.stepInterAdsCountMax);
             cooldownTimer.Start(DataManager.Ins.ConfigData.interAdsCooldownTime);
             interCallBack?.Invoke();
             interCallBack = null;
