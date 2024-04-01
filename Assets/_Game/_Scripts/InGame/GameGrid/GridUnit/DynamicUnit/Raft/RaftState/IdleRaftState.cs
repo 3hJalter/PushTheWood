@@ -25,10 +25,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
             //DEV: Refactor
             if(firstTime)
             {
-                firstHeight = t.Tf.transform.position.y;
+                firstHeight = t.Tf.position.y;
                 firstTime = false;  
             }
-            originTransform = t.Tf.transform.position;
+            originTransform = t.Tf.position;
             originTransform.Set(originTransform.x, firstHeight, originTransform.z);
             floatingTween = DOVirtual.Float(0, MOVE_Y_TIME, MOVE_Y_TIME, i =>
             {
@@ -40,7 +40,7 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
             void SetSinWavePosition(float time)
             {
                 float value = Mathf.Sin(2 * time * Mathf.PI / MOVE_Y_TIME) * MOVE_Y_VALUE;
-                t.Tf.transform.position = originTransform + Vector3.up * value;
+                t.Tf.position = originTransform + Vector3.up * value;
             }
             #endregion
         }
@@ -52,8 +52,10 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Raft.RaftState
 
         public void OnExit(Raft t)
         {
-            floatingTween.Kill();
-            t.Tf.transform.position = originTransform;
+            floatingTween?.Kill();
+            // set pos y to first height
+            Vector3 pos = t.Tf.position;
+            t.Tf.position = new Vector3(pos.x, firstHeight, pos.z);
         }
     }
 }
