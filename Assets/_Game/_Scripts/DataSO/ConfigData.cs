@@ -154,6 +154,8 @@ namespace _Game.Data
         public readonly int winLevelCountInterAds = 3;
         [FoldoutGroup("Ads")]
         public int bannerHeight = 100;
+        [FoldoutGroup("Ads")]
+        public int reloadBannerTime = 120;
         #endregion
 
         #region Collection

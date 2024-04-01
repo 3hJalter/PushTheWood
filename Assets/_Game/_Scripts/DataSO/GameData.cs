@@ -77,8 +77,7 @@ namespace _Game.Data
 
             //Ads Data
             public int hintAdsCount;
-            
-            
+            public int interAdsStepCount = 0;
         }
 
         [Serializable]

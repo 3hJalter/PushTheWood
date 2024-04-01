@@ -77,7 +77,7 @@ MonoBehaviour:
       Data: 1
     - Name: 
       Entry: 3
-      Data: 2
+      Data: 1
     - Name: 
       Entry: 13
       Data: 
@@ -316,3 +316,4 @@ MonoBehaviour:
       MainIconSprite: {fileID: 0}
       SubIconSprite: {fileID: 0}
   bannerHeight: 150
+  reloadBannerTime: 120

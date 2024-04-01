@@ -81,9 +81,8 @@ namespace _Game.Managers
             }
         }
         public int HintAdsCount => GameData.user.hintAdsCount;
-
         public int GoldCount => GameData.user.gold;
-
+        public int InterAdsStepCount => GameData.user.interAdsStepCount;
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
@@ -196,7 +195,29 @@ namespace _Game.Managers
         {
             GameData.user.playerRentSkinState[index] += value;
         }
-
+        public void SetInterAdsStepCount(int value)
+        {
+            if(value < 0)
+            {
+                GameData.user.interAdsStepCount = 0;
+            }
+            else
+            {
+                GameData.user.interAdsStepCount = value;
+            }
+        }
+        public void AddInterAdsStepCount(int value)
+        {
+            int newValue = InterAdsStepCount + value;
+            if (newValue < 0)
+            {
+                GameData.user.interAdsStepCount = 0;
+            }
+            else
+            {
+                GameData.user.interAdsStepCount = newValue;
+            }
+        }
         public int GetLevelTime(LevelType type, LevelNormalType normalType = LevelNormalType.None)
         {
             return type switch

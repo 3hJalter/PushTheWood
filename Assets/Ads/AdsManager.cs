@@ -2,10 +2,12 @@ using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.Utilities.Timer;
 using AppsFlyerSDK;
+using GoogleMobileAds.Api;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace _Game.Managers
 {
@@ -21,6 +23,7 @@ namespace _Game.Managers
         public RewardedAds RewardedAds => Reward;
 
         STimer cooldownTimer;
+        STimer bannerTimer;
         Action interCallBack;
 
         int intAdsStepCount = 0;
@@ -28,6 +31,8 @@ namespace _Game.Managers
         protected void Awake()
         {
             DontDestroyOnLoad(gameObject);
+            bannerTimer = TimerManager.Ins.PopSTimer();
+
             MaxSdkCallbacks.OnSdkInitializedEvent += (MaxSdkBase.SdkConfiguration sdkConfiguration) =>
             {
                 // AppLovin SDK is initialized, start loading ads
@@ -37,14 +42,15 @@ namespace _Game.Managers
             GameManager.Ins.RegisterListenerEvent(EventID.OnInterAdsStepCount, OnInterAdsStepCount);
             GameManager.Ins.RegisterListenerEvent(EventID.OnCheckShowInterAds, CheckShowInterAds);
             MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent += OnRewardedAdRevenuePaidEvent;
-            cooldownTimer = new STimer();
-        }
+            cooldownTimer = new STimer();          
+       }
         public void ShowBannerAds()
         {
             int levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
             if (levelIndex < DataManager.Ins.ConfigData.startBannerAds || (DebugManager.Ins && !DebugManager.Ins.IsShowAds))
                 return;
             Banner.Show();
+            bannerTimer.Start(DataManager.Ins.ConfigData.reloadBannerTime, Banner.Show, true);
         }
 
         public void HideBannerAds()
@@ -101,14 +107,14 @@ namespace _Game.Managers
                 || (DebugManager.Ins && !DebugManager.Ins.IsShowAds)) return;
 
             AnalysticManager.Ins.AppsFlyerTrackEvent("af_inters_logicgame");
-            intAdsStepCount += (int)value;
-            if(intAdsStepCount >= DataManager.Ins.ConfigData.stepInterAdsCountMax)
+            DataManager.Ins.AddInterAdsStepCount((int)value);
+            if(DataManager.Ins.InterAdsStepCount >= DataManager.Ins.ConfigData.stepInterAdsCountMax)
             {
                 Interstitial.Show(OnInterAdsDone);
             }
         }
         private void OnInterAdsDone() {
-            intAdsStepCount -= DataManager.Ins.ConfigData.stepInterAdsCountMax;
+            DataManager.Ins.AddInterAdsStepCount(-DataManager.Ins.ConfigData.stepInterAdsCountMax);
             cooldownTimer.Start(DataManager.Ins.ConfigData.interAdsCooldownTime);
             interCallBack?.Invoke();
             interCallBack = null;
