@@ -1,4 +1,5 @@
 using _Game.DesignPattern;
+using _Game.GameGrid;
 using _Game.Utilities.Timer;
 using AppsFlyerSDK;
 using System;
@@ -55,25 +56,43 @@ namespace _Game.Managers
         }
         private void CheckShowInterAds(object callBack = null)
         {
-            int levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
-            interCallBack = (Action)callBack;
-
-            if (levelIndex < DataManager.Ins.ConfigData.startInterAdsLevel || cooldownTimer.IsStart 
-                || (DebugManager.Ins && !DebugManager.Ins.IsShowAds))
+            if(cooldownTimer.IsStart || (DebugManager.Ins && !DebugManager.Ins.IsShowAds))
             {
                 interCallBack?.Invoke();
                 interCallBack = null;
                 return;
             }
-
-            AnalysticManager.Ins.AppsFlyerTrackEvent("af_inters_logicgame");
-            if ((levelIndex - DataManager.Ins.ConfigData.startInterAdsLevel) % DataManager.Ins.ConfigData.winLevelCountInterAds == 0)
+                
+            switch (LevelManager.Ins.CurrentLevel.LevelType)
             {
-                Interstitial.Show(OnInterAdsDone);
-                return;
+                case Data.LevelType.Normal:
+                    int levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
+                    interCallBack = (Action)callBack;
+
+                    if (levelIndex < DataManager.Ins.ConfigData.startInterAdsLevel)
+                    {
+                        interCallBack?.Invoke();
+                        interCallBack = null;
+                        return;
+                    }
+
+                    AnalysticManager.Ins.AppsFlyerTrackEvent("af_inters_logicgame");
+                    if ((levelIndex - DataManager.Ins.ConfigData.startInterAdsLevel) % DataManager.Ins.ConfigData.winLevelCountInterAds == 0)
+                    {
+                        Interstitial.Show(OnInterAdsDone);
+                        return;
+                    }
+                    interCallBack?.Invoke();
+                    interCallBack = null;
+                    break;
+                case Data.LevelType.Secret:
+                    Interstitial.Show(OnInterAdsDone);
+                    break;
+                case Data.LevelType.DailyChallenge:
+                    OnInterAdsStepCount(1);
+                    break;
             }
-            interCallBack?.Invoke();
-            interCallBack = null;
+            
         }
         private void OnInterAdsStepCount(object value)
         {
