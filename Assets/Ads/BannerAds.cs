@@ -16,6 +16,7 @@ public class BannerAds : MonoBehaviour
     private bool isAdmobInited = false;
     // Start is called before the first frame update
     BannerView bannerView;
+    bool isBannerPrepared = false;
     public bool IsBannerOpen => isBannerOpen;
     void Start()
     {
@@ -36,9 +37,9 @@ public class BannerAds : MonoBehaviour
 
         MobileAds.Initialize(initStatus =>
         {
-            DevLog.Log(DevId.Hung,initStatus.ToString());
+            DevLog.Log(DevId.Hung, initStatus.ToString());
             isAdmobInited = true;
-            Init();
+            InitBanner();
         });
     }
 
@@ -59,13 +60,17 @@ public class BannerAds : MonoBehaviour
         {
             isBannerOpen = false;
             if (bannerView != null)
+            {
+                DevLog.Log(DevId.Hung, "Banner Hide");
                 bannerView.Hide();
+            }
         }
     }
 
-    public void Init()
+    public void InitBanner()
     {
         bannerView = new BannerView(collapsibleBannerAdUnitId, AdSize.Banner, AdPosition.Bottom);
+        isBannerPrepared = true;
 
         bannerView.OnBannerAdLoaded += () =>
         {
@@ -105,17 +110,21 @@ public class BannerAds : MonoBehaviour
     {
         DevLog.Log(DevId.Hung, "Show banner collap");
         if (isAdmobInited)
-        {
-            if (bannerView != null)
-                DestroyBannerView();
-            bannerView = new BannerView(collapsibleBannerAdUnitId, AdSize.Banner, AdPosition.Bottom);
-            var adRequest = new AdRequest.Builder().Build();
+        {            
+            if (!isBannerPrepared)
+            {
+                if (bannerView != null)
+                    DestroyBannerView();
+                InitBanner();
+            }
 
+            var adRequest = new AdRequest.Builder().Build();
             // Create an extra parameter that aligns the bottom of the expanded ad to the
             // bottom of the bannerView.
             adRequest.Extras.Add("collapsible", "bottom");
             adRequest.Extras.Add("collapsible_request_id", RandomIDForBannerCollap());
             bannerView.LoadAd(adRequest);
+            isBannerPrepared = false;
         }
     }
     private string RandomIDForBannerCollap()
