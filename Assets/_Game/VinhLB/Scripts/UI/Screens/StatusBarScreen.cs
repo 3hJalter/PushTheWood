@@ -164,7 +164,7 @@ namespace VinhLB
 
         private IEnumerator DelayOpenCoroutine()
         {
-            while (UIManager.Ins.IsOpened<SplashScreen>())
+            while (UIManager.Ins.IsOpened<TransitionScreen>())
             {
                 yield return null;
             }

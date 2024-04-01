@@ -129,7 +129,7 @@ namespace _Game.UIs.Popup
         {
             LevelManager.Ins.dailyLevelClickedDay = _currentBtnClick.Index;
             UIManager.Ins.CloseAll();
-            SplashScreen ui = UIManager.Ins.OpenUI<SplashScreen>();
+            TransitionScreen ui = UIManager.Ins.OpenUI<TransitionScreen>();
             ui.OnOpenCallback += () =>
             {
                 LevelManager.Ins.OnGoLevel(LevelType.DailyChallenge, DataManager.Ins.GetDailyChallengeDay(LevelManager.Ins.dailyLevelClickedDay));

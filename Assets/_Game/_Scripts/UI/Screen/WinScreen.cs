@@ -192,7 +192,7 @@ namespace _Game.UIs.Screen
         {
             LevelType type = LevelManager.Ins.CurrentLevel.LevelType;
             UIManager.Ins.CloseAll();
-            SplashScreen ui = UIManager.Ins.OpenUI<SplashScreen>();
+            TransitionScreen ui = UIManager.Ins.OpenUI<TransitionScreen>();
             ui.OnOpenCallback += () =>
             {
                 LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
