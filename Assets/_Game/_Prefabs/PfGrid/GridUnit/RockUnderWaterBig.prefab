@@ -24,8 +24,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 659011302188247322}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
-  m_LocalScale: {x: 1, y: 2, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5157738888456464950}
@@ -58,7 +58,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 663939738024044129}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -112,9 +112,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5537220399447289996}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.6, z: 0}
-  m_LocalScale: {x: 20, y: 20, z: 20}
-  m_ConstrainProportionsScale: 1
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalScale: {x: 21, y: 55, z: 21}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 659011302188247317}
   m_RootOrder: 0
@@ -320,9 +320,10 @@ MonoBehaviour:
   poolType: 22
   skin: {fileID: 659011302188247317}
   meshRenderer: {fileID: 0}
-  size: {x: 1, y: 2, z: 1}
-  isMinusHalfSizeY: 0
-  startHeight: 2
+  skinController: {fileID: 0}
+  size: {x: 1, y: 3, z: 1}
+  isMinusHalfSizeY: 1
+  startHeight: 0
   endHeight: 0
   overrideStartHeight: 1
   floatingHeightOffset: 0
@@ -333,5 +334,3 @@ MonoBehaviour:
   islandID: -1
   gridUnitStaticType: 9
   anchor: {fileID: 4941841983449918107}
-  DEGREE: 3
-  DECAY_VALUE: 0.8
