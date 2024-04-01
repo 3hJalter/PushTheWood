@@ -18,7 +18,7 @@ public class BannerAds : MonoBehaviour
             // You may call the utility method MaxSdkUtils.isTablet() to help with view sizing adjustments
             MaxSdk.CreateBanner(bannerAdUnitId, MaxSdkBase.BannerPosition.BottomCenter);
             // Set background or background color for banners to be fully functional
-            MaxSdk.SetBannerBackgroundColor(bannerAdUnitId, Color.black);
+            MaxSdk.SetBannerBackgroundColor(bannerAdUnitId, new Color(0, 0, 0, 0.25f));
         };
 
         MaxSdk.SetSdkKey("ZoNyqu_piUmpl33-qkoIfRp6MTZGW9M5xk1mb1ZIWK6FN9EBu0TXSHeprC3LMPQI7S3kTc1-x7DJGSV8S-gvFJ");

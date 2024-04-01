@@ -308,8 +308,8 @@ namespace _Game.Managers
 
             #region BANNER
             AdsManager.Ins.ShowBannerAds();
-            if(AdsManager.Ins.IsBannerOpen)
-                GameManager.Ins.PostEvent(EventID.OnChangeLayoutForBanner, true);
+            // if(AdsManager.Ins.IsBannerOpen)
+            //     GameManager.Ins.PostEvent(EventID.OnChangeLayoutForBanner, true);
             #endregion
 
             #region ANALYSTIC

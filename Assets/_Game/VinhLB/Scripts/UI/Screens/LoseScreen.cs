@@ -24,13 +24,13 @@ namespace VinhLB
 
         private void Awake()
         {
-            GameManager.Ins.RegisterListenerEvent(EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
-            ChangeLayoutForBanner(AdsManager.Ins.IsBannerOpen);
+            // GameManager.Ins.RegisterListenerEvent(EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
+            // ChangeLayoutForBanner(AdsManager.Ins.IsBannerOpen);
         }
 
         private void OnDestroy()
         {
-            GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
+            // GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
         }
         
         private void ChangeLayoutForBanner(object isBannerActive)

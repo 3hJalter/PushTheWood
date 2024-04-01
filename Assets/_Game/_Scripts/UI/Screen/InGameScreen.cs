@@ -107,7 +107,7 @@ namespace _Game.UIs.Screen
             pushHintButton.AddEvent(OnClickPushHint);
             growTreeButton.AddEvent(OnClickGrowTree);
             // resetIslandButton.AddEvent(OnClickResetIsland);
-            GameManager.Ins.RegisterListenerEvent(DesignPattern.EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
+            // GameManager.Ins.RegisterListenerEvent(DesignPattern.EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
         }
 
         private void OnDestroy()
@@ -119,8 +119,7 @@ namespace _Game.UIs.Screen
             pushHintButton.RemoveEvent(OnClickPushHint);
             growTreeButton.RemoveEvent(OnClickGrowTree);
             // resetIslandButton.RemoveEvent(OnClickResetIsland);
-            GameManager.Ins.UnregisterListenerEvent(DesignPattern.EventID.OnChangeLayoutForBanner,
-                ChangeLayoutForBanner);
+            // GameManager.Ins.UnregisterListenerEvent(DesignPattern.EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
         }
 
         

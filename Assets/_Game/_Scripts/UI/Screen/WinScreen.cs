@@ -41,14 +41,13 @@ namespace _Game.UIs.Screen
 
         private void Awake()
         {
-            GameManager.Ins.RegisterListenerEvent(EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
-            ChangeLayoutForBanner(AdsManager.Ins.IsBannerOpen);
+            // GameManager.Ins.RegisterListenerEvent(EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
+            // ChangeLayoutForBanner(AdsManager.Ins.IsBannerOpen);
         }
 
         private void OnDestroy()
         {
-            GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeLayoutForBanner,
-                ChangeLayoutForBanner);
+            // GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
         }
 
         public override void Setup(object param = null)

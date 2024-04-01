@@ -71,8 +71,8 @@ namespace _Game.UIs.Screen
 
             #region BANNER
             AdsManager.Ins.HideBannerAds();
-            if(!AdsManager.Ins.IsBannerOpen)
-                GameManager.Ins.PostEvent(EventID.OnChangeLayoutForBanner, false);
+            // if(!AdsManager.Ins.IsBannerOpen)
+            //     GameManager.Ins.PostEvent(EventID.OnChangeLayoutForBanner, false);
             #endregion
         }
 
