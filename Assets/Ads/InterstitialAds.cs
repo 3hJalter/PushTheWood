@@ -1,4 +1,5 @@
 using _Game.Managers;
+using _Game.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +10,9 @@ public class InterstitialAds : MonoBehaviour
     string adUnitId = "c8ea8f6273eef263";
     int retryAttempt;
     bool showImmediate = false;
+    bool isShowingAds = false;
     Action onAdsClose = null;
+    public bool IsShowingAds => isShowingAds;
 
     // Start is called before the first frame update
     void Start()
@@ -21,9 +24,8 @@ public class InterstitialAds : MonoBehaviour
         MaxSdkCallbacks.Interstitial.OnAdClickedEvent += OnInterstitialClickedEvent;
         MaxSdkCallbacks.Interstitial.OnAdHiddenEvent += OnInterstitialHiddenEvent;
         MaxSdkCallbacks.Interstitial.OnAdDisplayFailedEvent += OnInterstitialAdFailedToDisplayEvent;
-
+        isShowingAds = false;
         // Load the first interstitial
-
     }
 
     public void Load(bool show = false)
@@ -36,9 +38,11 @@ public class InterstitialAds : MonoBehaviour
     {
         if (MaxSdk.IsInterstitialReady(adUnitId))
         {
+            isShowingAds = true;
             MaxSdk.ShowInterstitial(adUnitId);
             AnalysticManager.Ins.InterAdsShow(_Game.Ads.Placement.In_Game);
             this.onAdsClose = onAdsClose;
+            DevLog.Log(DevId.Hung, "ADS: SHOWING INTER");
         }
         else
         {
@@ -84,7 +88,9 @@ public class InterstitialAds : MonoBehaviour
     private void OnInterstitialHiddenEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
     {
         // Interstitial ad is hidden. Pre-load the next ad.
+        isShowingAds = false;
         this.onAdsClose?.Invoke();
+        DevLog.Log(DevId.Hung, "ADS: HIDE INTER");
         Load();
     }
 
