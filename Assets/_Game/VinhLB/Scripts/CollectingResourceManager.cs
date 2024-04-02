@@ -30,7 +30,9 @@ namespace VinhLB
             public Tween ReactionTween;
         }
         
+        [HideInInspector]
         public Func<Task> DelayCollectingRewardKeys;
+        [HideInInspector]
         public Func<Task> DelayCollectingLevelStars;
 
         private const float HEIGHT_OFFSET = 60;
@@ -56,7 +58,7 @@ namespace VinhLB
         [SerializeField]
         private CollectingResourceConfig _collectingInGameRewardKeyConfig;
 
-        [Title("In-game Compass")]
+        [Title("In-game Compasses")]
         [SerializeField]
         private CollectingResourceConfig _collectingInGameCompassConfig;
 
@@ -178,20 +180,20 @@ namespace VinhLB
             unit.Text.text = $"+{amount}";
             unit.CanvasGroup.alpha = 0;
 
-            if (_collectingInGameRewardKeyConfig.CollectingResourceParentRectTF == null)
+            if (_collectingInGameCompassConfig.CollectingResourceParentRectTF == null)
             {
-                _collectingInGameRewardKeyConfig.CollectingResourceParentRectTF =
+                _collectingInGameCompassConfig.CollectingResourceParentRectTF =
                     _overlayScreen.FloatingRewardKeyParentRectTF;
             }
-            if (unit.Tf.parent != _collectingInGameRewardKeyConfig.CollectingResourceParentRectTF)
+            if (unit.Tf.parent != _collectingInGameCompassConfig.CollectingResourceParentRectTF)
             {
-                unit.Tf.SetParent(_collectingInGameRewardKeyConfig.CollectingResourceParentRectTF, false);
+                unit.Tf.SetParent(_collectingInGameCompassConfig.CollectingResourceParentRectTF, false);
             }
-            RectTransform parentRectTransform = _collectingInGameRewardKeyConfig.CollectingResourceParentRectTF;
+            RectTransform parentRectTransform = _collectingInGameCompassConfig.CollectingResourceParentRectTF;
 
             Sequence s = DOTween.Sequence();
-            s.Append(unit.CanvasGroup.DOFade(1, _collectingInGameRewardKeyConfig.MoveDuration))
-                .Join(DOVirtual.Float(0, HEIGHT_INCREASE, _collectingInGameRewardKeyConfig.MoveDuration, y =>
+            s.Append(unit.CanvasGroup.DOFade(1, _collectingInGameCompassConfig.MoveDuration))
+                .Join(DOVirtual.Float(0, HEIGHT_INCREASE, _collectingInGameCompassConfig.MoveDuration, y =>
                 {
                     Vector2 viewportPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) -
                                             Vector3.one * 0.5f;
@@ -199,9 +201,9 @@ namespace VinhLB
                         parentRectTransform.rect.height * viewportPoint.y + 60 + y);
                 }).SetEase(Ease.OutQuart))
                 .Append(
-                    unit.CanvasGroup.DOFade(0, _collectingInGameRewardKeyConfig.MoveDuration * 1.5f)
+                    unit.CanvasGroup.DOFade(0, _collectingInGameCompassConfig.MoveDuration * 1.5f)
                         .SetEase(Ease.InQuint))
-                .Join(DOVirtual.Float(0, HEIGHT_INCREASE, _collectingInGameRewardKeyConfig.MoveDuration * 1.5f, y =>
+                .Join(DOVirtual.Float(0, HEIGHT_INCREASE, _collectingInGameCompassConfig.MoveDuration * 1.5f, y =>
                 {
                     Vector2 viewportPoint = CameraManager.Ins.WorldToViewportPoint(objectTransform.position) -
                                             Vector3.one * 0.5f;

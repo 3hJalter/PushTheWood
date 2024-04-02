@@ -19,6 +19,8 @@ namespace VinhLB
         [SerializeField]
         private ScrollRect _scrollRect;
         [SerializeField]
+        private LayoutGroup _contentLayoutGroup;
+        [SerializeField]
         private GameObject _topBlurGO;
         [SerializeField]
         private GameObject _bottomBlurGO;
@@ -121,7 +123,7 @@ namespace VinhLB
                 }
             }
 
-            // _scrollRect.ScrollTo(_collectionItemList[_currentPetIndex].RectTransform);
+            // _scrollRect.ScrollTo(_collectionItemList[_currentPetIndex].RectTransform, _contentLayoutGroup.padding);
             _scrollRect.verticalNormalizedPosition = 1f;
             OnRewardScrollRectValueChanged(_scrollRect.normalizedPosition);
         }

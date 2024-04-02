@@ -473,6 +473,7 @@ GameObject:
   - component: {fileID: 1262681387000572898}
   - component: {fileID: 1262681387000572896}
   - component: {fileID: 1262681387000572903}
+  - component: {fileID: 8544664999312255264}
   - component: {fileID: 1978755664843233920}
   m_Layer: 5
   m_Name: Canvas_PopupNotification
@@ -553,6 +554,26 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!95 &8544664999312255264
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262681387000572901}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ea0d3738208b34645a1010916f8a698b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!114 &1978755664843233920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,8 +587,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDestroyOnClose: 0
-  useAnimator: 0
-  animator: {fileID: 0}
+  useAnimator: 1
+  animator: {fileID: 8544664999312255264}
   icon: {fileID: 0}
   title: {fileID: 5715261919077910359}
 --- !u!1 &1262681387894939503
