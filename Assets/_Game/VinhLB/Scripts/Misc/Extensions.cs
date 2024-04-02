@@ -107,22 +107,40 @@ namespace VinhLB
                 (targetRectTransform.rect.height / 2));
             contentRectTransform.localPosition = newTargetLocalPosition;
         }
-        
-        public static void ScrollTo(this ScrollRect scrollRect, RectTransform targetRectTransform)
+
+        public static void ScrollTo(this ScrollRect scrollRect, RectTransform targetRectTransform, RectOffset padding = null)
         {
             Canvas.ForceUpdateCanvases();
-            Debug.Log(scrollRect.content.InverseTransformPoint(targetRectTransform.position));
-            Debug.Log(targetRectTransform.anchoredPosition);
-            Debug.Log(scrollRect.viewport.localPosition);
-            Debug.Log(targetRectTransform.localPosition);
-            
+            Vector3 relativePosition = scrollRect.content.InverseTransformPoint(targetRectTransform.position);
+            float horizontalNormalizedPosition =
+                (relativePosition.x + scrollRect.content.pivot.x * scrollRect.content.rect.width) /
+                scrollRect.content.rect.width;
+            float verticalNormalizedPosition =
+                (relativePosition.y + scrollRect.content.pivot.y * scrollRect.content.rect.height) /
+                scrollRect.content.rect.height;
+
+            // if (padding == null)
+            // {
+            //     padding = new RectOffset();
+            // }
             if (scrollRect.horizontal)
             {
-                
+                scrollRect.horizontalNormalizedPosition = horizontalNormalizedPosition;
             }
             if (scrollRect.vertical)
             {
+                // Debug.Log(verticalNormalizedPosition);
+                // if (verticalNormalizedPosition > 0.5f)
+                // {
+                //     verticalNormalizedPosition += (-padding.top + padding.bottom) / scrollRect.content.rect.height;
+                // }
+                // else
+                // {
+                //     verticalNormalizedPosition -= (-padding.top + padding.bottom) / scrollRect.content.rect.height;
+                // }
+                // Debug.Log(verticalNormalizedPosition);
                 
+                scrollRect.verticalNormalizedPosition = verticalNormalizedPosition;
             }
         }
         #endregion
