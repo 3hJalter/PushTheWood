@@ -45,7 +45,7 @@ namespace VinhLB
             }
             GameManager.Ins.ChangeState(GameState.Pause);
             
-            _buyButton.gameObject.SetActive(GameManager.Ins.AdTickets >= _boosterConfig.TicketPerBuyRatio.ticketNeed);
+            //_buyButton.gameObject.SetActive(GameManager.Ins.AdTickets >= _boosterConfig.TicketPerBuyRatio.ticketNeed);
         }
 
         public override void Open(object param = null)
