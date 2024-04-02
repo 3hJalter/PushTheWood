@@ -219,7 +219,7 @@ namespace _Game.Data
         [SerializeField]
         private int goldPerBuyTen;
         [SerializeField]
-        private TicketPerBuyRatio ticketPerBuyRatio;
+        private GoldPerBuyRatio goldPerBuyRatio;
 
         [HideInInspector]
         public UIResourceConfig UIResourceConfig;
@@ -229,7 +229,7 @@ namespace _Game.Data
         public string Name => UIResourceConfig.Name;
         public Sprite MainIcon => UIResourceConfig.MainIconSprite;
         public int GoldPerBuyTen => goldPerBuyTen;
-        public TicketPerBuyRatio TicketPerBuyRatio => ticketPerBuyRatio;
+        public GoldPerBuyRatio GoldPerBuyRatio => goldPerBuyRatio;
         // Do with goldPerBuyMore
     }
 
@@ -241,15 +241,15 @@ namespace _Game.Data
     }
 
     [Serializable]
-    public struct TicketPerBuyRatio
+    public struct GoldPerBuyRatio
     {
-        public TicketPerBuyRatio(int first, int second)
+        public GoldPerBuyRatio(int first, int second)
         {
-            ticketNeed = first;
+            goldNeed = first;
             itemsPerBuy = second;
         }
 
-        public int ticketNeed;
+        public int goldNeed;
         public int itemsPerBuy;
     }
 }
