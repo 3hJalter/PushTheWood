@@ -7,7 +7,6 @@ using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.Resource;
 using _Game.UIs.Screen;
-using _Game.Utilities;
 using _Game.Utilities.Timer;
 using AudioEnum;
 using Unity.Collections;
@@ -69,6 +68,7 @@ namespace _Game.Managers
         [SerializeField]
         private int time;
         private int _gameDuration;
+        private bool _isShowSaveMeScreen;
         private STimer timer;
 
         public PushHintObject PushHintObject => pushHintObject;
@@ -246,6 +246,7 @@ namespace _Game.Managers
         {
             if (LevelManager.Ins.IsSavePlayerPushStep) SavePushHint = new SavePushHint();
             _lastPlayerIslandId = -1;
+            _isShowSaveMeScreen = false;
             PushHintObject.SetActive(false);
             OnResetTime();
             screen.OnHandleTutorial();
@@ -416,7 +417,7 @@ namespace _Game.Managers
             }
             #endregion
         }
-
+        
         private void CountTime()
         {
             if (time < 0) return;
@@ -425,12 +426,21 @@ namespace _Game.Managers
             screen.Time = time;
             if (time <= 0)
             {
-                UIManager.Ins.OpenUI<SaveMeScreen>();
+                if (!_isShowSaveMeScreen)
+                {
+                    _isShowSaveMeScreen = true;
+                    UIManager.Ins.OpenUI<SaveMeScreen>();
+                }
+                else
+                {
+                    OnLoseGame(LevelLoseCondition.Timeout);
+                }
             }
         }
 
         #region Booster
-        public void OnUsingBooster(BoosterType boosterType)
+
+        private void OnUsingBooster(BoosterType boosterType)
         {
             if (LevelManager.Ins.player.IsStun || LevelManager.Ins.player.IsDead) return;
             switch (boosterType)
