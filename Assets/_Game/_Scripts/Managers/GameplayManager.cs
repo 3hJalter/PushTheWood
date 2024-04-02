@@ -307,7 +307,14 @@ namespace _Game.Managers
             // If hard level, show a notification -> If it None -> not show
 
             #region BANNER
-            AdsManager.Ins.ShowBannerAds();
+            if (TutorialManager.Ins.TutorialList.ContainsKey(DataManager.Ins.GameData.user.normalLevelIndex))
+            {
+                AdsManager.Ins.ShowBannerAds(BannerAds.TYPE.MAX);
+            }
+            else
+            {
+                AdsManager.Ins.ShowBannerAds(BannerAds.TYPE.ADSMOB);
+            }
             // if(AdsManager.Ins.IsBannerOpen)
             //     GameManager.Ins.PostEvent(EventID.OnChangeLayoutForBanner, true);
             #endregion

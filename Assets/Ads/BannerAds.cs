@@ -10,6 +10,11 @@ using static MaxSdkCallbacks;
 
 public class BannerAds : MonoBehaviour
 {
+    public enum TYPE
+    {
+        MAX = 0,
+        ADSMOB = 1,
+    }
     string bannerAdUnitId = "6966fa233ec0364f"; // Retrieve the ID from your account
     string collapsibleBannerAdUnitId = "ca-app-pub-9819920607806935/7099802728";
     bool isBannerOpen = false;
@@ -17,18 +22,19 @@ public class BannerAds : MonoBehaviour
     // Start is called before the first frame update
     BannerView bannerView;
     bool isBannerPrepared = false;
+    TYPE currentBannerType;
     public bool IsBannerOpen => isBannerOpen;
     void Start()
     {
         MaxSdkCallbacks.OnSdkInitializedEvent += (MaxSdkBase.SdkConfiguration sdkConfiguration) =>
         {
 
-            //// AppLovin SDK is initialized, start loading ads
-            //// Banners are automatically sized to 320×50 on phones and 728×90 on tablets
-            //// You may call the utility method MaxSdkUtils.isTablet() to help with view sizing adjustments
-            //MaxSdk.CreateBanner(bannerAdUnitId, MaxSdkBase.BannerPosition.BottomCenter);
-            //// Set background or background color for banners to be fully functional
-            //MaxSdk.SetBannerBackgroundColor(bannerAdUnitId, Color.black);
+            // AppLovin SDK is initialized, start loading ads
+            // Banners are automatically sized to 320×50 on phones and 728×90 on tablets
+            // You may call the utility method MaxSdkUtils.isTablet() to help with view sizing adjustments
+            MaxSdk.CreateBanner(bannerAdUnitId, MaxSdkBase.BannerPosition.BottomCenter);
+            // Set background or background color for banners to be fully functional
+            MaxSdk.SetBannerBackgroundColor(bannerAdUnitId, Color.black);
         };
 
         MaxSdk.SetSdkKey("ZoNyqu_piUmpl33-qkoIfRp6MTZGW9M5xk1mb1ZIWK6FN9EBu0TXSHeprC3LMPQI7S3kTc1-x7DJGSV8S-gvFJ");
@@ -43,27 +49,33 @@ public class BannerAds : MonoBehaviour
         });
     }
 
-    public void Show()
+    public void Show(TYPE type)
     {
-        //isBannerOpen = true;
-        //MaxSdk.ShowBanner(bannerAdUnitId);
-        //DataManager.Ins.ConfigData.bannerHeight = (int)MaxSdk.GetMRecLayout(bannerAdUnitId).height;
         isBannerOpen = true;
-        Load();
+        currentBannerType = type;
+        switch (type)
+        {
+            case TYPE.MAX:
+                MaxSdk.ShowBanner(bannerAdUnitId);
+                break;
+            case TYPE.ADSMOB:
+                Load();
+                break;
+        }
+        
     }
 
     public void Hide()
     {
-        //isBannerOpen = false;
-        //MaxSdk.HideBanner(bannerAdUnitId);
         if (isBannerOpen)
         {
             isBannerOpen = false;
+            MaxSdk.HideBanner(bannerAdUnitId);
             if (bannerView != null)
             {
                 DevLog.Log(DevId.Hung, "Banner Hide");
                 bannerView.Hide();
-            }
+            }      
         }
     }
 

@@ -47,13 +47,22 @@ namespace _Game.Managers
             cooldownTimer = new STimer();          
         }
         
-        public void ShowBannerAds()
+        public void ShowBannerAds(BannerAds.TYPE type)
         {
             int levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
             if (levelIndex < DataManager.Ins.ConfigData.startBannerAds || (DebugManager.Ins && !DebugManager.Ins.IsShowAds))
                 return;
-            Banner.Show();
-            bannerTimer.Start(DataManager.Ins.ConfigData.reloadBannerTime, Banner.Show, true);
+            switch (type)
+            {
+                case BannerAds.TYPE.ADSMOB:
+                    Banner.Show(type);
+                    bannerTimer.Start(DataManager.Ins.ConfigData.reloadBannerTime,() => Banner.Show(type), true);
+                    break;
+                case BannerAds.TYPE.MAX:
+                    Banner.Show(type);
+                    break;
+            }
+            
         }
 
         public void HideBannerAds()
