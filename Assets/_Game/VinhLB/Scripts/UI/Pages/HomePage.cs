@@ -100,22 +100,22 @@ namespace VinhLB
                 LevelManager.Ins.InitLevel();
                 UIManager.Ins.CloseAll();
 
-                SplashScreen splashScreen = UIManager.Ins.OpenUI<SplashScreen>();
+                TransitionScreen transitionScreen = UIManager.Ins.OpenUI<TransitionScreen>();
                 if (LevelManager.Ins.IsHardLevel)
                 {
-                    splashScreen.OnOpenCallback += OpenActions;
-                    splashScreen.OnCloseCallback += CloseActions;
+                    transitionScreen.OnOpenCallback += OpenActions;
+                    transitionScreen.OnCloseCallback += CloseActions;
 
                     void OpenActions()
                     {
-                        splashScreen.OnOpenCallback -= OpenActions;
+                        transitionScreen.OnOpenCallback -= OpenActions;
 
                         CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera, 0f);
                     }
 
                     void CloseActions()
                     {
-                        splashScreen.OnCloseCallback -= CloseActions;
+                        transitionScreen.OnCloseCallback -= CloseActions;
 
                         UIManager.Ins.OpenUI<HardWarningScreen>();
                     }
@@ -545,7 +545,7 @@ namespace VinhLB
 
         private IEnumerator OpenActionsCoroutine()
         {
-            while (UIManager.Ins.IsOpened<SplashScreen>())
+            while (UIManager.Ins.IsOpened<TransitionScreen>())
             {
                 yield return null;
             }

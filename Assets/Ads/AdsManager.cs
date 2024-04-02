@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VinhLB;
 using static UnityEngine.Rendering.DebugUI;
 
 namespace _Game.Managers
@@ -28,6 +29,7 @@ namespace _Game.Managers
 
         int intAdsStepCount = 0;
         public bool IsBannerOpen => Banner.IsBannerOpen;
+        
         protected void Awake()
         {
             DontDestroyOnLoad(gameObject);
@@ -43,7 +45,8 @@ namespace _Game.Managers
             GameManager.Ins.RegisterListenerEvent(EventID.OnCheckShowInterAds, CheckShowInterAds);
             MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent += OnRewardedAdRevenuePaidEvent;
             cooldownTimer = new STimer();          
-       }
+        }
+        
         public void ShowBannerAds()
         {
             int levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
@@ -60,6 +63,7 @@ namespace _Game.Managers
             if(IsBannerOpen)
                 Banner.Hide();
         }
+        
         private void CheckShowInterAds(object callBack = null)
         {
             if(cooldownTimer.IsStart || (DebugManager.Ins && !DebugManager.Ins.IsShowAds))
@@ -85,14 +89,14 @@ namespace _Game.Managers
                     AnalysticManager.Ins.AppsFlyerTrackEvent("af_inters_logicgame");
                     if ((levelIndex - DataManager.Ins.ConfigData.startInterAdsLevel) % DataManager.Ins.ConfigData.winLevelCountInterAds == 0)
                     {
-                        Interstitial.Show(OnInterAdsDone);
+                        ShowInterAdsWithSplashScreen();
                         return;
                     }
                     interCallBack?.Invoke();
                     interCallBack = null;
                     break;
                 case Data.LevelType.Secret:
-                    Interstitial.Show(OnInterAdsDone);
+                    ShowInterAdsWithSplashScreen();
                     break;
                 case Data.LevelType.DailyChallenge:
                     OnInterAdsStepCount(1);
@@ -100,6 +104,21 @@ namespace _Game.Managers
             }
             
         }
+        
+        private void ShowInterAds()
+        {
+            Interstitial.Show(OnInterAdsDone);
+        }
+
+        private void ShowInterAdsWithSplashScreen()
+        {
+            UIManager.Ins.OpenUI<SplashScreen>((Action)(() => Interstitial.Show(() =>
+            {
+                OnInterAdsDone();
+                UIManager.Ins.CloseUI<SplashScreen>();
+            })));
+        }
+        
         private void OnInterAdsStepCount(object value)
         {
             int levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
@@ -108,17 +127,19 @@ namespace _Game.Managers
 
             AnalysticManager.Ins.AppsFlyerTrackEvent("af_inters_logicgame");
             DataManager.Ins.AddInterAdsStepCount((int)value);
-            if(DataManager.Ins.InterAdsStepCount >= DataManager.Ins.ConfigData.stepInterAdsCountMax)
+            if (DataManager.Ins.InterAdsStepCount >= DataManager.Ins.ConfigData.stepInterAdsCountMax)
             {
-                Interstitial.Show(OnInterAdsDone);
+                ShowInterAdsWithSplashScreen();
             }
         }
+        
         private void OnInterAdsDone() {
             DataManager.Ins.AddInterAdsStepCount(-DataManager.Ins.ConfigData.stepInterAdsCountMax);
             cooldownTimer.Start(DataManager.Ins.ConfigData.interAdsCooldownTime);
             interCallBack?.Invoke();
             interCallBack = null;
         }
+        
         private void OnRewardedAdRevenuePaidEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
         {
             //NOTE: Ad revenue paid. Use this callback to track user revenue.

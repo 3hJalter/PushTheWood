@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/_Game/Resources/UI/UIScreen/Canvas_ScreenTransition.prefab.meta
-guid: 7ad13d46877ae514ebca93940f2a3362
-========
-guid: 6b023e4e966da7e46a16cfffaef8f025
->>>>>>>> Hung:Assets/_Game/_Prefabs/Manager/AudioManager.prefab.meta
+guid: abc0139c4c334be488c3b49c3b2457d5
 PrefabImporter:
   externalObjects: {}
   userData: 
