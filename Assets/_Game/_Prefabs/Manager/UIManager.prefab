@@ -789,6 +789,10 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 65598046672356527, guid: e4cb9b930e39beb41a1717324195966b, type: 3}
+    - target: {fileID: 7937655173844186259, guid: e4cb9b930e39beb41a1717324195966b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 450
+      objectReference: {fileID: 0}
     - target: {fileID: 7937655173850625682, guid: e4cb9b930e39beb41a1717324195966b, type: 3}
       propertyPath: m_Name
       value: MoveChoice
@@ -911,7 +915,7 @@ PrefabInstance:
       objectReference: {fileID: 7937655174681304455, guid: e4cb9b930e39beb41a1717324195966b, type: 3}
     - target: {fileID: 7937655175006482904, guid: e4cb9b930e39beb41a1717324195966b, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7937655175006482906, guid: e4cb9b930e39beb41a1717324195966b, type: 3}
       propertyPath: holdingButton
