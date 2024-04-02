@@ -282,7 +282,7 @@ MonoBehaviour:
       quantity: 800
   boosterConfigList:
   - type: 0
-    unlockAtLevel: 3
+    unlockAtLevel: 1
     goldPerBuyTen: 10
     ticketPerBuyRatio:
       ticketNeed: 1

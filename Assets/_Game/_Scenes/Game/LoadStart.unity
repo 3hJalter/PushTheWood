@@ -808,6 +808,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8295795834014792383, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 550
+      objectReference: {fileID: 0}
     - target: {fileID: 8295795834074003701, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: uiCamera
       value: 
@@ -836,10 +840,18 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8295795834910935896, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+    - target: {fileID: 8295795835008368628, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8295795835008368630, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8295795835008368630, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+    - target: {fileID: 8295795835068603729, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8295795835253314475, guid: 5f8624e451d711d418319cb9256b4bf7, type: 3}
       propertyPath: serializationData.Prefab
       value: 
