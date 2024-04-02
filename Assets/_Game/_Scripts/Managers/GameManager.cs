@@ -273,17 +273,24 @@ namespace _Game.Managers
 
         private bool TryModifyHeart(int amount, object source)
         {
-            if (_gameData.user.heart + amount < 0) return false;
+            int newValue = _gameData.user.heart + amount;
+
+            if (newValue < 0) return false;
+
+            if(newValue > DataManager.Ins.ConfigData.maxHeart)
+            {
+                newValue = DataManager.Ins.ConfigData.maxHeart;
+            }
 
             ResourceChangeData data = new()
             {
                 ChangedAmount = amount,
                 OldValue = _gameData.user.heart,
-                NewValue = _gameData.user.heart + amount,
+                NewValue = newValue,
                 Source = source
             };
 
-            _gameData.user.heart += amount;
+            _gameData.user.heart = newValue;
             PostEvent(EventID.OnChangeHeart, data);
             Database.SaveData(_gameData);
 

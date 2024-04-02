@@ -25,6 +25,8 @@ namespace _Game.Data
         #region In Game
         [FoldoutGroup("In Game")]
         // Time per level
+        [FoldoutGroup("In Game")]
+        public int maxHeart = 5;
         [FoldoutGroup("In Game/Time Per Level/Normal")]
         [InfoBox("Do not change the order of the list: Easy -> Medium -> Hard")]
         public List<TimePerNormalLevel> timePerNormalLevel = new()

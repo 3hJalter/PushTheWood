@@ -148,14 +148,14 @@ namespace VinhLB
 
             void SpawnCollectingUIAdTickets()
             {
-                int collectingAdTicketAmount = Mathf.Min((int)data.ChangedAmount, Constants.MAX_UI_UNIT);
+                int collectingHeartAmount = Mathf.Min((int)data.ChangedAmount, Constants.MAX_UI_UNIT);
                 Vector3 spawnPosition = data.Source as Vector3? ??
                                         CameraManager.Ins.ViewportToWorldPoint(new Vector3(0.5f, 0.5f));
-                CollectingResourceManager.Ins.SpawnCollectingUIAdTickets(collectingAdTicketAmount, spawnPosition,
+                CollectingResourceManager.Ins.SpawnCollectingUIAdTickets(collectingHeartAmount, spawnPosition,
                     _adTicketIconTF,
                     (progress) =>
                     {
-                        GameManager.Ins.SmoothHeart += data.ChangedAmount / collectingAdTicketAmount;
+                        GameManager.Ins.SmoothHeart += data.ChangedAmount / collectingHeartAmount;
                         int normalizedValue = Mathf.RoundToInt(GameManager.Ins.SmoothHeart);
                         _adTicketValueText.text = normalizedValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
                     });
