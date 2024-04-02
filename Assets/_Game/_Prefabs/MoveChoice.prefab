@@ -601,12 +601,15 @@ MonoBehaviour:
   isOverlappingUI: 0
   sensitivity: 120
   quickSensitive: 50
+  superSensitive: 150
   swipeTouchTime: 0.1
   quickSwipeTouchTime: 0.035
   continuousDetection: 0
   swipeDetectionMode: 2
   samplePoints: []
   quickSamplePoints: []
+  superSamplePoint: []
+  _isPointerUI: 0
 --- !u!1 &7937655174677662599
 GameObject:
   m_ObjectHideFlags: 0
@@ -765,6 +768,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8643770746981963272, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+      propertyPath: holdingButton
+      value: 
+      objectReference: {fileID: 65598046672356527}
+    - target: {fileID: 8643770746981963272, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8643770746981963272, guid: 6a551d3bb595b89459262a7449677600, type: 3}
@@ -886,6 +893,17 @@ PrefabInstance:
       objectReference: {fileID: 8643770747366404017, guid: 6a551d3bb595b89459262a7449677600, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+--- !u!114 &65598046672356527 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1816619650764841853, guid: 6a551d3bb595b89459262a7449677600, type: 3}
+  m_PrefabInstance: {fileID: 1863611606589024210}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3889d9e67e142ff9f14abfdc1c784bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7937655173937350005 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8643770747054678695, guid: 6a551d3bb595b89459262a7449677600, type: 3}
