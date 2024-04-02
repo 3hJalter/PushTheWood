@@ -7,7 +7,6 @@ using _Game.DesignPattern;
 using _Game.GameGrid;
 using _Game.Resource;
 using _Game.UIs.Screen;
-using _Game.Utilities;
 using _Game.Utilities.Timer;
 using AudioEnum;
 using Unity.Collections;
@@ -433,7 +432,8 @@ namespace _Game.Managers
         }
 
         #region Booster
-        public void OnUsingBooster(BoosterType boosterType)
+
+        private void OnUsingBooster(BoosterType boosterType)
         {
             if (LevelManager.Ins.player.IsStun || LevelManager.Ins.player.IsDead) return;
             switch (boosterType)
