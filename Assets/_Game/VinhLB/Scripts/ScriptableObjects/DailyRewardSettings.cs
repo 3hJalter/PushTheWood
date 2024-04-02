@@ -30,13 +30,13 @@ namespace VinhLB
         public CharacterType CharacterType;
         public int Amount;
 
-        private UIResourceConfig _uiResourceConfig;
+        private UIResourceConfig? _uiResourceConfig;
 
-        public UIResourceConfig UIResourceConfig
+        public UIResourceConfig? UIResourceConfig
         {
             get
             {
-                if (_uiResourceConfig.Equals(default(UIResourceConfig)))
+                if (_uiResourceConfig is null)
                 {
                     switch (RewardType)
                     {

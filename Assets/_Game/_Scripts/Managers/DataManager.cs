@@ -88,9 +88,11 @@ namespace _Game.Managers
             DontDestroyOnLoad(gameObject);
         }
 
+        public int CurrentDay => GameData.user.currentDay;
+        public int DaysInMonth => GameData.user.daysInMonth;
+        
         public int GetDailyChallengeDay(int index)
         {
-            if (index >= Constants.DAILY_CHALLENGER_COUNT) return 0;
             return _gameData.user.dailyLevelIndex[index];
         }
 
@@ -131,7 +133,10 @@ namespace _Game.Managers
 
         public bool IsClearAllDailyChallenge()
         {
-            return _gameData.user.dailyLevelIndexComplete.Count >= _gameData.user.currentDailyChallengerDay;
+            // get current day in month from UTC time
+            int currentDay = System.DateTime.UtcNow.Day;
+            
+            return _gameData.user.dailyLevelIndexComplete.Count >= currentDay;
         }
 
         public bool IsClearAllSecretLevel()

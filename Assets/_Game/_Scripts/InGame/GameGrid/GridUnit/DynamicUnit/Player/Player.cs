@@ -294,10 +294,12 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player
             // TRICK: Take offset = 3 to make camera not really see the edge of the island
 
             float x = cell.WorldPos.x;
+            float z = cell.WorldPos.z;
             
             // If the player is out of the island 1 cell, the camera will change target to Player
-            if (island.minXIslandPos.x - x > Constants.CELL_SIZE * OUT_OF_ISLAND_CELL_BEFORE_TARGET_CAM_TO_PLAYER ||
-                x - island.maxXIslandPos.x > Constants.CELL_SIZE * OUT_OF_ISLAND_CELL_BEFORE_TARGET_CAM_TO_PLAYER)
+            const float OUT_OF_ISLAND_OFFSET = Constants.CELL_SIZE * OUT_OF_ISLAND_CELL_BEFORE_TARGET_CAM_TO_PLAYER;
+            if (island.minXIslandPos.x - x > OUT_OF_ISLAND_OFFSET || x - island.maxXIslandPos.x > OUT_OF_ISLAND_OFFSET)
+                                                                  // || island.minZIslandPos.z - z > OUT_OF_ISLAND_OFFSET || z - island.maxZIslandPos.z > OUT_OF_ISLAND_OFFSET)
             {
                 _isOutOfIsland = true;
                 CameraManager.Ins.ChangeCameraTargetPosition(cell.WorldPos + CameraDownOffsetVector, MOVE_TIME);

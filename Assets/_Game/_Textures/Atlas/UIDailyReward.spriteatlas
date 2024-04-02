@@ -65,6 +65,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: d4319085219662546a5515d2b9768e3f, type: 3}
   - {fileID: 21300000, guid: 0d7892b525ad66f4695bf903dcb2fe58, type: 3}
   - {fileID: 21300000, guid: 504f9966ff4ab054483f4ad651852872, type: 3}
+  - {fileID: 21300000, guid: 5536bd070f6cc514399a665b0bb960c9, type: 3}
   - {fileID: 21300000, guid: 48c4a408eef32174dbc3b47e40259cc6, type: 3}
   - {fileID: 21300000, guid: e88c0a18126de3c41a8134ece7b0a9ba, type: 3}
   - {fileID: 21300000, guid: 31def8a89839000498379bc2345bb19b, type: 3}
@@ -89,6 +90,7 @@ SpriteAtlas:
   - _0003_DAY-7
   - _0020_DAY-5
   - _0012_DAY-2
+  - Bubble
   - _0015_return_text
   - _0016_daily-gift
   - _0009_Group-8

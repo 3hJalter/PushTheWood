@@ -5,7 +5,7 @@ using UnityEngine;
 
 public static class Constants
 {
-    public const int DAILY_CHALLENGER_COUNT = 7;
+    // public const int DAILY_CHALLENGER_COUNT = 7;
     
     public const int CELL_SIZE = 2;
     public const int DOWN_CAMERA_CELL_OFFSET = 0;
@@ -111,6 +111,7 @@ public static class Constants
     public const HeightLevel MAX_HEIGHT = HeightLevel.FourPointFive;
 
     public const int MAX_SMALL_ISLAND_SIZE = 5;
+    public const int MAX_SMALL_ISLAND_SIZE_Z = 9;
 
     public const string BASE_COLOR = "_BaseColor";
 

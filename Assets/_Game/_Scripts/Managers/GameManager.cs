@@ -69,20 +69,21 @@ namespace _Game.Managers
             // Get now day & last login day
             int day = (int)(DateTime.UtcNow.Date - _gameData.user.lastTimeLogOut.ToUniversalTime().Date)
                 .TotalDays;
-
+            // get how many month pass since last login
+            int month = (DateTime.UtcNow.Year - _gameData.user.lastTimeLogOut.Year) * 12 +
+                        DateTime.UtcNow.Month - _gameData.user.lastTimeLogOut.Month;
 
             if (day > 0)
             {
+                _gameData.user.currentDay = DateTime.UtcNow.Day;
                 _gameData.user.playedDay += 1;
-                _gameData.user.currentDailyChallengerDay += day;
                 _gameData.user.isFreeDailyChallengeFirstTime = true;
                 AnalysticManager.Ins.Day();
             }
 
-            // if the currentDailyChallengerDay is greater than the number of daily challenger, reset it
-            if (_gameData.user.currentDailyChallengerDay > Constants.DAILY_CHALLENGER_COUNT)
+            if (month > 0)
             {
-                _gameData.user.currentDailyChallengerDay %= 7 + 1;
+                _gameData.user.daysInMonth = DateTime.DaysInMonth(DateTime.UtcNow.Year, DateTime.UtcNow.Month);
                 _gameData.user.dailyLevelIndexComplete.Clear();
                 _gameData.user.dailyChallengeRewardCollected.Clear();
                 if (_gameData.user.completedOneTimeTutorial.Contains(DataManager.Ins.ConfigData
