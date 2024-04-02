@@ -80,7 +80,7 @@ namespace _Game.Data
                 {
                     new()
                     {
-                        currencyType = CurrencyType.AdTicket,
+                        currencyType = CurrencyType.Heart,
                         quantity = 1
                     }
                 }
@@ -104,7 +104,7 @@ namespace _Game.Data
                 {
                     new()
                     {
-                        currencyType = CurrencyType.AdTicket,
+                        currencyType = CurrencyType.Heart,
                         quantity = 1
                     }
                 }
@@ -121,7 +121,7 @@ namespace _Game.Data
                     },
                     new()
                     {
-                        currencyType = CurrencyType.AdTicket,
+                        currencyType = CurrencyType.Heart,
                         quantity = 1
                     },
                     new()
@@ -194,8 +194,8 @@ namespace _Game.Data
                 case CurrencyType.Gold:
                     GameManager.Ins.GainGold(quantity, param);
                     break;
-                case CurrencyType.AdTicket:
-                    GameManager.Ins.GainAdTickets(quantity, param);
+                case CurrencyType.Heart:
+                    GameManager.Ins.GainHeart(quantity, param);
                     break;
                 case CurrencyType.RandomBooster:
                     break;

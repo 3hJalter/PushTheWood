@@ -309,8 +309,9 @@ namespace _Game.Managers
             // If hard level, show a notification -> If it None -> not show
 
             #region BANNER
-            if (TutorialManager.Ins.TutorialList.ContainsKey(DataManager.Ins.GameData.user.normalLevelIndex) 
-                || !DataManager.Ins.IsOpenInGameDailyChallengeTut())
+            LevelType type = LevelManager.Ins.CurrentLevel.LevelType;
+            if ((type == LevelType.Normal && TutorialManager.Ins.TutorialList.ContainsKey(DataManager.Ins.GameData.user.normalLevelIndex)) 
+                ||(type == LevelType.DailyChallenge && !DataManager.Ins.IsOpenInGameDailyChallengeTut()))
             {
                 AdsManager.Ins.ShowBannerAds(BannerAds.TYPE.MAX);
             }

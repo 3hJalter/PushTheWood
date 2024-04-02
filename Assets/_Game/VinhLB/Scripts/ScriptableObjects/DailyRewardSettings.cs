@@ -69,8 +69,8 @@ namespace VinhLB
                     case CurrencyType.Gold:
                         GameManager.Ins.GainGold(Amount, fromPosition);
                         break;
-                    case CurrencyType.AdTicket:
-                        GameManager.Ins.GainAdTickets(Amount, fromPosition);
+                    case CurrencyType.Heart:
+                        GameManager.Ins.GainHeart(Amount, fromPosition);
                         break;
                     case CurrencyType.SecretMapPiece:
                         GameManager.Ins.GainSecretMapPiece(Amount);

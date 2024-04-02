@@ -96,7 +96,7 @@ namespace _Game.UIs.Screen
             
             _toggleWaterButton.onClick.AddListener(ToggleWater);
             
-            _addAdTicketsButton.onClick.AddListener(AddAdTickets);
+            _addAdTicketsButton.onClick.AddListener(AddHeart);
             _addGoldButton.onClick.AddListener(AddGold);
             _addRewardKeysButton.onClick.AddListener(AddRewardKeys);
             _addLevelStarsButton.onClick.AddListener(AddLevelStars);
@@ -169,9 +169,9 @@ namespace _Game.UIs.Screen
             FXManager.Ins.ToggleWater();
         }
 
-        private void AddAdTickets()
+        private void AddHeart()
         {
-            GameManager.Ins.GainAdTickets(1, _addAdTicketsButton.transform.position);
+            GameManager.Ins.GainHeart(1, _addAdTicketsButton.transform.position);
             //UIManager.Ins.UpdateUIs();
         }
         

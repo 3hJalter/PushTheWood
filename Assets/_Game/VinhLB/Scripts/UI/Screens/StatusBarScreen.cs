@@ -37,7 +37,7 @@ namespace VinhLB
         {
             GameManager.Ins.RegisterListenerEvent(EventID.OnChangeGold,
                 data => ChangeGoldValue((ResourceChangeData)data));
-            GameManager.Ins.RegisterListenerEvent(EventID.OnChangeAdTickets,
+            GameManager.Ins.RegisterListenerEvent(EventID.OnChangeHeart,
                 data => ChangeAdTicketValue((ResourceChangeData)data));
 
             _addButton.onClick.AddListener(() =>
@@ -50,7 +50,7 @@ namespace VinhLB
         {
             GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeGold,
                 data => ChangeGoldValue((ResourceChangeData)data));
-            GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeAdTickets,
+            GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeHeart,
                 data => ChangeAdTicketValue((ResourceChangeData)data));
         }
 
@@ -71,7 +71,7 @@ namespace VinhLB
 
             int normalizedValue = Mathf.RoundToInt(GameManager.Ins.SmoothGold);
             _goldValueText.text = normalizedValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
-            normalizedValue = Mathf.RoundToInt(GameManager.Ins.SmoothAdTickets);
+            normalizedValue = Mathf.RoundToInt(GameManager.Ins.SmoothHeart);
             _adTicketValueText.text = normalizedValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
         }
 
@@ -133,7 +133,7 @@ namespace VinhLB
                 if (!gameObject.activeInHierarchy)
                 {
                     // _delayCollectingAdTickets += SpawnCollectingUIAdTickets;
-                    GameManager.Ins.SmoothAdTickets += data.ChangedAmount;
+                    GameManager.Ins.SmoothHeart += data.ChangedAmount;
                 }
                 else
                 {
@@ -155,8 +155,8 @@ namespace VinhLB
                     _adTicketIconTF,
                     (progress) =>
                     {
-                        GameManager.Ins.SmoothAdTickets += data.ChangedAmount / collectingAdTicketAmount;
-                        int normalizedValue = Mathf.RoundToInt(GameManager.Ins.SmoothAdTickets);
+                        GameManager.Ins.SmoothHeart += data.ChangedAmount / collectingAdTicketAmount;
+                        int normalizedValue = Mathf.RoundToInt(GameManager.Ins.SmoothHeart);
                         _adTicketValueText.text = normalizedValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
                     });
             }

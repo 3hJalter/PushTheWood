@@ -30,6 +30,9 @@ namespace _Game.Managers
 
         int intAdsStepCount = 0;
         public bool IsBannerOpen => Banner.IsBannerOpen;
+        public bool IsCanShowInter => !interTimer.IsStart && !cooldownTimer.IsStart
+            && !(DataManager.Ins.GameData.user.normalLevelIndex < DataManager.Ins.ConfigData.startInterAdsLevel)
+            && !(DebugManager.Ins && !DebugManager.Ins.IsShowAds);
 
         protected void Awake()
         {
@@ -103,8 +106,6 @@ namespace _Game.Managers
 
                     interTimer.Start((float)DataManager.Ins.ConfigData.interAdsCappingTime);
                     ShowInterAdsWithSplashScreen();
-                    interCallBack?.Invoke();
-                    interCallBack = null;
                     break;
                 case Data.LevelType.Secret:
                     ShowInterAdsWithSplashScreen();

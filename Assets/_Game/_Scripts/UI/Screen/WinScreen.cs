@@ -116,8 +116,15 @@ namespace _Game.UIs.Screen
             }
             else
             {
-                _onContinueClick = null;
-                _continueButton.onClick.AddListener(OnGoMenu);
+                if (AdsManager.Ins.IsCanShowInter)
+                {
+                    _onContinueClick = OnGoMenu;
+                }
+                else
+                {
+                    _onContinueClick = null;
+                    _continueButton.onClick.AddListener(OnGoMenu);
+                }               
             }
             _continueButton.onClick.AddListener(() => OnClickContinue(_onContinueClick));
         }
