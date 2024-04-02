@@ -156,6 +156,8 @@ namespace _Game.Data
         public int bannerHeight = 100;
         [FoldoutGroup("Ads")]
         public int reloadBannerTime = 120;
+        [FoldoutGroup("Ads")]
+        public int interAdsCappingTime = 150;
         #endregion
 
         #region Collection
