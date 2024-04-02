@@ -44,8 +44,9 @@ namespace _Game.Managers
                 Reward.Load();
                 Interstitial.Load();
             };
-            GameManager.Ins.RegisterListenerEvent(EventID.OnInterAdsStepCount, OnInterAdsStepCount);
+            //GameManager.Ins.RegisterListenerEvent(EventID.OnInterAdsStepCount, OnInterAdsStepCount);
             GameManager.Ins.RegisterListenerEvent(EventID.OnCheckShowInterAds, CheckShowInterAds);
+            interTimer.Start((float)DataManager.Ins.ConfigData.interAdsCappingTime);
             MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent += OnRewardedAdRevenuePaidEvent;
         }
 
@@ -100,7 +101,7 @@ namespace _Game.Managers
                         return;
                     }
 
-                    interTimer.Start(DataManager.Ins.ConfigData.interAdsCappingTime);
+                    interTimer.Start((float)DataManager.Ins.ConfigData.interAdsCappingTime);
                     ShowInterAdsWithSplashScreen();
                     interCallBack?.Invoke();
                     interCallBack = null;
@@ -146,7 +147,7 @@ namespace _Game.Managers
         private void OnInterAdsDone()
         {
             DataManager.Ins.AddInterAdsStepCount(-DataManager.Ins.ConfigData.stepInterAdsCountMax);
-            cooldownTimer.Start(DataManager.Ins.ConfigData.interAdsCooldownTime);
+            cooldownTimer.Start((float)DataManager.Ins.ConfigData.interAdsCooldownTime);
             interCallBack?.Invoke();
             interCallBack = null;
         }
@@ -171,7 +172,7 @@ namespace _Game.Managers
         }
         private void OnDestroy()
         {
-            GameManager.Ins.UnregisterListenerEvent(EventID.OnInterAdsStepCount, OnInterAdsStepCount);
+            //GameManager.Ins.UnregisterListenerEvent(EventID.OnInterAdsStepCount, OnInterAdsStepCount);
             GameManager.Ins.UnregisterListenerEvent(EventID.OnCheckShowInterAds, CheckShowInterAds);
         }
     }
