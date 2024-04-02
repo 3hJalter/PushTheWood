@@ -61,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.29803923}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -183,7 +183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.29803923}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -305,7 +305,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.29803923}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -647,7 +647,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.29803923}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -854,6 +854,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  mainImg: {fileID: 8643770746723842651}
   direction: 1
   pointerDownImg: {fileID: 8643770746869901543}
 --- !u!1 &8643770746869901543
@@ -1075,6 +1076,12 @@ MonoBehaviour:
   - {fileID: 8643770746723842645}
   - {fileID: 8643770747183796009}
   - {fileID: 8643770747366404017}
+  dpadImages:
+  - {fileID: 5491811123735771366}
+  - {fileID: 2188353595545762853}
+  - {fileID: 3277449032512905761}
+  - {fileID: 2023194354202185163}
+  - {fileID: 3603312524242042339}
 --- !u!1 &8643770747054678689
 GameObject:
   m_ObjectHideFlags: 0
@@ -1145,7 +1152,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 5005dba33f4e7ab47896663d5ed91ac0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1221,6 +1228,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  mainImg: {fileID: 8643770747054678692}
   direction: 0
   pointerDownImg: {fileID: 8643770747380525667}
 --- !u!1 &8643770747183796008
@@ -1369,6 +1377,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  mainImg: {fileID: 8643770747183796015}
   direction: 2
   pointerDownImg: {fileID: 8643770748181251130}
 --- !u!1 &8643770747366404019
@@ -1517,6 +1526,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  mainImg: {fileID: 8643770747366404023}
   direction: 3
   pointerDownImg: {fileID: 8643770746910192815}
 --- !u!1 &8643770747380525667

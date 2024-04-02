@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using _Game.Camera;
 using _Game.Managers;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace HControls
 {
@@ -16,7 +18,15 @@ namespace HControls
         
         [SerializeField] private HDpadButton[] dpadButtons;
 
+        [SerializeField] private List<Image> dpadImages;
 
+        public event Action OnPointerDown;
+
+        public void ClearAction()
+        {
+            OnPointerDown = null;
+        }
+        
         private void Awake()
         {
             holdingButton.OnInit(Constants.HOLD_TOUCH_TIME, null, PointerUpAction, HoldAction);
@@ -42,10 +52,29 @@ namespace HControls
             HInputManager.SetDirectionInput(Direction.None);
         }
 
+        public void SetAlpha(float alpha)
+        {
+            for (int i = 0; i < dpadImages.Count; i++)
+            {
+                dpadImages[i].color = new Color(dpadImages[i].color.r, dpadImages[i].color.g, dpadImages[i].color.b, alpha);
+            }
+        }
+        
+        public void SetButtonAlpha(Direction direction, float alpha)
+        {
+            dpadImages[(int) direction].color = new Color(dpadImages[(int) direction].color.r, dpadImages[(int) direction].color.g, dpadImages[(int) direction].color.b, alpha);
+        }
+        
+        public void SetHoldingButton(bool isHolding)
+        {
+            holdingButton.enabled = isHolding;
+        }
+        
         public void OnButtonPointerDown(int index)
         {
             if (highlightButton) dpadButtons[index].PointerDownImg.SetActive(true);
             HInputManager.SetDirectionInput(dpadButtons[index].Direction);
+            OnPointerDown?.Invoke();
         }
 
         public void OnButtonPointerUp(int index)
@@ -54,5 +83,9 @@ namespace HControls
             HInputManager.SetDirectionInput(Direction.None);
         }
 
+        public void LockInput(Direction back, bool isLock)
+        {
+            dpadButtons[(int) back].LockInput(isLock);
+        }
     }
 }

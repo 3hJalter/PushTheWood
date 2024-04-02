@@ -37,7 +37,6 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
 
         private void SetupHoldAction()
         {
-            
             holdingButton.OnInit(Constants.HOLD_TOUCH_TIME, null, PointerUpAction, HoldAction);
             return;
 
