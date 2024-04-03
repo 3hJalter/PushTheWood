@@ -912,6 +912,7 @@ MonoBehaviour:
   - {fileID: 4900000, guid: fa64820a4815f514db17c8c7de617ca2, type: 3}
   - {fileID: 4900000, guid: cd02f6be5946c564b910379ef28deacf, type: 3}
   - {fileID: 4900000, guid: 4478ab50c205a0c46b3f73fc62fd410c, type: 3}
+  - {fileID: 4900000, guid: 1259cb59ee5bee840b1b30dc571d7b41, type: 3}
   - {fileID: 4900000, guid: bc1bfbeefdf462945bea1ddcf6cfee16, type: 3}
   dailyChallengerLevel:
   - {fileID: 4900000, guid: 785855e7a42c9544fa55015f0ba772ec, type: 3}
