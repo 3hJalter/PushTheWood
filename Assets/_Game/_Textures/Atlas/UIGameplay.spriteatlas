@@ -60,6 +60,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 982f3eb951abb7d4e9a43b4cf232b663, type: 3}
     - {fileID: 2800000, guid: aef9a8b6bcbd3a34eb52d7957e26a207, type: 3}
     - {fileID: 2800000, guid: 49e72cf12ea404541bf3df7d6e014d26, type: 3}
+    - {fileID: 2800000, guid: 0fc18e2bad6999b48b3c17f4564fe2dc, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -79,6 +80,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 3d51b9499215c95409575808db7284c5, type: 3}
   - {fileID: 21300000, guid: 982f3eb951abb7d4e9a43b4cf232b663, type: 3}
   - {fileID: 21300000, guid: 3e53afb930fb97e479738d9639ad649e, type: 3}
+  - {fileID: 21300000, guid: 0fc18e2bad6999b48b3c17f4564fe2dc, type: 3}
   - {fileID: 21300000, guid: e8f82d3c5ef946f46aceb6099a0ab7e6, type: 3}
   - {fileID: 21300000, guid: 1012a03e39ef4c149aee0eba370d2c3f, type: 3}
   m_PackedSpriteNamesToIndex:
@@ -96,6 +98,7 @@ SpriteAtlas:
   - pause_btn
   - DONT-No_Txt
   - star
+  - pause_icon
   - DO-No_Txt
   - reset
   m_RenderDataMap: {}
