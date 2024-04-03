@@ -47,7 +47,7 @@ namespace _Game.Managers
                         {
                             return false;
                         }
-                        break;
+                        return true;
                     case Data.LevelType.Secret:
                         return true;
                     case Data.LevelType.DailyChallenge:
@@ -71,9 +71,11 @@ namespace _Game.Managers
                 Interstitial.Load();
             };
             //GameManager.Ins.RegisterListenerEvent(EventID.OnInterAdsStepCount, OnInterAdsStepCount);
-            GameManager.Ins.RegisterListenerEvent(EventID.OnCheckShowInterAds, CheckShowInterAds);
-            interTimer.Start((float)DataManager.Ins.ConfigData.interAdsCappingTime);
+            GameManager.Ins.RegisterListenerEvent(EventID.OnCheckShowInterAds, CheckShowInterAds);           
             MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent += OnRewardedAdRevenuePaidEvent;
+
+            interTimer.Start((float)DataManager.Ins.ConfigData.interAdsCooldownTime);
+            cooldownTimer.Start((float)DataManager.Ins.ConfigData.interAdsCooldownTime);
         }
 
         public void ShowBannerAds(BannerAds.TYPE type)
@@ -116,6 +118,12 @@ namespace _Game.Managers
             }
             else
             {
+                switch (LevelManager.Ins.CurrentLevel.LevelType)
+                {
+                    case Data.LevelType.Normal:
+                        interTimer.Start((float)DataManager.Ins.ConfigData.interAdsCappingTime);
+                        break;
+                }
                 ShowInterAdsWithSplashScreen();
             }
             AnalysticManager.Ins.AppsFlyerTrackEvent("af_inters_logicgame");
