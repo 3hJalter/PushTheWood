@@ -17,6 +17,7 @@ namespace _Game._Scripts.UIs.Component
         [SerializeField] private OverlayScreen overlay;
         [SerializeField] private float jumpPower = 20;
         [SerializeField] private float jumpDuration = 1;
+        [SerializeField] private float endScaleValue = 0.75f;
         [SerializeField] private Ease moveEase = Ease.OutQuad;
         [SerializeField] private Ease scaleEase = Ease.OutQuad;
         [SerializeField] private RectTransform icon;
@@ -59,8 +60,8 @@ namespace _Game._Scripts.UIs.Component
             Sequence s = DOTween.Sequence();
             
             s.Append(Tf.DOJump(boosterButtonRect.position, jumpPower, 1,  jumpDuration).SetEase(moveEase))
-                .Join(icon.DOScaleX(1, jumpDuration).SetEase(scaleEase))
-                .Join(icon.DOScaleY(1, jumpDuration).SetEase(scaleEase))
+                .Join(icon.DOScaleX(endScaleValue, jumpDuration).SetEase(scaleEase))
+                .Join(icon.DOScaleY(endScaleValue, jumpDuration).SetEase(scaleEase))
                 .OnComplete(() =>
             {
                 _boosterButton.gameObject.SetActive(true);
