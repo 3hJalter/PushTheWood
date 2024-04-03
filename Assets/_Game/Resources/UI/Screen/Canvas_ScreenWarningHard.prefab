@@ -431,8 +431,8 @@ GameObject:
   m_Component:
   - component: {fileID: 499521064431617939}
   - component: {fileID: 1449635507181347098}
-  - component: {fileID: 1449635507181347096}
   - component: {fileID: 1449635507181347099}
+  - component: {fileID: 1449635507181347096}
   - component: {fileID: 1449635507181347100}
   m_Layer: 5
   m_Name: Canvas_ScreenWarningHard
@@ -483,18 +483,6 @@ Canvas:
   m_SortingLayerID: -118727557
   m_SortingOrder: 2
   m_TargetDisplay: 0
---- !u!225 &1449635507181347096
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8131171033383672152}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!114 &1449635507181347099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,6 +500,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 32
+--- !u!225 &1449635507181347096
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8131171033383672152}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &1449635507181347100
 MonoBehaviour:
   m_ObjectHideFlags: 0

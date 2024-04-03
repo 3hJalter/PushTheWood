@@ -63,7 +63,7 @@ public class UICanvas : MonoBehaviour
         ChangeAnim(Constants.OPEN);
     }
 
-    private void CloseAnimationAnim(Action onCompleteAction, float time = 0.2f)
+    private void CloseAnimationAnim(Action onCompleteAction, float time = 0.15f)
     {
         ChangeAnim(Constants.CLOSE);
         DOVirtual.DelayedCall(time, () => onCompleteAction?.Invoke());

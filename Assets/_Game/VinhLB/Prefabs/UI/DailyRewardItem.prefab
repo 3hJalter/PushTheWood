@@ -872,7 +872,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  pressAnimType: 0
+  pressAnimType: 1
   pressAnimTime: 0.2
   releaseAnimTime: 0.2
   pressedTargetScale: {x: 0.95, y: 0.95}
