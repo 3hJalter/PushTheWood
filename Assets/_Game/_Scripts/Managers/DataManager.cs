@@ -136,7 +136,7 @@ namespace _Game.Managers
 
         public bool IsClearAllSecretLevel()
         {
-            return _gameData.user.secretLevelIndexComplete.Count >= _gameData.user.secretLevelUnlock;
+            return _gameData.user.secretLevelIndexComplete.Count >= CountSecretLevel;
         }
 
         public bool IsSecretLevelComplete(int index)
