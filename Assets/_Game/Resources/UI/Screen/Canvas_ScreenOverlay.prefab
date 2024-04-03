@@ -202,6 +202,7 @@ MonoBehaviour:
   overlay: {fileID: 8215290960789869724}
   jumpPower: 5
   jumpDuration: 0.7
+  endScaleValue: 0.75
   moveEase: 6
   scaleEase: 28
   icon: {fileID: 5060567590515699122}
