@@ -43,7 +43,7 @@ namespace VinhLB
             
             SetupDailyRewards();
 
-            _claimButton.gameObject.SetActive(!DailyRewardManager.Ins.IsTodayRewardObtained);
+            _claimButton.interactable = !DailyRewardManager.Ins.IsTodayRewardObtained;
         }
 
         private void SetupDailyRewards()
@@ -63,9 +63,7 @@ namespace VinhLB
         {
             SetupDailyRewards();
             
-            _claimButton.gameObject.SetActive(!DailyRewardManager.Ins.IsTodayRewardObtained);
-            
-            GameManager.Ins.PostEvent(EventID.OnUpdateUI);
+            _claimButton.interactable = !DailyRewardManager.Ins.IsTodayRewardObtained;
         }
     }
 }

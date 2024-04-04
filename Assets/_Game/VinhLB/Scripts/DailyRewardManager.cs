@@ -44,6 +44,8 @@ namespace VinhLB
             DataManager.Ins.Save();
 
             OnDailyRewardParamsChanged?.Invoke();
+            
+            GameManager.Ins.PostEvent(EventID.OnUpdateUI);
         }
 
         private void SetPlayerPrefsDateTime(string key, DateTime dateTime)

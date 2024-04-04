@@ -484,32 +484,54 @@ namespace _Game.Managers
         private void OnUndo()
         {
             if (!isCanUndo) return;
-            if (DataManager.Ins.GameData.user.undoCount <= 0)
+            if (!LevelManager.Ins.OnUndo()) return;
+            // Send an undo Signal
+            EventGlobalManager.Ins.OnUndoBoosterCall.Dispatch(LevelManager.Ins.player.islandID);
+            OnChangeBoosterAmount(BoosterType.Undo, -1);
+            // TEMPORARY
+            if (!_pushHint.IsStartHint)
             {
-                BoosterConfig boosterConfig = DataManager.Ins.ConfigData.boosterConfigList[(int)BoosterType.Undo];
-                boosterConfig.UIResourceConfig = DataManager.Ins.GetBoosterUIResourceConfig(boosterConfig.Type);
-                UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(boosterConfig);
+                if (_pushHint.IsPlayerMakeHintWrong) _pushHint.OnStopHint();
             }
             else
             {
-                if (!LevelManager.Ins.OnUndo()) return;
-                // Send an undo Signal
-                EventGlobalManager.Ins.OnUndoBoosterCall.Dispatch(LevelManager.Ins.player.islandID);
-                OnChangeBoosterAmount(BoosterType.Undo, -1);
-                // TEMPORARY
-                if (!_pushHint.IsStartHint)
-                {
-                    if (_pushHint.IsPlayerMakeHintWrong) _pushHint.OnStopHint();
-                }
+                if (_pushHint.IsPlayerMakeHintWrong) _pushHint.OnContinueHint();
                 else
                 {
-                    if (_pushHint.IsPlayerMakeHintWrong) _pushHint.OnContinueHint();
-                    else
-                    {
-                        _pushHint.OnRevertHint();
-                    }
+                    _pushHint.OnRevertHint();
                 }
             }
+
+            #region Old Buy Undo
+
+            // if (DataManager.Ins.GameData.user.undoCount <= 0)
+            // {
+            //     BoosterConfig boosterConfig = DataManager.Ins.ConfigData.boosterConfigList[(int)BoosterType.Undo];
+            //     boosterConfig.UIResourceConfig = DataManager.Ins.GetBoosterUIResourceConfig(boosterConfig.Type);
+            //     UIManager.Ins.OpenUI<BoosterWatchVideoPopup>(boosterConfig);
+            // }
+            // else
+            // {
+            //     if (!LevelManager.Ins.OnUndo()) return;
+            //     // Send an undo Signal
+            //     EventGlobalManager.Ins.OnUndoBoosterCall.Dispatch(LevelManager.Ins.player.islandID);
+            //     OnChangeBoosterAmount(BoosterType.Undo, -1);
+            //     // TEMPORARY
+            //     if (!_pushHint.IsStartHint)
+            //     {
+            //         if (_pushHint.IsPlayerMakeHintWrong) _pushHint.OnStopHint();
+            //     }
+            //     else
+            //     {
+            //         if (_pushHint.IsPlayerMakeHintWrong) _pushHint.OnContinueHint();
+            //         else
+            //         {
+            //             _pushHint.OnRevertHint();
+            //         }
+            //     }
+            // }
+
+            #endregion
         }
         #endregion
 

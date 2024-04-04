@@ -3,6 +3,7 @@ using _Game.GameGrid;
 using _Game.Utilities.Timer;
 using AppsFlyerSDK;
 using GoogleMobileAds.Api;
+using NSubstitute;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,9 +31,31 @@ namespace _Game.Managers
 
         int intAdsStepCount = 0;
         public bool IsBannerOpen => Banner.IsBannerOpen;
-        public bool IsCanShowInter => !interTimer.IsStart && !cooldownTimer.IsStart
-            && !(DataManager.Ins.GameData.user.normalLevelIndex < DataManager.Ins.ConfigData.startInterAdsLevel)
-            && !(DebugManager.Ins && !DebugManager.Ins.IsShowAds);
+        public bool IsCanShowInter
+        {
+            get
+            {
+                if (cooldownTimer.IsStart || (DebugManager.Ins && !DebugManager.Ins.IsShowAds))
+                {
+                    return false;
+                }
+                switch (LevelManager.Ins.CurrentLevel.LevelType)
+                {
+                    case Data.LevelType.Normal:
+                        int levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
+                        if (levelIndex < DataManager.Ins.ConfigData.startInterAdsLevel || interTimer.IsStart)
+                        {
+                            return false;
+                        }
+                        return true;
+                    case Data.LevelType.Secret:
+                        return true;
+                    case Data.LevelType.DailyChallenge:
+                        return true;
+                }
+                return false;
+            }
+        }
 
         protected void Awake()
         {
@@ -48,9 +71,11 @@ namespace _Game.Managers
                 Interstitial.Load();
             };
             //GameManager.Ins.RegisterListenerEvent(EventID.OnInterAdsStepCount, OnInterAdsStepCount);
-            GameManager.Ins.RegisterListenerEvent(EventID.OnCheckShowInterAds, CheckShowInterAds);
-            interTimer.Start((float)DataManager.Ins.ConfigData.interAdsCappingTime);
+            GameManager.Ins.RegisterListenerEvent(EventID.OnCheckShowInterAds, CheckShowInterAds);           
             MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent += OnRewardedAdRevenuePaidEvent;
+
+            interTimer.Start((float)DataManager.Ins.ConfigData.interAdsCooldownTime);
+            cooldownTimer.Start((float)DataManager.Ins.ConfigData.interAdsCooldownTime);
         }
 
         public void ShowBannerAds(BannerAds.TYPE type)
@@ -84,35 +109,22 @@ namespace _Game.Managers
 
         private void CheckShowInterAds(object callBack = null)
         {
-            if (cooldownTimer.IsStart || (DebugManager.Ins && !DebugManager.Ins.IsShowAds))
+            interCallBack = (Action)callBack;
+            if (!IsCanShowInter)
             {
                 interCallBack?.Invoke();
                 interCallBack = null;
                 return;
             }
-
-            switch (LevelManager.Ins.CurrentLevel.LevelType)
+            else
             {
-                case Data.LevelType.Normal:
-                    int levelIndex = DataManager.Ins.GameData.user.normalLevelIndex;
-                    interCallBack = (Action)callBack;
-
-                    if (levelIndex < DataManager.Ins.ConfigData.startInterAdsLevel || interTimer.IsStart)
-                    {
-                        interCallBack?.Invoke();
-                        interCallBack = null;
-                        return;
-                    }
-
-                    interTimer.Start((float)DataManager.Ins.ConfigData.interAdsCappingTime);
-                    ShowInterAdsWithSplashScreen();
-                    break;
-                case Data.LevelType.Secret:
-                    ShowInterAdsWithSplashScreen();
-                    break;
-                case Data.LevelType.DailyChallenge:
-                    ShowInterAdsWithSplashScreen();
-                    break;
+                switch (LevelManager.Ins.CurrentLevel.LevelType)
+                {
+                    case Data.LevelType.Normal:
+                        interTimer.Start((float)DataManager.Ins.ConfigData.interAdsCappingTime);
+                        break;
+                }
+                ShowInterAdsWithSplashScreen();
             }
             AnalysticManager.Ins.AppsFlyerTrackEvent("af_inters_logicgame");
         }
