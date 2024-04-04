@@ -32,7 +32,9 @@ namespace _Game.UIs.Screen
         [SerializeField]
         private RewardItem _rewardItemPrefab;
         [SerializeField]
-        private Button _continueButton;
+        private HButton _claimX2Button;
+        [SerializeField]
+        private HButton _continueButton;
 
         private Action _onContinueClick;
         private List<RewardItem> _rewardItemList = new List<RewardItem>();
@@ -41,6 +43,11 @@ namespace _Game.UIs.Screen
 
         private void Awake()
         {
+            _claimX2Button.onClick.AddListener(() =>
+            {
+                UIManager.Ins.OpenUI<NotificationPopup>(Constants.FEATURE_COMING_SOON);
+            });
+            
             // GameManager.Ins.RegisterListenerEvent(EventID.OnChangeLayoutForBanner, ChangeLayoutForBanner);
             // ChangeLayoutForBanner(AdsManager.Ins.IsBannerOpen);
         }

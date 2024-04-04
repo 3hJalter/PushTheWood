@@ -48,7 +48,7 @@ namespace _Game.UIs.Screen
             DebugManager.Ins?.OpenDebugCanvas(UI_POSITION.MAIN_MENU);
             if (DataManager.Ins.CurrentUIPlayerSkinIndex != DataManager.Ins.CurrentPlayerSkinIndex)
             {
-                Debug.Log(DataManager.Ins.CurrentUIPlayerSkinIndex);
+                // Debug.Log(DataManager.Ins.CurrentUIPlayerSkinIndex);
                 LevelManager.Ins.player.ChangeSkin(DataManager.Ins.CurrentUIPlayerSkinIndex);
             }
             GameManager.Ins.ChangeState(GameState.MainMenu);
