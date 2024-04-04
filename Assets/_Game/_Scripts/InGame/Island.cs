@@ -87,7 +87,7 @@ namespace _Game._Scripts.InGame
 
         public void ClearIsland(bool clearIslandSet = false)
         {
-            if (clearIslandSet) _thisLevel.OnResetIslandSet.Clear();
+            if (clearIslandSet) _thisLevel.ResetIslandSet.Clear();
             HashSet<int> islandIDSet = new();
             for (int i = 0; i < GridCells.Count; i++)
             {
@@ -104,7 +104,7 @@ namespace _Game._Scripts.InGame
             _gridUnits.Clear();
 
             if (islandIDSet.Count <= 0) return;
-            foreach (int id in islandIDSet.Where(id => _thisLevel.OnResetIslandSet.Add(id)))
+            foreach (int id in islandIDSet.Where(id => _thisLevel.ResetIslandSet.Add(id)))
             {
                 _thisLevel.Islands[id].ResetIsland(false);
             }

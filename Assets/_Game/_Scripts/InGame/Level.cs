@@ -13,7 +13,6 @@ using DG.Tweening;
 using GameGridEnum;
 using MapEnum;
 using UnityEngine;
-using static UnityEngine.Rendering.VolumeComponent;
 using Object = UnityEngine.Object;
 
 namespace _Game._Scripts.InGame
@@ -106,7 +105,7 @@ namespace _Game._Scripts.InGame
         public Dictionary<int, Island> Islands { get; } = new();
 
         // For handling when reset Island
-        public HashSet<int> OnResetIslandSet { get; } = new();
+        public HashSet<int> ResetIslandSet { get; } = new();
 
         // Some other data
         public GameGridCell FirstPlayerInitCell { get; private set; }
@@ -118,14 +117,12 @@ namespace _Game._Scripts.InGame
 
         public int Index { get; }
         public Mesh CombineMesh { get; private set; }
-        public readonly Mesh[] SurfaceCombineMesh = new Mesh[3] {null, null, null };
+        public readonly Mesh[] SurfaceCombineMesh = new Mesh[] {null, null, null };
 
         public bool IsInit { get; private set; }
 
         private GridSurface[,] GridSurfaceMap { get; set; }
         private bool[,] HasUnitInMap { get; set; }
-
-        public List<Vector3> HintLinePosList { get; } = new();
 
         public List<LevelUnitData> UnitDataList { get; } = new(); // Not include ICharacter
         public List<LevelUnitData> CharacterDataList { get; } = new(); // Include ICharacter, but not include Player
@@ -283,8 +280,6 @@ namespace _Game._Scripts.InGame
             CharacterDataList.Clear();
             // Clear all _shadowUnitList data
             ShadowUnitList.Clear();
-            // Clear all _hintLinePosList data
-            HintLinePosList.Clear();
             IsInit = false;
         }
 
@@ -385,10 +380,10 @@ namespace _Game._Scripts.InGame
         {
             List<MeshFilter> groundFilters = null;
             List<MeshFilter>[] surfaceFilters = null;
-            if (CombineMesh == null)
+            if (CombineMesh is null)
             {
                 groundFilters = new List<MeshFilter>();
-                surfaceFilters = new List<MeshFilter>[3] { new List<MeshFilter>(), new List<MeshFilter>(), new List<MeshFilter>() };            
+                surfaceFilters = new List<MeshFilter>[] { new(), new(), new() };            
             }
             // Loop through all sfD (surface data) in _rawLevelData
             for (int i = 0; i < _rawLevelData.sfD.Length; i++)
@@ -412,21 +407,19 @@ namespace _Game._Scripts.InGame
                     (Direction)surfaceData.d, (MaterialEnum)surfaceData.m, (ThemeEnum)_rawLevelData.t,
                     HasUnitInMap[gridCell.X, gridCell.Y]);
 
-                if (CombineMesh == null && surfaceClone is GroundSurface)
+                if (CombineMesh is null && surfaceClone is GroundSurface clone)
                 {
-                    GroundSurface groundSurface = null;
-                    groundSurface = (GroundSurface)surfaceClone;
-                    groundFilters?.AddRange(groundSurface.CombineMeshs(false));
-                    surfaceFilters[(int)groundSurface.groundMaterialEnum]?.Add(groundSurface.GroundMeshFilter);
-                    groundSurface.GroundMeshFilter.gameObject.SetActive(false);
+                    groundFilters?.AddRange(clone.CombineMeshs(false));
+                    surfaceFilters?[(int)clone.groundMaterialEnum]?.Add(clone.GroundMeshFilter);
+                    clone.GroundMeshFilter.gameObject.SetActive(false);
                 }
             }
-            if (CombineMesh == null)
+            if (CombineMesh is null)
             {
                 CombineMesh = Optimize.CombineMeshes(groundFilters);
                 for(int i = 0; i < SurfaceCombineMesh.Length; i++)
                 {
-                    SurfaceCombineMesh[i] = Optimize.CombineMeshes(surfaceFilters[i]);
+                    SurfaceCombineMesh[i] = Optimize.CombineMeshes(surfaceFilters?[i]);
                 }
             }
         }
@@ -553,17 +546,6 @@ namespace _Game._Scripts.InGame
                 unit.ChangeReceiveShadow(false);
                 ShadowUnitList.Add(unit);
                 unit.gameObject.SetActive(false);
-            }
-        }
-
-        private void OnSetHintLine()
-        {
-            // Loop through all htD (hint trail data) in _rawLevelData
-            for (int i = 0; i < _rawLevelData.htD.Length; i++)
-            {
-                RawLevelData.HintTrailData hintTrailData = _rawLevelData.htD[i];
-                HintLinePosList.Add(new Vector3(hintTrailData.p.x, Constants.DEFAULT_HINT_TRAIL_HEIGHT,
-                    hintTrailData.p.y));
             }
         }
 

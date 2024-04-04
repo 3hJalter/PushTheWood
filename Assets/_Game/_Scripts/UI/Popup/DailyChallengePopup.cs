@@ -172,7 +172,7 @@ namespace _Game.UIs.Popup
             };
         }
         
-        private void OnHandleCurrentButton()
+        private void OnHandleCurrentButton() 
         {
             // hide all interact btn
             notYetBtn.SetActive(false);
