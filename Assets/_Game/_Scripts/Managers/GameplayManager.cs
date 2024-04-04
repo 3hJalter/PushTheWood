@@ -171,10 +171,10 @@ namespace _Game.Managers
                     UpdateBoosterCount(ref DataManager.Ins.GameData.user.pushHintCount, screen.pushHintButton,
                         amount);
                     break;
-                // case BoosterType.ResetIsland:
-                //     UpdateBoosterCount(ref DataManager.Ins.GameData.user.resetIslandCount, screen.resetIslandButton,
-                //         amount);
-                //     break;
+                    // case BoosterType.ResetIsland:
+                    //     UpdateBoosterCount(ref DataManager.Ins.GameData.user.resetIslandCount, screen.resetIslandButton,
+                    //         amount);
+                    //     break;
             }
 
             #region ANALYSTIC
@@ -201,7 +201,7 @@ namespace _Game.Managers
             isBoughtGrowTreeInIsland.Clear();
             isCanGrowTreeInIsland.Clear();
         }
-        
+
         public void OnPauseGame()
         {
             timer.Stop();
@@ -309,16 +309,8 @@ namespace _Game.Managers
             // If hard level, show a notification -> If it None -> not show
 
             #region BANNER
-            LevelType type = LevelManager.Ins.CurrentLevel.LevelType;
-            if ((type == LevelType.Normal && TutorialManager.Ins.TutorialList.ContainsKey(DataManager.Ins.GameData.user.normalLevelIndex)) 
-                ||(type == LevelType.DailyChallenge && !DataManager.Ins.IsOpenInGameDailyChallengeTut()))
-            {
-                AdsManager.Ins.ShowBannerAds(BannerAds.TYPE.MAX);
-            }
-            else
-            {
-                AdsManager.Ins.ShowBannerAds(BannerAds.TYPE.ADSMOB);
-            }
+            AdsManager.Ins.ShowBannerAds(BannerAds.TYPE.ADSMOB);
+
             // if(AdsManager.Ins.IsBannerOpen)
             //     GameManager.Ins.PostEvent(EventID.OnChangeLayoutForBanner, true);
             #endregion
@@ -420,7 +412,7 @@ namespace _Game.Managers
             }
             #endregion
         }
-        
+
         private void CountTime()
         {
             if (time < 0) return;
