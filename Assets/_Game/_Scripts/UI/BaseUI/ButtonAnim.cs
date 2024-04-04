@@ -74,6 +74,9 @@ public class ButtonAnim : HMonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (!_hBtn.interactable)
+            return;
+        
         AudioManager.Ins.PlaySfx(btnSound);
     }
 
