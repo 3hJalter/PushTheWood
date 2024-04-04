@@ -51,6 +51,8 @@ namespace _Game.GameGrid
         private int secretLevelIndex;
         [SerializeField]
         MeshFilter groundCombineMeshFilter;
+        [SerializeField]
+        MeshFilter[] surfaceCombineMeshFilters;
         // TEMPORARY
         public int dailyLevelClickedDay;
         
@@ -181,6 +183,10 @@ namespace _Game.GameGrid
             IsConstructingLevel = true;
             _currentLevel = new Level(type, index);
             groundCombineMeshFilter.mesh = _currentLevel.CombineMesh;
+            for(int i = 0; i < surfaceCombineMeshFilters.Length; i++)
+            {
+                surfaceCombineMeshFilters[i].mesh = _currentLevel.SurfaceCombineMesh[i];
+            }
             if (_currentLevel.Theme != _currentTheme)
             {
                 _currentTheme = _currentLevel.Theme;

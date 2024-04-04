@@ -13,6 +13,7 @@ namespace _Game.GameGrid.GridSurface
         private MeshRenderer grassRenderer;
         [SerializeField]
         private MeshRenderer groundMeshRenderer;
+        private MeshFilter groundMeshFilter;
         [SerializeField]
         private List<MeshFilter> combineMeshs;
         [SerializeField]
@@ -22,8 +23,8 @@ namespace _Game.GameGrid.GridSurface
 
         public MaterialEnum groundMaterialEnum = MaterialEnum.None;
 
-
         private List<Flower> _flowerList = new List<Flower>();
+        public MeshFilter GroundMeshFilter => groundMeshFilter;
 
         public override void OnInit(int levelIndex, Vector2Int gridCellPos, Vector2Int gridSize,
             Direction rotateDirection = Direction.Forward, MaterialEnum materialEnum = MaterialEnum.None,
@@ -32,6 +33,7 @@ namespace _Game.GameGrid.GridSurface
             transform.localRotation = Quaternion.Euler(0, BuildingUnitData.GetRotationAngle(rotateDirection), 0);
             // Change material in mesh renderer
             if (groundMeshRenderer is null) return;
+            groundMeshFilter = groundMeshRenderer.GetComponent<MeshFilter>();
             groundMaterialEnum = materialEnum;
             groundMeshRenderer.material = DataManager.Ins.GetSurfaceMaterial(materialEnum);
             if (groundMaterialEnum is MaterialEnum.None || grassRenderer is null) return;

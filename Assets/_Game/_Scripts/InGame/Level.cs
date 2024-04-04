@@ -118,6 +118,7 @@ namespace _Game._Scripts.InGame
 
         public int Index { get; }
         public Mesh CombineMesh { get; private set; }
+        public readonly Mesh[] SurfaceCombineMesh = new Mesh[3] {null, null, null };
 
         public bool IsInit { get; private set; }
 
@@ -382,9 +383,13 @@ namespace _Game._Scripts.InGame
 
         private void SpawnGridSurfaceToGrid()
         {
-            List<MeshFilter> meshFilters = null;
+            List<MeshFilter> groundFilters = null;
+            List<MeshFilter>[] surfaceFilters = null;
             if (CombineMesh == null)
-                meshFilters = new List<MeshFilter>();
+            {
+                groundFilters = new List<MeshFilter>();
+                surfaceFilters = new List<MeshFilter>[3] { new List<MeshFilter>(), new List<MeshFilter>(), new List<MeshFilter>() };            
+            }
             // Loop through all sfD (surface data) in _rawLevelData
             for (int i = 0; i < _rawLevelData.sfD.Length; i++)
             {
@@ -398,14 +403,7 @@ namespace _Game._Scripts.InGame
 
                 GridSurface surfaceClone = SimplePool.Spawn<GridSurface>(gridSurface,
                     new Vector3(gridCell.WorldX, 0, gridCell.WorldY), Quaternion.identity);
-                // Set surface to grid cell
-                if(surfaceClone is GroundSurface)
-                {
-                    GroundSurface groundSurface = null;
-                    groundSurface = (GroundSurface)surfaceClone;
-                    meshFilters?.AddRange(groundSurface.CombineMeshs(false));
-                }
-
+                // Set surface to grid cell               
                 gridCell.SetSurface(surfaceClone);
                 // Set surface to GridSurfaceMap
                 GridSurfaceMap[surfaceData.p.x, surfaceData.p.y] = surfaceClone;
@@ -413,9 +411,24 @@ namespace _Game._Scripts.InGame
                 surfaceClone.OnInit(Index, gridCell.GetCellPosition(), new Vector2Int(GridSizeX, gridSizeY),
                     (Direction)surfaceData.d, (MaterialEnum)surfaceData.m, (ThemeEnum)_rawLevelData.t,
                     HasUnitInMap[gridCell.X, gridCell.Y]);
+
+                if (CombineMesh == null && surfaceClone is GroundSurface)
+                {
+                    GroundSurface groundSurface = null;
+                    groundSurface = (GroundSurface)surfaceClone;
+                    groundFilters?.AddRange(groundSurface.CombineMeshs(false));
+                    surfaceFilters[(int)groundSurface.groundMaterialEnum]?.Add(groundSurface.GroundMeshFilter);
+                    groundSurface.GroundMeshFilter.gameObject.SetActive(false);
+                }
             }
             if (CombineMesh == null)
-                CombineMesh = Optimize.CombineMeshes(meshFilters);
+            {
+                CombineMesh = Optimize.CombineMeshes(groundFilters);
+                for(int i = 0; i < SurfaceCombineMesh.Length; i++)
+                {
+                    SurfaceCombineMesh[i] = Optimize.CombineMeshes(surfaceFilters[i]);
+                }
+            }
         }
 
         private void AddIslandIdToSurface()
