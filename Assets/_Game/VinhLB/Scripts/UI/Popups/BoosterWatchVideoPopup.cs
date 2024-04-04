@@ -45,7 +45,7 @@ namespace VinhLB
             }
             GameManager.Ins.ChangeState(GameState.Pause);
             
-            _buyButton.gameObject.SetActive(GameManager.Ins.AdTickets >= _boosterConfig.TicketPerBuyRatio.ticketNeed);
+            //_buyButton.gameObject.SetActive(GameManager.Ins.AdTickets >= _boosterConfig.TicketPerBuyRatio.ticketNeed);
         }
 
         public override void Open(object param = null)
@@ -68,8 +68,8 @@ namespace VinhLB
             // Change the _boosterIcon to boosterConfig.icon & _boosterText to boosterConfig.name
             _boosterIcon.sprite = _boosterConfig.MainIcon;
             _boosterText.text = _boosterConfig.Name;
-            _boosterAmountText.text = $"x{_boosterConfig.TicketPerBuyRatio.itemsPerBuy}";
-            _currencyAmountText.text = _boosterConfig.TicketPerBuyRatio.ticketNeed.ToString(("#,#"));
+            _boosterAmountText.text = $"x{_boosterConfig.GoldPerBuyRatio.itemsPerBuy}";
+            _currencyAmountText.text = _boosterConfig.GoldPerBuyRatio.goldNeed.ToString(("#,#"));
             _videoAmountText.text = "CLAIM";
 
             //switch (_boosterConfig.Type)
@@ -85,21 +85,21 @@ namespace VinhLB
         
         public void OnClickBuyButton()
         {
-            if (GameManager.Ins.TrySpendAdTickets(_boosterConfig.TicketPerBuyRatio.ticketNeed))
+            if (GameManager.Ins.TrySpendGold(_boosterConfig.GoldPerBuyRatio.goldNeed))
             {
-                EventGlobalManager.Ins.OnChangeBoosterAmount.Dispatch(_boosterConfig.Type, _boosterConfig.TicketPerBuyRatio.itemsPerBuy);
+                EventGlobalManager.Ins.OnChangeBoosterAmount.Dispatch(_boosterConfig.Type, _boosterConfig.GoldPerBuyRatio.itemsPerBuy);
                 Close();
             }
             else
             {
-                UIManager.Ins.OpenUI<NotificationPopup>("You do not have enough Ticket Ads!");
+                UIManager.Ins.OpenUI<NotificationPopup>("You do not have enough Gold!");
             }
         }
 
         public void OnClickClaimButton()
         {
             AdsManager.Ins.RewardedAds.Show(null, null, new List<BoosterType> { _boosterConfig.Type },
-                new List<int> { _boosterConfig.TicketPerBuyRatio.itemsPerBuy});
+                new List<int> { _boosterConfig.GoldPerBuyRatio.itemsPerBuy});
             Close();          
         }
     }

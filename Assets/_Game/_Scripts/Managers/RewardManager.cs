@@ -89,7 +89,7 @@ namespace _Game.Managers
                 case CurrencyType.Gold:
                     rewards[0].Amount = UnityEngine.Random.Range(100, 201);
                     break;
-                case CurrencyType.AdTicket:
+                case CurrencyType.Heart:
                     rewards[0].Amount = DataManager.Ins.ConfigData.LCQuantitys[index];
                     break;
             }

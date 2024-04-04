@@ -151,7 +151,7 @@ namespace _Game.Managers
 
         public bool IsAdsHintEnough()
         {
-            return GameData.user.hintAdsCount >= ConfigData.GetBoosterConfig(BoosterType.PushHint).TicketPerBuyRatio.ticketNeed;
+            return GameData.user.hintAdsCount >= ConfigData.GetBoosterConfig(BoosterType.PushHint).GoldPerBuyRatio.goldNeed;
         }
 
         public void CheckingRentPlayerSkinCount()

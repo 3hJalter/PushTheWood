@@ -48,7 +48,7 @@ namespace _Game.Data
             
             // Income Progress Data
             public int gold;
-            public int adTickets;
+            public int heart;
             public int rewardChestKeys;
             public int levelChestProgress;
             public int currentRewardChestIndex = 0;

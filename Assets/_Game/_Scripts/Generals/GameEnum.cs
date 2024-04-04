@@ -191,7 +191,7 @@ namespace _Game.Resource
     {
         None = -1,
         Gold = 0,
-        AdTicket = 1,
+        Heart = 1,
         SecretMapPiece = 2,
         RandomBooster = 3,
         RewardKey = 4,

@@ -187,7 +187,7 @@ namespace _Game.UIs.Popup
                     break;
                 // if current button is un clear, show pay to play btn
                 case DailyChallengeButtonState.UnClear:
-                    if (DataManager.Ins.GameData.user.adTickets > 0)
+                    if (DataManager.Ins.GameData.user.heart > 0)
                     {
                         payToPlayBtn.gameObject.SetActive(true);
                     }
@@ -209,7 +209,7 @@ namespace _Game.UIs.Popup
                     }
                     else
                     {
-                        if (DataManager.Ins.GameData.user.adTickets > 0)
+                        if (DataManager.Ins.GameData.user.heart > 0)
                         {
                             payToPlayBtn.gameObject.SetActive(true);
                         }

@@ -112,7 +112,7 @@ namespace _Game.Managers
 
             #endregion
 
-            SmoothAdTickets = AdTickets;
+            SmoothHeart = AdTickets;
             SmoothGold = Gold;
             SmoothRewardKeys = CanClaimRewardChest ? DataManager.Ins.ConfigData.requireRewardKey : RewardKeys;
             SmoothLevelProgress = CanClaimLevelChest ? DataManager.Ins.ConfigData.requireLevelProgress : LevelProgress;
@@ -150,11 +150,11 @@ namespace _Game.Managers
         public int SecretLevelUnlock => _gameData.user.secretLevelUnlock;
         public int SecretMapPieces => _gameData.user.secretMapPieces;
         public int Gold => _gameData.user.gold;
-        public int AdTickets => _gameData.user.adTickets;
+        public int AdTickets => _gameData.user.heart;
         public int RewardKeys => _gameData.user.rewardChestKeys;
         public int LevelProgress => _gameData.user.levelChestProgress;
         public float SmoothGold { get; set; }
-        public float SmoothAdTickets { get; set; }
+        public float SmoothHeart { get; set; }
         public float SmoothRewardKeys { get; set; }
         public float SmoothLevelProgress { get; set; }
         public bool CanClaimRewardChest => _gameData.user.currentRewardChestIndex < _gameData.user.rewardChestUnlock;
@@ -187,9 +187,9 @@ namespace _Game.Managers
             TryModifyGold(value, source);
         }
 
-        public void GainAdTickets(int value, object source = null)
+        public void GainHeart(int value, object source = null)
         {
-            TryModifyAdTickets(value, source);
+            TryModifyHeart(value, source);
         }
 
         public void GainRewardKeys(int amount, object source = null)
@@ -247,13 +247,13 @@ namespace _Game.Managers
 
         public bool TrySpendAdTickets(int amount, object source = null)
         {
-            return TryModifyAdTickets(-amount, source);
+            return TryModifyHeart(-amount, source);
         }
 
         public void ResetUserData()
         {
             TrySpendGold(_gameData.user.gold);
-            TrySpendAdTickets(_gameData.user.adTickets);
+            TrySpendAdTickets(_gameData.user.heart);
 
             _gameData.user.secretLevelUnlock = 0;
         }
@@ -287,23 +287,30 @@ namespace _Game.Managers
             return true;
         }
 
-        private bool TryModifyAdTickets(int amount, object source)
+        private bool TryModifyHeart(int amount, object source)
         {
-            if (_gameData.user.adTickets + amount < 0) return false;
+            int newValue = _gameData.user.heart + amount;
+
+            if (newValue < 0) return false;
+
+            if(newValue > DataManager.Ins.ConfigData.maxHeart)
+            {
+                newValue = DataManager.Ins.ConfigData.maxHeart;
+            }
 
             ResourceChangeData data = new()
             {
                 ChangedAmount = amount,
-                OldValue = _gameData.user.adTickets,
-                NewValue = _gameData.user.adTickets + amount,
+                OldValue = _gameData.user.heart,
+                NewValue = newValue,
                 Source = source
             };
 
-            _gameData.user.adTickets += amount;
-            PostEvent(EventID.OnChangeAdTickets, data);
+            _gameData.user.heart = newValue;
+            PostEvent(EventID.OnChangeHeart, data);
             Database.SaveData(_gameData);
 
-            if (amount < 0) SmoothAdTickets = _gameData.user.adTickets;
+            if (amount < 0) SmoothHeart = _gameData.user.heart;
 
             return true;
         }

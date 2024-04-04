@@ -246,6 +246,7 @@ MonoBehaviour:
     - Name: maxRentCount
       Entry: 3
       Data: 3
+  maxHeart: 5
   timePerNormalLevel:
   - levelNormalType: 0
     time: 90
@@ -343,9 +344,9 @@ MonoBehaviour:
   - type: 0
     unlockAtLevel: 3
     goldPerBuyTen: 10
-    ticketPerBuyRatio:
-      ticketNeed: 1
-      itemsPerBuy: 3
+    goldPerBuyRatio:
+      goldNeed: 3
+      itemsPerBuy: 300
     UIResourceConfig:
       Name: Undo
       MainIconSprite: {fileID: 0}
@@ -353,8 +354,8 @@ MonoBehaviour:
   - type: 1
     unlockAtLevel: 7
     goldPerBuyTen: 10
-    ticketPerBuyRatio:
-      ticketNeed: 1
+    goldPerBuyRatio:
+      goldNeed: 500
       itemsPerBuy: 1
     UIResourceConfig:
       Name: Push Hint
@@ -363,9 +364,9 @@ MonoBehaviour:
   - type: 2
     unlockAtLevel: 6
     goldPerBuyTen: 10
-    ticketPerBuyRatio:
-      ticketNeed: 1
-      itemsPerBuy: 1
+    goldPerBuyRatio:
+      goldNeed: 1
+      itemsPerBuy: 300
     UIResourceConfig:
       Name: Grow Tree
       MainIconSprite: {fileID: 0}
@@ -373,12 +374,13 @@ MonoBehaviour:
   - type: 3
     unlockAtLevel: 3
     goldPerBuyTen: 10
-    ticketPerBuyRatio:
-      ticketNeed: 1
-      itemsPerBuy: 1
+    goldPerBuyRatio:
+      goldNeed: 0
+      itemsPerBuy: 0
     UIResourceConfig:
       Name: Reset Island
       MainIconSprite: {fileID: 0}
       SubIconSprite: {fileID: 0}
   bannerHeight: 150
   reloadBannerTime: 120
+  interAdsCappingTime: 150

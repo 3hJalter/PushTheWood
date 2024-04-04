@@ -26,6 +26,8 @@ namespace _Game.Data
         #region In Game
         [FoldoutGroup("In Game")]
         // Time per level
+        [FoldoutGroup("In Game")]
+        public int maxHeart = 5;
         [FoldoutGroup("In Game/Time Per Level/Normal")]
         [InfoBox("Do not change the order of the list: Easy -> Medium -> Hard")]
         public List<TimePerNormalLevel> timePerNormalLevel = new()
@@ -71,8 +73,8 @@ namespace _Game.Data
 
         #region Daily Challenge Reward
         [FoldoutGroup("Daily Challenge Reward")]
-        // Note: Add a theme resource when have, and make player take it the first time player clear full first 25 day
-        public List<DailyChallengeRewardMilestone> dailyChallengeRewardMilestones = new() { };
+        // Note: Add a theme resource when have, and make player take it the first time player clear full 7 days
+        public List<DailyChallengeRewardMilestone> dailyChallengeRewardMilestones = new();
         #endregion
 
         #region Booster Purchase
@@ -97,6 +99,8 @@ namespace _Game.Data
         public int bannerHeight = 100;
         [FoldoutGroup("Ads")]
         public int reloadBannerTime = 120;
+        [FoldoutGroup("Ads")]
+        public int interAdsCappingTime = 150;
         #endregion
 
         #region Collection
@@ -124,6 +128,32 @@ namespace _Game.Data
     }
 
     [Serializable]
+    public struct DailyChallengeReward
+    {
+        public CurrencyType currencyType;
+        public int quantity;
+
+        public void GetReward(object param)
+        {
+            switch (currencyType)
+            {
+                case CurrencyType.Gold:
+                    GameManager.Ins.GainGold(quantity, param);
+                    break;
+                case CurrencyType.Heart:
+                    GameManager.Ins.GainHeart(quantity, param);
+                    break;
+                case CurrencyType.RandomBooster:
+                    break;
+                case CurrencyType.None:
+                case CurrencyType.SecretMapPiece:
+                default:
+                    break;
+            }
+        }
+    }
+
+    [Serializable]
     public struct BoosterConfig
     {
         [SerializeField]
@@ -133,7 +163,7 @@ namespace _Game.Data
         [SerializeField]
         private int goldPerBuyTen;
         [SerializeField]
-        private TicketPerBuyRatio ticketPerBuyRatio;
+        private GoldPerBuyRatio goldPerBuyRatio;
 
         [HideInInspector]
         public UIResourceConfig UIResourceConfig;
@@ -143,7 +173,7 @@ namespace _Game.Data
         public string Name => UIResourceConfig.Name;
         public Sprite MainIcon => UIResourceConfig.MainIconSprite;
         public int GoldPerBuyTen => goldPerBuyTen;
-        public TicketPerBuyRatio TicketPerBuyRatio => ticketPerBuyRatio;
+        public GoldPerBuyRatio GoldPerBuyRatio => goldPerBuyRatio;
         // Do with goldPerBuyMore
     }
 
@@ -155,15 +185,15 @@ namespace _Game.Data
     }
 
     [Serializable]
-    public struct TicketPerBuyRatio
+    public struct GoldPerBuyRatio
     {
-        public TicketPerBuyRatio(int first, int second)
+        public GoldPerBuyRatio(int first, int second)
         {
-            ticketNeed = first;
+            goldNeed = first;
             itemsPerBuy = second;
         }
 
-        public int ticketNeed;
+        public int goldNeed;
         public int itemsPerBuy;
     }
 }

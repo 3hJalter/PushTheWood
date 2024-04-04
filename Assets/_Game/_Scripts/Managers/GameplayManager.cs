@@ -11,6 +11,7 @@ using _Game.Utilities.Timer;
 using AudioEnum;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.Playables;
 using VinhLB;
 
 namespace _Game.Managers
@@ -308,7 +309,9 @@ namespace _Game.Managers
             // If hard level, show a notification -> If it None -> not show
 
             #region BANNER
-            if (TutorialManager.Ins.TutorialList.ContainsKey(DataManager.Ins.GameData.user.normalLevelIndex))
+            LevelType type = LevelManager.Ins.CurrentLevel.LevelType;
+            if ((type == LevelType.Normal && TutorialManager.Ins.TutorialList.ContainsKey(DataManager.Ins.GameData.user.normalLevelIndex)) 
+                ||(type == LevelType.DailyChallenge && !DataManager.Ins.IsOpenInGameDailyChallengeTut()))
             {
                 AdsManager.Ins.ShowBannerAds(BannerAds.TYPE.MAX);
             }
