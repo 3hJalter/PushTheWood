@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using _Game.Data;
 using _Game.DesignPattern;
 using _Game.Managers;
 using _Game.Resource;
 using _Game.UIs.Popup;
+using _Game.Utilities;
 using UnityEngine;
 using VinhLB;
 
@@ -20,6 +22,17 @@ namespace _Game._Scripts.UIs.Component
         private DailyChallengePopup _popup;
         private DailyChallengeRewardMilestone _milestone;
         private DcRewardState _state;
+
+        
+        [SerializeField] private RewardItem rewardItemPrefab;
+        [SerializeField] private Transform rewardItemContainer;
+        
+        private MiniPool<RewardItem> rewardItemPool;
+
+        private RectTransform _containerRect;
+        private float _initializeContainerWidth;
+
+        private const float ITEM_WIDTH = 30f;
         
         public DcRewardState State
         {
@@ -33,7 +46,12 @@ namespace _Game._Scripts.UIs.Component
 
         private void Awake()
         {
+            _containerRect = rewardItemContainer.GetComponent<RectTransform>();
+            _initializeContainerWidth = _containerRect.sizeDelta.x;
             hButton.onClick.AddListener(OnClick);
+            rewardItemContainer.gameObject.SetActive(false);
+            rewardItemPool = new MiniPool<RewardItem>();
+            rewardItemPool.OnInit(rewardItemPrefab, 3, rewardItemContainer);
         }
         
         private void OnDestroy()
@@ -57,18 +75,40 @@ namespace _Game._Scripts.UIs.Component
             } 
         }
 
+        public void OnRelease()
+        {
+            rewardItemContainer.gameObject.SetActive(false);
+            rewardItemPool.Collect();
+        }
+        
         private void OnClick()
         {
-            if (State is not DcRewardState.Unlock) return;
-            // Claim reward
-            // TODO: Change to show claim popup to verify
-            State = DcRewardState.Claimed;
-            UIManager.Ins.OpenUI<RewardPopup>(GetReward()).OnClicked += () =>
+            if (_popup.LastClickRewardButton)
             {
-                DataManager.Ins.GameData.user.dailyChallengeRewardCollected.Add(_milestone.clearLevelNeed);
-                DataManager.Ins.Save();
-                GameManager.Ins.PostEvent(EventID.OnUpdateUI);
-            };
+                _popup.LastClickRewardButton.OnRelease();
+            }
+            if (State is DcRewardState.Lock)
+            {
+                _popup.LastClickRewardButton = this;
+                rewardItemContainer.gameObject.SetActive(true);
+                Reward[] rewards = IsCanCollectFirstReward ? _milestone.firstRewards : _milestone.rewards;
+                for (int i = 0; i < _milestone.rewards.Length; i++)
+                {
+                    rewardItemPool.Spawn().Initialize(rewards[i]);
+                }
+                // add more width for container
+                _containerRect.sizeDelta = new Vector2(_initializeContainerWidth + (_milestone.rewards.Length - 1) * ITEM_WIDTH, _containerRect.sizeDelta.y);
+            }
+            else if (State is DcRewardState.Unlock)
+            {
+                State = DcRewardState.Claimed;
+                UIManager.Ins.OpenUI<RewardPopup>(GetReward()).OnClicked += () =>
+                {
+                    DataManager.Ins.GameData.user.dailyChallengeRewardCollected.Add(_milestone.clearLevelNeed);
+                    DataManager.Ins.Save();
+                    GameManager.Ins.PostEvent(EventID.OnUpdateUI);
+                };
+            }
         }
 
         private void OnChangeState()
@@ -76,23 +116,19 @@ namespace _Game._Scripts.UIs.Component
             lockIcon.SetActive(State == DcRewardState.Lock);
             unlockIcon.SetActive(State == DcRewardState.Unlock);
             claimedIcon.SetActive(State == DcRewardState.Claimed);
-            hButton.interactable = State == DcRewardState.Unlock;
+            hButton.interactable = State is DcRewardState.Unlock or DcRewardState.Lock;
         }
+        
+        private bool IsCanCollectFirstReward => _milestone.hasFirstReward &&
+                   !DataManager.Ins.GameData.user.isCollectDailyChallengeRewardOneTime.Contains(_milestone.clearLevelNeed);
         
         private Reward[] GetReward()
         {
-            Reward[] rewards = new Reward[_milestone.rewards.Count];
-            for (int i = 0; i < _milestone.rewards.Count; i++)
-            {
-                // Convert each to Reward
-                rewards[i] = new Reward
-                {
-                    CurrencyType = _milestone.rewards[i].currencyType,
-                    Amount = _milestone.rewards[i].quantity,
-                    RewardType = RewardType.Currency
-                };
-            }
-            return rewards;
+            if (!_milestone.hasFirstReward ||
+                DataManager.Ins.GameData.user.isCollectDailyChallengeRewardOneTime.Contains(_milestone.clearLevelNeed))
+                return _milestone.rewards;
+            DataManager.Ins.GameData.user.isCollectDailyChallengeRewardOneTime.Add(_milestone.clearLevelNeed);
+            return _milestone.firstRewards;
         }
     }
 

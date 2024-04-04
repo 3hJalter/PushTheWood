@@ -256,25 +256,90 @@ MonoBehaviour:
     time: 210
   dailyChallengeRewardMilestones:
   - clearLevelNeed: 1
+    hasFirstReward: 0
+    firstRewards: []
     rewards:
-    - currencyType: 1
-      quantity: 1
-  - clearLevelNeed: 2
+    - RewardType: 0
+      BoosterType: 0
+      CurrencyType: 0
+      CharacterType: 0
+      Amount: 3
+  - clearLevelNeed: 3
+    hasFirstReward: 0
+    firstRewards: []
     rewards:
-    - currencyType: 0
-      quantity: 60
-  - clearLevelNeed: 4
-    rewards:
-    - currencyType: 1
-      quantity: 1
+    - RewardType: 1
+      BoosterType: 0
+      CurrencyType: 0
+      CharacterType: 0
+      Amount: 200
   - clearLevelNeed: 7
+    hasFirstReward: 0
+    firstRewards: []
     rewards:
-    - currencyType: 0
-      quantity: 120
-    - currencyType: 1
-      quantity: 1
-    - currencyType: 3
-      quantity: 1
+    - RewardType: 1
+      BoosterType: 0
+      CurrencyType: 0
+      CharacterType: 0
+      Amount: 500
+    - RewardType: 0
+      BoosterType: 1
+      CurrencyType: 0
+      CharacterType: 0
+      Amount: 1
+  - clearLevelNeed: 15
+    hasFirstReward: 0
+    firstRewards: []
+    rewards:
+    - RewardType: 0
+      BoosterType: 0
+      CurrencyType: 0
+      CharacterType: 0
+      Amount: 3
+    - RewardType: 0
+      BoosterType: 1
+      CurrencyType: 0
+      CharacterType: 0
+      Amount: 1
+    - RewardType: 0
+      BoosterType: 2
+      CurrencyType: 0
+      CharacterType: 0
+      Amount: 1
+  - clearLevelNeed: 25
+    hasFirstReward: 1
+    firstRewards:
+    - RewardType: 2
+      BoosterType: 0
+      CurrencyType: 0
+      CharacterType: 5
+      Amount: 1
+    - RewardType: 1
+      BoosterType: 0
+      CurrencyType: 0
+      CharacterType: 0
+      Amount: 1000
+    - RewardType: 0
+      BoosterType: 0
+      CurrencyType: 0
+      CharacterType: 0
+      Amount: 3
+    rewards:
+    - RewardType: 0
+      BoosterType: 0
+      CurrencyType: 0
+      CharacterType: 0
+      Amount: 3
+    - RewardType: 1
+      BoosterType: 0
+      CurrencyType: 0
+      CharacterType: 0
+      Amount: 1000
+    - RewardType: 0
+      BoosterType: 1
+      CurrencyType: 0
+      CharacterType: 0
+      Amount: 3
   boosterConfigList:
   - type: 0
     unlockAtLevel: 3

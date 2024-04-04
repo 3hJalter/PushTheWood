@@ -30,16 +30,16 @@ namespace VinhLB
 
             if (_nameText != null)
             {
-                _nameText.text = _reward.UIResourceConfig.Name;
+                _nameText.text = _reward.UIResourceConfig?.Name;
             }
 
             if (_reward.RewardType == RewardType.Character)
             {
-                _iconImage.sprite = _reward.UIResourceConfig.SubIconSprite;
+                _iconImage.sprite = _reward.UIResourceConfig?.SubIconSprite;
             }
             else
             {
-                _iconImage.sprite = _reward.UIResourceConfig.MainIconSprite;
+                _iconImage.sprite = _reward.UIResourceConfig?.MainIconSprite;
             }
 
             string amountText;
