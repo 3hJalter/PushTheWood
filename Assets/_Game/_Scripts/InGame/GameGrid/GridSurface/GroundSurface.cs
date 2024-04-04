@@ -24,16 +24,24 @@ namespace _Game.GameGrid.GridSurface
 
         public override void OnInit(int levelIndex, Vector2Int gridCellPos, Vector2Int gridSize,
             Direction rotateDirection = Direction.Forward, MaterialEnum materialEnum = MaterialEnum.None,
-            bool hasUnitInMap = false)
+            ThemeEnum themeEnum = ThemeEnum.Default, bool hasUnitInMap = false)
         {
             transform.localRotation = Quaternion.Euler(0, BuildingUnitData.GetRotationAngle(rotateDirection), 0);
             // Change material in mesh renderer
-            if (groundMeshRenderer == null) return;
+            if (groundMeshRenderer is null) return;
             groundMaterialEnum = materialEnum;
             groundMeshRenderer.material = DataManager.Ins.GetSurfaceMaterial(materialEnum);
-            if (groundMaterialEnum is MaterialEnum.None || grassRenderer == null) return;
-            grassRenderer.material = DataManager.Ins.GetGrassMaterial(materialEnum);
+            if (groundMaterialEnum is MaterialEnum.None || grassRenderer is null) return;
+            if (themeEnum is ThemeEnum.Winter)
+            {
+                grassRenderer.gameObject.SetActive(false);
+            }
+            else
+            {
+                grassRenderer.gameObject.SetActive(true);
+                grassRenderer.material = DataManager.Ins.GetGrassMaterial(materialEnum);
 
+            }
             // Spawn flowers if it does not has unit in map
             if (CanSpawnFlowers(levelIndex, gridCellPos, gridSize, hasUnitInMap))
             {
