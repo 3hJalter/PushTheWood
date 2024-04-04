@@ -64,7 +64,24 @@ namespace _Game.Managers
                 DataManager.Ins.SetCharacterSkinIndex(0);
             }
 
+            #region Handle modified Daily Challenge
+
+            if (_gameData.user.dailyLevelIndex.Length <= 31) // MAXIMUM number of days in month{
+            {
+                _gameData.user.dailyLevelIndex = new[]
+                {
+                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+                    13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
+                    23, 24, 25, 26, 27, 28, 29, 30, 31
+                };
+                Database.SaveData(_gameData);
+            }    
+            #endregion
+            
             #region Handle day online
+
+            _gameData.user.currentDay = DateTime.UtcNow.Day;
+            _gameData.user.daysInMonth = DateTime.DaysInMonth(DateTime.UtcNow.Year, DateTime.UtcNow.Month);
 
             // Get now day & last login day
             int day = (int)(DateTime.UtcNow.Date - _gameData.user.lastTimeLogOut.ToUniversalTime().Date)
@@ -75,7 +92,6 @@ namespace _Game.Managers
 
             if (day > 0)
             {
-                _gameData.user.currentDay = DateTime.UtcNow.Day;
                 _gameData.user.playedDay += 1;
                 _gameData.user.isFreeDailyChallengeFirstTime = true;
                 AnalysticManager.Ins.Day();
@@ -83,7 +99,6 @@ namespace _Game.Managers
 
             if (month > 0)
             {
-                _gameData.user.daysInMonth = DateTime.DaysInMonth(DateTime.UtcNow.Year, DateTime.UtcNow.Month);
                 _gameData.user.dailyLevelIndexComplete.Clear();
                 _gameData.user.dailyChallengeRewardCollected.Clear();
                 if (_gameData.user.completedOneTimeTutorial.Contains(DataManager.Ins.ConfigData
