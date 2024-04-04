@@ -92,7 +92,7 @@ namespace _Game._Scripts.UIs.Component
                 _popup.LastClickRewardButton = this;
                 rewardItemContainer.gameObject.SetActive(true);
                 Reward[] rewards = IsCanCollectFirstReward ? _milestone.firstRewards : _milestone.rewards;
-                for (int i = 0; i < _milestone.rewards.Length; i++)
+                for (int i = 0; i < rewards.Length; i++)
                 {
                     rewardItemPool.Spawn().Initialize(rewards[i]);
                 }
