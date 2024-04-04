@@ -49,7 +49,8 @@ namespace _Game.GameGrid
         [SerializeField]
         [ReadOnly]
         private int secretLevelIndex;
-
+        [SerializeField]
+        MeshFilter groundCombineMeshFilter;
         // TEMPORARY
         public int dailyLevelClickedDay;
         
@@ -179,7 +180,7 @@ namespace _Game.GameGrid
             GameplayManager.Ins.ClearBoosterPurchase();
             IsConstructingLevel = true;
             _currentLevel = new Level(type, index);
-            
+            groundCombineMeshFilter.mesh = _currentLevel.CombineMesh;
             if (_currentLevel.Theme != _currentTheme)
             {
                 _currentTheme = _currentLevel.Theme;

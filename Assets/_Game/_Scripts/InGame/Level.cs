@@ -13,6 +13,7 @@ using DG.Tweening;
 using GameGridEnum;
 using MapEnum;
 using UnityEngine;
+using static UnityEngine.Rendering.VolumeComponent;
 using Object = UnityEngine.Object;
 
 namespace _Game._Scripts.InGame
@@ -65,7 +66,7 @@ namespace _Game._Scripts.InGame
             }
             return playerSteps;
         }
-        
+
         public void ResetNonIslandUnit()
         {
             for (int i = 0; i < nonIslandUnitLis.Count; i++)
@@ -103,7 +104,7 @@ namespace _Game._Scripts.InGame
 
         // Island (Each island has some surfaces and units)
         public Dictionary<int, Island> Islands { get; } = new();
-        
+
         // For handling when reset Island
         public HashSet<int> OnResetIslandSet { get; } = new();
 
@@ -116,6 +117,7 @@ namespace _Game._Scripts.InGame
         private int GridSizeX { get; }
 
         public int Index { get; }
+        public Mesh CombineMesh { get; private set; }
 
         public bool IsInit { get; private set; }
 
@@ -126,18 +128,18 @@ namespace _Game._Scripts.InGame
 
         public List<LevelUnitData> UnitDataList { get; } = new(); // Not include ICharacter
         public List<LevelUnitData> CharacterDataList { get; } = new(); // Include ICharacter, but not include Player
-        
+
         private readonly List<LevelUnitData> nonIslandUnitLis = new();
 
         public List<GridUnit> ShadowUnitList { get; } = new();
 
         public Grid<GameGridCell, GameGridCellData> GridMap { get; private set; }
-        
-        public LevelType LevelType => (LevelType) _rawLevelData.lt;
-        
-        public ThemeEnum Theme => (ThemeEnum) _rawLevelData.t;
-        public LevelWinCondition LevelWinCondition => (LevelWinCondition) _rawLevelData.wc;
-        public LevelNormalType LevelNormalType => (LevelNormalType) _rawLevelData.lnt;
+
+        public LevelType LevelType => (LevelType)_rawLevelData.lt;
+
+        public ThemeEnum Theme => (ThemeEnum)_rawLevelData.t;
+        public LevelWinCondition LevelWinCondition => (LevelWinCondition)_rawLevelData.wc;
+        public LevelNormalType LevelNormalType => (LevelNormalType)_rawLevelData.lnt;
         #endregion
 
         #region public function
@@ -230,11 +232,11 @@ namespace _Game._Scripts.InGame
         {
             // Despawn all groundUnit
             for (int index0 = 0; index0 < GridSurfaceMap.GetLength(0); index0++)
-            for (int index1 = 0; index1 < GridSurfaceMap.GetLength(1); index1++)
-            {
-                GridSurface gridSurface = GridSurfaceMap[index0, index1];
-                if (gridSurface is not null) gridSurface.OnDespawn();
-            }
+                for (int index1 = 0; index1 < GridSurfaceMap.GetLength(1); index1++)
+                {
+                    GridSurface gridSurface = GridSurfaceMap[index0, index1];
+                    if (gridSurface is not null) gridSurface.OnDespawn();
+                }
 
             for (int i = 0; i < ShadowUnitList.Count; i++) Object.Destroy(ShadowUnitList[i].gameObject);
 
@@ -258,7 +260,7 @@ namespace _Game._Scripts.InGame
                 for (int i = 0; i < UnitDataList.Count; i++)
                 {
                     LevelUnitData data = UnitDataList[i];
-                     data.unit.OnDespawn();
+                    data.unit.OnDespawn();
                 }
                 for (int i = 0; i < CharacterDataList.Count; i++)
                 {
@@ -348,12 +350,12 @@ namespace _Game._Scripts.InGame
         {
             // set all gridSurface tp parent
             for (int index0 = 0; index0 < GridSurfaceMap.GetLength(0); index0++)
-            for (int index1 = 0; index1 < GridSurfaceMap.GetLength(1); index1++)
-            {
-                GridSurface gridSurface = GridSurfaceMap[index0, index1];
-                if (gridSurface is null) continue;
-                gridSurface.Tf.SetParent(parent);
-            }
+                for (int index1 = 0; index1 < GridSurfaceMap.GetLength(1); index1++)
+                {
+                    GridSurface gridSurface = GridSurfaceMap[index0, index1];
+                    if (gridSurface is null) continue;
+                    gridSurface.Tf.SetParent(parent);
+                }
 
             // set all gridUnit to parent
             for (int i = 0; i < UnitDataList.Count; i++)
@@ -361,7 +363,7 @@ namespace _Game._Scripts.InGame
                 LevelUnitData data = UnitDataList[i];
                 data.unit.Tf.SetParent(parent);
             }
-            
+
             // set all character to parent
             for (int i = 0; i < CharacterDataList.Count; i++)
             {
@@ -380,6 +382,9 @@ namespace _Game._Scripts.InGame
 
         private void SpawnGridSurfaceToGrid()
         {
+            List<MeshFilter> meshFilters = null;
+            if (CombineMesh == null)
+                meshFilters = new List<MeshFilter>();
             // Loop through all sfD (surface data) in _rawLevelData
             for (int i = 0; i < _rawLevelData.sfD.Length; i++)
             {
@@ -394,6 +399,13 @@ namespace _Game._Scripts.InGame
                 GridSurface surfaceClone = SimplePool.Spawn<GridSurface>(gridSurface,
                     new Vector3(gridCell.WorldX, 0, gridCell.WorldY), Quaternion.identity);
                 // Set surface to grid cell
+                if(surfaceClone is GroundSurface)
+                {
+                    GroundSurface groundSurface = null;
+                    groundSurface = (GroundSurface)surfaceClone;
+                    meshFilters?.AddRange(groundSurface.CombineMeshs(false));
+                }
+
                 gridCell.SetSurface(surfaceClone);
                 // Set surface to GridSurfaceMap
                 GridSurfaceMap[surfaceData.p.x, surfaceData.p.y] = surfaceClone;
@@ -402,19 +414,21 @@ namespace _Game._Scripts.InGame
                     (Direction)surfaceData.d, (MaterialEnum)surfaceData.m, (ThemeEnum)_rawLevelData.t,
                     HasUnitInMap[gridCell.X, gridCell.Y]);
             }
+            if (CombineMesh == null)
+                CombineMesh = Optimize.CombineMeshes(meshFilters);
         }
 
         private void AddIslandIdToSurface()
         {
             int currentIslandID = 0;
             for (int y = 0; y < GridSurfaceMap.GetLength(1); y++)
-            for (int x = 0; x < GridSurfaceMap.GetLength(0); x++)
-                if (IsGridSurfaceHadIsland(x, y, out GridSurface gridSurface))
-                {
-                    FloodFillIslandID(gridSurface, x, y, currentIslandID);
-                    Islands[currentIslandID].SetIslandPos();
-                    currentIslandID++;
-                }
+                for (int x = 0; x < GridSurfaceMap.GetLength(0); x++)
+                    if (IsGridSurfaceHadIsland(x, y, out GridSurface gridSurface))
+                    {
+                        FloodFillIslandID(gridSurface, x, y, currentIslandID);
+                        Islands[currentIslandID].SetIslandPos();
+                        currentIslandID++;
+                    }
 
             return;
 
@@ -579,7 +593,7 @@ namespace _Game._Scripts.InGame
         Enemy = 1,
         Bee = 2,
     }
-    
+
     [Serializable]
     public struct RawLevelData
     {
@@ -593,7 +607,7 @@ namespace _Game._Scripts.InGame
         public ShadowUnitData[] suD; // SHADOW UNIT DATA
         public HintTrailData[] htD; // HINT TRAIL DATA
         public PlayerStep[] pS; // PLAYER STEP
-        
+
         [Serializable]
         public struct GridSurfaceData
         {
@@ -624,7 +638,7 @@ namespace _Game._Scripts.InGame
         {
             public Vector2 p; // POSITION XZ
         }
-        
-        
+
+
     }
 }

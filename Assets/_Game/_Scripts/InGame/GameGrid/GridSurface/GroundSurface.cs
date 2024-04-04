@@ -7,18 +7,21 @@ using VinhLB;
 
 namespace _Game.GameGrid.GridSurface
 {
-    public class GroundSurface : GridSurface
+    public class GroundSurface : GridSurface, ICombineMesh
     {
         [SerializeField]
         private MeshRenderer grassRenderer;
         [SerializeField]
         private MeshRenderer groundMeshRenderer;
         [SerializeField]
+        private List<MeshFilter> combineMeshs;
+        [SerializeField]
         private Transform _flowersParentTF;
         [SerializeField]
         private Transform[] _flowerSpawnPoints;
 
         public MaterialEnum groundMaterialEnum = MaterialEnum.None;
+
 
         private List<Flower> _flowerList = new List<Flower>();
 
@@ -69,7 +72,16 @@ namespace _Game.GameGrid.GridSurface
                 }
             }
         }
-
+        public List<MeshFilter> CombineMeshs(bool isActiveMesh)
+        {
+            foreach (MeshFilter mesh in combineMeshs)
+            {
+                GameObject meshObj = mesh.gameObject;
+                if (meshObj.activeInHierarchy != isActiveMesh)
+                    meshObj.SetActive(isActiveMesh);
+            }
+            return combineMeshs;
+        }
         public override void OnDespawn()
         {
             for (int i = _flowerList.Count - 1; i >= 0; i--)
