@@ -24,10 +24,16 @@ namespace _Game.Data
             public List<int> completedOneTimeTutorial = new();
             
             // daily challenge
-            public int currentDailyChallengerDay = 1;
-            public int[] dailyLevelIndex = { 1, 2, 3, 4, 5, 6, 7 };
+            public int currentDay;
+            public int daysInMonth;
+            public int[] dailyLevelIndex = {
+                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+                13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
+                23, 24, 25, 26, 27, 28, 29, 30, 31
+            };
             public List<int> dailyLevelIndexComplete = new();
             public List<int> dailyChallengeRewardCollected = new(); 
+            public List<int> isCollectDailyChallengeRewardOneTime = new();
             public bool isFreeDailyChallengeFirstTime = true;
             public bool isOpenInGameDailyChallengeTut;
             
@@ -42,7 +48,7 @@ namespace _Game.Data
             
             // Income Progress Data
             public int gold;
-            public int adTickets;
+            public int heart;
             public int rewardChestKeys;
             public int levelChestProgress;
             public int currentRewardChestIndex = 0;
@@ -72,7 +78,8 @@ namespace _Game.Data
             public int sessionPlayed;
             public int retryTime;
             
-            public DateTime lastTimeLogOut = DateTime.UtcNow;
+            public DateTime lastTimeLogOut = DateTime.MinValue;
+            
             public bool isFirstDayOfWeekCheck;
 
             //Ads Data

@@ -30,13 +30,13 @@ namespace VinhLB
         public CharacterType CharacterType;
         public int Amount;
 
-        private UIResourceConfig _uiResourceConfig;
+        private UIResourceConfig? _uiResourceConfig;
 
-        public UIResourceConfig UIResourceConfig
+        public UIResourceConfig? UIResourceConfig
         {
             get
             {
-                if (_uiResourceConfig.Equals(default(UIResourceConfig)))
+                if (_uiResourceConfig is null)
                 {
                     switch (RewardType)
                     {
@@ -69,8 +69,8 @@ namespace VinhLB
                     case CurrencyType.Gold:
                         GameManager.Ins.GainGold(Amount, fromPosition);
                         break;
-                    case CurrencyType.AdTicket:
-                        GameManager.Ins.GainAdTickets(Amount, fromPosition);
+                    case CurrencyType.Heart:
+                        GameManager.Ins.GainHeart(Amount, fromPosition);
                         break;
                     case CurrencyType.SecretMapPiece:
                         GameManager.Ins.GainSecretMapPiece(Amount);

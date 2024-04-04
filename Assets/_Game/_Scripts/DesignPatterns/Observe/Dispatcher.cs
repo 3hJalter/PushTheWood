@@ -71,7 +71,7 @@ namespace _Game.DesignPattern
         LoseGame = 4,
         ObjectInOutDangerCell = 5, //NOTE: Event in gameplay may be in other sources
         OnChangeGold = 6,
-        OnChangeAdTickets = 7,
+        OnChangeHeart = 7,
         OnResetToMainMenu = 8,
         OnSecretMapPieceChange = 9,
         OnUnlockSecretMap = 10,

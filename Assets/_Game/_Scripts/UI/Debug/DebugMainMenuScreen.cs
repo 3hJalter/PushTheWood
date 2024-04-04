@@ -96,7 +96,7 @@ namespace _Game.UIs.Screen
             
             _toggleWaterButton.onClick.AddListener(ToggleWater);
             
-            _addAdTicketsButton.onClick.AddListener(AddAdTickets);
+            _addAdTicketsButton.onClick.AddListener(AddHeart);
             _addGoldButton.onClick.AddListener(AddGold);
             _addRewardKeysButton.onClick.AddListener(AddRewardKeys);
             _addLevelStarsButton.onClick.AddListener(AddLevelStars);
@@ -169,9 +169,9 @@ namespace _Game.UIs.Screen
             FXManager.Ins.ToggleWater();
         }
 
-        private void AddAdTickets()
+        private void AddHeart()
         {
-            GameManager.Ins.GainAdTickets(1, _addAdTicketsButton.transform.position);
+            GameManager.Ins.GainHeart(1, _addAdTicketsButton.transform.position);
             //UIManager.Ins.UpdateUIs();
         }
         
@@ -216,11 +216,11 @@ namespace _Game.UIs.Screen
         }
         private void AddOneDailyChallengeDay()
         {
-            DataManager.Ins.GameData.user.currentDailyChallengerDay++;
+            DataManager.Ins.GameData.user.currentDay++;
             DataManager.Ins.GameData.user.isFreeDailyChallengeFirstTime = true;
-            if (DataManager.Ins.GameData.user.currentDailyChallengerDay > Constants.DAILY_CHALLENGER_COUNT)
+            if (DataManager.Ins.GameData.user.currentDay > DataManager.Ins.GameData.user.daysInMonth)
             {
-                DataManager.Ins.GameData.user.currentDailyChallengerDay = 1;
+                DataManager.Ins.GameData.user.currentDay = 1;
                 DataManager.Ins.GameData.user.dailyLevelIndexComplete.Clear();
                 DataManager.Ins.GameData.user.dailyChallengeRewardCollected.Clear();
                 if (DataManager.Ins.GameData.user.completedOneTimeTutorial.Contains(DataManager.Ins.ConfigData

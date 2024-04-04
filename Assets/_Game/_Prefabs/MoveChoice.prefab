@@ -600,13 +600,16 @@ MonoBehaviour:
       m_Calls: []
   isOverlappingUI: 0
   sensitivity: 120
-  quickSensitive: 50
+  quickSensitive: 80
+  superSensitive: 135
   swipeTouchTime: 0.1
   quickSwipeTouchTime: 0.035
   continuousDetection: 0
   swipeDetectionMode: 2
   samplePoints: []
   quickSamplePoints: []
+  superSamplePoint: []
+  _isPointerUI: 0
 --- !u!1 &7937655174677662599
 GameObject:
   m_ObjectHideFlags: 0
@@ -753,17 +756,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1816619650764841853, guid: 6a551d3bb595b89459262a7449677600, type: 3}
     - target: {fileID: 8643770746723842645, guid: 6a551d3bb595b89459262a7449677600, type: 3}
-      propertyPath: eventTrigger
-      value: 
-      objectReference: {fileID: 7937655174681304456}
-    - target: {fileID: 8643770746723842645, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8643770746723842645, guid: 6a551d3bb595b89459262a7449677600, type: 3}
-    - target: {fileID: 8643770746981963272, guid: 6a551d3bb595b89459262a7449677600, type: 3}
-      propertyPath: testing
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8643770746981963272, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -771,10 +766,6 @@ PrefabInstance:
     - target: {fileID: 8643770746981963274, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Name
       value: DPad
-      objectReference: {fileID: 0}
-    - target: {fileID: 8643770746981963274, guid: 6a551d3bb595b89459262a7449677600, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8643770746981963275, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: m_Pivot.x
@@ -861,75 +852,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8643770747054678694, guid: 6a551d3bb595b89459262a7449677600, type: 3}
-      propertyPath: eventTrigger
-      value: 
-      objectReference: {fileID: 7937655173937350005}
-    - target: {fileID: 8643770747054678694, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8643770747054678694, guid: 6a551d3bb595b89459262a7449677600, type: 3}
     - target: {fileID: 8643770747183796009, guid: 6a551d3bb595b89459262a7449677600, type: 3}
-      propertyPath: eventTrigger
-      value: 
-      objectReference: {fileID: 7937655174133524732}
-    - target: {fileID: 8643770747183796009, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8643770747183796009, guid: 6a551d3bb595b89459262a7449677600, type: 3}
-    - target: {fileID: 8643770747366404017, guid: 6a551d3bb595b89459262a7449677600, type: 3}
-      propertyPath: eventTrigger
-      value: 
-      objectReference: {fileID: 7937655174316116068}
     - target: {fileID: 8643770747366404017, guid: 6a551d3bb595b89459262a7449677600, type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 8643770747366404017, guid: 6a551d3bb595b89459262a7449677600, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a551d3bb595b89459262a7449677600, type: 3}
---- !u!114 &7937655173937350005 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8643770747054678695, guid: 6a551d3bb595b89459262a7449677600, type: 3}
-  m_PrefabInstance: {fileID: 1863611606589024210}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7937655174133524732 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8643770747183796014, guid: 6a551d3bb595b89459262a7449677600, type: 3}
-  m_PrefabInstance: {fileID: 1863611606589024210}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7937655174316116068 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8643770747366404022, guid: 6a551d3bb595b89459262a7449677600, type: 3}
-  m_PrefabInstance: {fileID: 1863611606589024210}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7937655174681304456 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8643770746723842650, guid: 6a551d3bb595b89459262a7449677600, type: 3}
-  m_PrefabInstance: {fileID: 1863611606589024210}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &7937655175006482905 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8643770746981963275, guid: 6a551d3bb595b89459262a7449677600, type: 3}

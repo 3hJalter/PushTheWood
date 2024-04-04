@@ -13,7 +13,9 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
     {
         private UnityAction<string> _swipeEvent;
         private UnityAction<string> _testSwipeEvent;
-        [SerializeField] private RectTransform mask;
+        
+        // TEMPORARY
+        private Direction _saveDirection;
         
         public override void Setup(object param = null)
         {
@@ -21,44 +23,46 @@ namespace _Game._Scripts.Tutorial.ScreenTutorial
 
             MoveInputManager.Ins.ShowContainer(true);
             // Add Close this screen when swipe
-            _testSwipeEvent = _ => { DevLog.Log(DevId.Hoang, "Test swipe"); };
-            _swipeEvent = direction =>
+            MoveInputManager.Ins.Dpad.SetButtonAlpha(Direction.Forward,1f);
+            MoveInputManager.Ins.Dpad.LockInput(Direction.Back, true);
+            MoveInputManager.Ins.Dpad.LockInput(Direction.Left, true);
+            MoveInputManager.Ins.Dpad.LockInput(Direction.Right, true);
+            
+            
+            MoveInputManager.Ins.Dpad.OnPointerDown += () =>
             {
-                DevLog.Log(DevId.Hoang, $"Swipe - {direction}");
-                if (direction != DirectionId.ID_UP) return;
-                HInputManager.SetDirectionInput(Direction.Forward);
+                _saveDirection = HInputManager.GetDirectionInput();
+                MoveInputManager.Ins.Dpad.LockInput(Direction.Back, false);
+                MoveInputManager.Ins.Dpad.LockInput(Direction.Left, false);
+                MoveInputManager.Ins.Dpad.LockInput(Direction.Right, false);
+                MoveInputManager.Ins.Dpad.SetButtonAlpha(Direction.Forward, 0.3f);
+                MoveInputManager.Ins.Dpad.ClearAction();
                 CloseDirectly(false);
+                MoveInputManager.Ins.Dpad.OnButtonPointerDown((int) _saveDirection);
             };
-            // Remove the default swipe event
-            MoveInputManager.Ins.HSwipe.RemoveListener();
-            MoveInputManager.Ins.HSwipe.AddListener(_swipeEvent);
-            MoveInputManager.Ins.HSwipe.AddListener(_testSwipeEvent);
-            // OpenMask();
-        }
-
-        private void OpenMask()
-        {
-            MaskData maskData = new()
-            {
-                Position = mask.position,
-                Size = mask.sizeDelta + Vector2.one * 40f,
-                MaskType = MaskType.Eclipse,
-                ClickableItem = null,
-                OnClickedCallback = () => UIManager.Ins.CloseUI<MaskScreen>(),
-                // If you want to make mask fit and follow target
-                //TargetRectTF = rectTransform
-            };
-            UIManager.Ins.OpenUI<MaskScreen>(maskData);
+            
+            // _swipeEvent = direction =>
+            // {
+            //     DevLog.Log(DevId.Hoang, $"Swipe - {direction}");
+            //     if (direction != DirectionId.ID_UP) return;
+            //     HInputManager.SetDirectionInput(Direction.Forward);
+            //     CloseDirectly(false);
+            // };
+            // // Remove the default swipe event
+            // MoveInputManager.Ins.HSwipe.RemoveListener();
+            // MoveInputManager.Ins.HSwipe.AddListener(_swipeEvent);
+            // MoveInputManager.Ins.HSwipe.AddListener(_testSwipeEvent);
+            // // OpenMask();
         }
         
-        public override void CloseDirectly(object param = null)
-        {
-            // Remove Close this screen when swipe 
-            MoveInputManager.Ins.HSwipe.RemoveListener(_swipeEvent);
-            MoveInputManager.Ins.HSwipe.RemoveListener(_testSwipeEvent);
-            // Add the default swipe event
-            MoveInputManager.Ins.HSwipe.AddListener();
-            base.CloseDirectly(param);
-        }
+        // public override void CloseDirectly(object param = null)
+        // {
+        //     // Remove Close this screen when swipe 
+        //     MoveInputManager.Ins.HSwipe.RemoveListener(_swipeEvent);
+        //     MoveInputManager.Ins.HSwipe.RemoveListener(_testSwipeEvent);
+        //     // Add the default swipe event
+        //     MoveInputManager.Ins.HSwipe.AddListener();
+        //     base.CloseDirectly(param);
+        // }
     }
 }

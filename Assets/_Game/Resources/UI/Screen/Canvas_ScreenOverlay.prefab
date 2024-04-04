@@ -128,8 +128,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: aef9a8b6bcbd3a34eb52d7957e26a207, type: 3}
-  m_Type: 1
-  m_PreserveAspect: 0
+  m_Type: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -202,16 +202,22 @@ MonoBehaviour:
   overlay: {fileID: 8215290960789869724}
   jumpPower: 5
   jumpDuration: 0.7
+  endScaleValue: 0.75
   moveEase: 6
   scaleEase: 28
   icon: {fileID: 5060567590515699122}
+  iconImage: {fileID: 2877130371034972390}
   boosterImage: {fileID: 582191140311964886}
+  boosterAmountGO: {fileID: 6295447067432494246}
   boosterAmount: {fileID: 4598116767571815308}
   test: 0
   boosterIcon:
   - {fileID: 21300000, guid: 2c6177a86c6fcbb4f9094c7388fcd9f6, type: 3}
   - {fileID: 21300000, guid: 9579f68de3707b6458dcc2bbad91fc31, type: 3}
   - {fileID: 21300000, guid: 27eb4bc6eccfed4479f666177d467105, type: 3}
+  boosterLayoutIcon:
+  - {fileID: 21300000, guid: aef9a8b6bcbd3a34eb52d7957e26a207, type: 3}
+  - {fileID: 21300000, guid: 3d51b9499215c95409575808db7284c5, type: 3}
 --- !u!1 &1471458726297212058
 GameObject:
   m_ObjectHideFlags: 0

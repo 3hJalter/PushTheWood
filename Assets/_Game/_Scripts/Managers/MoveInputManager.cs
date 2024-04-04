@@ -11,8 +11,8 @@ namespace _Game._Scripts.Managers
     {
         public enum MoveChoice
         {
-            Swipe = 0,
-            DPad = 1,
+            DPad = 0,
+            Swipe = 1,
             Switch = 2,
             SwipeContinuous = 3,
         }
@@ -121,7 +121,7 @@ namespace _Game._Scripts.Managers
         private bool _isFirstOpen;
         public void ShowContainer(bool isShow, bool isSetDefault = true)
         {
-            container.worldCamera = CameraManager.Ins.BrainCamera;
+            // container.worldCamera = CameraManager.Ins.BrainCamera;
             container.gameObject.SetActive(isShow);
             if (!isShow) HideButton(isSetDefault);
             else

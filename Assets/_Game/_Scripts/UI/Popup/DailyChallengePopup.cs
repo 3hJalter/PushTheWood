@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _Game._Scripts.UIs.Component;
 using _Game.Data;
 using _Game.GameGrid;
@@ -17,9 +18,11 @@ namespace _Game.UIs.Popup
         [SerializeField] private Slider dailyChallengeSliderProgress;
         [SerializeField] private List<DailyChallengeRewardButton> dailyChallengeRewardButtons;
         [SerializeField] List<DailyChallengeButton> dailyChallengeButtons;
+        [SerializeField] private List<GameObject> dailyChallengeButtonAnchors;
         private DailyChallengeButton _currentBtnClick;
-        private int _currentDay;
-        
+
+        public DailyChallengeRewardButton LastClickRewardButton { get; set; }
+
         // interact Btn
         [SerializeField] private GameObject notYetBtn;
         [SerializeField] private HButton payToPlayBtn;
@@ -29,7 +32,7 @@ namespace _Game.UIs.Popup
         private void Awake()
         {
             // Set panel height by adding 123f for each row, each row has 7 buttons
-            panel.sizeDelta = new Vector2(panel.sizeDelta.x, PANEL_INIT_HEIGHT + (123f * Mathf.CeilToInt(Constants.DAILY_CHALLENGER_COUNT / 7f)));
+            panel.sizeDelta = new Vector2(panel.sizeDelta.x, PANEL_INIT_HEIGHT + (130f * Mathf.CeilToInt(DataManager.Ins.DaysInMonth / 7f)));
             // Set listener for interact btn
             payToPlayBtn.onClick.AddListener(OnClickPayToPlayButton);
             adsToPlayBtn.onClick.AddListener(OnClickAdToPlayButton);
@@ -46,25 +49,53 @@ namespace _Game.UIs.Popup
 
         private void OnUpdateProgress()
         {
-            float progress = (float) DataManager.Ins.GameData.user.dailyLevelIndexComplete.Count / Constants.DAILY_CHALLENGER_COUNT;
+            List<DailyChallengeRewardMilestone> dcm = DataManager.Ins.ConfigData.dailyChallengeRewardMilestones;
+            int count = DataManager.Ins.GameData.user.dailyLevelIndexComplete.Count;
+            if (count == 0)
+            {
+                dailyChallengeSliderProgress.value = 0;
+                return;
+            }
+            float progress = 0;
+            int mileStoneNums = dcm.Count;
+            float mileStoneProgress = 1/(float)mileStoneNums;
+            for (int i = 0; i < mileStoneNums; i++)
+            {
+                if (count >= dcm[i].clearLevelNeed)
+                {
+                    progress += mileStoneProgress;       
+                }
+                else
+                {
+                    if (i == 0) break;
+                    progress += (float) (count - dcm[i-1].clearLevelNeed)/(dcm[i].clearLevelNeed - dcm[i-1].clearLevelNeed) * mileStoneProgress;
+                    break;  
+                }
+            }
             dailyChallengeSliderProgress.value = progress;
         }
 
         public override void Setup(object param = null)
         {
             base.Setup(param);
-            _currentDay = DataManager.Ins.GameData.user.currentDailyChallengerDay;
+            int firstDayOfWeekInMonth = (int) new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1).DayOfWeek;
+            for (int i = 0; i < dailyChallengeButtonAnchors.Count; i++)
+            {
+                // Set true if i less than day of week, else set false
+                dailyChallengeButtonAnchors[i].SetActive(i < firstDayOfWeekInMonth);
+            }
+            
             // Set up buttons
             for (int index = 0; index < dailyChallengeButtons.Count; index++)
-            {
+            { 
                 // if index is greater than days in month, disable button
-                if (index >= Constants.DAILY_CHALLENGER_COUNT)
+                if (index >= DataManager.Ins.DaysInMonth)
                 {
                     dailyChallengeButtons[index].gameObject.SetActive(false);
                     continue;
                 }
                 DailyChallengeButton dailyChallengeButton = dailyChallengeButtons[index];
-                dailyChallengeButton.SetIndex(index, _currentDay);
+                dailyChallengeButton.SetIndex(index, DataManager.Ins.CurrentDay);
                 dailyChallengeButton.onClick.AddListener(delegate
                 {
                     OnClickDailyChallengeButton(
@@ -79,7 +110,7 @@ namespace _Game.UIs.Popup
             
             OnUpdateProgress();
             // click today button
-            OnClickDailyChallengeButton(_currentDay - 1);
+            OnClickDailyChallengeButton(DataManager.Ins.CurrentDay - 1);
         }
         
         public override void Close()
@@ -91,7 +122,11 @@ namespace _Game.UIs.Popup
             }
             _currentBtnClick.OnUnHover();
             _currentBtnClick = null;
-            
+            if (LastClickRewardButton)
+            {
+                LastClickRewardButton.OnRelease();
+                LastClickRewardButton = null;
+            }
             base.Close();
         }
 
@@ -152,7 +187,7 @@ namespace _Game.UIs.Popup
                     break;
                 // if current button is un clear, show pay to play btn
                 case DailyChallengeButtonState.UnClear:
-                    if (DataManager.Ins.GameData.user.adTickets > 0)
+                    if (DataManager.Ins.GameData.user.heart > 0)
                     {
                         payToPlayBtn.gameObject.SetActive(true);
                     }
@@ -174,7 +209,7 @@ namespace _Game.UIs.Popup
                     }
                     else
                     {
-                        if (DataManager.Ins.GameData.user.adTickets > 0)
+                        if (DataManager.Ins.GameData.user.heart > 0)
                         {
                             payToPlayBtn.gameObject.SetActive(true);
                         }
