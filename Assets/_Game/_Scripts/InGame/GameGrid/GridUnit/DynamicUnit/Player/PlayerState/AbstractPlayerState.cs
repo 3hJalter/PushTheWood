@@ -31,6 +31,11 @@ namespace _Game.GameGrid.Unit.DynamicUnit.Player.PlayerState
         {
             if (t.InputDirection != Direction.None && t.InputDetection.InputAction == InputAction.ButtonDown)
             {
+                // MAXIMUM COMMAND CACHE is 1
+                if (t.CommandCache.Count > 0)
+                {
+                    return;
+                }
                 t.CommandCache.Enqueue(t.InputDirection);
             }
         }

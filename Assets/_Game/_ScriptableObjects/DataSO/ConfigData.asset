@@ -219,15 +219,24 @@ MonoBehaviour:
     - Name: MoreTimeAdded
       Entry: 3
       Data: 60
-    - Name: finalPointGoldReward
-      Entry: 3
-      Data: 20
     - Name: bonusChestGoldReward
       Entry: 3
       Data: 40
-    - Name: finalEnemyGoldReward
+    - Name: easyLevelGoldReward
+      Entry: 3
+      Data: 20
+    - Name: mediumLevelGoldReward
       Entry: 3
       Data: 40
+    - Name: hardLevelGoldReward
+      Entry: 3
+      Data: 80
+    - Name: dailyChallengeGoldReward
+      Entry: 3
+      Data: 40
+    - Name: secretLevelGoldReward
+      Entry: 3
+      Data: 200
     - Name: stepInterAdsCountMax
       Entry: 3
       Data: 3
@@ -260,10 +269,10 @@ MonoBehaviour:
     firstRewards: []
     rewards:
     - RewardType: 0
-      BoosterType: 0
+      BoosterType: 1
       CurrencyType: 0
       CharacterType: 0
-      Amount: 3
+      Amount: 1
   - clearLevelNeed: 3
     hasFirstReward: 0
     firstRewards: []
@@ -277,25 +286,34 @@ MonoBehaviour:
     hasFirstReward: 0
     firstRewards: []
     rewards:
+    - RewardType: 0
+      BoosterType: 2
+      CurrencyType: 0
+      CharacterType: 0
+      Amount: 1
     - RewardType: 1
       BoosterType: 0
       CurrencyType: 0
       CharacterType: 0
-      Amount: 500
-    - RewardType: 0
-      BoosterType: 1
-      CurrencyType: 0
-      CharacterType: 0
-      Amount: 1
+      Amount: 300
   - clearLevelNeed: 15
     hasFirstReward: 0
     firstRewards: []
     rewards:
-    - RewardType: 0
-      BoosterType: 0
+    - RewardType: 1
+      BoosterType: 2
       CurrencyType: 0
       CharacterType: 0
-      Amount: 3
+      Amount: 500
+  - clearLevelNeed: 25
+    hasFirstReward: 1
+    firstRewards:
+    - RewardType: 2
+      BoosterType: 0
+      CurrencyType: 0
+      CharacterType: 3
+      Amount: 1
+    rewards:
     - RewardType: 0
       BoosterType: 1
       CurrencyType: 0
@@ -306,44 +324,14 @@ MonoBehaviour:
       CurrencyType: 0
       CharacterType: 0
       Amount: 1
-  - clearLevelNeed: 25
-    hasFirstReward: 1
-    firstRewards:
-    - RewardType: 2
-      BoosterType: 0
-      CurrencyType: 0
-      CharacterType: 5
-      Amount: 1
     - RewardType: 1
-      BoosterType: 0
-      CurrencyType: 0
-      CharacterType: 0
-      Amount: 1000
-    - RewardType: 0
-      BoosterType: 0
-      CurrencyType: 0
-      CharacterType: 0
-      Amount: 3
-    rewards:
-    - RewardType: 0
-      BoosterType: 0
-      CurrencyType: 0
-      CharacterType: 0
-      Amount: 3
-    - RewardType: 1
-      BoosterType: 0
-      CurrencyType: 0
-      CharacterType: 0
-      Amount: 1000
-    - RewardType: 0
       BoosterType: 1
       CurrencyType: 0
       CharacterType: 0
-      Amount: 3
+      Amount: 200
   boosterConfigList:
   - type: 0
     unlockAtLevel: 1
-    goldPerBuyTen: 10
     goldPerBuyRatio:
       goldNeed: 3
       itemsPerBuy: 300
@@ -353,9 +341,8 @@ MonoBehaviour:
       SubIconSprite: {fileID: 0}
   - type: 1
     unlockAtLevel: 7
-    goldPerBuyTen: 10
     goldPerBuyRatio:
-      goldNeed: 500
+      goldNeed: 550
       itemsPerBuy: 1
     UIResourceConfig:
       Name: Push Hint
@@ -363,17 +350,15 @@ MonoBehaviour:
       SubIconSprite: {fileID: 0}
   - type: 2
     unlockAtLevel: 6
-    goldPerBuyTen: 10
     goldPerBuyRatio:
-      goldNeed: 1
-      itemsPerBuy: 300
+      goldNeed: 300
+      itemsPerBuy: 2
     UIResourceConfig:
       Name: Grow Tree
       MainIconSprite: {fileID: 0}
       SubIconSprite: {fileID: 0}
   - type: 3
     unlockAtLevel: 3
-    goldPerBuyTen: 10
     goldPerBuyRatio:
       goldNeed: 0
       itemsPerBuy: 0

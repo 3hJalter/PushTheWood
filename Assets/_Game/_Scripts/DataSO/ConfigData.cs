@@ -66,9 +66,15 @@ namespace _Game.Data
         [FoldoutGroup("In Game/MoreTimeAdded")]
         public readonly int MoreTimeAdded = 60;
 
-        [FoldoutGroup("In Game/Reward")] public readonly int finalPointGoldReward = 20;
+        // [FoldoutGroup("In Game/Reward")] public readonly int finalPointGoldReward = 20;
         [FoldoutGroup("In Game/Reward")] public readonly int bonusChestGoldReward = 40;
-        [FoldoutGroup("In Game/Reward")] public readonly int finalEnemyGoldReward = 40;
+        // [FoldoutGroup("In Game/Reward")] public readonly int finalEnemyGoldReward = 40;
+        
+        [FoldoutGroup("In Game/Reward")] public readonly int easyLevelGoldReward = 20;
+        [FoldoutGroup("In Game/Reward")] public readonly int mediumLevelGoldReward = 40;
+        [FoldoutGroup("In Game/Reward")] public readonly int hardLevelGoldReward = 80;
+        [FoldoutGroup("In Game/Reward")] public readonly int dailyChallengeGoldReward = 40;
+        [FoldoutGroup("In Game/Reward")] public readonly int secretLevelGoldReward = 200;
         #endregion
 
         #region Daily Challenge Reward
@@ -161,8 +167,6 @@ namespace _Game.Data
         [SerializeField]
         private int unlockAtLevel;
         [SerializeField]
-        private int goldPerBuyTen;
-        [SerializeField]
         private GoldPerBuyRatio goldPerBuyRatio;
 
         [HideInInspector]
@@ -172,7 +176,6 @@ namespace _Game.Data
         public int UnlockAtLevel => unlockAtLevel;
         public string Name => UIResourceConfig.Name;
         public Sprite MainIcon => UIResourceConfig.MainIconSprite;
-        public int GoldPerBuyTen => goldPerBuyTen;
         public GoldPerBuyRatio GoldPerBuyRatio => goldPerBuyRatio;
         // Do with goldPerBuyMore
     }

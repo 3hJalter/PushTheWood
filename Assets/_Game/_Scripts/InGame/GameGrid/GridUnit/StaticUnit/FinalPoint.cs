@@ -65,7 +65,6 @@ namespace _Game.GameGrid.Unit.StaticUnit
         {
             #region Get Resource
             
-            LevelManager.Ins.goldCount += DataManager.Ins.ConfigData.finalPointGoldReward;
             if (LevelManager.Ins.CurrentLevel.LevelType == LevelType.Normal)
             {
                 int levelIndex = LevelManager.Ins.CurrentLevel.Index;
