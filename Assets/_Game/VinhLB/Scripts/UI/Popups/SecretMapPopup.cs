@@ -1,7 +1,9 @@
-﻿using _Game.Data;
+﻿using System;
+using _Game.Data;
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Screen;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -45,6 +47,15 @@ namespace VinhLB
 
             _scrollRect.verticalNormalizedPosition = 1f;
             OnRewardScrollRectValueChanged(_scrollRect.normalizedPosition);
+
+            _scrollRect.enabled = false;
+        }
+
+        public override void Open(object param = null)
+        {
+            base.Open(param);
+
+            DOVirtual.DelayedCall(0.15f, () => _scrollRect.enabled = true);
         }
 
         public override void UpdateUI()

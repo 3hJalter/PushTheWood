@@ -21,7 +21,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 27eb4bc6eccfed4479f666177d467105, type: 3}
     - {fileID: 21300000, guid: 1012a03e39ef4c149aee0eba370d2c3f, type: 3}
     - {fileID: 21300000, guid: 239e6d44770ea2840add230e3cdc4936, type: 3}
-    - {fileID: 21300000, guid: 3f0f861da080eae42b3f72238afd861c, type: 3}
+    - {fileID: 21300000, guid: 6dd98809192e24bb185001de5a7f7b38, type: 3}
     - {fileID: 21300000, guid: 586971203c5c34e4294e3e829bce298d, type: 3}
     - {fileID: 21300000, guid: 53a5f9376ba7ea74cb52863fb47c7456, type: 3}
     - {fileID: 21300000, guid: 3e53afb930fb97e479738d9639ad649e, type: 3}
@@ -224,7 +224,7 @@ MonoBehaviour:
       Data: VinhLB.UIResourceConfig, Assembly-CSharp
     - Name: Name
       Entry: 1
-      Data: Ad Ticket
+      Data: Heart
     - Name: MainIconSprite
       Entry: 10
       Data: 5

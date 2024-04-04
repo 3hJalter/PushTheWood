@@ -23,8 +23,9 @@ public class GridMapDataGenerator : MonoBehaviour
     [SerializeField] private int offsetSurfaceWithFirstCell = 3; // Should be 3
     [Tooltip("Random rotation for rock")]
     [SerializeField] private bool isRandomRotationForRock = true;
-    [ReadOnly] // Debugging
     // ReSharper disable once NotAccessedField.Local
+    [SerializeField] private ThemeEnum themeEnum;
+    [ReadOnly] // Debugging
     [SerializeField] private LevelType levelType;
     [SerializeField] private LevelWinCondition winCondition;
     [SerializeField] private LevelNormalType levelNormalType = LevelNormalType.None;
@@ -224,6 +225,7 @@ public class GridMapDataGenerator : MonoBehaviour
             // Set the local rotation of Skin to identity
             skin.localRotation = Quaternion.identity;
         }
+        DataManager.Ins.OnChangeTheme(_loadedLevel.Theme);
         // Set all GridUnit from _loadedLevel.ShadowUnitList to shadowContainer
         if (_loadedLevel.ShadowUnitList.Count <= 0)
         {
@@ -265,6 +267,11 @@ public class GridMapDataGenerator : MonoBehaviour
                 return;
         }
 
+        if (themeEnum is ThemeEnum.None) {
+            Debug.LogError("Theme can not be None");
+            return;
+        }
+        
         LevelType levelTypeTemp = VerifyLevelName(mapLevelName);
         if (levelTypeTemp == LevelType.None)
         {
@@ -568,6 +575,7 @@ public class GridMapDataGenerator : MonoBehaviour
         }
         RawLevelData levelData = new()
         {
+            t = (int) themeEnum,
             lt = (int) levelTypeTemp,
             wc = (int) winCondition,
             lnt = (int) levelNormalType,
@@ -587,6 +595,7 @@ public class GridMapDataGenerator : MonoBehaviour
         DevLog.Log(DevId.Hoang, "Save to path: " + path);
         File.WriteAllText(path, json);
         // check if gridData contain this textAsset with this name, if not, add it 
+        DataManager.Ins.OnChangeTheme(themeEnum);
         TextAsset textAsset = Resources.Load<TextAsset>(GetPathFromName(levelTypeTemp, mapLevelName));
         if (textAsset == null) return;
         if (DataManager.Ins.HasGridTextData(levelTypeTemp, textAsset))

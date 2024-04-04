@@ -342,7 +342,7 @@ MonoBehaviour:
       Amount: 3
   boosterConfigList:
   - type: 0
-    unlockAtLevel: 3
+    unlockAtLevel: 1
     goldPerBuyTen: 10
     goldPerBuyRatio:
       goldNeed: 3
