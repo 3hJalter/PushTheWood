@@ -56,6 +56,8 @@ namespace _Game.GameGrid
         private Level _currentLevel;
         private bool _isRestarting;
         private bool _isResetting;
+        private ThemeEnum _currentTheme = ThemeEnum.None;
+        
 
         public readonly HashSet<GameUnit> SaveChangeUnits = new HashSet<GameUnit>();
         public int KeyRewardCount = 0;
@@ -177,6 +179,13 @@ namespace _Game.GameGrid
             GameplayManager.Ins.ClearBoosterPurchase();
             IsConstructingLevel = true;
             _currentLevel = new Level(type, index);
+            
+            if (_currentLevel.Theme != _currentTheme)
+            {
+                _currentTheme = _currentLevel.Theme;
+                DataManager.Ins.OnChangeTheme(_currentTheme);
+            }
+            
             objectiveTotal = 0;
             if (needInit && !_currentLevel.IsInit)
             {

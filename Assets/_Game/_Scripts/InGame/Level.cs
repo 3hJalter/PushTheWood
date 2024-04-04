@@ -134,6 +134,8 @@ namespace _Game._Scripts.InGame
         public Grid<GameGridCell, GameGridCellData> GridMap { get; private set; }
         
         public LevelType LevelType => (LevelType) _rawLevelData.lt;
+        
+        public ThemeEnum Theme => (ThemeEnum) _rawLevelData.t;
         public LevelWinCondition LevelWinCondition => (LevelWinCondition) _rawLevelData.wc;
         public LevelNormalType LevelNormalType => (LevelNormalType) _rawLevelData.lnt;
         #endregion
@@ -397,7 +399,8 @@ namespace _Game._Scripts.InGame
                 GridSurfaceMap[surfaceData.p.x, surfaceData.p.y] = surfaceClone;
                 // Init surface
                 surfaceClone.OnInit(Index, gridCell.GetCellPosition(), new Vector2Int(GridSizeX, gridSizeY),
-                    (Direction)surfaceData.d, (MaterialEnum)surfaceData.m, HasUnitInMap[gridCell.X, gridCell.Y]);
+                    (Direction)surfaceData.d, (MaterialEnum)surfaceData.m, (ThemeEnum)_rawLevelData.t,
+                    HasUnitInMap[gridCell.X, gridCell.Y]);
             }
         }
 
@@ -580,6 +583,7 @@ namespace _Game._Scripts.InGame
     [Serializable]
     public struct RawLevelData
     {
+        public int t; // THEME
         public int lt; // LEVEL TYPE
         public int wc; // WIN CONDITION
         public int lnt; // LEVEL NORMAL TYPE 

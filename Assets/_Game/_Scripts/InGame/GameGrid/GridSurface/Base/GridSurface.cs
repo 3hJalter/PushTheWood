@@ -27,7 +27,7 @@ namespace _Game.GameGrid.GridSurface
 
         public virtual void OnInit(int levelIndex, Vector2Int gridCellPos, Vector2Int gridSize,
             Direction rotateDirection = Direction.Forward, MaterialEnum materialEnum = MaterialEnum.None,
-            bool hasUnitInMap = false)
+            ThemeEnum themeEnum = ThemeEnum.Default, bool hasUnitInMap = false)
         {
         }
 

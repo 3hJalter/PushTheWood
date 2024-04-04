@@ -251,6 +251,11 @@ namespace _Game.Managers
             return materialData.GetGrassMaterial(materialEnum);
         }
 
+        public void OnChangeTheme(ThemeEnum theme)
+        {
+            materialData.CurrentTheme = theme;
+        }
+        
         public TextAsset GetLevelData(LevelType type, int index)
         {
             return gridData.GetLevelData(type, index);
