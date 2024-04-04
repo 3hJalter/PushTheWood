@@ -93,6 +93,8 @@ MonoBehaviour:
   islandID: -1
   grassRenderer: {fileID: 1465778981463877543}
   groundMeshRenderer: {fileID: 8360711682533394458}
+  combineMeshs:
+  - {fileID: 2155598582484559762}
   _flowersParentTF: {fileID: 0}
   _flowerSpawnPoints: []
   groundMaterialEnum: -1
