@@ -265,28 +265,52 @@ MonoBehaviour:
     time: 210
   dailyChallengeRewardMilestones:
   - clearLevelNeed: 1
+    hasFirstReward: 0
+    firstRewards: []
     rewards:
-    - currencyType: 0
-      quantity: 300
+    - RewardType: 0
+      BoosterType: 0
+      CurrencyType: 0
+      CharacterType: 0
+      Amount: 0
   - clearLevelNeed: 2
+    hasFirstReward: 0
+    firstRewards: []
     rewards:
-    - currencyType: 0
-      quantity: 500
+    - RewardType: 0
+      BoosterType: 0
+      CurrencyType: 0
+      CharacterType: 0
+      Amount: 0
   - clearLevelNeed: 4
+    hasFirstReward: 0
+    firstRewards: []
     rewards:
-    - currencyType: 0
-      quantity: 600
+    - RewardType: 0
+      BoosterType: 0
+      CurrencyType: 0
+      CharacterType: 0
+      Amount: 0
   - clearLevelNeed: 7
+    hasFirstReward: 0
+    firstRewards: []
     rewards:
-    - currencyType: 0
-      quantity: 800
+    - RewardType: 0
+      BoosterType: 0
+      CurrencyType: 0
+      CharacterType: 0
+      Amount: 0
+  - clearLevelNeed: 0
+    hasFirstReward: 0
+    firstRewards: []
+    rewards: []
   boosterConfigList:
   - type: 0
     unlockAtLevel: 1
     goldPerBuyTen: 10
-    ticketPerBuyRatio:
-      ticketNeed: 1
-      itemsPerBuy: 3
+    goldPerBuyRatio:
+      goldNeed: 0
+      itemsPerBuy: 0
     UIResourceConfig:
       Name: Undo
       MainIconSprite: {fileID: 0}
@@ -294,9 +318,9 @@ MonoBehaviour:
   - type: 1
     unlockAtLevel: 7
     goldPerBuyTen: 10
-    ticketPerBuyRatio:
-      ticketNeed: 1
-      itemsPerBuy: 1
+    goldPerBuyRatio:
+      goldNeed: 0
+      itemsPerBuy: 0
     UIResourceConfig:
       Name: Push Hint
       MainIconSprite: {fileID: 0}
@@ -304,9 +328,9 @@ MonoBehaviour:
   - type: 2
     unlockAtLevel: 6
     goldPerBuyTen: 10
-    ticketPerBuyRatio:
-      ticketNeed: 1
-      itemsPerBuy: 1
+    goldPerBuyRatio:
+      goldNeed: 0
+      itemsPerBuy: 0
     UIResourceConfig:
       Name: Grow Tree
       MainIconSprite: {fileID: 0}
@@ -314,9 +338,9 @@ MonoBehaviour:
   - type: 3
     unlockAtLevel: 3
     goldPerBuyTen: 10
-    ticketPerBuyRatio:
-      ticketNeed: 1
-      itemsPerBuy: 1
+    goldPerBuyRatio:
+      goldNeed: 0
+      itemsPerBuy: 0
     UIResourceConfig:
       Name: Reset Island
       MainIconSprite: {fileID: 0}
