@@ -378,7 +378,7 @@ namespace _Game.UIs.Screen
             timerContainer.SetActive(!isTutorial);
             settingButton.gameObject.SetActive(!isTutorial);
             // Hide Showing Booster
-            if (type is LevelType.Normal && LevelManager.Ins.CurrentLevel.Index < 3)
+            if (type is LevelType.Normal && LevelManager.Ins.CurrentLevel.Index < 1)
             {
                 undoButton.gameObject.SetActive(false);
                 growTreeButton.gameObject.SetActive(false);

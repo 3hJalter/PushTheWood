@@ -47,10 +47,13 @@ MonoBehaviour:
       Data: 0|_Game.Resource.BoosterType[], Assembly-CSharp
     - Name: 
       Entry: 12
-      Data: 3
+      Data: 4
     - Name: 
       Entry: 3
-      Data: 0
+      Data: 1
+    - Name: 
+      Entry: 3
+      Data: 2
     - Name: 
       Entry: 3
       Data: 1
@@ -68,16 +71,19 @@ MonoBehaviour:
       Data: 1|System.Int32[], mscorlib
     - Name: 
       Entry: 14
-      Data: 3
-    - Name: 
-      Entry: 3
-      Data: 3
+      Data: 4
     - Name: 
       Entry: 3
       Data: 1
     - Name: 
       Entry: 3
       Data: 1
+    - Name: 
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 3
+      Data: 2
     - Name: 
       Entry: 13
       Data: 
@@ -89,16 +95,19 @@ MonoBehaviour:
       Data: 2|System.Single[], mscorlib
     - Name: 
       Entry: 14
-      Data: 3
+      Data: 4
     - Name: 
       Entry: 4
-      Data: 0.6
+      Data: 0.4
     - Name: 
       Entry: 4
-      Data: 0.1
+      Data: 0.4
     - Name: 
       Entry: 4
-      Data: 0.3
+      Data: 0.05
+    - Name: 
+      Entry: 4
+      Data: 0.15
     - Name: 
       Entry: 13
       Data: 
@@ -119,13 +128,13 @@ MonoBehaviour:
       Data: 0
     - Name: 
       Entry: 3
-      Data: 1
+      Data: 0
     - Name: 
       Entry: 3
-      Data: 1
+      Data: 0
     - Name: 
       Entry: 3
-      Data: 1
+      Data: 0
     - Name: 
       Entry: 13
       Data: 
@@ -143,13 +152,13 @@ MonoBehaviour:
       Data: 160
     - Name: 
       Entry: 3
-      Data: 1
+      Data: 200
     - Name: 
       Entry: 3
-      Data: 2
+      Data: 220
     - Name: 
       Entry: 3
-      Data: 3
+      Data: 260
     - Name: 
       Entry: 13
       Data: 
@@ -164,16 +173,16 @@ MonoBehaviour:
       Data: 4
     - Name: 
       Entry: 4
-      Data: 0.94
+      Data: 0.5
     - Name: 
       Entry: 4
-      Data: 0.03
+      Data: 0.3
     - Name: 
       Entry: 4
-      Data: 0.02
+      Data: 0.15
     - Name: 
       Entry: 4
-      Data: 0.01
+      Data: 0.05
     - Name: 
       Entry: 13
       Data: 
@@ -256,97 +265,28 @@ MonoBehaviour:
     time: 210
   dailyChallengeRewardMilestones:
   - clearLevelNeed: 1
-    hasFirstReward: 0
-    firstRewards: []
     rewards:
-    - RewardType: 0
-      BoosterType: 0
-      CurrencyType: 0
-      CharacterType: 0
-      Amount: 3
-  - clearLevelNeed: 3
-    hasFirstReward: 0
-    firstRewards: []
+    - currencyType: 0
+      quantity: 300
+  - clearLevelNeed: 2
     rewards:
-    - RewardType: 1
-      BoosterType: 0
-      CurrencyType: 0
-      CharacterType: 0
-      Amount: 200
+    - currencyType: 0
+      quantity: 500
+  - clearLevelNeed: 4
+    rewards:
+    - currencyType: 0
+      quantity: 600
   - clearLevelNeed: 7
-    hasFirstReward: 0
-    firstRewards: []
     rewards:
-    - RewardType: 1
-      BoosterType: 0
-      CurrencyType: 0
-      CharacterType: 0
-      Amount: 500
-    - RewardType: 0
-      BoosterType: 1
-      CurrencyType: 0
-      CharacterType: 0
-      Amount: 1
-  - clearLevelNeed: 15
-    hasFirstReward: 0
-    firstRewards: []
-    rewards:
-    - RewardType: 0
-      BoosterType: 0
-      CurrencyType: 0
-      CharacterType: 0
-      Amount: 3
-    - RewardType: 0
-      BoosterType: 1
-      CurrencyType: 0
-      CharacterType: 0
-      Amount: 1
-    - RewardType: 0
-      BoosterType: 2
-      CurrencyType: 0
-      CharacterType: 0
-      Amount: 1
-  - clearLevelNeed: 25
-    hasFirstReward: 1
-    firstRewards:
-    - RewardType: 2
-      BoosterType: 0
-      CurrencyType: 0
-      CharacterType: 5
-      Amount: 1
-    - RewardType: 1
-      BoosterType: 0
-      CurrencyType: 0
-      CharacterType: 0
-      Amount: 1000
-    - RewardType: 0
-      BoosterType: 0
-      CurrencyType: 0
-      CharacterType: 0
-      Amount: 3
-    rewards:
-    - RewardType: 0
-      BoosterType: 0
-      CurrencyType: 0
-      CharacterType: 0
-      Amount: 3
-    - RewardType: 1
-      BoosterType: 0
-      CurrencyType: 0
-      CharacterType: 0
-      Amount: 1000
-    - RewardType: 0
-      BoosterType: 1
-      CurrencyType: 0
-      CharacterType: 0
-      Amount: 3
+    - currencyType: 0
+      quantity: 800
   boosterConfigList:
   - type: 0
-    unlockAtLevel: 3
+    unlockAtLevel: 1
     goldPerBuyTen: 10
-    goldPerBuyRatio:
-      goldNeed: 3
-      itemsPerBuy: 300
+    ticketPerBuyRatio:
+      ticketNeed: 1
+      itemsPerBuy: 3
     UIResourceConfig:
       Name: Undo
       MainIconSprite: {fileID: 0}
@@ -354,8 +294,8 @@ MonoBehaviour:
   - type: 1
     unlockAtLevel: 7
     goldPerBuyTen: 10
-    goldPerBuyRatio:
-      goldNeed: 500
+    ticketPerBuyRatio:
+      ticketNeed: 1
       itemsPerBuy: 1
     UIResourceConfig:
       Name: Push Hint
@@ -364,9 +304,9 @@ MonoBehaviour:
   - type: 2
     unlockAtLevel: 6
     goldPerBuyTen: 10
-    goldPerBuyRatio:
-      goldNeed: 1
-      itemsPerBuy: 300
+    ticketPerBuyRatio:
+      ticketNeed: 1
+      itemsPerBuy: 1
     UIResourceConfig:
       Name: Grow Tree
       MainIconSprite: {fileID: 0}
@@ -374,9 +314,9 @@ MonoBehaviour:
   - type: 3
     unlockAtLevel: 3
     goldPerBuyTen: 10
-    goldPerBuyRatio:
-      goldNeed: 0
-      itemsPerBuy: 0
+    ticketPerBuyRatio:
+      ticketNeed: 1
+      itemsPerBuy: 1
     UIResourceConfig:
       Name: Reset Island
       MainIconSprite: {fileID: 0}

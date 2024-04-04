@@ -21,14 +21,14 @@ namespace HControls
         
         private void Awake()
         {
-            timerList.Add(Constants.HOLD_TOUCH_TIME);
-            actions.Add(() =>
-            {
-                if (isHolding)
-                {
-                    CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera, Constants.ZOOM_OUT_TIME);
-                }
-            });
+            // timerList.Add(Constants.HOLD_TOUCH_TIME);
+            // actions.Add(() =>
+            // {
+            //     if (isHolding)
+            //     {
+            //         CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera, Constants.ZOOM_OUT_TIME);
+            //     }
+            // });
         }
 
         public void OnInit(float time, Action pointerDownAction, Action pointerUpAction, Action holdAction)

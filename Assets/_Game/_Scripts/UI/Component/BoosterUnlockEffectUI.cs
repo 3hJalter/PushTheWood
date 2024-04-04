@@ -17,16 +17,20 @@ namespace _Game._Scripts.UIs.Component
         [SerializeField] private OverlayScreen overlay;
         [SerializeField] private float jumpPower = 20;
         [SerializeField] private float jumpDuration = 1;
+        [SerializeField] private float endScaleValue = 0.75f;
         [SerializeField] private Ease moveEase = Ease.OutQuad;
         [SerializeField] private Ease scaleEase = Ease.OutQuad;
         [SerializeField] private RectTransform icon;
+        [SerializeField] private Image iconImage;
         [SerializeField] private Image boosterImage;
+        [SerializeField] private GameObject boosterAmountGO;
         [SerializeField] private TextMeshProUGUI boosterAmount;
         private BoosterButton _boosterButton;
         private Vector3 _initIconScale;
         [SerializeField] private BoosterType test;
 
         [SerializeField] private List<Sprite> boosterIcon;
+        [SerializeField] private List<Sprite> boosterLayoutIcon;
         
         
         private Vector3 _initPosition;
@@ -59,8 +63,8 @@ namespace _Game._Scripts.UIs.Component
             Sequence s = DOTween.Sequence();
             
             s.Append(Tf.DOJump(boosterButtonRect.position, jumpPower, 1,  jumpDuration).SetEase(moveEase))
-                .Join(icon.DOScaleX(1, jumpDuration).SetEase(scaleEase))
-                .Join(icon.DOScaleY(1, jumpDuration).SetEase(scaleEase))
+                .Join(icon.DOScaleX(endScaleValue, jumpDuration).SetEase(scaleEase))
+                .Join(icon.DOScaleY(endScaleValue, jumpDuration).SetEase(scaleEase))
                 .OnComplete(() =>
             {
                 _boosterButton.gameObject.SetActive(true);
@@ -86,6 +90,16 @@ namespace _Game._Scripts.UIs.Component
                 BoosterType.GrowTree => 3.ToString(),
                 _ => 0.ToString()
             };
+            if (type is BoosterType.Undo)
+            {
+                boosterAmountGO.SetActive(false);
+                iconImage.sprite = boosterLayoutIcon[1]; // Undo Icon LAYOUT -> SPECIAL CASE
+            }
+            else
+            {
+                boosterAmountGO.SetActive(true);
+                iconImage.sprite = boosterLayoutIcon[0]; // Normal Icon LAYOUT
+            }
         }
         
         private static BoosterButton GetBoosterButton(BoosterType type)

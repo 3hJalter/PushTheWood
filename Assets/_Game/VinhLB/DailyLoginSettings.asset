@@ -39,10 +39,10 @@ MonoBehaviour:
       Data: 2|VinhLB.Reward, Assembly-CSharp
     - Name: RewardType
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: BoosterType
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: CurrencyType
       Entry: 3
       Data: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
       Data: 0
     - Name: Amount
       Entry: 3
-      Data: 3
+      Data: 200
     - Name: 
       Entry: 8
       Data: 
@@ -117,7 +117,7 @@ MonoBehaviour:
       Data: 0
     - Name: Amount
       Entry: 3
-      Data: 100
+      Data: 300
     - Name: 
       Entry: 8
       Data: 
@@ -150,7 +150,7 @@ MonoBehaviour:
       Data: 0
     - Name: Amount
       Entry: 3
-      Data: 2
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
@@ -183,7 +183,7 @@ MonoBehaviour:
       Data: 0
     - Name: Amount
       Entry: 3
-      Data: 200
+      Data: 300
     - Name: 
       Entry: 8
       Data: 
@@ -198,19 +198,40 @@ MonoBehaviour:
       Data: 11|VinhLB.Reward[], Assembly-CSharp
     - Name: 
       Entry: 12
-      Data: 1
+      Data: 2
     - Name: 
       Entry: 7
       Data: 12|VinhLB.Reward, Assembly-CSharp
     - Name: RewardType
       Entry: 3
-      Data: 1
+      Data: 0
     - Name: BoosterType
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: CurrencyType
       Entry: 3
+      Data: 0
+    - Name: CharacterType
+      Entry: 3
+      Data: 0
+    - Name: Amount
+      Entry: 3
       Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 13|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 0
+    - Name: BoosterType
+      Entry: 3
+      Data: 2
+    - Name: CurrencyType
+      Entry: 3
+      Data: 0
     - Name: CharacterType
       Entry: 3
       Data: 0
@@ -228,13 +249,13 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 13|VinhLB.Reward[], Assembly-CSharp
+      Data: 14|VinhLB.Reward[], Assembly-CSharp
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 14|VinhLB.Reward, Assembly-CSharp
+      Data: 15|VinhLB.Reward, Assembly-CSharp
     - Name: RewardType
       Entry: 3
       Data: 2
@@ -267,20 +288,20 @@ MonoBehaviour:
       Data: 
     - Name: RewardsList
       Entry: 7
-      Data: 15|System.Collections.Generic.List`1[[VinhLB.Reward[], Assembly-CSharp]],
+      Data: 16|System.Collections.Generic.List`1[[VinhLB.Reward[], Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
       Data: 7
     - Name: 
       Entry: 7
-      Data: 16|VinhLB.Reward[], Assembly-CSharp
+      Data: 17|VinhLB.Reward[], Assembly-CSharp
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 17|VinhLB.Reward, Assembly-CSharp
+      Data: 18|VinhLB.Reward, Assembly-CSharp
     - Name: RewardType
       Entry: 3
       Data: 1
@@ -289,13 +310,13 @@ MonoBehaviour:
       Data: 18446744073709551615
     - Name: CurrencyType
       Entry: 3
-      Data: 1
+      Data: 0
     - Name: CharacterType
       Entry: 3
       Data: 0
     - Name: Amount
       Entry: 3
-      Data: 1
+      Data: 200
     - Name: 
       Entry: 8
       Data: 
@@ -307,67 +328,34 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 18|VinhLB.Reward[], Assembly-CSharp
+      Data: 19|VinhLB.Reward[], Assembly-CSharp
     - Name: 
       Entry: 12
       Data: 2
-    - Name: 
-      Entry: 7
-      Data: 19|VinhLB.Reward, Assembly-CSharp
-    - Name: RewardType
-      Entry: 3
-      Data: 1
-    - Name: BoosterType
-      Entry: 3
-      Data: 0
-    - Name: CurrencyType
-      Entry: 3
-      Data: 1
-    - Name: CharacterType
-      Entry: 3
-      Data: 0
-    - Name: Amount
-      Entry: 3
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: 
       Entry: 7
       Data: 20|VinhLB.Reward, Assembly-CSharp
     - Name: RewardType
       Entry: 3
-      Data: 1
+      Data: 0
     - Name: BoosterType
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: CurrencyType
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: CharacterType
       Entry: 3
       Data: 0
     - Name: Amount
       Entry: 3
-      Data: 30
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 21|VinhLB.Reward[], Assembly-CSharp
-    - Name: 
-      Entry: 12
       Data: 1
     - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
       Entry: 7
-      Data: 22|VinhLB.Reward, Assembly-CSharp
+      Data: 21|VinhLB.Reward, Assembly-CSharp
     - Name: RewardType
       Entry: 3
       Data: 1
@@ -382,7 +370,7 @@ MonoBehaviour:
       Data: 0
     - Name: Amount
       Entry: 3
-      Data: 60
+      Data: 300
     - Name: 
       Entry: 8
       Data: 
@@ -394,16 +382,16 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 23|VinhLB.Reward[], Assembly-CSharp
+      Data: 22|VinhLB.Reward[], Assembly-CSharp
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 24|VinhLB.Reward, Assembly-CSharp
+      Data: 23|VinhLB.Reward, Assembly-CSharp
     - Name: RewardType
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: BoosterType
       Entry: 3
       Data: 0
@@ -415,31 +403,52 @@ MonoBehaviour:
       Data: 0
     - Name: Amount
       Entry: 3
+      Data: 500
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 24|VinhLB.Reward[], Assembly-CSharp
+    - Name: 
+      Entry: 12
       Data: 2
     - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
       Entry: 7
-      Data: 25|VinhLB.Reward[], Assembly-CSharp
-    - Name: 
-      Entry: 12
+      Data: 25|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 0
+    - Name: BoosterType
+      Entry: 3
       Data: 1
+    - Name: CurrencyType
+      Entry: 3
+      Data: 0
+    - Name: CharacterType
+      Entry: 3
+      Data: 0
+    - Name: Amount
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 7
       Data: 26|VinhLB.Reward, Assembly-CSharp
     - Name: RewardType
       Entry: 3
-      Data: 1
+      Data: 0
     - Name: BoosterType
       Entry: 3
-      Data: 0
+      Data: 2
     - Name: CurrencyType
       Entry: 3
       Data: 0
@@ -448,7 +457,7 @@ MonoBehaviour:
       Data: 0
     - Name: Amount
       Entry: 3
-      Data: 60
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
@@ -481,7 +490,7 @@ MonoBehaviour:
       Data: 0
     - Name: Amount
       Entry: 3
-      Data: 1
+      Data: 500
     - Name: 
       Entry: 8
       Data: 
@@ -496,7 +505,7 @@ MonoBehaviour:
       Data: 29|VinhLB.Reward[], Assembly-CSharp
     - Name: 
       Entry: 12
-      Data: 3
+      Data: 1
     - Name: 
       Entry: 7
       Data: 30|VinhLB.Reward, Assembly-CSharp
@@ -514,13 +523,46 @@ MonoBehaviour:
       Data: 0
     - Name: Amount
       Entry: 3
-      Data: 30
+      Data: 500
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
     - Name: 
       Entry: 8
       Data: 
     - Name: 
       Entry: 7
-      Data: 31|VinhLB.Reward, Assembly-CSharp
+      Data: 31|VinhLB.Reward[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 32|VinhLB.Reward, Assembly-CSharp
+    - Name: RewardType
+      Entry: 3
+      Data: 1
+    - Name: BoosterType
+      Entry: 3
+      Data: 0
+    - Name: CurrencyType
+      Entry: 3
+      Data: 0
+    - Name: CharacterType
+      Entry: 3
+      Data: 0
+    - Name: Amount
+      Entry: 3
+      Data: 600
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 33|VinhLB.Reward, Assembly-CSharp
     - Name: RewardType
       Entry: 3
       Data: 0
@@ -541,13 +583,13 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 32|VinhLB.Reward, Assembly-CSharp
+      Data: 34|VinhLB.Reward, Assembly-CSharp
     - Name: RewardType
       Entry: 3
       Data: 0
     - Name: BoosterType
       Entry: 3
-      Data: 3
+      Data: 2
     - Name: CurrencyType
       Entry: 3
       Data: 0

@@ -1494,6 +1494,7 @@ GameObject:
   - component: {fileID: 1824299030540152753}
   - component: {fileID: 1824299030540152755}
   - component: {fileID: 1824299030540152756}
+  - component: {fileID: 3318249386417287253}
   - component: {fileID: 352794305399869245}
   m_Layer: 5
   m_Name: Canvas_PopupDailyChallenge
@@ -1574,6 +1575,26 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!95 &3318249386417287253
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824299030540152758}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ea0d3738208b34645a1010916f8a698b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!114 &352794305399869245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1587,8 +1608,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDestroyOnClose: 0
-  useAnimator: 0
-  animator: {fileID: 0}
+  useAnimator: 1
+  animator: {fileID: 3318249386417287253}
   panel: {fileID: 7475965432780403616}
   dailyChallengeSliderProgress: {fileID: 2728723464405536549}
   dailyChallengeRewardButtons:

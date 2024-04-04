@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d40ac0e781514afd8174662b8fe382e3, type: 3}
-  m_Name: TC4
+  m_Script: {fileID: 11500000, guid: 5b090927d56847eca33a14cc967f178b, type: 3}
+  m_Name: TC6
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,6 +21,5 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  tutorialScreens:
-  - {fileID: 3370214023908611334, guid: 651f790757ed1924c88c34a6181042ab, type: 3}
+  tutorialScreens: []
   currentScreen: {fileID: 0}

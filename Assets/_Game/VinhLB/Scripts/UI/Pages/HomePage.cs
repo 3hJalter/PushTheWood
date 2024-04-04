@@ -259,6 +259,22 @@ namespace VinhLB
             int levelIndex = LevelManager.Ins.NormalLevelIndex;
             _levelText.text = $"Level {levelIndex + 1}";
 
+            #region Notif
+
+            int dailyRewardNotificationAmount = DailyRewardManager.Ins.IsTodayRewardObtained ? 0 : 1;
+            _dailyRewardButton.SetNotificationAmount(dailyRewardNotificationAmount);
+
+            int dailyChallengeNotificationAmount = DataManager.Ins.IsClearAllDailyChallenge() &&
+                                                   DataManager.Ins.IsCollectedAllDailyChallengeReward()
+                ? 0
+                : 1;
+            _dailyChallengeButton.SetNotificationAmount(dailyChallengeNotificationAmount);
+
+            int secretMapNotificationAmount = DataManager.Ins.IsClearAllSecretLevel() ? 0 : 1;
+            _secretMapButton.SetNotificationAmount(secretMapNotificationAmount);
+            
+            #endregion
+            
             if (levelIndex == DataManager.Ins.CountNormalLevel - 1)
             {
                 _levelNormalFrame.color = _lastLevelNormalColor;
@@ -286,18 +302,6 @@ namespace VinhLB
                     _levelNormalFrame.color = _hardLevelNormalColor;
                     break;
             }
-
-            int dailyRewardNotificationAmount = DailyRewardManager.Ins.IsTodayRewardObtained ? 0 : 1;
-            _dailyRewardButton.SetNotificationAmount(dailyRewardNotificationAmount);
-
-            int dailyChallengeNotificationAmount = DataManager.Ins.IsClearAllDailyChallenge() &&
-                                                   DataManager.Ins.IsCollectedAllDailyChallengeReward()
-                ? 0
-                : 1;
-            _dailyChallengeButton.SetNotificationAmount(dailyChallengeNotificationAmount);
-
-            int secretMapNotificationAmount = DataManager.Ins.IsClearAllSecretLevel() ? 0 : 1;
-            _secretMapButton.SetNotificationAmount(secretMapNotificationAmount);
         }
 
         public void ShowDailyChallengeButton(bool isShow)
