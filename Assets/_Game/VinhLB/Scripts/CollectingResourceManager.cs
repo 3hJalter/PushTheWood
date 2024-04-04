@@ -8,6 +8,7 @@ using AudioEnum;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace VinhLB
@@ -42,9 +43,10 @@ namespace VinhLB
         [SerializeField]
         private CollectingResourceConfig _collectingUICoinConfig;
 
-        [Title("UI Ad Tickets")]
+        [FormerlySerializedAs("_collectingUIAdTicketConfig")]
+        [Title("UI Hearts")]
         [SerializeField]
-        private CollectingResourceConfig _collectingUIAdTicketConfig;
+        private CollectingResourceConfig _collectingUIHeartConfig;
 
         [Title("UI Reward Keys")]
         [SerializeField]
@@ -78,17 +80,17 @@ namespace VinhLB
                 eachCompleted, allCompleted);
         }
 
-        public void SpawnCollectingUIAdTickets(int amount, Vector3 startPosition, Transform endPoint,
+        public void SpawnCollectingUIHearts(int amount, Vector3 startPosition, Transform endPoint,
             Action<float> eachCompleted = null, Action allCompleted = null)
         {
             UpdateComponents();
 
-            if (_collectingUIAdTicketConfig.CollectingResourceParentRectTF == null)
+            if (_collectingUIHeartConfig.CollectingResourceParentRectTF == null)
             {
-                _collectingUIAdTicketConfig.CollectingResourceParentRectTF = _overlayScreen.UIAdTicketParentRectTF;
+                _collectingUIHeartConfig.CollectingResourceParentRectTF = _overlayScreen.UIAdTicketParentRectTF;
             }
 
-            SpawnCollectingUIResource(_collectingUIAdTicketConfig, amount, startPosition, endPoint,
+            SpawnCollectingUIResource(_collectingUIHeartConfig, amount, startPosition, endPoint,
                 eachCompleted, allCompleted);
         }
 

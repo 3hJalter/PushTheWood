@@ -22,11 +22,13 @@ namespace VinhLB
         [SerializeField]
         private Transform _goldIconTF;
         [SerializeField]
-        private TMP_Text _adTicketValueText;
+        private TMP_Text _heartValueText;
         [SerializeField]
-        private Transform _adTicketIconTF;
+        private Transform _heartIconTF;
         [SerializeField]
         private HButton _addButton;
+        [SerializeField]
+        private HButton[] _buyHeartButtons;
 
         private Coroutine _delayOpenCoroutine;
         
@@ -38,12 +40,19 @@ namespace VinhLB
             GameManager.Ins.RegisterListenerEvent(EventID.OnChangeGold,
                 data => ChangeGoldValue((ResourceChangeData)data));
             GameManager.Ins.RegisterListenerEvent(EventID.OnChangeHeart,
-                data => ChangeAdTicketValue((ResourceChangeData)data));
+                data => ChangeHearthValue((ResourceChangeData)data));
 
             _addButton.onClick.AddListener(() =>
             {
                 UIManager.Ins.OpenUI<NotificationPopup>(Constants.FEATURE_COMING_SOON);
             });
+            for (int i = 0; i < _buyHeartButtons.Length; i++)
+            {
+                _buyHeartButtons[i].onClick.AddListener(() =>
+                {
+                    UIManager.Ins.OpenUI<NotificationPopup>(Constants.FEATURE_COMING_SOON);
+                });   
+            }
         }
 
         private void OnDestroy()
@@ -51,7 +60,7 @@ namespace VinhLB
             GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeGold,
                 data => ChangeGoldValue((ResourceChangeData)data));
             GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeHeart,
-                data => ChangeAdTicketValue((ResourceChangeData)data));
+                data => ChangeHearthValue((ResourceChangeData)data));
         }
 
         public override void Setup(object param = null)
@@ -72,7 +81,7 @@ namespace VinhLB
             int normalizedValue = Mathf.RoundToInt(GameManager.Ins.SmoothGold);
             _goldValueText.text = normalizedValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
             normalizedValue = Mathf.RoundToInt(GameManager.Ins.SmoothHeart);
-            _adTicketValueText.text = normalizedValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+            _heartValueText.text = normalizedValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
         }
 
         public override void Open(object param = null)
@@ -126,7 +135,7 @@ namespace VinhLB
             }
         }
 
-        private void ChangeAdTicketValue(ResourceChangeData data)
+        private void ChangeHearthValue(ResourceChangeData data)
         {
             if (data.ChangedAmount > 0)
             {
@@ -142,7 +151,7 @@ namespace VinhLB
             }
             else
             {
-                _adTicketValueText.text =
+                _heartValueText.text =
                     data.NewValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
             }
 
@@ -151,13 +160,13 @@ namespace VinhLB
                 int collectingHeartAmount = Mathf.Min((int)data.ChangedAmount, Constants.MAX_UI_UNIT);
                 Vector3 spawnPosition = data.Source as Vector3? ??
                                         CameraManager.Ins.ViewportToWorldPoint(new Vector3(0.5f, 0.5f));
-                CollectingResourceManager.Ins.SpawnCollectingUIAdTickets(collectingHeartAmount, spawnPosition,
-                    _adTicketIconTF,
+                CollectingResourceManager.Ins.SpawnCollectingUIHearts(collectingHeartAmount, spawnPosition,
+                    _heartIconTF,
                     (progress) =>
                     {
                         GameManager.Ins.SmoothHeart += data.ChangedAmount / collectingHeartAmount;
                         int normalizedValue = Mathf.RoundToInt(GameManager.Ins.SmoothHeart);
-                        _adTicketValueText.text = normalizedValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
+                        _heartValueText.text = normalizedValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
                     });
             }
         }

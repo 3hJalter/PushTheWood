@@ -16,6 +16,8 @@ namespace VinhLB
         [SerializeField]
         private Button _claimButton;
         [SerializeField]
+        private Button _fakeClaimButton;
+        [SerializeField]
         private List<DailyRewardItem> _dailyRewardItemList;
 
         private void Awake()
@@ -40,10 +42,17 @@ namespace VinhLB
         public override void Setup(object param = null)
         {
             base.Setup(param);
-            
+
+            UpdateVisual();
+        }
+
+        private void UpdateVisual()
+        {
             SetupDailyRewards();
 
-            _claimButton.interactable = !DailyRewardManager.Ins.IsTodayRewardObtained;
+            bool claimable = !DailyRewardManager.Ins.IsTodayRewardObtained;
+            _claimButton.gameObject.SetActive(claimable);
+            _fakeClaimButton.gameObject.SetActive(!claimable);
         }
 
         private void SetupDailyRewards()
@@ -61,9 +70,7 @@ namespace VinhLB
 
         private void DailyRewardManager_OnDailyRewardParamsChanged()
         {
-            SetupDailyRewards();
-            
-            _claimButton.interactable = !DailyRewardManager.Ins.IsTodayRewardObtained;
+            UpdateVisual();
         }
     }
 }
