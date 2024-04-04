@@ -309,13 +309,13 @@ namespace _Game.GameGrid
 
         public void OnWin()
         {
+            goldCount += GetEndGameGold();
             switch (_currentLevel.LevelType)
             {
                 case LevelType.Normal:
                     // TEMPORARY: Add reward if the normal level is defeat enemy
                     if (CurrentLevel.LevelWinCondition == LevelWinCondition.DefeatAllEnemy)
                     {
-                        goldCount += DataManager.Ins.ConfigData.finalEnemyGoldReward;
                         CollectingResourceManager.Ins.SpawnCollectingRewardKey(1, player.Tf);
                         KeyRewardCount += 1;
                         if (CurrentLevel.Index >= DataManager.Ins.ConfigData.unlockSecretLevelAtLevelIndex)
@@ -353,6 +353,34 @@ namespace _Game.GameGrid
             // Future: Add reward collected in-game
         }
 
+        private int GetEndGameGold()
+        {
+            switch (_currentLevel.LevelType)
+            {
+                case LevelType.Normal:
+                    switch (_currentLevel.LevelNormalType)
+                    {
+                        case LevelNormalType.Easy:
+                            return DataManager.Ins.ConfigData.easyLevelGoldReward;
+                        case LevelNormalType.Medium:
+                            return DataManager.Ins.ConfigData.mediumLevelGoldReward; 
+                        case LevelNormalType.Hard:
+                            return DataManager.Ins.ConfigData.hardLevelGoldReward;
+                        case LevelNormalType.None:
+                        default:
+                            return DataManager.Ins.ConfigData.easyLevelGoldReward;
+                    }
+                    break;
+                case LevelType.Secret:
+                    return DataManager.Ins.ConfigData.secretLevelGoldReward;
+                    case LevelType.DailyChallenge:
+                    return DataManager.Ins.ConfigData.dailyChallengeGoldReward;
+                case LevelType.None:
+                default:
+                    return 0;
+            }
+        }
+        
         public void OnGoLevel(LevelType type, int index, bool needInit = true)
         {
             // Dev: Currently make it work only for daily challenge
