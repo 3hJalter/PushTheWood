@@ -83,6 +83,7 @@ namespace _Game.DesignPattern
         OnChangeRewardKeys = 16,
         OnChangeLevelProgress = 17,
         OnShowTutorialInMenu = 18,
+        OnHeartTimeChange = 19,
 
         //NOTE: Ads
         OnInterAdsStepCount = 10000,

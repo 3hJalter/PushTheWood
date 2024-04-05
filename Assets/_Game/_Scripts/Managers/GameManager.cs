@@ -209,6 +209,14 @@ namespace _Game.Managers
             int regenHeart = offlineSecond / DataManager.Ins.ConfigData.regenHeartTime;
             GainHeart(regenHeart);
             currentRegenHeartTime = offlineSecond % DataManager.Ins.ConfigData.regenHeartTime;
+            if(Heart >= DataManager.Ins.ConfigData.maxHeart)
+            {
+                PostEvent(EventID.OnHeartTimeChange, -1);
+            }
+            else
+            {
+                PostEvent(EventID.OnHeartTimeChange, currentRegenHeartTime);
+            }
         }
         public void GainHeart(int value, object source = null)
         {
@@ -221,16 +229,18 @@ namespace _Game.Managers
             {
                 heartTimer.Stop();
                 currentRegenHeartTime = 0;
+                PostEvent(EventID.OnHeartTimeChange, -1);
             }
             else
-            {
-                if(!heartTimer.IsStart)
+            {               
+                if (!heartTimer.IsStart)
                     heartTimer.Start(1, UpdateHeartCount, true);
             }
             
             void UpdateHeartCount()
             {
                 currentRegenHeartTime += 1;
+                PostEvent(EventID.OnHeartTimeChange, currentRegenHeartTime);
                 if (currentRegenHeartTime >= DataManager.Ins.ConfigData.regenHeartTime)
                 {
                     currentRegenHeartTime -= DataManager.Ins.ConfigData.regenHeartTime;

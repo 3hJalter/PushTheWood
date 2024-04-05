@@ -4,6 +4,7 @@ using System.Globalization;
 using _Game.DesignPattern;
 using _Game.Managers;
 using _Game.UIs.Popup;
+using AudioEnum;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -24,6 +25,8 @@ namespace VinhLB
         [SerializeField]
         private TMP_Text _heartValueText;
         [SerializeField]
+        private TMP_Text _regenHeartTime;
+        [SerializeField]
         private Transform _heartIconTF;
         [SerializeField]
         private HButton _addButton;
@@ -31,7 +34,7 @@ namespace VinhLB
         private HButton[] _buyHeartButtons;
 
         private Coroutine _delayOpenCoroutine;
-        
+
         private event Action _delayCollectingGold;
         private event Action _delayCollectingHearts;
 
@@ -40,7 +43,9 @@ namespace VinhLB
             GameManager.Ins.RegisterListenerEvent(EventID.OnChangeGold,
                 data => ChangeGoldValue((ResourceChangeData)data));
             GameManager.Ins.RegisterListenerEvent(EventID.OnChangeHeart,
-                data => ChangeHearthValue((ResourceChangeData)data));
+                data => ChangeHeartValue((ResourceChangeData)data));
+            GameManager.Ins.RegisterListenerEvent(EventID.OnHeartTimeChange,
+                time => ChangeHeartTime((int)time));
 
             _addButton.onClick.AddListener(() =>
             {
@@ -51,7 +56,7 @@ namespace VinhLB
                 _buyHeartButtons[i].onClick.AddListener(() =>
                 {
                     UIManager.Ins.OpenUI<BuyMorePopup>();
-                });   
+                });
             }
         }
 
@@ -60,7 +65,9 @@ namespace VinhLB
             GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeGold,
                 data => ChangeGoldValue((ResourceChangeData)data));
             GameManager.Ins.UnregisterListenerEvent(EventID.OnChangeHeart,
-                data => ChangeHearthValue((ResourceChangeData)data));
+                data => ChangeHeartValue((ResourceChangeData)data));
+            GameManager.Ins.UnregisterListenerEvent(EventID.OnHeartTimeChange,
+                time => ChangeHeartTime((int)time));
         }
 
         public override void Setup(object param = null)
@@ -135,7 +142,7 @@ namespace VinhLB
             }
         }
 
-        private void ChangeHearthValue(ResourceChangeData data)
+        private void ChangeHeartValue(ResourceChangeData data)
         {
             if (data.ChangedAmount > 0)
             {
@@ -143,6 +150,7 @@ namespace VinhLB
                 {
                     // _delayCollectingAdTickets += SpawnCollectingUIAdTickets;
                     GameManager.Ins.SmoothHeart += data.ChangedAmount;
+                    _heartValueText.transform.DOScale(Vector3.one * 1.5f, 0.15f).SetLoops(2, LoopType.Yoyo);
                 }
                 else
                 {
@@ -170,7 +178,20 @@ namespace VinhLB
                     });
             }
         }
-
+        private void ChangeHeartTime(int time)
+        {
+            if (time < 0)
+            {
+                _regenHeartTime.text = "FULL";
+            }
+            else
+            {
+                time = DataManager.Ins.ConfigData.regenHeartTime - time;
+                int second = time % 60;
+                int minute = time / 60;
+                _regenHeartTime.text = $"{minute:00}:{second:00}";
+            }          
+        }
         private IEnumerator DelayOpenCoroutine()
         {
             while (UIManager.Ins.IsOpened<TransitionScreen>())
