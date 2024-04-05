@@ -15,7 +15,6 @@ public class BannerAds : MonoBehaviour
         MAX = 0,
         ADSMOB = 1,
     }
-    string bannerAdUnitId = "6966fa233ec0364f"; // Retrieve the ID from your account
     string collapsibleBannerAdUnitId = "ca-app-pub-9819920607806935/7099802728";
     bool isBannerOpen = false;
     private bool isAdmobInited = false;
@@ -26,21 +25,6 @@ public class BannerAds : MonoBehaviour
     public bool IsBannerOpen => isBannerOpen;
     void Start()
     {
-        MaxSdkCallbacks.OnSdkInitializedEvent += (MaxSdkBase.SdkConfiguration sdkConfiguration) =>
-        {
-
-            // AppLovin SDK is initialized, start loading ads
-            // Banners are automatically sized to 320×50 on phones and 728×90 on tablets
-            // You may call the utility method MaxSdkUtils.isTablet() to help with view sizing adjustments
-            MaxSdk.CreateBanner(bannerAdUnitId, MaxSdkBase.BannerPosition.BottomCenter);
-            // Set background or background color for banners to be fully functional
-            MaxSdk.SetBannerBackgroundColor(bannerAdUnitId, Color.black);
-        };
-
-        MaxSdk.SetSdkKey("ZoNyqu_piUmpl33-qkoIfRp6MTZGW9M5xk1mb1ZIWK6FN9EBu0TXSHeprC3LMPQI7S3kTc1-x7DJGSV8S-gvFJ");
-        MaxSdk.SetUserId("USER_ID");
-        MaxSdk.InitializeSdk();
-
         MobileAds.Initialize(initStatus =>
         {
             DevLog.Log(DevId.Hung, initStatus.ToString());
@@ -55,9 +39,6 @@ public class BannerAds : MonoBehaviour
         currentBannerType = type;
         switch (type)
         {
-            case TYPE.MAX:
-                MaxSdk.ShowBanner(bannerAdUnitId);
-                break;
             case TYPE.ADSMOB:
                 Load();
                 break;
@@ -70,7 +51,6 @@ public class BannerAds : MonoBehaviour
         if (isBannerOpen)
         {
             isBannerOpen = false;
-            MaxSdk.HideBanner(bannerAdUnitId);
             if (bannerView != null)
             {
                 DevLog.Log(DevId.Hung, "Banner Hide");

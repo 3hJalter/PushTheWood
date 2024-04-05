@@ -71,6 +71,9 @@ namespace _Game.Managers
                 Interstitial.Load();
             };
             //GameManager.Ins.RegisterListenerEvent(EventID.OnInterAdsStepCount, OnInterAdsStepCount);
+            MaxSdk.SetSdkKey("ZoNyqu_piUmpl33-qkoIfRp6MTZGW9M5xk1mb1ZIWK6FN9EBu0TXSHeprC3LMPQI7S3kTc1-x7DJGSV8S-gvFJ");
+            MaxSdk.InitializeSdk();
+
             GameManager.Ins.RegisterListenerEvent(EventID.OnCheckShowInterAds, CheckShowInterAds);           
             MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent += OnRewardedAdRevenuePaidEvent;
 
@@ -88,9 +91,6 @@ namespace _Game.Managers
                 case BannerAds.TYPE.ADSMOB:
                     Banner.Show(type);
                     bannerTimer.Start(DataManager.Ins.ConfigData.reloadBannerTime, () => Banner.Show(type), true);
-                    break;
-                case BannerAds.TYPE.MAX:
-                    Banner.Show(type);
                     break;
             }
 
