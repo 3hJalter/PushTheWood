@@ -42,6 +42,7 @@ public class RewardedAds : MonoBehaviour
 
     public void Show(Action callback, _Game.Ads.Placement placement = _Game.Ads.Placement.None)
     {
+        OnClearReward();
         OnClearCallBack();
         OnCallBackAdReceivedRewardEvent = callback;
         this.placement = placement;
