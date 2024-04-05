@@ -46,12 +46,26 @@ namespace VinhLB
 
         private void OnBuyClick()
         {
-            UIManager.Ins.OpenUI<NotificationPopup>(Constants.FEATURE_COMING_SOON);
+            if (GameManager.Ins.TrySpendGold(DataManager.Ins.ConfigData.goldToBuyHeart))
+            {
+                GetHeart();
+            }
+            else
+            {
+                UIManager.Ins.OpenUI<NotificationPopup>("Not Enough Gold!");
+            }
+            
         }
 
         private void OnClaimClick()
         {
-            UIManager.Ins.OpenUI<NotificationPopup>(Constants.FEATURE_COMING_SOON);
+            AdsManager.Ins.RewardedAds.Show(GetHeart);
         }
+
+        private void GetHeart()
+        {
+            GameManager.Ins.GainHeart(1, this);
+        }
+
     }
 }

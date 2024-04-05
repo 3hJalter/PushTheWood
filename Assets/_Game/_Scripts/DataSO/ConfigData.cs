@@ -30,6 +30,9 @@ namespace _Game.Data
         public int maxHeart = 5;
         [FoldoutGroup("In Game")]
         public int regenHeartTime = 900;
+        [FoldoutGroup("In Game")]
+        public int goldToBuyHeart = 600;
+
         [FoldoutGroup("In Game/Time Per Level/Normal")]
         [InfoBox("Do not change the order of the list: Easy -> Medium -> Hard")]
         public List<TimePerNormalLevel> timePerNormalLevel = new()
