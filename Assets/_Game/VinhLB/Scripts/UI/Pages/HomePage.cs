@@ -97,32 +97,39 @@ namespace VinhLB
 
             _playButton.onClick.AddListener(() =>
             {
-                LevelManager.Ins.InitLevel();
-                UIManager.Ins.CloseAll();
-
-                TransitionScreen transitionScreen = UIManager.Ins.OpenUI<TransitionScreen>();
-                if (LevelManager.Ins.IsHardLevel)
+                if (GameManager.Ins.Heart <= 0)
                 {
-                    transitionScreen.OnOpenCallback += OpenActions;
-                    transitionScreen.OnCloseCallback += CloseActions;
-
-                    void OpenActions()
-                    {
-                        transitionScreen.OnOpenCallback -= OpenActions;
-
-                        CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera, 0f);
-                    }
-
-                    void CloseActions()
-                    {
-                        transitionScreen.OnCloseCallback -= CloseActions;
-
-                        UIManager.Ins.OpenUI<HardWarningScreen>();
-                    }
+                    UIManager.Ins.OpenUI<BuyMorePopup>();
                 }
                 else
                 {
-                    UIManager.Ins.OpenUI<InGameScreen>();
+                    LevelManager.Ins.InitLevel();
+                    UIManager.Ins.CloseAll();
+
+                    TransitionScreen transitionScreen = UIManager.Ins.OpenUI<TransitionScreen>();
+                    if (LevelManager.Ins.IsHardLevel)
+                    {
+                        transitionScreen.OnOpenCallback += OpenActions;
+                        transitionScreen.OnCloseCallback += CloseActions;
+
+                        void OpenActions()
+                        {
+                            transitionScreen.OnOpenCallback -= OpenActions;
+
+                            CameraManager.Ins.ChangeCamera(ECameraType.ZoomOutCamera, 0f);
+                        }
+
+                        void CloseActions()
+                        {
+                            transitionScreen.OnCloseCallback -= CloseActions;
+
+                            UIManager.Ins.OpenUI<HardWarningScreen>();
+                        }
+                    }
+                    else
+                    {
+                        UIManager.Ins.OpenUI<InGameScreen>();
+                    }
                 }
             });
             _dailyChallengeButton.AddListener(() => { UIManager.Ins.OpenUI<DailyChallengePopup>(); });

@@ -33,7 +33,7 @@ namespace VinhLB
         private Coroutine _delayOpenCoroutine;
         
         private event Action _delayCollectingGold;
-        private event Action _delayCollectingAdTickets;
+        private event Action _delayCollectingHearts;
 
         private void Awake()
         {
@@ -146,7 +146,7 @@ namespace VinhLB
                 }
                 else
                 {
-                    SpawnCollectingUIAdTickets();
+                    SpawnCollectingUIHearts();
                 }
             }
             else
@@ -155,7 +155,7 @@ namespace VinhLB
                     data.NewValue.ToString(Constants.VALUE_FORMAT, CultureInfo.InvariantCulture);
             }
 
-            void SpawnCollectingUIAdTickets()
+            void SpawnCollectingUIHearts()
             {
                 int collectingHeartAmount = Mathf.Min((int)data.ChangedAmount, Constants.MAX_UI_UNIT);
                 Vector3 spawnPosition = data.Source as Vector3? ??
@@ -183,10 +183,10 @@ namespace VinhLB
                 _delayCollectingGold.Invoke();
                 _delayCollectingGold = null;
             }
-            if (_delayCollectingAdTickets != null)
+            if (_delayCollectingHearts != null)
             {
-                _delayCollectingAdTickets?.Invoke();
-                _delayCollectingAdTickets = null;
+                _delayCollectingHearts?.Invoke();
+                _delayCollectingHearts = null;
             }
 
             _delayOpenCoroutine = null;

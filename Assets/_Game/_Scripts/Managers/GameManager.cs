@@ -112,7 +112,7 @@ namespace _Game.Managers
 
             #endregion
 
-            SmoothHeart = AdTickets;
+            SmoothHeart = Heart;
             SmoothGold = Gold;
             SmoothRewardKeys = CanClaimRewardChest ? DataManager.Ins.ConfigData.requireRewardKey : RewardKeys;
             SmoothLevelProgress = CanClaimLevelChest ? DataManager.Ins.ConfigData.requireLevelProgress : LevelProgress;
@@ -150,7 +150,7 @@ namespace _Game.Managers
         public int SecretLevelUnlock => _gameData.user.secretLevelUnlock;
         public int SecretMapPieces => _gameData.user.secretMapPieces;
         public int Gold => _gameData.user.gold;
-        public int AdTickets => _gameData.user.heart;
+        public int Heart => _gameData.user.heart;
         public int RewardKeys => _gameData.user.rewardChestKeys;
         public int LevelProgress => _gameData.user.levelChestProgress;
         public float SmoothGold { get; set; }
