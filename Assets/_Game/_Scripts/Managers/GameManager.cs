@@ -206,7 +206,14 @@ namespace _Game.Managers
             }
             int regenHeart = offlineSecond / DataManager.Ins.ConfigData.regenHeartTime;
             GainHeart(regenHeart);
-            currentRegenHeartTime = offlineSecond % DataManager.Ins.ConfigData.regenHeartTime;
+            if(Heart >= DataManager.Ins.ConfigData.maxHeart)
+            {
+                currentRegenHeartTime = 0;
+            }
+            else 
+            {
+                currentRegenHeartTime = offlineSecond % DataManager.Ins.ConfigData.regenHeartTime;
+            }
         }
         public void GainHeart(int value, object source = null)
         {
