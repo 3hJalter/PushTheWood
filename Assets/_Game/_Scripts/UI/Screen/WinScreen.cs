@@ -73,6 +73,7 @@ namespace _Game.UIs.Screen
             }
 
             UpdateVisual((Reward[])param);
+            DefineActionOnContinueButton();
         }
 
         public override void Open(object param = null)
@@ -126,6 +127,32 @@ namespace _Game.UIs.Screen
             }
         }
 
+        private void DefineActionOnContinueButton()
+        {
+            _continueButton.onClick.RemoveAllListeners();
+            // Hide the next level button if the current level is not Normal level
+            Level level = LevelManager.Ins.CurrentLevel;
+
+            if (level.LevelType is LevelType.Normal &&
+                level.Index < DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex - 1)
+            {
+                _onContinueClick = OnGoNextLevel;
+            }
+            else
+            {
+                if (AdsManager.Ins.IsCanShowInter)
+                {
+                    _onContinueClick = OnGoMenu;
+                }
+                else
+                {
+                    _onContinueClick = null;
+                    _continueButton.onClick.AddListener(OnGoMenu);
+                }
+            }
+            _continueButton.onClick.AddListener(() => OnContinueClick(_onContinueClick));
+        }
+        
         private void UpdateVisual(Reward[] rewards)
         {
             _contentImage.sprite = DataManager.Ins.UIResourceDatabase.WinScreenResourceConfigDict[
@@ -166,28 +193,6 @@ namespace _Game.UIs.Screen
             {
                 _rewardParentRectTF.gameObject.SetActive(false);
             }
-
-            // Hide the next level button if the current level is not Normal level
-            Level level = LevelManager.Ins.CurrentLevel;
-
-            if (level.LevelType is LevelType.Normal &&
-                level.Index < DataManager.Ins.ConfigData.unlockBonusChestAtLevelIndex - 1)
-            {
-                _onContinueClick = OnGoNextLevel;
-            }
-            else
-            {
-                if (AdsManager.Ins.IsCanShowInter)
-                {
-                    _onContinueClick = OnGoMenu;
-                }
-                else
-                {
-                    _onContinueClick = null;
-                    _continueButton.onClick.AddListener(OnGoMenu);
-                }
-            }
-            _continueButton.onClick.AddListener(() => OnContinueClick(_onContinueClick));
         }
 
         private void ChangeLayoutForBanner(object isBannerActive)

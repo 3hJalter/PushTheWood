@@ -52,9 +52,11 @@ SpriteAtlas:
   m_PackedSprites:
   - {fileID: 21300000, guid: 709178b9eeb05f54682d7b62c5316992, type: 3}
   - {fileID: 21300000, guid: b37f654d106e5bb46920daace212214c, type: 3}
+  - {fileID: 21300000, guid: eefc5abea3f3da2409161514fa19cdf1, type: 3}
   m_PackedSpriteNamesToIndex:
   - millie_avatar
   - weeny_avatar
+  - ollie_avatar
   m_RenderDataMap: {}
   m_Tag: UIAvatars
   m_IsVariant: 0
