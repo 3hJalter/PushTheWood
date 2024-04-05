@@ -9339,6 +9339,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2536484174366814806, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_Color.b
+      value: 0.5294118
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536484174366814806, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_Color.g
+      value: 0.6431373
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536484174366814806, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_Color.r
+      value: 0.85490197
+      objectReference: {fileID: 0}
+    - target: {fileID: 3189528027463550805, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fe5034b549bf7114081e69ec9314f93c, type: 3}
+    - target: {fileID: 4201913745696744887, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5e338aea225012f43aee61e275405e4c, type: 3}
     - target: {fileID: 5812754949031007684, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -9347,6 +9367,10 @@ PrefabInstance:
       propertyPath: m_TargetGraphic
       value: 
       objectReference: {fileID: 7481618703287303495}
+    - target: {fileID: 7650622561797931290, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 82ae1d62ce56fd64eb349ce342c11752, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
 --- !u!114 &2496586350047347260 stripped
@@ -10038,6 +10062,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2536484174366814806, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_Color.b
+      value: 0.5294118
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536484174366814806, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_Color.g
+      value: 0.6431373
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536484174366814806, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_Color.r
+      value: 0.854902
+      objectReference: {fileID: 0}
+    - target: {fileID: 3189528027463550805, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fe5034b549bf7114081e69ec9314f93c, type: 3}
+    - target: {fileID: 4201913745696744887, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5e338aea225012f43aee61e275405e4c, type: 3}
     - target: {fileID: 5812754949031007684, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -10046,6 +10090,14 @@ PrefabInstance:
       propertyPath: m_TargetGraphic
       value: 
       objectReference: {fileID: 1467416044240560053}
+    - target: {fileID: 7650622561797931290, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 82ae1d62ce56fd64eb349ce342c11752, type: 3}
+    - target: {fileID: 8703596225765654885, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
 --- !u!114 &1467416044240560053 stripped
@@ -10444,6 +10496,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2536484174366814806, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_Color.b
+      value: 0.5294118
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536484174366814806, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_Color.g
+      value: 0.6431373
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536484174366814806, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_Color.r
+      value: 0.85490197
+      objectReference: {fileID: 0}
+    - target: {fileID: 3189528027463550805, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fe5034b549bf7114081e69ec9314f93c, type: 3}
+    - target: {fileID: 4201913745696744887, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5e338aea225012f43aee61e275405e4c, type: 3}
     - target: {fileID: 5812754949031007684, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -10452,6 +10524,10 @@ PrefabInstance:
       propertyPath: m_TargetGraphic
       value: 
       objectReference: {fileID: 539384191315623492}
+    - target: {fileID: 7650622561797931290, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 82ae1d62ce56fd64eb349ce342c11752, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc4ca07ccb57a0748b55206252c7a7e0, type: 3}
 --- !u!114 &539384191315623492 stripped
