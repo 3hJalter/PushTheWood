@@ -188,7 +188,7 @@ public class GridMapDataGenerator : MonoBehaviour
         }
         // Create a new empty object
         GameObject levelObject = new(name);
-        _loadedLevel = new Level(levelTypeTemp, index, levelObject.transform);
+        _loadedLevel = new Level(levelTypeTemp, index, levelObject.transform, true);
         levelType = _loadedLevel.LevelType;
         winCondition = _loadedLevel.LevelWinCondition;
         levelNormalType = _loadedLevel.LevelNormalType;

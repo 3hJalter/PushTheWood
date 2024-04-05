@@ -325,7 +325,7 @@ namespace _Game.Managers
             if (LevelManager.Ins.IsSavePlayerPushStep) SavePushHint.Save();
             _pushHint.OnStopHint();
             timer.Stop();
-            UIManager.Ins.OpenUI<WinScreen>(OnWinGameReward());
+            UIManager.Ins.OpenUI<WinScreen>(GetWinGameRewards());
             GameManager.Ins.ChangeState(GameState.WinGame);
 
             #region ANALYSTIC
@@ -343,9 +343,13 @@ namespace _Game.Managers
             #endregion
         }
 
-        private Reward[] OnWinGameReward()
+        public Reward[] GetWinGameRewards(bool doubleGold = false)
         {
             int goldAmount = LevelManager.Ins.goldCount;
+            if (doubleGold)
+            {
+                goldAmount *= 2;
+            }
             int keyAmount = LevelManager.Ins.KeyRewardCount;
             int secretMapPieceAmount = LevelManager.Ins.SecretMapPieceCount;
             List<Reward> rewards = new();
