@@ -15,6 +15,29 @@ MonoBehaviour:
   m_Active: 0
   overrideRenderEvent: 0
   renderEvent: 0
+--- !u!114 &-4022875679087468506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d3f79408ff6441dbcf6487edb1514dc, type: 3}
+  m_Name: BlobShadowsRendererFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  _settings:
+    ShadowDistance: 11.4
+    ExtraShadowScaling: 1.75
+    ResolutionPerUnit: 8
+    ShadowFrustumPadding: 1
+    ShadowThreshold: -0.051
+    ShadowSmoothness: 0.86
+    BlendingMode: 0
+    FilterMode: 1
+    Material: {fileID: 2100000, guid: f9efedaa1be82e3419069de34d3f3a2d, type: 2}
 --- !u!114 &-2401278517541482506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,7 +143,8 @@ MonoBehaviour:
   - {fileID: -2401278517541482506}
   - {fileID: -806410875179746480}
   - {fileID: -2379589649603372801}
-  m_RendererFeatureMap: a33bd003931e81aba9319428ad1157edf6cf292be9f1acde503be6e1940dcff4ffd83140d2fff9de
+  - {fileID: -4022875679087468506}
+  m_RendererFeatureMap: a33bd003931e81aba9319428ad1157edf6cf292be9f1acde503be6e1940dcff4ffd83140d2fff9de26e06e4ce2df2bc8
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 0}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}

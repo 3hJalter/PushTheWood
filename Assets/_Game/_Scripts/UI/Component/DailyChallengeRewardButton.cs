@@ -92,12 +92,12 @@ namespace _Game._Scripts.UIs.Component
                 _popup.LastClickRewardButton = this;
                 rewardItemContainer.gameObject.SetActive(true);
                 Reward[] rewards = IsCanCollectFirstReward ? _milestone.firstRewards : _milestone.rewards;
-                for (int i = 0; i < _milestone.rewards.Length; i++)
+                for (int i = 0; i < rewards.Length; i++)
                 {
                     rewardItemPool.Spawn().Initialize(rewards[i]);
                 }
                 // add more width for container
-                _containerRect.sizeDelta = new Vector2(_initializeContainerWidth + (_milestone.rewards.Length - 1) * ITEM_WIDTH, _containerRect.sizeDelta.y);
+                _containerRect.sizeDelta = new Vector2(_initializeContainerWidth + (rewards.Length - 1) * ITEM_WIDTH, _containerRect.sizeDelta.y);
             }
             else if (State is DcRewardState.Unlock)
             {

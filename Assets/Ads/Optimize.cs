@@ -4,8 +4,7 @@ using UnityEngine;
 
 public static class Optimize
 {
-    [ContextMenu("Combine Meshes")]
-    private static Mesh CombineMeshes(List<MeshFilter> sourceMeshFilters)
+    public static Mesh CombineMeshes(List<MeshFilter> sourceMeshFilters)
     {
         var combine = new CombineInstance[sourceMeshFilters.Count];
 
@@ -16,7 +15,7 @@ public static class Optimize
         }
 
         var mesh = new Mesh();
-        mesh.CombineMeshes(combine);
+        mesh.CombineMeshes(combine, true, true);
         return mesh;
     }
 }

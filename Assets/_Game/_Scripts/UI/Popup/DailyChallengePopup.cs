@@ -172,7 +172,7 @@ namespace _Game.UIs.Popup
             };
         }
         
-        private void OnHandleCurrentButton()
+        private void OnHandleCurrentButton() 
         {
             // hide all interact btn
             notYetBtn.SetActive(false);
@@ -187,14 +187,7 @@ namespace _Game.UIs.Popup
                     break;
                 // if current button is un clear, show pay to play btn
                 case DailyChallengeButtonState.UnClear:
-                    if (DataManager.Ins.GameData.user.heart > 0)
-                    {
-                        payToPlayBtn.gameObject.SetActive(true);
-                    }
-                    else
-                    {
-                        adsToPlayBtn.gameObject.SetActive(true);
-                    }
+                    adsToPlayBtn.gameObject.SetActive(true);
                     break;
                 // if current button is clear, show replay btn
                 case DailyChallengeButtonState.Clear:
@@ -209,14 +202,7 @@ namespace _Game.UIs.Popup
                     }
                     else
                     {
-                        if (DataManager.Ins.GameData.user.heart > 0)
-                        {
-                            payToPlayBtn.gameObject.SetActive(true);
-                        }
-                        else
-                        {
-                            adsToPlayBtn.gameObject.SetActive(true);
-                        }
+                       adsToPlayBtn.gameObject.SetActive(true);
                     }
                     break;
             }
