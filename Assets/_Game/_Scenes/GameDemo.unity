@@ -971,13 +971,25 @@ PrefabInstance:
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 698761956, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+    - target: {fileID: 5485926010309425722, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7030098244278345250, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 7030098244278345250, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+    - target: {fileID: 7030098244420996755, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7030098245329535405, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030098245329535407, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 7030098245580201128, guid: 767a48930e52b9945a3e7fc5099ea1fb, type: 3}
       propertyPath: m_RootOrder
