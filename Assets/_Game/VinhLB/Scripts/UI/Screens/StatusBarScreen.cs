@@ -50,7 +50,7 @@ namespace VinhLB
             {
                 _buyHeartButtons[i].onClick.AddListener(() =>
                 {
-                    UIManager.Ins.OpenUI<NotificationPopup>(Constants.FEATURE_COMING_SOON);
+                    UIManager.Ins.OpenUI<BuyMorePopup>();
                 });   
             }
         }
