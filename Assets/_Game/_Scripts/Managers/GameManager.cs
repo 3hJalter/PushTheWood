@@ -3,6 +3,8 @@ using _Game._Scripts.Utilities;
 using _Game.Data;
 using _Game.DesignPattern;
 using _Game.Resource;
+using _Game.Utilities;
+using _Game.Utilities.Timer;
 using DG.Tweening;
 using UnityEngine;
 using VinhLB;
@@ -28,6 +30,8 @@ namespace _Game.Managers
         [SerializeField] private bool reduceScreenResolution;
 
         private GameData _gameData;
+        private STimer heartTimer;
+        private int currentRegenHeartTime;
 
         public float ReduceRatio { get; private set; }
         public bool IsReduce { get; private set; }
@@ -51,7 +55,7 @@ namespace _Game.Managers
                     Screen.SetResolution(newScreenWidth, maxScreenHeight, true);
                 }
             }
-
+            heartTimer = TimerManager.Ins.PopSTimer();
             VerifyGameData();
         }
 
@@ -75,11 +79,10 @@ namespace _Game.Managers
                     23, 24, 25, 26, 27, 28, 29, 30, 31
                 };
                 Database.SaveData(_gameData);
-            }    
+            }
             #endregion
-            
-            #region Handle day online
 
+            #region Handle day online         
             _gameData.user.currentDay = DateTime.UtcNow.Day;
             _gameData.user.daysInMonth = DateTime.DaysInMonth(DateTime.UtcNow.Year, DateTime.UtcNow.Month);
 
@@ -89,6 +92,10 @@ namespace _Game.Managers
             // get how many month pass since last login
             int month = (DateTime.UtcNow.Year - _gameData.user.lastTimeLogOut.Year) * 12 +
                         DateTime.UtcNow.Month - _gameData.user.lastTimeLogOut.Month;
+
+            #region Handle heart time
+            InitHeart();          
+            #endregion
 
             if (day > 0)
             {
@@ -107,7 +114,7 @@ namespace _Game.Managers
 
             #endregion
 
-            SmoothHeart = AdTickets;
+            SmoothHeart = Heart;
             SmoothGold = Gold;
             SmoothRewardKeys = CanClaimRewardChest ? DataManager.Ins.ConfigData.requireRewardKey : RewardKeys;
             SmoothLevelProgress = CanClaimLevelChest ? DataManager.Ins.ConfigData.requireLevelProgress : LevelProgress;
@@ -145,7 +152,7 @@ namespace _Game.Managers
         public int SecretLevelUnlock => _gameData.user.secretLevelUnlock;
         public int SecretMapPieces => _gameData.user.secretMapPieces;
         public int Gold => _gameData.user.gold;
-        public int AdTickets => _gameData.user.heart;
+        public int Heart => _gameData.user.heart;
         public int RewardKeys => _gameData.user.rewardChestKeys;
         public int LevelProgress => _gameData.user.levelChestProgress;
         public float SmoothGold { get; set; }
@@ -181,12 +188,52 @@ namespace _Game.Managers
         {
             TryModifyGold(value, source);
         }
-
+        private void InitHeart()
+        {
+            int day = (int)(DateTime.UtcNow.Date - _gameData.user.lastTimeLogOut.ToUniversalTime().Date)
+                .TotalDays;
+            int offlineSecond = (int)DateTime.UtcNow.TimeOfDay.TotalSeconds + _gameData.user.heartRemaningTime;
+            if (day > 0)
+            {
+                offlineSecond += day * 3600 * 24 + 86400 - _gameData.user.heartStopCountingSecond;
+            }
+            else
+            {
+                offlineSecond -= _gameData.user.heartStopCountingSecond;
+            }
+            int regenHeart = offlineSecond / DataManager.Ins.ConfigData.regenHeartTime;
+            GainHeart(regenHeart);
+            currentRegenHeartTime = offlineSecond % DataManager.Ins.ConfigData.regenHeartTime;
+        }
         public void GainHeart(int value, object source = null)
         {
             TryModifyHeart(value, source);
+            CheckRegenHeartTimer();
         }
-
+        private void CheckRegenHeartTimer()
+        {
+            if(Heart >= DataManager.Ins.ConfigData.maxHeart)
+            {
+                heartTimer.Stop();
+                currentRegenHeartTime = 0;
+            }
+            else
+            {
+                if(!heartTimer.IsStart)
+                    heartTimer.Start(1, UpdateHeartCount, true);
+            }
+            
+            void UpdateHeartCount()
+            {
+                currentRegenHeartTime += 1;
+                if (currentRegenHeartTime >= DataManager.Ins.ConfigData.regenHeartTime)
+                {
+                    currentRegenHeartTime -= DataManager.Ins.ConfigData.regenHeartTime;
+                    GainHeart(1);
+                }
+            }
+        }
+        
         public void GainRewardKeys(int amount, object source = null)
         {
             // _gameData.user.rewardChestKeys += amount;
@@ -295,7 +342,7 @@ namespace _Game.Managers
 
             ResourceChangeData data = new()
             {
-                ChangedAmount = amount,
+                ChangedAmount = newValue - _gameData.user.heart,
                 OldValue = _gameData.user.heart,
                 NewValue = newValue,
                 Source = source
@@ -380,13 +427,24 @@ namespace _Game.Managers
 
         private void OnApplicationPause(bool pauseStatus)
         {
-            if (!pauseStatus) return;
-            DataManager.Ins.Save();
+            if (pauseStatus)
+            {
+                _gameData.user.lastTimeLogOut = DateTime.Now;
+                _gameData.user.heartRemaningTime = currentRegenHeartTime;
+                _gameData.user.heartStopCountingSecond = (int)DateTime.UtcNow.TimeOfDay.TotalSeconds;
+                DataManager.Ins.Save();
+            }
+            else
+            {
+                InitHeart();
+            }
         }
 
         private void OnApplicationQuit()
         {
             _gameData.user.lastTimeLogOut = DateTime.Now;
+            _gameData.user.heartRemaningTime = currentRegenHeartTime;
+            _gameData.user.heartStopCountingSecond = (int)DateTime.UtcNow.TimeOfDay.TotalSeconds;
             DataManager.Ins.Save();
         }
 

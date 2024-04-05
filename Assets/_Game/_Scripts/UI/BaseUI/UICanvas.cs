@@ -29,6 +29,17 @@ public class UICanvas : MonoBehaviour
         }
     }
 
+    private Canvas _canvas;
+
+    protected Canvas Canvas
+    {
+        get
+        {
+            _canvas = _canvas ? _canvas : GetComponent<Canvas>();
+            return _canvas;
+        }
+    }
+
     public virtual void Show()
     {
         gameObject.SetActive(true);

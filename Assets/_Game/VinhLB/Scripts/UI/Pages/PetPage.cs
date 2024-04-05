@@ -8,6 +8,7 @@ using _Game.UIs.Popup;
 using _Game.Utilities;
 using TMPro;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 namespace VinhLB
@@ -102,6 +103,11 @@ namespace VinhLB
                     if (i == (int)CharacterType.Weeny)
                     {
                         _collectionItemList[i].SetLocked(true, "Receive in day 7");
+                        _collectionItemList[i].ShowPrice(false);
+                    }
+                    else if(i == (int)CharacterType.Millie)
+                    {
+                        _collectionItemList[i].SetLocked(true, "Receive in daily challenge");
                         _collectionItemList[i].ShowPrice(false);
                     }
                     else
