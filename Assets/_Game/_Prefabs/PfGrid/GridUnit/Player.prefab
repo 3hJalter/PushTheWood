@@ -480,6 +480,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RabbitLumber
       objectReference: {fileID: 0}
+    - target: {fileID: 8856181055264524260, guid: 1664d1af882ed5647a21baac9f19c6a5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1664d1af882ed5647a21baac9f19c6a5, type: 3}
 --- !u!1 &6007098353646220824 stripped
@@ -618,6 +622,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CatLumber
       objectReference: {fileID: 0}
+    - target: {fileID: 5499773127816172536, guid: ccc3a551bd27e2a4192ac40a6cabe1f7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ccc3a551bd27e2a4192ac40a6cabe1f7, type: 3}
 --- !u!4 &573079532446395039 stripped
@@ -690,6 +698,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GrayCatLumber
       objectReference: {fileID: 0}
+    - target: {fileID: 3214646169939905016, guid: 36d2cb090a13be241a3f3f02c0114020, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36d2cb090a13be241a3f3f02c0114020, type: 3}
 --- !u!95 &3532370511487048372 stripped
@@ -714,9 +726,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6362001040993170748}
     m_Modifications:
+    - target: {fileID: 3251210413607840688, guid: df736b36b53f5e1479cc4dfa30bf3c40, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.00074037886
+      objectReference: {fileID: 0}
+    - target: {fileID: 3251210413607840688, guid: df736b36b53f5e1479cc4dfa30bf3c40, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.051524375
+      objectReference: {fileID: 0}
     - target: {fileID: 4765684790871456153, guid: df736b36b53f5e1479cc4dfa30bf3c40, type: 3}
       propertyPath: m_Name
       value: GoldenLumber
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765684790871456153, guid: df736b36b53f5e1479cc4dfa30bf3c40, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5289703977568412451, guid: df736b36b53f5e1479cc4dfa30bf3c40, type: 3}
       propertyPath: m_RootOrder
@@ -834,6 +858,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BearLumber
       objectReference: {fileID: 0}
+    - target: {fileID: 9007009973571468545, guid: 8b26893f3bde1ce4ca5221bc084cee3d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b26893f3bde1ce4ca5221bc084cee3d, type: 3}
 --- !u!4 &3659285158010825348 stripped
@@ -905,6 +933,10 @@ PrefabInstance:
     - target: {fileID: 8981864126822035451, guid: 1bef2ffa4cd8e874daf1ce172a8b95b2, type: 3}
       propertyPath: m_Name
       value: DogModel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981864126822035451, guid: 1bef2ffa4cd8e874daf1ce172a8b95b2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1bef2ffa4cd8e874daf1ce172a8b95b2, type: 3}
