@@ -5232,7 +5232,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Add 1 Ad Ticket
+  m_text: Add 1 Heart
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}
   m_sharedMaterial: {fileID: 6655746723336473214, guid: 3f5cf7f9d5db847479b1165e141ff34c, type: 2}
@@ -5693,7 +5693,7 @@ GameObject:
   - component: {fileID: 4609692560812524117}
   - component: {fileID: 6639927890579248512}
   m_Layer: 5
-  m_Name: AddAdTicketsButton
+  m_Name: AddHeartButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

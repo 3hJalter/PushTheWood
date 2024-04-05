@@ -48,7 +48,7 @@ namespace _Game.Data
             
             // Income Progress Data
             public int gold;
-            public int heart;
+            public int heart = 5;
             public int heartRemaningTime;
             public int heartStopCountingSecond;
             public int rewardChestKeys;

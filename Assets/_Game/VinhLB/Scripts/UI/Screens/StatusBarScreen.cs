@@ -7,6 +7,7 @@ using _Game.UIs.Popup;
 using AudioEnum;
 using DG.Tweening;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -106,6 +107,16 @@ namespace VinhLB
                 StopCoroutine(_delayOpenCoroutine);
             }
             _delayOpenCoroutine = StartCoroutine(DelayOpenCoroutine());
+
+            _heartValueText.text = GameManager.Ins.Heart.ToString();
+            if (GameManager.Ins.Heart >= DataManager.Ins.ConfigData.maxHeart)
+            {
+                _regenHeartTime.text = "FULL";
+            }
+            else
+            {
+                ChangeHeartTime(GameManager.Ins.CurrentRegenHeartTime);
+            }
         }
 
         private void ChangeGoldValue(ResourceChangeData data)

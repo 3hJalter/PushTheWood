@@ -7,6 +7,7 @@ using _Game.Utilities;
 using _Game.Utilities.Timer;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Playables;
 using VinhLB;
 
 namespace _Game.Managers
@@ -32,7 +33,7 @@ namespace _Game.Managers
         private GameData _gameData;
         private STimer heartTimer;
         private int currentRegenHeartTime;
-
+        public int CurrentRegenHeartTime => currentRegenHeartTime;
         public float ReduceRatio { get; private set; }
         public bool IsReduce { get; private set; }
 
@@ -192,6 +193,8 @@ namespace _Game.Managers
         {
             int day = (int)(DateTime.UtcNow.Date - _gameData.user.lastTimeLogOut.ToUniversalTime().Date)
                 .TotalDays;
+            if (_gameData.user.heartRemaningTime < 0)
+                _gameData.user.heartRemaningTime = 0;
             int offlineSecond = (int)DateTime.UtcNow.TimeOfDay.TotalSeconds + _gameData.user.heartRemaningTime;
             if (day > 0)
             {
@@ -204,14 +207,6 @@ namespace _Game.Managers
             int regenHeart = offlineSecond / DataManager.Ins.ConfigData.regenHeartTime;
             GainHeart(regenHeart);
             currentRegenHeartTime = offlineSecond % DataManager.Ins.ConfigData.regenHeartTime;
-            if(Heart >= DataManager.Ins.ConfigData.maxHeart)
-            {
-                PostEvent(EventID.OnHeartTimeChange, -1);
-            }
-            else
-            {
-                PostEvent(EventID.OnHeartTimeChange, currentRegenHeartTime);
-            }
         }
         public void GainHeart(int value, object source = null)
         {
@@ -224,6 +219,7 @@ namespace _Game.Managers
             {
                 heartTimer.Stop();
                 currentRegenHeartTime = 0;
+                _gameData.user.heartRemaningTime = 0;
                 PostEvent(EventID.OnHeartTimeChange, -1);
             }
             else
@@ -236,6 +232,8 @@ namespace _Game.Managers
             {
                 currentRegenHeartTime += 1;
                 PostEvent(EventID.OnHeartTimeChange, currentRegenHeartTime);
+                DevLog.Log(DevId.Hung,$"Update Timer: {currentRegenHeartTime}" );
+
                 if (currentRegenHeartTime >= DataManager.Ins.ConfigData.regenHeartTime)
                 {
                     currentRegenHeartTime -= DataManager.Ins.ConfigData.regenHeartTime;
