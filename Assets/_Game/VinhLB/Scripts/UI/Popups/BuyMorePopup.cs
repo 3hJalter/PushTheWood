@@ -44,6 +44,21 @@ namespace VinhLB
             // TODO: Retrieve param to detect resource to buy such as Gold, Heart, etc...
         }
 
+        public override void UpdateUI()
+        {
+            base.UpdateUI();
+            if(GameManager.Ins.Heart >= DataManager.Ins.ConfigData.maxHeart)
+            {
+                _buyButton.gameObject.SetActive(false);
+                _claimButton.gameObject.SetActive(false);
+            }
+            else
+            {
+                _buyButton.gameObject.SetActive(true);
+                _claimButton.gameObject.SetActive(true);
+            }
+        }
+
         private void OnBuyClick()
         {
             if (GameManager.Ins.TrySpendGold(DataManager.Ins.ConfigData.goldToBuyHeart))
@@ -54,12 +69,13 @@ namespace VinhLB
             {
                 UIManager.Ins.OpenUI<NotificationPopup>("Not Enough Gold!");
             }
-            
+            Close();
         }
 
         private void OnClaimClick()
         {
             AdsManager.Ins.RewardedAds.Show(GetHeart);
+            Close();
         }
 
         private void GetHeart()

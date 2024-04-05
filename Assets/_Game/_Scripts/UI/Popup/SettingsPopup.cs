@@ -5,6 +5,7 @@ using _Game.Data;
 using _Game.GameGrid;
 using _Game.Managers;
 using _Game.UIs.Screen;
+using Sirenix.Serialization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -144,7 +145,16 @@ namespace _Game.UIs.Popup
 
         public void OnGoMenuClick()
         {
-            UIManager.Ins.OpenUI<GiveUpPopup>((Action)ActualGoMenu);
+            switch(LevelManager.Ins.CurrentLevel.LevelType)
+            {
+                case LevelType.Normal:
+                case LevelType.Secret:
+                    UIManager.Ins.OpenUI<GiveUpPopup>((Action)ActualGoMenu);
+                    break;
+                default:
+                    ActualGoMenu();
+                    break;
+            }
             
             void ActualGoMenu()
             {

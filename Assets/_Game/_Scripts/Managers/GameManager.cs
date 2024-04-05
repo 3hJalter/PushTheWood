@@ -198,7 +198,7 @@ namespace _Game.Managers
             int offlineSecond = (int)DateTime.UtcNow.TimeOfDay.TotalSeconds + _gameData.user.heartRemaningTime;
             if (day > 0)
             {
-                offlineSecond += day * 3600 * 24 + 86400 - _gameData.user.heartStopCountingSecond;
+                offlineSecond += (day - 1) * 3600 * 24 + 86400 - _gameData.user.heartStopCountingSecond;
             }
             else
             {
@@ -230,6 +230,9 @@ namespace _Game.Managers
             
             void UpdateHeartCount()
             {
+                if (currentRegenHeartTime < 0)
+                    currentRegenHeartTime = 0;
+
                 currentRegenHeartTime += 1;
                 PostEvent(EventID.OnHeartTimeChange, currentRegenHeartTime);
                 DevLog.Log(DevId.Hung,$"Update Timer: {currentRegenHeartTime}" );

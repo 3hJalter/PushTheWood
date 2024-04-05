@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using _Game._Scripts.InGame;
 using _Game.DesignPattern;
+using _Game.GameGrid;
 using _Game.Managers;
 using HControls;
 using MEC;
@@ -63,7 +64,16 @@ namespace _Game.UIs.Screen
 
         private void OnGoLose()
         {
-            UIManager.Ins.OpenUI<GiveUpPopup>((Action)ActualGoLose);
+            switch (LevelManager.Ins.CurrentLevel.LevelType)
+            {
+                case Data.LevelType.Normal:
+                case Data.LevelType.Secret:
+                    UIManager.Ins.OpenUI<GiveUpPopup>((Action)ActualGoLose);
+                    break;
+                default:
+                    ActualGoLose();
+                    break;
+            }
 
             void ActualGoLose()
             {
