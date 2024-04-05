@@ -232,6 +232,8 @@ namespace _Game.Managers
             {
                 currentRegenHeartTime += 1;
                 PostEvent(EventID.OnHeartTimeChange, currentRegenHeartTime);
+                DevLog.Log(DevId.Hung,$"Update Timer: {currentRegenHeartTime}" );
+
                 if (currentRegenHeartTime >= DataManager.Ins.ConfigData.regenHeartTime)
                 {
                     currentRegenHeartTime -= DataManager.Ins.ConfigData.regenHeartTime;

@@ -108,9 +108,9 @@ namespace VinhLB
             }
             _delayOpenCoroutine = StartCoroutine(DelayOpenCoroutine());
 
+            _heartValueText.text = GameManager.Ins.Heart.ToString();
             if (GameManager.Ins.Heart >= DataManager.Ins.ConfigData.maxHeart)
             {
-                _heartValueText.text = GameManager.Ins.Heart.ToString();
                 _regenHeartTime.text = "FULL";
             }
             else
