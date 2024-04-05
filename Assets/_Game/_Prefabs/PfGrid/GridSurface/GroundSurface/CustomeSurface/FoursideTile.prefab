@@ -92,7 +92,9 @@ MonoBehaviour:
   surfaceType: 1
   islandID: -1
   grassRenderer: {fileID: 1083103131027955000}
+  grassMeshFilter: {fileID: 2141971497470347489}
   groundMeshRenderer: {fileID: 1926374796096332564}
+  groundMeshFilter: {fileID: 7302703781013097559}
   combineMeshs:
   - {fileID: 7302703781013097559}
   _flowersParentTF: {fileID: 0}
@@ -343,5 +345,10 @@ Transform:
 --- !u!23 &1083103131027955000 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 4955539010319295801, guid: 5208cefe5bb5dc04b964f8a04a82cab4, type: 3}
+  m_PrefabInstance: {fileID: 5459041105316476929}
+  m_PrefabAsset: {fileID: 0}
+--- !u!33 &2141971497470347489 stripped
+MeshFilter:
+  m_CorrespondingSourceObject: {fileID: 6231758455214944480, guid: 5208cefe5bb5dc04b964f8a04a82cab4, type: 3}
   m_PrefabInstance: {fileID: 5459041105316476929}
   m_PrefabAsset: {fileID: 0}

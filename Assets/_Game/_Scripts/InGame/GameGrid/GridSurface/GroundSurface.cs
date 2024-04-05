@@ -12,7 +12,10 @@ namespace _Game.GameGrid.GridSurface
         [SerializeField]
         private MeshRenderer grassRenderer;
         [SerializeField]
+        private MeshFilter grassMeshFilter;
+        [SerializeField]
         private MeshRenderer groundMeshRenderer;
+        [SerializeField]
         private MeshFilter groundMeshFilter;
         [SerializeField]
         private List<MeshFilter> combineMeshs;
@@ -25,28 +28,29 @@ namespace _Game.GameGrid.GridSurface
 
         private List<Flower> _flowerList = new List<Flower>();
         public MeshFilter GroundMeshFilter => groundMeshFilter;
-
+        public MeshFilter GrassMeshFilter => grassMeshFilter;
+        
+        
         public override void OnInit(int levelIndex, Vector2Int gridCellPos, Vector2Int gridSize,
             Direction rotateDirection = Direction.Forward, MaterialEnum materialEnum = MaterialEnum.None,
             ThemeEnum themeEnum = ThemeEnum.Default, bool hasUnitInMap = false)
         {
             transform.localRotation = Quaternion.Euler(0, BuildingUnitData.GetRotationAngle(rotateDirection), 0);
             // Change material in mesh renderer
-            if (groundMeshRenderer is null) return;
-            groundMeshFilter = groundMeshRenderer.GetComponent<MeshFilter>();
+            if (groundMeshRenderer is null) return; 
             groundMaterialEnum = materialEnum;
-            groundMeshRenderer.material = DataManager.Ins.GetSurfaceMaterial(materialEnum);
+            // groundMeshRenderer.material = DataManager.Ins.GetSurfaceMaterial(materialEnum);
             if (groundMaterialEnum is MaterialEnum.None || grassRenderer is null) return;
-            if (themeEnum is ThemeEnum.Winter)
-            {
-                grassRenderer.gameObject.SetActive(false);
-            }
-            else
-            {
-                grassRenderer.gameObject.SetActive(true);
-                grassRenderer.material = DataManager.Ins.GetGrassMaterial(materialEnum);
-
-            }
+            // if (themeEnum is ThemeEnum.Winter)
+            // {
+            //     grassRenderer.gameObject.SetActive(false);
+            // }
+            // else
+            // {
+            //     grassRenderer.gameObject.SetActive(true);
+            //     grassRenderer.material = DataManager.Ins.GetGrassMaterial(materialEnum);
+            //
+            // }
             // Spawn flowers if it does not has unit in map
             if (CanSpawnFlowers(levelIndex, gridCellPos, gridSize, hasUnitInMap))
             {
@@ -84,6 +88,27 @@ namespace _Game.GameGrid.GridSurface
             }
             return combineMeshs;
         }
+
+        public void ActiveMesh(bool isActiveMesh, ThemeEnum themeEnum)
+        {
+            GroundMeshFilter.gameObject.SetActive(isActiveMesh);
+            GrassMeshFilter.gameObject.SetActive(isActiveMesh);
+            if (isActiveMesh)
+            {
+                groundMeshRenderer.material = DataManager.Ins.GetSurfaceMaterial(groundMaterialEnum);
+                if (themeEnum is ThemeEnum.Winter)
+                {
+                    grassRenderer.gameObject.SetActive(false);
+                }
+                else
+                {
+                    grassRenderer.gameObject.SetActive(true);
+                    grassRenderer.material = DataManager.Ins.GetGrassMaterial(groundMaterialEnum);
+                
+                }
+            }
+        }
+        
         public override void OnDespawn()
         {
             for (int i = _flowerList.Count - 1; i >= 0; i--)
