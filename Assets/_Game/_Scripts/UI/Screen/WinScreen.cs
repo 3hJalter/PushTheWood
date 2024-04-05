@@ -204,18 +204,25 @@ namespace _Game.UIs.Screen
             }
 
             UpdateVisual(GameplayManager.Ins.GetWinGameRewards(true));
-            for (int i = 0; i < _rewardItemList.Count; i++)
-            {
-                if (_rewardItemList[i].Reward.RewardType == RewardType.Currency &&
-                    _rewardItemList[i].Reward.CurrencyType == CurrencyType.Gold)
-                {
-                    _rewardItemList[i].Reward.Amount /= 2;
-                    _rewardItemList[i].Reward.Obtain(_rewardItemList[i].IconImagePosition);
-                }
-            }
+            AdsManager.Ins.RewardedAds.Show(UpdateX2Reward, Ads.Placement.Win_Popup);
 
-            _claimX2Button.gameObject.SetActive(false);
-            _fakeClaimX2Button.gameObject.SetActive(true);
+            void UpdateX2Reward()
+            {
+                for (int i = 0; i < _rewardItemList.Count; i++)
+                {
+                    if (_rewardItemList[i].Reward.RewardType == RewardType.Currency &&
+                        _rewardItemList[i].Reward.CurrencyType == CurrencyType.Gold)
+                    {
+                        _rewardItemList[i].Reward.Amount /= 2;
+                        _rewardItemList[i].Reward.Obtain(_rewardItemList[i].IconImagePosition);
+                    }
+                }
+                _claimX2Button.gameObject.SetActive(false);
+                _fakeClaimX2Button.gameObject.SetActive(true);
+            }
+            
+
+            
         }
 
         private void OnGoNextLevel()
