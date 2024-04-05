@@ -32,7 +32,7 @@ namespace _Game._Scripts.UIs.Component
         private RectTransform _containerRect;
         private float _initializeContainerWidth;
 
-        private const float ITEM_WIDTH = 30f;
+        private const float ITEM_WIDTH = 42.5f;
         
         public DcRewardState State
         {
