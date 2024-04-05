@@ -53,6 +53,8 @@ namespace _Game.GameGrid
         MeshFilter groundCombineMeshFilter;
         [SerializeField]
         MeshFilter[] surfaceCombineMeshFilters;
+        [SerializeField]
+        MeshFilter[] grassCombineMeshFilters;
         // TEMPORARY
         public int dailyLevelClickedDay;
         
@@ -182,17 +184,21 @@ namespace _Game.GameGrid
             GameplayManager.Ins.ClearBoosterPurchase();
             IsConstructingLevel = true;
             _currentLevel = new Level(type, index);
-            groundCombineMeshFilter.mesh = _currentLevel.CombineMesh;
-            for(int i = 0; i < surfaceCombineMeshFilters.Length; i++)
-            {
-                surfaceCombineMeshFilters[i].mesh = _currentLevel.SurfaceCombineMesh[i];
-            }
             if (_currentLevel.Theme != _currentTheme)
             {
                 _currentTheme = _currentLevel.Theme;
                 DataManager.Ins.OnChangeTheme(_currentTheme);
             }
-            
+            groundCombineMeshFilter.mesh = _currentLevel.CombineMesh;
+            for(int i = 0; i < surfaceCombineMeshFilters.Length; i++)
+            {
+                surfaceCombineMeshFilters[i].mesh = _currentLevel.SurfaceCombineMesh[i];
+            }
+            for (int i = 0; i < grassCombineMeshFilters.Length; i++)
+            {
+                grassCombineMeshFilters[i].mesh = _currentLevel.GrassCombineMesh[i];
+                grassCombineMeshFilters[i].gameObject.SetActive(_currentTheme is not ThemeEnum.Winter);
+            }
             objectiveTotal = 0;
             if (needInit && !_currentLevel.IsInit)
             {

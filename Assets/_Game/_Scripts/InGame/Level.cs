@@ -118,7 +118,9 @@ namespace _Game._Scripts.InGame
         public int Index { get; }
         public Mesh CombineMesh { get; private set; }
         public readonly Mesh[] SurfaceCombineMesh = new Mesh[] {null, null, null };
-
+        public readonly Mesh[] GrassCombineMesh = new Mesh[] {null, null, null };
+        
+        
         public bool IsInit { get; private set; }
 
         private GridSurface[,] GridSurfaceMap { get; set; }
@@ -380,10 +382,12 @@ namespace _Game._Scripts.InGame
         {
             List<MeshFilter> groundFilters = null;
             List<MeshFilter>[] surfaceFilters = null;
+            List<MeshFilter>[] grassFilters = null;
             if (CombineMesh is null)
             {
                 groundFilters = new List<MeshFilter>();
                 surfaceFilters = new List<MeshFilter>[] { new(), new(), new() };            
+                grassFilters = new List<MeshFilter>[] { new(), new(), new() };
             }
             // Loop through all sfD (surface data) in _rawLevelData
             for (int i = 0; i < _rawLevelData.sfD.Length; i++)
@@ -411,7 +415,8 @@ namespace _Game._Scripts.InGame
                 {
                     groundFilters?.AddRange(clone.CombineMeshs(enableRootModel));
                     surfaceFilters?[(int)clone.groundMaterialEnum]?.Add(clone.GroundMeshFilter);
-                    clone.GroundMeshFilter.gameObject.SetActive(enableRootModel);
+                    grassFilters?[(int)clone.groundMaterialEnum]?.Add(clone.GrassMeshFilter);
+                    clone.ActiveMesh(enableRootModel, (ThemeEnum) _rawLevelData.t); 
                 }
             }
             if (CombineMesh is null)
@@ -420,6 +425,10 @@ namespace _Game._Scripts.InGame
                 for(int i = 0; i < SurfaceCombineMesh.Length; i++)
                 {
                     SurfaceCombineMesh[i] = Optimize.CombineMeshes(surfaceFilters?[i]);
+                }
+                for (int i = 0; i < GrassCombineMesh.Length; i++)
+                {
+                    GrassCombineMesh[i] = Optimize.CombineMeshes(grassFilters?[i]);
                 }
             }
         }
