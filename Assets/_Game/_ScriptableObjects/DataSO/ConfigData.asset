@@ -47,10 +47,7 @@ MonoBehaviour:
       Data: 0|_Game.Resource.BoosterType[], Assembly-CSharp
     - Name: 
       Entry: 12
-      Data: 3
-    - Name: 
-      Entry: 3
-      Data: 0
+      Data: 2
     - Name: 
       Entry: 3
       Data: 1
@@ -68,10 +65,7 @@ MonoBehaviour:
       Data: 1|System.Int32[], mscorlib
     - Name: 
       Entry: 14
-      Data: 3
-    - Name: 
-      Entry: 3
-      Data: 3
+      Data: 2
     - Name: 
       Entry: 3
       Data: 1
@@ -143,13 +137,13 @@ MonoBehaviour:
       Data: 160
     - Name: 
       Entry: 3
-      Data: 1
+      Data: 200
     - Name: 
       Entry: 3
-      Data: 2
+      Data: 220
     - Name: 
       Entry: 3
-      Data: 3
+      Data: 250
     - Name: 
       Entry: 13
       Data: 
@@ -164,16 +158,16 @@ MonoBehaviour:
       Data: 4
     - Name: 
       Entry: 4
-      Data: 0.94
+      Data: 0.5
     - Name: 
       Entry: 4
-      Data: 0.03
+      Data: 0.3
     - Name: 
       Entry: 4
-      Data: 0.02
+      Data: 0.15
     - Name: 
       Entry: 4
-      Data: 0.01
+      Data: 0.05
     - Name: 
       Entry: 13
       Data: 
