@@ -42,7 +42,7 @@ namespace _Game.Managers
             Application.targetFrameRate = 60;
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
             DontDestroyOnLoad(gameObject);
-            // BUGS: Indicator fall when reduce resolution
+
             if (reduceScreenResolution)
             {
                 const int maxScreenHeight = 1280;
@@ -70,7 +70,7 @@ namespace _Game.Managers
 
             #region Handle modified Daily Challenge
 
-            if (_gameData.user.dailyLevelIndex.Length <= 31) // MAXIMUM number of days in month{
+            if (_gameData.user.dailyLevelIndex.Length < 31) // MAXIMUM number of days in month{
             {
                 _gameData.user.dailyLevelIndex = new[]
                 {
@@ -108,13 +108,8 @@ namespace _Game.Managers
             {
                 _gameData.user.dailyLevelIndexComplete.Clear();
                 _gameData.user.dailyChallengeRewardCollected.Clear();
-                if (_gameData.user.completedOneTimeTutorial.Contains(DataManager.Ins.ConfigData
-                        .unlockDailyChallengeAtLevelIndex)) // If clear the tutorial && unlock daily challenge
-                {
-                    // Shuffle daily level index
-                    _gameData.user.dailyLevelIndex.Shuffle();
-                    Database.SaveData(_gameData);
-                }
+                _gameData.user.dailyLevelIndex.Shuffle();
+                Database.SaveData(_gameData);
             }
 
             #endregion

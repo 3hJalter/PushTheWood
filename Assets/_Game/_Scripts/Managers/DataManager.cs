@@ -138,6 +138,12 @@ namespace _Game.Managers
             
             return _gameData.user.dailyLevelIndexComplete.Count >= currentDay;
         }
+        
+        public bool IsClearDailyChallenge(int index)
+        {
+            int levelIndex = _gameData.user.dailyLevelIndex[index];
+            return _gameData.user.dailyLevelIndexComplete.Contains(levelIndex);
+        }
 
         public bool IsClearAllSecretLevel()
         {
