@@ -320,6 +320,14 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -5383627553356662943, guid: 18d7a80cc2efb0140ae7cf802e329ad5, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -2696037548572287840, guid: 18d7a80cc2efb0140ae7cf802e329ad5, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 18d7a80cc2efb0140ae7cf802e329ad5, type: 3}
       propertyPath: m_Name
       value: BabyTree_grow02 (1)
