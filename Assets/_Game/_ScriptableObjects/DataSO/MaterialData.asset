@@ -1547,4 +1547,4 @@ MonoBehaviour:
   transparentMaterial: {fileID: 2100000, guid: 050e81b8eb5499c4db08f8b394332a10, type: 2}
   generalModelMaterial: {fileID: 2100000, guid: b558f0e1c612b62418a8707d7d57850c, type: 2}
   waterMaterial: {fileID: 2100000, guid: 907487b64e851a643a3e4248ed6b8797, type: 2}
-  currentTheme: 2
+  currentTheme: 0
