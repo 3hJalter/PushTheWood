@@ -41,10 +41,10 @@ Material:
     - _WindFrequency: 0.01
     - _WindStrength: 0.1
     m_Colors:
-    - _BaseColor: {r: 0.1969316, g: 0.6603774, b: 0.1837842, a: 1}
+    - _BaseColor: {r: 1, g: 0.88235295, b: 0.43529412, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _CurvedWorldBendSettings: {r: 2, g: 1, b: 0, a: 0}
-    - _TipColor: {r: 0.08248176, g: 0.745283, b: 0.06679419, a: 1}
+    - _TipColor: {r: 0.972549, g: 0.84313726, b: 0.36078432, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &3491717857063969027
 MonoBehaviour:

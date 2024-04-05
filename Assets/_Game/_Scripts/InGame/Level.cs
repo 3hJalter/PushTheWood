@@ -20,7 +20,7 @@ namespace _Game._Scripts.InGame
     public class Level
     {
         #region constructor
-        public Level(LevelType type, int index, Transform parent = null)
+        public Level(LevelType type, int index, Transform parent = null, bool enableRootModel = false)
         {
             IsInit = false;
             // Set GridMap
@@ -35,7 +35,7 @@ namespace _Game._Scripts.InGame
             // Spawn Units (Not Init)
             OnSpawnUnits();
             // Spawn Grid Surface
-            SpawnGridSurfaceToGrid();
+            SpawnGridSurfaceToGrid(enableRootModel);
             // OnSpawnShadowUnit();
             // OnSetHintLine();
             // if isInit -> AddIsland & InitUnit
@@ -376,7 +376,7 @@ namespace _Game._Scripts.InGame
             HasUnitInMap = new bool[GridSizeX, gridSizeY];
         }
 
-        private void SpawnGridSurfaceToGrid()
+        private void SpawnGridSurfaceToGrid(bool enableRootModel = false)
         {
             List<MeshFilter> groundFilters = null;
             List<MeshFilter>[] surfaceFilters = null;
@@ -409,9 +409,9 @@ namespace _Game._Scripts.InGame
 
                 if (CombineMesh is null && surfaceClone is GroundSurface clone)
                 {
-                    groundFilters?.AddRange(clone.CombineMeshs(false));
+                    groundFilters?.AddRange(clone.CombineMeshs(enableRootModel));
                     surfaceFilters?[(int)clone.groundMaterialEnum]?.Add(clone.GroundMeshFilter);
-                    clone.GroundMeshFilter.gameObject.SetActive(false);
+                    clone.GroundMeshFilter.gameObject.SetActive(enableRootModel);
                 }
             }
             if (CombineMesh is null)
