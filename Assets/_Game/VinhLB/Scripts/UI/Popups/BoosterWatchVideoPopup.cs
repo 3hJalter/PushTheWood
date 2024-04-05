@@ -8,18 +8,18 @@ using _Game.Resource;
 using _Game.UIs.Popup;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace VinhLB
 {
     public class BoosterWatchVideoPopup : UICanvas
     {
-        private const int BOOSTER_AMOUNT_ON_BUY = 5;
-
         [SerializeField]
         private Image _boosterIcon;
+        [FormerlySerializedAs("_boosterText")]
         [SerializeField]
-        private TMP_Text _boosterText;
+        private TMP_Text _boosterNameText;
         [SerializeField]
         private TMP_Text _boosterAmountText;
         [SerializeField]
@@ -67,7 +67,7 @@ namespace VinhLB
             base.UpdateUI();
             // Change the _boosterIcon to boosterConfig.icon & _boosterText to boosterConfig.name
             _boosterIcon.sprite = _boosterConfig.MainIcon;
-            _boosterText.text = _boosterConfig.Name;
+            _boosterNameText.text = _boosterConfig.Name;
             _boosterAmountText.text = $"x{_boosterConfig.GoldPerBuyRatio.itemsPerBuy}";
             _currencyAmountText.text = _boosterConfig.GoldPerBuyRatio.goldNeed.ToString(("#,#"));
             _videoAmountText.text = "CLAIM";

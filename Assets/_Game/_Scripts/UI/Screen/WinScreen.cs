@@ -203,26 +203,27 @@ namespace _Game.UIs.Screen
                 return;
             }
 
-            UpdateVisual(GameplayManager.Ins.GetWinGameRewards(true));
             AdsManager.Ins.RewardedAds.Show(UpdateX2Reward, Ads.Placement.Win_Popup);
 
             void UpdateX2Reward()
             {
+                UpdateVisual(GameplayManager.Ins.GetWinGameRewards(true));
+                
+                _claimX2Button.gameObject.SetActive(false);
+                _fakeClaimX2Button.gameObject.SetActive(true);
+                
                 for (int i = 0; i < _rewardItemList.Count; i++)
                 {
                     if (_rewardItemList[i].Reward.RewardType == RewardType.Currency &&
                         _rewardItemList[i].Reward.CurrencyType == CurrencyType.Gold)
                     {
+                        // We need double gold visual but we receive first half gold amount
+                        // when the win screen open so we just receive other half gold amount
                         _rewardItemList[i].Reward.Amount /= 2;
                         _rewardItemList[i].Reward.Obtain(_rewardItemList[i].IconImagePosition);
                     }
                 }
-                _claimX2Button.gameObject.SetActive(false);
-                _fakeClaimX2Button.gameObject.SetActive(true);
             }
-            
-
-            
         }
 
         private void OnGoNextLevel()

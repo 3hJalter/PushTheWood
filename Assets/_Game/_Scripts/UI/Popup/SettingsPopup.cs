@@ -144,15 +144,19 @@ namespace _Game.UIs.Popup
 
         public void OnGoMenuClick()
         {
+            UIManager.Ins.OpenUI<GiveUpPopup>((Action)ActualGoMenu);
             
-            UIManager.Ins.CloseAll();
-            TransitionScreen ui = UIManager.Ins.OpenUI<TransitionScreen>();
-            ui.OnOpenCallback += () =>
+            void ActualGoMenu()
             {
-                LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
-                GameManager.Ins.PostEvent(DesignPattern.EventID.OnInterAdsStepCount, 1);
-                UIManager.Ins.OpenUI<MainMenuScreen>();
-            };
+                UIManager.Ins.CloseAll();
+                TransitionScreen transitionScreen = UIManager.Ins.OpenUI<TransitionScreen>();
+                transitionScreen.OnOpenCallback += () =>
+                {
+                    LevelManager.Ins.OnGoLevel(LevelType.Normal, LevelManager.Ins.NormalLevelIndex, false);
+                    GameManager.Ins.PostEvent(DesignPattern.EventID.OnInterAdsStepCount, 1);
+                    UIManager.Ins.OpenUI<MainMenuScreen>();
+                };
+            }
         }
         
         #region Old functions

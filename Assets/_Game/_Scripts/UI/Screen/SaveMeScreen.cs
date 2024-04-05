@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _Game._Scripts.InGame;
 using _Game.DesignPattern;
 using _Game.Managers;
@@ -6,6 +7,7 @@ using HControls;
 using MEC;
 using UnityEngine;
 using UnityEngine.UI;
+using VinhLB;
 
 namespace _Game.UIs.Screen
 {
@@ -48,18 +50,26 @@ namespace _Game.UIs.Screen
         public override void Open(object param = null)
         {
             base.Open(param);
+            
             AudioManager.Ins.PlaySfx(AudioEnum.SfxType.PopupOpen);
         }
+        
         public override void Close()
         {
             HInputManager.LockInput(false);
+            
             base.Close();
         }
 
         private void OnGoLose()
         {
-            GameplayManager.Ins.OnLoseGame(LevelLoseCondition.Timeout);
-            Close();
+            UIManager.Ins.OpenUI<GiveUpPopup>((Action)ActualGoLose);
+
+            void ActualGoLose()
+            {
+                GameplayManager.Ins.OnLoseGame(LevelLoseCondition.Timeout);
+                Close();
+            }
         }
 
         private void OnMoreTimeTicket()
