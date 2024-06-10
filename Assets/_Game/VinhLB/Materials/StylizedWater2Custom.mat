@@ -277,7 +277,7 @@ Material:
     - _ZTest: 2
     - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 0, g: 0.104621306, b: 0.5176471, a: 1}
+    - _BaseColor: {r: 0.0022694964, g: 0.4811321, b: 0.121985145, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Direction: {r: -1, g: -1, b: 0, a: 0}
     - _DissolveMaskChannel: {r: 0, g: 1, b: 0, a: 0}
